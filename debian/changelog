@@ -1,0 +1,73 @@
+browser (0.1.6-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.6-0 
+
+  * Synchronize source code with public and private for...
+  * ...
+
+ -- Sangpyo Kim <sangpyo7.kim@samsung.com>  Thu, 05 Apr 2012 18:24:17 +0900
+
+browser (0.1.5-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.5-0
+ 
+  * Deactivating accelerated composition setting menu
+
+ -- Sangpyo Kim <sangpyo7.kim@samsung.com>  Wed, 22 Feb 2012 23:54:23 +0900
+
+browser (0.1.4-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.4-0
+
+ * Remove youtube auth.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Wed, 22 Feb 2012 20:23:14 +0900
+
+browser (0.1.3-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.3-0 
+
+  * Activate the URL edit mode when launch the browser
+  * Adding Firefox user agent menu and updating chrome
+
+ -- Sangpyo Kim <sangpyo7.kim@samsung.com>  Wed, 22 Feb 2012 20:11:47 +0900
+
+browser (0.1.1-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.1-0 
+
+  * adding accelerated composition view for browser setting
+
+ -- Sangpyo Kim <sangpyo7.kim@samsung.com>  Wed, 22 Feb 2012 01:06:35 +0900
+
+browser (0.1.0-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.0-0
+
+  * Upversion.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Tue, 21 Feb 2012 18:58:54 +0900
+
+browser (0.0.2-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.0.2-0
+
+  * Fix browser launching issue.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Tue, 21 Feb 2012 18:56:48 +0900
+
+browser (0.0.1-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.0.1-0
+
+  * Initial release 
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Thu, 17 Feb 2012 12:35:50 +0900

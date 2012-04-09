@@ -1,0 +1,59 @@
+/*
+Copyright (c) 2000-2012 Samsung Electronics Co., Ltd All Rights Reserved
+
+This file is part of browser
+Written by Hyerim Bae hyerim.bae@samsung.com.
+
+PROPRIETARY/CONFIDENTIAL
+
+This software is the confidential and proprietary information of
+SAMSUNG ELECTRONICS ("Confidential Information"). You shall not
+disclose such Confidential Information and shall use it only in
+accordance with the terms of the license agreement you entered
+into with SAMSUNG ELECTRONICS.
+
+SAMSUNG make no representations or warranties about the suitability
+of the software, either express or implied, including but not limited
+to the implied warranties of merchantability, fitness for a particular
+purpose, or non-infringement. SAMSUNG shall not be liable for any
+damages suffered by licensee as a result of using, modifying or
+distributing this software or its derivatives.
+*/
+
+#include "browser-macro.edc"
+
+collections {
+	group {
+		name: "picker_layout";
+		parts {
+			part {
+	      		name: "bg";
+				mouse_events: 1;
+				repeat_events: 1;
+				type: RECT;
+				description
+				{
+					state: "default" 0.0;
+					visible: 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					color: 0 0 0 0;
+				}
+			}
+			part {
+				name: "elm.swallow.picker";
+				type: SWALLOW;
+				mouse_events: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.5; to: bg; }
+					rel2 { relative: 1.0 1.0; to: bg; }
+				}
+			}
+		}
+	}
+}
+
