@@ -1087,7 +1087,8 @@ void Browser_Bookmark_View::__rename_folder_unfocus_cb(void *data, Evas_Object *
 	Evas_Object *genlist = bookmark_view->_get_current_folder_genlist();
 
 	Evas_Object *edit_field_entry = obj;
-	char *text = elm_entry_markup_to_utf8(elm_entry_entry_get(edit_field_entry));
+	char *markup_text = elm_entry_markup_to_utf8(elm_entry_entry_get(edit_field_entry));
+	char *text = bookmark_view->_trim(markup_text);
 	if (!text) {
 		BROWSER_LOGE("elm_entry_markup_to_utf8 failed");
 		return;
@@ -1113,6 +1114,8 @@ void Browser_Bookmark_View::__rename_folder_unfocus_cb(void *data, Evas_Object *
 			item->title = text;
 			m_data_manager->get_bookmark_db()->modify_bookmark_title(item->id, text);
 		} else {
+			if (elm_genlist_decorate_mode_get(bookmark_view->_get_current_folder_genlist()))
+				bookmark_view->show_msg_popup(BR_STRING_ALREADY_EXISTS);
 			std::string folder_name = m_data_manager->get_bookmark_db()->get_folder_name_by_id(item->id);
 			elm_entry_entry_set(edit_field_entry, folder_name.c_str());
 		}
@@ -1123,7 +1126,7 @@ void Browser_Bookmark_View::__rename_folder_unfocus_cb(void *data, Evas_Object *
 
 	bookmark_view->m_rename_edit_field = NULL;
 
-	free(text);
+	free(markup_text);
 }
 
 void Browser_Bookmark_View::__drag_genlist_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1338,9 +1341,7 @@ Evas_Object *Browser_Bookmark_View::_show_delete_confirm_popup(void)
 	}
 
 	evas_object_size_hint_weight_set(m_delete_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-	std::string confirm_msg = std::string(BR_STRING_DELETE) + std::string("?");
-	elm_object_text_set(m_delete_confirm_popup, confirm_msg.c_str());
+	elm_object_text_set(m_delete_confirm_popup, BR_STRING_DELETE_Q);
 
 	Evas_Object *ok_button = elm_button_add(m_delete_confirm_popup);
 	elm_object_text_set(ok_button, BR_STRING_YES);
@@ -2001,6 +2002,8 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_CONTROLBAR, m_bottom_control_bar);
 	}
 
+	elm_object_focus_allow_set(m_bottom_control_bar, EINA_FALSE);
+
 	return EINA_TRUE;
 }
 
@@ -2110,6 +2113,7 @@ Eina_Bool Browser_Bookmark_View::_create_main_layout(void)
 								BR_STRING_BOOKMARKS, __controlbar_tab_changed_cb, this);
 	elm_toolbar_item_append(m_top_control_bar, NULL, BR_STRING_HISTORY, __controlbar_tab_changed_cb, this);
 
+	elm_toolbar_select_mode_set(m_top_control_bar, ELM_OBJECT_SELECT_MODE_ALWAYS);
 	elm_toolbar_item_selected_set(bookmark_tab_item, EINA_TRUE);
 
 	evas_object_show(m_top_control_bar);

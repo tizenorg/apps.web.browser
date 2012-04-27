@@ -26,4 +26,4 @@ X-TIZEN-IsHorizontalScale=1
 X-TIZEN-TaskManage=True
 X-TIZEN-Multiple=False
 X-TIZEN-Removable=False
-X-TIZEN-SVC=http://tizen.org/appsvc/operation/view|http|NULL,http://tizen.org/appsvc/operation/view|file|NULL,http://tizen.org/appsvc/operation/view|NULL|application/x-shockwave-flash,http://tizen.org/appsvc/operation/view|NULL|image/svg+xml,http://tizen.org/appsvc/operation/view|NULL|text/html,http://tizen.org/appsvc/operation/view|NULL|application/xml
+X-TIZEN-SVC=http://tizen.org/appsvc/operation/view|http|NULL,http://tizen.org/appsvc/operation/view|https|NULL,http://tizen.org/appsvc/operation/view|file|NULL,http://tizen.org/appsvc/operation/view|NULL|application/x-shockwave-flash,http://tizen.org/appsvc/operation/view|NULL|image/svg+xml,http://tizen.org/appsvc/operation/view|NULL|text/html,http://tizen.org/appsvc/operation/view|NULL|application/xml

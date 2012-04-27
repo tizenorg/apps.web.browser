@@ -88,8 +88,13 @@ void Browser_New_Folder_View::__save_button_clicked_cb(void *data, Evas_Object *
 		elm_entry_entry_set(br_elm_editfield_entry_get(edit_field), new_folder_view->m_folder_name.c_str());
 		free(utf8_text);
 		return;
-	} else
-		new_folder_view->_create_new_folder(folder_name);
+	} else {
+		if (!new_folder_view->_create_new_folder(folder_name)) {
+			BROWSER_LOGD("_create_new_folder failed");
+			free(utf8_text);
+			return;
+		}
+	}
 
 	free(utf8_text);
 
@@ -108,7 +113,7 @@ void Browser_New_Folder_View::__save_button_clicked_cb(void *data, Evas_Object *
 		bookmark_view->return_to_bookmark_view();
 }
 
-void Browser_New_Folder_View::_create_new_folder(const char *folder_name)
+Eina_Bool Browser_New_Folder_View::_create_new_folder(const char *folder_name)
 {
 	BROWSER_LOGD("folder_name=[%s]", folder_name);
 
@@ -117,11 +122,11 @@ void Browser_New_Folder_View::_create_new_folder(const char *folder_name)
 
 	if (bookmark_db->is_duplicated(folder_name)) {
 		show_msg_popup(BR_STRING_ALREADY_EXISTS);
-		return;
+		return EINA_FALSE;
 	}
 	else if (bookmark_db->is_full()) {
 		show_msg_popup(BR_STRING_WARNING, BR_STRING_WARNING_OVER_BOOKMARK_LIMIT, 3);
-		return;
+		return EINA_FALSE;
 	}
 	else {
 		Eina_Bool ret = bookmark_db->save_folder(folder_name);
@@ -151,6 +156,8 @@ void Browser_New_Folder_View::_create_new_folder(const char *folder_name)
 		}
 
 	}
+
+	return EINA_TRUE;
 }
 
 void Browser_New_Folder_View::__title_entry_changed_cb(void *data, Evas_Object *obj, void *event_info)

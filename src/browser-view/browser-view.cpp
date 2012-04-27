@@ -599,6 +599,9 @@ void Browser_View::_navigationbar_visible_set_signal(Eina_Bool visible)
 	if (visible && m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
 		return;
 
+	if (m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
+		return;
+
 	evas_object_data_set(m_navi_bar, "visible", (Eina_Bool *)visible);
 
 	Elm_Object_Item *top_it = elm_naviframe_top_item_get(m_navi_bar);
@@ -612,6 +615,9 @@ void Browser_View::_navigationbar_visible_set_signal(Eina_Bool visible)
 void Browser_View::_navigationbar_visible_set(Eina_Bool visible)
 {
 	if (visible && m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+		return;
+
+	if (m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
 		return;
 
 	evas_object_data_set(m_navi_bar, "visible", (Eina_Bool *)visible);
@@ -1443,7 +1449,7 @@ void Browser_View::__go_to_bookmark_cb(void *data, Evas_Object *obj, void *event
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
+	browser_view->suspend_webview(browser_view->m_focused_window->m_ewk_view);
 	if (!m_data_manager->create_bookmark_view()) {
 		BROWSER_LOGE("m_data_manager->create_bookmark_view failed");
 		return;
@@ -1467,6 +1473,7 @@ void Browser_View::__backward_cb(void *data, Evas_Object *obj, void *event_info)
 	Browser_View *browser_view = (Browser_View *)data;
 	__title_back_button_clicked_cb(data, obj, event_info);
 	browser_view->_destroy_more_context_popup();
+	browser_view->m_context_menu->destroy_context_popup();
 }
 
 void Browser_View::__forward_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1717,13 +1724,13 @@ Eina_Bool Browser_View::_show_more_context_popup(void)
 	elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_SETTINGS, NULL,
 							__internet_settings_cb, this);
 
-	elm_ctxpopup_hover_parent_set(m_more_context_popup, m_scroller);
+	elm_ctxpopup_hover_parent_set(m_more_context_popup, m_navi_bar);
 
 	Evas_Coord navibar_width = 0;
 	Evas_Coord navibar_height = 0;
 	evas_object_geometry_get(m_navi_bar, NULL, NULL, &navibar_width, &navibar_height);
 
-	evas_object_move(m_more_context_popup, BROWSER_MORE_CTX_POPUP_MARGIN,
+	evas_object_move(m_more_context_popup, BROWSER_MORE_CTX_POPUP_MARGIN * 7,
 					navibar_height - BROWSER_MORE_CTX_POPUP_MARGIN);
 	evas_object_show(m_more_context_popup);
 
@@ -2869,8 +2876,10 @@ void Browser_View::__naviframe_pop_finished_cb(void *data , Evas_Object *obj, vo
 	Browser_View *browser_view = (Browser_View *)data;
 	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
 
-	if (browser_view->m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
+	if (browser_view->m_navi_it != elm_naviframe_top_item_get(m_navi_bar)) {
+		browser_view->suspend_webview(browser_view->m_focused_window->m_ewk_view);
 		return;
+	}
 
 	m_data_manager->destroy_bookmark_view();
 	m_data_manager->destroy_history_layout();
@@ -2882,6 +2891,8 @@ void Browser_View::__naviframe_pop_finished_cb(void *data , Evas_Object *obj, vo
 		delete browser_view->m_browser_settings;
 		browser_view->m_browser_settings = NULL;
 	}
+
+	browser_view->resume_webview(browser_view->m_focused_window->m_ewk_view);
 }
 
 void Browser_View::__dim_area_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)

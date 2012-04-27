@@ -135,9 +135,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::_show_delete_confirm_popup(void)
 	}
 
 	evas_object_size_hint_weight_set(m_delete_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-	std::string confirm_msg = std::string(BR_STRING_DELETE) + std::string("?");
-	elm_object_text_set(m_delete_confirm_popup, confirm_msg.c_str());
+	elm_object_text_set(m_delete_confirm_popup, BR_STRING_DELETE_Q);
 
 	Evas_Object *ok_button = elm_button_add(m_delete_confirm_popup);
 	if (!ok_button) {

@@ -1,3 +1,81 @@
+browser (0.1.14-0) unstable; urgency=low
+
+  * Git : slp/plgs/b/browser
+  * Tag : browser_0.1.14-0
+
+  * Replace icon of browser(internet)
+  * update spec file
+
+ -- Junghwan Kang <junghwan.kang@samsung.com>  Sat, 21 Apr 2012 20:05:28 +0900
+
+browser (0.1.13-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.13-0
+
+  * Fix context menu minor bug.
+  * update spec file.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Thu, 19 Apr 2012 19:12:02 +0900
+
+browser (0.1.12-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.12-0
+
+  * Fix minor bug in history view.
+  * update spec file.
+
+ -- Hyerim bae <hyerim.bae@samsung.com>  Thu, 19 Apr 2012 13:57:38 +0900
+
+browser (0.1.11-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.11-0
+
+  * Fix minor bugs in bookmark view.
+  * update spec file.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Tue, 17 Apr 2012 19:08:26 +0900
+
+browser (0.1.10-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.10-0
+
+  * Fix minor bugs.
+
+ -- Hyerim Bae <hyerim.bae@samsung.com>  Mon, 16 Apr 2012 18:22:25 +0900
+
+browser (0.1.9-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.9-0
+
+  * Fix minor bugs
+
+ -- Junghwan Kang <junghwan.kang@samsung.com>  Tue, 10 Apr 2012 17:33:28 +0900
+
+browser (0.1.8-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.8-0
+
+  * Fix minor bugs
+  * change version name of spec file
+
+ -- Sangpyo Kim <sangpyo7.kim@samsung.com>  Tue, 10 Apr 2012 16:56:59 +0900
+
+browser (0.1.7-0) unstable; urgency=low
+
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_0.1.7-0
+
+  * Fix minor translation issue of delete popup
+  * git clone git@165.213.180.234:shared/pkgs/b/browser
+
+ -- Junghwan Kang <junghwan.kang@samsung.com>  Tue, 10 Apr 2012 11:37:04 +0900
+
 browser (0.1.6-0) unstable; urgency=low
 
   * Git : slp/pkgs/b/browser

@@ -41,6 +41,7 @@ distributing this software or its derivatives.
 #define BR_STRING_DELETE	dgettext("sys_string", "IDS_COM_SK_DELETE")
 #define BR_STRING_SEARCH 	"Search"
 #define BR_STRING_DELETED 	_("IDS_BR_POP_DELETED")
+#define BR_STRING_DELETE_Q  dgettext("sys_string", "IDS_COM_POP_DELETE_Q")
 #define BR_STRING_CLOSE		dgettext("sys_string", "IDS_COM_POP_CLOSE")
 #define BR_STRING_VIEW_CHANGE 	_("IDS_BR_SK3_CHANGE_VIEW")
 #define BR_STRING_NEW_WINDOW 	_("IDS_BR_SK1_NEW_WINDOW")

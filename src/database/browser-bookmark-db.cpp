@@ -675,15 +675,14 @@ Eina_Bool Browser_Bookmark_DB::get_untitled_folder_count(int *count)
 
 	std::string title;
 	std::string title_from_db;
-	char buf[32] = {0, };
+	char *buf = "Folder_";
 	for (int i = 1; ; i++) {
 		*count = i;
 		error = sqlite3_step(sqlite3_stmt);
 		if (error == SQLITE_ROW) {
-			snprintf(buf, sizeof(buf)-1, "Folder_%02d", i);
 			title = buf; 
 			title_from_db = reinterpret_cast<const char *>(sqlite3_column_text(sqlite3_stmt,0));
-			if (title_from_db != title)
+			if (strncmp(title_from_db.c_str(), title.c_str(), title.length()))
 				break;
 		} else
 			break;

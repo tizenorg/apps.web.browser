@@ -34,7 +34,7 @@ public:
 	Eina_Bool init(void);
 private:
 	Eina_Bool _create_main_layout(void);
-	void _create_new_folder(const char *folder_name);
+	Eina_Bool _create_new_folder(const char *folder_name);
 	string _get_default_new_folder_name(void);
 
 	/* Elementary event callback functions */

@@ -2,7 +2,7 @@
 
 Name:       org.tizen.browser
 Summary:    webkit browser with EFL
-Version:	0.1.6
+Version:	0.1.14
 Release:    2
 Group:      Applications
 License:    Samsung Proprietary License

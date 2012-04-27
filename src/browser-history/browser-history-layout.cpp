@@ -254,9 +254,15 @@ void Browser_History_Layout::__search_delay_changed_cb(void *data, Evas_Object *
 	if (!data || !search_text)
 		return;
 
+	char *utf8_text = elm_entry_markup_to_utf8(search_text);
+	if (!utf8_text)
+		return;
+
 	Browser_History_Layout *history_layout = (Browser_History_Layout *)data;
-	if (!history_layout->_show_searched_history(search_text))
+	if (!history_layout->_show_searched_history(utf8_text))
 		BROWSER_LOGE("_show_searched_history failed");
+
+	free(utf8_text);
 }
 
 void Browser_History_Layout::_enable_searchbar_layout(Eina_Bool enable)
@@ -1179,9 +1185,7 @@ Evas_Object *Browser_History_Layout::_show_delete_confirm_popup(void)
 	}
 
 	evas_object_size_hint_weight_set(m_delete_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-	std::string confirm_msg = std::string(BR_STRING_DELETE) + std::string("?");
-	elm_object_text_set(m_delete_confirm_popup, confirm_msg.c_str());
+	elm_object_text_set(m_delete_confirm_popup, BR_STRING_DELETE_Q);
 
 	Evas_Object *ok_button = elm_button_add(m_delete_confirm_popup);
 	elm_object_text_set(ok_button, BR_STRING_YES);
