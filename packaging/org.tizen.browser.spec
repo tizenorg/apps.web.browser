@@ -69,12 +69,8 @@ make %{?jobs:-j%jobs}
 %make_install
 
 %post
-# Change file owner
-if [ ${USER} == "root" ]
-then
     # Change file owner
     chown -R 5000:5000 /opt/apps/org.tizen.browser/data
-fi
 
 ### Bookmark ### 
 if [ ! -f /opt/dbspace/.internet_bookmark.db ];
@@ -162,8 +158,6 @@ then
 fi
 
 # Change db file owner & permission
-if [ ${USER} == "root" ]  
-then  
 	#chown root:root /opt/apps/org.tizen.browser/data/db  
 	chown -R 5000:5000 /opt/apps/org.tizen.browser/data/db 
 	chown :6002 /opt/apps/org.tizen.browser/data/db/.browser.db
@@ -190,13 +184,10 @@ then
 	chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-credential.db-journal
 	chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-notification.db
 	chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-notification.db-journal
-fi
 
 ##################################################
 # set default vconf values
 ##################################################
-if [ ${USER} == "root" ]
-then
 	vconftool set -t bool db/browser/ShowMySitesGuide 1 -g 6514
         vconftool set -t string db/browser/Last/Url "" -g 6514
         vconftool set -t string db/browsersetting/LastVisitedUrl "" -g 6514
@@ -241,51 +232,6 @@ then
 	vconftool set -t bool db/browsersetting/RemoteWebInspector 0 -g 6514
 	vconftool set -t bool db/browsersetting/DemoSetting 0 -g 6514
 	vconftool set -t bool db/browsersetting/DemoMode 0 -g 6514
-else
-	vconftool set -t bool db/browser/ShowMySitesGuide 1
-        vconftool set -t string db/browser/Last/Url ""
-        vconftool set -t string db/browsersetting/LastVisitedUrl ""
-	vconftool set -t int db/browser/BrowserBrightnessLevel -1
-# Browser settings vconf values
-# Set without -g, -u options
-	vconftool set -t string db/browsersetting/Homepage "Recently visited site" # "Recently visited site", "user set site", "Empty page"
-	vconftool set -t string db/browsersetting/HomepageMode "MOST_VISITED_SITES"
-	vconftool set -t string db/browsersetting/UserHomepage "www.tizen.org" # default site is www.tizen.org
-	vconftool set -t string db/browsersetting/UserAgent "Tizen"
-	vconftool set -t string db/browsersetting/DefaultViewLevel "Readable" # "Readable", "Fit to width"
-	vconftool set -t bool db/browsersetting/EnableLandscape 1
-	vconftool set -t bool db/browsersetting/RunJavaScript 1
-	vconftool set -t bool db/browsersetting/DisplayImages 1
-	vconftool set -t bool db/browsersetting/BlockPopup 1
-	vconftool set -t string db/browsersetting/AutoSaveIDPassword "Always ask" # "On", "Off"
-	vconftool set -t string db/browsersetting/SaveIDPassword "ALWAYS_ASK"
-	vconftool set -t string db/browsersetting/CustomUserAgent ""
-	# set default vconf value for reader
-	vconftool set -t bool db/browsersetting/RunReader 1
-	vconftool set -t int db/browsersetting/FontSize 16
-	# set default vconf value for plugins
-	vconftool set -t bool db/browsersetting/RunPlugins 1
-	vconftool set -t bool db/browsersetting/RunFlash 0
-	# set search vconf
-	vconftool set -t string db/browsersetting/SearchEngine "Google" # "Google", "Yahoo", "Bing"
-	vconftool set -t string db/browsersetting/SearchUrl "http://www.google.com/m/search?q="
-	vconftool set -t bool db/browsersetting/SearchCaseSensitive 0
-	# privacy
-	vconftool set -t string db/browsersetting/CookieOption "Accept all"
-	vconftool set -t bool db/browsersetting/CookieOptionInt 1
-	# performance
-	vconftool set -t bool db/browsersetting/FastRendering 1
-	vconftool set -t bool db/browsersetting/LargeRenderingBuffer 1
-	vconftool set -t bool db/browsersetting/AcceleratedComposition 1
-	vconftool set -t bool db/browsersetting/SamsungAppsInstall 0
-	vconftool set -t bool db/browsersetting/ExternalVideoPlayer 0 # if the AcceleratedComposition is 0, this must be 0
-	vconftool set -t bool db/browsersetting/CompositedRenderLayerBorders 0 # if the AcceleratedComposition is 0, this must be 0
-	vconftool set -t bool db/browsersetting/PhysicsEngine 0
-	vconftool set -t bool db/browsersetting/RecordingSurface 0
-	vconftool set -t bool db/browsersetting/RemoteWebInspector 0
-	vconftool set -t bool db/browsersetting/DemoMode 0
-	vconftool set -t bool db/browsersetting/DemoSetting 0
-fi
 
 %files
 /opt/apps/org.tizen.browser/bin/browser
