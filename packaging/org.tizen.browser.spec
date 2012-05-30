@@ -7,6 +7,7 @@ Release:    2
 Group:      Applications
 License:    Samsung Proprietary License
 Source0:    %{name}-%{version}.tar.bz2
+Source1001: packaging/org.tizen.browser.manifest 
 #Patch0:     change-float-abi.patch
 Requires(post): /usr/bin/sqlite3
 BuildRequires: pkgconfig(appcore-efl)
@@ -59,6 +60,7 @@ webkit browser with EFL.
 #%patch0 -p1
 
 %build
+cp %{SOURCE1001} .
 export LDFLAGS+="-Wl,--rpath=%{appdir}/lib -Wl,--hash-style=both -Wl,--as-needed"
 LDFLAGS="$LDFLAGS"
 cmake . -DCMAKE_INSTALL_PREFIX=%{appdir}
@@ -234,6 +236,7 @@ fi
 	vconftool set -t bool db/browsersetting/DemoMode 0 -g 6514
 
 %files
+%manifest org.tizen.browser.manifest
 /opt/apps/org.tizen.browser/bin/browser
 %dir %attr(-,inhouse,inhouse) /opt/apps/org.tizen.browser/data
 %dir %attr(-,inhouse,inhouse) /opt/apps/org.tizen.browser/data/db
