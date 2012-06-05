@@ -50,6 +50,8 @@ BuildRequires:  cmake
 BuildRequires:  gettext-tools
 BuildRequires:  edje-tools
 
+Requires:    glib-networking
+
 %description
 webkit browser with EFL.
 
@@ -238,8 +240,8 @@ fi
 %files
 %manifest org.tizen.browser.manifest
 /opt/apps/org.tizen.browser/bin/browser
-%dir %attr(-,inhouse,inhouse) /opt/apps/org.tizen.browser/data
-%dir %attr(-,inhouse,inhouse) /opt/apps/org.tizen.browser/data/db
+%dir %attr(-,app,app) /opt/apps/org.tizen.browser/data
+%dir %attr(-,app,app) /opt/apps/org.tizen.browser/data/db
 /opt/apps/org.tizen.browser/data/screenshots/default_0
 /opt/apps/org.tizen.browser/data/screenshots/default_1
 /opt/apps/org.tizen.browser/data/screenshots/default_2
