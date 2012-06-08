@@ -1,0 +1,9 @@
+browser (0.1.14-0) unstable; urgency=low
+
+  * Git : slp/plgs/b/browser
+  * Tag : browser_0.1.14-0
+
+  * Replace icon of browser(internet)
+  * update spec file
+
+ -- Junghwan Kang <junghwan.kang@samsung.com>  Sat, 21 Apr 2012 20:05:28 +0900
