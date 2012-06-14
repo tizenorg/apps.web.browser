@@ -1,0 +1,5 @@
+* Fri June 08 2012 Yan Yin <yan.yin@intel.com> - 0.1.14
+- tigger submission to OBS
+
+* Wed June 06 2012 Yan Yin <yan.yin@intel.com> - 0.1.14
+- change user inhouse to app, add requires glib-networking
