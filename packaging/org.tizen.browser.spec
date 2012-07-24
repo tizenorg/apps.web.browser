@@ -5,7 +5,7 @@ Summary:    webkit browser with EFL
 Version:	0.1.14
 Release:    2
 Group:      Applications
-License:    Samsung Proprietary License
+License:    Flora Software License
 Source0:    %{name}-%{version}.tar.bz2
 Source1001: packaging/org.tizen.browser.manifest 
 #Patch0:     change-float-abi.patch
