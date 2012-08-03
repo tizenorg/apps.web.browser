@@ -1626,6 +1626,7 @@ Evas_Object *Browser_Settings_Main_View::_create_content_genlist(void)
 		BROWSER_LOGE("elm_genlist_add failed");
 		return NULL;
 	}
+	elm_object_style_set(genlist, "dialogue");
 
 	m_radio_text_item_class.item_style = "dialogue/1text.1icon/expandable2";
 	m_radio_text_item_class.func.text_get = __genlist_label_get;
@@ -1794,7 +1795,7 @@ Evas_Object *Browser_Settings_Main_View::_create_content_genlist(void)
 							&m_clear_passwords_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
 							__genlist_item_clicked_cb, &m_clear_passwords_callback_data);
 	/* Others */
-	m_seperator_item_class.item_style = "dialogue/seperator";
+	m_seperator_item_class.item_style = "grouptitle.dialogue.seperator";
 	m_seperator_item_class.func.text_get = NULL;
 	m_seperator_item_class.func.content_get = NULL;
 	m_seperator_item_class.func.state_get = NULL;
