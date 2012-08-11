@@ -517,7 +517,7 @@ Eina_Bool Most_Visited_Sites::_delete_selected_item(void)
 			return EINA_FALSE;
 		}
 
-			is_ranked = EINA_TRUE;
+		is_ranked = EINA_TRUE;
 	} else {
 		if (!m_most_visited_sites_db->delete_most_visited_sites_history_item(atoi(m_selected_item->history_id))) {
 			BROWSER_LOGE("delete_most_visited_sites_history_item failed");
@@ -531,7 +531,7 @@ Eina_Bool Most_Visited_Sites::_delete_selected_item(void)
 			most_visited_sites_item* p_item = (most_visited_sites_item *)elm_object_item_data_get(it);
 			if (p_item->tack) {    // only search in tacked items. (mysites items)
 				if (m_selected_item->url && p_item->url && (strlen(m_selected_item->url) == strlen(p_item->url))
-				    && !strncmp(m_selected_item->url, p_item->url, strlen(p_item->url))) {
+				    && !strcmp(m_selected_item->url, p_item->url)) {
 					is_ranked = EINA_FALSE;
 					break;
 				}
@@ -547,11 +547,28 @@ Eina_Bool Most_Visited_Sites::_delete_selected_item(void)
 		remove(screen_shot_path.c_str());
 	}
 
+	elm_object_item_del(m_selected_item->item);
+
+	most_visited_sites_item *item = new(nothrow) most_visited_sites_item;
+	if (!item) {
+		BROWSER_LOGE("new(nothrow) most_visited_sites_item is failed");
+		return EINA_FALSE;
+	}
+	item->history_id = NULL;
+	item->url = NULL;
+	item->title = NULL;
+	item->tack = EINA_FALSE;
+	item->layout = NULL;
+	item->screen_shot = NULL;
+	item->data = (void *)this;
+	item->item = elm_gengrid_item_append(m_gengrid, &m_gengrid_item_class, item, __item_clicked_cb, item);
+	m_item_list.push_back(item);
+#if 0
 	if (!_reload_items()) {
 		BROWSER_LOGE("_reload_items failed");
 		return EINA_FALSE;
 	}
-
+#endif
 	return EINA_TRUE;
 }
 
