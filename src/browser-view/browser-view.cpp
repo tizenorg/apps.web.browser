@@ -2198,9 +2198,6 @@ void Browser_View::__multi_window_cb(void *data, Evas_Object *obj, void *event_i
 		return;
 	}
 
-	if (browser_view->_is_loading())
-		browser_view->_stop_loading();
-
 	if (!m_data_manager->create_multi_window_view()) {
 		BROWSER_LOGE("m_data_manager->create_multi_window_view failed");
 		return;
