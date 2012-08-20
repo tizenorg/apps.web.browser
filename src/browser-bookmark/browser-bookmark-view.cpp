@@ -253,9 +253,16 @@ void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
 				genlist = m_sub_folder_genlist;
 
 			item->user_data_1 = (void *)this;
-			item->user_data_2 = (void *)elm_genlist_item_append(genlist, &m_bookmark_genlist_item_class,
+			if (item->is_folder) {
+				item->user_data_2 = (void *)elm_genlist_item_append(genlist, &m_folder_genlist_item_class,
 									item, NULL, ELM_GENLIST_ITEM_NONE,
 									__bookmark_item_clicked_cb, this);
+
+			} else {
+				item->user_data_2 = (void *)elm_genlist_item_append(genlist, &m_bookmark_genlist_item_class,
+									item, NULL, ELM_GENLIST_ITEM_NONE,
+									__bookmark_item_clicked_cb, this);
+			}
 
 			if (item->parent == BROWSER_BOOKMARK_MAIN_FOLDER_ID)
 				m_main_folder_list.push_back(item);
@@ -266,9 +273,15 @@ void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
 			/* If the current folder is sub folder but the saved folder is main folder,
 			  * add the saved bookmark item to main folder. */
 			item->user_data_1 = (void *)this;
+			if (item->is_folder) {
+			item->user_data_2 = (void *)elm_genlist_item_append(m_main_folder_genlist, &m_folder_genlist_item_class,
+									item, NULL, ELM_GENLIST_ITEM_NONE,
+									__bookmark_item_clicked_cb, this);
+			} else {
 			item->user_data_2 = (void *)elm_genlist_item_append(m_main_folder_genlist, &m_bookmark_genlist_item_class,
 									item, NULL, ELM_GENLIST_ITEM_NONE,
 									__bookmark_item_clicked_cb, this);
+			}
 			m_main_folder_list.push_back(item);
 		}
 
@@ -2120,6 +2133,13 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 		m_bookmark_genlist_item_class.func.del = NULL;
 //		m_bookmark_genlist_item_class.func.moved = __genlist_move_cb;
 
+		m_folder_genlist_item_class.item_style = "1text.1icon.2";
+		m_folder_genlist_item_class.decorate_item_style = "mode/slide2";
+		m_folder_genlist_item_class.decorate_all_item_style = "edit_default";
+		m_folder_genlist_item_class.func.text_get = __genlist_label_get_cb;
+		m_folder_genlist_item_class.func.content_get = __genlist_icon_get_cb;
+		m_folder_genlist_item_class.func.state_get = NULL;
+		m_folder_genlist_item_class.func.del = NULL;
 		evas_object_show(genlist);
 
 		/* Fill bookmark list */
@@ -2134,9 +2154,16 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 		BROWSER_LOGD("bookmark count=%d", size);
 		for (int i = 0 ; i < size ; i++ ) {
 			m_main_folder_list[i]->user_data_1 = (void *)this;
-			m_main_folder_list[i]->user_data_2 = (void *)elm_genlist_item_append(genlist,
-						&m_bookmark_genlist_item_class, m_main_folder_list[i], NULL,
-						ELM_GENLIST_ITEM_NONE, __bookmark_item_clicked_cb, this);
+			if (m_main_folder_list[i]->is_folder) {
+				m_main_folder_list[i]->user_data_2 = (void *)elm_genlist_item_append(genlist,
+							&m_folder_genlist_item_class, m_main_folder_list[i], NULL,
+							ELM_GENLIST_ITEM_NONE, __bookmark_item_clicked_cb, this);
+
+			} else {
+				m_main_folder_list[i]->user_data_2 = (void *)elm_genlist_item_append(genlist,
+							&m_bookmark_genlist_item_class, m_main_folder_list[i], NULL,
+							ELM_GENLIST_ITEM_NONE, __bookmark_item_clicked_cb, this);
+			}
 		}
 	}
 

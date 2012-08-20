@@ -139,7 +139,7 @@ Eina_Bool Browser_New_Folder_View::_create_new_folder(const char *folder_name)
 				folder_list[i]->user_data_1 = (void *)bookmark_view;
 				bookmark_view->m_main_folder_list.push_back(folder_list[i]);
 				folder_list[i]->user_data_2 = (void *)elm_genlist_item_append(bookmark_view->m_main_folder_genlist,
-						&(bookmark_view->m_bookmark_genlist_item_class), folder_list[i], NULL,
+						&(bookmark_view->m_folder_genlist_item_class), folder_list[i], NULL,
 						ELM_GENLIST_ITEM_NONE, bookmark_view->__bookmark_item_clicked_cb, bookmark_view);
 
 				break;
