@@ -1,6 +1,6 @@
 browser (2.0.0-0) unstable; urgency=low
 
-  * Git : slp/pkgs/b/browser
+  * Git : apps/web/browser
   * Tag : browser_2.0.0-0
 
   * Release Public Tizen browser
