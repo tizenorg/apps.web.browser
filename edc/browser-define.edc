@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "browser-macro.edc"
 
@@ -242,25 +243,51 @@ collections {
 	}
 
 BUTTON_WITH_BG(title_back, "icon/I01_title_btn.png",
-		"icon/I01_title_btn_press.png", "icon/I01_btn_back.png", 6, 6, 6, 6, 124, 74, 56, 56);
+		"icon/I01_title_btn_press.png", "icon/I01_btn_back.png", "icon/I01_btn_back.png", 6, 6, 6, 6, 124, 74, 56, 56);
 
 BUTTON_WITH_BG(bookmark_controlbar_back, "icon/I01_Back_btn_normal.png",
-		"icon/I01_Back_btn_press.png", "icon/I01_btn_back.png", 7, 7, 7, 7, 112, 82, 56, 56);
+		"icon/I01_Back_btn_press.png", "icon/I01_btn_back.png", "icon/I01_btn_back.png", 7, 7, 7, 7, 112, 82, 56, 56);
+
+BUTTON_WITH_BG(browser_view_controlbar_back, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", "icon/I01_btn_back.png", "icon/I01_btn_back.png", 6, 6, 6, 6, 112, 82, 56, 56);
+
+BUTTON_WITH_BG(most_visited_sites_setting, "icon/I01_picker_btn_normal.png",
+		"icon/I01_picker_btn_press.png", "icon/I01_icon_setting.png", "icon/I01_icon_setting.png", 6, 6, 6, 6, 144, 60, 42, 42);
+
+BUTTON(most_visited_sites_done, "icon/I01_picker_btn_normal.png",
+		"icon/I01_picker_btn_press.png", 6, 6, 6, 6);
 
 BUTTON_WITH_BG(find_word_prev, "icon/I01_btn_normal.png",
-		"icon/I01_btn_press.png", "icon/I01_picker_arrow_left.png", 0, 0, 0, 0, 74, 74, 74, 74);
+		"icon/I01_btn_press.png", "icon/I01_picker_arrow_left.png", "icon/I01_picker_arrow_left.png", 0, 0, 0, 0, 64, 64, 64, 64);
 
 BUTTON_WITH_BG(find_word_next, "icon/I01_btn_normal.png",
-		"icon/I01_btn_press.png", "icon/I01_picker_arrow_right.png", 0, 0, 0, 0, 74, 74, 74, 74);
+		"icon/I01_btn_press.png", "icon/I01_picker_arrow_right.png", "icon/I01_picker_arrow_right.png", 0, 0, 0, 0, 64, 64, 64, 64);
 
-BUTTON_WITH_BG(reader_icon, "icon/I01_btn_normal.png",
-		"icon/I01_btn_press.png", "icon/I01_fit_screen.png", 0, 0, 0, 0, 74, 74, 74, 74);
+FIND_BUTTON_WITH_BG(find_word_prev_but, "icon/I01_btn_normal.png",
+		"icon/I01_btn_press.png", "icon/I01_picker_arrow_left.png", "icon/I01_btn_dim.png",  0, 0, 0, 0, 64, 64, 64, 64);
 
-TITLE_BUTTON(title_button, "icon/I01_title_btn.png",
-		"icon/I01_title_btn_press.png", 6, 6, 6, 6);
+FIND_BUTTON_WITH_BG(find_word_next_but, "icon/I01_btn_normal.png",
+		"icon/I01_btn_press.png", "icon/I01_picker_arrow_right.png", "icon/I01_btn_dim.png",  0, 0, 0, 0, 64, 64, 64, 64);
 
-TITLE_BUTTON(close_button, "icon/I01_Option_header_bt.png",
-		"icon/I01_Option_header_bt_press.png", 4, 4, 4, 4);
+BUTTON_WITH_BG(reader_icon, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", "icon/I01_fit_screen.png", "icon/I01_fit_screen.png", 7, 7, 7, 7, 74, 64, 74, 64);
+
+TITLE_BUTTON(title_button, "icon/I01_title_btn_blue.png",
+		"icon/I01_title_btn_blue_press.png", 6, 6, 6, 6);
+
+TITLE_BUTTON(cancel_button, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", 7, 7, 7, 7);
+
+BUTTON_WITH_TEXT(multi_window_cancel_button, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", 6, 6, 6, 6, 112, 82);
+
+BUTTON_WITH_BG(backward, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", "icon/I01_title_btn_icon_previous.png", "icon/I01_title_btn_icon_previous_disable.png", 7, 7, 7, 7, 78, 66, 42, 42);
+BUTTON_WITH_BG(forward, "icon/I01_title_btn.png",
+		"icon/I01_title_btn_press.png", "icon/I01_title_btn_icon_next.png", "icon/I01_title_btn_icon_next_disable.png", 7, 7, 7, 7, 78, 66, 42, 42);
+
+BUTTON(ok_button, "browser-view-images/most-visited-sites/I01_button_popup_normal.png",
+		"browser-view-images/most-visited-sites/I01_button_popup_press.png", 4, 4, 4, 4);
 
 /* ifdef ZOOM_BUTTON */
 ZOOM_BUTTON(zoom_out, "browser-view-images/00_zoom_out.png",
@@ -284,21 +311,10 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
             mouse_events: 1;
             scale: 1;
             description { state: "default" 0.0;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 20 50;
-#else
                min: 30 75;
-#endif
                color: 0 0 0 0;
-#ifdef WVGA_NBEAT // 480 * 800
-               rel1.offset: 5 5;
-               rel2.offset: -6 -6;
-#else
-//               rel1.offset: 7 7;
-//               rel2.offset: -9 -9;
                rel1.offset: 7 12;
                rel2.offset: -9 -4;
-#endif
                image.normal: "icon/I01_Option_header_bt.png";
                image.border: 4 4 4 4;
                color: 255 255 255 255;
@@ -321,11 +337,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                align: 0.0 0.0;
                rel1.relative: 0.0 0.0;
                rel2.relative: 0.0 0.0;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 10 5;
-#else
                min: 15 7;
-#endif
                fixed: 1 1;
                visible: 0;
             }
@@ -339,11 +351,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                align: 1.0 1.0;
                rel1.relative: 1.0 1.0;
                rel2.relative: 1.0 1.0;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 10 5;
-#else
                min: 15 7;
-#endif
                fixed: 1 1;
                visible: 0;
             }
@@ -364,11 +372,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
             }
             description { state: "visible" 0.0;
                visible: 1;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 22 22;
-#else
                min: 33 33;
-#endif
                fixed: 1 0;
                rel1 { relative: 1.0 1.0; to: "padding_left_top"; }
                rel2 { relative: 1.0 0.0; to_x: "padding_left_top"; to_y: "padding_right_bottom"; }
@@ -398,11 +402,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                rel1 { relative: 1.0 0.0; to: "icon_rect"; }
                rel2 { relative: 1.0 1.0; to: "icon_rect"; }
                fixed: 1 0;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 6 0;
-#else
                min: 9 0;
-#endif
                color: 0 0 0 0;
             }
             description { state: "icononly" 0.0;
@@ -419,11 +419,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                rel1 { relative: 0.0 1.0; to_x: "elm.text"; to_y: "padding_left_top"; }
                rel2 { relative: 0.0 0.0; to_x: "elm.text"; to_y: "padding_right_bottom"; }
                fixed: 1 0;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 6 0;
-#else
                min: 9 0;
-#endif
                color: 0 0 0 0;
             }
          }
@@ -441,13 +437,8 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
             description { state: "visible" 0.0;
                fixed: 1 0;
                visible: 1;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 22 22;
-               max: 22 22;
-#else
                min: 33 33;
                max: 33 33;
-#endif
                align: 1.0 0.5;
                rel1 { relative: 0.0 1.0; to_x: "padding_before_text"; to_y: "padding_left_top"; }
                rel2 { relative: 0.0 0.0; to_x: "padding_before_text"; to_y: "padding_right_bottom"; }
@@ -456,13 +447,8 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
             }
             description { state: "icononly" 0.0;
                visible: 1;
-#ifdef WVGA_NBEAT // 480 * 800
-               min: 30 30;
-               max: 30 30;
-#else
                min: 45 45;
                max: 45 45;
-#endif
                rel1 { relative: 1.0 1.0; to: "padding_left_top"; }
                rel2 { relative: 0.0 0.0; to: "padding_right_bottom"; }
                align: 0.5 0.5;
@@ -483,13 +469,8 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                color: 255 255 255 255;
                text {
                   font: "SLP:style=Medium";
-#ifdef WVGA_NBEAT // 480 * 800
-                  size: 20;
-#else
                   size: 30;
-#endif
                   min:  0 0;
-//                  align: 0.5 0.5;
                   align: 0.5 0.6;
                   max: 1 0;
                }
@@ -711,18 +692,8 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
       }
    }
 
-#ifdef WVGA_NBEAT // 480 * 800
-
-#define BUTTON_NAVIBAR_BACK_BUTTON_BUTTON_IMAGE_MIN_INC 67 40
-#define BUTTON_NAVIBAR_BACK_BUTTON_BG_MIN_MAX_INC 22 20
-
-#else
-
 #define BUTTON_NAVIBAR_BACK_BUTTON_BUTTON_IMAGE_MIN_INC 100 60
 #define BUTTON_NAVIBAR_BACK_BUTTON_BG_MIN_MAX_INC 33 30
-
-#endif
-
 #define NAVIBAR_TITLE_RIGHT_SEPARATOR_COLOR_INC 84 93 110 255
 #define NAVIBAR_TITLE_LEFT_SEPARATOR_COLOR_INC 35 45 61 255
 

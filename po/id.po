@@ -1,0 +1,831 @@
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Mengingatkan..."
+
+msgid "IDS_BR_BODY_PROCESSING_ING"
+msgstr "Memproses..."
+
+msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
+msgstr "Proses selesai"
+
+msgid "IDS_BR_SK_RETRY"
+msgstr "Coba lagi"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Pengelola download"
+
+msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
+msgstr "Deskriptor tidak berlaku"
+
+msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
+msgstr "Tdk dapat utk buka file"
+
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Unduh?"
+
+msgid "IDS_BR_OPT_DELETE_SELECTED"
+msgstr "Terpilih"
+
+msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
+msgstr "Unduhan dibatalkan"
+
+msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
+msgstr "Lanjut dari halaman akhir"
+
+msgid "IDS_BR_BODY_PAGE"
+msgstr "Halaman"
+
+msgid "IDS_BR_OPT_DICTIONARY"
+msgstr "Kamus"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "Tentang browser"
+
+msgid "IDS_BR_BODY_BROWSER_TYPE"
+msgstr "Tipe"
+
+msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
+msgstr "Penerbit"
+
+msgid "IDS_BR_BODY_DISPLAY_IMAGES"
+msgstr "Tampilan gambar"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Unduh"
+
+msgid "IDS_BR_BODY_ENTER_URL"
+msgstr "Masukkan URL"
+
+msgid "IDS_BR_BODY_FOLDER"
+msgstr "Folder"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Homepage"
+
+msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
+msgstr "Tampilan lanskap"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Tdk ada bookmark"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Tidak ada hasil yang ditemukan"
+
+msgid "IDS_BR_BODY_OPTIONAL"
+msgstr "Opsional"
+
+msgid "IDS_BR_BODY_RSS"
+msgstr "RSS"
+
+msgid "IDS_BR_BODY_RUN_FLASH"
+msgstr "Jalankan Flash"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "Jalankan JavaScript"
+
+msgid "IDS_BR_HEADER_COMMON_NAME_C"
+msgstr "Nama umum:"
+
+msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
+msgstr "Unit organisasi:"
+
+msgid "IDS_BR_HEADER_ORGANIZATION_C"
+msgstr "Organisasi:"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Perantara pengguna"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
+msgstr "Last Viewed Page"
+
+msgid "IDS_BR_OPT_PREFERENCES"
+msgstr "Preferensi"
+
+msgid "IDS_BR_POP_ACTICATION_ERR"
+msgstr "Pengaktifan error"
+
+msgid "IDS_BR_POP_ALREADY_RUNNING"
+msgstr "Sudah berjalan..."
+
+msgid "IDS_BR_POP_ERRORIMPLEMENTED"
+msgstr "Tdk terimpelemntasi"
+
+msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
+msgstr "Pengautentikasian gagal"
+
+msgid "IDS_BR_POP_OVERWRITE_Q"
+msgstr "Timpa tulisan?"
+
+msgid "IDS_BR_POP_URL"
+msgstr "URL"
+
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Histori"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
+msgstr "Daftar unduhan"
+
+msgid "IDS_BR_POP_ALREADYINSTALLED"
+msgstr "Sudah terinstal"
+
+msgid "IDS_BR_POP_NOTIFYING"
+msgstr "Mengingatkan..."
+
+msgid "IDS_BR_POP_NOTSUPPORT"
+msgstr "Konten tdk mendukung"
+
+msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
+msgstr "Error: tidak dpat menyelesaikan nama host"
+
+msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
+msgstr "Tidak dapat menjangkau proksi"
+
+msgid "IDS_BR_POP_NOSSLCERTI"
+msgstr "Tdk ada sertifikat SSL"
+
+msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
+msgstr "Ukuran file melebihi batas upload maksimum"
+
+msgid "IDS_BR_BODY_ENTER_NAME_C"
+msgstr "Masukan nama:"
+
+msgid "IDS_BR_SK_NEXT"
+msgstr "Berktnya"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Folder baru"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Tmbh ke Bookmark"
+
+msgid "IDS_BR_SK1_NEW_WINDOW"
+msgstr "Jendela baru"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_URL_C"
+msgstr "URL:"
+
+msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
+msgstr "URL tidak tersedia"
+
+msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
+msgstr "URL %s tidak tersedia. Mungkin sistem sedang turun atau tidak lagi digunakan"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Folder"
+
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Nama folder"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
+msgstr "Nama Folder\ntelah digunakan"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Tdk ada judul"
+
+msgid "IDS_BR_HEADER_MULTI_WINDOW"
+msgstr "Multijendela"
+
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Tidak ada riwayat"
+
+msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
+msgstr "Tambah ke Bookmark"
+
+msgid "IDS_BR_BODY_EDIT_BOOKMARK"
+msgstr "Ubah bookmark"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_C"
+msgstr "Nama folder:"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Pilih semua"
+
+msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
+msgstr "Pengelola download"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEED"
+msgstr "Tambahkan umpanan RSS"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
+msgstr "Tambahkan RSS feed"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Pengaturan"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "Masukkan URL"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Kata sandi"
+
+msgid "IDS_BR_POP_INVALIDADDRESS"
+msgstr "Alamat tidak berlaku"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
+msgstr "Telah ada di Daftar Unduhan"
+
+msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
+msgstr "Masukan nama folder"
+
+msgid "IDS_BR_POP_NO_PAGE"
+msgstr "Tdk ada laman"
+
+msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
+msgstr "Tdk ada laman ke belakang"
+
+msgid "IDS_BR_POP_NO_PAGES_FORWARD"
+msgstr "Tdk ada laman di depan"
+
+msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
+msgstr "Tdk ada halaman untuk dimuat ulang"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Autentikasi diperlukan"
+
+msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
+msgstr "Bookmark sudah ada"
+
+msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
+msgstr "nama folder sudah ada"
+
+msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
+msgstr "Tidak dapat menyimpan objek.Tidak cukup ruangan di cache"
+
+msgid "IDS_BR_HEADER_SELECT_ITEMS"
+msgstr "Pilih item"
+
+msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
+msgstr "Info sertifikat"
+
+msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
+msgstr "Bagi lewat email"
+
+msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
+msgstr "Bagi lewat Pesan"
+
+msgid "IDS_BR_OPT_SHARE_VIA"
+msgstr "Berbagi lewat"
+
+msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
+msgstr "Tidak dapat memulai browser"
+
+msgid "IDS_BR_POP_NO_ADDRESS"
+msgstr "Tdk ada alamat"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Jangan pernah tampilkan lagi"
+
+msgid "IDS_BR_POP_FILE_NAME_EMPTY"
+msgstr "Nama file kosong"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Buat folder"
+
+msgid "IDS_BR_OPT_SELECTED"
+msgstr "Terpilih"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Berbagi"
+
+msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
+msgstr "Halaman yang baru dikunjungi"
+
+msgid "IDS_BR_OPT_DISPLAY"
+msgstr "Tampilan"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "Sesuaikan lebar"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Bisa dibaca"
+
+msgid "IDS_BR_BODY_PRIVACY"
+msgstr "Privasi"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "Cookis"
+
+msgid "IDS_BR_BODY_COOKIESACCEPTALL"
+msgstr "Terima semua"
+
+msgid "IDS_BR_BODY_COOKIESPROMPT"
+msgstr "Tanyakan"
+
+msgid "IDS_BR_HEADER_COOKIES"
+msgstr "Cookis"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Terima cookie"
+
+msgid "IDS_BR_OPT_ACCEPT_COOKIES"
+msgstr "Terima cookie"
+
+msgid "IDS_BR_BODY_ACCEPT_ALL"
+msgstr "Terima semua"
+
+msgid "IDS_BR_BODY_REJECT_ALL"
+msgstr "Tolak semua"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "Otomatis simpan ID/kata sandi"
+
+msgid "IDS_BR_BODY_ON"
+msgstr "Aktif"
+
+msgid "IDS_BR_BODY_OFF"
+msgstr "Tdk aktif"
+
+msgid "IDS_BR_BODY_DEFAULT_STORAGE"
+msgstr "Penyimpanan Default"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Cari"
+
+msgid "IDS_BR_BODY_SAVE_IMAGE"
+msgstr "Simpan gambar"
+
+msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
+msgstr "Baterai lemah. Tidak bisa menjalankan browser"
+
+msgid "IDS_BR_BODY_FIND_WORD"
+msgstr "Cari kata"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
+msgstr "Tambahkan ke Home screen"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Tambahkan ke layar depan"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Situs yang paling sering dikunjungi"
+
+msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
+msgstr "Bagikan melalui Facebook"
+
+msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
+msgstr "Bagikan melalui Twitter"
+
+msgid "IDS_BR_SK3_CHANGE_VIEW"
+msgstr "Ubah tampilan"
+
+msgid "IDS_BR_HEADER_SELECT_URLS"
+msgstr "Pilih URL"
+
+msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
+msgstr "Situs ini berusaha membuka pop-up window"
+
+msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
+msgstr "Blokir pop-up windows"
+
+msgid "IDS_BR_BODY_TEXT_READER"
+msgstr "Text reader"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Salin gambar"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Simpan gambar"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Putar"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Pilih"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Mundur"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Maju"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Berhenti"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Reload"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Kutip"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "Lagi"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Gagal"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Buka di jendela baru"
+
+msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
+msgstr "Lihat daftar unduhan"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "Salin URL"
+
+msgid "IDS_BR_BODY_COPY_URL_TO"
+msgstr "Salin URL ke"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Tampilkan gambar"
+
+msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
+msgstr "Pengaturan privasi"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Hapus memori"
+
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Hapus histori"
+
+msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
+msgstr "Aktifkan plugin"
+
+msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
+msgstr "Pilih mesin pencarian"
+
+msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
+msgstr "Hapus ID/sandi tersimpan"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Hapus semua data cookie"
+
+msgid "IDS_BR_BODY_UP"
+msgstr "Naik"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Ukuran huruf"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Terhapus"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Tampilan default"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Pengaturan konten halaman"
+
+msgid "IDS_BR_POP_CASE_SENSITIVE"
+msgstr "Peka huruf kecil dan huruf besar"
+
+msgid "IDS_BR_BODY_PLUG_IN"
+msgstr "Sambung"
+
+msgid "IDS_BR_OPT_PLUGINS_LIST"
+msgstr "Daftar plugin"
+
+msgid "IDS_BR_HEADER_LOCAL_STORAGE"
+msgstr "Penyimpanan lokal"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Hapus data ramban"
+
+msgid "IDS_BR_BODY_LOADING_ING"
+msgstr "Meloading…"
+
+msgid "IDS_BR_HEADER_LOADING_ING"
+msgstr "Meloading…"
+
+msgid "IDS_BR_HEADER_ENTERURL"
+msgstr "Masukkan URL"
+
+msgid "IDS_BR_OPT_LOCK"
+msgstr "Kunci"
+
+msgid "IDS_BR_OPT_UNLOCK"
+msgstr "Buka kunci"
+
+msgid "IDS_BR_BODY_MODIFY"
+msgstr "Ubah"
+
+msgid "IDS_BR_SK_PAGE_UP"
+msgstr "Lmn naik"
+
+msgid "IDS_BR_SK_PAGE_DOWN"
+msgstr "Lmn turun"
+
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Developer mode"
+
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Kosong"
+
+msgid "IDS_BR_BODY_CERTIFICATES"
+msgstr "Sertifikat"
+
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Bookmark"
+
+msgid "IDS_BR_BODY_ENTER_NAME"
+msgstr "Masukkan nama"
+
+msgid "IDS_BR_BODY_NAME"
+msgstr "Nama"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Kirim lewat Email"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Kirim lewat pesan"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Pengaturan"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Nama pemakai"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Sudah ada"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Tersimpan"
+
+msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
+msgstr "Memori tdk cukup"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Jaringan error"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Selalu menanyakan"
+
+msgid "IDS_BR_BODY_MEMORY_CARD"
+msgstr "Kartu memori"
+
+msgid "IDS_BR_BODY_PHONE"
+msgstr "Telepon"
+
+msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
+msgstr "Tidak ada akun"
+
+msgid "IDS_BR_HEADER_ERROR_PAGE"
+msgstr "Halaman gangguan"
+
+msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
+msgstr "Laman web tidak tersedia untuk sementara"
+
+msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
+msgstr "Laman web tidak tersedia"
+
+msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
+msgstr "Gagal memuat bingkai"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
+msgstr "Saat menelusuri laman Web %s, terjadi gangguan lanjutan."
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
+msgstr "Tidak bisa menelusuri laman Web. (Laman web mungkin sedang mengalami gangguan atau telah dipindahkan ke URL baru)"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
+msgstr "Kemungkinan penyebabnya ada di bawah ini"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
+msgstr "Koneksi jaringan tidak normal"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
+msgstr "Periksa URL laman Web"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
+msgstr "Muat ulang laman Web nanti"
+
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Bookmark"
+
+msgid "IDS_BR_BODY_TITLE"
+msgstr "Judul"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Masukan judul"
+
+msgid "IDS_BR_OPT_FOLDERS"
+msgstr "Folder"
+
+msgid "IDS_BR_OPT_ALLOW"
+msgstr "Bolehkan"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Menolak"
+
+msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
+msgstr "Gangguan Keamanan: Sertifikat server tak terpercaya"
+
+msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
+msgstr "%d item dipilih"
+
+msgid "IDS_BR_POP_1_ITEM_SELECTED"
+msgstr "1 item dipilih"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "Tambahkan ke klip web"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Pemintas dibuat"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Pilih kata"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Cari di halaman"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Cari di halaman"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "Internet"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "Daftar"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Pilih semua"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Pesan"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Batal"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Salin URL link"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Tampilkan gambar"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Buka di laman baru"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Buka file"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Seleksi teks aktif"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bookmark"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Ubah"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Hapus"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Hapus"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Batal"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Ubah bookmark"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Pesan"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "Email"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Ubah"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Hapus"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Tambah ke Bookmark"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Ukuran huruf"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Besar"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Kecil"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "Kecepatan"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Alamat proxy"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Port proksi"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Selesai"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versi"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "Instal"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Halaman aktif"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "Masukan nama folder"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "Masukkan nama bookmark"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Jangan tanya lagi"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL tidak ditemukan"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s meminta lokasi Anda"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Ingat preferensi"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Tampilkan gambar"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Tunjukkan peringatan keamanan"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Ingat kata sandi"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Hapus kata sandi"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Hapus semua kata sandi yang tersimpan?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "Hapus semua cookies. Lanjutkan?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Ingat dari data"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Reset ke default"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Semua pengaturan ke default. Lanjutkan?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "Hapus memori?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "Hapus semua histori?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "Histori navigasi browser akan dihapus"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Selalu aktif"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Aktifkan lokasi"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Hapus akses lokasi"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Tidak bisa menambah bookmark.. Jumlah maksimum bookmark terjangkau"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Hapus informasi akses lokasi situs web?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Cetak"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Cari atau masukkan URL"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "Otomatis"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "Manual"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "Rendah"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Sedang"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Halaman kosong"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "Instalasi gagal"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Pengaturan situs web"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Tinggi"
+

@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+
 
 #ifndef BROWSER_BOOKMARK_VIEW_H
 #define BROWSER_BOOKMARK_VIEW_H
@@ -33,6 +36,8 @@ public:
 
 	Eina_Bool init(void);
 	void return_to_bookmark_view(int added_bookmark_id = -1);
+	Eina_Bool append_bookmark_item(const char *title, const char *url);
+	void delete_bookmark_item(int bookmark_id);
 protected:
 	void history_item_clicked(const char *url);
 private:
@@ -67,6 +72,7 @@ private:
 	void _show_select_processing_popup(void);
 	void _show_delete_processing_popup(void);
 	Evas_Object *_show_delete_confirm_popup(void);
+	void _delete_bookmark_item_by_slide_button(Browser_Bookmark_DB::bookmark_item *item);
 	Eina_Bool _set_controlbar_type(controlbar_type type);
 
 	/* ecore timer callback functions */
@@ -79,6 +85,8 @@ private:
 	/* elementary event callback functions. */
 	static void __select_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_edit_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_bookmark_item_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __rename_folder_unfocus_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __rename_folder_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
@@ -87,10 +95,16 @@ private:
 	static void __edit_mode_select_all_check_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __upper_folder_clicked_cb(void *data, Evas_Object *obj, void *eventInfo);
 	static void __drag_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+#if defined(GENLIST_SWEEP)
+	static void __sweep_cancel_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __sweep_left_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+#endif
 	static void __back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_controlbar_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __controlbar_tab_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __bookmark_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo);
+	static void __delete_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __cancel_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_confirm_response_by_edit_mode_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __create_folder_button(void *data, Evas_Object *obj, void *event_info);
@@ -145,6 +159,8 @@ private:
 	Evas_Object *m_processing_popup;
 	Evas_Object *m_processing_popup_layout;
 	Eina_Bool m_select_all_check_value;
+
+	Elm_Object_Item *m_current_sweep_item;
 	Elm_Object_Item *m_navi_it;
 
 	Evas_Object *m_delete_confirm_popup;

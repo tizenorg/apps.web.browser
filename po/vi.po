@@ -1,0 +1,831 @@
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Đang báo tin..."
+
+msgid "IDS_BR_BODY_PROCESSING_ING"
+msgstr "Đang xử lý.."
+
+msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
+msgstr "Việc xử lý đã hoàn tất"
+
+msgid "IDS_BR_SK_RETRY"
+msgstr "Thử lại"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Quản lý tải về"
+
+msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
+msgstr "Miêu tả không hợp lệ"
+
+msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
+msgstr "Không thể mở file"
+
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Tải xuống?"
+
+msgid "IDS_BR_OPT_DELETE_SELECTED"
+msgstr "Đã chọn"
+
+msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
+msgstr "Hủy bỏ tải"
+
+msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
+msgstr "Tiếp tục từ trang cuối"
+
+msgid "IDS_BR_BODY_PAGE"
+msgstr "Trang"
+
+msgid "IDS_BR_OPT_DICTIONARY"
+msgstr "Từ điển"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "Thông tin"
+
+msgid "IDS_BR_BODY_BROWSER_TYPE"
+msgstr "Loại"
+
+msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
+msgstr "Nhà phát hành"
+
+msgid "IDS_BR_BODY_DISPLAY_IMAGES"
+msgstr "Hiển thị hình ảnh"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Tải xuống"
+
+msgid "IDS_BR_BODY_ENTER_URL"
+msgstr "Nhập địa chỉ Web"
+
+msgid "IDS_BR_BODY_FOLDER"
+msgstr "Thư mục"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Trang chủ"
+
+msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
+msgstr "Xem dạng ngang"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Không có trang hay dùng"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Không tìm thấy kết quả nào"
+
+msgid "IDS_BR_BODY_OPTIONAL"
+msgstr "Tùy ý"
+
+msgid "IDS_BR_BODY_RSS"
+msgstr "RSS"
+
+msgid "IDS_BR_BODY_RUN_FLASH"
+msgstr "Chạy Flash"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "Chạy JavaScript"
+
+msgid "IDS_BR_HEADER_COMMON_NAME_C"
+msgstr "Tên chung:"
+
+msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
+msgstr "Đơn vị tổ chức:"
+
+msgid "IDS_BR_HEADER_ORGANIZATION_C"
+msgstr "Tổ chức:"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Tác nhân người dùng"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
+msgstr "Last Viewed Page"
+
+msgid "IDS_BR_OPT_PREFERENCES"
+msgstr "Ưu tiên"
+
+msgid "IDS_BR_POP_ACTICATION_ERR"
+msgstr "Lỗi khi bật"
+
+msgid "IDS_BR_POP_ALREADY_RUNNING"
+msgstr "Đang chạy..."
+
+msgid "IDS_BR_POP_ERRORIMPLEMENTED"
+msgstr "Không thực hiện"
+
+msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
+msgstr "Lỗi xác thực"
+
+msgid "IDS_BR_POP_OVERWRITE_Q"
+msgstr "Viết đè?"
+
+msgid "IDS_BR_POP_URL"
+msgstr "URL"
+
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Lịch sử"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
+msgstr "Danh sách tải xuống"
+
+msgid "IDS_BR_POP_ALREADYINSTALLED"
+msgstr "Đã cài rồi"
+
+msgid "IDS_BR_POP_NOTIFYING"
+msgstr "Đang báo tin..."
+
+msgid "IDS_BR_POP_NOTSUPPORT"
+msgstr "Nội dung không hỗ trợ"
+
+msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
+msgstr "Lỗi: không thể giải quyết tên máy chủ"
+
+msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
+msgstr "Không thể kết nối proxy"
+
+msgid "IDS_BR_POP_NOSSLCERTI"
+msgstr "Không có chứng nhận SSL"
+
+msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
+msgstr "Quá kích thước file tối đa"
+
+msgid "IDS_BR_BODY_ENTER_NAME_C"
+msgstr "Nhập tên:"
+
+msgid "IDS_BR_SK_NEXT"
+msgstr "Tiếp"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Thư mục mới"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Thêm vào Đánhdấu"
+
+msgid "IDS_BR_SK1_NEW_WINDOW"
+msgstr "Cửa sổ mới"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_URL_C"
+msgstr "URL:"
+
+msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
+msgstr "Không có URL"
+
+msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
+msgstr "Không có URL %s. Có thể nó bị ngừng tạm thời hoặc không còn sử dụng nữa"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Thư mục"
+
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Tên thư mục"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
+msgstr "Tên thư mục đã dùng"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Không có tiêu đề"
+
+msgid "IDS_BR_HEADER_MULTI_WINDOW"
+msgstr "Nhiều cửa sổ"
+
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Không có lịch sử"
+
+msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
+msgstr "Thêm trang hay dùng"
+
+msgid "IDS_BR_BODY_EDIT_BOOKMARK"
+msgstr "Sửa trang hay dùng"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_C"
+msgstr "Tên thư mục:"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Chọn tất cả"
+
+msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
+msgstr "Quản lý tải về"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEED"
+msgstr "Thêm địa chỉ RSS"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
+msgstr "Thêm  RSS feed"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Cài đặt"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "Nhập địa chỉ Web"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Mật mã"
+
+msgid "IDS_BR_POP_INVALIDADDRESS"
+msgstr "Địa chỉ không hợp lệ"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
+msgstr "Đã có trong Danh sách tải về"
+
+msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
+msgstr "Nhập tên thư mục"
+
+msgid "IDS_BR_POP_NO_PAGE"
+msgstr "Không có trang"
+
+msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
+msgstr "Không có trang trước"
+
+msgid "IDS_BR_POP_NO_PAGES_FORWARD"
+msgstr "Không có trang sau"
+
+msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
+msgstr "Không có trang để nạp lại"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Yêu cầu xác thực"
+
+msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
+msgstr "Đã tồn tại"
+
+msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
+msgstr "Tên thư mục đã có"
+
+msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
+msgstr "Không thể lưu đối tượng. Không đủ bộ nhớ cache"
+
+msgid "IDS_BR_HEADER_SELECT_ITEMS"
+msgstr "Chọn mục"
+
+msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
+msgstr "Thông tin chứng nhận"
+
+msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
+msgstr "Chia sẻ qua email"
+
+msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
+msgstr "Chia sẻ qua Tin nhắn"
+
+msgid "IDS_BR_OPT_SHARE_VIA"
+msgstr "Chia sẻ qua"
+
+msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
+msgstr "Không thể chạy Trình duyệt"
+
+msgid "IDS_BR_POP_NO_ADDRESS"
+msgstr "Không địa chỉ"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Không hiển thị lại nữa"
+
+msgid "IDS_BR_POP_FILE_NAME_EMPTY"
+msgstr "Tên file trống"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Tạo thư mục"
+
+msgid "IDS_BR_OPT_SELECTED"
+msgstr "Đã chọn"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Chia sẻ"
+
+msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
+msgstr "Trang ghé thăm gần đây"
+
+msgid "IDS_BR_OPT_DISPLAY"
+msgstr "Hiển thị"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "Vừa độ rộng"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Có thể đọc"
+
+msgid "IDS_BR_BODY_PRIVACY"
+msgstr "Riêng tư"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "Cookie"
+
+msgid "IDS_BR_BODY_COOKIESACCEPTALL"
+msgstr "Chấp nhận tất cả"
+
+msgid "IDS_BR_BODY_COOKIESPROMPT"
+msgstr "Hỏi trước"
+
+msgid "IDS_BR_HEADER_COOKIES"
+msgstr "Cookie"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Chấp nhận các cookie"
+
+msgid "IDS_BR_OPT_ACCEPT_COOKIES"
+msgstr "Chấp nhận các cookie"
+
+msgid "IDS_BR_BODY_ACCEPT_ALL"
+msgstr "Chấp nhận tất cả"
+
+msgid "IDS_BR_BODY_REJECT_ALL"
+msgstr "Từ chối tất cả"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "Tự động lưu ID/mật khẩu"
+
+msgid "IDS_BR_BODY_ON"
+msgstr "Bật"
+
+msgid "IDS_BR_BODY_OFF"
+msgstr "Tắt"
+
+msgid "IDS_BR_BODY_DEFAULT_STORAGE"
+msgstr "Lưu mặc định"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Tìm"
+
+msgid "IDS_BR_BODY_SAVE_IMAGE"
+msgstr "Lưu ảnh"
+
+msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
+msgstr "Pin yếu. Không thể chạy trình duyệt"
+
+msgid "IDS_BR_BODY_FIND_WORD"
+msgstr "Tìm từ"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
+msgstr "Thêm vào màn hình chờ"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Thêm vào Màn hình nền"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Trang web được ghé thăm nhiều nhất"
+
+msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
+msgstr "Chia sẻ qua Facebook"
+
+msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
+msgstr "Chia sẻ qua Twitter"
+
+msgid "IDS_BR_SK3_CHANGE_VIEW"
+msgstr "Đổi dạng xem"
+
+msgid "IDS_BR_HEADER_SELECT_URLS"
+msgstr "Chọn URL"
+
+msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
+msgstr "Trang web này đang cố gắng mở cửa sổ khác bật lên"
+
+msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
+msgstr "Chặn các cửa sổ pop-up"
+
+msgid "IDS_BR_BODY_TEXT_READER"
+msgstr "Trình đọc văn bản"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Chép ảnh"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Lưu ảnh"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Phát"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Chọn"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Trang trước"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Trang sau"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Dừng"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Tải lại"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Dán"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "L.chọn"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Lỗi"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Mở trong cửa sổ mới"
+
+msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
+msgstr "Xem danh sách Tải xuống"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "Sao URL"
+
+msgid "IDS_BR_BODY_COPY_URL_TO"
+msgstr "Chép địa chỉ vào"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Xem ảnh"
+
+msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
+msgstr "Cài đặt riêng tư"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Xóa bộ nhớ đệm"
+
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Xóa lịch sử"
+
+msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
+msgstr "Cho phép các plug-in"
+
+msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
+msgstr "Chọn dịch vụ tìm kiếm"
+
+msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
+msgstr "Xóa ID/mật mã đã lưu"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Xóa tất cả dữ liệu cookie"
+
+msgid "IDS_BR_BODY_UP"
+msgstr "Lên"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Cỡ chữ"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Đã xóa"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Xem mặc định"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Cài đặt nội dung trang"
+
+msgid "IDS_BR_POP_CASE_SENSITIVE"
+msgstr "Phân biệt hoa/thường"
+
+msgid "IDS_BR_BODY_PLUG_IN"
+msgstr "Cắm"
+
+msgid "IDS_BR_OPT_PLUGINS_LIST"
+msgstr "Danh sách phần bổ sung"
+
+msgid "IDS_BR_HEADER_LOCAL_STORAGE"
+msgstr "Bộ nhớ nội bộ"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Xóa dữ liệu trình duyệt"
+
+msgid "IDS_BR_BODY_LOADING_ING"
+msgstr "Đang tải…"
+
+msgid "IDS_BR_HEADER_LOADING_ING"
+msgstr "Đang tải…"
+
+msgid "IDS_BR_HEADER_ENTERURL"
+msgstr "Nhập địa chỉ Web"
+
+msgid "IDS_BR_OPT_LOCK"
+msgstr "Khóa"
+
+msgid "IDS_BR_OPT_UNLOCK"
+msgstr "Mở khóa"
+
+msgid "IDS_BR_BODY_MODIFY"
+msgstr "Sửa đổi"
+
+msgid "IDS_BR_SK_PAGE_UP"
+msgstr "Lên"
+
+msgid "IDS_BR_SK_PAGE_DOWN"
+msgstr "Xuống"
+
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Chế độ người phát triển"
+
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Trống"
+
+msgid "IDS_BR_BODY_CERTIFICATES"
+msgstr "Chứng nhận"
+
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Trang hay dùng"
+
+msgid "IDS_BR_BODY_ENTER_NAME"
+msgstr "Nhập tên"
+
+msgid "IDS_BR_BODY_NAME"
+msgstr "Tên"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Gửi qua Email"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Gửi qua tin nhắn"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Cài đặt"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Tên người dùng"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Đã tồn tại"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Đã lưu"
+
+msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
+msgstr "Không đủ bộ nhớ"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Lỗi mạng"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Luôn luôn hỏi"
+
+msgid "IDS_BR_BODY_MEMORY_CARD"
+msgstr "Thẻ nhớ"
+
+msgid "IDS_BR_BODY_PHONE"
+msgstr "Điện thoại"
+
+msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
+msgstr "Không có tài khoản"
+
+msgid "IDS_BR_HEADER_ERROR_PAGE"
+msgstr "Trang lỗi"
+
+msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
+msgstr "Trang web tạm thời không sẵn dùng"
+
+msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
+msgstr "Trang web không sẵn dùng"
+
+msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
+msgstr "Xảy ra lỗi khi nạp khung"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
+msgstr "Trong khi truy xuất trang web %s, đã xảy ra lỗi sau."
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
+msgstr "Không thể truy xuất trang web. (Trang web có thể tạm thời không sẵn dùng hoặc đã bị di chuyển đến URL mới)"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
+msgstr "Nguyên nhân phổ biến nhất là"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
+msgstr "Kết nối mạng không được thiết lập bình thường"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
+msgstr "Kiểm tra URL trang Web"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
+msgstr "Nạp lại trang web sau"
+
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Trang hay dùng"
+
+msgid "IDS_BR_BODY_TITLE"
+msgstr "Tựa đề"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Nhập tựa đề"
+
+msgid "IDS_BR_OPT_FOLDERS"
+msgstr "Thư mục"
+
+msgid "IDS_BR_OPT_ALLOW"
+msgstr "Cho phép"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Từ chối"
+
+msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
+msgstr "Lỗi Bảo mật: Chứng chỉ server không tin cậy"
+
+msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
+msgstr "%d mục được chọn"
+
+msgid "IDS_BR_POP_1_ITEM_SELECTED"
+msgstr "1 mục được chọn"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "Thêm vào clip Web"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Kết nối nhanh được tạo"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Chọn từ"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Tìm trong trang"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Tìm trong trang"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "Internet"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "Danh sách"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Chọn tất cả"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Tin nhắn"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Hủy"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Chép nối kết URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Xem ảnh"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Mở ra trang mới"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Mở file"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Bật chọn văn bản"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Trang hay dùng"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Sửa"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Xóa"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Xóa"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Hủy"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Sửa trang hay dùng"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Tin nhắn"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "Email"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Sửa"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Xóa"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Thêm trang hay dùng"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Cỡ chữ"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Lớn"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Nhỏ"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "Tốc độ"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Địa chỉ proxy"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Cổng proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "H.tất"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Phiên bản"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "Cài đặt"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Trang hiện thời"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "Nhập tên thư mục"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "Nhập tên đánh dấu"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Không hỏi lại"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "Không tìm thấy URL"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s yêu cầu vị trí của bạn"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Nhớ Cài đặt sở thích"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Hiện ảnh"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Hiện các cảnh báo bảo mật"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Nhớ mật mã"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Xóa mật mã"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Xóa mọi mật mã đã lưu?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "Xoá tất cả cookie. Tiếp tục?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Nhớ dữ liệu biểu mẫu"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Đưa về cài đặt mặc định"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Tất cả cài đặt ở mặc định. Tiếp tục?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "Xóa bộ nhớ đệm?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "Xóa tất cả lịch sử?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "Lịch sử dẫn hướng của trình duyệt sẽ bị xóa"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Luôn bật"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Cho phép định vị"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Xóa truy nhập vị trí"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Không thể trang hay dùng. Đã đạt số đánh dấu tối đa"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Xóa thông tin truy nhập vị trí của website?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "In"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Tìm kiếm hoặc nhập URL"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "Tự động"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "Thủ công"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "Thấp"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Vừa"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Trang trắng"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "Xảy ra lỗi khi cài đặt"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Cài đặt website"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Cao"
+

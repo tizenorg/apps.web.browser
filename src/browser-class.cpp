@@ -1,48 +1,44 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-#include "browser-authentication-manager.h"
-#include "browser-certificate-manager.h"
 #include "browser-class.h"
 #include "browser-context-menu.h"
-#include "browser-download-manager.h"
-#include "browser-exscheme-handler.h"
 #include "browser-find-word.h"
+#include "browser-geolocation.h"
+#ifdef USE_META_TAG
+#include "browser-meta-tag.h"
+#endif
 #include "browser-multi-window-view.h"
 #include "browser-network-manager.h"
-#include "browser-notification-manager.h"
-#include "browser-picker-handler.h"
 #include "browser-user-agent-db.h"
-#include "browser-view.h"
 #include "browser-window.h"
+#include "browser-policy-decision-maker.h"
 
-Browser_Class::Browser_Class(Evas_Object *win, Evas_Object *navi_bar, Evas_Object *bg, Evas_Object *layout)
+Browser_Class::Browser_Class(Evas_Object *win, Evas_Object *navi_bar, Evas_Object *bg)
 :
 	m_win(win)
 	,m_navi_bar(navi_bar)
 	,m_bg(bg)
-	,m_layout(layout)
 	,m_browser_view(NULL)
 	,m_focused_window(NULL)
 	,m_user_agent_db(NULL)
-	,m_download_manager(NULL)
+	,m_download_policy(NULL)
 	,m_clean_up_windows_timer(NULL)
-	,m_authentication_manager(NULL)
-	,m_certificate_manager(NULL)
-	,m_notification_manager(NULL)
+	,m_geolocation(NULL)
 	,m_network_manager(NULL)
 {
 	m_window_list.clear();
@@ -56,14 +52,10 @@ Browser_Class::~Browser_Class(void)
 		delete m_browser_view;
 	if (m_user_agent_db)
 		delete m_user_agent_db;
-	if (m_download_manager)
-		delete m_download_manager;
-	if (m_authentication_manager)
-		delete m_authentication_manager;
-	if (m_certificate_manager)
-		delete m_certificate_manager;
-	if (m_notification_manager)
-		delete m_notification_manager;
+	if (m_download_policy)
+		delete m_download_policy;
+	if (m_geolocation)
+		delete m_geolocation;
 	if (m_network_manager)
 		delete m_network_manager;
 
@@ -75,25 +67,35 @@ Browser_Class::~Browser_Class(void)
 
 	if (m_clean_up_windows_timer)
 		ecore_timer_del(m_clean_up_windows_timer);
+}
 
-	if (!ewk_cache_dump())
-		BROWSER_LOGE("ewk_cache_dump failed");
+Eina_Bool Browser_Class::__create_network_manager_idler_cb(void *data)
+{
+	Browser_Class *browser = (Browser_Class *)data;
 
-	ewk_shutdown();
+	browser->m_network_manager = new(nothrow) Browser_Network_Manager;
+	if (!browser->m_network_manager) {
+		BROWSER_LOGE("new Browser_Network_Manager failed");
+		return ECORE_CALLBACK_CANCEL;
+	}
+	if (!browser->m_network_manager->init(browser->m_browser_view)) {
+		BROWSER_LOGE("m_network_manager->init failed");
+		return ECORE_CALLBACK_CANCEL;
+	}
+
+	return ECORE_CALLBACK_CANCEL;
 }
 
 Eina_Bool Browser_Class::init(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	ewk_init();
-
 	m_user_agent_db = new(nothrow) Browser_User_Agent_DB;
 	if (!m_user_agent_db) {
 		BROWSER_LOGE("new Browser_User_Agent_DB failed");
 		return EINA_FALSE;
 	}
 
-	m_browser_view = new(nothrow) Browser_View(m_win, m_navi_bar, m_bg, m_layout, this);
+	m_browser_view = new(nothrow) Browser_View(m_win, m_navi_bar, m_bg, this);
 	/* Create browser view layout */
 	if (m_browser_view) {
 		if (!m_browser_view->init()) {
@@ -103,34 +105,15 @@ Eina_Bool Browser_Class::init(void)
 	} else
 		return EINA_FALSE;
 
-	m_download_manager = new(nothrow) Browser_Download_Manager(m_navi_bar, m_browser_view);
-	if (!m_download_manager) {
+	m_download_policy = new(nothrow) Browser_Policy_Decision_Maker(m_navi_bar, m_browser_view);
+	if (!m_download_policy) {
 		BROWSER_LOGE("new Browser_Policy_Decision_Maker failed");
 		return EINA_FALSE;
 	}
 
-	m_authentication_manager = new(nothrow) Browser_Authetication_Manager;
-	if (!m_authentication_manager) {
-		BROWSER_LOGE("new Browser_Authetication_Manager failed");
-		return EINA_FALSE;
-	}
- 	m_authentication_manager->init();
-
-	m_certificate_manager = new(nothrow) Browser_Certificate_Manager;
-	if (!m_certificate_manager) {
-		BROWSER_LOGE("new Browser_Certificate_Manager failed");
-		return EINA_FALSE;
-	}
-	if (!m_certificate_manager->init()) {
-		BROWSER_LOGE("m_certificate_manager->init failed");
-		delete m_certificate_manager;
-		m_certificate_manager = NULL;
-		return EINA_FALSE;
-	}
-
-	m_notification_manager = new(nothrow) Browser_Notification_Manager;
-	if (!m_notification_manager) {
-		BROWSER_LOGE("new Browser_Notification_Manager failed");
+	m_geolocation = new(nothrow) Browser_Geolocation;
+	if (!m_geolocation) {
+		BROWSER_LOGE("new Browser_Geolocation failed");
 		return EINA_FALSE;
 	}
 
@@ -139,32 +122,101 @@ Eina_Bool Browser_Class::init(void)
 		BROWSER_LOGE("new Browser_Network_Manager failed");
 		return EINA_FALSE;
 	}
+	if (!m_network_manager->init(m_browser_view)) {
+		BROWSER_LOGE("m_network_manager->init failed");
+		return EINA_FALSE;
+	}
 
 	if (!_set_ewk_view_options_listener()) {
 		BROWSER_LOGE("_set_ewk_view_options_listener failed");
 		return EINA_FALSE;
 	}
 
-	if (!ewk_settings_icon_database_path_set(DATABASE_DIR)) {
-		BROWSER_LOGE("ewk_settings_icon_database_path_set failed");
-		return EINA_FALSE;
-	}
 
-	if (!ewk_cache_init(WEBKIT_SOUP_CACHE_DIR, EINA_FALSE)) {
-		BROWSER_LOGE("ewk_cache_init failed");
-		return EINA_FALSE;
-	}
-	if (!ewk_cache_load()) {
-		BROWSER_LOGE("ewk_cache_load failed");
-		return EINA_FALSE;
-	}
-
-	if (!ewk_cookies_file_set(DATABASE_DIR"/"COOKIES_DATABASENAME)) {
-		BROWSER_LOGE("ewk_cookies_file_set failed");
-		return EINA_FALSE;
-	}
+	ewk_context_cache_model_set(ewk_context_default_get(), EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
 
 	return EINA_TRUE;
+}
+
+void Browser_Class::__preference_changed_cb(const char *key, void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_Class *browser = (Browser_Class *)data;
+
+	if (!key || strlen(key) == 0) {
+		BROWSER_LOGD("vconf_keynode_get_name failed");
+		return;
+	}
+
+	if (!strncmp(key, DEFAULT_VIEW_LEVEL_KEY, strlen(DEFAULT_VIEW_LEVEL_KEY))) {
+		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
+			char *default_level = NULL;
+			if (br_preference_get_str(DEFAULT_VIEW_LEVEL_KEY, &default_level) == false) {
+				BROWSER_LOGE("failed to get %s preference\n", DEFAULT_VIEW_LEVEL_KEY);
+				return;
+			}
+			if (default_level && browser->m_window_list[i]->m_ewk_view) {
+				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				if (!strncmp(default_level, FIT_TO_WIDTH, strlen(FIT_TO_WIDTH)))
+					ewk_setting_auto_fitting_set(setting, EINA_TRUE);
+				else
+					ewk_setting_auto_fitting_set(setting, EINA_FALSE);
+				free(default_level);
+				default_level = NULL;
+			}
+			if (default_level)
+				free(default_level);
+		}
+	} else if (!strncmp(key, RUN_JAVASCRIPT_KEY, strlen(RUN_JAVASCRIPT_KEY))) {
+		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
+			if (browser->m_window_list[i]->m_ewk_view) {
+				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				bool run_javascript = 1;
+				br_preference_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript);
+				if (run_javascript)
+					ewk_setting_enable_scripts_set(setting, EINA_TRUE);
+				else
+					ewk_setting_enable_scripts_set(setting, EINA_FALSE);
+			}
+		}
+	} else if (!strncmp(key, DISPLAY_IMAGES_KEY, strlen(DISPLAY_IMAGES_KEY))) {
+		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
+			if (browser->m_window_list[i]->m_ewk_view) {
+				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				bool display_images = 1;
+				br_preference_get_bool(DISPLAY_IMAGES_KEY, &display_images);
+				if (display_images)
+					ewk_setting_auto_load_images_set(setting, EINA_TRUE);
+				else
+					ewk_setting_auto_load_images_set(setting, EINA_FALSE);
+			}
+		}
+	} else if (!strncmp(key, ACCEPT_COOKIES_KEY, strlen(ACCEPT_COOKIES_KEY))) {
+		bool accept_cookies = 1;
+		br_preference_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies);
+		if (accept_cookies)
+			ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_ALWAYS);
+		else
+			ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_NEVER);
+	} else if (!strncmp(key, BLOCK_POPUP_KEY, strlen(BLOCK_POPUP_KEY))) {
+		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
+			if (browser->m_window_list[i]->m_ewk_view) {
+				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				bool block_popup = 0;
+				br_preference_get_bool(BLOCK_POPUP_KEY, &block_popup);
+				if (block_popup)
+					ewk_setting_scripts_window_open_set(setting, EINA_FALSE);
+				else
+					ewk_setting_scripts_window_open_set(setting, EINA_TRUE);
+			}
+		}
+	} else if (!strncmp(key, SHOW_SECURITY_WARNINGS_KEY, strlen(SHOW_SECURITY_WARNINGS_KEY))) {
+			bool security_warnings = 1;
+			br_preference_get_bool(SHOW_SECURITY_WARNINGS_KEY, &security_warnings);
+	}
 }
 
 void Browser_Class::__vconf_changed_cb(keynode_t *keynode, void *data)
@@ -175,6 +227,7 @@ void Browser_Class::__vconf_changed_cb(keynode_t *keynode, void *data)
 
 	Browser_Class *browser = (Browser_Class *)data;
 	char *key = vconf_keynode_get_name(keynode);
+
 	if (!key || strlen(key) == 0) {
 		BROWSER_LOGD("vconf_keynode_get_name failed");
 		return;
@@ -187,149 +240,7 @@ void Browser_Class::__vconf_changed_cb(keynode_t *keynode, void *data)
 					BROWSER_LOGE("_set_user_agent failed");
 			}
 		}
-	} else if (!strncmp(key, DEFAULT_VIEW_LEVEL_KEY, strlen(DEFAULT_VIEW_LEVEL_KEY))) {
-		char *default_level = vconf_get_str(DEFAULT_VIEW_LEVEL_KEY);
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {			
-			if (default_level && browser->m_window_list[i]->m_ewk_view) {
-				if (!strncmp(default_level, FIT_TO_WIDTH, strlen(FIT_TO_WIDTH)))
-					elm_webview_auto_fitting_set(browser->m_window_list[i]->m_ewk_view, EINA_TRUE);
-				else
-					elm_webview_auto_fitting_set(browser->m_window_list[i]->m_ewk_view, EINA_FALSE);
-			}
-		}
-		if (default_level)
-			free(default_level);
-	} else if (!strncmp(key, RUN_JAVASCRIPT_KEY, strlen(RUN_JAVASCRIPT_KEY))) {
-		int run_javascript = 1;
-		if (vconf_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", RUN_JAVASCRIPT_KEY);
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (run_javascript) {
-					if (!ewk_view_setting_enable_scripts_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_enable_scripts_set failed");
-				} else {
-					if (!ewk_view_setting_enable_scripts_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_enable_scripts_set failed");
-				}
-			}
-		}
-	} else if (!strncmp(key, DISPLAY_IMAGES_KEY, strlen(DISPLAY_IMAGES_KEY))) {
-		int display_images = 1;
-		if (vconf_get_bool(DISPLAY_IMAGES_KEY, &display_images) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", DISPLAY_IMAGES_KEY);
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (display_images) {
-					if (!ewk_view_setting_auto_load_images_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_auto_load_images_set failed");
-				} else {
-					if (!ewk_view_setting_auto_load_images_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_auto_load_images_set failed");
-				}
-			}
-		}
-	} else if (!strncmp(key, BLOCK_POPUP_KEY, strlen(BLOCK_POPUP_KEY))) {
-		int block_popup = 1;
-		if (vconf_get_bool(BLOCK_POPUP_KEY, &block_popup) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", BLOCK_POPUP_KEY);
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (block_popup) {
-					if (!ewk_view_setting_scripts_window_open_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_scripts_window_open_set failed");
-				} else {
-					if (!ewk_view_setting_scripts_window_open_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_scripts_window_open_set failed");
-				}
-			}
-		}
-	} else if (!strncmp(key, ACCEPT_COOKIES_KEY, strlen(ACCEPT_COOKIES_KEY))) {
-		int accept_cookies = 1;
-		if (vconf_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", ACCEPT_COOKIES_KEY);
-		if (accept_cookies)
-			ewk_cookies_policy_set(EWK_COOKIE_JAR_ACCEPT_ALWAYS);
-		else
-			ewk_cookies_policy_set(EWK_COOKIE_JAR_ACCEPT_NEVER);
-	} else if (!strncmp(key, RUN_PLUGINS_KEY, strlen(RUN_PLUGINS_KEY))) {
-		int run_plugins = 1;
-		if (vconf_get_bool(RUN_PLUGINS_KEY, &run_plugins) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", RUN_PLUGINS_KEY);
-
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (run_plugins) {
-					if (!ewk_view_setting_enable_plugins_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_enable_plugins_set failed");
-					if (!ewk_view_setting_enable_specified_plugin_set(webkit,
-								EINA_TRUE, BROWSER_FLASH_MIME_TYPE)) {
-						BROWSER_LOGE("ewk_view_setting_enable_specified_plugin_set failed");
-					}
-				} else {
-					if (!ewk_view_setting_enable_plugins_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_enable_plugins_set failed");
-					if (!ewk_view_setting_enable_specified_plugin_set(webkit,
-								EINA_FALSE, BROWSER_FLASH_MIME_TYPE)) {
-						BROWSER_LOGE("ewk_view_setting_enable_specified_plugin_set failed");
-					}
-				}
-			}
-		}
-	}else if (!strncmp(key, ACCELERATED_COMPOSITION_KEY, strlen(ACCELERATED_COMPOSITION_KEY))) {
-		BROWSER_LOGD("ACCELERATED_COMPOSITION_KEY");
-		int accelerated_composition = 1;
-		if (vconf_get_bool(ACCELERATED_COMPOSITION_KEY, &accelerated_composition) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", ACCELERATED_COMPOSITION_KEY);
-
-		int external_video_player = 0;
-		if (vconf_get_bool(EXTERNAL_VIDEO_PLAYER_KEY, &external_video_player) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", EXTERNAL_VIDEO_PLAYER_KEY);
-
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (accelerated_composition) {
-					if (!ewk_view_setting_accelerated_compositing_enable_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_accelerated_compositing_enable_set failed");
-					if (external_video_player) {
-						if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE))
-							BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-					} else {
-						if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_FALSE))
-							BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-					}
-				} else {
-					if (!ewk_view_setting_accelerated_compositing_enable_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_accelerated_compositing_enable_set failed");
-					if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-				}
-			}
-		}
-	}else if (!strncmp(key, EXTERNAL_VIDEO_PLAYER_KEY, strlen(EXTERNAL_VIDEO_PLAYER_KEY))) {
-		int external_video_player = 0;
-		if (vconf_get_bool(EXTERNAL_VIDEO_PLAYER_KEY, &external_video_player) < 0)
-			BROWSER_LOGE("Can not get [%s] value.\n", EXTERNAL_VIDEO_PLAYER_KEY);
-
-		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
-			if (browser->m_window_list[i]->m_ewk_view) {
-				Evas_Object *webkit = elm_webview_webkit_get(browser->m_window_list[i]->m_ewk_view);
-				if (external_video_player) {
-					if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE))
-						BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-				} else {
-					if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_FALSE))
-						BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-				}
-			}
-		}
 	}
-
 }
 
 Eina_Bool Browser_Class::_set_ewk_view_options_listener(void)
@@ -339,39 +250,31 @@ Eina_Bool Browser_Class::_set_ewk_view_options_listener(void)
 		BROWSER_LOGE("user agent vconf_notify_key_changed failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(DEFAULT_VIEW_LEVEL_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("default view level vconf_notify_key_changed failed");
+
+	if (br_preference_set_changed_cb(DEFAULT_VIEW_LEVEL_KEY, __preference_changed_cb, this) < 0) {
+		BROWSER_LOGE("default view level br_preference_set_changed_cb failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(RUN_JAVASCRIPT_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("run javascript level vconf_notify_key_changed failed");
+	if (br_preference_set_changed_cb(RUN_JAVASCRIPT_KEY, __preference_changed_cb, this) < 0) {
+		BROWSER_LOGE("run javascript level br_preference_set_changed_cb failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(DISPLAY_IMAGES_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("display images level vconf_notify_key_changed failed");
+	if (br_preference_set_changed_cb(DISPLAY_IMAGES_KEY, __preference_changed_cb, this) < 0) {
+		BROWSER_LOGE("display images level br_preference_set_changed_cb failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(BLOCK_POPUP_KEY, __vconf_changed_cb, this) < 0) {
+	if (br_preference_set_changed_cb(ACCEPT_COOKIES_KEY, __preference_changed_cb, this) < 0) {
+		BROWSER_LOGE("accept cookie br_preference_set_changed_cb failed");
+		return EINA_FALSE;
+	}
+	if (!br_preference_set_changed_cb(BLOCK_POPUP_KEY, __preference_changed_cb, this)) {
 		BROWSER_LOGE("BLOCK_POPUP_KEY vconf_notify_key_changed failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(ACCEPT_COOKIES_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("ACCEPT_COOKIES_KEY vconf_notify_key_changed failed");
+	if (!br_preference_set_changed_cb(SHOW_SECURITY_WARNINGS_KEY, __preference_changed_cb, this)) {
+		BROWSER_LOGE("SHOW_SECURITY_WARNINGS_KEY vconf_notify_key_changed failed");
 		return EINA_FALSE;
 	}
-	if (vconf_notify_key_changed(RUN_PLUGINS_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("RUN_PLUGINS_KEY vconf_notify_key_changed failed");
-		return EINA_FALSE;
-	}
-	if (vconf_notify_key_changed(ACCELERATED_COMPOSITION_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("ACCELERATED_COMPOSITION_KEY vconf_notify_key_changed failed");
-		return EINA_FALSE;
-	}
-	if (vconf_notify_key_changed(EXTERNAL_VIDEO_PLAYER_KEY, __vconf_changed_cb, this) < 0) {
-		BROWSER_LOGE("EXTERNAL_VIDEO_PLAYER_KEY vconf_notify_key_changed failed");
-		return EINA_FALSE;
-	}
-
 	return EINA_TRUE;
 }
 
@@ -382,180 +285,58 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 	if (!_set_user_agent(ewk_view))
 		BROWSER_LOGE("_set_user_agent failed");
 
-	char *default_level = vconf_get_str(DEFAULT_VIEW_LEVEL_KEY);
+	ewk_context_icon_database_path_set(ewk_view_context_get(ewk_view), BROWSER_FAVICON_DB_PATH);
+
+	Ewk_Setting *setting = ewk_view_setting_get(ewk_view);
+	ewk_setting_show_ime_on_autofocus_set(setting, EINA_FALSE);
+
+	char *default_level = NULL;
+	if (br_preference_get_str(DEFAULT_VIEW_LEVEL_KEY, &default_level) == false) {
+		BROWSER_LOGE("failed to get %s preference", DEFAULT_VIEW_LEVEL_KEY);
+		return EINA_FALSE;
+	}
 	if (default_level) {
 		if (!strncmp(default_level, FIT_TO_WIDTH, strlen(FIT_TO_WIDTH)))
-			elm_webview_auto_fitting_set(ewk_view, EINA_TRUE);
+			ewk_setting_auto_fitting_set(setting, EINA_TRUE);
 		else
-			elm_webview_auto_fitting_set(ewk_view, EINA_FALSE);
-
+			ewk_setting_auto_fitting_set(setting, EINA_FALSE);
 		free(default_level);
 	}
 
-	int run_javascript = 1;
-	if (vconf_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", RUN_JAVASCRIPT_KEY);
-	Evas_Object *webkit = elm_webview_webkit_get(ewk_view);
-	if (run_javascript) {
-		if (!ewk_view_setting_enable_scripts_set(webkit, EINA_TRUE))
-			BROWSER_LOGE("ewk_view_setting_enable_scripts_set failed");
-	} else {
-		if (!ewk_view_setting_enable_scripts_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_enable_scripts_set failed");
-	}
-
-	int display_images = 1;
-	if (vconf_get_bool(DISPLAY_IMAGES_KEY, &display_images) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", DISPLAY_IMAGES_KEY);
-	if (display_images) {
-		if (!ewk_view_setting_auto_load_images_set(webkit, EINA_TRUE))
-			BROWSER_LOGE("ewk_view_setting_auto_load_images_set failed");
-	} else {
-		if (!ewk_view_setting_auto_load_images_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_auto_load_images_set failed");
-	}
-
-	int block_popup = 1;
-	if (vconf_get_bool(BLOCK_POPUP_KEY, &block_popup) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", BLOCK_POPUP_KEY);
-	if (block_popup) {
-		if (!ewk_view_setting_scripts_window_open_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_scripts_window_open_set failed");
-	} else {
-		if (!ewk_view_setting_scripts_window_open_set(webkit, EINA_TRUE))
-			BROWSER_LOGE("ewk_view_setting_auto_load_images_set failed");
-	}
-
-	int accept_cookies = 1;
-	if (vconf_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", ACCEPT_COOKIES_KEY);
-	if (accept_cookies)
-		ewk_cookies_policy_set(EWK_COOKIE_JAR_ACCEPT_ALWAYS);
+	bool run_javascript = 1;
+	br_preference_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript);
+	if (run_javascript)
+		ewk_setting_enable_scripts_set(setting, EINA_TRUE);
 	else
-		ewk_cookies_policy_set(EWK_COOKIE_JAR_ACCEPT_NEVER);
+		ewk_setting_enable_scripts_set(setting, EINA_FALSE);
 
-	int run_plugins = 1;
-	if (vconf_get_bool(RUN_PLUGINS_KEY, &run_plugins) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", RUN_PLUGINS_KEY);
-	if (run_plugins) {
-		if (!ewk_view_setting_enable_plugins_set(webkit, EINA_TRUE))
-			BROWSER_LOGE("ewk_view_setting_enable_plugins_set failed");
-		if (!ewk_view_setting_enable_specified_plugin_set(webkit,
-					EINA_TRUE, BROWSER_FLASH_MIME_TYPE)) {
-			BROWSER_LOGE("ewk_view_setting_enable_specified_plugin_set failed");
-		}
-	} else {
-		if (!ewk_view_setting_enable_plugins_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_enable_plugins_set failed");
-		if (!ewk_view_setting_enable_specified_plugin_set(webkit,
-					EINA_FALSE, BROWSER_FLASH_MIME_TYPE)) {
-			BROWSER_LOGE("ewk_view_setting_enable_specified_plugin_set failed");
-		}
-	}
-	int accelerated_composition = 1;
-	if (vconf_get_bool(ACCELERATED_COMPOSITION_KEY, &accelerated_composition) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", ACCELERATED_COMPOSITION_KEY);
-	if (accelerated_composition) {
-		if (!ewk_view_setting_accelerated_compositing_enable_set(webkit, EINA_TRUE))
-			BROWSER_LOGE("ewk_view_setting_accelerated_compositing_enable_set failed");
-/*		if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_FALSE)) {
-			BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-		}
-		*/
-	} else {
-		if (!ewk_view_setting_accelerated_compositing_enable_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_accelerated_compositing_enable_set failed");
-		if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE)) {
-			BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-		}
-	}
+	bool display_images = 1;
+	br_preference_get_bool(DISPLAY_IMAGES_KEY, &display_images);
+	if (display_images)
+		ewk_setting_enable_plugins_set(setting, EINA_TRUE);
+	else
+		ewk_setting_enable_plugins_set(setting, EINA_FALSE);
 
-	int external_video_player = 1;
-	if (vconf_get_bool(EXTERNAL_VIDEO_PLAYER_KEY, &external_video_player) < 0)
-		BROWSER_LOGE("Can not get [%s] value.\n", EXTERNAL_VIDEO_PLAYER_KEY);
-	if (external_video_player) {
-		if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE))
-				BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-	} else {
-		if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_FALSE))
-			BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-	}
-	elm_webview_enable_default_context_menu_set(ewk_view, EINA_TRUE);
-	elm_webview_auto_suspend_set(ewk_view, EINA_TRUE);
-	elm_webview_use_mouse_down_delay_set(ewk_view, EINA_TRUE);
-	elm_webview_show_ime_on_autofocus_set(ewk_view, EINA_FALSE);
+	bool accept_cookies = 1;
+	br_preference_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies);
+	if (accept_cookies)
+		ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_ALWAYS);
+	else
+		ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_NEVER);
 
-	ewk_view_visibility_state_set(webkit, EWK_PAGE_VISIBILITY_STATE_VISIBLE, EINA_TRUE);
+	bool block_popup = 0;
+	br_preference_get_bool(BLOCK_POPUP_KEY, &block_popup);
+	if (block_popup)
+		ewk_setting_scripts_window_open_set(setting, EINA_FALSE);
+	else
+		ewk_setting_scripts_window_open_set(setting, EINA_TRUE);
 
-	if (!ewk_view_setting_geolocation_set(webkit, EINA_TRUE)) {
-		BROWSER_LOGE("ewk_view_setting_geolocation_set failed");
-		return EINA_FALSE;
-	}
-	if (!ewk_view_setting_enable_frame_flattening_set(webkit, EINA_TRUE)) {
-		BROWSER_LOGE("ewk_view_setting_enable_frame_flattening_set failed");
-		return EINA_FALSE;
-	}
-	if (!ewk_view_setting_local_storage_database_path_set(webkit, DATABASE_DIR)) {
-		BROWSER_LOGE("ewk_view_setting_local_storage_database_path_set failed");
-		return EINA_FALSE;
-	}
-	if (!ewk_view_setting_enable_onscroll_event_suppression_set(webkit, EINA_TRUE)) {
-		BROWSER_LOGE("ewk_view_setting_enable_onscroll_event_suppression_set failed");
-		return EINA_FALSE;
-	}
+	ewk_view_recording_surface_enable_set(ewk_view, EINA_TRUE);
+	ewk_setting_layer_borders_enable_set(ewk_view_setting_get(ewk_view), false);
+	ewk_setting_enable_plugins_set(setting, EINA_TRUE);
+
 	if (!_set_http_accepted_language_header(ewk_view)) {
 		BROWSER_LOGE("_set_http_accepted_language_header failed");
-		return EINA_FALSE;
-	}
-
-	m_browser_view->m_exscheme_handler->init(m_browser_view, ewk_view);
-
-	if (!m_network_manager->init(m_browser_view, ewk_view)) {
-		BROWSER_LOGE("m_network_manager->init failed");
-		return EINA_FALSE;
-	}
-	
-	/* If not debug mode, set the default setting. */
-	if (!ewk_view_setting_recording_surface_enable_set(webkit, EINA_FALSE))
-		BROWSER_LOGE("ewk_view_setting_recording_surface_enable_set failed");
-		if (!ewk_view_setting_accelerated_compositing_enable_set(webkit, EINA_TRUE))
-		BROWSER_LOGE("ewk_view_setting_accelerated_compositing_enable_set failed");
-	if (!ewk_view_setting_html5video_external_player_enable_set(webkit, EINA_TRUE))
-		BROWSER_LOGE("ewk_view_setting_html5video_external_player_enable_set failed");
-	if (!ewk_view_setting_layer_borders_enable_set(webkit, EINA_FALSE))
-		BROWSER_LOGE("ewk_view_setting_layer_borders_enable_set failed");
-
-	Ewk_Tile_Unused_Cache *unused_cache = ewk_view_tiled_unused_cache_get(webkit);
-	if (unused_cache)
-		ewk_tile_unused_cache_max_set(unused_cache, BACKING_STORE_CACHE_SIZE);
-
-	return EINA_TRUE;
-}
-
-Eina_Bool Browser_Class::_set_http_accepted_language_header(Evas_Object *ewk_view)
-{
-	BROWSER_LOGD("[%s]", __func__);
-
-	char *system_language_locale = NULL;
-	char system_language[3] = {0,};
-	Evas_Object *webkit = NULL;
-
-	webkit = elm_webview_webkit_get(ewk_view);
-	system_language_locale = vconf_get_str("db/menu_widget/language");
-	BROWSER_LOGD("system language and locale is [%s]\n", system_language_locale);
-	if (!system_language_locale) {
-		BROWSER_LOGD("Failed to get system_language, set as English");
-		strncpy(system_language, "en", 2); /* Copy language set as english */
-	} else {
-		/* Copy language set from system using 2byte, ex)ko */
-		strncpy(system_language, system_language_locale, 2);
-	}
-
-	if (system_language_locale)
-		free(system_language_locale);
-
-	if (!ewk_view_setting_custom_header_add(webkit, "Accept-Language", system_language)) {
-		BROWSER_LOGD("ewk_view_setting_custom_header_add is failed");
 		return EINA_FALSE;
 	}
 
@@ -565,86 +346,102 @@ Eina_Bool Browser_Class::_set_http_accepted_language_header(Evas_Object *ewk_vie
 void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
+	evas_object_smart_callback_del(ewk_view, "load,started", Browser_View::__load_started_cb);
+	evas_object_smart_callback_del(ewk_view, "load,committed", Browser_View::__load_committed_cb);
+	evas_object_smart_callback_del(ewk_view, "load,nonemptylayout,finished",
+						Browser_View::__load_nonempty_layout_finished_cb);
+	evas_object_smart_callback_del(ewk_view, "title,changed", Browser_View::__title_changed_cb);
+	evas_object_smart_callback_del(ewk_view, "load,progress", Browser_View::__load_progress_cb);
+	evas_object_smart_callback_del(ewk_view, "load,finished", Browser_View::__did_finish_load_for_frame_cb);
+	evas_object_smart_callback_del(ewk_view, "process,crashed", Browser_View::__process_crashed_cb);
+	evas_object_event_callback_del(ewk_view, EVAS_CALLBACK_MOUSE_DOWN,
+					Browser_View::__ewk_view_mouse_down_cb);
+	evas_object_event_callback_del(ewk_view, EVAS_CALLBACK_MOUSE_UP,
+					Browser_View::__ewk_view_mouse_up_cb);
+	evas_object_smart_callback_del(ewk_view, "edge,top",
+					Browser_View::__ewk_view_edge_top_cb);
+	evas_object_smart_callback_del(ewk_view, "edge,bottom",
+					Browser_View::__ewk_view_scroll_down_cb);
+	evas_object_smart_callback_del(ewk_view, "scroll,down",
+					Browser_View::__ewk_view_scroll_down_cb);
+	evas_object_smart_callback_del(ewk_view, "scroll,up",
+					Browser_View::__ewk_view_scroll_up_cb);
+	evas_object_smart_callback_del(ewk_view, "fullscreen,enterfullscreen",
+					Browser_View::__ewk_view_enter_full_screen_cb);
+	evas_object_smart_callback_del(ewk_view, "fullscreen,exitfullscreen",
+					Browser_View::__ewk_view_exit_full_screen_cb);
+	evas_object_smart_callback_del(ewk_view, "vibration,vibrate",
+					Browser_View::__ewk_view_vibration_vibrate_cb);
+	evas_object_smart_callback_del(ewk_view, "vibration,cancel",
+					Browser_View::__ewk_view_vibration_cancel_cb);
 
-	evas_object_smart_callback_del(ewk_view, "edge,top", Browser_View::__ewk_view_edge_top_cb);
+	evas_object_smart_callback_del(ewk_view, "create,window", Browser_View::__create_window_cb);
+	evas_object_smart_callback_del(ewk_view, "close,window", Browser_View::__close_window_cb);
 
-	Evas_Object *webkit = elm_webview_webkit_get(ewk_view);
-	evas_object_event_callback_del(webkit, EVAS_CALLBACK_MOUSE_MOVE, Browser_View::__ewk_view_mouse_move_cb);
-	evas_object_event_callback_del(webkit, EVAS_CALLBACK_MOUSE_DOWN, Browser_View::__ewk_view_mouse_down_cb);
-	evas_object_event_callback_del(webkit, EVAS_CALLBACK_MOUSE_UP, Browser_View::__ewk_view_mouse_up_cb);
-	evas_object_event_callback_del(webkit, EVAS_CALLBACK_MOUSE_UP, Browser_View::__ewk_view_multi_down_cb);
-
-	evas_object_smart_callback_del(webkit, "uri,changed", Browser_View::__uri_changed_cb);
-	evas_object_smart_callback_del(webkit, "load,started", Browser_View::__load_started_cb);
-	evas_object_smart_callback_del(webkit, "load,progress", Browser_View::__load_progress_cb);
-	evas_object_smart_callback_del(webkit, "load,finished", Browser_View::__load_finished_cb);
-	evas_object_smart_callback_del(ewk_view_frame_main_get(webkit), "load,nonemptylayout,finished",
-							Browser_View::__load_nonempty_layout_finished_cb);
-	evas_object_smart_callback_del(webkit, "create,webview", Browser_View::__create_webview_cb);
-	evas_object_smart_callback_del(webkit, "window,close", Browser_View::__window_close_cb);
-
-	evas_object_smart_callback_del(ewk_view_frame_main_get(webkit), "html,boundary,reached",
-							Browser_View::__html_boundary_reached_cb);
-	evas_object_smart_callback_del(webkit, "html5video,request", Browser_View::__html5_video_request_cb);
-	evas_object_smart_callback_del(webkit, "vibrator,vibrate", Browser_View::__vibrator_vibrate_cb);
-	evas_object_smart_callback_del(webkit, "vibrator,cancel", Browser_View::__vibrator_cancel_cb);
-
-	m_browser_view->suspend_webview(ewk_view);
-
-	m_download_manager->deinit();
-	m_notification_manager->deinit();
-
-	m_browser_view->deinit_personal_data_manager();
-
-	m_browser_view->m_picker_handler->deinit();
-
+	evas_object_smart_callback_del(ewk_view, "request,geolocation,permission",
+					Browser_Geolocation::__geolocation_permission_request_cb);
+	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
+#ifdef USE_META_TAG
+	m_browser_view->m_meta_tag->deinit();
+#endif
+
+	m_browser_view->suspend_ewk_view(ewk_view);
 }
 
 void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
-
 	ewk_view_deinit(ewk_view);
 
+	evas_object_smart_callback_add(ewk_view, "load,started",
+					Browser_View::__load_started_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "load,committed",
+					Browser_View::__load_committed_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "load,nonemptylayout,finished",
+					Browser_View::__load_nonempty_layout_finished_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "title,changed",
+					Browser_View::__title_changed_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "load,progress",
+					Browser_View::__load_progress_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "load,finished",
+					Browser_View::__did_finish_load_for_frame_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "process,crashed",
+					Browser_View::__process_crashed_cb, m_browser_view);
+	evas_object_event_callback_add(ewk_view, EVAS_CALLBACK_MOUSE_DOWN,
+					Browser_View::__ewk_view_mouse_down_cb, m_browser_view);
+	evas_object_event_callback_add(ewk_view, EVAS_CALLBACK_MOUSE_UP,
+					Browser_View::__ewk_view_mouse_up_cb, m_browser_view);
 	evas_object_smart_callback_add(ewk_view, "edge,top",
 					Browser_View::__ewk_view_edge_top_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "edge,bottom",
+					Browser_View::__ewk_view_scroll_down_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "scroll,down",
+					Browser_View::__ewk_view_scroll_down_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "scroll,up",
+					Browser_View::__ewk_view_scroll_up_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "fullscreen,enterfullscreen",
+					Browser_View::__ewk_view_enter_full_screen_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "fullscreen,exitfullscreen",
+					Browser_View::__ewk_view_exit_full_screen_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "vibration,vibrate",
+					Browser_View::__ewk_view_vibration_vibrate_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "vibration,cancel",
+					Browser_View::__ewk_view_vibration_cancel_cb, m_browser_view);
 
-	Evas_Object *webkit = elm_webview_webkit_get(ewk_view);
-	evas_object_event_callback_add(webkit, EVAS_CALLBACK_MOUSE_MOVE,
-					Browser_View::__ewk_view_mouse_move_cb, m_browser_view);
-	evas_object_event_callback_add(webkit, EVAS_CALLBACK_MOUSE_DOWN,
-					Browser_View::__ewk_view_mouse_down_cb, m_browser_view);
-	evas_object_event_callback_add(webkit, EVAS_CALLBACK_MOUSE_UP,
-					Browser_View::__ewk_view_mouse_up_cb, m_browser_view);
-	evas_object_event_callback_add(webkit, EVAS_CALLBACK_MULTI_DOWN,
-					Browser_View::__ewk_view_multi_down_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "create,window", Browser_View::__create_window_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "close,window", Browser_View::__close_window_cb, m_browser_view);
 
-	evas_object_smart_callback_add(webkit, "uri,changed", Browser_View::__uri_changed_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "load,started", Browser_View::__load_started_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "load,progress", Browser_View::__load_progress_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "load,finished", Browser_View::__load_finished_cb, m_browser_view);
-	evas_object_smart_callback_add(ewk_view_frame_main_get(webkit), "load,nonemptylayout,finished",
-					Browser_View::__load_nonempty_layout_finished_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "create,webview", Browser_View::__create_webview_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "window,close", Browser_View::__window_close_cb, m_browser_view);
-	evas_object_smart_callback_add(ewk_view_frame_main_get(webkit), "html,boundary,reached",
-					Browser_View::__html_boundary_reached_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "html5video,request",
-				Browser_View::__html5_video_request_cb, m_browser_view);
-	evas_object_smart_callback_add(webkit, "vibrator,vibrate", Browser_View::__vibrator_vibrate_cb, NULL);
-	evas_object_smart_callback_add(webkit, "vibrator,cancel", Browser_View::__vibrator_cancel_cb, NULL);
+	evas_object_smart_callback_add(ewk_view, "request,geolocation,permission",
+					Browser_Geolocation::__geolocation_permission_request_cb, m_browser_view);
 
-	m_browser_view->resume_webview(ewk_view);
-
-	m_download_manager->init(ewk_view);
-	m_notification_manager->init(ewk_view);
-
-	m_browser_view->init_personal_data_manager(ewk_view);
-	m_browser_view->m_picker_handler->init(ewk_view);
-
-	if (!m_browser_view->m_context_menu->init(ewk_view))
-		BROWSER_LOGE("m_context_menu->init failed");
+	m_download_policy->init(ewk_view_WKPage_get(ewk_view));
+	m_browser_view->m_context_menu->init(ewk_view);
+#ifdef USE_META_TAG
+	m_browser_view->m_meta_tag->init(ewk_view);
+#endif
+	m_geolocation->init(ewk_view);
+	m_browser_view->resume_ewk_view(ewk_view);
 }
 
 std::string Browser_Class::get_user_agent(void)
@@ -680,33 +477,63 @@ Eina_Bool Browser_Class::_set_user_agent(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	char *user_agent_title = vconf_get_str(USERAGENT_KEY);
-	if (!user_agent_title) {
-		BROWSER_LOGE("vconf_get_str(USERAGENT_KEY) failed.");
-		user_agent_title = strdup("Tizen");
-		if (!user_agent_title) {
-			BROWSER_LOGE("strdup(BROWSER_DEFAULT_USER_AGENT_TITLE) failed.");
-			return EINA_FALSE;
-		}
-	}
-#define TIZEN_USER_AGENT	"Mozilla/5.0 (Linux; U; Tizen 1.0; en-us) AppleWebKit/534.46 (KHTML, like Gecko) Mobile Tizen Browser/1.0"
-#define CHROME_USER_AGENT	"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.16 (KHTML, like Gecko) Chrome/18.0.1003.1 Safari/535.16"
-#define FIREFOX_USER_AGENT	"Mozilla/5.0 (Windows NT 6.1; rv:9.0.1) Gecko/20100101 Firefox/9.0.1"
-	if (!strncmp(user_agent_title, "Firefox", strlen("Firefox"))) {
-		if (!ewk_view_setting_user_agent_set(elm_webview_webkit_get(ewk_view), FIREFOX_USER_AGENT));
-			BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
-	} else if (!strncmp(user_agent_title, "Chrome", strlen("Chrome"))) {
-		if (!ewk_view_setting_user_agent_set(elm_webview_webkit_get(ewk_view), CHROME_USER_AGENT));
-			BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
+    char *user_agent_title = vconf_get_str(USERAGENT_KEY);
+    if (!user_agent_title) {
+        BROWSER_LOGE("vconf_get_str(USERAGENT_KEY) failed.");
+        user_agent_title = strdup("Tizen");
+        if (!user_agent_title) {
+            BROWSER_LOGE("strdup(BROWSER_DEFAULT_USER_AGENT_TITLE) failed.");
+            return EINA_FALSE;
+        }
+    }
+
+#define TIZEN_USER_AGENT "Mozilla/5.0 (Linux; U; Tizen 1.0; en-us) AppleWebKit/534.46 (KHTML,like Gecko) Mobile Tizen Browser/1.0"
+#define CHROME_USER_AGENT "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11"
+
+    if (strncmp(user_agent_title, "Chrome 20", strlen("Chrome 20"))) {
+        if (!ewk_view_user_agent_set(ewk_view, TIZEN_USER_AGENT));
+            BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
+    } else {
+        if (!ewk_view_user_agent_set(ewk_view, CHROME_USER_AGENT));
+            BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
+    }
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_Class::_set_http_accepted_language_header(Evas_Object *ewk_view)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	char *system_language_locale = NULL;
+	char system_language[3] = {0,};
+
+	system_language_locale = vconf_get_str(VCONFKEY_LANGSET);
+	BROWSER_LOGD("system language and locale is [%s]\n", system_language_locale);
+	if (!system_language_locale) {
+		BROWSER_LOGD("Failed to get system_language, set as English");
+		strncpy(system_language, "en", 2); /* Copy language set as english */
 	} else {
-		if (!ewk_view_setting_user_agent_set(elm_webview_webkit_get(ewk_view), TIZEN_USER_AGENT));
-			BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
+		/* Copy language set from system using 2byte, ex)ko */
+		strncpy(system_language, system_language_locale, 2);
+	}
+
+	if (system_language_locale)
+		free(system_language_locale);
+
+	if (!ewk_view_custom_header_add(ewk_view, "Accept-Language", system_language)) {
+		BROWSER_LOGD("ewk_view_setting_custom_header_add is failed");
+		return EINA_FALSE;
 	}
 
 	return EINA_TRUE;
 }
 
-void Browser_Class::set_focused_window(Browser_Window *window, Eina_Bool show_most_visited_sites)
+void Browser_Class::set_focused_window(Browser_Window *window
+#if defined(FEATURE_MOST_VISITED_SITES)
+	, Eina_Bool show_most_visited_sites
+#endif
+	)
 {
 	if (m_focused_window == window || !window)
 		return;
@@ -743,11 +570,19 @@ void Browser_Class::set_focused_window(Browser_Window *window, Eina_Bool show_mo
 
 		ewk_view_init(m_focused_window->m_ewk_view);
 
-		m_browser_view->set_focused_window(m_focused_window, show_most_visited_sites);
+		m_browser_view->set_focused_window(m_focused_window
+#if defined(FEATURE_MOST_VISITED_SITES)
+			, show_most_visited_sites
+#endif
+			);
 		m_browser_view->load_url(m_focused_window->m_url.c_str());
 	} else {
 		ewk_view_init(m_focused_window->m_ewk_view);
-		m_browser_view->set_focused_window(m_focused_window, show_most_visited_sites);
+		m_browser_view->set_focused_window(m_focused_window
+#if defined(FEATURE_MOST_VISITED_SITES)
+			, show_most_visited_sites
+#endif
+			);
 	}
 }
 
@@ -762,6 +597,9 @@ void Browser_Class::delete_window(Browser_Window *delete_window, Browser_Window 
 {
 	BROWSER_LOGD("[%s]", __func__);
 
+	if (m_window_list.size() <= 1)
+		return;
+
 	int index = 0;
 	for (index = 0 ; index < m_window_list.size() ; index++) {
 		if (delete_window == m_window_list[index])
@@ -774,7 +612,11 @@ void Browser_Class::delete_window(Browser_Window *delete_window, Browser_Window 
 	}
 
 	if (parent)
-		set_focused_window(parent, EINA_FALSE);
+		set_focused_window(parent
+#if defined(FEATURE_MOST_VISITED_SITES)
+		, EINA_FALSE
+#endif
+		);
 
 	delete m_window_list[index];
 	m_window_list.erase(m_window_list.begin() + index);
@@ -785,6 +627,9 @@ void Browser_Class::delete_window(Browser_Window *delete_window, Browser_Window 
 void Browser_Class::delete_window(Browser_Window *window)
 {
 	BROWSER_LOGD("[%s]", __func__);
+
+	if (m_window_list.size() <= 1)
+		return;
 
 	int index = 0;
 	for (index = 0 ; index < m_window_list.size() ; index++) {
@@ -836,28 +681,34 @@ void Browser_Class::clean_up_windows(void)
 				evas_object_del(m_window_list[i]->m_ewk_view);
 				m_window_list[i]->m_ewk_view = NULL;
 			}
+			if (m_window_list[i]->m_ewk_view_layout) {
+				evas_object_del(m_window_list[i]->m_ewk_view_layout);
+				m_window_list[i]->m_ewk_view_layout = NULL;
+			}
 		}
 	}
 
 	/* Clear memory cache to reduce memory usage in case of low memory. */
-	/* To do */
+	ewk_context_cache_clear(ewk_context_default_get());
+
+	ewk_context_notify_low_memory(ewk_context_default_get());
 //	m_browser_view->show_msg_popup("This is a test message. Low memory - clean up windows.", 5);
 }
 
 Browser_Window *Browser_Class::create_deleted_window(int index)
 {
 	if (m_window_list[index]->m_ewk_view == NULL) {
-		m_window_list[index]->m_ewk_view = elm_webview_add(m_win, EINA_TRUE);
-
+		m_window_list[index]->m_ewk_view = ewk_view_add(evas_object_evas_get(m_win));
 		if (!m_window_list[index]->m_ewk_view) {
 			BROWSER_LOGE("ewk_view_add failed");
 			return NULL;
 		}
 
 		evas_object_color_set(m_window_list[index]->m_ewk_view, 255, 255, 255, 255);
+#ifdef BROWSER_SCROLLER_BOUNCING
 		/* The webview is locked initially. */
-		elm_webview_vertical_panning_hold_set(m_window_list[index]->m_ewk_view, EINA_TRUE);
-
+		ewk_view_vertical_panning_hold_set(m_window_list[index]->m_ewk_view, EINA_TRUE);
+#endif
 		evas_object_size_hint_weight_set(m_window_list[index]->m_ewk_view,
 						EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 		evas_object_size_hint_align_set(m_window_list[index]->m_ewk_view,
@@ -880,9 +731,7 @@ Browser_Window *Browser_Class::create_new_window(Eina_Bool created_by_user)
 		BROWSER_LOGE("new Browser_Window failed");
 		return NULL;
 	}
-
-	 window->m_ewk_view = elm_webview_add(m_win, EINA_TRUE);
-
+	window->m_ewk_view = ewk_view_add(evas_object_evas_get(m_win));
 	if (!window->m_ewk_view) {
 		BROWSER_LOGE("ewk_view_add failed");
 		return NULL;
@@ -892,9 +741,10 @@ Browser_Window *Browser_Class::create_new_window(Eina_Bool created_by_user)
 	if (created_by_user)
 		window->m_created_by_user = created_by_user;
 
-	elm_webview_vertical_panning_hold_set(window->m_ewk_view, EINA_TRUE);
-	elm_object_focus_allow_set(window->m_ewk_view, EINA_FALSE);
-
+#ifdef BROWSER_SCROLLER_BOUNCING
+	/* The webview is locked initially. */
+	ewk_view_vertical_panning_hold_set(window->m_ewk_view, EINA_TRUE);
+#endif
 	evas_object_size_hint_weight_set(window->m_ewk_view, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(window->m_ewk_view, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
@@ -903,10 +753,6 @@ Browser_Window *Browser_Class::create_new_window(Eina_Bool created_by_user)
 
 	m_window_list.push_back(window);
 
-	/* Workaround.
-	  * If launch the browser by aul, the grey bg is displayed shortly. */
-	edje_object_signal_emit(elm_layout_edje_get(m_browser_view->m_main_layout),
-					"hide,grey_background,signal", "");
 	return window;
 }
 
@@ -916,9 +762,13 @@ Eina_Bool Browser_Class::launch(const char *url, Eina_Bool new_window_flag)
 
 	m_browser_view->delete_non_user_created_windows();
 
-	if (new_window_flag && m_window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT)
+	if (new_window_flag && m_window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT) {
 		/* If the multi window is max, delete the first one in case of new window. */
-		delete_window(m_window_list[0]);
+		if (m_window_list[0] != m_focused_window)
+			delete_window(m_window_list[0]);
+		else
+			delete_window(m_window_list[1]);
+	}
 
 	if (m_window_list.size() == 0 || new_window_flag) {
 		Browser_Window *new_window = NULL;
@@ -942,6 +792,23 @@ Eina_Bool Browser_Class::launch(const char *url, Eina_Bool new_window_flag)
 	return EINA_TRUE;
 }
 
+#if defined(HORIZONTAL_UI)
+Eina_Bool Browser_Class::is_available_to_rotate(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_browser_view)
+		return m_browser_view->is_available_to_rotate();
+	else
+		return EINA_FALSE;
+}
+
+void Browser_Class::rotate(int degree)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	m_browser_view->rotate(degree);
+}
+#endif
+
 Eina_Bool Browser_Class::__clean_up_windows_timer_cb(void *data)
 {
 	if (!data)
@@ -960,6 +827,7 @@ void Browser_Class::pause(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	m_browser_view->pause();
+	m_download_policy->pause();
 
 	if (m_clean_up_windows_timer)
 		ecore_timer_del(m_clean_up_windows_timer);

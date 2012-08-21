@@ -1,29 +1,28 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 extern "C" {
 #include <ITapiSat.h>
+#include <TapiUtility.h>
 }
 
-#include <sys/utsname.h>
-
-#include "browser-class.h"
+#include <app.h>
 #include "browser-config.h"
-
-using namespace std;
+#include "browser-class.h"
 
 struct browser_data {
 	Evas_Object *main_win;
@@ -33,15 +32,16 @@ struct browser_data {
 	Elm_Theme *browser_theme;
 
 	Browser_Class *browser_instance;
+
+	Eina_Bool is_paused;
 };
 
 static void __br_set_env(void)
 {
-	/* enable gl */
-	if (!getenv("ELM_ENGINE")) {
-		if (setenv("ELM_ENGINE", "gl", 1))
-			BROWSER_LOGD("ELM_ENGINE's value is overwrited");
-	}
+#if !defined(TIZEN_PUBLIC)
+	/* manual enabling of CoreGL fastpath */	
+	setenv("COREGL_FASTPATH", "1", 1);
+#endif
 
 	/* set image cache suze */
 	if (setenv("ELM_IMAGE_CACHE", "0", 1))
@@ -66,7 +66,51 @@ static void __br_destroy(void *data)
 
 static void __main_win_del_cb(void *data, Evas_Object *obj, void *event)
 {
-	BROWSER_LOGD("<< window delete callback [%d]>>", appcore_measure_time());
+	BROWSER_LOGD("[Browser-Launching time measure]<< window delete callback >>");
+}
+
+static bool __init_preference()
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!br_preference_create_bool(SHOW_MY_SITES_GUIDE, true))
+		return false;
+	if (!br_preference_create_str(LAST_VISITED_URL_KEY, ""))
+		return false;
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (!br_preference_create_str(HOMEPAGE_KEY, MOST_VISITED_SITES))
+		return false;
+#else
+	if (!br_preference_create_str(HOMEPAGE_KEY, USER_HOMEPAGE))
+		return false;
+#endif
+	if (!br_preference_create_str(USER_HOMEPAGE_KEY, BROWSER_DEFAULT_USER_HOMEPAGE))
+		return false;
+	if (!br_preference_create_str(SEARCHURL_KEY, "http://search.yahoo.com/search?p="))
+		return false;
+	if (!br_preference_create_str(DEFAULT_VIEW_LEVEL_KEY, "READABLE"))
+		return false;
+	if (!br_preference_create_bool(RUN_JAVASCRIPT_KEY, true))
+		return false;
+	if (!br_preference_create_bool(DISPLAY_IMAGES_KEY, true))
+		return false;
+	if (!br_preference_create_bool(BLOCK_POPUP_KEY, true))
+		return false;
+	if (!br_preference_create_bool(SHOW_SECURITY_WARNINGS_KEY, true))
+		return false;
+	if (!br_preference_create_bool(ACCEPT_COOKIES_KEY, true))
+		return false;
+	if (!br_preference_create_bool(AUTO_SAVE_ID_PASSWORD_KEY, false))
+		return false;
+	if (!br_preference_create_bool(AUTO_SAVE_FORM_DATA_KEY, false))
+		return false;
+	if (!br_preference_create_bool(ENABLE_LOCATION_KEY, true))
+		return false;
+#ifdef ZOOM_BUTTON
+	if (!br_preference_create_bool(ZOOM_BUTTON_KEY, true))
+		return false;
+#endif
+	return true;
 }
 
 static Evas_Object *__create_main_win(void *app_data)
@@ -138,14 +182,27 @@ static Evas_Object *__create_navi_bar(void *app_data)
 	return navi_bar;
 }
 
-static Eina_Bool __process_app_service(bundle *b, void *app_data)
+static Eina_Bool __process_app_service(service_h service, void *app_data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	struct browser_data *ad = (struct browser_data *)app_data;
 
-	const char *operation = appsvc_get_operation(b);
-	const char *request_uri = appsvc_get_uri(b);
-	const char *request_mime_type = appsvc_get_mime(b);
+	char *operation = NULL;
+	char *request_uri = NULL;
+	char *request_mime_type = NULL;
+
+	if (service_get_operation(service, &operation) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service operation failed");
+		return EINA_FALSE;
+	}
+
+	if (service_get_uri(service, &request_uri) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service uri failed");
+	}
+
+	if (service_get_mime(service, &request_mime_type) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service mime failed");
+	}
 
 	if (!operation && !request_uri && !request_mime_type) {
 		BROWSER_LOGD("Not app svc");
@@ -157,16 +214,15 @@ static Eina_Bool __process_app_service(bundle *b, void *app_data)
 	std::string full_path;
 
 	if (request_mime_type) {
-		if (!strncmp(request_mime_type, "http.uri", strlen("http.uri"))
-		    || !strncmp(request_mime_type, "file.uri", strlen("file.uri"))) {
-		    	if (request_uri)
-				full_path = std::string(request_uri);
-		} else if (!strncmp(request_mime_type, "application/x-shockwave-flash", strlen("application/x-shockwave-flash"))
+		if (!strncmp(request_mime_type, "application/x-shockwave-flash", strlen("application/x-shockwave-flash"))
 			|| !strncmp(request_mime_type, "image/svg+xml", strlen("image/svg+xml"))
 			|| !strncmp(request_mime_type, "text/html", strlen("text/html"))
 			|| !strncmp(request_mime_type, "application/xml", strlen("application/xml"))) {
 			if (request_uri)
-				full_path = "file://" + std::string(request_uri);
+				full_path = std::string(request_uri);
+		} else {
+			BROWSER_LOGD("Not allowed mime type : [%s]", request_mime_type);
+			return EINA_FALSE;
 		}
 	} else if (request_uri) {
 		full_path = std::string(request_uri);
@@ -182,36 +238,54 @@ static Eina_Bool __process_app_service(bundle *b, void *app_data)
 	return EINA_TRUE;
 }
 
-static void __br_load_url(bundle *b, void *app_data)
+static void __br_load_url(service_h service, void *app_data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	struct browser_data *ad = (struct browser_data *)app_data;
 
-	if (__process_app_service(b, app_data)) {
+	if (__process_app_service(service, app_data)) {
 		BROWSER_LOGD("app service");
 		return;
 	}
 
 	std::string full_path;
-	const char *mime_type = bundle_get_val(b, AUL_K_MIME_TYPE);
-	const char *content_url = bundle_get_val(b, AUL_K_MIME_CONTENT);
-	const char *search_keyword = bundle_get_val(b, "search_keyword");
-	const char *goto_url = bundle_get_val(b, "goto_url");
-	const char *url = bundle_get_val(b, "url");
-	if (mime_type && content_url) {
-		BROWSER_LOGD("mime type=[%s], url=[%s]", mime_type, content_url);
-		if (!strcmp(mime_type, "http.uri") || !strcmp(mime_type, "file.uri")) {
-			full_path = content_url;
-		} else if (!strcmp(mime_type, "application/x-shockwave-flash")
+	char *mime_type = NULL;
+	char *search_keyword = NULL;
+	char *goto_url = NULL;
+	char *url = NULL;
+
+	if (service_get_uri(service, &url) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service uri failed");
+	}
+
+	if (service_get_mime(service, &mime_type) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service mime failed");
+	}
+
+	if (service_get_extra_data(service, "search_keyword", &search_keyword) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service extra data(search keyword) failed");
+	}
+
+	if (service_get_extra_data(service, "goto_url", &search_keyword) != SERVICE_ERROR_NONE) {
+		BROWSER_LOGD("get service extra data(search keyword) failed");
+	}
+
+	if (mime_type && url) {
+		BROWSER_LOGD("mime type=[%s], url=[%s]", mime_type, url);
+		if (!strcmp(mime_type, "application/x-shockwave-flash")
 			|| !strcmp(mime_type, "image/svg+xml")
 			|| !strcmp(mime_type, "text/html")
 			|| !strcmp(mime_type, "application/xml")) {
-			full_path = "file://" + std::string(content_url);
+			full_path = std::string(url);
 		}
 	} else if (search_keyword) {
 		BROWSER_LOGD("search_keyword=[%s]", search_keyword);
 		if (search_keyword) {
-			char *search_url = vconf_get_str(SEARCHURL_KEY);
+			char *search_url = NULL;
+			if (br_preference_get_str(SEARCHURL_KEY, &search_url) == false) {
+				BROWSER_LOGE("failed to get %s preference\n", SEARCHURL_KEY);
+				return;
+			}
 			if (search_url) {
 				full_path = std::string(search_url) + std::string(search_keyword);
 				free(search_url);
@@ -244,14 +318,45 @@ static Eina_Bool __br_keydown_event(void *data, int type, void *event)
 	return EXIT_FAILURE;
 }
 
-static int __br_lang_changed_cb(void *data)
+#if defined(HORIZONTAL_UI)
+static void __br_rotate_cb(app_device_orientation_e mode, void *data)
 {
-	BROWSER_LOGD("[%s]", __func__);
-	/* To do */
-	return 0;
-}
+	BROWSER_LOGD("[%s] rotation mode = %d", __func__, mode);
+	struct browser_data *ad = (struct browser_data *)data;
+	int rotation_value;
 
-static int __br_low_memory_cb(void* data)
+	switch (mode) {
+	case APP_DEVICE_ORIENTATION_0:
+		rotation_value = 0;
+		ug_send_event(UG_EVENT_ROTATE_PORTRAIT);
+		break;
+	case APP_DEVICE_ORIENTATION_90:
+		rotation_value = 90;
+		ug_send_event(UG_EVENT_ROTATE_LANDSCAPE_UPSIDEDOWN);
+		break;
+	case APP_DEVICE_ORIENTATION_180:
+		rotation_value = 180;
+		ug_send_event(UG_EVENT_ROTATE_PORTRAIT_UPSIDEDOWN);
+		break;
+	case APP_DEVICE_ORIENTATION_270:
+		rotation_value = 270;
+		ug_send_event(UG_EVENT_ROTATE_LANDSCAPE);
+		break;
+	default:
+		rotation_value = -1;
+		break;
+	}
+
+	if (rotation_value >= 0 && ad->browser_instance) {
+		if (ad->browser_instance->is_available_to_rotate()) {
+			elm_win_rotation_with_resize_set(ad->main_win, rotation_value);
+			ad->browser_instance->rotate(rotation_value);
+		}
+	}
+}
+#endif
+
+static void __br_low_memory_cb(void* data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	/* To do */
@@ -259,28 +364,86 @@ static int __br_low_memory_cb(void* data)
 
 	if (ad && ad->browser_instance)
 		ad->browser_instance->clean_up_windows();
+}
 
-	return 0;
+static void __br_low_battery_cb(void* data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	/* To do */
+	return;
+}
+
+static void __br_lang_changed_cb(void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	/* To do */
+	return;
+}
+
+static void __br_region_changed_cb(void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	/* To do */
+	return;
 }
 
 static void __br_register_system_event(void *app_data)
 {
+	/* To do */
 	struct browser_data *ad = (struct browser_data *)app_data;
-
-	/* add system event callback */
-	if (0 != appcore_set_event_callback(APPCORE_EVENT_LANG_CHANGE, __br_lang_changed_cb, ad))
-		BROWSER_LOGE("appcore_set_event_callback is failed.\n");
-
-	if (0 != appcore_set_event_callback(APPCORE_EVENT_LOW_MEMORY, __br_low_memory_cb, ad))
-		BROWSER_LOGE("appcore_set_event_callback is failed.\n");
-
-	ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, __br_keydown_event, ad);
 }
 
-static int __br_app_create(void *app_data)
+static int __browser_set_i18n(const char *domain, const char *dir)
 {
-	BROWSER_LOGD("<< theme extenstion [%d]>>", appcore_measure_time());
+    char *r = NULL;
+
+    if (domain == NULL) {
+		BROWSER_LOGE("domain is NULL");
+        return -1;
+    }
+
+    r = setlocale(LC_ALL, "");
+
+    /* if locale is not set properly, try again to set as language base */
+    if (r == NULL) {
+        char *lang_set = vconf_get_str(VCONFKEY_LANGSET);
+        if (!lang_set && strlen(lang_set) > 0)
+            r = setlocale(LC_ALL, lang_set);
+
+        BROWSER_LOGE("setlocale as [%s]", r);
+        if (lang_set)
+            free(lang_set);
+    }
+
+    if (r == NULL) {
+		BROWSER_LOGE("setlocale failed");
+        return -1;
+    }
+
+    r = bindtextdomain(domain, dir);
+    if (r == NULL) {
+		BROWSER_LOGE("bindtextdomain failed");
+        return -1;
+    }
+
+    r = textdomain(domain);
+    if (r == NULL) {
+		BROWSER_LOGE("textdomain failed");
+        return -1;
+    }
+
+    return 0;
+}
+
+static bool __br_app_create(void *app_data)
+{
+	BROWSER_LOGD("[Browser-Launching time measure] << theme extenstion >>");
 	struct browser_data *ad = (struct browser_data *)app_data;
+
+	elm_config_preferred_engine_set("opengl_x11");
+
+	if(!__init_preference())
+		return false;
 
 	ad->browser_theme = elm_theme_new();
 	elm_theme_ref_set(ad->browser_theme, NULL);
@@ -291,59 +454,64 @@ static int __br_app_create(void *app_data)
 	elm_theme_extension_add(ad->browser_theme, BROWSER_URL_LAYOUT_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_PREDICTIVE_HISTORY_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_SETTINGS_THEME);
-	elm_theme_extension_add(ad->browser_theme, BROWSER_MOST_VISITED_SITES_THEME);
-	elm_theme_extension_add(ad->browser_theme, BROWSER_MOST_VISITED_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_BOOKMARK_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_FIND_WORD_LAYOUT_THEME);
 
-	BROWSER_LOGD("<< create main window [%d]>>", appcore_measure_time());
+	BROWSER_LOGD("[Browser-Launching time measure] << create main window >>");
 	ad->main_win = __create_main_win(ad);
 	if (!ad->main_win) {
 		BROWSER_LOGE("fail to create window");
-		return -1;
+		return false;
 	}
 
-	BROWSER_LOGD("<< create background [%d]>>", appcore_measure_time());
+	BROWSER_LOGD("[Browser-Launching time measure] << create background >>");
 	ad->bg = __create_bg(ad->main_win);
 	if (!ad->bg) {
 		BROWSER_LOGE("fail to create bg");
-		return -1;
+		return false;
 	}
 
-	BROWSER_LOGD("<< create layout main [%d]>>", appcore_measure_time());
+	BROWSER_LOGD("[Browser-Launching time measure] << create layout main >>");
 	ad->main_layout = __create_main_layout(ad->main_win);
 	if (!ad->main_layout) {
 		BROWSER_LOGE("fail to create main layout");
-		return -1;
+		return false;
 	}
 
 	ad->navi_bar = __create_navi_bar(ad);
 	if (!ad->navi_bar) {
 		BROWSER_LOGE("fail to create navi bar");
-		return -1;
+		return false;
 	}
 
 	/* create browser instance & init */
-	ad->browser_instance = new(nothrow) Browser_Class(ad->main_win, ad->navi_bar, ad->bg, ad->main_layout);
+	ad->browser_instance = new(nothrow) Browser_Class(ad->main_win, ad->navi_bar, ad->bg);
 	if (!ad->browser_instance) {
 		BROWSER_LOGE("fail to Browser_Class");
-		return -1;
+		return false;
 	}
 	if (ad->browser_instance->init() == EINA_FALSE) {
 		BROWSER_LOGE("fail to browser init");
-		return -1;
+		return false;
 	}
 
 	/* init internationalization */
-	int ret = appcore_set_i18n(BROWSER_PACKAGE_NAME, BROWSER_LOCALE_DIR);
+	int ret = __browser_set_i18n(BROWSER_PACKAGE_NAME, BROWSER_LOCALE_DIR);
 	if (ret) {
-		BROWSER_LOGE("fail to appcore_set_i18n");
-		return -1;
+		BROWSER_LOGE("fail to __browser_set_i18n");
+		return false;
 	}
 
-	__br_register_system_event(ad);
+#if defined(HORIZONTAL_UI)
+	app_device_orientation_e rotation_value = app_get_device_orientation();
 
-	return 0;
+	if (rotation_value != APP_DEVICE_ORIENTATION_0) {
+		elm_win_rotation_with_resize_set(ad->main_win, rotation_value);
+		ad->browser_instance->rotate(rotation_value);
+	}
+#endif
+
+	return true;
 }
 
 /* GCF test requirement */
@@ -356,16 +524,17 @@ static void __send_termination_event_to_tapi(void)
 	event_data.eventDownloadType = TAPI_EVENT_SAT_DW_TYPE_BROWSER_TERMINATION;
 	event_data.u.browserTerminationEventReqInfo.browserTerminationCause = TAPI_SAT_BROWSER_TERMINATED_BY_USER;
 
-	tel_init();
-	tel_register_app_name((char*)"org.tizen.browser");
-	tel_download_sat_event(&event_data, &request_id);
+	TapiHandle *handle = NULL;
+	handle = tel_init(NULL);
+
+	ret = tel_download_sat_event(handle, &event_data, NULL, NULL);
 	if(ret != TAPI_API_SUCCESS && ret != TAPI_API_SAT_EVENT_NOT_REQUIRED_BY_USIM)
 		BROWSER_LOGE("failed to tel_download_sat_event");
 
-	tel_deinit();
+	tel_deinit(handle);
 }
 
-static int __br_app_terminate(void *app_data)
+static void __br_app_terminate(void *app_data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	struct browser_data *ad = (struct browser_data *)app_data;
@@ -377,8 +546,6 @@ static int __br_app_terminate(void *app_data)
 	elm_theme_extension_del(ad->browser_theme, BROWSER_PROGRESSBAR_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_PREDICTIVE_HISTORY_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_SETTINGS_THEME);
-	elm_theme_extension_del(ad->browser_theme, BROWSER_MOST_VISITED_SITES_THEME);
-	elm_theme_extension_del(ad->browser_theme, BROWSER_MOST_VISITED_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_BOOKMARK_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_FIND_WORD_LAYOUT_THEME);
 	elm_theme_free(ad->browser_theme);
@@ -392,67 +559,71 @@ static int __br_app_terminate(void *app_data)
 	if (ad->browser_instance)
 		delete ad->browser_instance;
 
-	BROWSER_LOGD("<< __br_app_terminate ends [%d]>>", appcore_measure_time());
-	return 0;
+	BROWSER_LOGD("[Browser-Launching time measure] << __br_app_terminate ends >>");
 }
 
-static int __br_app_pause(void *app_data)
+static void __br_app_pause(void *app_data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	struct browser_data *ad = (struct browser_data *)app_data;
 
 	if (!ad || !ad->browser_instance)
-		return 0;
+		return;
 
 	ad->browser_instance->pause();
 
-	return 0;
+	ad->is_paused = EINA_TRUE;
 }
 
-static int __br_app_resume(void *app_data)
+static void __br_app_resume(void *app_data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	struct browser_data *ad = (struct browser_data *)app_data;
 
 	if (!ad || !ad->browser_instance)
-		return 0;
+		return;
 
 	ad->browser_instance->resume();
 
-	return 0;
+	ad->is_paused = EINA_FALSE;
 }
 
-static int __br_app_reset(bundle *b, void *app_data)
+static void __br_app_reset(service_h service, void *app_data)
 {
 	struct browser_data *ad = (struct browser_data *)app_data;
 	BROWSER_LOGD("[%s]", __func__);
+
 	ad->browser_instance->reset();
 
-	__br_load_url(b, app_data);
+	__br_load_url(service, app_data);
 
-	return 0;
+	ad->is_paused = EINA_FALSE;
 }
 
 int main(int argc, char *argv[])
 {
 	__br_set_env();
 
-	appcore_measure_start();
-
-	struct appcore_ops ops;
+	app_event_callback_s ops;
+	memset(&ops, 0x0, sizeof(app_event_callback_s));
 
 	ops.create = __br_app_create;
 	ops.terminate = __br_app_terminate;
 	ops.pause = __br_app_pause;
 	ops.resume = __br_app_resume;
-	ops.reset = __br_app_reset;
+	ops.service = __br_app_reset;
+	ops.low_memory = __br_low_memory_cb;
+	ops.low_battery = __br_low_battery_cb;
+#if defined(HORIZONTAL_UI)
+	ops.device_orientation = __br_rotate_cb;
+#endif
+	ops.language_changed = __br_lang_changed_cb;
+	ops.region_format_changed = __br_region_changed_cb;
 
 	struct browser_data ad;
 	memset(&ad, 0x0, sizeof(struct browser_data));
 
-	ops.data = &ad;
-
-	int ret = appcore_efl_main(BROWSER_PACKAGE_NAME, &argc, &argv, &ops);
+	int ret = app_efl_main(&argc, &argv, &ops, &ad);
 
 	return ret;
 }

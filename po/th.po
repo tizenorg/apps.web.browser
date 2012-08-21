@@ -1,0 +1,831 @@
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "กำลัง​แจ้ง​ข้อมูล..."
+
+msgid "IDS_BR_BODY_PROCESSING_ING"
+msgstr "ดำเนิน​การ..."
+
+msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
+msgstr "ดำเนิน​การ​เสร็จ​สมบูรณ์"
+
+msgid "IDS_BR_SK_RETRY"
+msgstr "ลอง​ใหม่"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "การจัดการการ​ดาวน์​โหลด"
+
+msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
+msgstr "ตัว​อธิบาย​ไม่​ถูก​ต้อง"
+
+msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
+msgstr "เปิด​ไฟล์​ไม่​ได้​เข้า​กัน​ไม่​ได้"
+
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "ดาวน์​โหลด?"
+
+msgid "IDS_BR_OPT_DELETE_SELECTED"
+msgstr "ที่​เลือก"
+
+msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
+msgstr "ยก​เลิก​ดาวน์​โหลด"
+
+msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
+msgstr "ต่อจากหน้าสุดท้าย"
+
+msgid "IDS_BR_BODY_PAGE"
+msgstr "หน้า"
+
+msgid "IDS_BR_OPT_DICTIONARY"
+msgstr "พจนานุกรม"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "เกี่ยว​กับ​บ​ราว​เซอร์"
+
+msgid "IDS_BR_BODY_BROWSER_TYPE"
+msgstr "ชนิด"
+
+msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
+msgstr "ผู้​จำหน่าย"
+
+msgid "IDS_BR_BODY_DISPLAY_IMAGES"
+msgstr "แสดง​รูป​ภาพ"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "ดาวน์​โหลด"
+
+msgid "IDS_BR_BODY_ENTER_URL"
+msgstr "ใส่ URL"
+
+msgid "IDS_BR_BODY_FOLDER"
+msgstr "แฟ้ม"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "โฮ​มเพ​จ"
+
+msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
+msgstr "แสดง​ใน​แนว​นอน"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "ไม่​มี​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "ไม่​พบ​ผลลัพธ์"
+
+msgid "IDS_BR_BODY_OPTIONAL"
+msgstr "เลือก​ได้"
+
+msgid "IDS_BR_BODY_RSS"
+msgstr "RSS"
+
+msgid "IDS_BR_BODY_RUN_FLASH"
+msgstr "ใช้​โปรแกรม​แฟลช"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "รัน JavaScript"
+
+msgid "IDS_BR_HEADER_COMMON_NAME_C"
+msgstr "ชื่อ​ทั่ว​ไป:"
+
+msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
+msgstr "หน่วย​ของ​หน่วย​งาน:"
+
+msgid "IDS_BR_HEADER_ORGANIZATION_C"
+msgstr "หน่วย​งาน:"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "เอ​เจนต์​ผู้​ใช้"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
+msgstr "Last Viewed Page"
+
+msgid "IDS_BR_OPT_PREFERENCES"
+msgstr "รายการ​ที่​เตรียม​ไว้"
+
+msgid "IDS_BR_POP_ACTICATION_ERR"
+msgstr "การ​ใช้​งาน​ผิด​พลาด"
+
+msgid "IDS_BR_POP_ALREADY_RUNNING"
+msgstr "กำลัง​ทำ​งานอยู่..."
+
+msgid "IDS_BR_POP_ERRORIMPLEMENTED"
+msgstr "ไม่​ได้​ผล"
+
+msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
+msgstr "การ​รับรอง​ผิด​พลาด"
+
+msgid "IDS_BR_POP_OVERWRITE_Q"
+msgstr "เขียน​ทับ?"
+
+msgid "IDS_BR_POP_URL"
+msgstr "URL"
+
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "ประวัติ"
+
+msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
+msgstr "ดาวน์​โหลด​รายการ"
+
+msgid "IDS_BR_POP_ALREADYINSTALLED"
+msgstr "ติด​ตั้ง​แล้ว"
+
+msgid "IDS_BR_POP_NOTIFYING"
+msgstr "กำลัง​แจ้ง​ข้อมูล..."
+
+msgid "IDS_BR_POP_NOTSUPPORT"
+msgstr "ไม่​รอง​รับ\n​คอน​เทนท์"
+
+msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
+msgstr "ข้อ​ผิด​พลาด: ​ไม่​สามารถ​ระ​บุ​ชื่อ​โฮสต์"
+
+msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
+msgstr "ไม่​สามารถ​เข้า​ถึง​พ​ร็อก​ซี"
+
+msgid "IDS_BR_POP_NOSSLCERTI"
+msgstr "ไม่​มี​ใบ​รับรอง SSL"
+
+msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
+msgstr "ขนาด​ของ​ไฟล์​มี​ค่า​เกิน​ค่า​สูง​สูด​ของ​ข้อ​จำกัด​ใน​การอัพ​โหลด"
+
+msgid "IDS_BR_BODY_ENTER_NAME_C"
+msgstr "ใส่​ชื่อ:"
+
+msgid "IDS_BR_SK_NEXT"
+msgstr "ถัด​ไป"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "แฟ้ม​ใหม่"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "เพิ่ม​ใน​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_SK1_NEW_WINDOW"
+msgstr "หน้าต่าง​ใหม่"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_URL_C"
+msgstr "URL:"
+
+msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
+msgstr "URL ​ใช้​ไม่​ได้"
+
+msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
+msgstr "URL %s ​ใช้​ไม่​ได้ ระบบ​ขัด​ข้อง​ชั่ว​คราว​หรือ​ใช้​ไม่​ได้​อีก​ต่อ​ไป"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "แฟ้ม"
+
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "ชื่อ​แฟ้ม"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
+msgstr "ชื่อ​แฟ้ม\n​ใช้​แล้ว"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "ไม่​มี​ชื่อ"
+
+msgid "IDS_BR_HEADER_MULTI_WINDOW"
+msgstr "หลายหน้าต่าง"
+
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "ไม่​มี​ประวัติ"
+
+msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
+msgstr "เพิ่ม​ใน​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_BODY_EDIT_BOOKMARK"
+msgstr "แก้​ไข​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_BODY_FOLDER_NAME_C"
+msgstr "ชื่อ​โฟลเดอร์:"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "เลือก​ทั้ง​หมด"
+
+msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
+msgstr "การจัดการการ​ดาวน์​โหลด"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEED"
+msgstr "เพิ่ม​ RSS feed"
+
+msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
+msgstr "เพิ่ม ​RSS feeds"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "การตั้งค่า"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "ใส่ URL"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "รหัสผ่าน"
+
+msgid "IDS_BR_POP_INVALIDADDRESS"
+msgstr "ที่​อยู่​ไม่​ถูก​ต้อง"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
+msgstr "มี​อยู่​แล้ว​ใน​รายการ​ดาวน์​โหลด"
+
+msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
+msgstr "ใส่​ชื่อ​แฟ้ม"
+
+msgid "IDS_BR_POP_NO_PAGE"
+msgstr "ไม่​มี​หน้า"
+
+msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
+msgstr "ไม่​มี​หน้า​ย้อน​กลับ"
+
+msgid "IDS_BR_POP_NO_PAGES_FORWARD"
+msgstr "ไม่​มี​เพ​จ​ต่อไป"
+
+msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
+msgstr "ไม่​มี​หน้าที่​จะ​โหลด​ใหม่"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "ต้อง​การ​การ​รับรอง"
+
+msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
+msgstr "มี​บุ๊ค​มา​ร์​คอ​ยู่​แล้ว"
+
+msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
+msgstr "ชื่อ​แฟ้มมี​อยู่​แล้ว"
+
+msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
+msgstr "ไม่​สามารถ​บันทึก​วัตถุ พื้นที่​ว่าง​ใน​แค​ช​ไม่​เพียง​พอ"
+
+msgid "IDS_BR_HEADER_SELECT_ITEMS"
+msgstr "เลือก​รายการ"
+
+msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
+msgstr "ข้อมูล​ใบ​รับรอง​การ​ใช้​งาน"
+
+msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
+msgstr "แชร์​ผ่าน​อี​เมล์"
+
+msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
+msgstr "แชร์​ผ่าน​ข้อ​ความ"
+
+msgid "IDS_BR_OPT_SHARE_VIA"
+msgstr "แชร์​ผ่าน"
+
+msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
+msgstr "ไม่​สา​มา​รถ​เริ่ม​บ​ราว​เซอร์"
+
+msgid "IDS_BR_POP_NO_ADDRESS"
+msgstr "ไม่​มี​ที่​อยู่"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "ไม่​แสดง​อีก​ต่อ​ไป"
+
+msgid "IDS_BR_POP_FILE_NAME_EMPTY"
+msgstr "ชื่อ​ไฟล์​ว่าง"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "สร้างแฟ้ม"
+
+msgid "IDS_BR_OPT_SELECTED"
+msgstr "ที่​เลือก"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "แชร์"
+
+msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
+msgstr "หน้าที่​เพิ่ง​เข้า​ชม"
+
+msgid "IDS_BR_OPT_DISPLAY"
+msgstr "จอภาพ"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "พอ​ดี​กับ​ความ​กว้าง"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "อ่าน​ได้"
+
+msgid "IDS_BR_BODY_PRIVACY"
+msgstr "รายการ​ส่วน​ตัว"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "คุกกี้"
+
+msgid "IDS_BR_BODY_COOKIESACCEPTALL"
+msgstr "ยอม​รับ​ทั้ง​หมด"
+
+msgid "IDS_BR_BODY_COOKIESPROMPT"
+msgstr "เตือน​ก่อน"
+
+msgid "IDS_BR_HEADER_COOKIES"
+msgstr "คุกกี้"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "ยอม​รับ​คุกกี้"
+
+msgid "IDS_BR_OPT_ACCEPT_COOKIES"
+msgstr "ยอม​รับ​คุกกี้"
+
+msgid "IDS_BR_BODY_ACCEPT_ALL"
+msgstr "ยอม​รับ​ทั้ง​หมด"
+
+msgid "IDS_BR_BODY_REJECT_ALL"
+msgstr "ปฏิเสธ​ทั้ง​หมด"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "บันทึก ID/​รหัส​ผ่าน​อัตโนมัติ"
+
+msgid "IDS_BR_BODY_ON"
+msgstr "เปิด"
+
+msgid "IDS_BR_BODY_OFF"
+msgstr "ปิด"
+
+msgid "IDS_BR_BODY_DEFAULT_STORAGE"
+msgstr "ที่​เก็บ​พื้น​ฐาน"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "ค้น​หา"
+
+msgid "IDS_BR_BODY_SAVE_IMAGE"
+msgstr "บันทึก​รูป​ภาพ"
+
+msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
+msgstr "แบตเตอรี่​อ่อน ไม่​สา​มา​รถ​เปิด​บ​ราว​เซอร์"
+
+msgid "IDS_BR_BODY_FIND_WORD"
+msgstr "ค้นหาคำ"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
+msgstr "เพิ่มในห​น้า​จอ​หน้า​หลัก"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "เพิ่มในห​น้า​จอ​หลัก"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "ไซต์​ที่​เข้า​ชม​บ่อย​ที่​สุด"
+
+msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
+msgstr "แชร์​ผ่าน Facebook"
+
+msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
+msgstr "แชร์​ผ่าน Twitter"
+
+msgid "IDS_BR_SK3_CHANGE_VIEW"
+msgstr "เปลี่ยน​มุม​มอง"
+
+msgid "IDS_BR_HEADER_SELECT_URLS"
+msgstr "เลือก URL"
+
+msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
+msgstr "ไซต์​นี้​กำลัง​พยายาม​เปิด​หน้า​จอ​ป๊อป​อัพ"
+
+msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
+msgstr "บล็อก​หน้า​จอ​ป็อปอัพ"
+
+msgid "IDS_BR_BODY_TEXT_READER"
+msgstr "ตัว​อ่าน​ข้อ​ความ"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "คัด​ลอก​ภาพ"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "บันทึก​รูป​ภาพ"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "แสดง"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "เลือก"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "ย้อน​กลับ"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "ไป​ข้าง​หน้า"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "หยุด"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "โหลด​ใหม่"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "วาง"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "เพิ่ม​เติม"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "ผิด​พลาด"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "เปิด​ใน​หน้าต่าง​ใหม่"
+
+msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
+msgstr "ดู​รายการ​ดาวน์​โหลด"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "คัด​ลอก URL"
+
+msgid "IDS_BR_BODY_COPY_URL_TO"
+msgstr "คัด​ลอก URL ​ไป​ยัง"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "ดู​รูป​ภาพ"
+
+msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
+msgstr "การ​ตั้ง​ค่า​ความ​เป็น​ส่วน​ตัว"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "ลบแค​ช"
+
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "ลบ​ประวัติ"
+
+msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
+msgstr "เปิด​ใช้​ปลั๊ก​อิน"
+
+msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
+msgstr "เลือก​เครื่อง​มือ​ค้น​หา"
+
+msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
+msgstr "ลบ ID/​รหัส​ผ่าน​ที่​บันทึก"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "ลบ​คุกกี้​ทั้ง​หมด"
+
+msgid "IDS_BR_BODY_UP"
+msgstr "บน"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "ขนาด​อักษร"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "ลบ​แล้ว"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "แสดง​พื้น​ฐาน"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "การ​ตั้ง​ค่า​คอน​เทนท์​ของ​หน้า"
+
+msgid "IDS_BR_POP_CASE_SENSITIVE"
+msgstr "ใช้​ตัว​พิมพ์​ให้​ถูก​ต้อง"
+
+msgid "IDS_BR_BODY_PLUG_IN"
+msgstr "ปลั๊ก​อิน"
+
+msgid "IDS_BR_OPT_PLUGINS_LIST"
+msgstr "รายการ​ปลั๊ก​อิน"
+
+msgid "IDS_BR_HEADER_LOCAL_STORAGE"
+msgstr "พื้นที่​จัด​เก็บ​โทรศัพท์"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "ลบ​ข้อมูล​การ​เรียก​ดู"
+
+msgid "IDS_BR_BODY_LOADING_ING"
+msgstr "โหลด..."
+
+msgid "IDS_BR_HEADER_LOADING_ING"
+msgstr "โหลด..."
+
+msgid "IDS_BR_HEADER_ENTERURL"
+msgstr "ใส่ URL"
+
+msgid "IDS_BR_OPT_LOCK"
+msgstr "ล็อก"
+
+msgid "IDS_BR_OPT_UNLOCK"
+msgstr "ปลด​ล็อก"
+
+msgid "IDS_BR_BODY_MODIFY"
+msgstr "แก้ไข"
+
+msgid "IDS_BR_SK_PAGE_UP"
+msgstr "หน้า​ขึ้น"
+
+msgid "IDS_BR_SK_PAGE_DOWN"
+msgstr "หน้า​ลง"
+
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "โหมด​ผู้​พัฒนา"
+
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "ว่าง"
+
+msgid "IDS_BR_BODY_CERTIFICATES"
+msgstr "ใบ​รับรอง"
+
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_BODY_ENTER_NAME"
+msgstr "ใส่​ชื่อ"
+
+msgid "IDS_BR_BODY_NAME"
+msgstr "ชื่อ"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "ส่ง​ผ่าน​อี​เมล์"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "ส่ง​ผ่าน​ข้อ​ความ"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "การตั้งค่า"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "ชื่อ​ผู้​ใช้"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "มี​อยู่​แล้ว"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "บันทึก\nเรียบร้อย"
+
+msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
+msgstr "หน่ยวยความจำไม่​พอ"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "เครือข่ายผิดพลาด"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "ถาม​ทุก​ครั้ง"
+
+msgid "IDS_BR_BODY_MEMORY_CARD"
+msgstr "การ์ด​\nความ​จำ"
+
+msgid "IDS_BR_BODY_PHONE"
+msgstr "โทรศัพท์"
+
+msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
+msgstr "ไม่​มี​บัญชี​ผู้​ใช้"
+
+msgid "IDS_BR_HEADER_ERROR_PAGE"
+msgstr "เพ​จ​ผิด​พลาด"
+
+msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
+msgstr "เว็บ​เพ​จ​ใช้​ไม่​ได้​ชั่ว​คราว"
+
+msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
+msgstr "เว็บ​เพ​จ​ใช้​ไม่​ได้"
+
+msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
+msgstr "โหลด​เฟรม​ไม่​ได้"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
+msgstr "ใน​ขณะ​เรียก​เว็บ​เพ​จ​ %s ​เกิด​ข้อ​ผิด​พลาด​ต่อ​ไป​นี้"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
+msgstr "ไม่​สา​มา​รถ​เรียก​เว็บ​เพ​จ​ได้ (​เว็บ​เพ​จ​อาจ​ขัด​ข้อง​ชั่ว​คราว​หรือ​ย้าย​ไป​ยัง URL ​ใหม่)"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
+msgstr "สาเหตุ​ใกล้​เคียง​มาก​ที่​สุด​แสดงอยู่​ด้าน​ล่าง"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
+msgstr "ไม่​สามารถ​เชื่อม​ต่อ​เครือ​ข่าย​ได้​ตาม​ปกติ"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
+msgstr "ตรวจ​สอบ URL ​เว็บ​เพ​จ"
+
+msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
+msgstr "โหลด​เว็บ​เพ​จ​ใหม่​ภาย​หลัง"
+
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_BODY_TITLE"
+msgstr "ชื่อ"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "ใส่​เรื่อง"
+
+msgid "IDS_BR_OPT_FOLDERS"
+msgstr "แฟ้ม​"
+
+msgid "IDS_BR_OPT_ALLOW"
+msgstr "อนุญาต"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "ปฏิเสธ"
+
+msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
+msgstr "ข้อ​ผิด​พลาด​ของ​ระบบ​ป้องกัน: ​ใบ​รับ​รอง​เซิร์ฟเวอร์​ไม่​น่า​เชื่อ​ถือ"
+
+msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
+msgstr "เลือก %d ​รายการแล้ว"
+
+msgid "IDS_BR_POP_1_ITEM_SELECTED"
+msgstr "เลือก 1 ​รายการ"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "เพิ่ม​ใน​เว็บคลิ​ป"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "ปุ่ม​ทาง​ลัด​ที่​สร้าง​ไว้"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "เลือก​คำ​ศัพท์"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "ค้น​หา​ใน​เพ​จ"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "ค้น​หา​ใน​เพ​จ"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "อินเตอร์​เน็ต"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "รายการ"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "เลือก​ทั้ง​หมด"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "ข้อ​ความ"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "อี​เมล์"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "ยก​เลิก"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "คัด​ลอก​ลิงค์ URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "ดู​รูป​ภาพ"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "เปิด​ใน​หน้า​ใหม่"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "เปิด​"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "เปิด​การ​เลือก​ข้อ​ความ"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "แก้ไข"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "ลบ"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "ลบ"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "ยก​เลิก"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "แก้​ไข​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "ข้อ​ความ"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "อี​เมล์"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "แก้ไข"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "ลบ"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "เพิ่ม​ใน​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "ขนาด​อักษร"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "ใหญ่"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "เล็ก"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "ความ​เร็ว"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Proxy ​แอด​เด​รส"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "พอร์ตพ​ร็อก​ซี"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "เรียบร้อย"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "เวอร์ชั่น"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "ติด​ตั้ง"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "หน้าปัจจุบัน"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "ใส่​ชื่อ​แฟ้ม"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "ป้อน​ชื่อ​บุ๊ค​มา​ร์ค"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "ไม่​ต้อง​ถาม​อีก"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "ไม่​พบ URL"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s ร้องขอตำแหน่งของคุณ"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "จดจำค่าที่เตรียมไว้"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "แสดง​รูป​ภาพ"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "แสดง​คำ​เตือน​เกี่ยว​กับ​ระบบ​ป้องกัน"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "จำรหัสผ่าน"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "ลบรหัสผ่าน"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "ลบรหัสผ่านที่บันทึกไว้ทั้งหมด?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "ลบ​คุกกี้​ทั้ง​หมด ทำ​ต่อ?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "จำ​ข้อมูล​ฟอร์ม"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "รี​เซ็ท​เป็น​ค่า​พื้น​ฐาน"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "การ​ตั้ง​ค่า​ทั้ง​หมด​เป็น​ค่า​พื้น​ฐาน ทำ​ต่อ?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "ลบแค​ช?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "ลบ​ประวัติ​ทั้ง​หมด?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "ประ​วัติ​เน​วิ​เก​ชั่น​ขอ​งบ​ราว​เซอร์​จะ​ถูก​ล้าง"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "เปิด​ตลอด​"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "เปิด​ใช้​งาน​ตำแหน่ง"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "ลบการ​เข้า​ถึง​ตำแหน่ง"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "ไม่​สามารถ​เพิ่ม​บุ๊ค​มาร์​ค​ มี​จำนวน​บุ๊ค​มาร์​ค​สูง​สุด​แล้ว"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "ลบ​ข้อมูล​การ​เข้า​ถึง​ตำแหน่ง​ของ​เว็บ​ไซ​ต์?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "พิมพ์"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "ค้น​หา​หรือ​ใส่ URL"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "อัตโนมัติ"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "เลือก​เอง"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "ต่ำ"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "กลาง"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "หน้า​ว่าง"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "การ​ติด​ตั้ง​ไม่​สำเร็จ"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "การ​ตั้ง​ค่า​เว็บ​ไซ​ต์"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "สูง"
+

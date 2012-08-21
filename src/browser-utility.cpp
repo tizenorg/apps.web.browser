@@ -1,24 +1,26 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 extern "C" {
 #include <Elementary.h>
 }
 
 #include "browser-utility.h"
+#include "app.h" /* for preference CAPI */
 
 static void __changed_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -32,8 +34,10 @@ static void __changed_cb(void *data, Evas_Object *obj, void *event_info)
 	if (elm_object_focus_get(layout)) {
 		if (elm_entry_is_empty(obj))
 			elm_object_signal_emit(layout, "elm,state,eraser,hide", "elm");
-		else
+		else {
 			elm_object_signal_emit(layout, "elm,state,eraser,show", "elm");
+			elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
+		}
 	}
 }
 
@@ -71,6 +75,8 @@ static void __url_entry_focused_cb(void *data, Evas_Object *obj, void *event_inf
 		elm_object_signal_emit(layout, "elm,state,eraser,show", "elm");
 
 	elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
+//	edje_object_signal_emit(elm_layout_edje_get(layout), "ellipsis_hide,signal", "");
+	elm_object_signal_emit(layout, "ellipsis_hide,signal", "elm");
 
 	int *cursor_position = (int *)evas_object_data_get(obj, "cursor_position");
 	BROWSER_LOGD("cursor_position = %d", cursor_position);
@@ -85,6 +91,9 @@ static void __url_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_i
 		elm_object_signal_emit(layout, "elm,state,guidetext,show", "elm");
 
 	elm_object_signal_emit(layout, "elm,state,eraser,hide", "elm");
+
+//	edje_object_signal_emit(elm_layout_edje_get(layout), "ellipsis_show,signal", "");
+	elm_object_signal_emit(layout, "ellipsis_show,signal", "elm");
 
 	evas_object_data_set(obj, "cursor_position", (void *)elm_entry_cursor_pos_get(obj));
 
@@ -104,6 +113,11 @@ Evas_Object *br_elm_url_editfield_add(Evas_Object *parent)
 	elm_layout_theme_set(layout, "layout", "browser-editfield", "default");
 
 	Evas_Object *entry = elm_entry_add(parent);
+
+	elm_entry_single_line_set(entry, EINA_TRUE);
+	elm_entry_scrollable_set(entry, EINA_TRUE);
+
+	elm_entry_text_style_user_push(entry, "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
 	elm_object_part_content_set(layout, "elm.swallow.content", entry);
 
 	evas_object_smart_callback_add(entry, "changed", __changed_cb, layout);
@@ -111,6 +125,33 @@ Evas_Object *br_elm_url_editfield_add(Evas_Object *parent)
 	evas_object_smart_callback_add(entry, "unfocused", __url_entry_unfocused_cb, layout);
 	elm_object_signal_callback_add(layout, "elm,eraser,clicked", "elm",
 						__eraser_clicked_cb, entry);
+
+	elm_object_signal_emit(layout, "ellipsis_show,signal", "elm");
+
+	return layout;
+}
+
+Evas_Object *br_elm_find_word_editfield_add(Evas_Object *parent)
+{
+	Evas_Object *layout = elm_layout_add(parent);
+
+	elm_layout_theme_set(layout, "layout", "browser-editfield", "default");
+
+	Evas_Object *entry = elm_entry_add(parent);
+
+	elm_entry_single_line_set(entry, EINA_TRUE);
+	elm_entry_scrollable_set(entry, EINA_TRUE);
+
+	elm_entry_text_style_user_push(entry, "color=#000000 ellipsis=1'");
+	elm_object_part_content_set(layout, "elm.swallow.content", entry);
+
+	evas_object_smart_callback_add(entry, "changed", __changed_cb, layout);
+	evas_object_smart_callback_add(entry, "focused", __focused_cb, layout);
+	evas_object_smart_callback_add(entry, "unfocused", __unfocused_cb, layout);
+	elm_object_signal_callback_add(layout, "elm,eraser,clicked", "elm",
+						__eraser_clicked_cb, entry);
+
+	elm_object_signal_emit(layout, "ellipsis_hide,signal", "elm");
 
 	return layout;
 }
@@ -178,8 +219,10 @@ static void __searchbar_changed_cb(void *data, Evas_Object *obj, void *event_inf
 	if (elm_object_focus_get(layout)) {
 		if (elm_entry_is_empty(obj))
 			elm_object_signal_emit(layout, "elm,state,eraser,hide", "elm");
-		else
+		else {
 			elm_object_signal_emit(layout, "elm,state,eraser,show", "elm");
+			elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
+		}
 	}
 }
 
@@ -251,7 +294,7 @@ Evas_Object *br_elm_searchbar_add(Evas_Object *parent)
 	elm_object_part_content_set(searchbar_layout, "elm.swallow.content", entry);
 	elm_object_part_text_set(searchbar_layout, "elm.guidetext", BR_STRING_SEARCH);
 
-	/* Workaround 
+	/* Workaround
 	  * When tab history view, the search entry has focus automatically.
 	  * So the keypad is shown. So give focus manually. */
 	edje_object_signal_callback_add(elm_layout_edje_get(searchbar_layout),
@@ -296,5 +339,263 @@ char *br_elm_searchbar_text_get(Evas_Object *obj)
 Evas_Object *br_elm_searchbar_entry_get(Evas_Object *obj)
 {
 	return elm_object_part_content_get(obj, "elm.swallow.content");
+}
+
+bool br_preference_set_bool(const char *key, bool value)
+{
+	int ret;
+	ret = preference_set_boolean(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_get_bool(const char *key, bool *value)
+{
+	int ret = preference_get_boolean(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_NO_KEY:
+		BROWSER_LOGE("Can not get [%s] value. Required key not available\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_create_bool(const char *key, bool value)
+{
+	BROWSER_LOGD("%s(%d)", key, value);
+	bool existing = false;
+	int ret = preference_is_existing(key, &existing);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		if (!existing)
+			preference_set_boolean(key, value);
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not initialize [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not initialize [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_set_int(const char *key, int value)
+{
+	int ret;
+	ret = preference_set_int(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_get_int(const char *key, int *value)
+{
+	int ret = preference_get_int(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_NO_KEY:
+		BROWSER_LOGE("Can not get [%s] value. Required key not available\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_create_int(const char *key, int value)
+{
+	BROWSER_LOGD("%s(%d)", key, value);
+	bool existing = false;
+	int ret = preference_is_existing(key, &existing);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		if (!existing)
+			preference_set_int(key, value);
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not initialize [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not initialize [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_set_str(const char *key, const char *value)
+{
+	int ret;
+	ret = preference_set_string(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_get_str(const char *key, char **value)
+{
+	int ret = preference_get_string(key, value);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not get [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_OUT_OF_MEMORY:
+		BROWSER_LOGE("Can not get [%s] value. Out of Memory\n", key);
+		return false;
+	case PREFERENCE_ERROR_NO_KEY:
+		BROWSER_LOGE("Can not get [%s] value. Required key not available\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not get [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_create_str(const char *key, const char *value)
+{
+	BROWSER_LOGD("%s(%s)", key, value);
+	bool existing = false;
+	int ret = preference_is_existing(key, &existing);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		if (!existing)
+			preference_set_string(key, value);
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not initialize [%s] value. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not initialize [%s] value. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_set_changed_cb(const char *key, br_preference_changed_cb callback, void *user_data)
+{
+	BROWSER_LOGD("[%s]", key);
+	int ret = preference_set_changed_cb(key, (preference_changed_cb)callback, user_data);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not set [%s] callback. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_OUT_OF_MEMORY:
+		BROWSER_LOGE("Can not set [%s] callback. Out of Memory\n", key);
+		return false;
+	case PREFERENCE_ERROR_NO_KEY:
+		BROWSER_LOGE("Can not set [%s] callback. Required key not available\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not set [%s] callback. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool br_preference_unset_changed_cb(const char *key)
+{
+	BROWSER_LOGD("[%s]", key);
+	int ret = preference_unset_changed_cb(key);
+	switch (ret) {
+	case PREFERENCE_ERROR_NONE:
+		return true;
+	case PREFERENCE_ERROR_INVALID_PARAMETER:
+		BROWSER_LOGE("Can not unset [%s] callback. Invalid parameter\n", key);
+		return false;
+	case PREFERENCE_ERROR_IO_ERROR:
+		BROWSER_LOGE("Can not unset [%s] callback. Internal IO error\n", key);
+		return false;
+	default:
+		return false;
+	}
+	return true;
+}
+
+Browser_Utility::Browser_Utility(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+}
+
+Browser_Utility::~Browser_Utility(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+}
+
+std::string Browser_Utility::convert_WKStringRef(WKStringRef string_ref)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	std::string return_string;
+	int string_length = WKStringGetMaximumUTF8CStringSize(string_ref);
+	char *buffer =(char *)calloc(string_length + 1, sizeof(char));
+	if (buffer) {
+		WKStringGetUTF8CString(string_ref, buffer, string_length);
+		return_string = std::string(buffer);
+		free(buffer);
+	}
+
+	return return_string;
 }
 

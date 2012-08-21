@@ -1,6 +1,3 @@
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Instalação falhou"
-
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "A notificar..."
 
@@ -203,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME_C"
 msgstr "Nome da pasta:"
 
 msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Seleccionar tudo"
+msgstr "Selec. tudo"
 
 msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
 msgstr "Gestor de transferências"
@@ -618,4 +615,217 @@ msgstr "%d itens seleccionados"
 
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1 item seleccionado"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "Adicionar a Web clip"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Atalho criado"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Selec. palavra"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Local. na pág."
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Local. na pág."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "Internet"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lista"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Selec. tudo"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mensagem"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Cancelar"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Copiar URL lig."
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Ver imagem"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Abrir pág. nova"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Abrir"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Ligar selecção de texto"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favoritos"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Eliminar"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Eliminar"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Cancelar"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Editar favoritos"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mensagem"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "E-mail"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Eliminar"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Adicionar aos Favoritos"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Tamanho da fonte"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Pequeno"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "Velocidade"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Endereço proxy"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Porta de proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Concluído"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versão"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "Instal."
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Página actual"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "Introduzir nome da pasta"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "Introduzir nome do favorito"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Não voltar a perguntar"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL não encontrado"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s pede a sua localização"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Lembrar preferência"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Mostrar imagens"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Mostrar avisos de segurança"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Lembrar palavras-passe"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Limpar palavras-passe"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Eliminar todas as palavras-passe guardadas?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "Apaga todos os cookies. Continuar?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Lembrar dados de formulário"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Repor padrão"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Todas as definições para padrão. Continuar?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "Limpar cache?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "Limpar todo o histórico?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "O histórico de navegação do browser será limpo"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Sempre ligado"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Activar localização"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Limpar acesso à localização"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Impossível adicionar marcador. Número máximo de marcadores atingido"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Eliminar informações de acesso à localização do site da Web?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Imprimir"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Procurar ou introduzir URL"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "Automático"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "Manual"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "Baixo"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Médio"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Página em branco"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "Instalação falhou"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Definições de site da Web"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Alta"
 

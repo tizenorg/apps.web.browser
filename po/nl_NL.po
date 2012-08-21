@@ -1,6 +1,3 @@
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Installatie mislukt"
-
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Melden..."
 
@@ -618,4 +615,217 @@ msgstr "%d items geselecteerd"
 
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1 item geselecteerd"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "Toevoegen aan webclip"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Sneltoets gemaakt"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Woord selecteren"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Zoek op pagina"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Zoek op pagina"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "Internet"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lijst"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Alles selecteren"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Bericht"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Annuleer"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL kopiëren"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Afbeelding bekijken"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Open in nw venster"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Openen"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstselectie aan"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favorieten"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Bewerken"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Wissen"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Wissen"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Annuleren"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Favoriet bewerken"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Berichten"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "E-mail"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Bewerken"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Wissen"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Toevoegen aan Favorieten"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Tekstgrootte"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Groot"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Klein"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "Snelheid"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Proxyadres"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Poort proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Gereed"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versie"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "Install."
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Huidige pagina"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "Mapnaam invoeren"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "Geef naam favoriet in"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Niet nogmaals vragen"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL niet gevonden"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s vraagt om uw locatie"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Voorkeur onthouden"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Afbeeldingen tonen"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Beveiligingswaarschuwingen weergeven"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Wachtwoorden onthouden"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Wachtwoorden wissen"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Alle opgeslagen wachtwoorden verwijderen?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "Alle cookies verwijderen. Doorgaan?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Formuliergegevens onthouden"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Standaardinstellingen"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Alle instellingen op standaard. Doorgaan?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "Buffer leegmaken?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "Hele geschiedenis wissen?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "De navigatiehistorie van de browser wordt gewist"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Altijd aan"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Locatie activeren"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Toegang tot locatie wissen"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Kan geen favoriet toevoegen. Maximumaantal favorieten bereikt"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Toegangsgegevens voor websitelocatie verwijderen?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Afdrukken"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "URL zoeken of ingeven"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "Automatisch"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "Handmatig"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "Laag"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Normaal"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Lege pagina"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "Installatie mislukt"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Website-instellingen"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Hoog"
 

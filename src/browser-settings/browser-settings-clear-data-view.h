@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+
 
 #ifndef BROWSER_SETTINGS_CLEAR_DATA_VIEW_H
 #define BROWSER_SETTINGS_CLEAR_DATA_VIEW_H
@@ -29,7 +32,7 @@ public:
 		BR_CLEAR_HISTORY,
 		BR_CLEAR_CACHE,
 		BR_CLEAR_COOKIE,
-		BR_CLEAR_SAVED_ID_PASSWORD,
+		BR_CLEAR_SAVED_PASSWORD,
 		BR_MENU_UNKNOWN
 	}menu_type;
 
@@ -71,6 +74,7 @@ private:
 	Evas_Object *m_delete_button;
 	Evas_Object *m_bottom_control_bar;
 	Elm_Object_Item *m_delete_controlbar_item;
+	Elm_Object_Item *m_cancel_controlbar_item;
 
 	Evas_Object *m_select_all_check_box;
 	Evas_Object *m_history_check_box;

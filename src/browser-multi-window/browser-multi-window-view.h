@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #ifndef BROWSER_MULTI_WINDOW_VIEW_H
 #define BROWSER_MULTI_WINDOW_VIEW_H
@@ -27,13 +28,16 @@ public:
 	Browser_Multi_Window_View(void);
 	~Browser_Multi_Window_View(void);
 
-	Eina_Bool init(void);
+	Eina_Bool init(double duration = 0.5, Eina_Bool grid_mode = EINA_FALSE);
 	void close_multi_window(void);
 
 	typedef struct _gengrid_callback_param {
 		void *multi_window_view;
 		int index;
 	} gengrid_callback_param;
+
+	Eina_Bool _is_grid_mode(void);
+	Eina_Bool is_reordering_mode(void) { return m_is_reordering; }
 private:
 	Eina_Bool _create_main_layout(void);
 	Eina_Bool _show_zoom_out_effect(void);
@@ -49,12 +53,12 @@ private:
 	int _get_scroll_page_size(void);
 	void __delete_window_icon_clicked(Evas_Object *layout_edje);
 	void _delete_window_scroll_finished(void);
-	Eina_Bool _is_grid_mode(void);
 	Eina_Bool _create_gengrid(void);
 	Eina_Bool _show_grid_mode_zoom_in_effect(int index);
 	Eina_Bool __delete_window_icon_grid_mode(int index);
 	Eina_Bool _reorder_windows(void);
 	void _show_grey_effect(void);
+	Evas_Object *_create_control_bar(void);
 
 	/* gengrid event callback functions */
 	static Evas_Object *_get_gengrid_icon_cb(void *data, Evas_Object *obj, const char *part);
@@ -99,9 +103,6 @@ private:
 	Evas_Object *m_item_box;
 	Evas_Object *m_zoom_effect_image;
 	Evas_Object *m_flip_effect_image;
-	Evas_Object *m_close_multi_window_button;
-	Evas_Object *m_new_window_button;
-	Evas_Object *m_view_change_button;
 	Elm_Transit *m_zoom_transit;
 	Elm_Transit *m_zoom_move_transit;
 	Elm_Transit *m_scroll_move_transit;
@@ -121,10 +122,17 @@ private:
 	Elm_Gengrid_Item_Class m_gengrid_item_class;
 	gengrid_callback_param m_callback_param[BROWSER_MULTI_WINDOW_MAX_COUNT];
 
-	Eina_Bool m_is_reodering;
+	Eina_Bool m_is_reordering;
 	Ecore_Idler *m_zoom_out_effect_idler;
+	double m_zoom_out_duration;
 
 	Elm_Object_Item *m_index_items[BROWSER_MULTI_WINDOW_MAX_COUNT];
+	Elm_Object_Item *m_new_window_button;
+	Elm_Object_Item *m_change_view_button;
+	Evas_Object *m_cancel_button;
+	Evas_Object *m_controlbar;
+
+	Eina_Bool m_init_grid_mode;
 };
 #endif /* BROWSER_MULTI_WINDOW_VIEW_H */
 

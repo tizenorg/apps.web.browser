@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #include "browser-bookmark-db.h"
 #include "browser-bookmark-view.h"
@@ -77,7 +79,7 @@ void Browser_New_Folder_View::__save_button_clicked_cb(void *data, Evas_Object *
 	const char *folder_name = new_folder_view->_trim(utf8_text);
 
 	if (!folder_name || strlen(folder_name) == 0) {
-		new_folder_view->show_msg_popup(BR_STRING_EMPTY_FOLDER_NAME);
+		new_folder_view->show_msg_popup(BR_STRING_ENTER_FOLDER_NAME);
 		BROWSER_LOGD("new_folder_view->m_folder_name.c_str() = [%s]", new_folder_view->m_folder_name.c_str());
 		elm_entry_entry_set(br_elm_editfield_entry_get(edit_field), new_folder_view->m_folder_name.c_str());
 		free(utf8_text);
@@ -191,7 +193,7 @@ Evas_Object *Browser_New_Folder_View::__genlist_icon_get_cb(void *data, Evas_Obj
 		}
 		br_elm_editfield_entry_single_line_set(new_folder_view->m_folder_name_edit_field, EINA_TRUE);
 		br_elm_editfield_label_set(new_folder_view->m_folder_name_edit_field, BR_STRING_TITLE);
-		br_elm_editfield_guide_text_set(new_folder_view->m_folder_name_edit_field, BR_STRING_CLICK_HERE);
+		br_elm_editfield_guide_text_set(new_folder_view->m_folder_name_edit_field, BR_STRING_ENTER_FOLDER_NAME);
 		elm_entry_entry_set(br_elm_editfield_entry_get(new_folder_view->m_folder_name_edit_field),
 								new_folder_view->m_folder_name.c_str());
 

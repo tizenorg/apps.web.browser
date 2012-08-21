@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 /* color define */
 #define BROWSER_COLOR_WHITE 255 255 255 255
@@ -73,8 +74,15 @@ collections {
 					state: "default" 0.0;
 					visible: 1;
 					align: 0.0 0.0;
+					fixed: 1 1;
 					rel1 { relative: 0.0 0.0; to: "contents_bg"; }
 					rel2 { relative: 1.0 0.0; to: "elm.swallow.control_bar"; }
+				}
+				description {
+					state: "full_screen" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "contents_bg"; }
+					rel2 { relative: 1.0 1.0; to: "contents_bg"; }
 				}
 			}
 			part {
@@ -150,7 +158,8 @@ collections {
 				description {
 					state: "default" 0.0;
 					visible: 0;
-					min: 0 150;
+					min: 0 74;
+//					min: 0 150;
 					fixed: 0 1;
 					align: 0.0 0.0;
 					rel1 { relative: 0.0 0.0; to: "contents_bg"; }
@@ -189,7 +198,7 @@ collections {
 					align: 0.0 0.0;
 					rel1 { relative: 0.0 0.0; to: "elm.swallow.most_visited_sites"; }
 					rel2 { relative: 1.0 1.0; to: "elm.swallow.most_visited_sites"; }
-					color: 255 255 255 255;
+					color: 38 38 38 255;
 				}
 				description {
 					state: "visible" 0.0;
@@ -270,6 +279,21 @@ collections {
 				}
 			}
 			part {
+				name: "elm.rect.control_bar_bg";
+				type: RECT;
+				mouse_events: 0;
+				repeat_events: 0;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.control_bar"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.control_bar"; }
+					color: 255 255 255 255;
+				}
+			}
+			part {
 				name: "elm.swallow.control_bar";
 				type: SWALLOW;
 				mouse_events: 1;
@@ -291,6 +315,11 @@ collections {
 					rel1 { relative: 0.0 1.0; }
 					rel2 { relative: 1.0 1.0; }
 				}
+				description {
+					state: "full_screen" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
 			}
 			part {
 				name: "elm.swallow.multi_window";
@@ -302,8 +331,8 @@ collections {
 					state: "default" 0.0;
 					visible: 0;
 					align: 0.0 0.0;
-					rel1 { relative: 0.0 0.0; to: "contents_bg"; }
-					rel2 { relative: 1.0 1.0; to: "contents_bg"; }
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
 				}
 				description {
 					state: "visible" 0.0;
@@ -409,8 +438,184 @@ collections {
 					visible: 1;
 				}
 			}
+			part {
+				name: "elm.rect.more_context_bg";
+				type: RECT;
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					color: 0 0 0 0;
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part {
+				name: "elm.rect.brightness_top_seg_bg";
+				type: RECT;
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 0 1;
+					min: 0 BROWSER_CONTROL_BAR_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; }
+					color: 20 20 20 255;
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part {
+				name: "brightness_title_label";
+				type: TEXT;
+				scale: 1;
+				mouse_events: 0;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 {relative: 0.1 0.0; to: "elm.rect.brightness_top_seg_bg"; }
+					rel2 {relative: 0.9 0.4; to: "elm.rect.brightness_top_seg_bg"; }
+					text { font: FONT_ROM;
+                            size: 25;
+                            min: 0 0;
+                            align: 0.5 0.5;
+                    }
+                    color: 255 255 255 255;
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.brightness_top_seg";
+				mouse_events: 1;
+				repeat_events: 0;
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.1 0.4; to: "elm.rect.brightness_top_seg_bg"; }
+					rel2 { relative: 0.9 0.9; to: "elm.rect.brightness_top_seg_bg"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part {
+				name: "elm.rect.brightness_slider_bg";
+				type: RECT;
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.brightness_slider"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.brightness_slider"; }
+					color: 20 20 20 255;
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.brightness_slider";
+				mouse_events: 1;
+				repeat_events: 0;
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: 0 BROWSER_CONTROL_BAR_HEIGHT;
+					fixed: 0 1;
+					align: 0.0 1.0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.control_bar"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.control_bar"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
 		}
 		programs {
+			/////////////////////////////
+			// show / hide brightness layout
+			/////////////////////////////
+			program { name: "show,brightness_layout";
+				signal: "show,brightness_layout,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.brightness_slider";
+				target: "elm.rect.brightness_slider_bg";
+				target: "elm.rect.brightness_top_seg_bg";
+				target: "elm.swallow.brightness_top_seg";
+				target: "brightness_title_label";
+			}
+			program { name: "hide,brightness_layout";
+				signal: "hide,brightness_layout,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.brightness_slider";
+				target: "elm.rect.brightness_slider_bg";
+				target: "elm.rect.brightness_top_seg_bg";
+				target: "elm.swallow.brightness_top_seg";
+				target: "brightness_title_label";
+			}
+
+			/////////////////////////////
+			// show / hide more context bg
+			/////////////////////////////
+			program { name: "show,more_context_bg";
+				signal: "show,more_context_bg,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.rect.more_context_bg";
+			}
+			program { name: "hide,more_context_bg";
+				signal: "hide,more_context_bg,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.rect.more_context_bg";
+			}
+
+			/////////////////////////////
+			// full screen
+			/////////////////////////////
+			program { name: "enter,full_screen";
+				signal: "enter,full_screen,signal";
+				action: STATE_SET "full_screen" 0.0;
+				target: "elm.swallow.control_bar";
+				target: "elm.swallow.content";
+			}
+			program { name: "exit,full_screen";
+				signal: "exit,full_screen,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.control_bar";
+				target: "elm.swallow.content";
+			}
 			/////////////////////////////
 			// show / hide scissor box
 			/////////////////////////////
@@ -424,7 +629,6 @@ collections {
 				action: STATE_SET "default" 0.0;
 				target: "elm.swallow.scissorbox";
 			}
-
 			/* ifdef ZOOM_BUTTON */
 			/////////////////////////////
 			// show / hide zoom buttons
@@ -630,6 +834,18 @@ collections {
 					/* The webview size is content height + 65. */
 					rel2 { relative: 1.0 1.0; }
 					color: 0 0 0 0;
+					fixed: 0 1;
+					min: 0 1116;
+				}
+				description {
+					state: "resizable" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					/* The height of url bar layout is 65. */
+					/* The webview size is content height + 65. */
+					rel2 { relative: 1.0 1.0; }
+					color: 0 0 0 0;
 				}
 			}
 			part {
@@ -644,62 +860,33 @@ collections {
 					align: 0.0 0.0;
 					rel1 { relative: 0.0 0.0; to: "bg"; }
 					rel2 { relative: 1.0 1.0; to: "bg"; }
+					fixed: 0 1;
+					min: 0 1116;
+				}
+				description {
+					state: "resizable" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
 				}
 			}
 		}
-	}
-
-	group { name: "brightness_popup";
-		parts{
-			part { name: "elm.title";
-				type: TEXT;
-				scale : 1;
-				description { state: "default" 0.0;
-#ifdef WVGA_NBEAT // 480 * 800
-					max: 80 16;
-#else
-					max: 120 24;
-#endif
-					text {
-						font: "SLP:style=Medium";
-#ifdef WVGA_NBEAT // 480 * 800
-						size: 16;
-#else
-						size: 24;
-#endif
-						min: 0 0;
-						align: 0.5 0.0;
-					}
-					color: 108 108 108 255;
-					align: 0.5 0.0;
-					rel1 {
-						relative: 0.0 0.0;
-						to: "elm.swallow.content";
-					}
-					rel2 {
-						relative: 1.0 0.0;
-						to: "elm.swallow.content";
-					}
-				}
+		programs {
+			/////////////////////////////
+			// show / hide more context bg
+			/////////////////////////////
+			program { name: "resizable";
+				signal: "resizable,signal";
+				action: STATE_SET "resizable" 0.0;
+				target: "bg";
+				target: "elm.swallow.webview";
 			}
-			part{ name:"elm.swallow.content";
-				type: SWALLOW;
-				scale : 1;
-				description { state: "default" 0.0;
-#ifdef WVGA_NBEAT // 480 * 800
-					min: 0 70;
-#else
-					min: 0 105;
-#endif
-					align: 0.5 0.5;
-					fixed: 1 0;
-					rel1 {
-						relative: 0.0 0.0;
-					}
-					rel2 {
-						relative: 1.0 1.0;
-					}
-				}
+			program { name: "unresizable";
+				signal: "unresizable,signal";
+				action: STATE_SET "default" 0.0;
+				target: "bg";
+				target: "elm.swallow.webview";
 			}
 		}
 	}

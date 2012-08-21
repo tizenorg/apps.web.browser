@@ -1,40 +1,44 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "browser-add-to-bookmark-view.h"
 #include "browser-bookmark-view.h"
-#include "browser-certificate-manager.h"
 #include "browser-class.h"
+#include "browser-config.h"
 #include "browser-context-menu.h"
-#include "browser-exscheme-handler.h"
 #include "browser-history-db.h"
 #include "browser-find-word.h"
 #include "browser-multi-window-view.h"
-#include "browser-personal-data-manager.h"
-#include "browser-picker-handler.h"
-#include "browser-predictive-history.h"
+#include "browser-scissorbox-view.h"
 #include "browser-settings-class.h"
+#if defined(FEATURE_MOST_VISITED_SITES)
+#include "most-visited-sites.h"
+#include "most-visited-sites-db.h"
+#endif
 #include "browser-string.h"
 #include "browser-view.h"
 #include "browser-window.h"
 #include <devman.h>
-#include <url_download.h>
 
-Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar,
-						Evas_Object *bg, Evas_Object *layout, Browser_Class *browser)
+extern "C" {
+#include <shortcut.h>
+}
+
+Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object *bg, Browser_Class *browser)
 :
 	m_main_layout(NULL)
 	,m_scroller(NULL)
@@ -48,46 +52,79 @@ Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar,
 	,m_url_progresswheel(NULL)
 	,m_cancel_button(NULL)
 	,m_control_bar(NULL)
-	,m_backward_button(NULL)
+	,m_back_button(NULL)
 	,m_forward_button(NULL)
 	,m_add_bookmark_button(NULL)
 	,m_more_button(NULL)
 	,m_option_header_url_layout(NULL)
+	,m_find_word_entry_layout(NULL)
+	,m_find_word_edit_field(NULL)
 	,m_option_header_layout(NULL)
+	,m_find_word_cancel_button(NULL)
+	,m_option_header_find_word_layout(NULL)
 	,m_option_header_url_entry_layout(NULL)
 	,m_option_header_cancel_button(NULL)
+	,m_find_word_prev_button(NULL)
+	,m_find_word_next_button(NULL)
 	,m_option_header_url_progressbar(NULL)
 	,m_option_header_url_progresswheel(NULL)
 	,m_edit_mode(BR_NO_EDIT_MODE)
 	,m_homepage_mode(BR_START_MODE_UNKOWN)
+#if defined(HORIZONTAL_UI)
+	,m_rotate_degree(0)
+	,m_multi_window_rotate_timer(NULL)
+	,m_is_rotated(EINA_FALSE)
+#endif
 	,m_scroller_region_y(0)
 	,m_is_scrolling(EINA_FALSE)
 	,m_focused_window(NULL)
 	,m_more_context_popup(NULL)
-	,m_predictive_history(NULL)
+#if defined(FEATURE_MOST_VISITED_SITES)
+	,m_most_visited_sites(NULL)
+	,m_most_visited_sites_db(NULL)
+#endif
 	,m_new_window_transit(NULL)
 	,m_created_new_window(NULL)
 	,m_browser_settings(NULL)
 	,m_navi_it(NULL)
 	,m_find_word(NULL)
-	,m_is_scroll_up(EINA_FALSE)
-	,m_is_multi_touch(EINA_FALSE)
-	,m_context_menu(NULL)
-	,m_exscheme_handler(NULL)
-	,m_personal_data_manager(NULL)
-	,m_picker_handler(NULL)
+	,m_scissorbox_view(NULL)
 	,m_share_controlbar_button(NULL)
-	,m_add_to_home_control_bar(NULL)
+#ifdef USE_META_TAG
+	,m_meta_tag(NULL)
+#endif
+	,m_context_menu(NULL)
 	,m_multi_window_button(NULL)
+	,m_new_window_button(NULL)
+	,m_is_full_screen(EINA_FALSE)
+#ifdef ZOOM_BUTTON
 	,m_zoom_in_button(NULL)
 	,m_zoom_out_button(NULL)
 	,m_zoom_button_timer(NULL)
+#endif
+	,m_title_backward_button(NULL)
+	,m_title_forward_button(NULL)
+	,m_option_header_title_backward_button(NULL)
+	,m_option_header_title_forward_button(NULL)
+	,m_resize_idler(NULL)
+	,m_is_private(EINA_FALSE)
+	,m_private_check(NULL)
+	,m_is_private_item_pressed(EINA_FALSE)
+	,m_bookmark_on_off_icon(NULL)
+	,m_brightness_control_bar(NULL)
+	,m_brightness_auto_it(NULL)
+	,m_brightness_manual_it(NULL)
+	,m_default_seg_it(NULL)
+	,m_low_seg_it(NULL)
+	,m_medium_seg_it(NULL)
+	,m_high_seg_it(NULL)
+	,m_vibration_device_handle_id(-1)
+	,m_is_multi_window_grid_mode(EINA_FALSE)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	m_win = win;
 	m_navi_bar = navi_bar;
 	m_bg = bg;
-	m_layout = layout;
 	m_browser = browser;
 }
 
@@ -99,19 +136,25 @@ Browser_View::~Browser_View()
 
 	ug_destroy_all();
 
-	if (vconf_set_str(LAST_VISITED_URL_KEY, m_last_visited_url.c_str()) != 0)
-		BROWSER_LOGE("vconf_set_str failed");
+	br_preference_set_str(LAST_VISITED_URL_KEY, m_last_visited_url.c_str());
 
 	m_data_manager->destroy_history_db();
+	m_data_manager->destroy_geolocation_db();
 
 	if (m_data_manager) {
 		delete m_data_manager;
 		m_data_manager = NULL;
 	}
-	if (m_predictive_history) {
-		delete m_predictive_history;
-		m_predictive_history = NULL;
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (m_most_visited_sites) {
+		delete m_most_visited_sites;
+		m_most_visited_sites = NULL;
 	}
+	if (m_most_visited_sites_db) {
+		delete m_most_visited_sites_db;
+		m_most_visited_sites_db = NULL;
+	}
+#endif
 	if (m_new_window_transit) {
 		elm_transit_del(m_new_window_transit);
 		m_new_window_transit = NULL;
@@ -128,18 +171,32 @@ Browser_View::~Browser_View()
 		delete m_context_menu;
 		m_context_menu = NULL;
 	}
-	if (m_exscheme_handler) {
-		delete m_exscheme_handler;
-		m_exscheme_handler = NULL;
+	if (m_scissorbox_view) {
+		delete m_scissorbox_view;
+		m_scissorbox_view = NULL;
 	}
-	if (m_personal_data_manager) {
-		delete m_personal_data_manager;
-		m_personal_data_manager = NULL;
+#if defined(HORIZONTAL_UI)
+	if (m_multi_window_rotate_timer) {
+		ecore_timer_del(m_multi_window_rotate_timer);
+		m_multi_window_rotate_timer = NULL;
 	}
-	if (m_picker_handler) {
-		delete m_picker_handler;
-		m_picker_handler = NULL;
+#endif
+#ifdef USE_META_TAG
+	if (m_meta_tag) {
+		delete m_meta_tag;
+		m_meta_tag = NULL;
 	}
+#endif
+#ifdef ZOOM_BUTTON
+	if (m_zoom_in_button)
+		evas_object_del(m_zoom_in_button);
+	if (m_zoom_out_button)
+		evas_object_del(m_zoom_out_button);
+	if (m_zoom_button_timer) {
+		ecore_timer_del(m_zoom_button_timer);
+		m_zoom_button_timer = NULL;
+	}
+#endif
 }
 
 Eina_Bool Browser_View::init(void)
@@ -160,66 +217,58 @@ Eina_Bool Browser_View::init(void)
 		BROWSER_LOGE("m_data_manager->create_history_db failed");
 		return EINA_FALSE;
 	}
+
+	if (!m_data_manager->create_geolocation_db()) {
+		BROWSER_LOGE("m_data_manager->create_geolocation_db failed");
+		return EINA_FALSE;
+	}
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	m_most_visited_sites_db = new(nothrow) Most_Visited_Sites_DB;
+	if (!m_most_visited_sites_db) {
+		BROWSER_LOGE("new Most_Visited_Sites_DB failed");
+		return EINA_FALSE;
+	}
+#endif
+
 	m_find_word = new(nothrow) Browser_Find_Word(this);
 	if (!m_find_word) {
 		BROWSER_LOGE("new Browser_Find_Word failed");
 		return EINA_FALSE;
 	}
 
-	m_context_menu = new(nothrow) Browser_Context_Menu(m_navi_bar, this);
+	m_context_menu = new(nothrow) Browser_Context_Menu(this);
 	if (!m_context_menu) {
 		BROWSER_LOGE("new Browser_Context_Menu failed");
 		return EINA_FALSE;
 	}
-
-	m_exscheme_handler = new(nothrow) Browser_Exscheme_Handler();
-	if (!m_exscheme_handler) {
-		BROWSER_LOGE("new Browser_Exscheme_Handler failed");
+#ifdef USE_META_TAG
+	m_meta_tag = new(nothrow) Browser_Meta_Tag();
+	if (!m_meta_tag) {
+		BROWSER_LOGE("new Browser_Meta_Tag failed");
 		return EINA_FALSE;
 	}
-	m_personal_data_manager = new(nothrow) Browser_Personal_Data_Manager();
-	if (!m_personal_data_manager) {
-		BROWSER_LOGE("new Browser_Personal_Data_Manager failed");
-		return EINA_FALSE;
-	}
-	m_picker_handler = new(nothrow) Browser_Picker_Handler(this);
-	if (!m_picker_handler) {
-		BROWSER_LOGE("new Browser_Picker_Handler failed");
-		return EINA_FALSE;
-	}
+#endif
 	UG_INIT_EFL(m_win, UG_OPT_INDICATOR_ENABLE);
 
-	char *last_url = vconf_get_str(LAST_VISITED_URL_KEY);
+	char *last_url = NULL;
+	if (br_preference_get_str(LAST_VISITED_URL_KEY, &last_url) == false) {
+		BROWSER_LOGE("failed to get %s preference", LAST_VISITED_URL_KEY);
+		return EINA_FALSE;
+	}
 	if (last_url) {
 		m_last_visited_url = std::string(last_url);
 		free(last_url);
+	}
+	if (_haptic_device_init() == EINA_FALSE) {
+		BROWSER_LOGE("Failed to init haptic device");
+		return EINA_FALSE;
 	}
 
 	/* create brower view layout */
 	return _create_main_layout();
 }
 
-void Browser_View::stop_and_reload(void)
-{
-	BROWSER_LOGD("[%s]_is_loading=%d", __func__, _is_loading());
-	if (_is_loading()) {
-		_stop_loading();
-		_reload();
-	}
-}
-
-Evas_Object *Browser_View::get_focused_webview(void)
-{
-	return m_focused_window->m_ewk_view;
-}
-
-Eina_Bool Browser_View::_activate_url_entry_idler_cb(void *data)
-{
-	Browser_View* instance = (Browser_View*)data;
-
-	instance->__url_entry_clicked_cb(instance, NULL, NULL, NULL);
-	return ECORE_CALLBACK_CANCEL;
-}
 void Browser_View::launch(const char *url)
 {
 	/* Destroy all other views except browser view. */
@@ -231,27 +280,88 @@ void Browser_View::launch(const char *url)
 	  * So give focus to cancel button not to invoke the keypad. */
 	elm_object_focus_set(m_cancel_button, EINA_TRUE);
 
-	if (url && strlen(url)) {
+	if (url && strlen(url))
 		load_url(url);
-	 } else if (m_homepage_mode == BR_START_MODE_MOST_VISITED_SITES){
+#if defined(FEATURE_MOST_VISITED_SITES)
+	else if (m_homepage_mode == BR_START_MODE_MOST_VISITED_SITES)
 		load_url(BROWSER_MOST_VISITED_SITES_URL);
-		ecore_idler_add(_activate_url_entry_idler_cb, this);
-	 } else if (m_homepage_mode == BR_START_MODE_RECENTLY_VISITED_SITE) {
-		char *homepage = vconf_get_str(LAST_VISITED_URL_KEY);
+#endif
+	else if (m_homepage_mode == BR_START_MODE_RECENTLY_VISITED_SITE) {
+		char *homepage = NULL;
+		if (br_preference_get_str(LAST_VISITED_URL_KEY, &homepage) == false) {
+			BROWSER_LOGD("failed to get %s preference", LAST_VISITED_URL_KEY);
+			return;
+		}
 		if (homepage) {
 			load_url(homepage);
 			free(homepage);
 		} else
+#if defined(FEATURE_MOST_VISITED_SITES)
 			load_url(BROWSER_MOST_VISITED_SITES_URL);
+#else
+			load_url(BROWSER_BLANK_PAGE_URL);
+#endif
 	} else if (m_homepage_mode == BR_START_MODE_CUSTOMIZED_URL) {
-		char *user_homepage = vconf_get_str(USER_HOMEPAGE_KEY);
+		char *user_homepage = NULL;
+		if (br_preference_get_str(USER_HOMEPAGE_KEY, &user_homepage) ==false) {
+			BROWSER_LOGE("failed to get %s preference\n", USER_HOMEPAGE_KEY);
+			return;
+		}
 		if (user_homepage) {
 			load_url(user_homepage);
 			free(user_homepage);
 		} else
+#if defined(FEATURE_MOST_VISITED_SITES)
 			load_url(BROWSER_MOST_VISITED_SITES_URL);
+#else
+			load_url(BROWSER_BLANK_PAGE_URL);
+#endif
+	} else if (m_homepage_mode == BR_START_MODE_EMPTY_PAGE) {
+		load_url(BROWSER_BLANK_PAGE_URL);
 	}
+
 }
+
+void Browser_View::set_full_sreen(Eina_Bool enable)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (m_is_full_screen == enable)
+		return;
+
+	m_is_full_screen = enable;
+
+	if (m_is_full_screen) {
+		elm_win_indicator_mode_set(m_win, ELM_WIN_INDICATOR_HIDE);
+		_hide_scroller_url_layout();
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "enter,full_screen,signal", "");
+		_enable_webview_scroll();
+
+		elm_object_part_content_unset(m_focused_window->m_ewk_view_layout, "elm.swallow.webview");
+
+		evas_object_move(m_focused_window->m_ewk_view, 0, 0);
+	} else {
+		elm_win_indicator_mode_set(m_win, ELM_WIN_INDICATOR_SHOW);
+
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "exit,full_screen,signal", "");
+
+		elm_object_part_content_set(m_focused_window->m_ewk_view_layout, "elm.swallow.webview", m_focused_window->m_ewk_view);
+
+		_navigationbar_visible_set_signal(EINA_TRUE);
+	}
+
+	ecore_idler_add(__webview_layout_resize_idler_cb, this);
+}
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+Eina_Bool Browser_View::is_most_visited_sites_running(void)
+{
+	if (m_most_visited_sites)
+		return EINA_TRUE;
+	else
+		return EINA_FALSE;
+}
+#endif
 
 void Browser_View::return_to_browser_view(Eina_Bool saved_most_visited_sites_item)
 {
@@ -263,21 +373,19 @@ void Browser_View::return_to_browser_view(Eina_Bool saved_most_visited_sites_ite
 		else
 			_set_navigationbar_title(get_title().c_str());
 	}
-
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (is_most_visited_sites_running()) {
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+					"show,control_bar,no_animation,signal", "");
+		_set_navigationbar_title(BR_STRING_MOST_VISITED_SITES);
+	}
+	if (saved_most_visited_sites_item && is_most_visited_sites_running())
+		/* If longpress on speed dial item, then add to bookmark. */
+		edje_object_signal_emit(elm_layout_edje_get(m_most_visited_sites->m_selected_item->layout),
+										"bookmark_icon", "");
+#endif
 	_set_secure_icon();
 
-}
-
-void Browser_View::init_personal_data_manager(Evas_Object *webview)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	m_personal_data_manager->init(webview);
-}
-
-void Browser_View::deinit_personal_data_manager(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	m_personal_data_manager->deinit();
 }
 
 void Browser_View::_pop_other_views(void)
@@ -296,26 +404,42 @@ void Browser_View::_pop_other_views(void)
 	/* Pop all other views except browser view. */
 	elm_naviframe_item_pop_to(m_navi_it);
 
+	if (m_scissorbox_view)
+		_destroy_scissorbox_view();
 }
 
 /* set homepage from homepage vconf */
 void Browser_View::_set_homepage_mode(void)
 {
-	char *homepage = vconf_get_str(HOMEPAGE_KEY);
+	char *homepage = NULL;
+	if (br_preference_get_str(HOMEPAGE_KEY, &homepage) == false) {
+		BROWSER_LOGE("failed to get %s preference\n", HOMEPAGE_KEY);
+		return;
+	}
 	BROWSER_LOGD("homepage=[%s]", homepage);
 
 	if (!homepage) {
 		BROWSER_LOGE("homepage is null");
+#if defined(FEATURE_MOST_VISITED_SITES)
 		m_homepage_mode = BR_START_MODE_MOST_VISITED_SITES;
+#else
+		m_homepage_mode = BR_START_MODE_EMPTY_PAGE;
+#endif
 		return;
 	}
 
+#if defined(FEATURE_MOST_VISITED_SITES)
 	if (!strncmp(homepage, MOST_VISITED_SITES,
 				strlen(MOST_VISITED_SITES)))
 		m_homepage_mode = BR_START_MODE_MOST_VISITED_SITES;
-	else if (!strncmp(homepage, RECENTLY_VISITED_SITE,
+	else
+#endif
+	if (!strncmp(homepage, RECENTLY_VISITED_SITE,
 			strlen(RECENTLY_VISITED_SITE)))
 		m_homepage_mode = BR_START_MODE_RECENTLY_VISITED_SITE;
+	else if (!strncmp(homepage, EMPTY_PAGE,
+			strlen(EMPTY_PAGE)))
+		m_homepage_mode = BR_START_MODE_EMPTY_PAGE;
 	else
 		m_homepage_mode = BR_START_MODE_CUSTOMIZED_URL;
 
@@ -334,50 +458,29 @@ void Browser_View::__new_window_transit_finished_cb(void *data, Elm_Transit *tra
 		return;
 
 	browser_view->m_new_window_transit = NULL;
-	browser_view->m_browser->set_focused_window(browser_view->m_created_new_window, EINA_FALSE);
+	browser_view->m_browser->set_focused_window(browser_view->m_created_new_window
+#if defined(FEATURE_MOST_VISITED_SITES)
+			, EINA_FALSE
+#endif
+			);
 	browser_view->m_created_new_window = NULL;
 }
 
 Eina_Bool Browser_View::_show_new_window_effect(Evas_Object *current_ewk_view,
 								Evas_Object *new_ewk_view)
 {
-	BROWSER_LOGD("[%s]", __func__);
-	m_new_window_transit = elm_transit_add();
-	if (!m_new_window_transit) {
-		BROWSER_LOGE("elm_transit_add failed");
-		return EINA_FALSE;
-	}
 	int scroller_x = 0;
+	int scroller_y = 0;
 	int scroller_w = 0;
 	int scroller_h = 0;
-	elm_scroller_region_get(m_scroller, &scroller_x, NULL, &scroller_w, &scroller_h);
+	elm_scroller_region_get(m_scroller, &scroller_x, &scroller_y, &scroller_w, &scroller_h);
 	elm_scroller_region_show(m_scroller ,scroller_x, 0, scroller_w, scroller_h);
 
-	/* Block event durring animation. */
-	elm_transit_event_enabled_set(m_new_window_transit, EINA_TRUE);
-
-	int url_layout_h = 0;
-	int url_layout_y = 0;
-	evas_object_geometry_get(m_url_layout, NULL, &url_layout_y, NULL, &url_layout_h);
-
-	int current_ewk_view_x = 0;
-	int current_ewk_view_w = 0;
-	int current_ewk_view_h = 0;
-	evas_object_geometry_get(current_ewk_view, &current_ewk_view_x, NULL,
-								&current_ewk_view_w, &current_ewk_view_h);
-
-	evas_object_resize(new_ewk_view, current_ewk_view_w, current_ewk_view_h - url_layout_h);
-	evas_object_move(new_ewk_view, current_ewk_view_x + current_ewk_view_w, url_layout_y + url_layout_h);
-	evas_object_show(new_ewk_view);
-
-	elm_transit_object_add(m_new_window_transit, current_ewk_view);
-	elm_transit_object_add(m_new_window_transit, new_ewk_view);
-	elm_transit_tween_mode_set(m_new_window_transit, ELM_TRANSIT_TWEEN_MODE_SINUSOIDAL);
-	elm_transit_objects_final_state_keep_set(m_new_window_transit, EINA_FALSE);
-	elm_transit_effect_translation_add(m_new_window_transit, 0, 0, (-1) * current_ewk_view_w, 0);
-	elm_transit_del_cb_set(m_new_window_transit, __new_window_transit_finished_cb, this);
-	elm_transit_duration_set(m_new_window_transit, 0.3);
-	elm_transit_go(m_new_window_transit);
+	m_browser->set_focused_window(m_created_new_window
+#if defined(FEATURE_MOST_VISITED_SITES)
+		, EINA_FALSE
+#endif
+		);
 
 	return EINA_TRUE;
 }
@@ -387,7 +490,9 @@ Evas_Object *Browser_View::get_favicon(const char *url)
 	if (!url || !strlen(url))
 		return NULL;
 
-	Evas_Object *favicon = ewk_settings_icon_database_icon_object_add(url, evas_object_evas_get(m_win));
+	Ewk_Context* context = ewk_view_context_get(m_focused_window->m_ewk_view);
+	Evas_Object *favicon = ewk_context_icon_database_icon_object_add(context, url, evas_object_evas_get(m_focused_window->m_ewk_view));
+
 	return favicon;
 }
 
@@ -401,19 +506,22 @@ Eina_Bool Browser_View::_set_favicon(void)
 		return EINA_FALSE;
 	}
 
-	if (get_url().empty())
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (is_most_visited_sites_running()) {
+		BROWSER_LOGD("is_most_visited_sites_running");
 		return EINA_FALSE;
+	}
+#endif
 
-	double progress = ewk_view_load_progress_get(elm_webview_webkit_get(m_focused_window->m_ewk_view));
+	double progress = ewk_view_load_progress_get(m_focused_window->m_ewk_view);
 	if (progress < 1.0f && progress > 0.05f) {
 		BROWSER_LOGD("loadin status");
 		return EINA_FALSE;
 	}
 
-	Evas_Object *favicon = ewk_settings_icon_database_icon_object_add(get_url().c_str(),
-								evas_object_evas_get(m_win));
-	Evas_Object *option_header_favicon = ewk_settings_icon_database_icon_object_add(get_url().c_str(),
-									evas_object_evas_get(m_win));
+	Evas_Object *favicon = get_favicon(get_url().c_str());
+	Evas_Object *option_header_favicon = get_favicon(get_url().c_str());
+
 	if (favicon) {
 		if (m_focused_window->m_favicon)
 			evas_object_del(m_focused_window->m_favicon);
@@ -474,6 +582,9 @@ Eina_Bool Browser_View::_set_favicon(void)
 								"show,favicon,signal", "");
 	edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 								"show,favicon,signal", "");
+
+	_set_secure_icon();
+
 	return EINA_TRUE;
 }
 
@@ -492,20 +603,16 @@ Eina_Bool Browser_View::__close_window_idler_cb(void *data)
 	else
 		browser->delete_window(browser_view->m_focused_window);
 
+	int scroller_x = 0;
+	int scroller_w = 0;
+	int scroller_h = 0;
+	elm_scroller_region_get(browser_view->m_scroller, &scroller_x, NULL, &scroller_w, &scroller_h);
+	elm_scroller_region_show(browser_view->m_scroller ,scroller_x, 0,
+								scroller_w, scroller_h);
 	return ECORE_CALLBACK_CANCEL;
 }
 
-void Browser_View::__html_boundary_reached_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->show_msg_popup(BR_STRING_MSG_BOUNDARY_LACK_OF_SPACE_TO_SAVE_HTML);
-}
-
-void Browser_View::__window_close_cb(void *data, Evas_Object *obj, void *event_info)
+void Browser_View::__close_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
@@ -518,16 +625,72 @@ void Browser_View::__window_close_cb(void *data, Evas_Object *obj, void *event_i
 	ecore_idler_add(__close_window_idler_cb, browser_view);
 }
 
-/*
- * navigation_action type :
- * WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED,
- * WEBKIT_WEB_NAVIGATION_REASON_FORM_SUBMITTED,
- * WEBKIT_WEB_NAVIGATION_REASON_BACK_FORWARD,
- * WEBKIT_WEB_NAVIGATION_REASON_RELOAD,
- * WEBKIT_WEB_NAVIGATION_REASON_FORM_RESUBMITTED,
- * WEBKIT_WEB_NAVIGATION_REASON_OTHER,
-*/
-void Browser_View::__create_webview_cb(void *data, Evas_Object *obj, void *event_info)
+Eina_Bool Browser_View::_haptic_device_init(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (m_vibration_device_handle_id == BROWSER_HAPTIC_DEVICE_HANDLE) {
+		BROWSER_LOGD("device handle for haptic is already set");
+		return EINA_FALSE;
+	}
+
+	if (haptic_initialize() != HAPTIC_ERROR_NONE) {
+		BROWSER_LOGD("failed to initiate haptic device");
+		return EINA_FALSE;
+	}
+
+	m_vibration_device_handle_id = BROWSER_HAPTIC_DEVICE_HANDLE;
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::_haptic_device_play(long haptic_play_time)
+{
+	BROWSER_LOGD("[%s], requested time is [%dms]", __func__, haptic_play_time);
+
+	if (m_vibration_device_handle_id != BROWSER_HAPTIC_DEVICE_HANDLE) {
+		BROWSER_LOGD("device handle for haptic is not set. Unable to play haptic");
+		return EINA_FALSE;
+	}
+
+	if (haptic_vibrate_monotone(BROWSER_HAPTIC_DEVICE_HANDLE, haptic_play_time, HAPTIC_LEVEL_AUTO) != HAPTIC_ERROR_NONE) {
+		BROWSER_LOGD("haptic_vibrate_monotone failed.");
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::_haptic_device_stop(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (m_vibration_device_handle_id != BROWSER_HAPTIC_DEVICE_HANDLE) {
+		BROWSER_LOGD("device handle for haptic is not set. Unable to play haptic");
+		return EINA_FALSE;
+	}
+
+	if (haptic_stop_device(BROWSER_HAPTIC_DEVICE_HANDLE) != HAPTIC_ERROR_NONE) {
+		BROWSER_LOGD("haptic_stop_device failed.");
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::_haptic_device_close(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (haptic_deinitialize() != HAPTIC_ERROR_NONE) {
+		BROWSER_LOGD("haptic_deinitialize failed.");
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+void Browser_View::__create_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
@@ -539,22 +702,11 @@ void Browser_View::__create_webview_cb(void *data, Evas_Object *obj, void *event
 	std::vector<Browser_Window *> window_list = browser->get_window_list();
 	if (window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT) {
 		/* If the multi window is max, delete the first one. */
+		/* if the first window is focused, delete second one(oldest one except first one) */
 		if (browser_view->m_focused_window != window_list[0])
 			browser->delete_window(window_list[0]);
 		else
-			browser->delete_window(window_list[BROWSER_MULTI_WINDOW_MAX_COUNT - 1]);
-	}
-
-	Elm_WebView_Create_Webview_Data *create_webview_data = (Elm_WebView_Create_Webview_Data *)event_info;
-	if (create_webview_data->navigation_action == 5 && create_webview_data->javascript) {
-		int block_popup = 1;
-		const char *msg = BR_STRING_DISPLAY_POPUP_Q;
-		if (vconf_get_bool(BLOCK_POPUP_KEY, &block_popup) < 0)
-			BROWSER_LOGE("vconf_get_bool BLOCK_POPUP_KEY failed");
-		if (!block_popup) {
-			if (!browser_view->show_modal_popup(msg))
-				return;
-		}
+			browser->delete_window(window_list[1]);
 	}
 
 	browser_view->m_created_new_window = browser->create_new_window();
@@ -570,27 +722,53 @@ void Browser_View::__create_webview_cb(void *data, Evas_Object *obj, void *event
 
 	/* Destroy previous multi window item snapshot.
 	  * This is because the snapshot of multi window item can't be captured in this case. */
+#if defined(HORIZONTAL_UI)
 	if (browser_view->m_focused_window->m_landscape_snapshot_image) {
 		evas_object_del(browser_view->m_focused_window->m_landscape_snapshot_image);
 		browser_view->m_focused_window->m_landscape_snapshot_image = NULL;
 	}
+#endif
 	if (browser_view->m_focused_window->m_portrait_snapshot_image) {
 		evas_object_del(browser_view->m_focused_window->m_portrait_snapshot_image);
 		browser_view->m_focused_window->m_portrait_snapshot_image = NULL;
 	}
 
-	create_webview_data->webview = elm_webview_webkit_get(browser_view->m_created_new_window->m_ewk_view);
-
 	if (!browser_view->_show_new_window_effect(browser_view->m_focused_window->m_ewk_view,
 					browser_view->m_created_new_window->m_ewk_view))
 		BROWSER_LOGE("_show_new_window_effect failed");
+
+	*((Evas_Object **)event_info) = browser_view->m_created_new_window->m_ewk_view;
+}
+
+void Browser_View::__load_started_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);	
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *url_progressbar = browser_view->m_url_progressbar;
+	Evas_Object *progressbar_wheel = browser_view->m_url_progresswheel;
+	Evas_Object *option_header_url_progressbar = browser_view->m_option_header_url_progressbar;
+	Evas_Object *option_header_progressbar_wheel = browser_view->m_option_header_url_progresswheel;
+
+	double progress = ewk_view_load_progress_get(browser_view->m_focused_window->m_ewk_view);
+	if (progress <= 0.0f)
+		progress = 0.05f;
+	elm_progressbar_pulse(progressbar_wheel, EINA_TRUE);
+	elm_progressbar_pulse(option_header_progressbar_wheel, EINA_TRUE);
+
+	elm_progressbar_value_set(url_progressbar, progress);
+	elm_progressbar_value_set(option_header_url_progressbar, progress);
+
+	browser_view->_load_start();
 }
 
 void Browser_View::_navigationbar_visible_set_signal(Eina_Bool visible)
 {
 	BROWSER_LOGD("visible=%d", visible);
 
-	if (visible && m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+	if (visible && (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW) || m_is_full_screen || m_brightness_control_bar))
 		return;
 
 	if (m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
@@ -608,7 +786,7 @@ void Browser_View::_navigationbar_visible_set_signal(Eina_Bool visible)
 
 void Browser_View::_navigationbar_visible_set(Eina_Bool visible)
 {
-	if (visible && m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+	if (visible && (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW) || m_is_full_screen))
 		return;
 
 	if (m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
@@ -678,18 +856,28 @@ void Browser_View::_load_start(void)
 		m_focused_window->m_option_header_favicon = NULL;
 	}
 
+	/* This makes the ewk view unfocused so that the ime can't be invoked. */
+	evas_object_focus_set(m_focused_window->m_ewk_view_layout, EINA_TRUE);
+
 	if (_get_edit_mode() != BR_NO_EDIT_MODE)
 		_set_edit_mode(BR_NO_EDIT_MODE);
+
 	/* For deleted window because of unused case like low memory. */
 	m_focused_window->m_url.clear();
 	m_focused_window->m_title.clear();
 
-	m_browser->get_certificate_manager()->reset_certificate();
+	set_full_sreen(EINA_FALSE);
 
-	m_picker_handler->destroy_picker_layout();
+	elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
+	elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
+	elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
+
+	if (m_scissorbox_view)
+		_destroy_scissorbox_view();
+	_destroy_more_context_popup();
 }
 
-void Browser_View::__uri_changed_cb(void *data, Evas_Object *obj, void *event_info)
+void Browser_View::__load_committed_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
@@ -698,14 +886,11 @@ void Browser_View::__uri_changed_cb(void *data, Evas_Object *obj, void *event_in
 	Browser_View *browser_view = (Browser_View *)data;
 	if (browser_view->_get_edit_mode() != BR_NO_EDIT_MODE)
 		return;
-	const char *uri = (const char *)event_info;
-	browser_view->_set_url_entry(uri);
 
-	/* Workaround, give focus to option header cancel button to hide imf. */
-	elm_object_focus_set(browser_view->m_option_header_cancel_button, EINA_TRUE);
+	browser_view->_set_url_entry(browser_view->get_url().c_str());
 }
 
-void Browser_View::__load_started_cb(void *data, Evas_Object *obj, void *event_info)
+void Browser_View::__load_nonempty_layout_finished_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
@@ -713,21 +898,32 @@ void Browser_View::__load_started_cb(void *data, Evas_Object *obj, void *event_i
 
 	Browser_View *browser_view = (Browser_View *)data;
 
-	Evas_Object *url_progressbar = browser_view->m_url_progressbar;
-	Evas_Object *progressbar_wheel = browser_view->m_url_progresswheel;
-	Evas_Object *option_header_url_progressbar = browser_view->m_option_header_url_progressbar;
-	Evas_Object *option_header_progressbar_wheel = browser_view->m_option_header_url_progresswheel;
+	if (!browser_view->_is_loading())
+		return;
 
-	double progress = ewk_view_load_progress_get(elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view));
-	if (progress <= 0.0f)
-		progress = 0.05f;
-	elm_progressbar_pulse(progressbar_wheel, EINA_TRUE);
-	elm_progressbar_pulse(option_header_progressbar_wheel, EINA_TRUE);
+#ifdef BROWSER_SCROLLER_BOUNCING
+	/* If the first content is displayed, hide the url layout in browser scroller like safari. */
+	int scroller_x = 0;
+	int scroller_w = 0;
+	int scroller_h = 0;
+	elm_scroller_region_get(browser_view->m_scroller, &scroller_x, NULL, &scroller_w, &scroller_h);
+	elm_scroller_region_show(browser_view->m_scroller ,scroller_x, 0,
+								scroller_w, scroller_h);
+#endif
+}
 
-	elm_progressbar_value_set(url_progressbar, progress);
-	elm_progressbar_value_set(option_header_url_progressbar, progress);
+void Browser_View::__title_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
 
-	browser_view->_load_start();
+	Browser_View *browser_view = (Browser_View *)data;
+	if (browser_view->_get_edit_mode() != BR_NO_EDIT_MODE)
+		return;
+
+	if (!m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+		browser_view->_set_navigationbar_title(browser_view->get_title().c_str());
 }
 
 void Browser_View::__load_finished_cb(void *data, Evas_Object *obj, void *event_info)
@@ -743,185 +939,66 @@ void Browser_View::__load_finished_cb(void *data, Evas_Object *obj, void *event_
 	elm_progressbar_pulse(progressbar_wheel, EINA_FALSE);
 	elm_progressbar_pulse(option_header_progressbar_wheel, EINA_FALSE);
 
+	/*
+	* For the first time, the background color is white initially.
+	* If the background is not displayed yet, show the grey background.
+	* This code is executed only one time at launching time.
+	*/
+	const char* state = edje_object_part_state_get(elm_layout_edje_get(browser_view->m_main_layout),
+							"contents_bg", NULL);
+	if(state && !strncmp(state, "default", strlen("default")))
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout),
+					"show,grey_background,signal", "");
+
 	if (browser_view->m_edit_mode != BR_URL_ENTRY_EDIT_MODE
 	    && browser_view->m_edit_mode != BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF) {
 		/* change the url layout for normal mode. (change the reload icon etc) */
-		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout),
-									"loading,off,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "loading,off,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout),
 					"loading,off,signal", "");
 	}
 
-	if (!m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)) {
-		if (browser_view->get_title().empty())
-			browser_view->_set_navigationbar_title(browser_view->get_url().c_str());
-		else
-			browser_view->_set_navigationbar_title(browser_view->get_title().c_str());
-	}
+	if (!m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+		browser_view->_set_navigationbar_title(browser_view->get_title().c_str());
 
-	browser_view->_set_secure_icon();
+	/* This is because,
+	  * finish progress event can be come after finish progress frame event at some pages.
+	  * In this case, the title & favicon display error happens, becaue these are handled in finish progress frame.
+	  * So do that again here. */
 	if (!browser_view->_set_favicon())
 		BROWSER_LOGE("_set_favicon failed");
-
+	browser_view->_set_secure_icon();
 	browser_view->_load_finished();
 }
 
-void Browser_View::__load_progress_cb(void *data, Evas_Object *obj, void *event_info)
+static Eina_Bool __kill_browser_timer_cb(void *data)
+{
+	elm_exit();
+	return ECORE_CALLBACK_CANCEL;
+}
+
+void Browser_View::__process_crashed_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	Evas_Object *url_progressbar = browser_view->m_url_progressbar;
-	Evas_Object *option_header_url_progressbar = browser_view->m_option_header_url_progressbar;
-
-	double progress = *((double *)event_info);
-	BROWSER_LOGD("progress=%f", progress);
-	elm_progressbar_value_set(url_progressbar, progress);
-	elm_progressbar_value_set(option_header_url_progressbar, progress);
+	browser_view->show_msg_popup(BR_STRING_WEBPROCESS_CRASH, 3);
+	ecore_timer_add(3, __kill_browser_timer_cb, NULL);
 }
 
-void Browser_View::__load_nonempty_layout_finished_cb(void *data, Evas_Object *obj, void *event_info)
+void Browser_View::__did_finish_load_for_frame_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
 
-	/* If the first content is displayed, hide the url layout in browser scroller like safari. */
-	int scroller_x = 0;
-	int scroller_w = 0;
-	int scroller_h = 0;
-	elm_scroller_region_get(browser_view->m_scroller, &scroller_x, NULL, &scroller_w, &scroller_h);
-	elm_scroller_region_show(browser_view->m_scroller ,scroller_x, 0,
-								scroller_w, scroller_h);
-}
+	if (!m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
+		browser_view->_set_navigationbar_title(browser_view->get_title().c_str());
 
-void Browser_View::__html5_video_request_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data || !event_info)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)data;
-	html5_video_data *video_data = (html5_video_data *)event_info;
-
-	if (!browser_view->_call_html5_video_streaming_player(video_data->path, video_data->cookie))
-		BROWSER_LOGE("_call_html5_video_streaming_player");
-}
-
-void Browser_View::__vibrator_vibrate_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-
-	int device_handle = 0;
-	int ret_val = 0;
-	const long vibration_time = *((const long *)event_info);
-
-	BROWSER_LOGD("__vibrator_vibrate_cb : play time is [%ld]", vibration_time);
-
-	device_handle = device_haptic_open(DEV_IDX_0, 0);
-
-	if (device_handle < 0) {
-		BROWSER_LOGD("Failed to get handle ID of vibration device");
-		return;
-	}
-
-	ret_val = device_haptic_play_monotone(device_handle, vibration_time);
-	if (ret_val != 0)
-		BROWSER_LOGD("Failed to play vibration");
-
-	ret_val = device_haptic_close(device_handle);
-	if (ret_val != 0)
-		BROWSER_LOGD("Failed to withdraw vibration handle");
-}
-
-void Browser_View::__vibrator_cancel_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-
-	int device_handle = 0;
-	int ret_val = 0;
-
-	device_handle = device_haptic_open(DEV_IDX_0, 0);
-
-	if (device_handle < 0) {
-		BROWSER_LOGD("Failed to get handle ID of vibration device");
-		return;
-	}
-
-	ret_val = device_haptic_stop_play(device_handle);
-	if (ret_val != 0)
-		BROWSER_LOGD("Failed to stop vibration");
-
-	ret_val = device_haptic_close(device_handle);
-	if (ret_val != 0)
-		BROWSER_LOGD("Failed to withdraw vibration handle");
-}
-
-Eina_Bool Browser_View::_call_html5_video_streaming_player(const char *url, const char *cookie)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!url || !strlen(url)) {
-		BROWSER_LOGE("url is null");
-		return EINA_FALSE;
-	}
-
-	bool is_running = false;
-	if (app_manager_is_running(SEC_VT_CALL, &is_running)) {
-			BROWSER_LOGE("Fail to get app running information\n");
-			return EINA_FALSE;
-	}
-
-	if (is_running) {
-		BROWSER_LOGE("org.tizen.vtmain is running......\n");
-		show_msg_popup(BR_STRING_WARNING_VIDEO_PLAYER);
-		return EINA_FALSE;
-	}
-
-	service_h service_handle = NULL;
-
-	if (service_create(&service_handle) < 0) {
-		BROWSER_LOGE("Fail to create service handle");
-		return EINA_FALSE;
-	}
-
-	if (!service_handle) {
-		BROWSER_LOGE("service handle is NULL");
-		return EINA_FALSE;
-	}
-
-	if (service_set_uri(service_handle, url) < 0) {
-		BROWSER_LOGE("Fail to set uri");
-		service_destroy(service_handle);
-		return EINA_FALSE;
-	}
-
-	if (cookie && strlen(cookie)) {
-		if (service_add_extra_data(service_handle, "cookie", cookie) < 0) {
-			BROWSER_LOGE("Fail to set extra data as cookie");
-			service_destroy(service_handle);
-			return EINA_FALSE;
-		}
-	}
-
-	if (service_set_package(service_handle, SEC_STREAMING_PLAYER) < 0) {
-		BROWSER_LOGE("Fail to create service_set_package as org.tizen.video-player");
-		return EINA_FALSE;
-	}
-
-	if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
-		BROWSER_LOGE("Fail to launch service operation");
-		service_destroy(service_handle);
-		return EINA_FALSE;
-	}
-
-	service_destroy(service_handle);
-
-	return EINA_TRUE;
+	browser_view->_load_finished();
 }
 
 void Browser_View::_set_secure_icon(void)
@@ -929,20 +1006,198 @@ void Browser_View::_set_secure_icon(void)
 	std::string url = get_url();
 	BROWSER_LOGD("url=[%s]", url.c_str());
 
+	if (m_focused_window->m_secure_icon == NULL) {
+		m_focused_window->m_secure_icon = elm_icon_add(m_focused_window->m_ewk_view);
+		if (!m_focused_window->m_secure_icon) {
+			BROWSER_LOGE("elm_icon_add is failed.");
+			return;
+		}
+
+		if (!elm_icon_file_set(m_focused_window->m_secure_icon, BROWSER_IMAGE_DIR"/lock.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.");
+			return;
+		}
+		evas_object_size_hint_aspect_set(m_focused_window->m_secure_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+		elm_object_part_content_set(m_url_entry_layout, "elm.swallow.secure_icon",
+				m_focused_window->m_secure_icon);
+	}
+
+	if (m_focused_window->m_option_header_secure_icon == NULL) {
+		m_focused_window->m_option_header_secure_icon = elm_icon_add(m_focused_window->m_ewk_view);
+		if (!m_focused_window->m_option_header_secure_icon) {
+			BROWSER_LOGE("elm_icon_add is failed.");
+			return;
+		}
+
+		if (!elm_icon_file_set(m_focused_window->m_option_header_secure_icon, BROWSER_IMAGE_DIR"/lock.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.");
+			return;
+		}
+		evas_object_size_hint_aspect_set(m_focused_window->m_option_header_secure_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+		elm_object_part_content_set(m_option_header_url_entry_layout, "elm.swallow.secure_icon",
+				m_focused_window->m_option_header_secure_icon);
+	}
+
 	if (url.c_str() && url.length()) {
 		if (!strncmp(url.c_str(), BROWSER_HTTPS_SCHEME, strlen(BROWSER_HTTPS_SCHEME))) {
-			edje_object_signal_emit(elm_layout_edje_get(m_url_layout),
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
 									"show,secure_icon,signal", "");
-			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_layout),
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 									"show,secure_icon,signal", "");
 			return;
 		}
 	}
-
-	edje_object_signal_emit(elm_layout_edje_get(m_url_layout), "hide,secure_icon,signal", "");
-	edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_layout),
+	edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "hide,secure_icon,signal", "");
+	edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 								"hide,secure_icon,signal", "");
 }
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+Eina_Bool Browser_View::_capture_most_visited_sites_item_screen_shot(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	Eina_Bool is_ranked = EINA_FALSE;
+	std::string screen_shot_path;
+	std::string current_url = get_url();
+	screen_shot_path.clear();
+
+	if (!m_selected_most_visited_sites_item_info.url.empty()) {
+		std::string history_id;
+		history_id = m_most_visited_sites_db->get_history_id_by_url(get_url().c_str());
+		if (!history_id.empty()) {
+			std::string history_title;
+			history_title = m_most_visited_sites_db->get_history_title_by_id(history_id.c_str());
+			if (!history_title.empty()) {
+				if (!m_most_visited_sites_db->save_most_visited_sites_item(m_selected_most_visited_sites_item_info.index,
+						get_url().c_str(), history_title.c_str(), history_id.c_str()))
+					BROWSER_LOGE("save_most_visited_sites_item failed");
+			} else {
+				if (!m_most_visited_sites_db->save_most_visited_sites_item(m_selected_most_visited_sites_item_info.index,
+						get_url().c_str(), m_selected_most_visited_sites_item_info.title.c_str(),
+						history_id.c_str()))
+					BROWSER_LOGE("save_most_visited_sites_item failed");
+			}
+		}
+
+		m_selected_most_visited_sites_item_info.url.clear();
+		m_selected_most_visited_sites_item_info.title.clear();
+		m_selected_most_visited_sites_item_info.id.clear();
+	}
+
+	std::vector<Most_Visited_Sites_DB::most_visited_sites_entry> most_visited_sites_list;
+	if (!m_most_visited_sites_db->get_most_visited_sites_list(most_visited_sites_list)) {
+		BROWSER_LOGE("get_most_visited_sites_list failed");
+		return EINA_FALSE;
+	}
+
+	for (int i = 0 ; i < most_visited_sites_list.size() ; i++) {
+		if (!current_url.empty() && !most_visited_sites_list[i].url.empty()
+		     && (current_url.length() == most_visited_sites_list[i].url.length())
+		     && !strncmp(most_visited_sites_list[i].url.c_str(), current_url.c_str(), current_url.length())) {
+			is_ranked = EINA_TRUE;
+			screen_shot_path = std::string(BROWSER_SCREEN_SHOT_DIR)
+							+ most_visited_sites_list[i].id;
+			if (most_visited_sites_list[i].id.length() > strlen(DEFAULT_ICON_PREFIX) &&
+			    !strncmp(DEFAULT_ICON_PREFIX, most_visited_sites_list[i].id.c_str(),
+			    				strlen(DEFAULT_ICON_PREFIX))) {
+			    	/* If default icon */
+				std::string history_id;
+				history_id = m_most_visited_sites_db->get_history_id_by_url(most_visited_sites_list[i].url.c_str());
+				if (!history_id.empty()) {
+					if (m_most_visited_sites_db->save_most_visited_sites_item(most_visited_sites_list[i].index,
+						most_visited_sites_list[i].url.c_str(), most_visited_sites_list[i].title.c_str(),
+						history_id.c_str())) {
+						screen_shot_path = std::string(BROWSER_SCREEN_SHOT_DIR)
+									+ most_visited_sites_list[i].id;
+						remove(screen_shot_path.c_str());
+						screen_shot_path = std::string(BROWSER_SCREEN_SHOT_DIR)
+									+ history_id;
+					}
+				}
+			}
+			break;
+		}
+	}
+
+	if (!is_ranked) {
+		std::vector<Most_Visited_Sites_DB::most_visited_sites_entry> most_visited_list;
+		if (!m_most_visited_sites_db->get_most_visited_list(most_visited_list, most_visited_sites_list,
+							BROWSER_MOST_VISITED_SITES_ITEM_MAX * 2)) {
+			BROWSER_LOGE("get_most_visited_list failed");
+			return EINA_FALSE;
+		}
+		for (int i = 0; i < most_visited_list.size(); i++)
+		{
+			if (most_visited_list[i].url == current_url) {
+				is_ranked = EINA_TRUE;
+				screen_shot_path = std::string(BROWSER_SCREEN_SHOT_DIR)
+									+ most_visited_list[i].id;
+				break;
+			}
+		}
+	}
+
+	if (is_ranked && screen_shot_path.size() > 0) {
+		int focused_ewk_view_w = 0;
+		int focused_ewk_view_h = 0;
+		evas_object_geometry_get(m_focused_window->m_ewk_view, NULL, NULL,
+							&focused_ewk_view_w, &focused_ewk_view_h);
+
+		int window_w = 0;
+		evas_object_geometry_get(m_win, NULL, NULL, &window_w, NULL);
+		int item_w = window_w / 3;
+		int item_h = item_w + 10 * elm_scale_get();
+
+		double ratio = (double)((double)item_h / (double)item_w);
+
+		Eina_Rectangle snapshot_rect;
+		snapshot_rect.x = snapshot_rect.y = 0;
+		snapshot_rect.w = focused_ewk_view_w;
+		snapshot_rect.h = focused_ewk_view_w * ratio;
+
+		Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_focused_window->m_ewk_view,
+					snapshot_rect, 0.33, evas_object_evas_get(m_navi_bar));
+		if (!snapshot) {
+			BROWSER_LOGE("ewk_view_screenshot_contents_get failed");
+			return EINA_FALSE;
+		}
+		uint8_t *pixels = (uint8_t *)(evas_object_image_data_get(snapshot, EINA_TRUE));
+
+		int surface_width = 0;
+		int surface_height = 0;
+		evas_object_image_size_get(snapshot, &surface_width, &surface_height);
+		BROWSER_LOGD("<<<< surface_width = %d, surface_height = %d >>>", surface_width, surface_height);
+
+		cairo_surface_t *snapshot_surface = cairo_image_surface_create_for_data(pixels, CAIRO_FORMAT_RGB24,
+								surface_width, surface_height,
+								cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, surface_width));
+		if (!snapshot_surface) {
+			BROWSER_LOGE("cairo_image_surface_create_for_data failed");
+			return EINA_FALSE;
+		}
+
+		if (cairo_surface_write_to_png(snapshot_surface, screen_shot_path.c_str())
+							!= CAIRO_STATUS_SUCCESS)
+			BROWSER_LOGD("cairo_surface_write_to_png FAILED");
+		cairo_surface_destroy(snapshot_surface);
+	}
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::__capture_most_visited_sites_screen_shot_idler_cb(void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return ECORE_CALLBACK_CANCEL;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	if (!browser_view->_capture_most_visited_sites_item_screen_shot())
+		BROWSER_LOGE("_capture_most_visited_sites_item_screen_shot failed");
+
+	return ECORE_CALLBACK_CANCEL;
+}
+#endif
 
 void Browser_View::_load_finished(void)
 {
@@ -951,9 +1206,9 @@ void Browser_View::_load_finished(void)
 	/* enable or disable back,forward controlbar buttons */
 	_set_controlbar_back_forward_status();
 
-	_set_secure_icon();
 	if (!_set_favicon())
 		BROWSER_LOGE("_set_favicon failed");
+	_set_secure_icon();
 
 	/* Add current url to history */
 	Eina_Bool is_full = EINA_FALSE;
@@ -961,24 +1216,35 @@ void Browser_View::_load_finished(void)
 	/* Save last visited url to save this when browser exits. */
 	m_last_visited_url = get_url();
 
-	if (m_data_manager->get_history_db()) {
+	if (m_data_manager->get_history_db() && !m_is_private) {
 		m_data_manager->get_history_db()->save_history(m_last_visited_url.c_str(),
 							get_title().c_str(), &is_full);
 		if (is_full)
 			BROWSER_LOGE("history is full, delete the first one");
 	}
 
-	if (!m_personal_data_manager->set_personal_data(get_url().c_str()))
-		BROWSER_LOGE("set_personal_data failed");
-
 	_hide_scroller_url_layout();
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	ecore_idler_add(__capture_most_visited_sites_screen_shot_idler_cb, this);
+#endif
+
+	elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
+	elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
+	elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
+
+	_update_back_forward_buttons();
 }
 
 void Browser_View::_hide_scroller_url_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	if (_get_edit_mode() != BR_NO_EDIT_MODE)
+	if (_get_edit_mode() != BR_NO_EDIT_MODE
+#if defined(FEATURE_MOST_VISITED_SITES)
+	    || is_most_visited_sites_running()
+#endif
+	)
 		return;
 
 	_navigationbar_visible_set_signal(EINA_FALSE);
@@ -995,6 +1261,23 @@ void Browser_View::_hide_scroller_url_layout(void)
 					browser_scroller_w, browser_scroller_h);
 }
 
+void Browser_View::__load_progress_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *url_progressbar = browser_view->m_url_progressbar;
+	Evas_Object *option_header_url_progressbar = browser_view->m_option_header_url_progressbar;
+
+	double progress = ewk_view_load_progress_get(browser_view->m_focused_window->m_ewk_view);
+	elm_progressbar_value_set(url_progressbar, progress);
+	elm_progressbar_value_set(option_header_url_progressbar, progress);
+
+	if (progress == 1.0f)
+		__load_finished_cb(data, obj, NULL);
+}
+
 void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
 {
 	if (!data)
@@ -1005,157 +1288,152 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	Evas_Object *main_layout = browser_view->m_main_layout;
 	Evas_Object *ewk_view = browser_view->m_focused_window->m_ewk_view;
 
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (browser_view->is_most_visited_sites_running())
+		return;
+#endif
+
+#ifdef BROWSER_SCROLLER_BOUNCING
+	/* activate webview firstly when user starts to touch. */
+	browser_view->_enable_webview_scroll();
+#endif
+
 	if (!browser_view->_is_loading() && browser_view->_get_edit_mode() != BR_FIND_WORD_MODE)
 		browser_view->_navigationbar_visible_set(EINA_FALSE);
 
 	browser_view->m_is_scrolling = EINA_TRUE;
 
-	Evas_Object *webkit = elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view);
-	float max_zoom_rate = ewk_view_zoom_range_max_get(webkit);
-	float min_zoom_rate = ewk_view_zoom_range_min_get(webkit);
-	float current_zoom_rate = ewk_view_zoom_get(webkit);
+	BROWSER_LOGD("__ewk_view_mouse_down_cb");
 
-	Eina_Bool can_zoom_in = EINA_TRUE;
-	Eina_Bool can_zoom_out = EINA_TRUE;
-	if (current_zoom_rate >= max_zoom_rate)
-		can_zoom_in = EINA_FALSE;
-	if (current_zoom_rate <= min_zoom_rate)
-		can_zoom_out = EINA_FALSE;
-	if (can_zoom_in || can_zoom_out) {
-		if (browser_view->m_zoom_button_timer)
-			ecore_timer_del(browser_view->m_zoom_button_timer);
-		browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
-		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_buttons,signal", "");
-	}
+#ifdef ZOOM_BUTTON
+	double sacle_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
+	double min_scale = 0;
+	double max_scale = 0;
 
-	if (!can_zoom_in)
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_FALSE);
+	bool zoom_button_flag = true;
+	if (br_preference_get_bool(ZOOM_BUTTON_KEY, &zoom_button_flag) == false)
+		BROWSER_LOGE("failed to get ZOOM_BUTTON_KEY value\n");
 
-	if (!can_zoom_out)
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_FALSE);
+	BROWSER_LOGD("zoom_button_flag =%d", zoom_button_flag);
+
+	if (zoom_button_flag == false)
+		return;
+
+	if (browser_view->m_zoom_button_timer)
+		ecore_timer_del(browser_view->m_zoom_button_timer);
+	browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_buttons,signal", "");
+#endif
 }
 
-void Browser_View::__ewk_view_multi_down_cb(void *data, Evas *evas, Evas_Object *obj, void *ev)
+void Browser_View::__ewk_view_enter_full_screen_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	if (!data)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->m_is_multi_touch = EINA_TRUE;
-	browser_view->_enable_webview_scroll();
+	browser_view->set_full_sreen(EINA_TRUE);
 }
 
-void Browser_View::__ewk_view_mouse_up_cb(void *data, Evas *evas, Evas_Object *obj, void *ev)
+void Browser_View::__ewk_view_exit_full_screen_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->set_full_sreen(EINA_FALSE);
+}
+
+void Browser_View::__ewk_view_vibration_vibrate_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Browser_View *browser_view = (Browser_View*)data;
+	const long vibration_time = *((const long *)event_info);
+
+	BROWSER_LOGD("__ewk_view_vibration_vibrate_cb : play time is [%ld]", vibration_time);
+
+	browser_view->_haptic_device_play(vibration_time);
+}
+
+void Browser_View::__ewk_view_vibration_cancel_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	Browser_View *browser_view = (Browser_View*)data;
+
+	browser_view->_haptic_device_stop();
+}
+
+void Browser_View::__ewk_view_mouse_up_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
 {
 	if (!data)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
 
-	browser_view->m_is_multi_touch = EINA_FALSE;
 	browser_view->m_is_scrolling = EINA_FALSE;
 }
 
 void Browser_View::__ewk_view_edge_top_cb(void *data, Evas_Object *obj, void *event_info)
 {
+#ifdef BROWSER_SCROLLER_BOUNCING
+	BROWSER_LOGD("[%s]", __func__);
+
 	if (!data)
 		return;
 	Browser_View *browser_view = (Browser_View *)data;
-
-	int browser_scroller_x = 0;
-	int browser_scroller_y = 0;
-	int browser_scroller_w = 0;
-	int browser_scroller_h = 0;
-	elm_scroller_region_get(browser_view->m_scroller, &browser_scroller_x, &browser_scroller_y,
-					&browser_scroller_w, &browser_scroller_h);
-
-	int url_layout_h = 0;
-	evas_object_geometry_get(browser_view->m_url_layout, NULL, NULL, NULL, &url_layout_h);
-
-	if (browser_scroller_y < url_layout_h)
-		return;
-
-	if (browser_view->m_is_scroll_up)
-		return;
-
-	BROWSER_LOGD("[%s]", __func__);
 	browser_view->_enable_browser_scroller_scroll();
 
 	/* If user do flicking the mouse with scroll up, bring in the browser scroller to y=0.	*/
-	if (!browser_view->m_is_scrolling && !browser_view->m_is_scroll_up) {
+	if (!browser_view->m_is_scrolling) {
 		BROWSER_LOGD("<< elm_scroller_region_bring_in >>");
+		int browser_scroller_x = 0;
+		int browser_scroller_w = 0;
+		int browser_scroller_h = 0;
+		elm_scroller_region_get(browser_view->m_scroller, &browser_scroller_x, NULL,
+						&browser_scroller_w, &browser_scroller_h);
+
 		elm_scroller_region_bring_in(browser_view->m_scroller, browser_scroller_x, 0,
 						browser_scroller_w, browser_scroller_h);
 	}
-}
-
-void Browser_View::__scroller_edge_bottom_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->_enable_webview_scroll();
-}
-
-void Browser_View::__ewk_view_mouse_move_cb(void *data, Evas *evas, Evas_Object *obj, void *ev)
-{
-	if (!data)
-		return;
-
-	Evas_Event_Mouse_Move *point = (Evas_Event_Mouse_Move *)ev;
-
-	Browser_View *browser_view = (Browser_View *)data;
-	if (point->cur.output.y < point->prev.output.y) {
-		browser_view->m_is_scroll_up = EINA_TRUE;
-		__ewk_view_scroll_down_cb(data, NULL, NULL);
-	} else {
-		browser_view->m_is_scroll_up = EINA_FALSE;
-		/* scroll up */
-		__ewk_view_scroll_up_cb(data, NULL, NULL);
-	}
+#endif
 }
 
 void Browser_View::__ewk_view_scroll_down_cb(void *data, Evas_Object *obj, void *event_info)
 {
+#ifdef BROWSER_SCROLLER_BOUNCING
 	if (!data)
 		return;
 	Browser_View *browser_view = (Browser_View *)data;
 
-	int browser_scroller_y = 0;
+	int scroller_x = 0;
+	int scroller_y = 0;
+	int scroller_w = 0;
+	int scroller_h = 0;
 	int url_layout_h = 0;
-	elm_scroller_region_get(browser_view->m_scroller, NULL, &browser_scroller_y, NULL, NULL);
+	elm_scroller_region_get(browser_view->m_scroller, &scroller_x, &scroller_y, &scroller_w, &scroller_h);
 	evas_object_geometry_get(browser_view->m_url_layout, NULL, NULL, NULL, &url_layout_h);
 
-	if (browser_scroller_y < url_layout_h)
-		browser_view->_enable_browser_scroller_scroll();
-	else
+	if (scroller_y < url_layout_h) {
+		/* We have to hide urlbar when webview's contents are scrolled down by flicking. */
+		if (!browser_view->m_is_scrolling)
+			elm_scroller_region_show(browser_view->m_scroller, scroller_x, url_layout_h, scroller_w, scroller_h);
+		else
+			browser_view->_enable_browser_scroller_scroll();
+	} else {
 		browser_view->_enable_webview_scroll();
+	}
+#endif
 }
 
 void Browser_View::__ewk_view_scroll_up_cb(void *data, Evas_Object *obj, void *event_info)
 {
+#ifdef BROWSER_SCROLLER_BOUNCING
 	if (!data)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	int frame_position_y = 0;
-	Evas_Object *webkit = elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view);
-	Evas_Object *frame = ewk_view_frame_main_get(webkit);
-	ewk_frame_scroll_pos_get(frame, NULL, &frame_position_y);
-
-	int browser_scroller_y = 0;
-	elm_scroller_region_get(browser_view->m_scroller, NULL, &browser_scroller_y, NULL, NULL);
-
-	if (frame_position_y == 0 && browser_scroller_y)
-		browser_view->_enable_browser_scroller_scroll();
-	else
-		browser_view->_enable_webview_scroll();
+	browser_view->_enable_webview_scroll();
+#endif
 }
 
 void Browser_View::_set_navigationbar_title(const char *title)
@@ -1184,13 +1462,36 @@ void Browser_View::_set_url_entry(const char *url, Eina_Bool set_secrue_icon)
 			elm_entry_entry_set(entry, mark_up_url);
 			entry = br_elm_editfield_entry_get(m_option_header_url_edit_field);
 			elm_entry_entry_set(entry, mark_up_url);
+
+			edje_object_part_text_set(elm_layout_edje_get(m_option_header_url_edit_field),
+							"elm.text.ellipsis", mark_up_url);
+			edje_object_part_text_set(elm_layout_edje_get(m_url_edit_field),
+							"elm.text.ellipsis", mark_up_url);
 			free(mark_up_url);
 		}
 	} else {
 		Evas_Object *entry = br_elm_editfield_entry_get(m_url_edit_field);
+#if defined(FEATURE_MOST_VISITED_SITES)
 		elm_entry_entry_set(entry, BROWSER_MOST_VISITED_SITES_URL);
+#else
+		elm_entry_entry_set(entry, BROWSER_BLANK_PAGE_URL);
+#endif
 		entry = br_elm_editfield_entry_get(m_option_header_url_edit_field);
+#if defined(FEATURE_MOST_VISITED_SITES)
 		elm_entry_entry_set(entry, BROWSER_MOST_VISITED_SITES_URL);
+
+		edje_object_part_text_set(elm_layout_edje_get(m_option_header_url_edit_field),
+						"elm.text.ellipsis", BROWSER_MOST_VISITED_SITES_URL);
+		edje_object_part_text_set(elm_layout_edje_get(m_url_edit_field),
+						"elm.text.ellipsis", BROWSER_MOST_VISITED_SITES_URL);
+#else
+		elm_entry_entry_set(entry, BROWSER_BLANK_PAGE_URL);
+
+		edje_object_part_text_set(elm_layout_edje_get(m_option_header_url_edit_field),
+						"elm.text.ellipsis", BROWSER_BLANK_PAGE_URL);
+		edje_object_part_text_set(elm_layout_edje_get(m_url_edit_field),
+						"elm.text.ellipsis", BROWSER_BLANK_PAGE_URL);
+#endif
 	}
 
 	if (set_secrue_icon)
@@ -1200,26 +1501,27 @@ void Browser_View::_set_url_entry(const char *url, Eina_Bool set_secrue_icon)
 void Browser_View::_stop_loading(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (m_focused_window->m_ewk_view) {
-		if (!ewk_view_stop(elm_webview_webkit_get(m_focused_window->m_ewk_view)))
-			BROWSER_LOGE("ewk_view_stop failed.\n");
-	}
+	if (m_focused_window->m_ewk_view)
+		ewk_view_stop(m_focused_window->m_ewk_view);
 }
 
 void Browser_View::_reload(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (m_focused_window->m_ewk_view) {
-		if (!ewk_view_reload_full(elm_webview_webkit_get(m_focused_window->m_ewk_view)))
-			BROWSER_LOGE("ewk_view_reload_full failed.\n");
-	}
+	if (m_focused_window->m_ewk_view)
+		ewk_view_reload_bypass_cache(m_focused_window->m_ewk_view);
 }
 
-void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_most_visited_sites)
+void Browser_View::set_focused_window(Browser_Window *window
+#if defined(FEATURE_MOST_VISITED_SITES)
+	,Eina_Bool show_most_visited_sites
+#endif
+	)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (m_focused_window && m_focused_window->m_ewk_view) {
-		evas_object_hide(m_focused_window->m_ewk_view);
+	if (m_focused_window && m_focused_window->m_ewk_view_layout) {
+		elm_box_unpack(m_content_box, m_focused_window->m_ewk_view_layout);
+		evas_object_hide(m_focused_window->m_ewk_view_layout);
 	}
 
 	if (m_focused_window && m_focused_window->m_favicon) {
@@ -1237,16 +1539,43 @@ void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_mos
 
 	m_focused_window = window;
 
-	elm_box_unpack_all(m_content_box);
+	if (!m_focused_window->m_ewk_view_layout) {
+		m_focused_window->m_ewk_view_layout = elm_layout_add(m_navi_bar);
+		if (!m_focused_window->m_ewk_view_layout) {
+			BROWSER_LOGE("elm_layout_add failed!");
+			return;
+		}
+		if (!elm_layout_file_set(m_focused_window->m_ewk_view_layout,
+					BROWSER_EDJE_DIR"/browser-view-main.edj",
+					"browser/browser-view-webview")) {
+			BROWSER_LOGE("elm_layout_file_set failed", BROWSER_EDJE_DIR);
+			return;
+		}
+		evas_object_size_hint_weight_set(m_focused_window->m_ewk_view_layout,
+						EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+		evas_object_size_hint_align_set(m_focused_window->m_ewk_view_layout,
+						EVAS_HINT_FILL, EVAS_HINT_FILL);
+		elm_box_pack_end(m_content_box, m_focused_window->m_ewk_view_layout);
+		evas_object_show(m_focused_window->m_ewk_view_layout);
 
-	elm_box_pack_end(m_content_box, m_focused_window->m_ewk_view);
-	elm_box_pack_start(m_content_box, m_url_layout);
+		elm_object_part_content_set(m_focused_window->m_ewk_view_layout, "elm.swallow.webview",
+					m_focused_window->m_ewk_view);
+		evas_object_show(m_focused_window->m_ewk_view);
 
-	evas_object_show(m_focused_window->m_ewk_view);
-	/* Workaround.
-	  * The webview layout is not resized whenever repack to content box.
-	  * So resize the webview layout whenever repack. */
-	ecore_idler_add(__webview_layout_resize_idler_cb, this);
+
+		/* Workaround.
+		  * If launch the browser by aul, the grey bg is displayed shortly. */
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+						"hide,grey_background,signal", "");
+		/* Workaround.
+		  * The webview layout is not resized whenever repack to content box.
+		  * So resize the webview layout whenever repack. */
+		m_resize_idler = ecore_idler_add(__webview_layout_resize_idler_cb, this);
+	} else {
+		elm_box_pack_end(m_content_box, m_focused_window->m_ewk_view_layout);
+		evas_object_show(m_focused_window->m_ewk_view_layout);
+		evas_object_show(m_focused_window->m_ewk_view);
+	}
 
 	if (!_is_loading()) {
 		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "loading,off,signal", "");
@@ -1257,7 +1586,11 @@ void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_mos
 	}
 
 	/* show or hide favicon in url layout. */
-	if (m_focused_window->m_favicon) {
+	if (m_focused_window->m_favicon
+#if defined(FEATURE_MOST_VISITED_SITES)
+		&& !is_most_visited_sites_running()
+#endif
+		) {
 		if (elm_object_part_content_get(m_url_entry_layout, "elm.swallow.favicon"))
 			elm_object_part_content_unset(m_url_entry_layout, "elm.swallow.favicon");
 
@@ -1266,13 +1599,18 @@ void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_mos
 		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
 							"show,favicon,signal", "");
 		evas_object_show(m_focused_window->m_favicon);
+		_set_secure_icon();
 	} else {
 		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
 							"hide,favicon,signal", "");
 	}
 
 	/* show or hide favicon in option header url layout. */
-	if (m_focused_window->m_option_header_favicon) {
+	if (m_focused_window->m_option_header_favicon
+#if defined(FEATURE_MOST_VISITED_SITES)
+		&& !is_most_visited_sites_running()
+#endif
+		) {
 		if (elm_object_part_content_get(m_option_header_url_entry_layout, "elm.swallow.favicon"))
 			elm_object_part_content_unset(m_option_header_url_entry_layout, "elm.swallow.favicon");
 
@@ -1280,11 +1618,21 @@ void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_mos
 							m_focused_window->m_option_header_favicon);
 		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 							"show,favicon,signal", "");
+		_set_secure_icon();
 		evas_object_show(m_focused_window->m_option_header_favicon);
 	} else {
 		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 							"hide,favicon,signal", "");
 	}
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (show_most_visited_sites) {
+		if (get_url().empty())
+			_show_most_visited_sites(EINA_TRUE);
+		else
+			_show_most_visited_sites(EINA_FALSE);
+	}
+#endif
 
 	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
 	_set_multi_window_controlbar_text(window_list.size());
@@ -1292,31 +1640,135 @@ void Browser_View::set_focused_window(Browser_Window *window, Eina_Bool show_mos
 	if (!_set_favicon())
 		BROWSER_LOGE("_set_favicon failed");
 
+	_update_back_forward_buttons();
+
 	/* Without this code, the url is empty shortly when create deleted-window in multi window. */
 	if (get_url().empty() && !m_focused_window->m_url.empty())
 		_set_url_entry(m_focused_window->m_url.c_str());
 	else
 		_set_url_entry(get_url().c_str());
+
+	if (window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT)
+		elm_object_item_disabled_set(m_new_window_button, EINA_TRUE);
+	else
+		elm_object_item_disabled_set(m_new_window_button, EINA_FALSE);
 }
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+Eina_Bool Browser_View::_show_most_visited_sites(Eina_Bool is_show)
+{
+	BROWSER_LOGD("[%s]is_show=%d", __func__, is_show);
+	if (is_show) {
+		m_selected_most_visited_sites_item_info.url.clear();
+		m_selected_most_visited_sites_item_info.title.clear();
+		m_selected_most_visited_sites_item_info.id.clear();
+
+		if (!m_most_visited_sites) {
+			m_most_visited_sites = new(nothrow) Most_Visited_Sites(m_navi_bar, this, m_most_visited_sites_db);
+			if (!m_most_visited_sites) {
+				BROWSER_LOGE("new Most_Visited_Sites failed");
+				return EINA_FALSE;
+			}
+
+			Evas_Object *most_visited_sites_layout = m_most_visited_sites->create_most_visited_sites_main_layout();
+			if (!most_visited_sites_layout) {
+				BROWSER_LOGE("create_most_visited_sites_main_layout failed");
+				if (m_most_visited_sites) {
+					delete m_most_visited_sites;
+					m_most_visited_sites = NULL;
+				}
+				return EINA_FALSE;
+			}
+			elm_object_part_content_set(m_main_layout, "elm.swallow.most_visited_sites", most_visited_sites_layout);
+			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+							"show,most_visited_sites,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+							"show,control_bar,no_animation,signal", "");
+
+			/* change the url layout for normal mode. (change the reload icon etc) */
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "loading,off,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+						"loading,off,signal", "");
+
+			edje_object_part_text_set(elm_layout_edje_get(m_url_entry_layout),
+							"url_guide_text", BR_STRING_URL_GUIDE_TEXT);
+			edje_object_part_text_set(elm_layout_edje_get(m_option_header_url_entry_layout),
+							"url_guide_text", BR_STRING_URL_GUIDE_TEXT);
+
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "url_guide_text,on,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+								"url_guide_text,on,signal", "");
+
+			_set_navigationbar_title(BR_STRING_MOST_VISITED_SITES);
+			_set_url_entry(BROWSER_MOST_VISITED_SITES_URL);
+
+			/* If the speed dial is displayed for the first time, destroy the progress wheel. */
+			if (m_dummy_loading_progressbar) {
+				elm_object_part_content_unset(m_main_layout, "elm.swallow.waiting_progress");
+				evas_object_del(m_dummy_loading_progressbar);
+				m_dummy_loading_progressbar = NULL;
+				edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+							"hide,waiting_progressbar,signal", "");
+			}
+
+			elm_object_item_disabled_set(m_add_bookmark_button, EINA_TRUE);
+		}
+
+		int scroller_x = 0;
+		int scroller_w = 0;
+		int scroller_h = 0;
+		elm_scroller_region_get(m_scroller, &scroller_x, NULL, &scroller_w, &scroller_h);
+		elm_scroller_region_show(m_scroller ,scroller_x, 0, scroller_w, scroller_h);
+
+		_navigationbar_visible_set_signal(EINA_TRUE);
+
+		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
+							"hide,favicon,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+							"hide,favicon,signal", "");
+
+#ifdef BROWSER_SCROLLER_BOUNCING
+		BROWSER_LOGD("<< lock browser scroller >>");
+		elm_object_scroll_freeze_pop(m_scroller);
+		elm_object_scroll_freeze_push(m_scroller);
+#endif
+	} else {
+		if (m_most_visited_sites) {
+			if (elm_object_part_content_get(m_main_layout, "elm.swallow.most_visited_sites"))
+				elm_object_part_content_unset(m_main_layout, "elm.swallow.most_visited_sites");
+			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+							"hide,most_visited_sites,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
+						"hide,most_visited_sites_guide_text,signal", "");
+
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "url_guide_text,off,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+										"url_guide_text,off,signal", "");
+
+			delete m_most_visited_sites;
+			m_most_visited_sites = NULL;
+
+			elm_object_item_disabled_set(m_add_bookmark_button, EINA_FALSE);
+		}
+	}
+	return EINA_TRUE;
+}
+#endif
 
 void Browser_View::load_url(const char *url)
 {
-	BROWSER_LOGD("[%s]url=[%s]", __func__, url);
+	BROWSER_LOGD("[%s]", __func__);
+#if defined(FEATURE_MOST_VISITED_SITES)
 	if (!url || !strlen(url)) {
-		edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
-				"show,control_bar,no_animation,signal", "");
-
-		if (m_dummy_loading_progressbar) {
-			elm_object_part_content_unset(m_main_layout, "elm.swallow.waiting_progress");
-			evas_object_del(m_dummy_loading_progressbar);
-			m_dummy_loading_progressbar = NULL;
-			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
-						"hide,waiting_progressbar,signal", "");
-		}
-
-		ecore_idler_add(_activate_url_entry_idler_cb, this);
+		if (!_show_most_visited_sites(EINA_TRUE))
+			BROWSER_LOGE("_show_most_visited_sites EINA_TRUE failed");
 		return;
+
+	} else {
+		if (!_show_most_visited_sites(EINA_FALSE))
+			BROWSER_LOGE("_show_most_visited_sites EINA_FALSE failed");
 	}
+#endif
 
 	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(_get_activated_url_entry());
 	evas_object_smart_callback_del(edit_field_entry, "changed", __url_entry_changed_cb);
@@ -1331,86 +1783,74 @@ void Browser_View::load_url(const char *url)
 
 	_set_url_entry(full_url.c_str());
 
-	elm_webview_uri_set(m_focused_window->m_ewk_view, full_url.c_str());
- }
+	ewk_view_uri_set(m_focused_window->m_ewk_view, full_url.c_str());
+}
 
 string Browser_View::get_title(Browser_Window *window)
 {
-	BROWSER_LOGD("[%s]", __func__);
-	string title = "";
+	const char *title = ewk_view_title_get(window->m_ewk_view);
+	BROWSER_LOGD("title = [%s]", title);
 
 	if (!window->m_ewk_view && !window->m_title.empty())
 		return window->m_title;
 
 	if (!window->m_ewk_view)
-		return title;
+		return std::string();
 
-	Evas_Object *webkit = elm_webview_webkit_get(window->m_ewk_view);
-	Evas_Object *main_frame = ewk_view_frame_main_get(webkit);
-	if (main_frame) {
-		const char *frame_title = ewk_frame_title_get(main_frame);
-		if (frame_title)
-			title = std::string(frame_title);
+	if (!title) {
+		if (!window->m_title.empty())
+			return window->m_title;
+		else
+			return std::string();
 	}
 
-	return title;
+	return std::string(title);
 }
 
 string Browser_View::get_title(void)
 {
-	BROWSER_LOGD("[%s]", __func__);
-	string title = "";
+	const char *title = ewk_view_title_get(m_focused_window->m_ewk_view);
+	BROWSER_LOGD("title = [%s]", title);
 
-	Evas_Object *webkit = elm_webview_webkit_get(m_focused_window->m_ewk_view);
-	Evas_Object *main_frame = ewk_view_frame_main_get(webkit);
-	if (main_frame) {
-		const char *frame_title = ewk_frame_title_get(main_frame);
-		if (frame_title)
-			title = std::string(frame_title);
-	}
-
-	BROWSER_LOGD("m_focused_window->m_title=[%s]", m_focused_window->m_title.c_str());
-	if (title.empty() && !m_focused_window->m_title.empty())
+	if (!title && m_focused_window->m_title.empty())
+		return std::string();
+	else if (!title && !m_focused_window->m_title.empty())
 		return m_focused_window->m_title;
-	else
-		return title;
+
+	if (title && strlen(title))
+		return std::string(title);
+
+	return std::string();
 }
 
 string Browser_View::get_url(Browser_Window *window)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	string url = "";
 
 	if (!window->m_ewk_view && !window->m_url.empty())
 		return window->m_url;
 
 	if (!window->m_ewk_view)
-		return url;
+		return std::string();
 
-	Evas_Object *webkit = elm_webview_webkit_get(window->m_ewk_view);
-	Evas_Object *main_frame = ewk_view_frame_main_get(webkit);
-	if (main_frame) {
-		const char *frame_url = ewk_frame_uri_get(main_frame);
-		if (frame_url)
-			url = std::string(frame_url);
-	}
+	const char *uri = ewk_view_uri_get(window->m_ewk_view);
+	BROWSER_LOGD("uri = [%s]", uri);
 
-	return url;
+	if (!uri || strlen(uri) == 0)
+		return std::string();
+
+	return std::string(uri);
 }
 
 string Browser_View::get_url(void)
 {
-	BROWSER_LOGD("[%s]", __func__);
-	string url = "";
+	const char *uri = ewk_view_uri_get(m_focused_window->m_ewk_view);
+	BROWSER_LOGD("uri = [%s]", uri);
 
-	Evas_Object *webkit = elm_webview_webkit_get(m_focused_window->m_ewk_view);
-	Evas_Object *main_frame = ewk_view_frame_main_get(webkit);
-	if (main_frame) {
-		const char *frame_url = ewk_frame_uri_get(main_frame);
-		if (frame_url)
-			url = std::string(frame_url);
-	}
-	return url;
+	if (!uri || strlen(uri) == 0)
+		return std::string();
+
+	return std::string(uri);
 }
 
 /* If multi window is running, unset the navigation title object,
@@ -1431,8 +1871,10 @@ void Browser_View::unset_navigationbar_title_object(Eina_Bool is_unset)
 									m_option_header_layout);
 			evas_object_show(m_option_header_layout);
 		}
-
-		_navigationbar_visible_set_signal(EINA_FALSE);
+#if defined(FEATURE_MOST_VISITED_SITES)
+		if (!is_most_visited_sites_running())
+			_navigationbar_visible_set_signal(EINA_FALSE);
+#endif
 	}
 }
 
@@ -1443,7 +1885,7 @@ void Browser_View::__go_to_bookmark_cb(void *data, Evas_Object *obj, void *event
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->suspend_webview(browser_view->m_focused_window->m_ewk_view);
+
 	if (!m_data_manager->create_bookmark_view()) {
 		BROWSER_LOGE("m_data_manager->create_bookmark_view failed");
 		return;
@@ -1454,7 +1896,6 @@ void Browser_View::__go_to_bookmark_cb(void *data, Evas_Object *obj, void *event
 		m_data_manager->destroy_bookmark_view();
 	}
 
-	browser_view->m_context_menu->destroy_context_popup();
 	browser_view->_destroy_more_context_popup();
 }
 
@@ -1465,9 +1906,9 @@ void Browser_View::__backward_cb(void *data, Evas_Object *obj, void *event_info)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-	__title_back_button_clicked_cb(data, obj, event_info);
+	__title_back_button_clicked_cb(data, NULL, NULL);
+
 	browser_view->_destroy_more_context_popup();
-	browser_view->m_context_menu->destroy_context_popup();
 }
 
 void Browser_View::__forward_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1478,13 +1919,207 @@ void Browser_View::__forward_cb(void *data, Evas_Object *obj, void *event_info)
 
 	Browser_View *browser_view = (Browser_View *)data;
 	browser_view->_destroy_more_context_popup();
-	if (browser_view->m_focused_window->m_ewk_view) {
-		Evas_Object *webkit = elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view);
-		if (ewk_view_forward_possible(webkit)) {
-			if (!ewk_view_forward(webkit))
-				BROWSER_LOGE("ewk_view_forward failed");
-		}
+	if (browser_view->m_focused_window->m_ewk_view
+		&& ewk_view_forward_possible(browser_view->m_focused_window->m_ewk_view))
+		ewk_view_forward(browser_view->m_focused_window->m_ewk_view);
+}
+
+#ifdef USE_META_TAG
+void Browser_View::__web_app_capable_get_cb(Eina_Bool capable, void* user_data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!user_data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)user_data;
+	Evas_Object *webkit = browser_view->m_focused_window->m_ewk_view;
+	if (capable) {
+		ewk_view_web_application_icon_url_get(webkit, __web_app_icon_url_get_cb, browser_view);
 	}
+}
+
+void Browser_View::__web_app_icon_url_get_cb(const char* icon_url, void* user_data)
+{
+	BROWSER_LOGD("icon_url:%s", icon_url);
+
+	if (!user_data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)user_data;
+
+	/* make configure file */
+	browser_view->m_meta_tag->create_config_xml((browser_view->get_url()).c_str(), browser_view->get_title().c_str(), NULL);
+	if (!icon_url || strlen(icon_url) == 0) {
+		BROWSER_LOGD("Failed to get webapp icon url, make widget with default icon");
+		browser_view->m_meta_tag->wgt_install(NULL);
+	} else {
+		BROWSER_LOGD("Succeed to get webapp icon url, make widget after icon downloaded");
+		/* get icon */
+		browser_view->m_meta_tag->request_download_icon(icon_url);
+	}
+}
+#endif
+
+Eina_Bool Browser_View::__show_scissorbox_view_idler_cb(void *data)
+{
+	if (!data)
+		return ECORE_CALLBACK_CANCEL;
+
+	Browser_View *browser_view = (Browser_View *)data;
+
+	if (browser_view->m_scissorbox_view)
+		delete browser_view->m_scissorbox_view;
+
+	browser_view->m_scissorbox_view = new(nothrow) Browser_Scissorbox_View(browser_view);
+	if (!browser_view->m_scissorbox_view) {
+		BROWSER_LOGE("new Browser_Scissorbox_View failed");
+		return ECORE_CALLBACK_CANCEL;
+	}
+	if (!browser_view->m_scissorbox_view->init()) {
+		BROWSER_LOGE("m_scissorbox_view->init failed");
+		delete browser_view->m_scissorbox_view;
+		browser_view->m_scissorbox_view = NULL;
+		return ECORE_CALLBACK_CANCEL;
+	}
+
+	elm_object_part_content_set(browser_view->m_main_layout, "elm.swallow.scissorbox",
+						browser_view->m_scissorbox_view->get_layout());
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout),
+							"show,scissorbox,signal", "");
+
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_layout),
+							"show,scissorbox,signal", "");
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_layout),
+							"show,scissorbox,signal", "");
+
+
+	elm_object_part_content_unset(browser_view->m_main_layout, "elm.swallow.control_bar");
+	evas_object_hide(browser_view->m_control_bar);
+
+	return ECORE_CALLBACK_CANCEL;
+}
+
+Eina_Bool Browser_View::_show_scissorbox_view(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+//	_hide_scroller_url_layout();
+
+	ecore_idler_add(__show_scissorbox_view_idler_cb, this);
+
+	return EINA_TRUE;
+}
+
+void Browser_View::_destroy_scissorbox_view(void)
+{
+	elm_object_part_content_unset(m_main_layout, "elm.swallow.scissorbox");
+	edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "hide,scissorbox,signal", "");
+
+	edje_object_signal_emit(elm_layout_edje_get(m_url_layout),
+							"hide,scissorbox,signal", "");
+	edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_layout),
+							"hide,scissorbox,signal", "");
+
+	elm_object_part_content_unset(m_main_layout, "elm.swallow.control_bar");
+
+	if (m_scissorbox_view) {
+		delete m_scissorbox_view;
+		m_scissorbox_view = NULL;
+	}
+
+	elm_object_part_content_set(m_main_layout, "elm.swallow.control_bar", m_control_bar);
+	evas_object_show(m_control_bar);
+}
+
+void Browser_View::__private_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->m_is_private = !browser_view->m_is_private;
+
+	browser_view->m_is_private_item_pressed = EINA_TRUE;
+
+	elm_check_state_set(browser_view->m_private_check, browser_view->m_is_private);
+
+	if (browser_view->m_is_private) {
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,on,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,on,signal", "");
+	} else {
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,off,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,off,signal", "");
+	}
+
+	Ewk_Setting *setting = ewk_view_setting_get(browser_view->m_focused_window->m_ewk_view);
+	ewk_setting_private_browsing_set(setting, browser_view->m_is_private);
+}
+
+void Browser_View::__bookmark_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	int bookmark_id = -1;
+	if(!m_data_manager->get_history_db()->is_in_bookmark(browser_view->get_url().c_str(), &bookmark_id)) {
+		if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+			return;
+		}
+		m_data_manager->create_bookmark_db()->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID,
+					browser_view->get_title().c_str(), browser_view->get_url().c_str());
+		browser_view->show_notify_popup(BR_STRING_ADDED_TO_BOOKMARKS, 3, EINA_TRUE);
+	} else {
+		if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+			return;
+		}
+		m_data_manager->create_bookmark_db()->delete_bookmark(bookmark_id);
+		browser_view->show_notify_popup(BR_STRING_REMOVED_TO_BOOKMARKS, 3, EINA_TRUE);
+	}
+
+	m_data_manager->destroy_bookmark_db();
+}
+
+void Browser_View::__bookmark_icon_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+}
+
+void Browser_View::__private_check_change_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Eina_Bool state = elm_check_state_get((Evas_Object*)obj);
+	browser_view->m_is_private = state;
+
+	if (browser_view->m_is_private_item_pressed) {
+		browser_view->m_is_private = !browser_view->m_is_private;
+		elm_check_state_set(browser_view->m_private_check, browser_view->m_is_private);
+		browser_view->m_is_private_item_pressed = EINA_FALSE;
+	}
+
+	if (browser_view->m_is_private) {
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,on,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,on,signal", "");
+	} else {
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,off,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,off,signal", "");
+	}
+
+	Ewk_Setting *setting = ewk_view_setting_get(browser_view->m_focused_window->m_ewk_view);
+	ewk_setting_private_browsing_set(setting, browser_view->m_is_private);
 }
 
 void Browser_View::__expand_option_header_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1505,7 +2140,6 @@ void Browser_View::__add_bookmark_cb(void *data, Evas_Object *obj, void *event_i
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
 	if (!m_data_manager->create_add_to_bookmark_view(browser_view->get_title(), browser_view->get_url())) {
 		BROWSER_LOGE("m_data_manager->create_add_to_bookmark_view failed");
 		return;
@@ -1515,14 +2149,48 @@ void Browser_View::__add_bookmark_cb(void *data, Evas_Object *obj, void *event_i
 		m_data_manager->destroy_add_to_bookmark_view();
 }
 
+#if defined(HORIZONTAL_UI)
+void Browser_View::_rotate_multi_window(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!m_data_manager->create_multi_window_view()) {
+		BROWSER_LOGE("m_data_manager->create_multi_window_view failed");
+		return;
+	}
+
+	if (!m_data_manager->get_multi_window_view()->init(0.0, m_is_multi_window_grid_mode)) {
+		m_data_manager->destroy_multi_window_view();
+		BROWSER_LOGE("get_multi_window_view()->init failed");
+		return;
+	}
+
+	ewk_view_suspend(m_focused_window->m_ewk_view);
+
+	_navigationbar_visible_set_signal(EINA_FALSE);
+
+	/* Hide the secure lock icon in title bar. */
+	Elm_Object_Item *top_it = elm_naviframe_top_item_get(m_navi_bar);
+	elm_object_item_part_content_set(top_it, ELM_NAVIFRAME_ITEM_ICON, NULL);
+
+	if (_get_edit_mode() != BR_NO_EDIT_MODE)
+		_set_edit_mode(BR_NO_EDIT_MODE);
+
+	m_is_multi_window_grid_mode = EINA_FALSE;
+}
+#endif
+
 void Browser_View::__multi_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	browser_view->m_context_menu->destroy_context_popup();
 	browser_view->_destroy_more_context_popup();
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (browser_view->m_most_visited_sites && browser_view->m_most_visited_sites->is_guide_text_running())
+		return;
+#endif
 
 	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)) {
 		BROWSER_LOGD("close multi window");
@@ -1544,7 +2212,10 @@ void Browser_View::__multi_window_cb(void *data, Evas_Object *obj, void *event_i
 		return;
 	}
 
-	browser_view->suspend_webview(browser_view->m_focused_window->m_ewk_view);
+	/* Exception case to call ewk_view_suspend directly.
+	  * That's because the webpage is cleared, when call ewk_view_visibility_set suspend_ewk_view */
+	ewk_view_suspend(browser_view->m_focused_window->m_ewk_view);
+	ewk_view_visibility_set(browser_view->m_focused_window->m_ewk_view, EINA_FALSE);
 
 	browser_view->_navigationbar_visible_set_signal(EINA_FALSE);
 
@@ -1554,6 +2225,74 @@ void Browser_View::__multi_window_cb(void *data, Evas_Object *obj, void *event_i
 
 	if (browser_view->_get_edit_mode() != BR_NO_EDIT_MODE)
 		browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
+}
+
+void Browser_View::__new_window_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Browser_Class *browser = browser_view->m_browser;
+
+	if (browser_view->m_resize_idler)
+		return;
+
+	std::vector<Browser_Window *> window_list = browser->get_window_list();
+	if (window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT) {
+		/* If the multi window is max, delete the first one. */
+		/* if the first window is focused, delete second one(oldest one except first one) */
+		if (browser_view->m_focused_window != window_list[0])
+			browser->delete_window(window_list[0]);
+		else
+			browser->delete_window(window_list[1]);
+	}
+
+	browser_view->m_created_new_window = browser->create_new_window(EINA_TRUE);
+	if (!browser_view->m_created_new_window) {
+		BROWSER_LOGE("create_new_window failed");
+		return;
+	}
+	/* initialize the created webview first to connect ewk event callback functions such as load start, progress etc. */
+	ewk_view_suspend(browser_view->m_focused_window->m_ewk_view);
+
+#if defined(HORIZONTAL_UI)
+		if (browser_view->m_focused_window->m_landscape_snapshot_image) {
+			evas_object_del(browser_view->m_focused_window->m_landscape_snapshot_image);
+			browser_view->m_focused_window->m_landscape_snapshot_image = NULL;
+		}
+#endif
+		if (browser_view->m_focused_window->m_portrait_snapshot_image) {
+			evas_object_del(browser_view->m_focused_window->m_portrait_snapshot_image);
+			browser_view->m_focused_window->m_portrait_snapshot_image = NULL;
+		}
+
+#if defined(HORIZONTAL_UI)
+		if (browser_view->is_landscape())
+			browser_view->m_focused_window->m_landscape_snapshot_image = browser_view->_capture_snapshot(browser_view->m_focused_window, BROWSER_MULTI_WINDOW_ITEM_RATIO);
+		else
+#endif
+			browser_view->m_focused_window->m_portrait_snapshot_image = browser_view->_capture_snapshot(browser_view->m_focused_window, BROWSER_MULTI_WINDOW_ITEM_RATIO);
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (!browser_view->_show_most_visited_sites(EINA_FALSE))
+		BROWSER_LOGE("_show_most_visited_sites EINA_FALSE failed");
+#endif
+
+	/* initialize the created webview first to connect ewk event callback functions such as load start, progress etc. */
+	browser->ewk_view_init(browser_view->m_created_new_window->m_ewk_view);
+
+	if (!browser_view->_show_new_window_effect(browser_view->m_focused_window->m_ewk_view,
+					browser_view->m_created_new_window->m_ewk_view))
+		BROWSER_LOGE("_show_new_window_effect failed");
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	browser_view->load_url(BROWSER_MOST_VISITED_SITES_URL);
+#else
+	browser_view->load_url(BROWSER_BLANK_PAGE_URL);
+#endif
+	return;
 }
 
 Eina_Bool Browser_View::_call_internet_settings(void)
@@ -1588,6 +2327,13 @@ void Browser_View::__internet_settings_cb(void *data, Evas_Object *obj, void *ev
 		BROWSER_LOGE("_call_internet_settings failed");
 }
 
+void Browser_View::_update_find_word_index_text(const char *index_text)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	edje_object_part_text_set(elm_layout_edje_get(m_option_header_find_word_layout), "elm.index_text", index_text);
+}
+
 void Browser_View::__find_word_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -1606,8 +2352,9 @@ void Browser_View::__find_word_cb(void *data, Evas_Object *obj, void *event_info
 
 	browser_view->_set_edit_mode(BR_FIND_WORD_MODE);
 
-	browser_view->m_find_word->init(browser_view->m_focused_window->m_ewk_view);
+	elm_object_focus_set(browser_view->m_find_word_edit_field, EINA_TRUE);
 
+	edje_object_part_text_set(elm_layout_edje_get(browser_view->m_option_header_find_word_layout), "elm.index_text", "0/0");
 }
 
 Eina_Bool Browser_View::_call_download_manager(void)
@@ -1661,12 +2408,59 @@ void Browser_View::__download_manager_cb(void *data, Evas_Object *obj, void *eve
 		BROWSER_LOGE("_call_download_manager failed");
 }
 
+void Browser_View::__send_via_message_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_destroy_more_context_popup();
+
+	if (!browser_view->_send_via_message(browser_view->get_url(), std::string()))
+		BROWSER_LOGE("_send_via_message failed");
+}
+
+void Browser_View::__send_via_email_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_destroy_more_context_popup();
+
+	if (!browser_view->_send_via_email(browser_view->get_url()))
+		BROWSER_LOGE("_send_via_email failed");
+}
+
+void Browser_View::__post_to_sns_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View*)data;
+
+	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
+	const char *label = elm_object_item_text_get(it);
+	BROWSER_LOGD("label=[%s]", label);
+	if (label && strlen(label)) {
+		if (!browser_view->_post_to_sns(std::string(label), browser_view->get_url()))
+			BROWSER_LOGE("_post_to_sns failed");
+	}
+
+	browser_view->_destroy_more_context_popup();
+}
+
 void Browser_View::_destroy_more_context_popup(void)
 {
 	if (m_more_context_popup) {
 		evas_object_del(m_more_context_popup);
 		m_more_context_popup = NULL;
 	}
+
+	edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "hide,more_context_bg,signal", "");
 }
 
 void Browser_View::__more_context_popup_dismissed_cb(void *data, Evas_Object *obj,
@@ -1680,6 +2474,17 @@ void Browser_View::__more_context_popup_dismissed_cb(void *data, Evas_Object *ob
 	browser_view->_destroy_more_context_popup();
 }
 
+void Browser_View::__clean_up_windows_test_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_destroy_more_context_popup();
+
+	m_browser->clean_up_windows();
+}
+
 Eina_Bool Browser_View::_show_more_context_popup(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -1691,41 +2496,83 @@ Eina_Bool Browser_View::_show_more_context_popup(void)
 		BROWSER_LOGE("elm_ctxpopup_add failed");
 		return EINA_FALSE;
 	}
+
+	elm_object_style_set(m_more_context_popup, "pass_event");
+
+	edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "show,more_context_bg,signal", "");
+
 	evas_object_size_hint_weight_set(m_more_context_popup, EVAS_HINT_EXPAND,
 								EVAS_HINT_EXPAND);
 	evas_object_smart_callback_add(m_more_context_popup, "dismissed",
 					__more_context_popup_dismissed_cb, this);
 
-	Elm_Object_Item *sub_menu = elm_ctxpopup_item_append(m_more_context_popup,
-						BR_STRING_FORWARD, NULL, __forward_cb, this);
-	if (get_url().empty())
-		elm_object_item_disabled_set(sub_menu, EINA_TRUE);
-	else {
-		Evas_Object *webkit = elm_webview_webkit_get(m_focused_window->m_ewk_view);
-		if (!ewk_view_forward_possible(webkit))
-			elm_object_item_disabled_set(sub_menu, EINA_TRUE);
-	}
-
+	Elm_Object_Item *sub_menu = NULL;
 	elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_DOWNLOAD_MANAGER, NULL,
 							__download_manager_cb, this);
 
-	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_FIND_WORD, NULL,
+	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_FIND_ON_PAGE, NULL,
 							__find_word_cb, this);
-	if (get_url().empty()
+	if (
+#if defined(FEATURE_MOST_VISITED_SITES)
+		is_most_visited_sites_running() ||
+#endif
+		get_url().empty()
 	    || _get_edit_mode() == BR_FIND_WORD_MODE)
 		elm_object_item_disabled_set(sub_menu, EINA_TRUE);
+
+	m_bookmark_on_off_icon = elm_icon_add(m_more_context_popup);
+
+	if(m_data_manager->get_history_db()->is_in_bookmark(get_url().c_str(), NULL)) {
+		if (!elm_icon_file_set(m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+			return EINA_FALSE;
+		}
+	} else {
+		if (!elm_icon_file_set(m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+			return EINA_FALSE;
+		}
+	}
+	evas_object_size_hint_aspect_set(m_bookmark_on_off_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+
+	evas_object_propagate_events_set(m_bookmark_on_off_icon, EINA_FALSE);
+	evas_object_repeat_events_set(m_bookmark_on_off_icon, EINA_FALSE);
+	evas_object_smart_callback_add(m_bookmark_on_off_icon, "clicked", __bookmark_icon_changed_cb, this);
+
+	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_BOOKMARK, m_bookmark_on_off_icon,
+							__bookmark_cb, this);
+	if (
+#if defined(FEATURE_MOST_VISITED_SITES)
+		is_most_visited_sites_running() ||
+#endif
+		get_url().empty()
+	    || _get_edit_mode() == BR_FIND_WORD_MODE)
+		elm_object_item_disabled_set(sub_menu, EINA_TRUE);
+
+	m_private_check = elm_check_add(m_more_context_popup);
+	elm_object_style_set(m_private_check, "on&off");
+	evas_object_smart_callback_add(m_private_check, "changed", __private_check_change_cb, this);
+
+	elm_check_state_set(m_private_check, m_is_private);
+	evas_object_propagate_events_set(m_private_check, EINA_FALSE);
+	evas_object_show(m_private_check);
+
+	elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_PRIVATE, m_private_check,
+								__private_cb, this);
 
 	elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_SETTINGS, NULL,
 							__internet_settings_cb, this);
 
 	elm_ctxpopup_hover_parent_set(m_more_context_popup, m_navi_bar);
 
-	Evas_Coord navibar_width = 0;
-	Evas_Coord navibar_height = 0;
-	evas_object_geometry_get(m_navi_bar, NULL, NULL, &navibar_width, &navibar_height);
+	int controlbar_x = 0;
+	int controlbar_y = 0;
+	int controlbar_w = 0;
+	int controlbar_h = 0;
+	evas_object_geometry_get(m_control_bar, &controlbar_x, &controlbar_y, &controlbar_w, &controlbar_h);
 
-	evas_object_move(m_more_context_popup, BROWSER_MORE_CTX_POPUP_MARGIN * 7,
-					navibar_height - BROWSER_MORE_CTX_POPUP_MARGIN);
+	evas_object_move(m_more_context_popup, (controlbar_w / 5) * 3 + controlbar_w / 10, controlbar_y + (controlbar_h / 2));
+
 	evas_object_show(m_more_context_popup);
 
 	return EINA_TRUE;
@@ -1738,15 +2585,14 @@ void Browser_View::__more_cb(void *data, Evas_Object *obj, void *event_info)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	browser_view->m_context_menu->destroy_context_popup();
-
 	if (browser_view->m_more_context_popup == NULL) {
 		if (!browser_view->_show_more_context_popup())
 			BROWSER_LOGE("_show_more_context_popup failed");
 	} else {
 		browser_view->_destroy_more_context_popup();
 	}
+
+	browser_view->_navigationbar_visible_set(EINA_TRUE);
 }
 
 void Browser_View::_set_controlbar_back_forward_status(void)
@@ -1756,7 +2602,11 @@ void Browser_View::_set_controlbar_back_forward_status(void)
 	if (!ewk_view)
 		return;
 
-	if (get_url().empty())
+	if (
+#if defined(FEATURE_MOST_VISITED_SITES)
+		is_most_visited_sites_running() ||
+#endif
+		get_url().empty())
 		elm_object_item_disabled_set(m_share_controlbar_button, EINA_TRUE);
 	else
 		elm_object_item_disabled_set(m_share_controlbar_button, EINA_FALSE);
@@ -1777,13 +2627,43 @@ void Browser_View::_set_multi_window_controlbar_text(int count)
 Evas_Object *Browser_View::_create_control_bar(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
+	Evas_Object *controlbar_layout;
+	controlbar_layout = elm_layout_add(m_navi_bar);
+	if (!controlbar_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return NULL;
+	}
+	if (!elm_layout_file_set(controlbar_layout, BROWSER_EDJE_DIR"/browser-view-control-bar.edj",
+				"browser-view-controlbar")) {
+		BROWSER_LOGE("Can not set layout browser-view-controlbar\n");
+		return NULL;
+	}
+	evas_object_size_hint_weight_set(controlbar_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(controlbar_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(controlbar_layout);
+
 	Evas_Object *control_bar;
 	control_bar = elm_toolbar_add(m_navi_bar);
 	if (control_bar) {
-		elm_object_style_set(control_bar, "browser/default");
+		elm_object_style_set(control_bar, "browser/browser-view");
 
 		elm_toolbar_shrink_mode_set(control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
 
+		/* New Window Button */
+		m_new_window_button = elm_toolbar_item_append(control_bar,
+					BROWSER_IMAGE_DIR"/I01_controlbar_icon_new_window.png", NULL, __new_window_cb, this);
+		if (!m_new_window_button) {
+			BROWSER_LOGE("elm_toolbar_item_append failed");
+			return NULL;
+		}
+
+		/* Multi Window Button */
+		m_multi_window_button = elm_toolbar_item_append(control_bar,
+					BROWSER_IMAGE_DIR"/01_controlbar_icon_multiview.png", NULL, __multi_window_cb, this);
+		/* Bookmark Button */
+		elm_toolbar_item_append(control_bar, BROWSER_IMAGE_DIR"/I01_controlbar_icon_bookmark.png",
+						NULL, __go_to_bookmark_cb, this);
+		/* More menu Button */
 		m_more_button = elm_toolbar_item_append(control_bar,
 					BROWSER_IMAGE_DIR"/I01_controlbar_icon_more.png", NULL, __more_cb, this);
 		if (!m_more_button) {
@@ -1791,26 +2671,25 @@ Evas_Object *Browser_View::_create_control_bar(void)
 			return NULL;
 		}
 
-		m_multi_window_button = elm_toolbar_item_append(control_bar,
-					BROWSER_IMAGE_DIR"/01_controlbar_icon_multiview.png", NULL, __multi_window_cb, this);
-		elm_toolbar_item_append(control_bar, BROWSER_IMAGE_DIR"/I01_controlbar_icon_bookmark.png",
-						NULL, __go_to_bookmark_cb, this);
+		elm_object_part_content_set(controlbar_layout, "elm.swallow.controlbar", control_bar);
 
-
-		m_backward_button = elm_toolbar_item_append(control_bar,
-					BROWSER_IMAGE_DIR"/01_controlbar_icon_back.png", NULL, __backward_cb, this);
-		if (!m_backward_button) {
-			BROWSER_LOGE("elm_toolbar_item_append failed");
+		m_back_button = elm_button_add(control_bar);
+		if (!m_back_button) {
+			BROWSER_LOGE("elm_button_add failed");
 			return NULL;
 		}
+		elm_object_style_set(m_back_button, "browser/browser_view_controlbar_back");
 
+		elm_object_part_content_set(controlbar_layout, "elm.swallow.back_button", m_back_button);
+		evas_object_smart_callback_add(m_back_button, "clicked", __backward_cb, this);
+		evas_object_show(m_back_button);
 		evas_object_show(control_bar);
 	}
 
-	return control_bar;
+	return controlbar_layout;
 }
 
-/*
+/* 
 * Create two same url layouts similar with other browsers like android & safari.
 * The one(by _create_url_layout) is in the browser scroller and
 * the other(by _create_option_header_url_layout) is in the navigation bar option header.
@@ -1856,7 +2735,7 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 		}
 
 		elm_object_part_content_set(m_option_header_url_entry_layout, "elm.swallow.entry", m_option_header_url_edit_field);
-		br_elm_editfield_entry_single_line_set(m_option_header_url_edit_field, EINA_TRUE);
+//		br_elm_editfield_entry_single_line_set(m_option_header_url_edit_field, EINA_TRUE);
 		br_elm_editfield_eraser_set(m_option_header_url_edit_field, EINA_FALSE);
 
 		Evas_Object *edit_field_entry = br_elm_editfield_entry_get(m_option_header_url_edit_field);
@@ -1884,7 +2763,9 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 			BROWSER_LOGE("elm_progressbar_add failed");
 			return NULL;
 		}
-		elm_object_style_set(m_option_header_url_progresswheel, "browser/loading_wheel");
+
+		elm_object_style_set(m_option_header_url_progresswheel, "UIActivityIndicatorStyleWhite");
+
 		elm_progressbar_pulse(m_option_header_url_progresswheel, EINA_FALSE);
 		elm_object_part_content_set(m_option_header_url_entry_layout, "elm.swallow.progress", m_option_header_url_progresswheel);
 		evas_object_show(m_option_header_url_progresswheel);
@@ -1896,11 +2777,35 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 		}
 		evas_object_size_hint_weight_set(m_option_header_cancel_button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 		evas_object_size_hint_align_set(m_option_header_cancel_button, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		elm_object_style_set(m_option_header_cancel_button, "text_only/style2");
+		elm_object_style_set(m_option_header_cancel_button, "browser/cancel_button");
 		elm_object_text_set(m_option_header_cancel_button, BR_STRING_CANCEL);
 		elm_object_part_content_set(url_layout, "elm.swallow.cancel", m_option_header_cancel_button);
 		evas_object_smart_callback_add(m_option_header_cancel_button, "clicked", __cancel_button_clicked_cb, this);
 		evas_object_show(m_option_header_cancel_button);
+
+		m_option_header_title_backward_button = elm_button_add(m_navi_bar);
+		if (!m_option_header_title_backward_button) {
+			BROWSER_LOGE("elm_button_add failed");
+			return NULL;
+		}
+		elm_object_style_set(m_option_header_title_backward_button, "browser/backward");
+		elm_object_part_content_set(url_layout, "elm.swallow.backward_button", m_option_header_title_backward_button);
+		evas_object_smart_callback_add(m_option_header_title_backward_button, "clicked", __backward_button_clicked_cb, this);
+		elm_object_focus_allow_set(m_option_header_title_backward_button, EINA_FALSE);
+		evas_object_show(m_option_header_title_backward_button);
+		elm_object_disabled_set(m_option_header_title_backward_button, EINA_TRUE);
+
+		m_option_header_title_forward_button = elm_button_add(m_navi_bar);
+		if (!m_option_header_title_forward_button) {
+			BROWSER_LOGE("elm_button_add failed");
+			return NULL;
+		}
+		elm_object_style_set(m_option_header_title_forward_button, "browser/forward");
+		elm_object_part_content_set(url_layout, "elm.swallow.forward_button", m_option_header_title_forward_button);
+		evas_object_smart_callback_add(m_option_header_title_forward_button, "clicked", __forward_button_clicked_cb, this);
+		elm_object_focus_allow_set(m_option_header_title_forward_button, EINA_FALSE);
+		evas_object_show(m_option_header_title_forward_button);
+		elm_object_disabled_set(m_option_header_title_forward_button, EINA_TRUE);
 
 		/* for jump to top. */
 		evas_object_event_callback_add(url_layout, EVAS_CALLBACK_MOUSE_DOWN, __option_header_url_layout_mouse_down_cb, this);
@@ -1911,7 +2816,7 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 
 Evas_Object *Browser_View::_get_activated_url_entry(void)
 {
-	/* The edit field in option header url layout is only valid for edit.
+	/* The edit field in option header url layout is only valid for edit. 
 	  * If the edit field in browser scroller can have focus, there is so many focus issue.
 	  * So just make the edit field in option header editable. */
 	return m_option_header_url_edit_field;
@@ -1932,8 +2837,8 @@ void Browser_View::__url_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, 
 		if (browser_view->m_edit_mode != BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF
 		    && browser_view->m_edit_mode != BR_FIND_WORD_MODE)
 			browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
-
-		browser_view->_set_url_entry(browser_view->get_url().c_str());
+		else
+			return;
 	} else if (value == ECORE_IMF_INPUT_PANEL_STATE_SHOW)
 		/* If the focus of url entry is set automatically, the keypad is also displayed automatically. */
 		/* eg. At url edit mode, lock the screen -> then unlock, the url entry will get focus. */
@@ -1968,14 +2873,28 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 	if (m_edit_mode == mode)
 		return;
 
-	m_context_menu->destroy_context_popup();
-	m_picker_handler->destroy_picker_layout();
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (mode == BR_NO_EDIT_MODE) {
+		if (m_most_visited_sites) {
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "url_guide_text,on,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+								"url_guide_text,on,signal", "");
+		}
+	} else {
+		if (m_most_visited_sites) {
+			edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "url_guide_text,off,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+								"url_guide_text,off,signal", "");
+		}
+	}
+#endif
 
 	if (mode == BR_URL_ENTRY_EDIT_MODE || mode == BR_FIND_WORD_MODE
 	    || mode == BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF) {
+#ifdef BROWSER_SCROLLER_BOUNCING
 		/* If edit mode, lock the browser scroller */
 		_enable_webview_scroll();
-
+#endif
 		/* Make the browser scroller region y = 0 to show url bar all at edit mode. */
 		int scroller_x = 0;
 		int scroller_w = 0;
@@ -1998,41 +2917,12 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "hide,favicon,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 										"hide,favicon,signal", "");
-
-		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "rss,off,signal", "");
-		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
-									"rss,off,signal", "");
-
-		/* change the browser main view layout for edit mode.
-		 *  Display content dim*/
 		edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
 								"edit,url,on,signal", "");
-		if (m_predictive_history)
-			delete m_predictive_history;
-		m_predictive_history = new(nothrow) Browser_Predictive_History(m_navi_bar,
-						m_data_manager->get_history_db(), this);
-		if (!m_predictive_history) {
-			BROWSER_LOGE("new Browser_Predictive_History failed");
-			return;
-		}
-		Evas_Object *predictive_history_layout = m_predictive_history->create_predictive_history_layout();
-		if (!predictive_history_layout) {
-			BROWSER_LOGE("create_predictive_history_layout failed");
-			delete m_predictive_history;
-			m_predictive_history = NULL;
-			return;
-		}
-
-		/* Becaue of predictive hisotry. */
-		Evas_Object *edit_field_entry = br_elm_editfield_entry_get(_get_activated_url_entry());
-		evas_object_smart_callback_del(edit_field_entry, "changed", __url_entry_changed_cb);
-		evas_object_smart_callback_add(edit_field_entry, "changed", __url_entry_changed_cb, this);
-
-		elm_object_part_content_set(m_main_layout, "elm.swallow.predictive_history", predictive_history_layout);
 	} else if (mode == BR_NO_EDIT_MODE || mode == BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF) {
 		if (m_edit_mode == BR_FIND_WORD_MODE) {
 			edje_object_signal_emit(elm_layout_edje_get(m_option_header_layout), "hide,find_word_layout,signal", "");
-			m_find_word->deinit();
+			m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
 		} else {
 			/* change layout of url layout for normal mode. */
 			edje_object_signal_emit(elm_layout_edje_get(m_url_layout), "edit,url,off,signal", "");
@@ -2044,35 +2934,36 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 			edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 						"edit,url,off,signal", "");
 
-			if (m_focused_window->m_favicon)
-				edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
-										"show,favicon,signal", "");
-			if (m_focused_window->m_option_header_favicon)
+#if defined(FEATURE_MOST_VISITED_SITES)
+			if (!is_most_visited_sites_running())
+#endif
+			{
+				if (m_focused_window->m_favicon)
+					edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
+											"show,favicon,signal", "");
+				_set_secure_icon();
+			}
+			if (m_focused_window->m_option_header_favicon) {
 				edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 										"show,favicon,signal", "");
+				_set_secure_icon();
+			}
 
-			/* change the browser main view layout for normal mode.
-			 *  Hide content dim */
 			edje_object_signal_emit(elm_layout_edje_get(m_main_layout),
 						"edit,url,off,signal", "");
-
 			if (_is_loading()) {
 				edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "loading,on,signal", "");
 				edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
 							"loading,on,signal", "");
 			}
-
-			Evas_Object *edit_field_entry = br_elm_editfield_entry_get(_get_activated_url_entry());
-			/* Becaue of predictive hisotry. */
-			evas_object_smart_callback_del(edit_field_entry, "changed", __url_entry_changed_cb);
-			edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "hide,predictive_history,signal", "");
-			elm_object_part_content_unset(m_main_layout, "elm.swallow.predictive_history");
-			if (m_predictive_history) {
-				delete m_predictive_history;
-				m_predictive_history = NULL;
-			}
 		}
 	} else if (mode == BR_FIND_WORD_MODE) {
+		Evas_Object *find_word_edit_field_entry = br_elm_editfield_entry_get(m_find_word_edit_field);
+		elm_entry_entry_set(find_word_edit_field_entry, "");
+
+		evas_object_smart_callback_del(find_word_edit_field_entry, "changed", __find_word_entry_changed_cb);
+		evas_object_smart_callback_add(find_word_edit_field_entry, "changed", __find_word_entry_changed_cb, this);
+
 		edje_object_signal_emit(elm_layout_edje_get(m_option_header_layout), "show,find_word_layout,signal", "");
 	}
 
@@ -2080,6 +2971,21 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 
 	/* To show favicon, if click url entry while loading, then cancel case. */
 	_set_favicon();
+}
+
+/* Workaround
+  * The url entry of option header can't be focusable in case of switch TEXTBLOCK & elm entry.
+  * So focus the url entry in idler callback.
+  */
+static Eina_Bool __url_entry_focus_idler_cb(void *data)
+{
+	Evas_Object *edit_field = (Evas_Object *)data;
+	elm_object_focus_set(edit_field, EINA_TRUE);
+
+	Evas_Object *entry = br_elm_editfield_entry_get(edit_field);
+	elm_entry_cursor_end_set(entry);
+
+	return ECORE_CALLBACK_CANCEL;
 }
 
 void Browser_View::__url_entry_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
@@ -2098,15 +3004,19 @@ void Browser_View::__url_entry_clicked_cb(void *data, Evas_Object *obj, const ch
 		browser_view->_navigationbar_visible_set_signal(EINA_TRUE);
 	}
 
+	browser_view->_destroy_more_context_popup();
+
 	edit_mode mode = browser_view->_get_edit_mode();
 
 	browser_view->_set_edit_mode(BR_URL_ENTRY_EDIT_MODE);
 
 	if (mode == BR_NO_EDIT_MODE) {
-		elm_object_focus_set(browser_view->m_option_header_url_edit_field, EINA_TRUE);
-
 		Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
+
+		elm_object_focus_set(browser_view->m_option_header_url_edit_field, EINA_TRUE);
 		elm_entry_cursor_end_set(entry);
+
+//		ecore_idler_add(__url_entry_focus_idler_cb, browser_view->m_option_header_url_edit_field);
 	}
 }
 
@@ -2127,6 +3037,9 @@ void Browser_View::__cancel_button_clicked_cb(void *data, Evas_Object *obj, void
 		return;
 
 	browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
+
+	elm_object_signal_emit(browser_view->m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
+	elm_object_signal_emit(browser_view->m_url_edit_field, "ellipsis_show,signal", "elm");
 
 	browser_view->_set_url_entry(browser_view->get_url().c_str());
 }
@@ -2172,18 +3085,10 @@ void Browser_View::__url_entry_enter_key_cb(void *data, Evas_Object *obj, void *
 	}
 }
 
+
 void Browser_View::__url_entry_changed_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-	Browser_View *browser_view = (Browser_View *)data;
-
-	Evas_Object *entry = br_elm_editfield_entry_get(browser_view->_get_activated_url_entry());
-	const char *input_text = elm_entry_entry_get(entry);
-	BROWSER_LOGD("[%s]", input_text);
-	if (browser_view->m_predictive_history)
-		browser_view->m_predictive_history->url_changed(input_text);
 }
 
 void Browser_View::__url_layout_mouse_down_cb(void *data, Evas* evas, Evas_Object *obj,
@@ -2193,13 +3098,32 @@ void Browser_View::__url_layout_mouse_down_cb(void *data, Evas* evas, Evas_Objec
 	if (!data)
 		return;
 
+	Evas_Event_Mouse_Down event = *(Evas_Event_Mouse_Down *)event_info;
+
 	Browser_View *browser_view = (Browser_View *)data;
+
+	Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_url_edit_field);
+
+	int entry_x = 0;
+	int entry_y = 0;
+	int entry_w = 0;
+	int entry_h = 0;
+	evas_object_geometry_get(browser_view->m_url_edit_field, &entry_x, &entry_y, &entry_w, &entry_h);
+
+	if (event.output.x > entry_x && event.output.x < entry_x + entry_w &&
+	    event.output.y > entry_y && event.output.y < entry_y + entry_h) {
+		elm_object_signal_emit(browser_view->m_option_header_url_edit_field, "ellipsis_hide,signal", "elm");
+		elm_object_signal_emit(browser_view->m_url_edit_field, "ellipsis_hide,signal", "elm");
+	}
+
 	edit_mode mode = browser_view->_get_edit_mode();
 	if (mode == BR_URL_ENTRY_EDIT_MODE || mode == BR_FIND_WORD_MODE
 		    || mode == BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF) {
+#ifdef BROWSER_SCROLLER_BOUNCING
 		BROWSER_LOGD("<< lock browser scroller >>");
 		elm_object_scroll_freeze_pop(browser_view->m_scroller);
 		elm_object_scroll_freeze_push(browser_view->m_scroller);
+#endif
 	}
 }
 
@@ -2212,11 +3136,63 @@ void Browser_View::__option_header_url_layout_mouse_down_cb(void *data, Evas* ev
 	Evas_Event_Mouse_Down event = *(Evas_Event_Mouse_Down *)event_info;
 	Browser_View *browser_view = (Browser_View *)data;
 
-	int jump_y = 0;
-	evas_object_geometry_get(browser_view->m_option_header_cancel_button, NULL, &jump_y,
-											NULL, NULL);
-	if (event.output.y < jump_y)
+	Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
+
+	int entry_x = 0;
+	int entry_y = 0;
+	int entry_w = 0;
+	int entry_h = 0;
+	evas_object_geometry_get(browser_view->m_option_header_url_edit_field, &entry_x, &entry_y, &entry_w, &entry_h);
+
+	if (event.output.x > entry_x && event.output.x < entry_x + entry_w &&
+	    event.output.y > entry_y && event.output.y < entry_y + entry_h) {
+		elm_object_signal_emit(browser_view->m_option_header_url_edit_field, "ellipsis_hide,signal", "elm");
+		elm_object_signal_emit(browser_view->m_url_edit_field, "ellipsis_hide,signal", "elm");
+	}
+
+	int icon_y = 0;
+	if (event.output.y < icon_y)
 		browser_view->_jump_to_top();
+}
+
+void Browser_View::_update_back_forward_buttons(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (ewk_view_back_possible(m_focused_window->m_ewk_view)) {
+		elm_object_disabled_set(m_title_backward_button, EINA_FALSE);
+		elm_object_disabled_set(m_option_header_title_backward_button, EINA_FALSE);
+	} else {
+		elm_object_disabled_set(m_title_backward_button, EINA_TRUE);
+		elm_object_disabled_set(m_option_header_title_backward_button, EINA_TRUE);
+	}
+
+	if (ewk_view_forward_possible(m_focused_window->m_ewk_view)) {
+		elm_object_disabled_set(m_title_forward_button, EINA_FALSE);
+		elm_object_disabled_set(m_option_header_title_forward_button, EINA_FALSE);
+	} else {
+		elm_object_disabled_set(m_title_forward_button, EINA_TRUE);
+		elm_object_disabled_set(m_option_header_title_forward_button, EINA_TRUE);
+	}
+}
+
+void Browser_View::__backward_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	ewk_view_back(browser_view->m_focused_window->m_ewk_view);
+}
+
+void Browser_View::__forward_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	ewk_view_forward(browser_view->m_focused_window->m_ewk_view);
 }
 
 Evas_Object *Browser_View::_create_url_layout(void)
@@ -2254,7 +3230,7 @@ Evas_Object *Browser_View::_create_url_layout(void)
 			return NULL;
 		}
 		elm_object_part_content_set(m_url_entry_layout, "elm.swallow.entry", m_url_edit_field);
-		br_elm_editfield_entry_single_line_set(m_url_edit_field, EINA_TRUE);
+//		br_elm_editfield_entry_single_line_set(m_url_edit_field, EINA_TRUE);
 		br_elm_editfield_eraser_set(m_url_edit_field, EINA_FALSE);
 
 		Evas_Object *edit_field_entry = br_elm_editfield_entry_get(m_url_edit_field);
@@ -2264,6 +3240,8 @@ Evas_Object *Browser_View::_create_url_layout(void)
 		elm_object_focus_allow_set(m_url_edit_field, EINA_FALSE);
 		elm_object_focus_allow_set(edit_field_entry, EINA_FALSE);
 		elm_entry_input_panel_enabled_set(edit_field_entry, EINA_FALSE);
+
+		elm_entry_text_style_user_push(edit_field_entry, "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
 		evas_object_show(m_url_edit_field);
 
 		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "disable_entry,signal", "");
@@ -2271,7 +3249,7 @@ Evas_Object *Browser_View::_create_url_layout(void)
 						__url_entry_clicked_cb, this);
 
 		edje_object_signal_callback_add(elm_layout_edje_get(m_url_entry_layout), "refresh_stop", "*",
-						__refresh_button_clicked_cb, this);
+						__refresh_button_clicked_cb, this);		
 
 		m_url_progressbar = elm_progressbar_add(m_navi_bar);
 		if (!m_url_progressbar) {
@@ -2288,7 +3266,8 @@ Evas_Object *Browser_View::_create_url_layout(void)
 			BROWSER_LOGE("elm_progressbar_add failed");
 			return NULL;
 		}
-		elm_object_style_set(m_url_progresswheel, "browser/loading_wheel");
+
+		elm_object_style_set(m_url_progresswheel, "UIActivityIndicatorStyleWhite");
 		elm_progressbar_pulse(m_url_progresswheel, EINA_FALSE);
 		elm_object_part_content_set(m_url_entry_layout, "elm.swallow.progress", m_url_progresswheel);
 		evas_object_show(m_url_progresswheel);
@@ -2300,11 +3279,35 @@ Evas_Object *Browser_View::_create_url_layout(void)
 		}
 		evas_object_size_hint_weight_set(m_cancel_button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 		evas_object_size_hint_align_set(m_cancel_button, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		elm_object_style_set(m_cancel_button, "text_only/style2");
+		elm_object_style_set(m_cancel_button, "browser/cancel_button");
 		elm_object_text_set(m_cancel_button, BR_STRING_CANCEL);
 		elm_object_part_content_set(url_layout, "elm.swallow.cancel", m_cancel_button);
 		evas_object_smart_callback_add(m_cancel_button, "clicked", __cancel_button_clicked_cb, this);
 		evas_object_show(m_cancel_button);
+
+		m_title_backward_button = elm_button_add(m_navi_bar);
+		if (!m_title_backward_button) {
+			BROWSER_LOGE("elm_button_add failed");
+			return NULL;
+		}
+		elm_object_style_set(m_title_backward_button, "browser/backward");
+		elm_object_part_content_set(url_layout, "elm.swallow.backward_button", m_title_backward_button);
+		evas_object_smart_callback_add(m_title_backward_button, "clicked", __backward_button_clicked_cb, this);
+		elm_object_focus_allow_set(m_title_backward_button, EINA_FALSE);
+		evas_object_show(m_title_backward_button);
+		elm_object_disabled_set(m_title_backward_button, EINA_TRUE);
+
+		m_title_forward_button = elm_button_add(m_navi_bar);
+		if (!m_title_forward_button) {
+			BROWSER_LOGE("elm_button_add failed");
+			return NULL;
+		}
+		elm_object_style_set(m_title_forward_button, "browser/forward");
+		elm_object_part_content_set(url_layout, "elm.swallow.forward_button", m_title_forward_button);
+		evas_object_smart_callback_add(m_title_forward_button, "clicked", __forward_button_clicked_cb, this);
+		elm_object_focus_allow_set(m_title_forward_button, EINA_FALSE);
+		evas_object_show(m_title_forward_button);
+		elm_object_disabled_set(m_title_forward_button, EINA_TRUE);
 
 		/* Workaround.
 		 * When edit mode, if scroll down on url layout in browser view,
@@ -2317,73 +3320,275 @@ Evas_Object *Browser_View::_create_url_layout(void)
 	return url_layout;
 }
 
-Eina_Bool Browser_View::_search_keyword_from_search_engine(const char *keyword)
+Evas_Object *Browser_View::_create_find_word_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (!keyword || !strlen(keyword)) {
-		BROWSER_LOGE("keyword is null");
-		return EINA_FALSE;
+	Evas_Object *url_layout = elm_layout_add(m_navi_bar);
+	if (!url_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return NULL;
+	}
+	if (!elm_layout_file_set(url_layout, BROWSER_EDJE_DIR"/browser-view-find-word-layout.edj",
+		"browser-view/find_word_layout")) {
+		BROWSER_LOGE("Can not set layout theme[browser-view/find_word_layout]\n");
+		return NULL;
+	}
+	evas_object_size_hint_weight_set(url_layout, EVAS_HINT_EXPAND, 0.0);
+	evas_object_size_hint_align_set(url_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(url_layout);
+
+	/* create url entry layout in url layout */
+	m_find_word_entry_layout = elm_layout_add(m_navi_bar);
+	if (!m_find_word_entry_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return NULL;
+	}
+	if (!elm_layout_file_set(m_find_word_entry_layout, BROWSER_EDJE_DIR"/browser-view-find-word-layout.edj",
+				"browser-view/find_word_editfield_layout")) {
+		BROWSER_LOGE("browser-view/find_word_editfield_layout failed");
+		return NULL;
+	}
+	elm_object_part_content_set(url_layout, "elm.swallow.url", m_find_word_entry_layout);
+	evas_object_show(m_find_word_entry_layout);
+
+	edje_object_part_text_set(elm_layout_edje_get(url_layout), "title_text", BR_STRING_FIND_ON_PAGE);
+
+	m_find_word_edit_field = br_elm_find_word_editfield_add(m_navi_bar);
+	if (!m_find_word_edit_field) {
+		BROWSER_LOGE("elm_editfield_add failed");
+		return NULL;
+	}
+	elm_object_part_content_set(m_find_word_entry_layout, "elm.swallow.entry", m_find_word_edit_field);
+	evas_object_show(m_find_word_edit_field);
+
+	edje_object_signal_emit(elm_layout_edje_get(m_find_word_edit_field), "find_word,signal", "elm");
+
+//	br_elm_editfield_entry_single_line_set(m_find_word_edit_field, EINA_TRUE);
+	br_elm_editfield_eraser_set(m_find_word_edit_field, EINA_TRUE);
+
+	elm_object_signal_callback_add(m_find_word_edit_field, "elm,eraser,clicked", "elm",
+						__find_word_erase_button_clicked_cb, this);
+
+	Evas_Object *find_word_edit_field_entry = br_elm_editfield_entry_get(m_find_word_edit_field);
+	elm_entry_entry_set(find_word_edit_field_entry, "");
+	evas_object_smart_callback_add(find_word_edit_field_entry, "activated", __find_word_entry_enter_key_cb, this);
+	elm_entry_input_panel_layout_set(find_word_edit_field_entry, ELM_INPUT_PANEL_LAYOUT_NORMAL);
+	elm_entry_prediction_allow_set(find_word_edit_field_entry, EINA_FALSE);
+	ecore_imf_context_input_panel_event_callback_add((Ecore_IMF_Context *)elm_entry_imf_context_get(find_word_edit_field_entry),
+			ECORE_IMF_INPUT_PANEL_STATE_EVENT, __find_word_entry_imf_event_cb, this);
+	elm_entry_text_style_user_push(find_word_edit_field_entry, "DEFAULT='font_size=35 color=#3C363 2 ellipsis=1'");
+	evas_object_show(m_find_word_edit_field);
+
+	m_find_word_cancel_button = elm_button_add(m_navi_bar);
+	if (!m_find_word_cancel_button) {
+		BROWSER_LOGE("elm_button_add failed");
+		return NULL;
+	}
+	elm_object_style_set(m_find_word_cancel_button, "browser/cancel_button");
+	elm_object_text_set(m_find_word_cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(url_layout, "elm.swallow.cancel", m_find_word_cancel_button);
+	evas_object_show(m_find_word_cancel_button);
+
+	evas_object_smart_callback_add(m_find_word_cancel_button, "clicked", __find_word_cancel_button_clicked_cb, this);
+
+	m_find_word_prev_button = elm_button_add(m_navi_bar);
+	if (!m_find_word_prev_button) {
+		BROWSER_LOGE("elm_button_add failed");
+		return NULL;
+	}
+	elm_object_style_set(m_find_word_prev_button, "browser/find_word_prev_but");
+	elm_object_part_content_set(url_layout, "elm.swallow.find_word_prev", m_find_word_prev_button);
+	evas_object_show(m_find_word_prev_button);
+	evas_object_smart_callback_add(m_find_word_prev_button, "clicked", __find_word_prev_button_clicked_cb, this);
+
+	m_find_word_next_button = elm_button_add(m_navi_bar);
+	if (!m_find_word_next_button) {
+		BROWSER_LOGE("elm_button_add failed");
+		return NULL;
+	}
+	elm_object_style_set(m_find_word_next_button, "browser/find_word_next_but");
+	elm_object_part_content_set(url_layout, "elm.swallow.find_word_next", m_find_word_next_button);
+	evas_object_show(m_find_word_next_button);
+	evas_object_smart_callback_add(m_find_word_next_button, "clicked", __find_word_next_button_clicked_cb, this);
+
+	const char *current_theme = elm_theme_get(NULL);
+	if (current_theme && strstr(current_theme, "white")) {
+	} else {
+//		edje_object_signal_emit(elm_layout_edje_get(m_find_word_entry_layout),
+//									"black_theme,signal", "");
 	}
 
-	Eina_Bool only_has_space = EINA_FALSE;
-	int space_count = 0;
-	for (int i = 0 ; i < strlen(keyword) ; i++) {
-		if (keyword[i] == ' ')
-			space_count++;
-	}
-	if (space_count == strlen(keyword))
-		only_has_space = EINA_TRUE;
+	return url_layout;
+}
 
-	if (only_has_space) {
-		BROWSER_LOGE("keyword has only spaces");
-		return EINA_FALSE;
-	}
+void Browser_View::__find_word_erase_button_clicked_cb(void *data, Evas_Object *obj,
+								const char *emission, const char *source)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Browser_View *browser_view = (Browser_View *)data;
+	edje_object_part_text_set(elm_layout_edje_get(browser_view->m_option_header_find_word_layout), "elm.index_text", "0/0");
 
-	char *search_engine = vconf_get_str(BROWSER_SEARCH_ENGINE_KEY);
-	if (!search_engine) {
-		search_engine = strdup(BROWSER_GOOGLE);
-		if (!search_engine) {
-			BROWSER_LOGE("strdup failed");
-			return EINA_FALSE;
+	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+}
+
+void Browser_View::__find_word_cancel_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
+	browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+
+	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+}
+void Browser_View::__find_word_prev_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
+	const char *find_word = elm_entry_entry_get(edit_field_entry);
+	if (!find_word || !strlen(find_word))
+		return;
+
+	int index_cnt = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_BACKWARD);
+	int match_max_cnt = browser_view->m_find_word->get_match_max_value();
+
+	if (index_cnt == 1) {
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_TRUE);
+		if (index_cnt != match_max_cnt)
+			elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+	} else {
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	}
+}
+
+void Browser_View::__find_word_next_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
+	const char *find_word = elm_entry_entry_get(edit_field_entry);
+	if (!find_word || !strlen(find_word))
+		return;
+
+	int index_cnt = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+	int match_max_cnt = browser_view->m_find_word->get_match_max_value();
+
+	if (index_cnt == match_max_cnt) {
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_TRUE);
+		if (match_max_cnt != 1)
+			elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	} else {
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	}
+}
+
+void Browser_View::__find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value)
+{
+	BROWSER_LOGD("value=%d", value);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *find_word_editfield_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
+	elm_object_focus_set(find_word_editfield_entry, EINA_FALSE);
+	const char *find_word = elm_entry_entry_get(find_word_editfield_entry);
+
+	if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE) {
+		int match_max_cnt = browser_view->m_find_word->get_match_max_value();
+		if (match_max_cnt == 0 || match_max_cnt == 1) {
+			elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_TRUE);
+			elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_TRUE);
 		}
-	}
-
-	std::string search_url_prefix;
-	if (!strncmp(search_engine, BROWSER_GOOGLE, strlen(BROWSER_GOOGLE)))
-		search_url_prefix = std::string(BROWSER_SEARCH_URL_GOOGLE);
-	else if (!strncmp(search_engine, BROWSER_YAHOO, strlen(BROWSER_YAHOO)))
-		search_url_prefix = std::string(BROWSER_SEARCH_URL_YAHOO);
-
-	if (search_url_prefix.empty()) {
-		BROWSER_LOGE("search_url_prefix is empty");
-		return EINA_FALSE;
-	}
-
-	std::string search_url = search_url_prefix + std::string(keyword);
-	load_url(search_url.c_str());
-
-	return EINA_TRUE;
+	} else
+		elm_object_focus_set(find_word_editfield_entry, EINA_TRUE);
 }
 
 void Browser_View::_enable_browser_scroller_scroll(void)
 {
-	if (!elm_webview_vertical_panning_hold_get(m_focused_window->m_ewk_view)
-	     && !m_is_multi_touch && !_is_loading()
-	     && !elm_webview_fixed_position_get(m_focused_window->m_ewk_view)) {
+#ifdef BROWSER_SCROLLER_BOUNCING
+	if (!ewk_view_vertical_panning_hold_get(m_focused_window->m_ewk_view)
+	     && !_is_loading() && !m_is_full_screen) {
 		BROWSER_LOGD("<< unlock browser scroller, lock ewk view >>");
 		elm_object_scroll_freeze_pop(m_scroller);
-		elm_webview_vertical_panning_hold_set(m_focused_window->m_ewk_view, EINA_TRUE);
+		ewk_view_vertical_panning_hold_set(m_focused_window->m_ewk_view, EINA_TRUE);
 	}
+#endif
 }
 
 void Browser_View::_enable_webview_scroll(void)
 {
-//	if (elm_webview_vertical_panning_hold_get(m_focused_window->m_ewk_view)) 
-	{
-//		BROWSER_LOGD("<< lock browser scroller, unlock ewk view >>");
+#ifdef BROWSER_SCROLLER_BOUNCING
+	if (ewk_view_vertical_panning_hold_get(m_focused_window->m_ewk_view)) {
+		BROWSER_LOGD("<< lock browser scroller, unlock ewk view >>");
 		elm_object_scroll_freeze_pop(m_scroller);
 		elm_object_scroll_freeze_push(m_scroller);
-		elm_webview_vertical_panning_hold_set(m_focused_window->m_ewk_view, EINA_FALSE);
+		ewk_view_vertical_panning_hold_set(m_focused_window->m_ewk_view, EINA_FALSE);
+	}
+#endif
+}
+
+void Browser_View::__find_word_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
+	const char *find_word = elm_entry_entry_get(edit_field_entry);
+	if (!find_word || !strlen(find_word))
+		return;
+
+	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+
+	browser_view->m_find_word->init_index();
+	browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+
+	elm_object_focus_set(edit_field_entry, EINA_FALSE);
+	BROWSER_LOGD("find_word=[%s]", find_word);
+}
+
+void Browser_View::__find_word_entry_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
+
+	const char *find_word = elm_entry_entry_get(edit_field_entry);
+
+	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
+		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
+	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
+		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
+
+	if (!find_word || !strlen(find_word)) {
+		browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+	} else {
+		browser_view->m_find_word->init_index();
+		browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
 	}
 }
 
@@ -2396,6 +3601,9 @@ void Browser_View::_navigationbar_title_clicked(void)
 		return;
 
 	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)
+#if defined(FEATURE_MOST_VISITED_SITES)
+	    || is_most_visited_sites_running()
+#endif
 	    || m_edit_mode != BR_NO_EDIT_MODE)
 	    return;
 
@@ -2413,18 +3621,23 @@ void Browser_View::_navigationbar_title_clicked(void)
 		if(state && !strncmp(state, "default", strlen("default")))
 			edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "show,control_bar,signal", "");
 		else {
+#ifdef BROWSER_SCROLLER_BOUNCING
 			int url_layout_h = 0;
 			evas_object_geometry_get(m_url_layout, NULL, NULL, NULL, &url_layout_h);
 			elm_scroller_region_bring_in(m_scroller ,scroller_x, url_layout_h, scroller_w, scroller_h);
+#endif
 		}
 	} else {
 		if (_is_loading()) {
 		} else {
 			Eina_Bool visible = _navigationbar_visible_get();
+#ifdef BROWSER_SCROLLER_BOUNCING
 			_navigationbar_visible_set(!visible);
+#endif
 		}
 	}
 }
+
 
 void Browser_View::_jump_to_top(void)
 {
@@ -2435,6 +3648,9 @@ void Browser_View::_jump_to_top(void)
 		return;
 
 	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)
+#if defined(FEATURE_MOST_VISITED_SITES)
+	    || is_most_visited_sites_running()
+#endif
 	    || m_edit_mode != BR_NO_EDIT_MODE)
 		return;
 
@@ -2445,13 +3661,7 @@ void Browser_View::_jump_to_top(void)
 				&browser_scroller_w, &browser_scroller_h);
 	elm_scroller_region_show(m_scroller, browser_scroller_x, 0, browser_scroller_w, browser_scroller_h);
 
-	Evas_Object *webkit = elm_webview_webkit_get(m_focused_window->m_ewk_view);
-	int frame_x = 0;
-	int frame_y = 0;
-	if (!ewk_frame_scroll_pos_get(ewk_view_frame_main_get(webkit), &frame_x, &frame_y))
-		BROWSER_LOGE("_scroll_pos_get is failed.\n");
-	if (!ewk_frame_scroll_set(ewk_view_frame_main_get(webkit), frame_x, 0))
-		BROWSER_LOGE("ewk_frame_scroll_set is failed.\n");
+	ewk_view_top_of_contents_go(m_focused_window->m_ewk_view);
 }
 
 void Browser_View::delete_non_user_created_windows(void)
@@ -2464,26 +3674,14 @@ void Browser_View::delete_non_user_created_windows(void)
 	if (window_count <= 1)
 		return;
 
-	Browser_Window *focusable_window = NULL;
 	int i = 0;
 	for (i = 0 ; i < window_count ; i++) {
-		if (window_list[i]->m_ewk_view && window_list[i]->m_created_by_user == EINA_TRUE) {
-			focusable_window = window_list[i];
-			break;
-		}
-	}
-
-	if (!focusable_window)
-		focusable_window = window_list[0];
-
-	for (i = 0 ; i < window_count ; i++) {
-		BROWSER_LOGD("focusable_window = %d, window[%d]=%d", focusable_window, i, window_list[i]);
+		BROWSER_LOGD("focusable_window = %d, window[%d]=%d", m_focused_window, i, window_list[i]);
 		if (window_list[i]->m_ewk_view
-		     &&!ewk_view_back_possible(elm_webview_webkit_get(window_list[i]->m_ewk_view))
-		     && window_list[i] != focusable_window
+		     &&!ewk_view_back_possible(window_list[i]->m_ewk_view)
+		     && window_list[i] != m_focused_window
 		     && window_list[i]->m_created_by_user == EINA_FALSE) {
 			BROWSER_LOGD("delete window index=[%d]", i);
-			m_browser->set_focused_window(focusable_window);
 			m_browser->delete_window(window_list[i]);
 
 			/* Set title & url with the focused window. */
@@ -2511,11 +3709,9 @@ void Browser_View::__title_back_button_clicked_cb(void *data , Evas_Object *obj,
 	Browser_View *browser_view = (Browser_View *)data;
 
 	if (browser_view->m_focused_window->m_ewk_view
-	    && ewk_view_back_possible(elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view))) {
-		if (!ewk_view_back(elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view)))
-			BROWSER_LOGE("ewk_view_back failed");
-	} else
-	{
+	    && ewk_view_back_possible(browser_view->m_focused_window->m_ewk_view))
+	    	ewk_view_back(browser_view->m_focused_window->m_ewk_view);
+	else {
 		if (browser_view->m_focused_window->m_parent) {
 			/* Save current window pointer to delete later. */
 			Browser_Window *delete_window = browser_view->m_focused_window;
@@ -2538,6 +3734,7 @@ void Browser_View::__title_back_button_clicked_cb(void *data , Evas_Object *obj,
 
 void Browser_View::__scroller_scroll_cb(void *data, Evas_Object *obj, void *event_info)
 {
+#ifdef BROWSER_SCROLLER_BOUNCING
 	if (!data)
 		return;
 
@@ -2558,11 +3755,10 @@ void Browser_View::__scroller_scroll_cb(void *data, Evas_Object *obj, void *even
 	 * It's because the browser scroller region y is also bouncing.
 	 * So if the scroller region y is bigger than the height of url bar(65 pixel),
 	 * make the region y to url bar height by force. */
-	if (browser_scroller_y > url_layout_h) {
-		BROWSER_LOGE("== elm_scroller_region_show / hide url bar ==");
+	if (browser_scroller_y > url_layout_h)
 		elm_scroller_region_show(browser_view->m_scroller, browser_scroller_x, url_layout_h,
 					browser_scroller_w, browser_scroller_h);
-	}
+#endif
 }
 
 Eina_Bool Browser_View::_is_loading(void)
@@ -2570,46 +3766,85 @@ Eina_Bool Browser_View::_is_loading(void)
 	if (!m_focused_window || !m_focused_window->m_ewk_view)
 		return EINA_FALSE;
 
-	Evas_Object *webkit = elm_webview_webkit_get(m_focused_window->m_ewk_view);
-	if (!webkit) {
-		BROWSER_LOGE("elm_webview_webkit_get is failed\n");
-		return EINA_FALSE;
-	}
-	double progress = ewk_view_load_progress_get(webkit);
-
+	double progress = ewk_view_load_progress_get(m_focused_window->m_ewk_view);
+//	BROWSER_LOGD("progress=%f", progress);
 	if (progress == 1.0f || progress < 0.05f)
 		return EINA_FALSE;
 	else
 		return EINA_TRUE;
 }
 
-void Browser_View::suspend_webview(Evas_Object *webview)
+#if defined(HORIZONTAL_UI)
+Eina_Bool Browser_View::is_available_to_rotate(void)
+{
+	BROWSER_LOGD("\n");
+	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)) {
+		if (m_data_manager->get_multi_window_view()->is_reordering_mode())
+			return EINA_FALSE;
+	}
+
+	if (m_scissorbox_view)
+		return EINA_FALSE;
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::__rotate_multi_window_cb(void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->m_multi_window_rotate_timer = NULL;
+	browser_view->_rotate_multi_window();
+
+	return ECORE_CALLBACK_CANCEL;
+}
+
+void Browser_View::rotate(int degree)
+{
+	BROWSER_LOGD("\n");
+	/* In landscape mode, if the url bar is not displayed -> rotate to portrait mode.
+	 * Then the url bar is displayed. To avoid this issue, remember the scroller region y,
+	 * then restore it at portrait mode. */
+	int scroller_region_y = 0;
+	elm_scroller_region_get(m_scroller, NULL, &scroller_region_y, NULL, NULL);
+	m_scroller_region_y = scroller_region_y;
+
+	m_rotate_degree = degree;
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (m_most_visited_sites)
+		m_most_visited_sites->rotate();
+#endif
+	if (m_scissorbox_view)
+		_destroy_scissorbox_view();
+}
+#endif
+void Browser_View::suspend_ewk_view(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	Evas_Object *webkit = elm_webview_webkit_get(webview);
-	ewk_view_visibility_state_set(webkit, EWK_PAGE_VISIBILITY_STATE_VISIBLE, EINA_FALSE);
-	ewk_view_pause_or_resume_plugins(webkit, EINA_TRUE);
-	ewk_view_pause_or_resume_video_audio(webkit, EINA_TRUE);
-	ewk_view_javascript_suspend(webkit);
-	ewk_view_disable_render(webkit);
-	ewk_view_suspend_request(webkit);
+	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
+	for (int i = 0 ; i < window_list.size() ; i++) {
+		if (window_list[i]->m_ewk_view_layout) {
+			edje_object_signal_emit(elm_layout_edje_get(window_list[i]->m_ewk_view_layout),
+								"unresizable,signal", "");
+
+		}
+	}
+
+	ewk_view_suspend(ewk_view);
+	ewk_view_visibility_set(ewk_view, EINA_FALSE);
 }
 
-void Browser_View::resume_webview(Evas_Object *webview)
+void Browser_View::resume_ewk_view(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
 	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW))
 		return;
 
-	Evas_Object *webkit = elm_webview_webkit_get(webview);
-	ewk_view_visibility_state_set(webkit, EWK_PAGE_VISIBILITY_STATE_VISIBLE, EINA_TRUE);
-	ewk_view_pause_or_resume_plugins(webkit, EINA_FALSE);
-	ewk_view_pause_or_resume_video_audio(webkit, EINA_FALSE);
-	ewk_view_javascript_resume(webkit);
-	ewk_view_enable_render(webkit);
-	ewk_view_resume_request(webkit);
+	ewk_view_resume(ewk_view);
+	ewk_view_visibility_set(ewk_view, EINA_TRUE);
 }
 
 void Browser_View::pause(void)
@@ -2624,9 +3859,14 @@ void Browser_View::pause(void)
 			elm_progressbar_pulse(m_url_progresswheel, EINA_FALSE);
 	}
 
+	set_full_sreen(EINA_FALSE);
+
 	ug_pause();
 
-	suspend_webview(m_focused_window->m_ewk_view);
+	suspend_ewk_view(m_focused_window->m_ewk_view);
+
+	/* stop vibration */
+	_haptic_device_stop();
 }
 
 void Browser_View::resume(void)
@@ -2643,7 +3883,7 @@ void Browser_View::resume(void)
 
 	ug_resume();
 
-	resume_webview(m_focused_window->m_ewk_view);
+	resume_ewk_view(m_focused_window->m_ewk_view);
 }
 
 void Browser_View::reset(void)
@@ -2661,25 +3901,31 @@ Eina_Bool Browser_View::__webview_layout_resize_idler_cb(void *data)
 
 	Browser_View *browser_view = (Browser_View *)data;
 
+	browser_view->m_resize_idler = NULL;
+
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_focused_window->m_ewk_view_layout),
+						"resizable,signal", "");
+
 	int content_w = 0;
 	int content_h = 0;
+#ifdef BROWSER_SCROLLER_BOUNCING	
 	edje_object_part_geometry_get(elm_layout_edje_get(browser_view->m_main_layout),
 				"elm.swallow.content", NULL, NULL, &content_w, &content_h);
-	evas_object_size_hint_min_set(browser_view->m_focused_window->m_ewk_view,
-				content_w, content_h);
-	evas_object_resize(browser_view->m_focused_window->m_ewk_view,
-				content_w, content_h);
-
-	/*
-	* For the first time, the background color is white initially.
-	* If the background is not displayed yet, show the grey background.
-	* This code is executed only one time at launching time.
-	*/
-	const char* state = edje_object_part_state_get(elm_layout_edje_get(browser_view->m_main_layout),
-							"contents_bg", NULL);
-	if(state && !strncmp(state, "default", strlen("default")))
-		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout),
-						"show,grey_background,signal", "");
+#else
+	edje_object_part_geometry_get(elm_layout_edje_get(browser_view->m_focused_window->m_ewk_view_layout),
+				"elm.swallow.webview", NULL, NULL, &content_w, &content_h);
+#endif
+	if (browser_view->m_is_full_screen) {
+		int browser_scroller_y = 0;
+		evas_object_geometry_get(browser_view->m_scroller, NULL, &browser_scroller_y, NULL, NULL);
+		evas_object_resize(browser_view->m_focused_window->m_ewk_view,
+					content_w, content_h + browser_scroller_y);
+	} else {
+		evas_object_size_hint_min_set(browser_view->m_focused_window->m_ewk_view_layout,
+					content_w, content_h);
+		evas_object_resize(browser_view->m_focused_window->m_ewk_view_layout,
+					content_w, content_h);
+	}
 
 	return ECORE_CALLBACK_CANCEL;
 }
@@ -2697,7 +3943,7 @@ Eina_Bool Browser_View::__scroller_bring_in_idler_cb(void *data)
 	BROWSER_LOGD("<< elm_scroller_region_bring_in , url_layout_h=%d >>", url_layout_h);
 	int browser_scroller_x = 0;
 	int browser_scroller_w = 0;
-	int browser_scroller_h = 0;
+	int browser_scroller_h = 0;			
 	elm_scroller_region_get(browser_view->m_scroller, &browser_scroller_x, NULL,
 					&browser_scroller_w, &browser_scroller_h);
 	elm_scroller_region_show(browser_view->m_scroller, browser_scroller_x, url_layout_h,
@@ -2710,7 +3956,7 @@ Eina_Bool Browser_View::__scroller_bring_in_idler_cb(void *data)
  * If user invokes the keypad via input field or url entry, resize the webview.
  * The only scroller resize is called when the keypad is launched.
  * Other elements like layout, conformant resize event doesn't come. */
-void Browser_View::__scoller_resize_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
+void Browser_View::__scroller_resize_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
@@ -2718,16 +3964,29 @@ void Browser_View::__scoller_resize_cb(void* data, Evas* evas, Evas_Object* obj,
 
 	Browser_View *browser_view = (Browser_View *)data;
 
+	if (browser_view->m_is_full_screen) {
+		ecore_idler_add(__webview_layout_resize_idler_cb, browser_view);
+		return;
+	}
+
 	int scroller_w = 0;
 	int scroller_h = 0;
 	evas_object_geometry_get(browser_view->m_scroller, NULL, NULL, &scroller_w, &scroller_h);
-	if (browser_view->m_focused_window && browser_view->m_focused_window->m_ewk_view) {
-		evas_object_size_hint_min_set(browser_view->m_focused_window->m_ewk_view,
+	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
+
+	for (int i = 0 ; i < window_list.size() ; i++) {
+		if (window_list[i]->m_ewk_view_layout) {
+			edje_object_signal_emit(elm_layout_edje_get(window_list[i]->m_ewk_view_layout),
+								"resizable,signal", "");
+
+			evas_object_size_hint_min_set(window_list[i]->m_ewk_view_layout,
+										scroller_w, scroller_h);
+			evas_object_resize(window_list[i]->m_ewk_view_layout,
 									scroller_w, scroller_h);
-		evas_object_resize(browser_view->m_focused_window->m_ewk_view,
-								scroller_w, scroller_h);
+		}
 	}
 
+#if defined(HORIZONTAL_UI)
 	Evas_Object *edit_field_entry;
 	edit_field_entry = br_elm_editfield_entry_get(browser_view->_get_activated_url_entry());
 	Ecore_IMF_Context *ic = (Ecore_IMF_Context *)elm_entry_imf_context_get(edit_field_entry);
@@ -2743,8 +4002,23 @@ void Browser_View::__scoller_resize_cb(void* data, Evas* evas, Evas_Object* obj,
 			ecore_idler_add(__scroller_bring_in_idler_cb, browser_view);
 		}
 	}
+#endif
+
+	if (m_data_manager->is_in_view_stack(BR_MULTI_WINDOW_VIEW)) {
+		BROWSER_LOGD("close multi window");
+		browser_view->m_is_multi_window_grid_mode = m_data_manager->get_multi_window_view()->_is_grid_mode();
+		m_data_manager->get_multi_window_view()->close_multi_window();
+
+#if defined(HORIZONTAL_UI)
+		if (browser_view->m_multi_window_rotate_timer)
+			ecore_timer_del(browser_view->m_multi_window_rotate_timer);
+		browser_view->m_multi_window_rotate_timer = ecore_timer_add(0.2, __rotate_multi_window_cb, browser_view);
+#endif
+	}
 }
 
+
+#ifdef ZOOM_BUTTON
 Eina_Bool Browser_View::__zoom_button_timeout_cb(void *data)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -2766,35 +4040,12 @@ void Browser_View::__zoom_out_clicked_cb(void *data, Evas_Object *obj, void *eve
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	Evas_Object *webkit = elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view);
-	float current_zoom_rate = ewk_view_zoom_get(webkit);
-	ewk_view_zoom_set(webkit, current_zoom_rate - 0.5f, 0, 0);
+	double scale_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
+	ewk_view_scale_set(browser_view->m_focused_window->m_ewk_view, scale_factor - 0.5f, 0, 0);
 
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
 	browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
-
-	current_zoom_rate = ewk_view_zoom_get(webkit);
-	float max_zoom_rate = ewk_view_zoom_range_max_get(webkit);
-	float min_zoom_rate = ewk_view_zoom_range_min_get(webkit);
-
-	Eina_Bool can_zoom_in = EINA_TRUE;
-	Eina_Bool can_zoom_out = EINA_TRUE;
-	if (current_zoom_rate >= max_zoom_rate)
-		can_zoom_in = EINA_FALSE;
-	if (current_zoom_rate <= min_zoom_rate)
-		can_zoom_out = EINA_FALSE;
-
-	if (!can_zoom_in)
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_FALSE);
-
-	if (!can_zoom_out)
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_FALSE);
 }
 
 void Browser_View::__zoom_in_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -2804,35 +4055,12 @@ void Browser_View::__zoom_in_clicked_cb(void *data, Evas_Object *obj, void *even
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	Evas_Object *webkit = elm_webview_webkit_get(browser_view->m_focused_window->m_ewk_view);
-	float current_zoom_rate = ewk_view_zoom_get(webkit);
-	ewk_view_zoom_set(webkit, current_zoom_rate + 0.5f, 0, 0);
+	double scale_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
+	ewk_view_scale_set(browser_view->m_focused_window->m_ewk_view, scale_factor + 0.5f, 0, 0);
 
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
 	browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
-
-	current_zoom_rate = ewk_view_zoom_get(webkit);
-	float max_zoom_rate = ewk_view_zoom_range_max_get(webkit);
-	float min_zoom_rate = ewk_view_zoom_range_min_get(webkit);
-
-	Eina_Bool can_zoom_in = EINA_TRUE;
-	Eina_Bool can_zoom_out = EINA_TRUE;
-	if (current_zoom_rate >= max_zoom_rate)
-		can_zoom_in = EINA_FALSE;
-	if (current_zoom_rate <= min_zoom_rate)
-		can_zoom_out = EINA_FALSE;
-
-	if (!can_zoom_in)
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_in_button ,EINA_FALSE);
-
-	if (!can_zoom_out)
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_TRUE);
-	else
-		elm_object_disabled_set(browser_view->m_zoom_out_button ,EINA_FALSE);
 }
 
 Eina_Bool Browser_View::_create_zoom_buttons(void)
@@ -2861,6 +4089,8 @@ Eina_Bool Browser_View::_create_zoom_buttons(void)
 
 	return EINA_TRUE;
 }
+#endif
+
 void Browser_View::__naviframe_pop_finished_cb(void *data , Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -2870,23 +4100,22 @@ void Browser_View::__naviframe_pop_finished_cb(void *data , Evas_Object *obj, vo
 	Browser_View *browser_view = (Browser_View *)data;
 	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
 
-	if (browser_view->m_navi_it != elm_naviframe_top_item_get(m_navi_bar)) {
-		browser_view->suspend_webview(browser_view->m_focused_window->m_ewk_view);
+	if (browser_view->m_navi_it != elm_naviframe_top_item_get(m_navi_bar))
 		return;
-	}
 
 	m_data_manager->destroy_bookmark_view();
 	m_data_manager->destroy_history_layout();
 	/* Add to bookmark, then cancel. */
 	m_data_manager->destroy_add_to_bookmark_view();
+#if defined(FEATURE_MOST_VISITED_SITES)
+	m_data_manager->destroy_add_to_most_visited_sites_view();
+#endif
 
 	/* If return from browser settings. */
 	if (browser_view->m_browser_settings) {
 		delete browser_view->m_browser_settings;
 		browser_view->m_browser_settings = NULL;
 	}
-
-	browser_view->resume_webview(browser_view->m_focused_window->m_ewk_view);
 }
 
 void Browser_View::__dim_area_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
@@ -2898,6 +4127,17 @@ void Browser_View::__dim_area_clicked_cb(void *data, Evas_Object *obj, const cha
 	Browser_View *browser_view = (Browser_View *)data;
 
 	elm_object_focus_set(m_data_manager->get_browser_view()->m_option_header_cancel_button, EINA_TRUE);
+}
+
+void Browser_View::__context_menu_bg_mouse_down_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+
+	browser_view->_destroy_more_context_popup();
 }
 
 Eina_Bool Browser_View::_create_main_layout(void)
@@ -2949,14 +4189,18 @@ Eina_Bool Browser_View::_create_main_layout(void)
 	elm_scroller_policy_set(m_scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
 	evas_object_size_hint_align_set(m_scroller, EVAS_HINT_FILL, 0.0);
 	evas_object_size_hint_weight_set(m_scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
+#ifdef BROWSER_SCROLLER_BOUNCING
+//	elm_scroller_bounce_set(m_scroller, EINA_FALSE, EINA_TRUE);
 	elm_scroller_bounce_set(m_scroller, EINA_FALSE, EINA_FALSE);
-
+#else
+	elm_scroller_bounce_set(m_scroller, EINA_FALSE, EINA_FALSE);
+	elm_object_scroll_freeze_pop(m_scroller);
+	elm_object_scroll_freeze_push(m_scroller);
+#endif
 	evas_object_show(m_scroller);
 
 	evas_object_smart_callback_add(m_scroller, "scroll", __scroller_scroll_cb, this);
-	evas_object_event_callback_add(m_scroller, EVAS_CALLBACK_RESIZE, __scoller_resize_cb, this);
-	evas_object_smart_callback_add(m_scroller, "edge,bottom", __scroller_edge_bottom_cb, this);
+	evas_object_event_callback_add(m_scroller, EVAS_CALLBACK_RESIZE, __scroller_resize_cb, this);
 
 	/* create content box which contains navigation layout & webview */
 	m_content_box = elm_box_add(m_main_layout);
@@ -3036,30 +4280,35 @@ Eina_Bool Browser_View::_create_main_layout(void)
 	elm_object_part_content_set(m_option_header_layout, "elm.swallow.url_layout", m_option_header_url_layout);
 	evas_object_show(m_option_header_layout);
 
-	Evas_Object *find_word_layout = m_find_word->get_layout();
-	if (!find_word_layout) {
+	m_option_header_find_word_layout = _create_find_word_layout();
+	if (!m_option_header_find_word_layout) {
 		BROWSER_LOGE("_create_find_word_layout failed");
 		return EINA_FALSE;
 	}
-	elm_object_part_content_set(m_option_header_layout, "elm.swallow.find_word_layout", find_word_layout);
+	elm_object_part_content_set(m_option_header_layout, "elm.swallow.find_word_layout", m_option_header_find_word_layout);
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_OPTIONHEADER, m_option_header_layout);
 	_navigationbar_visible_set_signal(EINA_FALSE);
 
+#ifdef ZOOM_BUTTON
 	if (!_create_zoom_buttons()) {
 		BROWSER_LOGE("_create_zoom_buttons failed");
 		return EINA_FALSE;
 	}
+#endif
 
 	edje_object_signal_callback_add(elm_layout_edje_get(m_main_layout),
 					"mouse,clicked,1", "elm.rect.content_dim", __dim_area_clicked_cb, this);
 
+	edje_object_signal_callback_add(elm_layout_edje_get(m_main_layout),
+					"mouse,down,1", "elm.rect.more_context_bg", __context_menu_bg_mouse_down_cb, this);
+
 	const char *current_theme = elm_theme_get(NULL);
 	if (current_theme && strstr(current_theme, "white")) {
 	} else {
-		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "black_theme,signal", "");
-		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
-										"black_theme,signal", "");
+//		edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout), "black_theme,signal", "");
+//		edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+//										"black_theme,signal", "");
 	}
 
 	return EINA_TRUE;

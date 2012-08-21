@@ -1,29 +1,32 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #ifndef BROWSER_CONFIG_H
 #define BROWSER_CONFIG_H
 
-#include <appcore-efl.h>
+#include <account.h>
 #include <appsvc.h>
 #include <app_service.h>
 #include <app_manager.h>
 #include <aul.h>
 #include <bundle.h>
 #include <cairo.h>
+#include <cairo-pdf.h>
+#include <haptic.h>
 #include <dirent.h>
 #include <gio/gio.h>
 #include <glib.h>
@@ -34,29 +37,52 @@
 #include <stdlib.h>
 #include <ui-gadget.h>
 #include <unistd.h>
+#include <url_download.h>
 #include <utilX.h>
 #include <vconf.h>
 #include <Elementary.h>
-#include <Elementary_webview.h>
 #include <Ecore.h>
 #include <Ecore_IMF.h>
 #include <Ecore_X.h>
 #include <Evas.h>
-#include <EWebKit.h>
-#include <devman_haptic.h>
 
 #include <cstdio>
-#include <ewk_main.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <map>
 #include <set>
 #include <string>
+#include <syspopup_caller.h>
 #include <vector>
+#include <vconf-internal-keys.h>
 
 #include "browser-dlog.h"
 #include "browser-string.h"
+
+#define BUILDING_EFL__
+#include <WebKit2/WebKit2.h>
+#include <WebKit2/EWebKit2.h>
+
+#include <WebKit2/WKArray.h>
+#include <WebKit2/WKContextMenuItem.h>
+#include <WebKit2/WKContextMenuItemTypes.h>
+#include <WebKit2/WKContextTizen.h>
+#include <WebKit2/WKContextPrivate.h>
+#include <WebKit2/WKCookieManager.h>
+#include <WebKit2/WKDictionary.h>
+#include <WebKit2/WKDownload.h>
+#include <WebKit2/WKIconDatabase.h>
+#include <WebKit2/WKIconDatabaseEfl.h>
+#include <WebKit2/WKImageCairo.h>
+#include <WebKit2/WKGeolocationManager.h>
+#include <WebKit2/WKGeolocationPermissionRequest.h>
+#include <WebKit2/WKPageTizen.h>
+#include <WebKit2/WKPreferencesEfl.h>
+#include <WebKit2/WKResourceCacheManager.h>
+#include <WebKit2/WKSecurityOrigin.h>
+#include <WebKit2/WKURLRequestEfl.h>
+#include <WebKit2/WKURLResponseEfl.h>
 
 #define BROWSER_PACKAGE_NAME "browser"
 #define BROWSER_EDJE_DIR "/opt/apps/org.tizen.browser/res/edje"
@@ -69,12 +95,12 @@
 #define BROWSER_FILE_SCHEME "file://"
 #define BROWSER_RTSP_SCHEME "rtsp://"
 #define BROWSER_MAIL_TO_SCHEME "mailto:"
-#define BROWSER_TEL_SCHEME "tel:"
 #define BROWSER_SMS_SCHEME "sms:"
-#define BROWSER_VTEL_SCHEME "vtel:"
+#define BROWSER_SMS_TO_SCHEME "smsto:"
+#define BROWSER_MMS_SCHEME "mms:"
+#define BROWSER_MMS_TO_SCHEME "mmsto:"
 #define BROWSER_WTAI_SCHEME "wtai://"
-#define BROWSER_DAUM_TV_SCHEME "daumtv://"
-#define BROWSER_YOUTUBE_SCHEME "vnd.youtube"
+#define BROWSER_WTAI_WP_AP_SCHEME "wtai://wp/ap;"
 
 #define BROWSER_DEFAULT_USER_HOMEPAGE	"www.tizen.org"
 
@@ -87,72 +113,52 @@
 #define BROWSER_PREDICTIVE_HISTORY_THEME BROWSER_EDJE_DIR"/browser-predictive-history.edj"
 #define BROWSER_SETTINGS_THEME BROWSER_EDJE_DIR"/browser-settings.edj"
 #define BROWSER_BOOKMARK_THEME BROWSER_EDJE_DIR"/browser-bookmark-view.edj"
+#if defined(FEATURE_MOST_VISITED_SITES)
 #define BROWSER_MOST_VISITED_SITES_THEME BROWSER_EDJE_DIR"/most-visited-sites.edj"
 #define BROWSER_MOST_VISITED_THEME BROWSER_EDJE_DIR"/browser-most-visited.edj"
+#endif
 #define BROWSER_FIND_WORD_LAYOUT_THEME BROWSER_EDJE_DIR"/browser-view-find-word-layout.edj"
 
 /* browser vconf path */
 #define BROWSER_VCONF_PREFIX	"db/browser/"
 #define BROWSER_SETTING_VCONF_PREFIX "db/browsersetting/"
-#define SHOW_MY_SITES_GUIDE	BROWSER_VCONF_PREFIX"ShowMySitesGuide"
-#define BROWSER_BRIGHTNESS_LEVEL_KEY	BROWSER_VCONF_PREFIX"BrowserBrightnessLevel"
-#define LAST_VISITED_URL_KEY	BROWSER_SETTING_VCONF_PREFIX"LastVisitedUrl"
-//#define USERAGENT_KEY	BROWSER_VCONF_PREFIX"UserAgent"
 
-/* "db/browsersetting/UserAgent" should be installed in browser with Tizen open.
-  * Because the user agent ug is not available with Tizen open. */
-#define USERAGENT_KEY	BROWSER_SETTING_VCONF_PREFIX"UserAgent"
+#define SHOW_MY_SITES_GUIDE	"ShowMySitesGuide"
+#define LAST_VISITED_URL_KEY	"LastVisitedUrl"
+#define DEFAULT_USER_AGENT_STRING "System user agent"
+#define HOMEPAGE_KEY	"HomepageMode"
+#define USER_HOMEPAGE_KEY	"UserHomepage"
+#define SEARCHURL_KEY	"SearchUrl"
+#define DEFAULT_VIEW_LEVEL_KEY	"DefaultViewLevel"
+#define RUN_JAVASCRIPT_KEY	"RunJavaScript"
+#define DISPLAY_IMAGES_KEY	"DisplayImages"
+#define BLOCK_POPUP_KEY	"BlockPopup"
+#define SHOW_SECURITY_WARNINGS_KEY	"ShowSecurityWarnings"
+#define ACCEPT_COOKIES_KEY	"AcceptCookies"
+#define AUTO_SAVE_ID_PASSWORD_KEY	"AutoSaveIDPassword"
+#define AUTO_SAVE_FORM_DATA_KEY	"AutoSaveFormData"
+#define ENABLE_LOCATION_KEY	"EnableLocation"
+#ifdef ZOOM_BUTTON
+#define ZOOM_BUTTON_KEY	"Zoombutton"
+#endif
 
-#define DEFAULT_USER_AGENT_STRING "Tizen"
-
-#define HOMEPAGE_KEY	BROWSER_SETTING_VCONF_PREFIX"HomepageMode"
-#define USER_HOMEPAGE_KEY	BROWSER_SETTING_VCONF_PREFIX"UserHomepage"
-#define SEARCHURL_KEY	BROWSER_VCONF_PREFIX"SearchUrl"
-#define DEFAULT_VIEW_LEVEL_KEY	BROWSER_SETTING_VCONF_PREFIX"DefaultViewLevel"
-#define RUN_JAVASCRIPT_KEY	BROWSER_SETTING_VCONF_PREFIX"RunJavaScript"
-#define DISPLAY_IMAGES_KEY	BROWSER_SETTING_VCONF_PREFIX"DisplayImages"
-#define BLOCK_POPUP_KEY	BROWSER_SETTING_VCONF_PREFIX"BlockPopup"
-#define ACCEPT_COOKIES_KEY	BROWSER_SETTING_VCONF_PREFIX"CookieOptionInt"
-#define AUTO_SAVE_ID_PASSWORD_KEY	BROWSER_SETTING_VCONF_PREFIX"SaveIDPassword"
-
-#define RUN_READER_KEY	BROWSER_SETTING_VCONF_PREFIX"RunReader"
-#define READER_FONT_SIZE_KEY	BROWSER_SETTING_VCONF_PREFIX"FontSize"
-
-#define RUN_PLUGINS_KEY	BROWSER_SETTING_VCONF_PREFIX"RunPlugins"
-#define RUN_FLASH_KEY	BROWSER_SETTING_VCONF_PREFIX"RunFlash"
-#define PAUSE_FLASH_KEY	BROWSER_SETTING_VCONF_PREFIX"PauseFlash"
-#define ACCELERATED_COMPOSITION_KEY	BROWSER_SETTING_VCONF_PREFIX"AcceleratedComposition"
-#define EXTERNAL_VIDEO_PLAYER_KEY	BROWSER_SETTING_VCONF_PREFIX"ExternalVideoPlayer"
-#define BROWSER_FLASH_MIME_TYPE	"application/x-shockwave-flash"
-
-#define BACKING_STORE_CACHE_SIZE	42000000 /* 42 MB */
-
-#define BROWSER_READER_DEFAULT_FONT_SIZE	16
-#define BROWSER_READER_MIN_FONT_SIZE	10
-#define BROWSER_READER_MAX_FONT_SIZE	30
+#define USERAGENT_KEY	VCONFKEY_BROWSER_BROWSER_USER_AGENT
+#define CUSTOM_USERAGENT_KEY	VCONFKEY_BROWSER_CUSTOM_USER_AGENT
 
 #define BROWSER_DEFAULT_BRIGHTNESS_LEVEL	7
 
-#define MODAL_MSG_MAX_BUFFER	1024
-#define MODAL_LAUNCHER_BIN_PATH	"/usr/bin/modal_launcher"
-#define MODAL_LAUNCHER_BUNDLE_TYPE	"type"
-#define MODAL_LAUNCHER_BUNDLE_MESSAGE	"message"
-#define MODAL_LAUNCHER_RESULT_KEYWORD	"MODAL_RESULT"
-
 /* ID to save to vconf for browser settings */
+#if defined(FEATURE_MOST_VISITED_SITES)
 #define MOST_VISITED_SITES "MOST_VISITED_SITES"
+#endif
 #define RECENTLY_VISITED_SITE "RECENTLY_VISITED_SITE"
 #define USER_HOMEPAGE "USER_HOMEPAGE"
+#define EMPTY_PAGE	"EMPTY_PAGE"
 #define FIT_TO_WIDTH	"FIT_TO_WIDTH"
 #define READABLE	"READABLE"
 #define ALWAYS_ASK	"ALWAYS_ASK"
 #define ALWAYS_ON	"ON"
 #define ALWAYS_OFF	"OFF"
-
-#define GOOGLE_SEARCH_QUERY	"http://www.google.com/m/search?q="
-
-/* size definition */
-#define BROWSER_MORE_CTX_POPUP_MARGIN	(10 * elm_scale_get())
 
 /* bookmark definition */
 #define BROWSER_BOOKMARK_DB_PATH	"/opt/dbspace/.internet_bookmark.db"
@@ -169,9 +175,6 @@
 #define BROWSER_MAX_DATE_LEN	40
 #define BROWSER_PREDICTIVE_HISTORY_COUNT	2
 
-/* personal data definition */
-#define BROWSER_PERSONAL_DATA_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-credential.db"
-
 /* multi window definition */
 #define BROWSER_MULTI_WINDOW_MAX_COUNT	9
 #define BROWSER_MULTI_WINDOW_ITEM_RATIO	0.60f
@@ -179,27 +182,30 @@
 #define BROWSER_USER_AGENT_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser.db"
 #define BROWSER_DEFAULT_USER_AGENT_TITLE	"Tizen"
 
-#define BROWSER_NOTIFICATION_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-notification.db"
-
 /* Most visited definition */
 #define BROWSER_MOST_VISITED_COUNT_TEXT "3"
 
+#if defined(FEATURE_MOST_VISITED_SITES)
 /* Speed dial definition */
-#define BROWSER_MOST_VISITED_SITES_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-speeddial.db"
-#define BROWSER_MOST_VISITED_SITES_SCREEN_SHOT_DIR	"/opt/apps/org.tizen.browser/data/screenshots/"
+#define BROWSER_MOST_VISITED_SITES_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db"
 #define BROWSER_MOST_VISITED_SITES_ITEM_MAX	9
 #define BROWSER_MOST_VISITED_SITES_URL	""
 #define DEFAULT_ICON_PREFIX "default_"
+#endif
+#define BROWSER_BLANK_PAGE_URL	"about:blank"
 
+/* Geolocation definition */
+#define BROWSER_GEOLOCATION_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-geolocation.db"
+
+/* Screen shot path definition */
+#define BROWSER_SCREEN_SHOT_DIR	"/opt/apps/org.tizen.browser/data/screenshots/"
 #define BROWSER_FAVICON_DB_PATH	"/opt/apps/org.tizen.browser/data/db/WebpageIcons.db"
 
 #define BROWSER_CLEAN_UP_WINDOWS_TIMEOUT	(60 * 30) // 30 min
 
-/* To do. */
-#define BROWSER_SEARCH_URL_GOOGLE "http://www.google.com/m/search?q="
-#define BROWSER_SEARCH_URL_YAHOO "http://search.yahoo.com/search?p="
-#define BROWSER_SEARCH_URL_BING "http://www.bing.com/search?q="
-#define BROWSER_SEARCH_ENGINE_KEY	BROWSER_SETTING_VCONF_PREFIX"SearchEngine"
+/* Haptic device definition */
+#define BROWSER_HAPTIC_DEVICE_HANDLE    0
+
 #define BROWSER_GOOGLE	"Google"
 #define BROWSER_YAHOO	"Yahoo"
 #define BROWSER_BING	"Bing"
@@ -207,10 +213,11 @@
 #define SEC_DOWNLOAD_APP "org.tizen.download-provider"
 #define SEC_STREAMING_PLAYER "org.tizen.video-player"
 #define SEC_VIDEO_PLAYER SEC_STREAMING_PLAYER
-#define SEC_MUSIC_PLAYER "org.tizen.music-player"
+#define SEC_MUSIC_PLAYER "org.tizen.sound-player"
 #define SEC_VT_CALL "org.tizen.vtmain"
 #define SEC_MESSAGE "org.tizen.message"
 #define SEC_EMAIL "org.tizen.email"
+#define SEC_SAMSUNG_APPS "org.tizen.samsungapps"
 
 #define ELM_NAVIFRAME_ITEM_CONTENT "default"
 #define ELM_NAVIFRAME_ITEM_CONTROLBAR "controlbar"

@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "browser-add-to-bookmark-view.h"
 #include "browser-bookmark-db.h"
@@ -55,6 +56,7 @@ Browser_Bookmark_View::Browser_Bookmark_View(void)
 	,m_bookmark_delete_controlbar_item(NULL)
 	,m_bookmark_edit_controlbar_item(NULL)
 	,m_create_folder_controlbar_item(NULL)
+	,m_current_sweep_item(NULL)
 	,m_navi_it(NULL)
 	,m_delete_confirm_popup(NULL)
 	,m_rename_edit_field(NULL)
@@ -86,6 +88,7 @@ Browser_Bookmark_View::~Browser_Bookmark_View(void)
 
 	if (m_delete_confirm_popup)
 		evas_object_del(m_delete_confirm_popup);
+
 }
 
 Eina_Bool Browser_Bookmark_View::init(void)
@@ -97,6 +100,81 @@ Eina_Bool Browser_Bookmark_View::init(void)
 	}
 
 	return _create_main_layout();
+}
+
+Eina_Bool Browser_Bookmark_View::append_bookmark_item(const char *title, const char *url)
+{
+	if (!url || !title) {
+		BROWSER_LOGE("url or title is null");
+		return EINA_FALSE;
+	}
+
+	if (!m_data_manager->get_bookmark_db()->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID, title, url)) {
+		BROWSER_LOGE("save_bookmark failed");
+		return EINA_FALSE;
+	}
+
+	Browser_Bookmark_DB::bookmark_item *item = new(nothrow) Browser_Bookmark_DB::bookmark_item;
+	if (!item) {
+		BROWSER_LOGE("new(nothrow) Browser_Bookmark_DB::bookmark_item failed");
+		return EINA_FALSE;
+	}
+
+	int bookmark_id = -1;
+	m_data_manager->get_bookmark_db()->get_bookmark_id_by_title_url(BROWSER_BOOKMARK_MAIN_FOLDER_ID, title,
+				url, &bookmark_id);
+
+	item->parent = BROWSER_BOOKMARK_MAIN_FOLDER_ID;
+	item->user_data_1 = (void *)this;
+	item->url = std::string(url);
+	item->title = std::string(title);
+	item->is_folder = EINA_FALSE;
+	item->id = bookmark_id;
+	item->user_data_2 = (void *)elm_genlist_item_append(m_main_folder_genlist, &m_bookmark_genlist_item_class,
+							item, NULL, ELM_GENLIST_ITEM_NONE,
+							__bookmark_item_clicked_cb, this);
+
+	m_main_folder_list.push_back(item);
+
+	_show_empty_content_layout(EINA_FALSE);
+
+	return EINA_TRUE;
+}
+
+void Browser_Bookmark_View::delete_bookmark_item(int bookmark_id)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	int ret = EINA_TRUE;
+
+	ret = m_data_manager->get_bookmark_db()->delete_bookmark(bookmark_id);
+	if (!ret) {
+		BROWSER_LOGE("bookmark_db->delete_bookmark failed");
+		return;
+	}
+
+	Elm_Object_Item *it = elm_genlist_first_item_get(m_main_folder_genlist);
+	while (it) {
+		Browser_Bookmark_DB::bookmark_item *item = NULL;
+		item = (Browser_Bookmark_DB::bookmark_item *)elm_object_item_data_get(it);
+		if (item->id == bookmark_id) {
+			elm_object_item_del(it);
+			break;
+		}
+
+		it = elm_genlist_item_next_get(it);
+	}
+
+	for(int index = 0 ; index <  m_main_folder_list.size() ; index++) {
+		if (m_main_folder_list[index]->id == bookmark_id) {
+			delete m_main_folder_list[index];
+			m_main_folder_list.erase(m_main_folder_list.begin() + index);
+			break;
+		}
+	}
+
+	if (m_main_folder_list.size() == 0) {
+		_show_empty_content_layout(EINA_TRUE);
+	}
 }
 
 void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
@@ -135,6 +213,13 @@ void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
 	} else {
 		if (!m_data_manager->get_history_layout())
 			return;
+
+		/* In case that history view -> add to bookmark by slide-right, then return to history view. */
+		if (m_data_manager->get_history_layout()->m_current_sweep_item) {
+			elm_genlist_item_decorate_mode_set(m_data_manager->get_history_layout()->m_current_sweep_item, "slide", EINA_FALSE);
+			elm_genlist_item_select_mode_set(m_data_manager->get_history_layout()->m_current_sweep_item, ELM_OBJECT_SELECT_MODE_DEFAULT);
+			m_data_manager->get_history_layout()->m_current_sweep_item = NULL;
+		}
 	}
 
 	/* boomark view -> history -> add to bookmark by slide button, then done. */
@@ -671,17 +756,17 @@ void Browser_Bookmark_View::__delete_processing_popup_response_cb(void *data, Ev
 
 	evas_object_del(bookmark_view->m_processing_popup);
 
-		if (bookmark_view->m_processing_popup_timer) {
-			ecore_timer_del(bookmark_view->m_processing_popup_timer);
-			bookmark_view->m_processing_popup_timer = NULL;
-		}
-
-		bookmark_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
-
-		vector<Browser_Bookmark_DB::bookmark_item *> item_list = bookmark_view->_get_current_folder_item_list();
-		if (item_list.size() == 0)
-			bookmark_view->_show_empty_content_layout(EINA_TRUE);
+	if (bookmark_view->m_processing_popup_timer) {
+		ecore_timer_del(bookmark_view->m_processing_popup_timer);
+		bookmark_view->m_processing_popup_timer = NULL;
 	}
+
+	bookmark_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
+
+	vector<Browser_Bookmark_DB::bookmark_item *> item_list = bookmark_view->_get_current_folder_item_list();
+	if (item_list.size() == 0)
+		bookmark_view->_show_empty_content_layout(EINA_TRUE);
+}
 
 void Browser_Bookmark_View::__select_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -1055,6 +1140,9 @@ void Browser_Bookmark_View::__rename_folder_button_clicked_cb(void *data, Evas_O
 
 	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
+	/* If landscape mode, the folder edit field is hided by keypad. So turn to portrait. */
+	elm_win_rotation_with_resize_set(bookmark_view->m_win, 0);
+
 	evas_object_data_set(bookmark_view->_get_current_folder_genlist(), "selected_it", it);
 }
 
@@ -1101,17 +1189,20 @@ void Browser_Bookmark_View::__rename_folder_unfocus_cb(void *data, Evas_Object *
 	}
 
 	if (!text || strlen(text) == 0 || only_has_space) {
-		bookmark_view->show_msg_popup(BR_STRING_EMPTY_FOLDER_NAME);
+		bookmark_view->show_msg_popup(BR_STRING_ENTER_FOLDER_NAME);
 		elm_entry_entry_set(edit_field_entry, item->title.c_str());
 	} else {
-		if (!m_data_manager->get_bookmark_db()->is_duplicated(text)) {
-			item->title = text;
-			m_data_manager->get_bookmark_db()->modify_bookmark_title(item->id, text);
-		} else {
-			if (elm_genlist_decorate_mode_get(bookmark_view->_get_current_folder_genlist()))
-				bookmark_view->show_msg_popup(BR_STRING_ALREADY_EXISTS);
-			std::string folder_name = m_data_manager->get_bookmark_db()->get_folder_name_by_id(item->id);
-			elm_entry_entry_set(edit_field_entry, folder_name.c_str());
+		if (strcmp(text, item->title.c_str())) {
+			if (!m_data_manager->get_bookmark_db()->is_duplicated(text)) {
+				item->title = text;
+				m_data_manager->get_bookmark_db()->modify_bookmark_title(item->id, text);
+			} else {
+				if (elm_genlist_decorate_mode_get(bookmark_view->_get_current_folder_genlist()))
+					bookmark_view->show_msg_popup(BR_STRING_ALREADY_EXISTS);
+
+				std::string folder_name = m_data_manager->get_bookmark_db()->get_folder_name_by_id(item->id);
+				elm_entry_entry_set(edit_field_entry, folder_name.c_str());
+			}
 		}
 	}
 	elm_genlist_item_flip_set(it, EINA_FALSE);
@@ -1128,6 +1219,65 @@ void Browser_Bookmark_View::__drag_genlist_cb(void *data, Evas_Object *obj, void
 	BROWSER_LOGD("[%s]", __func__);
 }
 
+#if defined(GENLIST_SWEEP)
+void Browser_Bookmark_View::__sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)data;
+
+	if (elm_genlist_decorate_mode_get(obj))
+		return;
+	else {
+		elm_genlist_item_decorate_mode_set((Elm_Object_Item *)event_info, "slide", EINA_TRUE);
+		elm_genlist_item_select_mode_set((Elm_Object_Item *)event_info, ELM_OBJECT_SELECT_MODE_NONE);
+	}
+
+	if (bookmark_view->m_current_sweep_item
+	    && (Elm_Object_Item *)event_info != bookmark_view->m_current_sweep_item) {
+		elm_genlist_item_select_mode_set(bookmark_view->m_current_sweep_item, ELM_OBJECT_SELECT_MODE_DEFAULT);
+		bookmark_view->m_current_sweep_item = (Elm_Object_Item *)event_info;
+	}
+}
+
+void Browser_Bookmark_View::__sweep_cancel_genlist_cb(void *data,
+						Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!data)
+		return;
+
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)data;
+	Elm_Object_Item *it = (Elm_Object_Item*)elm_genlist_decorated_item_get(obj);
+	if (it) {
+		elm_genlist_item_decorate_mode_set(it, "slide", EINA_FALSE);
+		elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DEFAULT);
+
+		if (it == bookmark_view->m_current_sweep_item)
+			bookmark_view->m_current_sweep_item = NULL;
+	}
+}
+
+void Browser_Bookmark_View::__sweep_left_genlist_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)data;
+
+	if (elm_genlist_decorate_mode_get(obj))
+		return;
+	else {
+		elm_genlist_item_decorate_mode_set((Elm_Object_Item *)event_info, "slide", EINA_FALSE);
+		elm_genlist_item_select_mode_set((Elm_Object_Item *)event_info, ELM_OBJECT_SELECT_MODE_DEFAULT);
+	}
+
+	bookmark_view->m_current_sweep_item = NULL;
+}
+#endif
+
 char *Browser_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Object *obj, const char *part)
 {
 	BROWSER_LOGD("part=%s", part);
@@ -1135,20 +1285,23 @@ char *Browser_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Object *obj
 		return NULL;
 
 	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
-	std::string title = item->title;
-	std::string url = item->url;
 
+	const char *title = item->title.c_str();
+	BROWSER_LOGD("title(%p)=%s", title, title);
+	const char *url = item->url.c_str();
+	BROWSER_LOGD("url(%p)=%s", url, url);
 
 	if (part && strlen(part) > 0) {
 		if (!strncmp(part,"elm.text", strlen("elm.text"))
-		    || !strncmp(part, "elm.base.text", strlen("elm.base.text"))) {
-		    	if (!title.empty() && title.length() > 0)
-			    	return strdup(title.c_str());
+		    || !strncmp(part, "elm.base.text", strlen("elm.base.text"))
+		    || !strncmp(part, "elm.slide.text.1", strlen("elm.slide.text.1"))) {
+		    	if (title && strlen(title))
+			    	return strdup(title);
 			else
 				return NULL;
 		} else if (!strncmp(part, "elm.text.sub", strlen("elm.text.sub"))) {
-			if (!url.empty() && url.length() > 0)
-				return strdup(url.c_str());
+			if (url && strlen(url))
+				return strdup(url);
 			else
 				return NULL;
 		}
@@ -1193,6 +1346,30 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 					return default_icon;
 				}
 			}
+		} else if (!strncmp(part, "elm.slide.swallow.1", strlen("elm.slide.swallow.1"))) {
+			Evas_Object *edit_button = elm_button_add(obj);
+			if (!edit_button) {
+				BROWSER_LOGE("elm_button_add is failed.\n");
+				return NULL;
+			}
+			elm_object_style_set(edit_button, "text_only/sweep");
+			elm_object_text_set(edit_button, BR_STRING_EDIT);
+			if (!item->is_editable)
+				elm_object_disabled_set(edit_button, EINA_TRUE);
+			evas_object_smart_callback_add(edit_button, "clicked", __slide_edit_button_clicked_cb, item);
+			return edit_button;
+		} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
+			Evas_Object *delete_button = elm_button_add(obj);
+			if (!delete_button) {
+				BROWSER_LOGE("elm_button_add is failed.\n");
+				return NULL;
+			}
+			elm_object_style_set(delete_button, "text_only/sweep");
+			elm_object_text_set(delete_button, BR_STRING_DELETE);
+			if (!item->is_editable)
+				elm_object_disabled_set(delete_button, EINA_TRUE);
+			evas_object_smart_callback_add(delete_button, "clicked", __slide_delete_button_clicked_cb, item);
+			return delete_button;
 		}
 
 		if (elm_genlist_decorate_mode_get(obj)) {
@@ -1290,6 +1467,69 @@ Eina_Bool Browser_Bookmark_View::_is_empty_folder(string folder_name)
 		return EINA_TRUE;
 }
 
+void Browser_Bookmark_View::__slide_edit_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)(item->user_data_1);
+	bookmark_view->m_current_genlist_item_to_edit = (Elm_Object_Item *)(item->user_data_2);
+
+	if (item->is_folder) {
+		/* edit folder by slide genlist item */
+		if (bookmark_view->_is_empty_folder(item->title)) {
+			bookmark_view->show_msg_popup(BR_STRING_EMPTY);
+			return;
+		}
+
+		bookmark_view->_go_to_sub_foler(item->title.c_str());
+
+		bookmark_view->_set_edit_mode(EINA_TRUE);
+
+		Elm_Object_Item *top_it = elm_naviframe_top_item_get(m_navi_bar);
+		elm_object_item_signal_emit(top_it, ELM_NAVIFRAME_ITEM_SIGNAL_OPTIONHEADER_INSTANT_OPEN);
+		evas_object_data_set(m_navi_bar, "visible", (void *)EINA_TRUE);
+
+		edje_object_signal_emit(elm_layout_edje_get(bookmark_view->m_main_layout),
+					"expand_header_no_animation,signal", "");
+	} else {
+		/* edit bookmark item by slide genlist item */
+		/* Pass the selected genlist item as parameter when bookmark -> Edit item
+		    because of increase performance. */
+		if (!m_data_manager->create_edit_bookmark_view(item->title, item->url,
+							bookmark_view->m_current_folder_id)) {
+			BROWSER_LOGE("create_edit_bookmark_view failed");
+			return;
+		}
+
+		if (!m_data_manager->get_edit_bookmark_view()->init()) {
+			BROWSER_LOGE("new get_edit_bookmark_view()->init() failed");
+			m_data_manager->destroy_edit_bookmark_view();
+			return;
+		}
+	}
+
+	elm_genlist_item_decorate_mode_set(bookmark_view->m_current_genlist_item_to_edit, "slide", EINA_FALSE);
+	elm_genlist_item_select_mode_set(bookmark_view->m_current_genlist_item_to_edit, ELM_OBJECT_SELECT_MODE_DEFAULT);
+}
+
+void Browser_Bookmark_View::__delete_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj,
+								void *event_info)
+{
+	BROWSER_LOGD("event_info = %d", (int)event_info);
+
+	if (!data)
+		return;
+
+	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)(item->user_data_1);
+
+	evas_object_del(bookmark_view->m_delete_confirm_popup);
+
+	bookmark_view->_delete_bookmark_item_by_slide_button(item);
+}
 
 void Browser_Bookmark_View::__cancel_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj,
 								void *event_info)
@@ -1351,6 +1591,59 @@ Evas_Object *Browser_Bookmark_View::_show_delete_confirm_popup(void)
 	evas_object_show(m_delete_confirm_popup);
 
 	return ok_button;
+}
+
+void Browser_Bookmark_View::_delete_bookmark_item_by_slide_button(Browser_Bookmark_DB::bookmark_item *item)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Elm_Object_Item *it = (Elm_Object_Item *)(item->user_data_2);
+	int ret = EINA_TRUE;
+
+	if (item->is_folder) {
+		int folder_id = 0;
+		ret = m_data_manager->get_bookmark_db()->get_folder_id(m_current_folder_id,
+									item->title.c_str(), &folder_id);
+		if (!ret) {
+			BROWSER_LOGE("bookmark_db->get_folder_id failed");
+			return;
+		}
+		ret = m_data_manager->get_bookmark_db()->delete_folder(folder_id);
+		if (!ret) {
+			BROWSER_LOGE("bookmark_db->delete_folder failed");
+			return;
+		}
+	} else {
+		ret = m_data_manager->get_bookmark_db()->delete_bookmark(item->id);
+		if (!ret) {
+			BROWSER_LOGE("bookmark_db->delete_bookmark failed");
+			return;
+		}
+	}
+
+	_delete_bookmark_item_from_folder_list(item);
+
+	elm_object_item_del(it);
+
+	if (_get_current_folder_item_list().size() == 0) {
+		_show_empty_content_layout(EINA_TRUE);
+	}
+
+	show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
+}
+
+void Browser_Bookmark_View::__slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)(item->user_data_1);
+
+	Evas_Object *ok_button = bookmark_view->_show_delete_confirm_popup();
+	if (ok_button)
+		evas_object_smart_callback_add(ok_button, "clicked",
+			__delete_confirm_response_by_slide_button_cb, item);
 }
 
 void Browser_Bookmark_View::__genlist_move_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1700,6 +1993,13 @@ Evas_Object *Browser_Bookmark_View::_create_sub_folder_genlist(int folder_id)
 		elm_genlist_block_count_set(genlist, BROWSER_BOOKMARK_GENLIST_BLOCK_COUNT);
 		elm_genlist_homogeneous_set(genlist, EINA_TRUE);
 
+#if defined(GENLIST_SWEEP)
+		evas_object_smart_callback_add(genlist, "drag,start,up", __sweep_cancel_genlist_cb, genlist);
+		evas_object_smart_callback_add(genlist, "drag,start,down", __sweep_cancel_genlist_cb, genlist);
+		evas_object_smart_callback_add(genlist, "drag,start,right", __sweep_right_genlist_cb, this);
+		evas_object_smart_callback_add(genlist, "drag,start,left", __sweep_left_genlist_cb, this);
+#endif
+
 		evas_object_smart_callback_add(genlist, "moved", __genlist_move_cb, this);
 
 		elm_object_content_set(m_sub_folder_conformant, genlist);
@@ -1770,10 +2070,16 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 		elm_genlist_block_count_set(genlist, BROWSER_BOOKMARK_GENLIST_BLOCK_COUNT);
 		elm_genlist_homogeneous_set(genlist, EINA_TRUE);
 
+#if defined(GENLIST_SWEEP)
+		evas_object_smart_callback_add(genlist, "drag,start,up", __sweep_cancel_genlist_cb, genlist);
+		evas_object_smart_callback_add(genlist, "drag,start,down", __sweep_cancel_genlist_cb, genlist);
+		evas_object_smart_callback_add(genlist, "drag,start,right", __sweep_right_genlist_cb, this);
+		evas_object_smart_callback_add(genlist, "drag,start,left", __sweep_left_genlist_cb, this);
+#endif
 		evas_object_smart_callback_add(genlist, "moved", __genlist_move_cb, this);
 
 		m_bookmark_genlist_item_class.item_style = "1text.1icon.2";
-		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide3";
+		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide2";
 		m_bookmark_genlist_item_class.decorate_all_item_style = "edit_default";
 		m_bookmark_genlist_item_class.func.text_get = __genlist_label_get_cb;
 		m_bookmark_genlist_item_class.func.content_get = __genlist_icon_get_cb;
@@ -1904,14 +2210,15 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 
-		elm_toolbar_item_append(m_bottom_control_bar, BROWSER_IMAGE_DIR"/01_controllbar_icon_close.png", NULL,
-										__edit_controlbar_item_clicked_cb, this);
-
-		empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
-		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 		m_bookmark_delete_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 									BROWSER_IMAGE_DIR"/01_controlbar_icon_delete.png",
 									NULL, __delete_controlbar_item_clicked_cb, this);
+
+		empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
+		elm_object_item_disabled_set(empty_item, EINA_TRUE);
+
+		elm_toolbar_item_append(m_bottom_control_bar, BROWSER_IMAGE_DIR"/01_controllbar_icon_close.png", NULL,
+										__edit_controlbar_item_clicked_cb, this);
 
 		if (type == BOOKMARK_VIEW_EDIT_MODE) {
 			int delete_item_count = 0;

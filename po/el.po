@@ -1,0 +1,18 @@
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Σελιδοδείκτες"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Λήψη"
+
+msgid "IDS_BR_BODY_RSS"
+msgstr "RSS"
+
+msgid "IDS_BR_HEADER_ADD_TO_BOOKMARKS"
+msgstr "Προσθήκη στους σελιδ/τες"
+
+msgid "IDS_BR_OPT_CANCEL"
+msgstr "Ακύρωση"
+
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Cronologia"
+

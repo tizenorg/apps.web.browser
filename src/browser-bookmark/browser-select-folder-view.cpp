@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #include "browser-add-to-bookmark-view.h"
 #include "browser-bookmark-db.h"
@@ -80,6 +82,11 @@ void Browser_Select_Folder_View::__folder_item_selected_cb(void *data, Evas_Obje
 	select_folder_view->m_current_folder_id = item->id;
 
 	elm_list_item_selected_set(it, EINA_FALSE);
+
+	if (m_data_manager->get_edit_bookmark_view())
+		m_data_manager->get_edit_bookmark_view()->return_to_add_to_bookmark_view(select_folder_view->m_current_folder_id);
+	else if (m_data_manager->get_add_to_bookmark_view())
+		m_data_manager->get_add_to_bookmark_view()->return_to_add_to_bookmark_view(select_folder_view->m_current_folder_id);
 }
 
 void Browser_Select_Folder_View::_fill_folder_list(void)
@@ -268,17 +275,6 @@ Eina_Bool Browser_Select_Folder_View::_create_main_layout(void)
 	evas_object_show(m_cancel_button);
 	evas_object_smart_callback_add(m_cancel_button, "clicked", __cancel_button_clicked_cb, this);
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_LEFT_BTN, m_cancel_button);
-
-	m_done_button = elm_button_add(m_content_layout);
-	if (!m_done_button) {
-		BROWSER_LOGE("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_done_button, "browser/title_button");
-	elm_object_text_set(m_done_button, BR_STRING_DONE);
-	evas_object_show(m_done_button);
-	evas_object_smart_callback_add(m_done_button, "clicked", __done_button_clicked_cb, this);
-	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_RIGHT_BTN, m_done_button);
 
 	return EINA_TRUE;
 }

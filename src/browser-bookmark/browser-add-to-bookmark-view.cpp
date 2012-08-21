@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "browser-add-to-bookmark-view.h"
 #include "browser-bookmark-db.h"
@@ -67,7 +68,7 @@ Eina_Bool Browser_Add_To_Bookmark_View::init(void)
 }
 
 void Browser_Add_To_Bookmark_View::return_to_add_to_bookmark_view(int changed_folder_id)
-{
+{	
 	BROWSER_LOGD("[%s]", __func__);
 
 	/* If changed_folder_id is -1, just cancel the folder view. */
@@ -163,7 +164,7 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 			if (!add_to_bookmark_view->m_title_edit_field)
 				return NULL;
 			br_elm_editfield_entry_single_line_set(add_to_bookmark_view->m_title_edit_field, EINA_TRUE);
-			br_elm_editfield_guide_text_set(add_to_bookmark_view->m_title_edit_field, BR_STRING_CLICK_HERE);
+			br_elm_editfield_guide_text_set(add_to_bookmark_view->m_title_edit_field, BR_STRING_ENTER_BOOKMARK_NAME);
 			br_elm_editfield_label_set(add_to_bookmark_view->m_title_edit_field, BR_STRING_TITLE);
 
 			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
@@ -315,13 +316,13 @@ void Browser_Add_To_Bookmark_View::__cancel_button_clicked_cb(void *data, Evas_O
 	}
 
 	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW) && m_data_manager->get_bookmark_view())
-		/* boomark view -> edit one bookmark item, then cancel. */
+		/* boomark view -> edit one bookmark item, then cancel. */		
 		m_data_manager->get_bookmark_view()->return_to_bookmark_view();
 }
 
 /* bookmark -> edit -> edit each bookmark item then bookmark edit view -> done */
 Eina_Bool Browser_Add_To_Bookmark_View::_modify_bookmark_item(const char *title, const char *url)
-{
+{	
 	int bookmark_id = 0;
 	int ret = EINA_TRUE;
 	Browser_Bookmark_DB *bookmark_db = m_data_manager->get_bookmark_db();
@@ -445,16 +446,28 @@ void Browser_Add_To_Bookmark_View::_done_button_clicked(const char *title, const
 					elm_naviframe_item_pop(m_navi_bar);
 
 				if (!m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)) {
+#if defined(FEATURE_MOST_VISITED_SITES)
+					/* Set the title if enter the add to bookmark while loading. */
+					if (m_data_manager->get_browser_view()->is_most_visited_sites_running())
+						m_data_manager->get_browser_view()->return_to_browser_view(EINA_TRUE);
+					else
+#endif
+						m_data_manager->get_browser_view()->return_to_browser_view();
 
-					m_data_manager->get_browser_view()->return_to_browser_view();
-					m_data_manager->get_browser_view()->show_notify_popup(BR_STRING_SAVED, 3);
+#if defined(FEATURE_MOST_VISITED_SITES)
+					if (m_data_manager->get_browser_view()->is_most_visited_sites_running())
+						m_data_manager->get_browser_view()->show_notify_popup(BR_STRING_SAVED, 3,
+													EINA_TRUE);
+					else
+#endif
+						m_data_manager->get_browser_view()->show_notify_popup(BR_STRING_SAVED, 3);
 				} else {
-						int added_bookmark_id = -1;
-						bookmark_db->get_bookmark_id_by_title_url(m_folder_id_to_save, title,
-									url, &added_bookmark_id);
+					int added_bookmark_id = -1;
+					bookmark_db->get_bookmark_id_by_title_url(m_folder_id_to_save, title,
+								url, &added_bookmark_id);
 					BROWSER_LOGD("added_bookmark_id=%d", added_bookmark_id);
 						/* History view -> slide one item -> add to bookmark, then done. */
-						m_data_manager->get_bookmark_view()->return_to_bookmark_view(added_bookmark_id);
+					m_data_manager->get_bookmark_view()->return_to_bookmark_view(added_bookmark_id);
 
 					m_data_manager->get_browser_view()->show_notify_popup(BR_STRING_SAVED, 3, EINA_TRUE);
 				}
@@ -463,7 +476,6 @@ void Browser_Add_To_Bookmark_View::_done_button_clicked(const char *title, const
 	} else
 		show_msg_popup(BR_STRING_ALREADY_EXISTS);
 }
-
 void Browser_Add_To_Bookmark_View::__naviframe_pop_finished_cb(void *data , Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);

@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #include "browser-class.h"
 #include "browser-common-view.h"
@@ -23,7 +25,6 @@ Browser_Data_Manager *Browser_Common_View::m_data_manager;
 Evas_Object *Browser_Common_View::m_win;
 Evas_Object *Browser_Common_View::m_navi_bar;
 Evas_Object *Browser_Common_View::m_bg;
-Evas_Object *Browser_Common_View::m_layout;
 Browser_Class *Browser_Common_View::m_browser;
 
 Browser_Common_View::Browser_Common_View(void)
@@ -34,6 +35,8 @@ Browser_Common_View::Browser_Common_View(void)
 	,m_ug(NULL)
 	,m_share_popup(NULL)
 	,m_share_list(NULL)
+	,m_call_confirm_popup(NULL)
+	,m_call_type(CALL_UNKNOWN)
 {
 	BROWSER_LOGD("[%s]", __func__);
 }
@@ -64,6 +67,10 @@ Browser_Common_View::~Browser_Common_View(void)
 	if (m_ug) {
 		ug_destroy(m_ug);
 		m_ug = NULL;
+	}
+	if (m_call_confirm_popup) {
+		evas_object_del(m_call_confirm_popup);
+		m_call_confirm_popup = NULL;
 	}
 
 	m_sns_path_list.clear();
@@ -128,6 +135,7 @@ void Browser_Common_View::show_notify_popup(const char *msg, int timeout, Eina_B
 	}
 
 	int angle = 0;
+	angle = elm_win_rotation_get(m_win);
 	m_selection_info = elm_notify_add(m_navi_bar);
 	if (!m_selection_info) {
 		BROWSER_LOGD("elm_notify_add failed");
@@ -169,62 +177,208 @@ void Browser_Common_View::show_notify_popup(const char *msg, int timeout, Eina_B
 	evas_object_show(m_selection_info);
 }
 
-Eina_Bool Browser_Common_View::show_modal_popup(const char *msg)
-{
-	BROWSER_LOGD("msg = [%s]", msg);
-	FILE *pipe = NULL;
-
-	std::string source_string = std::string(MODAL_LAUNCHER_BIN_PATH) + std::string(" ")
-					+ std::string(MODAL_LAUNCHER_BUNDLE_TYPE) + std::string(" confirm ");
-
-	std::string msg_string = std::string("\"") + std::string(msg) + std::string("\"");
-
-	string::size_type pos = string::npos;
-	while ((pos = msg_string.find("\n")) != string::npos)
-		msg_string.replace(pos, strlen("\n"), std::string("<br>"));
-
-	source_string = source_string + std::string(MODAL_LAUNCHER_BUNDLE_MESSAGE) + std::string(" ") + msg_string;
-	BROWSER_LOGD("source_string = [%s]", source_string.c_str());
-
-	if (!(pipe = popen(source_string.c_str(), "r"))) {
-		BROWSER_LOGE("popen filed");
-		return EINA_FALSE;
-	}
-
-	char read_buffer[MODAL_MSG_MAX_BUFFER] = {0, };
-	while (fgets(read_buffer, MODAL_MSG_MAX_BUFFER, pipe)) {
-		if (!strncmp(read_buffer, MODAL_LAUNCHER_RESULT_KEYWORD,
-					strlen(MODAL_LAUNCHER_RESULT_KEYWORD))) {
-			BROWSER_LOGD("modal keyword found.");
-			return EINA_TRUE;
-		}
-	}
-
-	return EINA_FALSE;
-}
-
 /* Capture snapshot with current focused ewk view. */
 Evas_Object *Browser_Common_View::_capture_snapshot(Browser_Window *window, float scale)
 {
 	BROWSER_LOGD("[%s]", __func__);
+
 	int focused_ewk_view_w = 0;
 	int focused_ewk_view_h = 0;
 	evas_object_geometry_get(window->m_ewk_view, NULL, NULL,
 						&focused_ewk_view_w, &focused_ewk_view_h);
 
-	Evas_Object *snapshot_image = NULL;
-	snapshot_image = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
-	if (!snapshot_image) {
-		BROWSER_LOGE("evas_object_rectangle_add failed");
-		return NULL;
-	}
-	evas_object_size_hint_min_set(snapshot_image, (int)(focused_ewk_view_w * scale),
-						(int)(focused_ewk_view_h * scale));
-	evas_object_resize(snapshot_image, (int)(focused_ewk_view_w * scale),
-						(int)(focused_ewk_view_h * scale));
-	evas_object_color_set(snapshot_image, 255, 255, 255, 255);
+	Evas_Object *rectangle = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
+	evas_object_size_hint_min_set(rectangle, focused_ewk_view_w * scale, focused_ewk_view_h * scale);
+	evas_object_resize(rectangle, focused_ewk_view_w * scale, focused_ewk_view_h * scale);
+	evas_object_color_set(rectangle, 255, 255, 255, 255);
+	return rectangle;
+}
 
-	return snapshot_image;
+void Browser_Common_View::__post_to_sns_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	if (!data)
+		return;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+
+	Elm_Object_Item *selected_item = elm_list_selected_item_get(common_view->m_share_list);
+	const char *sns_name = elm_object_item_text_get(selected_item);
+	BROWSER_LOGD("sns_name=[%s]", sns_name);
+
+	if (!common_view->_post_to_sns(std::string(sns_name), common_view->m_share_url))
+		BROWSER_LOGE("_post_to_sns failed");
+
+	__popup_response_cb(common_view, NULL, NULL);
+}
+
+Eina_Bool Browser_Common_View::_post_to_sns(std::string sns_name, std::string url)
+{
+	BROWSER_LOGD("sns_name=[%s],  url=[%s]", sns_name.c_str(), url.c_str());
+	if (url.empty() || sns_name.empty()) {
+		show_msg_popup(BR_STRING_EMPTY);
+		return EINA_FALSE;
+	}
+
+	int index = 0;
+	for (index = 0 ; index < m_sns_name_list.size() ; index++) {
+		if (m_sns_name_list[index].find(sns_name) != string::npos)
+			break;
+	}
+
+	if (m_sns_path_list[index].find("twitter") != string::npos
+	    || m_sns_path_list[index].find("facebook") != string::npos) {
+
+		int ret = 0;
+		service_h service_handle = NULL;
+		if (service_create(&service_handle) < 0) {
+			BROWSER_LOGE("Fail to create service handle");
+			return EINA_FALSE;
+		}
+		if (!service_handle) {
+			BROWSER_LOGE("service handle is NULL");
+			return EINA_FALSE;
+		}
+		if (service_set_operation(service_handle, SERVICE_OPERATION_SEND_TEXT) < 0) {
+			BROWSER_LOGE("Fail to set service operation");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+		if (service_add_extra_data(service_handle, SERVICE_DATA_TEXT, (char *)url.c_str()) < 0) {
+			BROWSER_LOGE("Fail to set post data");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+		if (service_set_package(service_handle, m_sns_path_list[index].c_str()) < 0) {
+			BROWSER_LOGE("Fail to set SNS");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+		if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
+			BROWSER_LOGE("Fail to launch service operation");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+		service_destroy(service_handle);
+	}
+
+	return EINA_TRUE;
+}
+
+void Browser_Common_View::__send_via_message_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	if (!data)
+		return;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+	if (!common_view->_send_via_message(common_view->m_share_url, std::string()))
+		BROWSER_LOGE("_send_via_message failed");
+
+	__popup_response_cb(common_view, NULL, NULL);
+}
+
+Eina_Bool Browser_Common_View::_send_via_message(std::string url, std::string to, Eina_Bool attach_file)
+{
+	BROWSER_LOGD("[%s], url[%s], to[%s]", __func__, url.c_str(), to.c_str());
+	if (url.empty() && to.empty()) {
+		show_msg_popup(BR_STRING_EMPTY);
+		return EINA_FALSE;
+	}
+
+	service_h service_handle = NULL;
+	if (service_create(&service_handle) < 0) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (!service_handle) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (!url.empty()) {
+		if (attach_file) {
+			if (service_set_operation(service_handle, SERVICE_OPERATION_SEND) < 0) {
+				BROWSER_LOGE("Fail to set service operation");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+
+			if (service_add_extra_data(service_handle, "ATTACHFILE", url.c_str())) {
+				BROWSER_LOGE("Fail to set extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		} else {
+			if (service_set_operation(service_handle, SERVICE_OPERATION_SEND_TEXT) < 0) {
+				BROWSER_LOGE("Fail to set service operation");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+
+			if (service_add_extra_data(service_handle, SERVICE_DATA_TEXT, url.c_str()) < 0) {
+				BROWSER_LOGE("Fail to set extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+	}
+
+	if (!to.empty()) {
+		if (url.empty()) {
+			if (service_set_operation(service_handle, SERVICE_OPERATION_SEND_TEXT) < 0) {
+				BROWSER_LOGE("Fail to set service operation");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+
+		if (service_add_extra_data(service_handle, SERVICE_DATA_TO , to.c_str()) < 0) {
+			BROWSER_LOGE("Fail to set extra data");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+	}
+
+	if (service_set_package(service_handle, SEC_MESSAGE) < 0) {//SEC_EMAIL
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+
+	if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	service_destroy(service_handle);
+
+	return EINA_TRUE;
+}
+
+void Browser_Common_View::__send_via_email_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("%s", __func__);
+	if (!data)
+		return;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+	if (!common_view->_send_via_email(common_view->m_share_url))
+		BROWSER_LOGE("_send_via_email failed");
+
+	__popup_response_cb(common_view, NULL, NULL);
+}
+
+void Browser_Common_View::__share_via_nfc_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("%s", __func__);
+	if (!data)
+		return;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+	if (!common_view->_share_via_nfc(common_view->m_share_url))
+		BROWSER_LOGE("_share_via_nfc failed");
+
+	__popup_response_cb(common_view, NULL, NULL);
 }
 
 Eina_Bool Browser_Common_View::_launch_streaming_player(const char *url, const char *cookie)
@@ -290,6 +444,367 @@ Eina_Bool Browser_Common_View::_launch_streaming_player(const char *url, const c
 	return EINA_TRUE;
 }
 
+Eina_Bool Browser_Common_View::_check_available_sns_account(void)
+{
+	BROWSER_LOGD("%s", __func__);
+
+	int error_code = account_connect();
+	bool result = EINA_FALSE;
+
+	if(error_code != ACCOUNT_ERROR_NONE) {
+		BROWSER_LOGD("account_connect failed with error_code[%d].\n", error_code);
+		return EINA_FALSE;
+	}
+
+	if (account_query_account_by_package_name(__check_available_sns_account_cb,
+				"org.tizen.facebook", NULL) == ACCOUNT_ERROR_NONE) {
+		BROWSER_LOGD("Account for Facebook was set\n");
+	} else if (account_query_account_by_package_name(__check_available_sns_account_cb,
+				"org.tizen.twitter", NULL) == ACCOUNT_ERROR_NONE) {
+		BROWSER_LOGD("Account for Twitter was set\n");
+	} else {
+		BROWSER_LOGD("Account Queried failed \n");
+		error_code = account_disconnect();
+		if(error_code != ACCOUNT_ERROR_NONE) {
+			BROWSER_LOGD("(%d)-[Account] ret = %d, \n", __LINE__, error_code);
+			return EINA_FALSE;
+		}
+	}
+
+	error_code = account_disconnect();
+	if(error_code != ACCOUNT_ERROR_NONE) {
+		BROWSER_LOGD("(%d)-[Account] ret = %d, \n", __LINE__, error_code);
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+bool Browser_Common_View::__check_available_sns_account_cb(account_h handle, void *data)
+{
+	BROWSER_LOGD("%s", __func__);
+
+	char *pkg_name = NULL;
+	account_get_package_name(handle, &pkg_name);
+	BROWSER_LOGD("pkg_name [%s]", pkg_name);
+
+	if (pkg_name)
+		free(pkg_name);
+	pkg_name = NULL;
+
+	return true;
+}
+
+Eina_Bool Browser_Common_View::_get_available_sns_list(void)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	int  error_code = 0;
+	error_code = account_connect();
+
+	if (error_code == ACCOUNT_ERROR_RECORD_NOT_FOUND) {
+		show_msg_popup(BR_STRING_ERROR, BR_STRING_NOT_FOUND_URL, 2);
+		return EINA_FALSE;
+	} else if (error_code == ACCOUNT_ERROR_NONE) {
+		error_code = account_foreach_account_from_db(__get_sns_list, this);
+		error_code = account_disconnect();
+
+		if (error_code !=ACCOUNT_ERROR_NONE) {
+			BROWSER_LOGD("account_svc_disconnect failed with error code [%d]\n", error_code);
+			return EINA_FALSE;
+		}
+	} else {
+		BROWSER_LOGD("account_connect failed with error code [%d]\n", error_code);
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+
+bool Browser_Common_View::__get_sns_list(account_h account, void *data)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	if (!data)
+		return false;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+
+	int account_id = 0;
+	char *service_name = NULL;
+	char *lib_path = NULL;
+	char *icon_path = NULL;
+
+	Eina_Bool can_post = EINA_FALSE;
+
+	account_get_capability(account, __get_post_capability_cb, &can_post);
+	account_get_account_id(account, &account_id);
+	BROWSER_LOGD("account_id: %d\n", account_id);
+
+	account_get_domain_name(account, &service_name);
+	BROWSER_LOGD("service_name: %s\n", service_name);
+
+	if (!can_post) {
+		BROWSER_LOGD("cannot post to : [%s] in browser\n", service_name);
+		if (service_name)
+			free(service_name);
+		service_name = NULL;
+		return false;
+	} else {
+		account_get_package_name(account, &lib_path);
+		BROWSER_LOGD("lib_path: %s\n", lib_path);
+
+		account_get_icon_path(account, &icon_path);
+		BROWSER_LOGD("icon_path: %s\n", icon_path);
+
+		if (icon_path && strlen(icon_path) > 0) {
+			BROWSER_LOGD("icon_path: %s\n", icon_path);
+			Evas_Object *icon = elm_icon_add(common_view->m_share_popup);
+			if (icon) {
+				elm_icon_file_set(icon, icon_path, NULL);
+				BROWSER_LOGD("icon_path: %s\n", icon_path);
+				common_view->m_sns_icon_list.push_back(icon);
+			}
+		}
+
+		if (service_name && strlen(service_name) && lib_path && strlen(lib_path)) {
+			common_view->m_sns_path_list.push_back(std::string(lib_path));
+			common_view->m_sns_name_list.push_back(std::string(service_name));
+		}
+	}
+	if (service_name)
+		free(service_name);
+	service_name = NULL;
+
+	if (icon_path)
+		free(icon_path);
+	icon_path = NULL;
+
+	if (lib_path)
+		free(lib_path);
+	lib_path= NULL;
+
+	return true;
+}
+
+bool Browser_Common_View::__get_post_capability_cb(account_capability_type_e type,
+						account_capability_state_e state, void *data)
+{
+	Eina_Bool *can_post = (Eina_Bool *)data;
+	if (!can_post) {
+		BROWSER_LOGD("unable to post");
+		return false;
+	}
+
+	if (ACCOUNT_CAPABILITY_STATUS_POST != type)
+		return true;
+
+	if (ACCOUNT_CAPABILITY_DISABLED == state)
+		return true;
+
+	*can_post = EINA_TRUE;
+
+	return true;
+}
+
+Eina_Bool Browser_Common_View::_send_via_email(std::string url, Eina_Bool attach_file)
+{
+	BROWSER_LOGD("[%s], url[%s]", __func__, url.c_str());
+	if (url.empty()) {
+		show_msg_popup(BR_STRING_EMPTY);
+		return EINA_FALSE;
+	}
+
+	service_h service_handle = NULL;
+	if (service_create(&service_handle) < 0) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (!service_handle) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (attach_file) {
+		if (service_set_operation(service_handle, SERVICE_OPERATION_SEND) < 0) {
+			BROWSER_LOGE("Fail to set service operation");
+			service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+
+		if (service_set_uri(service_handle, url.c_str()) < 0) {
+			BROWSER_LOGE("Fail to set uri");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+	} else {
+		if (service_set_operation(service_handle, SERVICE_OPERATION_SEND_TEXT) < 0) {
+			BROWSER_LOGE("Fail to set service operation");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+
+		if (strstr(url.c_str(), BROWSER_MAIL_TO_SCHEME)) {
+			if (service_add_extra_data(service_handle, SERVICE_DATA_TO, url.c_str() + strlen(BROWSER_MAIL_TO_SCHEME)) < 0) {
+				BROWSER_LOGE("Fail to set mailto data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		} else {
+			if (service_add_extra_data(service_handle, SERVICE_DATA_TEXT, url.c_str()) < 0) {
+				BROWSER_LOGE("Fail to set extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+	}
+
+	if (service_set_package(service_handle, SEC_EMAIL) < 0) {
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+
+	if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	service_destroy(service_handle);
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_Common_View::_add_to_contact(std::string number)
+{
+	if (number.empty()) {
+		BROWSER_LOGE("number is null");
+		return EINA_FALSE;
+	}
+	struct ug_cbs cbs = {0, };
+	cbs.layout_cb = __ug_layout_cb;
+	cbs.result_cb = NULL;//__ug_result_cb;
+	cbs.destroy_cb = __ug_destroy_cb;
+	cbs.priv = (void *)this;
+
+	char *phone_number = (char *)strdup(number.c_str());
+	if (!phone_number) {
+		BROWSER_LOGE("strdup failed");
+		return EINA_FALSE;
+	}
+
+	service_h data = NULL;
+	service_create(&data);
+	if (data == NULL) {
+		BROWSER_LOGE("fail to service_create.");
+		return EINA_FALSE;
+	}
+/*
+type.
+CT_UG_REQUEST_ADD = 21,
+CT_UG_REQUEST_ADD_WITH_NUM = 22,
+CT_UG_REQUEST_ADD_WITH_EMAIL = 23,
+CT_UG_REQUEST_ADD_WITH_WEB = 24,
+*/
+	if (service_add_extra_data(data, "type", "22")) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(data);
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(data, "ct_num", number.c_str())) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(data);
+		return EINA_FALSE;
+	}
+
+	if (!ug_create(NULL, "contacts-details-efl", UG_MODE_FULLVIEW, data, &cbs))
+		BROWSER_LOGE("ug_create is failed.");
+
+	if (service_destroy(data))
+		BROWSER_LOGE("service_destroy is failed.");
+
+	free(phone_number);
+}
+
+Eina_Bool Browser_Common_View::_share_via_nfc(std::string url)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (url.empty()) {
+		show_msg_popup(BR_STRING_EMPTY);
+		return EINA_FALSE;
+	}
+
+	struct ug_cbs cbs = {0, };
+	cbs.layout_cb = __ug_layout_cb;
+	cbs.result_cb = NULL;//__ug_result_cb;
+	cbs.destroy_cb = __ug_destroy_cb;
+	cbs.priv = (void *)this;
+
+	char *share_url = (char *)strdup(url.c_str());
+	if (!share_url) {
+		BROWSER_LOGE("strdup failed");
+		return EINA_FALSE;
+	}
+
+	service_h data = NULL;
+	service_create(&data);
+	if (data == NULL) {
+		BROWSER_LOGE("fail to service_create.");
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(data, "count", "1")) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(data);
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(data, "request_type", "data_buffer")) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(data);
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(data, "request_data", share_url)) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(data);
+
+		free(share_url);
+		return EINA_FALSE;
+	}
+
+	if(!ug_create(NULL, "share-nfc-efl", UG_MODE_FULLVIEW, data, &cbs))
+		BROWSER_LOGE("ug_create is failed.");
+
+	if (service_destroy(data))
+		BROWSER_LOGE("service_destroy is failed.");
+
+	free(share_url);
+
+	return EINA_TRUE;
+}
+
+void Browser_Common_View::__popup_response_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("%s, event_info=%d", __func__, (int)event_info);
+
+	if (!data)
+		return;
+
+	Browser_Common_View *common_view = (Browser_Common_View *)data;
+	if (common_view->m_share_popup) {
+		evas_object_del(common_view->m_share_popup);
+		common_view->m_share_popup = NULL;
+	}
+	if (common_view->m_share_list) {
+		evas_object_del(common_view->m_share_list);
+		common_view->m_share_list = NULL;
+	}
+
+	common_view->m_sns_name_list.clear();
+	common_view->m_sns_path_list.clear();
+
+}
+
 char *Browser_Common_View::_trim(char *str)
 {
 	char *pos_bos = str;
@@ -307,42 +822,13 @@ char *Browser_Common_View::_trim(char *str)
 	return pos_bos;
 }
 
-std::string Browser_Common_View::get_domain_name(const char *url)
-{
-	if (!url || !strcmp(url, ""))
-		return std::string();
-
-	std::string domain_name = url;
-
-	/* replacing multiple "/" in a row with one "/" */
-	size_t pos = domain_name.find("//");
-	while (pos != std::string::npos) {
-		domain_name.erase(pos, 1);
-		pos = domain_name.find("//");
-	}
-
-	/* cut "xxx:/" prefix */
-	pos = domain_name.find(":/");
-	if (pos != std::string::npos) {
-		/* ":/" length */
-		domain_name = domain_name.substr(pos + 2);
-	}
-
-	/* cut behind "/" */
-	pos = domain_name.find("/");
-	if (pos != std::string::npos)
-		domain_name = domain_name.substr(0, pos);
-
-	return domain_name;
-}
-
+#if defined(HORIZONTAL_UI)
 Eina_Bool Browser_Common_View::is_landscape(void)
 {
-	/* The appcore_get_rotation_state fail in U1 HD target, temporary code. */
 	int window_w = 0;
 	int window_h = 0;
 	evas_object_geometry_get(m_win, NULL, NULL, &window_w, &window_h);
-	if (window_w < window_h) {
+	if (window_h > window_w) {
 		BROWSER_LOGD("portrait");
 		return EINA_FALSE;
 	} else {
@@ -350,6 +836,7 @@ Eina_Bool Browser_Common_View::is_landscape(void)
 		return EINA_TRUE;
 	}
 }
+#endif
 
 /* set focus to edit field idler callback to show ime. */
 Eina_Bool Browser_Common_View::__set_focus_editfield_idler_cb(void *edit_field)
@@ -369,14 +856,13 @@ Eina_Bool Browser_Common_View::__set_focus_editfield_idler_cb(void *edit_field)
 Eina_Bool Browser_Common_View::_has_url_sheme(const char *url)
 {
 	if (url && strlen(url)
-	    && (strstr(url, BROWSER_URL_SCHEME_CHECK) || strstr(url, BROWSER_MAIL_TO_SCHEME)
-	    || strstr(url, BROWSER_TEL_SCHEME) || strstr(url, BROWSER_YOUTUBE_SCHEME)))
+	    && (strstr(url, BROWSER_URL_SCHEME_CHECK) || strstr(url, BROWSER_MAIL_TO_SCHEME)))
 		return EINA_TRUE;
 	else
 		return EINA_FALSE;
 }
 
-void Browser_Common_View::__ug_layout_cb(struct ui_gadget *ug, enum ug_mode mode, void *priv)
+void Browser_Common_View::__ug_layout_cb(ui_gadget_h ug, enum ug_mode mode, void *priv)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (!priv || !ug)
@@ -393,7 +879,7 @@ void Browser_Common_View::__ug_layout_cb(struct ui_gadget *ug, enum ug_mode mode
 
 	switch (mode) {
 	case UG_MODE_FULLVIEW:
-		evas_object_size_hint_weight_set(base, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+		evas_object_size_hint_weight_set(base, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);		
 		elm_win_resize_object_add(win, base);
 		evas_object_show(base);
 		break;
@@ -402,13 +888,13 @@ void Browser_Common_View::__ug_layout_cb(struct ui_gadget *ug, enum ug_mode mode
 	}
 }
 
-void Browser_Common_View::__ug_result_cb(struct ui_gadget *ug, bundle *result, void *priv)
+void Browser_Common_View::__ug_result_cb(ui_gadget_h ug, bundle *result, void *priv)
 {
 	if (!priv || !ug)
 		return;
 }
 
-void Browser_Common_View::__ug_destroy_cb(struct ui_gadget *ug, void *priv)
+void Browser_Common_View::__ug_destroy_cb(ui_gadget_h ug, void *priv)
 {
 	if (!priv || !ug)
 		return;

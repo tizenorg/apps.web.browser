@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #include "browser-settings-main-view.h"
 #include "browser-settings-user-agent-view.h"
@@ -23,7 +25,6 @@ Browser_Settings_User_Agent_View::Browser_Settings_User_Agent_View(Browser_Setti
 	,m_genlist(NULL)
 	,m_tizen_checkbox(NULL)
 	,m_chrome_checkbox(NULL)
-	,m_firefox_checkbox(NULL)
 {
 	BROWSER_LOGD("[%s]", __func__);
 }
@@ -65,9 +66,7 @@ char *Browser_Settings_User_Agent_View::__genlist_label_get_cb(void *data,
 		if (type == TIZEN)
 			return strdup("Tizen");
 		else if (type == CHROME)
-			return strdup("Chrome");
-		else if (type == FIREFOX)
-			return strdup("Firefox");
+			return strdup("Chrome 20");
 	}
 
 	return NULL;
@@ -89,11 +88,10 @@ Evas_Object *Browser_Settings_User_Agent_View::__genlist_icon_get_cb(void *data,
 				return NULL;
 			}
 			char *user_agent = vconf_get_str(USERAGENT_KEY);
-			if (user_agent) {
-				if (!strncmp(user_agent, "Tizen", strlen("Tizen")))
-					elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_TRUE);
-
-				free(user_agent);
+			if (!user_agent || strncmp(user_agent, "Chrome 20", strlen("Chrome 20"))) {
+				elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_TRUE);
+				if (user_agent)
+					free(user_agent);
 			}
 
 			evas_object_propagate_events_set(user_agent_view->m_tizen_checkbox, EINA_FALSE);
@@ -109,7 +107,7 @@ Evas_Object *Browser_Settings_User_Agent_View::__genlist_icon_get_cb(void *data,
 			}
 			char *user_agent = vconf_get_str(USERAGENT_KEY);
 			if (user_agent) {
-				if (!strncmp(user_agent, "Chrome", strlen("Chrome")))
+				if (!strncmp(user_agent, "Chrome 20", strlen("Chrome 20")))
 					elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_TRUE);
 
 				free(user_agent);
@@ -120,25 +118,6 @@ Evas_Object *Browser_Settings_User_Agent_View::__genlist_icon_get_cb(void *data,
 									__check_changed_cb, callback_data);
 
 			return user_agent_view->m_chrome_checkbox;
-		}else if (type == FIREFOX) {
-			user_agent_view->m_firefox_checkbox = elm_check_add(obj);
-			if (!user_agent_view->m_firefox_checkbox) {
-				BROWSER_LOGE("elm_check_add failed");
-				return NULL;
-			}
-			char *user_agent = vconf_get_str(USERAGENT_KEY);
-			if (user_agent) {
-				if (!strncmp(user_agent, "Firefox", strlen("Firefox")))
-					elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_TRUE);
-
-				free(user_agent);
-			}
-
-			evas_object_propagate_events_set(user_agent_view->m_firefox_checkbox, EINA_FALSE);
-			evas_object_smart_callback_add(user_agent_view->m_firefox_checkbox, "changed",
-									__check_changed_cb, callback_data);
-
-			return user_agent_view->m_firefox_checkbox;
 		}
 	}
 
@@ -160,20 +139,12 @@ void Browser_Settings_User_Agent_View::__check_changed_cb( void *data,
 		if (type == TIZEN) {
 			elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_TRUE);
 			elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_FALSE);
-			elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_FALSE);
 			if (vconf_set_str(USERAGENT_KEY, "Tizen") < 0)
-				BROWSER_LOGE("vconf_set_str failed");
-		} else if (type == CHROME){
-			elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_FALSE);
-			elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_TRUE);
-			elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_FALSE);
-			if (vconf_set_str(USERAGENT_KEY, "Chrome") < 0)
 				BROWSER_LOGE("vconf_set_str failed");
 		} else {
 			elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_FALSE);
-			elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_FALSE);
-			elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_TRUE);
-			if (vconf_set_str(USERAGENT_KEY, "Firefox") < 0)
+			elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_TRUE);
+			if (vconf_set_str(USERAGENT_KEY, "Chrome 20") < 0)
 				BROWSER_LOGE("vconf_set_str failed");
 		}
 	} else {
@@ -199,20 +170,12 @@ void Browser_Settings_User_Agent_View::__item_selected_cb(void *data,
 	if (type == TIZEN) {
 		elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_TRUE);
 		elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_FALSE);
-		elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_FALSE);
 		if (vconf_set_str(USERAGENT_KEY, "Tizen") < 0)
-			BROWSER_LOGE("vconf_set_str failed");
-	} else if(type == CHROME){
-		elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_FALSE);
-		elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_TRUE);
-		elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_FALSE);
-		if (vconf_set_str(USERAGENT_KEY, "Chrome") < 0)
 			BROWSER_LOGE("vconf_set_str failed");
 	} else {
 		elm_check_state_set(user_agent_view->m_tizen_checkbox, EINA_FALSE);
-		elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_FALSE);
-		elm_check_state_set(user_agent_view->m_firefox_checkbox, EINA_TRUE);
-		if (vconf_set_str(USERAGENT_KEY, "Firefox") < 0)
+		elm_check_state_set(user_agent_view->m_chrome_checkbox, EINA_TRUE);
+		if (vconf_set_str(USERAGENT_KEY, "Chrome 20") < 0)
 			BROWSER_LOGE("vconf_set_str failed");
 	}
 
@@ -250,12 +213,6 @@ Eina_Bool Browser_Settings_User_Agent_View::_create_main_layout(void)
 						&m_chrome_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
 						__item_selected_cb, &m_chrome_item_callback_data);
 
-	m_firefox_item_callback_data.type = FIREFOX;
-	m_firefox_item_callback_data.user_data = this;
-	m_firefox_item_callback_data.it = elm_genlist_item_append(m_genlist, &m_1_text_1_icon_item_class,
-						&m_firefox_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
-						__item_selected_cb, &m_firefox_item_callback_data);
-
 	m_back_button = elm_button_add(m_genlist);
 	if (!m_back_button) {
 		BROWSER_LOGE("elm_button_add failed");
@@ -265,7 +222,7 @@ Eina_Bool Browser_Settings_User_Agent_View::_create_main_layout(void)
 	evas_object_show(m_back_button);
 	evas_object_smart_callback_add(m_back_button, "clicked", __back_button_clicked_cb, this);
 
-	Elm_Object_Item *navi_it = elm_naviframe_item_push(m_navi_bar, "User Agent",
+	Elm_Object_Item *navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_USER_AGENT,
 							m_back_button, NULL, m_genlist, "browser_titlebar");
 
 	return EINA_TRUE;

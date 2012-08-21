@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #ifndef BROWSER_DATA_MANAGER_H
 #define BROWSER_DATA_MANAGER_H
@@ -33,6 +34,7 @@ typedef enum _view_stack_status {
 } view_stack_status;
 
 class Browser_Add_To_Bookmark_View;
+class Add_To_Most_Visited_Sites_View;
 class Browser_Bookmark_DB;
 class Browser_Bookmark_View;
 class Browser_History_DB;
@@ -40,7 +42,9 @@ class Browser_History_Layout;
 class Browser_Multi_Window_View;
 class Browser_New_Folder_View;
 class Browser_Select_Folder_View;
+class Most_Visited_Sites;
 class Browser_View;
+class Browser_Geolocation_DB;
 
 class Browser_Data_Manager {
 public:
@@ -75,6 +79,12 @@ public:
 								string url, int current_folder_id = BROWSER_BOOKMARK_MAIN_FOLDER_ID);
 	void destroy_edit_bookmark_view(void);
 
+#if defined(FEATURE_MOST_VISITED_SITES)
+	Add_To_Most_Visited_Sites_View *get_add_to_most_visited_sites_view(void) { return m_add_to_most_visited_sites_view; }
+	Add_To_Most_Visited_Sites_View *create_add_to_most_visited_sites_view(Most_Visited_Sites *most_visited_sites);
+	void destroy_add_to_most_visited_sites_view(void);
+#endif
+
 	Browser_New_Folder_View *get_new_folder_view(void) { return m_new_folder_view; }
 	Browser_New_Folder_View *create_new_folder_view(void);
 	void destroy_new_folder_view(void);
@@ -94,10 +104,18 @@ public:
 	Browser_History_DB *get_history_db(void) { return m_history_db; }
 	Browser_History_DB *create_history_db(void);
 	void destroy_history_db(void);
+
+	Browser_Geolocation_DB *get_geolocation_db(void) { return m_geolocation_db; }
+	Browser_Geolocation_DB *create_geolocation_db(void);
+	void destroy_geolocation_db(void);
+
 private:
 	Browser_View *m_browser_view;
 	Browser_Bookmark_View *m_bookmark_view;
 	Browser_Add_To_Bookmark_View *m_add_to_bookmark_view;
+#if defined(FEATURE_MOST_VISITED_SITES)
+	Add_To_Most_Visited_Sites_View *m_add_to_most_visited_sites_view;
+#endif
 	Browser_Add_To_Bookmark_View *m_edit_bookmark_view;
 	Browser_New_Folder_View *m_new_folder_view;
 	Browser_Select_Folder_View *m_select_folder_view;
@@ -106,6 +124,7 @@ private:
 
 	Browser_Bookmark_DB *m_bookmark_db;
 	Browser_History_DB *m_history_db;
+	Browser_Geolocation_DB *m_geolocation_db;
 
 	unsigned int m_stack_status;
 };

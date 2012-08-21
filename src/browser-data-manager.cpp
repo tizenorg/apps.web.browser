@@ -1,20 +1,25 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
-
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+ 
 #include "browser-add-to-bookmark-view.h"
+#if defined(FEATURE_MOST_VISITED_SITES)
+#include "add-to-most-visited-sites-view.h"
+#endif
+#include "browser-geolocation-db.h"
 #include "browser-bookmark-db.h"
 #include "browser-bookmark-view.h"
 #include "browser-config.h"
@@ -24,6 +29,9 @@
 #include "browser-multi-window-view.h"
 #include "browser-new-folder-view.h"
 #include "browser-select-folder-view.h"
+#if defined(FEATURE_MOST_VISITED_SITES)
+#include "most-visited-sites.h"
+#endif
 #include "browser-view.h"
 
 Browser_Data_Manager::Browser_Data_Manager(void)
@@ -32,12 +40,16 @@ Browser_Data_Manager::Browser_Data_Manager(void)
 	,m_bookmark_view(NULL)
 	,m_add_to_bookmark_view(NULL)
 	,m_edit_bookmark_view(NULL)
+#if defined(FEATURE_MOST_VISITED_SITES)
+	,m_add_to_most_visited_sites_view(NULL)
+#endif
 	,m_new_folder_view(NULL)
 	,m_select_folder_view(NULL)
 	,m_history_layout(NULL)
 	,m_multi_window_view(NULL)
 	,m_bookmark_db(NULL)
 	,m_history_db(NULL)
+	,m_geolocation_db(NULL)
 	,m_stack_status(0)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -58,6 +70,12 @@ Browser_Data_Manager::~Browser_Data_Manager(void)
 		delete m_edit_bookmark_view;
 		m_edit_bookmark_view = NULL;
 	}
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (m_add_to_most_visited_sites_view) {
+		delete m_add_to_most_visited_sites_view;
+		m_add_to_most_visited_sites_view = NULL;
+	}
+#endif
 	if (m_new_folder_view) {
 		delete m_new_folder_view;
 		m_new_folder_view = NULL;
@@ -204,6 +222,35 @@ void Browser_Data_Manager::destroy_edit_bookmark_view(void)
 	}
 }
 
+#if defined(FEATURE_MOST_VISITED_SITES)
+Add_To_Most_Visited_Sites_View *Browser_Data_Manager::create_add_to_most_visited_sites_view(Most_Visited_Sites *most_visited_sites)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_add_to_most_visited_sites_view)
+		destroy_add_to_most_visited_sites_view();
+
+	m_add_to_most_visited_sites_view = new(nothrow) Add_To_Most_Visited_Sites_View(most_visited_sites);
+	if (!m_add_to_most_visited_sites_view)
+		BROWSER_LOGE("new Add_To_Most_Visited_Sites_View failed");
+	else
+		m_stack_status = m_stack_status | ADD_TO_MOST_VISITED_SITES_VIEW;
+
+	return m_add_to_most_visited_sites_view;
+}
+#endif
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+void Browser_Data_Manager::destroy_add_to_most_visited_sites_view(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_add_to_most_visited_sites_view) {
+		delete m_add_to_most_visited_sites_view;
+		m_add_to_most_visited_sites_view = NULL;
+		m_stack_status = m_stack_status - ADD_TO_MOST_VISITED_SITES_VIEW;
+	}
+}
+#endif
+
 Browser_New_Folder_View *Browser_Data_Manager::create_new_folder_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -325,3 +372,24 @@ void Browser_Data_Manager::destroy_history_db(void)
 	}
 }
 
+Browser_Geolocation_DB *Browser_Data_Manager::create_geolocation_db(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_geolocation_db)
+		destroy_geolocation_db();
+
+	m_geolocation_db = new(nothrow) Browser_Geolocation_DB;
+	if (!m_geolocation_db)
+		BROWSER_LOGE("new Browser_Geolocation_DB failed");
+
+	return m_geolocation_db;
+}
+
+void Browser_Data_Manager::destroy_geolocation_db(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_geolocation_db) {
+		delete m_geolocation_db;
+		m_geolocation_db = NULL;
+	}
+}

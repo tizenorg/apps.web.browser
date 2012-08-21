@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 using namespace std;
 
@@ -669,14 +671,15 @@ Eina_Bool Browser_Bookmark_DB::get_untitled_folder_count(int *count)
 
 	std::string title;
 	std::string title_from_db;
-	char *buf = "Folder_";
+	char buf[32] = {0, };
 	for (int i = 1; ; i++) {
 		*count = i;
 		error = sqlite3_step(sqlite3_stmt);
 		if (error == SQLITE_ROW) {
+			snprintf(buf, sizeof(buf)-1, "Folder_%02d", i);
 			title = buf; 
 			title_from_db = reinterpret_cast<const char *>(sqlite3_column_text(sqlite3_stmt,0));
-			if (strncmp(title_from_db.c_str(), title.c_str(), title.length()))
+			if (title_from_db != title)
 				break;
 		} else
 			break;

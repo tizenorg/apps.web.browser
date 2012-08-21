@@ -1,9 +1,8 @@
-browser (0.1.14-0) unstable; urgency=low
+browser (2.0.0-0) unstable; urgency=low
 
-  * Git : slp/plgs/b/browser
-  * Tag : browser_0.1.14-0
+  * Git : slp/pkgs/b/browser
+  * Tag : browser_2.0.0-0
 
-  * Replace icon of browser(internet)
-  * update spec file
+  * Release Public Tizen browser
 
- -- Junghwan Kang <junghwan.kang@samsung.com>  Sat, 21 Apr 2012 20:05:28 +0900
+ -- Junghwan Kang <junghwan.kang@samsung.com>  Wed, 25 Jul 2012 21:52:06 +0900

@@ -32,7 +32,7 @@ endif
 
 CFLAGS += -fPIC
 CXXFLAGS += -fPIC
-LDFLAGS += -Wl,--rpath=$(PREFIX)/lib -Wl,--hash-style=both -Wl,--as-needed
+LDFLAGS += -Wl,--rpath=$(PREFIX)/lib -Wl,--hash-style=both -Wl,--as-needed -pie
 
 configure: configure-stamp
 configure-stamp:
@@ -79,9 +79,11 @@ clean:
 	rm -rf po/Makefile
 	rm -rf po/install_manifest.txt
 
-	rm -rf browser.edj
-	rm -rf browser_theme.edj
-	rm -rf ug_effect.edj
+	rm -rf edc/browser-define.edj
+	rm -rf edc/browser-macro.edj
+	rm -rf edc/ug-effect.edj
+	rm -rf edc/browser-view-main.edj
+	rm -rf edc/browser-view-navigation-bar.edj
 
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
@@ -136,7 +138,7 @@ binary-arch: build install
 #	dh_perl
 	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

@@ -1,18 +1,19 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "browser-class.h"
 #include "browser-multi-window-view.h"
@@ -29,9 +30,6 @@ Browser_Multi_Window_View::Browser_Multi_Window_View(void)
 	,m_scroll_move_transit(NULL)
 	,m_scroller(NULL)
 	,m_item_box(NULL)
-	,m_close_multi_window_button(NULL)
-	,m_new_window_button(NULL)
-	,m_view_change_button(NULL)
 	,m_dummy_front_item_layout(NULL)
 	,m_dummy_end_item_layout(NULL)
 	,m_dummy_front_item_snapshot(NULL)
@@ -40,8 +38,14 @@ Browser_Multi_Window_View::Browser_Multi_Window_View(void)
 	,m_current_position_index(0)
 	,m_page_control(NULL)
 	,m_gengrid(NULL)
-	,m_is_reodering(EINA_FALSE)
+	,m_is_reordering(EINA_FALSE)
 	,m_zoom_out_effect_idler(NULL)
+	,m_zoom_out_duration(0.5)
+	,m_change_view_button(NULL)
+	,m_cancel_button(NULL)
+	,m_controlbar(NULL)
+	,m_new_window_button(NULL)
+	,m_init_grid_mode(EINA_FALSE)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	memset(m_index_items, 0x00, sizeof(Elm_Object_Item *) * BROWSER_MULTI_WINDOW_MAX_COUNT);
@@ -61,14 +65,6 @@ Browser_Multi_Window_View::~Browser_Multi_Window_View(void)
 	if (m_item_box) {
 		evas_object_del(m_item_box);
 		m_item_box = NULL;
-	}
-	if (m_close_multi_window_button) {
-		evas_object_del(m_close_multi_window_button);
-		m_close_multi_window_button = NULL;
-	}
-	if (m_new_window_button) {
-		evas_object_del(m_new_window_button);
-		m_new_window_button = NULL;
 	}
 	if (m_dummy_front_item_layout) {
 		evas_object_del(m_dummy_front_item_layout);
@@ -102,10 +98,6 @@ Browser_Multi_Window_View::~Browser_Multi_Window_View(void)
 		evas_object_del(m_flip_effect_image);
 		m_flip_effect_image = NULL;
 	}
-	if (m_view_change_button) {
-		evas_object_del(m_view_change_button);
-		m_view_change_button = NULL;
-	}
 	if (m_zoom_move_transit) {
 		elm_transit_del(m_zoom_move_transit);
 		m_zoom_move_transit = NULL;
@@ -130,9 +122,11 @@ Browser_Multi_Window_View::~Browser_Multi_Window_View(void)
 	}
 }
 
-Eina_Bool Browser_Multi_Window_View::init(void)
+Eina_Bool Browser_Multi_Window_View::init(double duration, Eina_Bool grid_mode)
 {
 	BROWSER_LOGD("[%s]", __func__);
+	m_zoom_out_duration = duration;
+	m_init_grid_mode = grid_mode;
 
 	if (!_create_main_layout()) {
 		BROWSER_LOGD("_create_main_layout failed");
@@ -186,12 +180,36 @@ void Browser_Multi_Window_View::__zoom_out_finished(void)
 	const char *title = browser_view->get_title().c_str();
 	const char *url = browser_view->get_url().c_str();
 
+	BROWSER_LOGD("title=[%s]", title);
+	BROWSER_LOGD("url=[%s]", url);
 	if (!title || strlen(title) == 0) {
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY_PAGE);
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
+		Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
+		const char *entry_text = elm_entry_entry_get(entry);
+		if (entry_text && strlen(entry_text)) {
+			BROWSER_LOGD("[%s][%s]", entry_text, entry_text);
+			char *markup = elm_entry_utf8_to_markup(entry_text);
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+				free(markup);
+			}
+		} else {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY);
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
+		}
 	} else {
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", title);
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", url);
+		BROWSER_LOGD("[%s][%s]", title, url);
+		char *markup = elm_entry_utf8_to_markup(title);
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+			free(markup);
+		}
+
+		markup = elm_entry_utf8_to_markup(url);
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+			free(markup);
+		}
 	}
 
 	_show_grey_effect();
@@ -260,8 +278,9 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 
 	evas_object_hide(item);
 
-	/* Destroy most visited sites little eariler because of blinking issue. */
+	/* Destroy speed dial little eariler because of blinking issue. */
 	Browser_View *browser_view = m_data_manager->get_browser_view();
+
 	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
 
 	int webview_x = 0;
@@ -275,11 +294,13 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 	int snapshot_y = 0;
 	int snapshot_w = 0;
 	int snapshot_h = 0;
-	if (!is_landscape())
-		evas_object_geometry_get(window_list[index]->m_portrait_snapshot_image,
+#if defined(HORIZONTAL_UI)
+	if (is_landscape())
+		evas_object_geometry_get(window_list[index]->m_landscape_snapshot_image,
 					&snapshot_x, &snapshot_y, &snapshot_w, &snapshot_h);
 	else
-		evas_object_geometry_get(window_list[index]->m_landscape_snapshot_image,
+#endif
+		evas_object_geometry_get(window_list[index]->m_portrait_snapshot_image,
 					&snapshot_x, &snapshot_y, &snapshot_w, &snapshot_h);
 
 	if (!window_list[index]->m_ewk_view || browser_view->get_url(window_list[index]).empty()) {
@@ -328,6 +349,11 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 
 	m_select_item_index = index;
 
+#if defined(FEATURE_MOST_VISITED_SITES)
+	if (!(browser_view->get_url(window_list[m_select_item_index]).empty()))
+		browser_view->_show_most_visited_sites(EINA_FALSE);
+#endif
+
 	/* Without this code, the url is empty shortly when create deleted-window in multi window. */
 	if (browser_view->get_url().empty() && !browser_view->m_focused_window->m_url.empty())
 		browser_view->_set_url_entry(window_list[m_select_item_index]->m_url.c_str(), EINA_FALSE);
@@ -339,9 +365,15 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 	elm_transit_tween_mode_set(m_zoom_transit, ELM_TRANSIT_TWEEN_MODE_SINUSOIDAL);
 	elm_transit_objects_final_state_keep_set(m_zoom_transit, EINA_FALSE);
 	elm_transit_effect_resizable_flip_add(m_zoom_transit, ELM_TRANSIT_EFFECT_FLIP_AXIS_Y, EINA_TRUE);
-	elm_transit_duration_set(m_zoom_transit, 0.8);
+	elm_transit_duration_set(m_zoom_transit, 0.5);
 	elm_transit_del_cb_set(m_zoom_transit, __zoom_in_finished_cb, this);
 	elm_transit_go(m_zoom_transit);
+
+#if defined(FEATURE_MOST_VISITED_SITES)
+	/* If speed dial is running, just zoom in effect is enough. */
+	if (browser_view->is_most_visited_sites_running())
+		return EINA_TRUE;
+#endif
 
 	/* If the url bar in browser scroller is being displayed,
 	 * the zoom animation should be move up because of the url bar gap.
@@ -373,7 +405,7 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 	elm_transit_effect_translation_add(m_zoom_move_transit, 0, 0, 0,
 							(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_scale_get())));
 
-	elm_transit_duration_set(m_zoom_move_transit, 0.8);
+	elm_transit_duration_set(m_zoom_move_transit, 0.5);
 	elm_transit_go(m_zoom_move_transit);
 
 	return EINA_TRUE;
@@ -393,6 +425,13 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 						&ewk_view_current_w, &ewk_view_current_h);
 
 	Browser_View *browser_view = m_data_manager->get_browser_view();
+
+	if (m_zoom_out_duration == 0) {
+		Elm_Transit *tmp = m_zoom_transit = elm_transit_add();
+		__zoom_out_finished_cb(this, NULL);
+		elm_transit_del(tmp);
+		return EINA_TRUE;
+	}
 
 	/* m_zoom_effect_image is only for zoom out effect for the first time. */
 	m_zoom_transit = elm_transit_add();
@@ -415,11 +454,13 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 	int current_snapshot_w = 0;
 	int current_snapshot_h = 0;
 	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
-	if (!is_landscape())
-		evas_object_geometry_get(window_list[0]->m_portrait_snapshot_image,
+#if defined(HORIZONTAL_UI)
+	if (is_landscape())
+		evas_object_geometry_get(window_list[0]->m_landscape_snapshot_image,
 				&current_snapshot_x, &current_snapshot_y, &current_snapshot_w, &current_snapshot_h);
 	else
-		evas_object_geometry_get(window_list[0]->m_landscape_snapshot_image,
+#endif
+		evas_object_geometry_get(window_list[0]->m_portrait_snapshot_image,
 				&current_snapshot_x, &current_snapshot_y, &current_snapshot_w, &current_snapshot_h);
 
 	evas_object_move(m_flip_effect_image, current_snapshot_x, current_snapshot_y);
@@ -431,10 +472,9 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 	elm_transit_object_add(m_zoom_transit, m_flip_effect_image);
 	elm_transit_tween_mode_set(m_zoom_transit, ELM_TRANSIT_TWEEN_MODE_SINUSOIDAL);
 	elm_transit_objects_final_state_keep_set(m_zoom_transit, EINA_FALSE);
-//	elm_transit_effect_zoom_add(m_zoom_transit, 1.0, BROWSER_MULTI_WINDOW_ITEM_RATIO);
 	elm_transit_effect_resizable_flip_add(m_zoom_transit, ELM_TRANSIT_EFFECT_FLIP_AXIS_Y, EINA_TRUE);
 
-	elm_transit_duration_set(m_zoom_transit, 0.8);
+	elm_transit_duration_set(m_zoom_transit, m_zoom_out_duration);
 	elm_transit_del_cb_set(m_zoom_transit, __zoom_out_finished_cb, this);
 	elm_transit_go(m_zoom_transit);
 
@@ -461,7 +501,6 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 
 	int scroller_y = 0;
 	evas_object_geometry_get(browser_view->m_scroller, NULL, &scroller_y, NULL, NULL);
-
 	if (browser_scroller_y > url_layout_h)
 		browser_scroller_y = url_layout_h;
 
@@ -469,7 +508,7 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 	elm_transit_effect_translation_add(m_zoom_move_transit, 0, 0, 0,
 					(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_scale_get())) * (-1));
 
-	elm_transit_duration_set(m_zoom_move_transit, 0.8);
+	elm_transit_duration_set(m_zoom_move_transit, m_zoom_out_duration);
 	elm_transit_go(m_zoom_move_transit);
 
 	return EINA_TRUE;
@@ -671,15 +710,37 @@ void Browser_Multi_Window_View::_delete_window_scroll_finished(void)
 	const char *title = browser_view->get_title(window_list[m_current_position_index]).c_str();
 	const char *url = browser_view->get_url(window_list[m_current_position_index]).c_str();
 	if (!title || strlen(title) == 0) {
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY_PAGE);
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
+		Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
+		const char *entry_text = elm_entry_entry_get(entry);
+		if (entry_text && strlen(entry_text)) {
+			BROWSER_LOGD("[%s][%s]", entry_text, entry_text);
+			char *markup = elm_entry_utf8_to_markup(entry_text);
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+				free(markup);
+			}
+		} else {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY);
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
+		}
 	} else {
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", title);
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", url);
+		BROWSER_LOGD("[%s][%s]", title, url);
+		char *markup = elm_entry_utf8_to_markup(title);
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+			free(markup);
+		}
+
+		markup = elm_entry_utf8_to_markup(url);
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+			free(markup);
+		}
 	}
 
 	if (BROWSER_MULTI_WINDOW_MAX_COUNT > window_list.size())
-		elm_object_disabled_set(m_new_window_button, EINA_FALSE);
+		elm_object_item_disabled_set(m_new_window_button, EINA_FALSE);
 
 	_show_grey_effect();
 }
@@ -787,10 +848,12 @@ Eina_Bool Browser_Multi_Window_View::_fill_multi_window_items(void)
 		evas_object_size_hint_align_set(item, 0.5, 0.5);
 
 		Evas_Object *snapshot_image = NULL;
-		if (!is_landscape())
-			snapshot_image = window_list[i]->m_portrait_snapshot_image;
-		else
+#if defined(HORIZONTAL_UI)
+		if (is_landscape())
 			snapshot_image = window_list[i]->m_landscape_snapshot_image;
+		else
+#endif
+			snapshot_image = window_list[i]->m_portrait_snapshot_image;
 
 		elm_object_part_content_set(item, "elm.swallow.snapshot", snapshot_image);
 
@@ -862,25 +925,42 @@ void Browser_Multi_Window_View::__close_multi_window_button_clicked_cb(void *dat
 		  * The snapshot is kept. */
 		elm_object_part_content_unset(multi_window_view->m_item_list[i],
 						"elm.swallow.snapshot");
-
+#if defined(HORIZONTAL_UI)
 		if (window_list[i]->m_landscape_snapshot_image) {
 			evas_object_hide(window_list[i]->m_landscape_snapshot_image);
 		}
+#endif
 		if (window_list[i]->m_portrait_snapshot_image) {
 			evas_object_hide(window_list[i]->m_portrait_snapshot_image);
 		}
+	}
+	Browser_View *browser_view = m_data_manager->get_browser_view();
+
+	elm_object_part_content_set(browser_view->m_main_layout, "elm.swallow.control_bar", browser_view->m_control_bar);
+	evas_object_show(browser_view->m_control_bar);
+
+	if (multi_window_view->m_controlbar) {
+		evas_object_del(multi_window_view->m_controlbar);
+		multi_window_view->m_controlbar = NULL;
 	}
 
 	multi_window_view->_set_multi_window_mode(EINA_FALSE);
 
 	m_data_manager->destroy_multi_window_view();
 
-	Browser_View *browser_view = m_data_manager->get_browser_view();
 	browser_view->_set_multi_window_controlbar_text(window_list.size());
+
+	browser_view->_update_back_forward_buttons();
+
+	if (window_list.size() >= BROWSER_MULTI_WINDOW_MAX_COUNT)
+		elm_object_item_disabled_set(browser_view->m_new_window_button, EINA_TRUE);
+	else
+		elm_object_item_disabled_set(browser_view->m_new_window_button, EINA_FALSE);
+
 	/* Set the title if enter the multi window while loading. */
 	browser_view->return_to_browser_view();
 
-	browser_view->resume_webview(browser_view->m_focused_window->m_ewk_view);
+	browser_view->resume_ewk_view(browser_view->m_focused_window->m_ewk_view);
 }
 
 void Browser_Multi_Window_View::__new_window_scroll_finished_cb(void *data,
@@ -931,7 +1011,11 @@ void Browser_Multi_Window_View::__new_window_zoom_in_finished_cb(void *data,
 	__close_multi_window_button_clicked_cb(multi_window_view, NULL, NULL);
 
 	Browser_View *browser_view = m_data_manager->get_browser_view();
+#if defined(FEATURE_MOST_VISITED_SITES)
 	browser_view->load_url(BROWSER_MOST_VISITED_SITES_URL);
+#else
+	browser_view->load_url(BROWSER_BLANK_PAGE_URL);
+#endif
 }
 
 Eina_Bool Browser_Multi_Window_View::_show_zoom_in_new_window_effect(void)
@@ -974,11 +1058,13 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_new_window_effect(void)
 	int snapshot_h = 0;
 	int scroll_size = _get_scroll_page_size();
 
-	if (!is_landscape())
-		evas_object_geometry_get(window_list[m_item_list.size() - 1]->m_portrait_snapshot_image,
+#if defined(HORIZONTAL_UI)
+	if (is_landscape())
+		evas_object_geometry_get(window_list[m_item_list.size() - 1]->m_landscape_snapshot_image,
 					&snapshot_x, &snapshot_y, &snapshot_w, &snapshot_h);
 	else
-		evas_object_geometry_get(window_list[m_item_list.size() - 1]->m_landscape_snapshot_image,
+#endif
+		evas_object_geometry_get(window_list[m_item_list.size() - 1]->m_portrait_snapshot_image,
 					&snapshot_x, &snapshot_y, &snapshot_w, &snapshot_h);
 
 	evas_object_resize(m_zoom_effect_image, snapshot_w, snapshot_h);
@@ -1000,12 +1086,9 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_new_window_effect(void)
 	elm_transit_tween_mode_set(m_zoom_transit, ELM_TRANSIT_TWEEN_MODE_SINUSOIDAL);
 	elm_transit_objects_final_state_keep_set(m_zoom_transit, EINA_FALSE);
 	elm_transit_effect_resizable_flip_add(m_zoom_transit, ELM_TRANSIT_EFFECT_FLIP_AXIS_Y, EINA_TRUE);
-	elm_transit_duration_set(m_zoom_transit, 0.8);
+	elm_transit_duration_set(m_zoom_transit, 0.5);
 	elm_transit_del_cb_set(m_zoom_transit, __new_window_zoom_in_finished_cb, this);
 	elm_transit_go(m_zoom_transit);
-
-	/* window_list[window_list.size() - 1] is new created window. */
-//	m_browser->set_focused_window(window_list[window_list.size() - 1]);
 
 	return EINA_TRUE;
 }
@@ -1056,15 +1139,19 @@ void Browser_Multi_Window_View::__new_window_button_clicked_cb(void *data,
 
 	multi_window_view->_show_new_window_scroll_effect();
 
-	/* The new window & close button can be clicked while the new window animation.
-	 * So delete the event callback during new window animation. */
-	evas_object_smart_callback_del(multi_window_view->m_new_window_button, "clicked",
-							__new_window_button_clicked_cb);
-	evas_object_smart_callback_del(multi_window_view->m_close_multi_window_button, "clicked",
-							__close_multi_window_button_clicked_cb);
+	Browser_View *browser_view = m_data_manager->get_browser_view();
+
+	elm_object_part_content_unset(browser_view->m_main_layout, "elm.swallow.control_bar");
+
+	elm_object_part_content_set(browser_view->m_main_layout, "elm.swallow.control_bar", browser_view->m_control_bar);
+
+	if (multi_window_view->m_new_window_button)
+		elm_object_item_disabled_set(multi_window_view->m_new_window_button, EINA_TRUE);
+	if (multi_window_view->m_change_view_button)
+		elm_object_item_disabled_set(multi_window_view->m_change_view_button, EINA_TRUE);
+	elm_object_disabled_set(multi_window_view->m_cancel_button, EINA_TRUE);
 
 	/* clear url entry filed when click new window button. */
-	Browser_View *browser_view = m_data_manager->get_browser_view();
 	browser_view->_set_url_entry("");
 	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "hide,favicon,signal", "");
 	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout),
@@ -1089,11 +1176,13 @@ int Browser_Multi_Window_View::_get_scroll_page_size(void)
 	int snapshot_w = 0;
 	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
 
-	if (!is_landscape())
-		evas_object_geometry_get(window_list[m_current_position_index]->m_portrait_snapshot_image,
+#if defined(HORIZONTAL_UI)
+	if (is_landscape())
+		evas_object_geometry_get(window_list[m_current_position_index]->m_landscape_snapshot_image,
 					NULL, NULL, &snapshot_w, NULL);
 	else
-		evas_object_geometry_get(window_list[m_current_position_index]->m_landscape_snapshot_image,
+#endif
+		evas_object_geometry_get(window_list[m_current_position_index]->m_portrait_snapshot_image,
 					NULL, NULL, &snapshot_w, NULL);
 
 	int padding = 22 * elm_scale_get();
@@ -1128,30 +1217,58 @@ void Browser_Multi_Window_View::_scroller_animation_stop(void)
 		std::string title_string = window_list[m_current_position_index]->m_title;
 		std::string url_string = window_list[m_current_position_index]->m_url;
 		if (title_string.empty()) {
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY_PAGE);
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY);
 			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
 		} else {
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", title_string.c_str());
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", url_string.c_str());
+			BROWSER_LOGD("[%s][%s]", title_string.c_str(), url_string.c_str());
+			char *markup = elm_entry_utf8_to_markup(title_string.c_str());
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+				free(markup);
+			}
+
+			markup = elm_entry_utf8_to_markup(url_string.c_str());
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+				free(markup);
+			}
 		}
 	} else if (!window_list[m_current_position_index]->m_title.empty()) {
+		BROWSER_LOGD("[%s][%s]", window_list[m_current_position_index]->m_title.c_str(), window_list[m_current_position_index]->m_url.c_str());
 		/* If the ewk view is deleted because of unused case(etc. low memory),
 		  * and it is re-created, then set the title. */
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title",
-					window_list[m_current_position_index]->m_title.c_str());
-		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url",
-					window_list[m_current_position_index]->m_url.c_str());
+		char *markup = elm_entry_utf8_to_markup(window_list[m_current_position_index]->m_title.c_str());
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+			free(markup);
+		}
+		markup = elm_entry_utf8_to_markup(window_list[m_current_position_index]->m_url.c_str());
+		if (markup) {
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+			free(markup);
+		}
 	} else {
 		std::string title = browser_view->get_title(window_list[m_current_position_index]);
 		std::string url = browser_view->get_url(window_list[m_current_position_index]);
 		if (title.empty()) {
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY_PAGE);
+			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", BR_STRING_EMPTY);
 			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", "");
 		} else {
 			std::string title_string = std::string(title);
 			std::string url_string = std::string(url);
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", title_string.c_str());
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", url_string.c_str());
+
+			char *markup = elm_entry_utf8_to_markup(title_string.c_str());
+			BROWSER_LOGD("[%s][%s]", title_string.c_str(), url_string.c_str());
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
+				free(markup);
+			}
+
+			markup = elm_entry_utf8_to_markup(url_string.c_str());
+			if (markup) {
+				edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
+				free(markup);
+			}
 		}
 	}
 
@@ -1189,7 +1306,7 @@ Eina_Bool Browser_Multi_Window_View::_show_grid_mode_zoom_in_effect(int index)
 		gengrid_item = elm_gengrid_item_next_get(gengrid_item);
 	}
 
-	const Evas_Object *snapshot_layout = elm_object_item_part_content_get(gengrid_item, "elm.swallow.content");
+	const Evas_Object *snapshot_layout = elm_object_item_part_content_get(gengrid_item, "elm.swallow.icon");
 
 	int snapshot_x = 0;
 	int snapshot_y = 0;
@@ -1233,13 +1350,25 @@ Eina_Bool Browser_Multi_Window_View::_show_grid_mode_zoom_in_effect(int index)
 					(float)((float)snapshot_w / (float)current_ewk_view_w));
 		if (!m_zoom_effect_image) {
 			BROWSER_LOGE("_capture_snapshot failed");
-			return EINA_FALSE;
+			m_zoom_effect_image = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
+			if (!m_zoom_effect_image) {
+				BROWSER_LOGE("evas_object_rectangle_add failed");
+				return EINA_FALSE;
+			}
+			evas_object_resize(m_zoom_effect_image, snapshot_w, snapshot_h);
+			evas_object_color_set(m_zoom_effect_image, 255, 255, 255, 255);
 		}
 
 		m_flip_effect_image = _capture_snapshot(window_list[index], 1.0);
 		if (!m_flip_effect_image) {
 			BROWSER_LOGE("_capture_snapshot failed");
-			return EINA_FALSE;
+			m_flip_effect_image = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
+			if (!m_flip_effect_image) {
+				BROWSER_LOGE("evas_object_rectangle_add failed");
+				return EINA_FALSE;
+			}
+			evas_object_resize(m_flip_effect_image, current_ewk_view_w, current_ewk_view_h);
+			evas_object_color_set(m_flip_effect_image, 255, 255, 255, 255);
 		}
 	}
 	evas_object_move(m_flip_effect_image, current_ewk_view_x, current_ewk_view_y);
@@ -1258,12 +1387,18 @@ Eina_Bool Browser_Multi_Window_View::_show_grid_mode_zoom_in_effect(int index)
 
 	m_select_item_index = index;
 
+#if defined(FEATURE_MOST_VISITED_SITES)
+	/* Destroy speed dial little eariler because of blinking issue. */
+	if (!(browser_view->get_url(window_list[m_select_item_index]).empty()))
+		browser_view->_show_most_visited_sites(EINA_FALSE);
+#endif
+
 	elm_transit_object_add(m_zoom_transit, m_zoom_effect_image);
 	elm_transit_object_add(m_zoom_transit, m_flip_effect_image);
 	elm_transit_tween_mode_set(m_zoom_transit, ELM_TRANSIT_TWEEN_MODE_SINUSOIDAL);
 	elm_transit_objects_final_state_keep_set(m_zoom_transit, EINA_FALSE);
 	elm_transit_effect_resizable_flip_add(m_zoom_transit, ELM_TRANSIT_EFFECT_FLIP_AXIS_Y, EINA_TRUE);
-	elm_transit_duration_set(m_zoom_transit, 0.8);
+	elm_transit_duration_set(m_zoom_transit, 0.5);
 	elm_transit_del_cb_set(m_zoom_transit, __zoom_in_finished_cb, this);
 	elm_transit_go(m_zoom_transit);
 
@@ -1286,7 +1421,7 @@ Eina_Bool Browser_Multi_Window_View::_show_grid_mode_zoom_in_effect(int index)
 	BROWSER_LOGD("to_x = %d, to_y = %d", to_x, to_y);
 	elm_transit_effect_translation_add(m_zoom_move_transit, 0, 0, to_x, to_y);
 
-	elm_transit_duration_set(m_zoom_move_transit, 0.8);
+	elm_transit_duration_set(m_zoom_move_transit, 0.5);
 	elm_transit_go(m_zoom_move_transit);
 
 	return EINA_TRUE;
@@ -1333,9 +1468,9 @@ void Browser_Multi_Window_View::__delete_window_icon_grid_mode_clicked_cb(void *
 	Browser_Multi_Window_View *multi_window_view = NULL;
 	multi_window_view = (Browser_Multi_Window_View *)(param->multi_window_view);
 
-	if (multi_window_view->m_is_reodering) {
+	if (multi_window_view->m_is_reordering) {
 		BROWSER_LOGD("reodering mode");
-		multi_window_view->m_is_reodering = EINA_FALSE;
+		multi_window_view->m_is_reordering = EINA_FALSE;
 		return;
 	}
 
@@ -1353,9 +1488,9 @@ void Browser_Multi_Window_View::__snapshot_grid_mode_clicked_cb(void *data,
 	gengrid_callback_param *param = (gengrid_callback_param *)data;
 	Browser_Multi_Window_View *multi_window_view = NULL;
 	multi_window_view = (Browser_Multi_Window_View *)(param->multi_window_view);
-	if (multi_window_view->m_is_reodering) {
+	if (multi_window_view->m_is_reordering) {
 		BROWSER_LOGD("reodering mode");
-		multi_window_view->m_is_reodering = EINA_FALSE;
+		multi_window_view->m_is_reordering = EINA_FALSE;
 		return;
 	}
 	if (multi_window_view->m_zoom_transit) {
@@ -1389,17 +1524,20 @@ Evas_Object *Browser_Multi_Window_View::_get_gengrid_icon_cb(void *data,
 		std::vector<Browser_Window *> window_list = m_browser->get_window_list();
 		int snapshot_w = 0;
 		int snapshot_h = 0;
-		if (!multi_window_view->is_landscape()) {
-			evas_object_image_source_set(snapshot_image, window_list[index]->m_portrait_snapshot_image);
-			evas_object_geometry_get(window_list[index]->m_portrait_snapshot_image, NULL, NULL,
-										&snapshot_w, &snapshot_h);
-			BROWSER_LOGD("portrait, snapshot_w=%d, snapshot_h=%d", snapshot_w, snapshot_h);
-		}
-		else {
+#if defined(HORIZONTAL_UI)
+		if (multi_window_view->is_landscape()) {
 			evas_object_image_source_set(snapshot_image, window_list[index]->m_landscape_snapshot_image);
 			evas_object_geometry_get(window_list[index]->m_landscape_snapshot_image, NULL, NULL,
 										&snapshot_w, &snapshot_h);
 			BROWSER_LOGD("landscape, snapshot_w=%d, snapshot_h=%d", snapshot_w, snapshot_h);
+		}
+		else
+#endif
+		{
+			evas_object_image_source_set(snapshot_image, window_list[index]->m_portrait_snapshot_image);
+			evas_object_geometry_get(window_list[index]->m_portrait_snapshot_image, NULL, NULL,
+										&snapshot_w, &snapshot_h);
+			BROWSER_LOGD("portrait, snapshot_w=%d, snapshot_h=%d", snapshot_w, snapshot_h);
 		}
 
 		int item_w = 0;
@@ -1445,7 +1583,7 @@ void Browser_Multi_Window_View::__gengrid_item_longpress_cb(void *data, Evas_Obj
 		return;
 
 	Browser_Multi_Window_View *multi_window_view = (Browser_Multi_Window_View *)data;
-	multi_window_view->m_is_reodering = EINA_TRUE;
+	multi_window_view->m_is_reordering = EINA_TRUE;
 }
 
 Eina_Bool Browser_Multi_Window_View::_reorder_windows(void)
@@ -1559,6 +1697,10 @@ void Browser_Multi_Window_View::__view_change_button_clicked_cb(void *data,
 		return;
 
 	Browser_Multi_Window_View *multi_window_view = (Browser_Multi_Window_View *)data;
+
+	if (multi_window_view->m_zoom_transit)
+		return;
+
 	if (!multi_window_view->_is_grid_mode()) {
 		if (!multi_window_view->_create_gengrid()) {
 			BROWSER_LOGE("_create_gengrid failed");
@@ -1566,12 +1708,17 @@ void Browser_Multi_Window_View::__view_change_button_clicked_cb(void *data,
 		}
 		edje_object_signal_emit(elm_layout_edje_get(multi_window_view->m_main_layout),
 									"show,grid_mode,signal", "");
+
+		elm_toolbar_item_icon_set(multi_window_view->m_change_view_button,
+					BROWSER_IMAGE_DIR"/I01_controlbar_icon_view_change.png");
 	} else {
 		/* To sync grid mode, if the window is deleted or reodered at grid mode. */
 		evas_object_smart_callback_call(multi_window_view->m_scroller, "scroll,anim,stop", NULL);
 
 		edje_object_signal_emit(elm_layout_edje_get(multi_window_view->m_main_layout),
 									"show,normal_mode,signal", "");
+		elm_toolbar_item_icon_set(multi_window_view->m_change_view_button,
+					BROWSER_IMAGE_DIR"/I01_controlbar_icon_view_change_3x3.png");
 	}
 }
 
@@ -1597,6 +1744,16 @@ Eina_Bool Browser_Multi_Window_View::__zoom_out_effect_idler_cb(void *data)
 
 	Browser_Multi_Window_View *multi_window_view = (Browser_Multi_Window_View *)data;
 	multi_window_view->m_zoom_out_effect_idler = NULL;
+
+	if (multi_window_view->m_init_grid_mode) {
+		multi_window_view->__zoom_out_finished();
+
+		__view_change_button_clicked_cb(multi_window_view, NULL, NULL);
+		edje_object_signal_emit(elm_layout_edje_get(multi_window_view->m_main_layout),
+								"show,bg,signal", "");
+		multi_window_view->m_init_grid_mode = EINA_FALSE;
+		return ECORE_CALLBACK_CANCEL;
+	}
 
 	/*  zoom out effect for the first time when user excutes multi window. */
 	if (!multi_window_view->_show_zoom_out_effect()) {
@@ -1633,6 +1790,63 @@ void Browser_Multi_Window_View::__index_selected_cb(void *data, Evas_Object *obj
 	elm_scroller_region_get(multi_window_view->m_scroller, NULL, &scroller_y, &scroller_w, &scroller_h);
 	elm_scroller_region_bring_in(multi_window_view->m_scroller, scroll_size * multi_window_view->m_current_position_index,
 						scroller_y, scroller_w, scroller_h);
+}
+
+Evas_Object *Browser_Multi_Window_View::_create_control_bar(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Evas_Object *controlbar_layout;
+	controlbar_layout = elm_layout_add(m_main_layout);
+	if (!controlbar_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return NULL;
+	}
+	if (!elm_layout_file_set(controlbar_layout, BROWSER_EDJE_DIR"/browser-view-control-bar.edj",
+				"browser-view-controlbar")) {
+		BROWSER_LOGE("Can not set layout browser-view-controlbar\n");
+		return NULL;
+	}
+	evas_object_size_hint_weight_set(controlbar_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(controlbar_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(controlbar_layout);
+
+	Evas_Object *control_bar;
+	control_bar = elm_toolbar_add(controlbar_layout);
+	if (control_bar) {
+		elm_object_style_set(control_bar, "browser/browser-view");
+
+		elm_toolbar_shrink_mode_set(control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+		m_new_window_button =  elm_toolbar_item_append(control_bar, BROWSER_IMAGE_DIR"/I01_controlbar_icon_new_window.png",
+										NULL, __new_window_button_clicked_cb, this);
+
+		Elm_Object_Item *item = elm_toolbar_item_append(control_bar, NULL, NULL, NULL, NULL);
+		elm_object_item_disabled_set(item, EINA_TRUE);
+
+		m_change_view_button = elm_toolbar_item_append(control_bar,
+					BROWSER_IMAGE_DIR"/I01_controlbar_icon_view_change_3x3.png", NULL,
+					__view_change_button_clicked_cb, this);
+
+		item = elm_toolbar_item_append(control_bar, NULL, NULL, NULL, NULL);
+		elm_object_item_disabled_set(item, EINA_TRUE);
+
+		elm_object_part_content_set(controlbar_layout, "elm.swallow.controlbar", control_bar);
+
+		m_cancel_button = elm_button_add(control_bar);
+		if (!m_cancel_button) {
+			BROWSER_LOGE("elm_button_add failed");
+			return NULL;
+		}
+		elm_object_style_set(m_cancel_button, "browser/multi_window_cancel_button");
+		elm_object_text_set(m_cancel_button, BR_STRING_CANCEL);
+
+		elm_object_part_content_set(controlbar_layout, "elm.swallow.back_button", m_cancel_button);
+		evas_object_smart_callback_add(m_cancel_button, "clicked", __close_multi_window_button_clicked_cb, this);
+		evas_object_show(m_cancel_button);
+
+		evas_object_show(control_bar);
+	}
+
+	return controlbar_layout;
 }
 
 Eina_Bool Browser_Multi_Window_View::_create_main_layout(void)
@@ -1751,44 +1965,15 @@ Eina_Bool Browser_Multi_Window_View::_create_main_layout(void)
 	elm_object_content_set(m_scroller, m_item_box);
 	evas_object_show(m_item_box);
 
-	m_close_multi_window_button = elm_button_add(m_navi_bar);
-	if (!m_close_multi_window_button) {
-		BROWSER_LOGD("elm_button_add failed");
+	m_controlbar = _create_control_bar();
+	if (!m_controlbar) {
+		BROWSER_LOGE("_create_control_bar failed");
 		return EINA_FALSE;
 	}
-	elm_object_style_set(m_close_multi_window_button, "text_only/style2");
-	elm_object_text_set(m_close_multi_window_button, BR_STRING_CLOSE);
-	elm_object_part_content_set(m_main_layout, "elm.swallow.close_multi_window_button",
-							m_close_multi_window_button);
-	evas_object_smart_callback_add(m_close_multi_window_button, "clicked",
-					__close_multi_window_button_clicked_cb, this);
-	evas_object_show(m_close_multi_window_button);
+	elm_object_part_content_unset(browser_view->m_main_layout, "elm.swallow.control_bar");
+	evas_object_hide(browser_view->m_control_bar);
 
-	m_view_change_button = elm_button_add(m_navi_bar);
-	if (!m_view_change_button) {
-		BROWSER_LOGD("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_view_change_button, "text_only/style2");
-	elm_object_text_set(m_view_change_button, BR_STRING_VIEW_CHANGE);
-	elm_object_part_content_set(m_main_layout, "elm.swallow.view_change_button",
-							m_view_change_button);
-	evas_object_smart_callback_add(m_view_change_button, "clicked",
-					__view_change_button_clicked_cb, this);
-	evas_object_show(m_view_change_button);
-
-	m_new_window_button = elm_button_add(m_navi_bar);
-	if (!m_new_window_button) {
-		BROWSER_LOGD("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_new_window_button, "text_only/style2");
-	elm_object_text_set(m_new_window_button, BR_STRING_NEW_WINDOW);
-	elm_object_part_content_set(m_main_layout, "elm.swallow.new_window_button",
-							m_new_window_button);
-	evas_object_smart_callback_add(m_new_window_button, "clicked",
-					__new_window_button_clicked_cb, this);
-	evas_object_show(m_new_window_button);
+	elm_object_part_content_set(browser_view->m_main_layout, "elm.swallow.control_bar", m_controlbar);
 
 	int index = 0;
 	std::vector<Browser_Window *> window_list = m_browser->get_window_list();
@@ -1827,49 +2012,12 @@ Eina_Bool Browser_Multi_Window_View::_create_main_layout(void)
 	evas_object_show(m_page_control);
 
 	if (BROWSER_MULTI_WINDOW_MAX_COUNT <= window_list.size())
-		elm_object_disabled_set(m_new_window_button, EINA_TRUE);
+		elm_object_item_disabled_set(m_new_window_button, EINA_TRUE);
 
 	_set_multi_window_mode(EINA_TRUE);
 
-	if (!is_landscape()) {
-		/* Portrait mode */
-		if (browser_view->m_focused_window->m_portrait_snapshot_image)
-			evas_object_del(browser_view->m_focused_window->m_portrait_snapshot_image);
-		browser_view->m_focused_window->m_portrait_snapshot_image = snapshot_image;
-
-		for (int i = 0 ; i < window_list.size() ; i++) {
-			/* Focused window is already captured above. So skip it. */
-			if ((window_list[i] != browser_view->m_focused_window)
-			     && !(window_list[i]->m_portrait_snapshot_image)) {
-				Evas_Object *snapshot_image = NULL;
-				if (window_list[i]->m_ewk_view == NULL || browser_view->get_url(window_list[i]).empty()) {
-					snapshot_image = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
-					if (!snapshot_image) {
-						BROWSER_LOGE("evas_object_rectangle_add failed");
-						return EINA_FALSE;
-					}
-					int focused_ewk_view_w = 0;
-					int focused_ewk_view_h = 0;
-					evas_object_geometry_get(browser_view->m_focused_window->m_ewk_view, NULL, NULL,
-									&focused_ewk_view_w, &focused_ewk_view_h);
-
-					evas_object_size_hint_min_set(snapshot_image, (int)(focused_ewk_view_w * BROWSER_MULTI_WINDOW_ITEM_RATIO),
-										(int)(focused_ewk_view_h * BROWSER_MULTI_WINDOW_ITEM_RATIO));
-					evas_object_resize(snapshot_image, (int)(focused_ewk_view_w * BROWSER_MULTI_WINDOW_ITEM_RATIO),
-									(int)(focused_ewk_view_h * BROWSER_MULTI_WINDOW_ITEM_RATIO));
-					evas_object_color_set(snapshot_image, 255, 255, 255, 255);
-				} else {
-					snapshot_image = _capture_snapshot(window_list[i],
-										BROWSER_MULTI_WINDOW_ITEM_RATIO);
-					if (!snapshot_image) {
-						BROWSER_LOGD("_capture_snapshot failed");
-						return EINA_FALSE;
-					}
-				}
-				window_list[i]->m_portrait_snapshot_image = snapshot_image;
-			}
-		}
-	} else {
+#if defined(HORIZONTAL_UI)
+	if (is_landscape()) {
 		/* Landscape mode */
 		if (browser_view->m_focused_window->m_landscape_snapshot_image)
 			evas_object_del(browser_view->m_focused_window->m_landscape_snapshot_image);
@@ -1905,6 +2053,47 @@ Eina_Bool Browser_Multi_Window_View::_create_main_layout(void)
 					}
 				}
 				window_list[i]->m_landscape_snapshot_image = snapshot_image;
+			}
+		}
+	}
+	else
+#endif
+	{
+		/* Portrait mode */
+		if (browser_view->m_focused_window->m_portrait_snapshot_image)
+			evas_object_del(browser_view->m_focused_window->m_portrait_snapshot_image);
+		browser_view->m_focused_window->m_portrait_snapshot_image = snapshot_image;
+
+		for (int i = 0 ; i < window_list.size() ; i++) {
+			/* Focused window is already captured above. So skip it. */
+			if ((window_list[i] != browser_view->m_focused_window)
+			     && !(window_list[i]->m_portrait_snapshot_image)) {
+				Evas_Object *snapshot_image = NULL;
+				if (window_list[i]->m_ewk_view == NULL || browser_view->get_url(window_list[i]).empty()) {
+					snapshot_image = evas_object_rectangle_add(evas_object_evas_get(m_navi_bar));
+					if (!snapshot_image) {
+						BROWSER_LOGE("evas_object_rectangle_add failed");
+						return EINA_FALSE;
+					}
+					int focused_ewk_view_w = 0;
+					int focused_ewk_view_h = 0;
+					evas_object_geometry_get(browser_view->m_focused_window->m_ewk_view, NULL, NULL,
+									&focused_ewk_view_w, &focused_ewk_view_h);
+
+					evas_object_size_hint_min_set(snapshot_image, (int)(focused_ewk_view_w * BROWSER_MULTI_WINDOW_ITEM_RATIO),
+										(int)(focused_ewk_view_h * BROWSER_MULTI_WINDOW_ITEM_RATIO));
+					evas_object_resize(snapshot_image, (int)(focused_ewk_view_w * BROWSER_MULTI_WINDOW_ITEM_RATIO),
+									(int)(focused_ewk_view_h * BROWSER_MULTI_WINDOW_ITEM_RATIO));
+					evas_object_color_set(snapshot_image, 255, 255, 255, 255);
+				} else {
+					snapshot_image = _capture_snapshot(window_list[i],
+										BROWSER_MULTI_WINDOW_ITEM_RATIO);
+					if (!snapshot_image) {
+						BROWSER_LOGD("_capture_snapshot failed");
+						return EINA_FALSE;
+					}
+				}
+				window_list[i]->m_portrait_snapshot_image = snapshot_image;
 			}
 		}
 	}

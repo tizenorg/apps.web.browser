@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 using namespace std;
 
@@ -480,3 +482,37 @@ Eina_Bool Browser_History_DB::clear_history(void)
 	else
 		return EINA_FALSE;
 }
+
+Eina_Bool Browser_History_DB::is_in_bookmark(const char* url, int *bookmark_id)
+{
+	int error = db_util_open(BROWSER_BOOKMARK_DB_PATH, &m_db_descriptor, DB_UTIL_REGISTER_HOOK_METHOD);
+	if (error != SQLITE_OK) {
+		db_util_close(m_db_descriptor);
+		m_db_descriptor = NULL;
+		return EINA_FALSE;
+	}
+
+	sqlite3_stmt *sqlite3_stmt = NULL;
+	error = sqlite3_prepare_v2(m_db_descriptor, "select id from bookmarks where address=?",
+									-1, &sqlite3_stmt, NULL);
+	if (error != SQLITE_OK) {
+		db_util_close(m_db_descriptor);
+		return EINA_FALSE;
+	}
+
+	if (sqlite3_bind_text(sqlite3_stmt, 1, url, -1, NULL) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
+
+	error = sqlite3_step(sqlite3_stmt);
+
+	if (bookmark_id)
+		*bookmark_id = sqlite3_column_int(sqlite3_stmt, 0);
+
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_finalize is failed.\n");
+
+	db_util_close(m_db_descriptor);
+
+	return (error == SQLITE_ROW);
+}
+

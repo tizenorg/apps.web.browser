@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #include "browser-settings-class.h"
 #include "browser-settings-edit-homepage-view.h"
@@ -56,8 +58,8 @@ void Browser_Settings_Edit_Homepage_View::__done_button_clicked_cb(void *data,
 	Evas_Object *entry = br_elm_editfield_entry_get(edit_homepage_view->m_edit_field);
 	char *homepage = elm_entry_markup_to_utf8(elm_entry_entry_get(entry));
 	if (homepage) {
-		vconf_set_str(USER_HOMEPAGE_KEY, homepage);
-		vconf_set_str(HOMEPAGE_KEY, USER_HOMEPAGE);
+		br_preference_set_str(USER_HOMEPAGE_KEY, homepage);
+		br_preference_set_str(HOMEPAGE_KEY, USER_HOMEPAGE);
 		free(homepage);
 	}
 
@@ -138,7 +140,11 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	br_elm_editfield_label_set(m_edit_field, BR_STRING_URL);
 	elm_object_part_content_set(m_content_layout, "elm.swallow.entry", m_edit_field);
 
-	char *homepage = vconf_get_str(USER_HOMEPAGE_KEY);
+	char *homepage = NULL;
+	if (br_preference_get_str(USER_HOMEPAGE_KEY, &homepage) == false) {
+		BROWSER_LOGE("failed to get %s preference\n", USER_HOMEPAGE_KEY);
+		return EINA_FALSE;
+	}
 	Evas_Object *entry = br_elm_editfield_entry_get(m_edit_field);
 	if (homepage) {
 		elm_entry_entry_set(entry, homepage);

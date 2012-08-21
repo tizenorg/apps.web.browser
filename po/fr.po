@@ -1,0 +1,18 @@
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Favoris"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Télécharger"
+
+msgid "IDS_BR_BODY_RSS"
+msgstr ""
+
+msgid "IDS_BR_HEADER_ADD_TO_BOOKMARKS"
+msgstr "Ajouter aux favoris"
+
+msgid "IDS_BR_OPT_CANCEL"
+msgstr "Annuler"
+
+msgid "IDS_BR_TAB_HISTORY"
+msgstr ""
+

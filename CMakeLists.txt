@@ -1,23 +1,33 @@
+#
+# Copyright 2012  Samsung Electronics Co., Ltd
+#
+# Licensed under the Flora License, Version 1.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.tizenopensource.org/license
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(browser CXX)
 
 SET(SRCS
 	src/browser-class.cpp
 	src/browser-window.cpp
+	src/browser-utility.cpp
 	src/browser-main.cpp
 	src/browser-common-view.cpp
 	src/browser-data-manager.cpp
-	src/browser-utility.cpp
+	src/browser-policy-client/browser-policy-decision-maker.cpp
+	src/browser-extension/browser-geolocation.cpp
 	src/browser-extension/browser-find-word.cpp
-	src/browser-extension/browser-download-manager.cpp
-	src/browser-extension/browser-exscheme-handler.cpp
-	src/browser-extension/browser-picker-handler.cpp
-	src/browser-extension/browser-notification-manager.cpp
-	src/browser-security/browser-personal-data-manager.cpp
-	src/browser-security/browser-authentication-manager.cpp
-	src/browser-security/browser-certificate-manager.cpp
+	src/browser-extension/browser-scissorbox-view.cpp
 	src/browser-view/browser-view.cpp
-	src/browser-view/browser-predictive-history.cpp
 	src/browser-view/browser-context-menu.cpp
 	src/browser-multi-window/browser-multi-window-view.cpp
 	src/data-network/browser-network-manager.cpp
@@ -29,15 +39,13 @@ SET(SRCS
 	src/database/browser-bookmark-db.cpp
 	src/database/browser-user-agent-db.cpp
 	src/database/browser-history-db.cpp
-	src/database/browser-personal-data-db.cpp
-	src/database/browser-notification-db.cpp
+	src/database/browser-geolocation-db.cpp
 	src/browser-settings/browser-settings-class.cpp
 	src/browser-settings/browser-settings-main-view.cpp
 	src/browser-settings/browser-settings-edit-homepage-view.cpp
 	src/browser-settings/browser-settings-clear-data-view.cpp
-	src/browser-settings/browser-settings-plugin-view.cpp
-	src/browser-settings/browser-settings-user-agent-view.cpp
-	src/browser-settings/browser-settings-accelerated-composition.cpp
+	src/browser-settings/browser-settings-website-setting.cpp
+	src/scissorbox/scissorbox.cpp
 )
 
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -51,26 +59,38 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/database)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/data-network)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-bookmark)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-view)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/most-visited-sites)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-multi-window)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-history)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-settings)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-policy-client)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-extension)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-security)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/scissorbox)
 
 # set pkg-config modules
 INCLUDE(FindPkgConfig)
-pkg_check_modules(pkgs REQUIRED
+pkg_check_modules(pkgs REQUIRED 
 		eina ecore evas ecore-evas edbus elementary
-		appcore-efl dlog db-util utilX ui-gadget tapi sensor
-		secure-storage libsoup-2.4 libxml-2.0 libssl elm-webview notification
-		ecore-input ecore-imf edje cairo ecore-x ewebkit appsvc devman
-		capi-appfw-app-manager capi-appfw-application capi-web-url-download devman_haptic
+		dlog db-util utilX ui-gadget-1 tapi
+		secure-storage libsoup-2.4 libxml-2.0 libssl capi-location-manager capi-system-haptic devman
+		accounts-svc ecore-input ecore-imf edje cairo ecore-x ewebkit2 appsvc capi-appfw-application
+		capi-appfw-app-manager capi-web-url-download shortcut syspopup-caller capi-network-connection pkgmgr
+		vconf-internal-keys
+		capi-system-device
+		capi-system-sensor
 )
 
 FIND_LIBRARY(LIB_GNUTLS gnutls)
 FOREACH(flag ${pkgs_CFLAGS})
 	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
+SET (USE_META_TAG ON)
+IF (USE_META_TAG)
+    ADD_DEFINITIONS("-DUSE_META_TAG")
+    LIST(APPEND SRCS
+        src/browser-extension/browser-meta-tag.cpp
+    )
+ENDIF ()
 
 # set extra defines
 SET(PREFIX ${CMAKE_INSTALL_PREFIX})
@@ -82,7 +102,7 @@ SET(EDJE_DIR "${RESDIR}/edje/")
 SET(LOCALE_DIR "${RESDIR}/locale/")
 SET(IMAGES_DIR "${RESDIR}/images/")
 SET(HTML_DIR "${RESDIR}/html/")
-SET(ICON_DIR "${RESDIR}/icons/default/small/")
+SET(ICON_DIR "/opt/share/icons/default/small/")
 # data
 SET(XML_DIR "${DATADIR}/xml/")
 SET(OPML_DIR "${DATADIR}/opml/")
@@ -95,7 +115,7 @@ SET(CERTIFICATES_DIR "/opt/etc/ssl/certs/")
 SET(DATABASENAME ".browser.db")
 SET(HISTORY_DATABASENAME ".browser-history.db")
 SET(CREDENTIAL_DATABASENAME ".browser-credential.db")
-SET(SPEEDDIAL_DATABASENAME ".browser-speeddial.db")
+SET(MOST_VISITED_DATABASENAME ".browser-mostvisited.db")
 SET(COOKIES_DATABASENAME ".browser-cookies.db")
 SET(DESKTOP_DIR "/opt/share/applications")
 ADD_DEFINITIONS(
@@ -120,10 +140,35 @@ ADD_DEFINITIONS(
 		-D__BUILD__
 )
 
+# Feature definitions
+ADD_DEFINITIONS("-DBROWSER_SCROLLER_BOUNCING")
+ADD_DEFINITIONS("-DSUPPORT_HLS")
+
+# Feature definitions - Must be activated on the Tizen public
+ADD_DEFINITIONS("-DTIZEN_PUBLIC")
+ADD_DEFINITIONS("-DZOOM_BUTTON")
+ADD_DEFINITIONS("-DHORIZONTAL_UI")
+ADD_DEFINITIONS("-DGENLIST_SWEEP")
+SET (USER_AGENT_VIEW ON)
+IF (USER_AGENT_VIEW)
+        ADD_DEFINITIONS("-DUSER_AGENT_VIEW")
+        LIST(APPEND SRCS
+                src/browser-settings/browser-settings-user-agent-view.cpp
+        )
+ENDIF ()
+SET (FEATURE_MOST_VISITED_LIST ON)
+IF (FEATURE_MOST_VISITED_LIST)
+        ADD_DEFINITIONS("-DFEATURE_MOST_VISITED_SITES")
+        LIST(APPEND SRCS
+		src/most-visited-sites/most-visited-sites.cpp
+                src/most-visited-sites/add-to-most-visited-sites-view.cpp
+		src/database/most-visited-sites-db.cpp
+        )
+ENDIF ()
 # set flags
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS}")
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
-SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_CFLAGS} -fPIC")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g -fpie")
+SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -fpie")
 
 FIND_PROGRAM(UNAME NAMES uname)
 EXEC_PROGRAM("${UNAME}" ARGS "-m" OUTPUT_VARIABLE "ARCH")
@@ -136,12 +181,12 @@ IF("${ARCH}" STREQUAL "arm")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
 ENDIF("${ARCH}" STREQUAL "arm")
 
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed -Wl,--hash-style=both")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed -Wl -pie,--hash-style=both")
 
 # real make??
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${pkgs_LDFLAGS} ${LIB_GNUTLS})
-#TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${pkgs_LDFLAGS} ewebkit)
+#TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${pkgs_LDFLAGS} ewebkit2)
 
 # browser-define.edj
 ADD_CUSTOM_TARGET(browser-define.edj
@@ -169,6 +214,15 @@ ADD_CUSTOM_TARGET(browser-naviframe.edj
 	DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-naviframe.edc
 	)
 ADD_DEPENDENCIES(${PROJECT_NAME} browser-naviframe.edj)
+
+# browser-reader.edj
+ADD_CUSTOM_TARGET(browser-reader.edj
+	COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
+	${CMAKE_SOURCE_DIR}/edc/browser-reader.edc
+	${CMAKE_BINARY_DIR}/edc/browser-reader.edj
+	DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-reader.edc
+	)
+ADD_DEPENDENCIES(${PROJECT_NAME} browser-reader.edj)
 
 # browser-view-main.edj
 ADD_CUSTOM_TARGET(browser-view-main.edj
@@ -215,6 +269,15 @@ ADD_CUSTOM_TARGET(browser-bookmark-view.edj
         )
 ADD_DEPENDENCIES(${PROJECT_NAME} browser-bookmark-view.edj)
 
+# browser-most-visited.edj
+ADD_CUSTOM_TARGET(browser-most-visited.edj
+        COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
+        ${CMAKE_SOURCE_DIR}/edc/browser-most-visited.edc
+        ${CMAKE_BINARY_DIR}/edc/browser-most-visited.edj
+        DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-most-visited.edc
+        )
+ADD_DEPENDENCIES(${PROJECT_NAME} browser-most-visited.edj)
+
 # browser-multi-window.edj
 ADD_CUSTOM_TARGET(browser-multi-window.edj
         COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
@@ -233,6 +296,15 @@ ADD_CUSTOM_TARGET(browser-predictive-history.edj
         )
 ADD_DEPENDENCIES(${PROJECT_NAME} browser-predictive-history.edj)
 
+# most-visited-sites.edj
+ADD_CUSTOM_TARGET(most-visited-sites.edj
+        COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
+        ${CMAKE_SOURCE_DIR}/edc/most-visited-sites.edc
+        ${CMAKE_BINARY_DIR}/edc/most-visited-sites.edj
+        DEPENDS ${CMAKE_SOURCE_DIR}/edc/most-visited-sites.edc
+        )
+ADD_DEPENDENCIES(${PROJECT_NAME} most-visited-sites.edj)
+
 # browser-settings.edj
 ADD_CUSTOM_TARGET(browser-settings.edj
         COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
@@ -242,14 +314,14 @@ ADD_CUSTOM_TARGET(browser-settings.edj
         )
 ADD_DEPENDENCIES(${PROJECT_NAME} browser-settings.edj)
 
-# browser-picker-layout.edj
-ADD_CUSTOM_TARGET(browser-picker-layout.edj
+# browser-popup.edj
+ADD_CUSTOM_TARGET(browser-popup.edj
         COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
-        ${CMAKE_SOURCE_DIR}/edc/browser-picker-layout.edc
-        ${CMAKE_BINARY_DIR}/edc/browser-picker-layout.edj
-        DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-picker-layout.edc
+        ${CMAKE_SOURCE_DIR}/edc/browser-popup.edc
+        ${CMAKE_BINARY_DIR}/edc/browser-popup.edj
+        DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-popup.edc
         )
-ADD_DEPENDENCIES(${PROJECT_NAME} browser-picker-layout.edj)
+ADD_DEPENDENCIES(${PROJECT_NAME} browser-popup.edj)
 
 # install browser
 INSTALL(PROGRAMS ${PROJECT_NAME} DESTINATION bin)
@@ -262,10 +334,13 @@ INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-view-url-layout.edj DESTINATION ${
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-view-find-word-layout.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-view-control-bar.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-bookmark-view.edj DESTINATION ${EDJE_DIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-most-visited.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-multi-window.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-predictive-history.edj DESTINATION ${EDJE_DIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/most-visited-sites.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-settings.edj DESTINATION ${EDJE_DIR})
-INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-picker-layout.edj DESTINATION ${EDJE_DIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-reader.edj DESTINATION ${EDJE_DIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-popup.edj DESTINATION ${EDJE_DIR})
 
 # install images
 INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/images/install/ DESTINATION ${IMAGES_DIR}
@@ -292,6 +367,7 @@ INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_0 DESTINATION ${SCREENSHOTS_D
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_1 DESTINATION ${SCREENSHOTS_DIR})
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_2 DESTINATION ${SCREENSHOTS_DIR})
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_3 DESTINATION ${SCREENSHOTS_DIR})
-
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_application_icon.png DESTINATION "${DATADIR}/")
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/config_sample.xml DESTINATION "${DATADIR}/")
 # i18n
 ADD_SUBDIRECTORY(po)

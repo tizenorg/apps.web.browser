@@ -1,6 +1,3 @@
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Installation gescheitert"
-
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Benachrichtigung..."
 
@@ -618,4 +615,217 @@ msgstr "%d Elemente ausgewählt"
 
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1 Element ausgewählt"
+
+msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
+msgstr "Als Widget hinzufügen"
+
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Shortcut erstellt"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Wort auswählen"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Auf der Seite suchen"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Auf Seite suchen"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
+msgid "IDS_BR_BODY_INTERNET"
+msgstr "Internet"
+
+msgid "IDS_BR_OPT_LIST"
+msgstr "Liste"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Alle auswählen"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Nachricht"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-Mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Abbrechen"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Link-URL kop."
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Bild anzeigen"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Auf neu. Seite öf."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Öffnen"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Textauswahl ein"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favoriten"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Bearbeiten"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Löschen"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Löschen"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Abbrechen"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Favorit bearbeiten"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Nachrichten"
+
+msgid "IDS_BR_OPT_EMAIL_M_BOX"
+msgstr "E-Mail"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Bearbeiten"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Löschen"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Zu Favoriten hinzufügen"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Schriftgröße"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Groß"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Klein"
+
+msgid "IDS_BR_BODY_SPEED"
+msgstr "Geschwindigkeit"
+
+msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
+msgstr "Proxy-Adresse"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy-Port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "OK"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Version"
+
+msgid "IDS_BR_SK_INSTALL"
+msgstr "Installieren"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Aktuelle Seite"
+
+msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
+msgstr "Ordnernamen eingeben"
+
+msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
+msgstr "Namen des Lesezeichens eingeben"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Nicht erneut fragen"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "Die URL wurde nicht gefunden"
+
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s fragt Ihre Position an"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Voreinstellung merken"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Bilder anzeigen"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Sicherheitswarnungen anzeigen"
+
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Passwörter merken"
+
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Passwörter löschen"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Alle gespeicherten Passwörter löschen?"
+
+msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
+msgstr "Alle Cookies löschen. Fortfahren?"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Formulardaten speichern"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Auf Standardeinstellungen zurücksetzen"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Alle Einstellungen auf Standard. Fortfahren?"
+
+msgid "IDS_BR_POP_CLEAR_CACHE_Q"
+msgstr "Cache leeren?"
+
+msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
+msgstr "Gesamten Verlauf löschen?"
+
+msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
+msgstr "Der Navigationsverlauf im Browser wird gelöscht"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Immer ein"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Standortzugriff aktivieren"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Standortzugriffsdaten löschen"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Favorit kann nicht hinzugefügt werden. Maximale Anzahl an Favoriten erreicht"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Standortzugriff für diese Webseite löschen?"
+
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Drucken"
+
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "URL suchen oder eingeben"
+
+msgid "IDS_BR_BODY_AUTO"
+msgstr "Auto"
+
+msgid "IDS_BR_OPT_MANUAL"
+msgstr "Manuell"
+
+msgid "IDS_BR_BODY_LOW"
+msgstr "Niedrig"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Mittel"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Leere Seite"
+
+msgid "IDS_BR_POP_INSTALLATION_FAILED"
+msgstr "Installation gescheitert"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Website-Einstellungen"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Hoch"
 

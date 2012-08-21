@@ -1,25 +1,28 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 // Apply new naviframe
 
 #define NAVIFRAME_TITLE_H_INC 0
 
 #define NAVIFRAME_SEGMENT_TITLE_H_INC 136
 
-#define NAVIFRAME_OH_OPENED_H_INC 150
+//#define NAVIFRAME_OH_OPENED_H_INC 150
+#define NAVIFRAME_OH_OPENED_H_INC 74
 
 #define NAVIFRAME_OH_CONTENT_H_INC 74
 #define NAVIFRAME_OH_PADDING_INC 16

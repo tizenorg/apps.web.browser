@@ -1,23 +1,22 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-#include "browser-class.h"
 #include "browser-data-manager.h"
 #include "browser-history-db.h"
-#include "browser-personal-data-manager.h"
 #include "browser-settings-clear-data-view.h"
 #include "browser-view.h"
 
@@ -35,6 +34,7 @@ Browser_Settings_Clear_Data_View::Browser_Settings_Clear_Data_View(Browser_Setti
 	,m_back_button(NULL)
 	,m_bottom_control_bar(NULL)
 	,m_delete_controlbar_item(NULL)
+	,m_cancel_controlbar_item(NULL)
 	,m_delete_confirm_popup(NULL)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -71,17 +71,20 @@ void Browser_Settings_Clear_Data_View::_delete_private_data(void)
 	}
 	if (elm_check_state_get(m_cache_check_box)) {
 		/* Clear cache */
-		if (!ewk_cache_clear())
-			BROWSER_LOGE("ewk_cache_clear failed");
+		Ewk_Context *ewk_context = ewk_context_default_get();
+		ewk_context_cache_clear(ewk_context);
+		ewk_context_web_indexed_database_delete_all(ewk_context);
+		ewk_context_application_cache_delete_all(ewk_context);
+		ewk_context_web_storage_delete_all(ewk_context);
+		ewk_context_web_database_delete_all(ewk_context);
 	}
 	if (elm_check_state_get(m_cookie_check_box)) {
 		/* Clear cookie */
-		ewk_cookies_clear();
+		Ewk_Context *ewk_context = ewk_context_default_get();
+		ewk_context_cookies_clear(ewk_context);
 	}
 	if (elm_check_state_get(m_saved_id_password_check_box)) {
 		/* Clear saved id & password */
-		if (!m_data_manager->get_browser_view()->get_personal_data_manager()->clear_personal_data())
-			BROWSER_LOGE("clear_personal_data failed");
 	}
 }
 
@@ -97,12 +100,12 @@ void Browser_Settings_Clear_Data_View::__delete_confirm_response_cb(void *data, 
 
 	evas_object_del(clear_data_view->m_delete_confirm_popup);
 
-	clear_data_view->_delete_private_data();
-	clear_data_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
+		clear_data_view->_delete_private_data();
+		clear_data_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
 
-	if (elm_naviframe_bottom_item_get(clear_data_view->m_navi_bar)
-	    != elm_naviframe_top_item_get(clear_data_view->m_navi_bar))
-		elm_naviframe_item_pop(clear_data_view->m_navi_bar);
+		if (elm_naviframe_bottom_item_get(clear_data_view->m_navi_bar)
+		    != elm_naviframe_top_item_get(clear_data_view->m_navi_bar))
+			elm_naviframe_item_pop(clear_data_view->m_navi_bar);
 	}
 
 void Browser_Settings_Clear_Data_View::__cancel_confirm_response_cb(void *data, Evas_Object *obj,
@@ -177,13 +180,13 @@ char *Browser_Settings_Clear_Data_View::__genlist_label_get(void *data,
 			return strdup(BR_STRING_HISTORY);
 	} else if (type == BR_CLEAR_CACHE) {
 		if (!strncmp(part, "elm.text", strlen("elm.text")))
-			return strdup(BR_STRING_CACHE);
+			return strdup(BR_STRING_CLEAR_CACHE);
 	} else if (type == BR_CLEAR_COOKIE) {
 		if (!strncmp(part, "elm.text", strlen("elm.text")))
-			return strdup(BR_STRING_COOKIE);
-	} else if (type == BR_CLEAR_SAVED_ID_PASSWORD) {
+			return strdup(BR_STRING_COOKIES);
+	} else if (type == BR_CLEAR_SAVED_PASSWORD) {
 		if (!strncmp(part, "elm.text", strlen("elm.text")))
-			return strdup(BR_STRING_SAVED_ID_PASSWORD);
+			return strdup(BR_STRING_CLEAR_PASSWORDS);
 	}
 
 	return NULL;
@@ -317,7 +320,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::__genlist_icon_get(void *data,
 			}
 			return clear_data_view->m_cookie_check_box;
 		}
-	} else if (type == BR_CLEAR_SAVED_ID_PASSWORD) {
+	} else if (type == BR_CLEAR_SAVED_PASSWORD) {
 		if(!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
 			clear_data_view->m_saved_id_password_check_box = elm_check_add(obj);
 			if (clear_data_view->m_saved_id_password_check_box) {
@@ -367,7 +370,7 @@ void Browser_Settings_Clear_Data_View::__genlist_item_selected_cb(void *data, Ev
 	 else if (type == BR_CLEAR_COOKIE)
 		elm_check_state_set(clear_data_view->m_cookie_check_box,
 			!elm_check_state_get(clear_data_view->m_cookie_check_box));
-	 else if (type == BR_CLEAR_SAVED_ID_PASSWORD)
+	 else if (type == BR_CLEAR_SAVED_PASSWORD)
 		elm_check_state_set(clear_data_view->m_saved_id_password_check_box,
 			!elm_check_state_get(clear_data_view->m_saved_id_password_check_box));
 
@@ -412,7 +415,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::_create_genlist(void)
 						&m_clear_cookie_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
 						__genlist_item_selected_cb, &m_clear_cookie_item_callback_data);
 
-	m_clear_saved_id_password_item_callback_data.type = BR_CLEAR_SAVED_ID_PASSWORD;
+	m_clear_saved_id_password_item_callback_data.type = BR_CLEAR_SAVED_PASSWORD;
 	m_clear_saved_id_password_item_callback_data.user_data = this;
 	m_clear_saved_id_password_item_callback_data.it = elm_genlist_item_append(genlist, &m_1text_item_class,
 						&m_clear_saved_id_password_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
@@ -470,17 +473,9 @@ Eina_Bool Browser_Settings_Clear_Data_View::_create_main_layout(void)
 
 	elm_genlist_decorate_mode_set(m_genlist, EINA_TRUE);
 
-	m_back_button = elm_button_add(m_content_box);
-	if (!m_back_button) {
-		BROWSER_LOGE("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_back_button, "browser/bookmark_controlbar_back");
-	evas_object_show(m_back_button);
-	evas_object_smart_callback_add(m_back_button, "clicked", __cancel_button_clicked_cb, this);
-
-	Elm_Object_Item *navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_CLEAR_PRIVATE_DATA,
-								m_back_button, NULL, m_content_box, "browser_titlebar");
+	Elm_Object_Item *navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_DELETE_BROWSING_DATA,
+								NULL, NULL, m_content_box, "browser_titlebar");
+	elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
 
 	m_bottom_control_bar = elm_toolbar_add(m_content_box);
 	if (!m_bottom_control_bar) {
@@ -490,16 +485,21 @@ Eina_Bool Browser_Settings_Clear_Data_View::_create_main_layout(void)
 	elm_object_style_set(m_bottom_control_bar, "browser/default");
 	elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
 
-	Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
-	elm_object_item_disabled_set(empty_item, EINA_TRUE);
-
 	m_delete_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
-							BROWSER_IMAGE_DIR"/01_controlbar_icon_delete.png", NULL,
+							NULL, BR_STRING_DELETE,
 							__delete_button_clicked_cb, this);
 	elm_object_item_disabled_set(m_delete_controlbar_item, EINA_TRUE);
 
+	Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
+	elm_object_item_disabled_set(empty_item, EINA_TRUE);
+
 	empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 	elm_object_item_disabled_set(empty_item, EINA_TRUE);
+
+	m_cancel_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
+							NULL, BR_STRING_CANCEL,
+							__cancel_button_clicked_cb, this);
+
 	evas_object_show(m_bottom_control_bar);
 	elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_CONTROLBAR, m_bottom_control_bar);
 

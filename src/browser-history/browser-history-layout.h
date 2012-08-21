@@ -1,18 +1,20 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * Copyright 2012  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 
 #ifndef BROWSER_HISTORY_LAYOUT_H
 #define BROWSER_HISTORY_LAYOUT_H
@@ -58,6 +60,7 @@ private:
 	void _show_selection_info(void);
 	void _delete_selected_history(void);
 	Evas_Object *_show_delete_confirm_popup(void);
+	void _delete_history_item_by_slide_button(Browser_History_DB::history_item *item);
 	void _show_select_processing_popup(void);
 	void _show_delete_processing_popup(void);
 	void _enable_searchbar_layout(Eina_Bool enable);
@@ -65,14 +68,24 @@ private:
 	void _delete_date_only_label_genlist_item(void);
 
 	/* elementary event callback functions. */
+#if defined(GENLIST_SWEEP)
+	static void __sweep_left_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __sweep_cancel_genlist_cb(void *data, Evas_Object *obj, void *event_info);
+#endif
 	static void __history_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo);
 	static void __edit_mode_item_check_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_mode_select_all_check_changed_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_add_to_bookmark_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_confirm_response_by_edit_mode_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __delete_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __cancel_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __select_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __search_delay_changed_cb(void *data, Evas_Object *obj, void *event_info);
+
+	static void __bookmark_on_off_icon_clicked_cb(void* data, Evas* evas, Evas_Object* obj, void* ev);
 
 	/* evas object event callback functions */
 	static void __edit_mode_select_all_clicked_cb(void *data, Evas *evas, Evas_Object *obj, void *event_info);
@@ -89,6 +102,8 @@ private:
 	history_date_param m_date_param;
 	Elm_Genlist_Item_Class m_history_genlist_item_class;
 	Elm_Genlist_Item_Class m_history_group_title_class;
+
+	Elm_Object_Item *m_current_sweep_item;
 
 	Evas_Object *m_searchbar_layout;
 	Evas_Object *m_searchbar;
@@ -117,6 +132,7 @@ private:
 	int m_total_item_count;
 
 	Evas_Object *m_delete_confirm_popup;
+	Eina_Bool m_is_bookmark_on_off_icon_clicked;
 };
 #endif /* BROWSER_HISTORY_LAYOUT_H */
 
