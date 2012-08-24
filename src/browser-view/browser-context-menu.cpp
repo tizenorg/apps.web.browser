@@ -84,8 +84,6 @@ void Browser_Context_Menu::__get_context_menu_from_proposed_context_menu_cb(void
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_IMAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CustomContextMenuItemImageSendViaMessageTag, BR_STRING_SHARE_VIA_MESSAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CustomContextMenuItemImageSendViaEmailTag, BR_STRING_SHARE_VIA_EMAIL, true);
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_IMAGE_LOCATION, true);
