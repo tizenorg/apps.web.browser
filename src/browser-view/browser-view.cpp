@@ -2324,13 +2324,31 @@ void Browser_View::__internet_settings_cb(void *data, Evas_Object *obj, void *ev
 		BROWSER_LOGE("_call_internet_settings failed");
 }
 
-void Browser_View::_update_find_word_index_text(const char *index_text)
+void Browser_View::_update_find_word_index_text(const char *index_text, int index, int max_match_cnt)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
 	edje_object_part_text_set(elm_layout_edje_get(m_option_header_find_word_layout), "elm.index_text", index_text);
-}
 
+	if (max_match_cnt == 0 || max_match_cnt == 1) {
+		elm_object_disabled_set(m_find_word_prev_button, EINA_TRUE);
+		elm_object_disabled_set(m_find_word_next_button, EINA_TRUE);
+	} else if (index == 0 || index == 1) {
+		elm_object_disabled_set(m_find_word_prev_button, EINA_TRUE);
+		elm_object_disabled_set(m_find_word_next_button, EINA_FALSE);
+		if (index == 0 || (index == 1 && elm_object_focus_get(m_find_word_cancel_button)))
+			elm_object_focus_set(m_find_word_cancel_button, EINA_TRUE);
+	} else if (index == max_match_cnt) {
+		elm_object_disabled_set(m_find_word_prev_button, EINA_FALSE);
+		elm_object_disabled_set(m_find_word_next_button, EINA_TRUE);
+		elm_object_focus_set(m_find_word_cancel_button, EINA_TRUE);
+	} else {
+		if (elm_object_disabled_get(m_find_word_prev_button))
+			elm_object_disabled_set(m_find_word_prev_button, EINA_FALSE);
+		if (elm_object_disabled_get(m_find_word_next_button))
+			elm_object_disabled_set(m_find_word_next_button, EINA_FALSE);
+	}
+}
 void Browser_View::__find_word_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -3424,11 +3442,6 @@ void Browser_View::__find_word_erase_button_clicked_cb(void *data, Evas_Object *
 	BROWSER_LOGD("[%s]", __func__);
 	Browser_View *browser_view = (Browser_View *)data;
 	edje_object_part_text_set(elm_layout_edje_get(browser_view->m_option_header_find_word_layout), "elm.index_text", "0/0");
-
-	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
 }
 
 void Browser_View::__find_word_cancel_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -3440,12 +3453,8 @@ void Browser_View::__find_word_cancel_button_clicked_cb(void *data, Evas_Object 
 	Browser_View *browser_view = (Browser_View *)data;
 	browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
 	browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
-
-	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
 }
+
 void Browser_View::__find_word_prev_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -3453,24 +3462,16 @@ void Browser_View::__find_word_prev_button_clicked_cb(void *data, Evas_Object *o
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,control_bar,no_animation,signal", "");
 	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
 	const char *find_word = elm_entry_entry_get(edit_field_entry);
 	if (!find_word || !strlen(find_word))
 		return;
 
-	int index_cnt = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_BACKWARD);
-	int match_max_cnt = browser_view->m_find_word->get_match_max_value();
-
-	if (index_cnt == 1) {
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_TRUE);
-		if (index_cnt != match_max_cnt)
-			elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
-	} else {
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	}
+	int index = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_BACKWARD);
+	if (index == 1)
+		elm_object_focus_set(browser_view->m_find_word_cancel_button, EINA_TRUE);
 }
-
 void Browser_View::__find_word_next_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -3478,22 +3479,15 @@ void Browser_View::__find_word_next_button_clicked_cb(void *data, Evas_Object *o
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,control_bar,no_animation,signal", "");
 	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
 	const char *find_word = elm_entry_entry_get(edit_field_entry);
 	if (!find_word || !strlen(find_word))
 		return;
 
-	int index_cnt = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
-	int match_max_cnt = browser_view->m_find_word->get_match_max_value();
-
-	if (index_cnt == match_max_cnt) {
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_TRUE);
-		if (match_max_cnt != 1)
-			elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	} else {
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	}
+	int index = browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+	if (index == browser_view->m_find_word->get_match_max_value())
+		elm_object_focus_set(browser_view->m_find_word_cancel_button, EINA_TRUE);
 }
 
 void Browser_View::__find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value)
@@ -3504,16 +3498,10 @@ void Browser_View::__find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context 
 
 	Browser_View *browser_view = (Browser_View *)data;
 	Evas_Object *find_word_editfield_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
-	elm_object_focus_set(find_word_editfield_entry, EINA_FALSE);
-	const char *find_word = elm_entry_entry_get(find_word_editfield_entry);
 
-	if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE) {
-		int match_max_cnt = browser_view->m_find_word->get_match_max_value();
-		if (match_max_cnt == 0 || match_max_cnt == 1) {
-			elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_TRUE);
-			elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_TRUE);
-		}
-	} else
+	if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE)
+		elm_object_focus_set(find_word_editfield_entry, EINA_FALSE);
+	else
 		elm_object_focus_set(find_word_editfield_entry, EINA_TRUE);
 }
 
@@ -3548,15 +3536,11 @@ void Browser_View::__find_word_entry_enter_key_cb(void *data, Evas_Object *obj, 
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,control_bar,no_animation,signal", "");
 	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
 	const char *find_word = elm_entry_entry_get(edit_field_entry);
 	if (!find_word || !strlen(find_word))
 		return;
-
-	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
 
 	browser_view->m_find_word->init_index();
 	browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
@@ -3573,21 +3557,12 @@ void Browser_View::__find_word_entry_changed_cb(void *data, Evas_Object *obj, vo
 
 	Browser_View *browser_view = (Browser_View *)data;
 	Evas_Object *edit_field_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
-
 	const char *find_word = elm_entry_entry_get(edit_field_entry);
 
-	if (elm_object_disabled_get(browser_view->m_find_word_prev_button))
-		elm_object_disabled_set(browser_view->m_find_word_prev_button, EINA_FALSE);
-	if (elm_object_disabled_get(browser_view->m_find_word_next_button))
-		elm_object_disabled_set(browser_view->m_find_word_next_button, EINA_FALSE);
-
-	if (!find_word || !strlen(find_word)) {
-		browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
-	} else {
-		browser_view->m_find_word->init_index();
-		browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
-	}
+	browser_view->m_find_word->init_index();
+	browser_view->m_find_word->find_word(find_word, Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
 }
+
 
 void Browser_View::_navigationbar_title_clicked(void)
 {

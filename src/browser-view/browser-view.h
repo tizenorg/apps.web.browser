@@ -264,7 +264,7 @@ private:
 	void _navigationbar_visible_set(Eina_Bool visible);
 	Eina_Bool _navigationbar_visible_get(void);
 	Evas_Object *_create_find_word_layout(void);
-	void _update_find_word_index_text(const char *index_text);
+	void _update_find_word_index_text(const char *index_text, int index, int max_match_cnt);
 	void _jump_to_top(void);
 	void _hide_scroller_url_layout(void);
 	Eina_Bool _show_scissorbox_view(void);

@@ -46,7 +46,15 @@ void Browser_Find_Word::__did_find_string_cb(Evas_Object* o, const char* string,
 		find_word->m_find_word_index = 0;
 		find_word->m_find_word_max_count = 0;
 
-		find_word->m_browser_view->_update_find_word_index_text("0/0");
+		find_word->m_browser_view->_update_find_word_index_text("0/0", find_word->m_find_word_index, find_word->m_find_word_max_count);
+		return;
+	}
+
+	if (match_count == 1) {
+		find_word->m_find_word_index = 1;
+		find_word->m_find_word_max_count = 1;
+
+		find_word->m_browser_view->_update_find_word_index_text("1/1", find_word->m_find_word_index, find_word->m_find_word_max_count);
 		return;
 	}
 
@@ -61,7 +69,7 @@ void Browser_Find_Word::__did_find_string_cb(Evas_Object* o, const char* string,
 		return;
 	}
 	g_string_printf(index_string, "%d/%d", find_word->m_find_word_index, find_word->m_find_word_max_count);
-	find_word->m_browser_view->_update_find_word_index_text(index_string->str);
+	find_word->m_browser_view->_update_find_word_index_text(index_string->str, find_word->m_find_word_index, find_word->m_find_word_max_count);
 	g_string_free(index_string, true);
 }
 
