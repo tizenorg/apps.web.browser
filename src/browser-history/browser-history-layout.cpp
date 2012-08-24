@@ -1508,10 +1508,14 @@ void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void* data, Evas*
 
 	int bookmark_id = -1;
 	if (m_data_manager->get_history_db()->is_in_bookmark(item->url.c_str(), &bookmark_id)) {
-		evas_object_image_file_set(obj, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL);
+		if (!elm_icon_file_set(obj, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+		}
 		m_data_manager->get_bookmark_view()->delete_bookmark_item(bookmark_id);
 	} else {
-		evas_object_image_file_set(obj, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL);
+		if (!elm_icon_file_set(obj, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
+			BROWSER_LOGE("elm_icon_file_set is failed.\n");
+		}
 		m_data_manager->get_bookmark_view()->append_bookmark_item(item->title.c_str(), item->url.c_str());
 	}
 }
@@ -1542,15 +1546,19 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 			return default_favicon;
 		}
 	} else if (!strncmp(part, "elm.icon.2", strlen("elm.icon.2"))) {
-		Evas_Object *bookmark_icon = evas_object_image_add(evas_object_evas_get(obj));
-		evas_object_image_load_size_set(bookmark_icon, 64 * elm_scale_get(), 64 * elm_scale_get());
-		evas_object_image_fill_set(bookmark_icon, 0, 0, 64 * elm_scale_get(), 64 * elm_scale_get());
-
-		if (m_data_manager->get_history_db()->is_in_bookmark(item->url.c_str(), NULL))
-			evas_object_image_file_set(bookmark_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL);
-		else
-			evas_object_image_file_set(bookmark_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL);
-
+		Evas_Object *bookmark_icon = elm_icon_add(obj);
+		if (m_data_manager->get_history_db()->is_in_bookmark(item->url.c_str(), NULL)) {
+			if (!elm_icon_file_set(bookmark_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
+				BROWSER_LOGE("elm_icon_file_set is failed.\n");
+				return NULL;
+			}
+		} else {
+			if (!elm_icon_file_set(bookmark_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {
+				BROWSER_LOGE("elm_icon_file_set is failed.\n");
+				return NULL;
+			}
+		}
+		evas_object_size_hint_aspect_set(bookmark_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 		evas_object_propagate_events_set(bookmark_icon, EINA_FALSE);
 		evas_object_repeat_events_set(bookmark_icon, EINA_FALSE);
 
