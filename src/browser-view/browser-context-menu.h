@@ -37,7 +37,8 @@ public:
 	enum {
 		CustomContextMenuItemBaseApplicationTag = EWK_CONTEXT_MENU_ITEM_BASE_APPLICATION_TAG,
 		CustomContextMenuItemImageSendViaMessageTag,
-		CustomContextMenuItemImageSendViaEmailTag
+		CustomContextMenuItemImageSendViaEmailTag,
+		CustomContextMenuItemSelectedTextShareTag
 	};
 private:
 	static void __get_context_menu_from_proposed_context_menu_cb(void *data, Evas_Object *obj, void *event_info);

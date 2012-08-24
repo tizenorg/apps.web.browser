@@ -1359,6 +1359,30 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 			evas_object_smart_callback_add(edit_button, "clicked", __slide_edit_button_clicked_cb, item);
 			return edit_button;
 		} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
+			if (item->is_folder) {
+				Evas_Object *delete_button = elm_button_add(obj);
+				if (!delete_button) {
+					BROWSER_LOGE("elm_button_add is failed.\n");
+					return NULL;
+				}
+				elm_object_style_set(delete_button, "text_only/sweep");
+				elm_object_text_set(delete_button, BR_STRING_DELETE);
+				if (!item->is_editable)
+					elm_object_disabled_set(delete_button, EINA_TRUE);
+				evas_object_smart_callback_add(delete_button, "clicked", __slide_delete_button_clicked_cb, item);
+				return delete_button;
+			} else {
+				Evas_Object *share_button = elm_button_add(obj);
+				if (!share_button) {
+					BROWSER_LOGE("elm_button_add is failed.\n");
+					return NULL;
+				}
+				elm_object_style_set(share_button, "text_only/sweep");
+				elm_object_text_set(share_button, BR_STRING_SHARE);
+				evas_object_smart_callback_add(share_button, "clicked", __slide_share_button_clicked_cb, item);
+				return share_button;
+			}
+		} else if (!strncmp(part, "elm.slide.swallow.3", strlen("elm.slide.swallow.3"))) {
 			Evas_Object *delete_button = elm_button_add(obj);
 			if (!delete_button) {
 				BROWSER_LOGE("elm_button_add is failed.\n");
@@ -1629,6 +1653,18 @@ void Browser_Bookmark_View::_delete_bookmark_item_by_slide_button(Browser_Bookma
 	}
 
 	show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
+}
+
+void Browser_Bookmark_View::__slide_share_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
+	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)(item->user_data_1);
+	if (!bookmark_view->_show_share_popup(item->url.c_str()))
+		BROWSER_LOGE("_show_share_popup failed");
 }
 
 void Browser_Bookmark_View::__slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -2079,7 +2115,7 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 		evas_object_smart_callback_add(genlist, "moved", __genlist_move_cb, this);
 
 		m_bookmark_genlist_item_class.item_style = "1text.1icon.2";
-		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide2";
+		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide3.text";
 		m_bookmark_genlist_item_class.decorate_all_item_style = "edit_default";
 		m_bookmark_genlist_item_class.func.text_get = __genlist_label_get_cb;
 		m_bookmark_genlist_item_class.func.content_get = __genlist_icon_get_cb;

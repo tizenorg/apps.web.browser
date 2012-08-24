@@ -87,6 +87,7 @@ private:
 	static void __delete_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __slide_edit_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_share_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_bookmark_item_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __rename_folder_unfocus_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __rename_folder_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);

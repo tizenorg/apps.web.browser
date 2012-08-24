@@ -118,6 +118,8 @@ private:
 	static void __title_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __load_nonempty_layout_finished_cb(void *data, Evas_Object *obj, void *event_info);
 
+	static void __url_editfield_share_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+
 	/* imf event callback functions */
 	static void __url_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value);
 	static void __find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value);
@@ -198,6 +200,7 @@ private:
 	Eina_Bool _create_zoom_buttons(void);
 #endif
 	static void __expand_option_header_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __share_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __private_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __private_check_change_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __bookmark_cb(void *data, Evas_Object *obj, void *event_info);

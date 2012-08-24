@@ -1961,6 +1961,19 @@ void Browser_View::__web_app_icon_url_get_cb(const char* icon_url, void* user_da
 }
 #endif
 
+void Browser_View::__url_editfield_share_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	const char *selected_text = elm_entry_selection_get(br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field));
+
+	if (browser_view->_show_share_popup(selected_text))
+		BROWSER_LOGE("_show_share_popup failed");
+}
+
 Eina_Bool Browser_View::__show_scissorbox_view_idler_cb(void *data)
 {
 	if (!data)
@@ -2031,6 +2044,18 @@ void Browser_View::_destroy_scissorbox_view(void)
 	elm_object_part_content_set(m_main_layout, "elm.swallow.control_bar", m_control_bar);
 	evas_object_show(m_control_bar);
 }
+
+void Browser_View::__share_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_destroy_more_context_popup();
+	browser_view->_show_share_popup(browser_view->get_url().c_str());
+}
+
 
 void Browser_View::__private_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -2535,6 +2560,9 @@ Eina_Bool Browser_View::_show_more_context_popup(void)
 	    || _get_edit_mode() == BR_FIND_WORD_MODE)
 		elm_object_item_disabled_set(sub_menu, EINA_TRUE);
 
+	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_SHARE, NULL,
+							__share_cb, this);
+
 	m_bookmark_on_off_icon = elm_icon_add(m_more_context_popup);
 
 	if(m_data_manager->get_history_db()->is_in_bookmark(get_url().c_str(), NULL)) {
@@ -2748,6 +2776,8 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 			BROWSER_LOGE("elm_editfield_add failed");
 			return NULL;
 		}
+		elm_entry_context_menu_item_add(br_elm_editfield_entry_get(m_option_header_url_edit_field),
+								BR_STRING_CTXMENU_SHARE, NULL, ELM_ICON_NONE, __url_editfield_share_clicked_cb, this);
 
 		elm_object_part_content_set(m_option_header_url_entry_layout, "elm.swallow.entry", m_option_header_url_edit_field);
 //		br_elm_editfield_entry_single_line_set(m_option_header_url_edit_field, EINA_TRUE);

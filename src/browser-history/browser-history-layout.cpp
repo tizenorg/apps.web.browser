@@ -1159,7 +1159,7 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 		return EINA_FALSE;
 	}
 
-	m_history_genlist_item_class.decorate_item_style = "mode/slide2";
+	m_history_genlist_item_class.decorate_item_style = "mode/slide3";
 	m_history_genlist_item_class.item_style = "2text.2icon.4";
 	m_history_genlist_item_class.decorate_all_item_style = "edit_default";
 	m_history_genlist_item_class.func.text_get = __genlist_label_get_cb;
@@ -1352,6 +1352,18 @@ void Browser_History_Layout::__slide_add_to_bookmark_button_clicked_cb(void *dat
 		m_data_manager->destroy_add_to_bookmark_view();
 		return;
 	}
+}
+
+void Browser_History_Layout::__slide_share_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_History_DB::history_item *item = (Browser_History_DB::history_item *)data;
+	Browser_History_Layout *history_layout = (Browser_History_Layout *)item->user_data;
+	if (!history_layout->_show_share_popup(item->url.c_str()))
+		BROWSER_LOGE("_show_share_popup failed");
 }
 
 void Browser_History_Layout::_delete_history_item_by_slide_button(Browser_History_DB::history_item *item)
@@ -1564,11 +1576,22 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 			LOGD("elm_button_add() is failed.");
 			return NULL;
 		}
+
+		elm_object_style_set(button, "sweep/multiline");
+		elm_object_text_set(button, BR_STRING_SHARE);
+		evas_object_smart_callback_add(button, "clicked", __slide_share_button_clicked_cb, item);
+		return button;
+	} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
+		Evas_Object *button = elm_button_add(obj);
+		if (!button) {
+			LOGD("elm_button_add() is failed.");
+			return NULL;
+		}
 		elm_object_style_set(button, "sweep/multiline");
 		elm_object_text_set(button, BR_STRING_ADD_TO_BOOKMARKS);
 		evas_object_smart_callback_add(button, "clicked", __slide_add_to_bookmark_button_clicked_cb, item);
-		return button;
-	} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
+		return button;	
+	} else if (!strncmp(part, "elm.slide.swallow.3", strlen("elm.slide.swallow.3"))) {
 		Evas_Object *button = elm_button_add(obj);
 		if (!button) {
 			LOGD("elm_button_add() is failed.");

@@ -783,6 +783,55 @@ Eina_Bool Browser_Common_View::_share_via_nfc(std::string url)
 	return EINA_TRUE;
 }
 
+Eina_Bool Browser_Common_View::_show_share_popup(const char *url)
+{
+	BROWSER_LOGE("url=[%s]", url);
+	if (!url || strlen(url) == 0) {
+		BROWSER_LOGE("url is empty");
+		return EINA_FALSE;
+	}
+
+	m_share_url = std::string(url);
+
+	m_sns_path_list.clear();
+	m_sns_name_list.clear();
+	m_sns_icon_list.clear();
+
+	m_share_popup = elm_popup_add(m_navi_bar);
+	if (!m_share_popup) {
+		BROWSER_LOGE("elm_popup_add failed");
+		return EINA_FALSE;
+	}
+	elm_object_style_set(m_share_popup, "menustyle");
+	elm_object_part_text_set(m_share_popup, "title,text", BR_STRING_SHARE);
+	evas_object_size_hint_weight_set(m_share_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+	m_share_list = elm_list_add(m_share_popup);
+	if (!m_share_list) {
+		BROWSER_LOGE("elm_list_add failed");
+		return EINA_FALSE;
+	}
+	evas_object_size_hint_weight_set(m_share_list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(m_share_list, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	elm_list_item_append(m_share_list, BR_STRING_MESSAGES, NULL, NULL, __send_via_message_cb, this);
+	elm_list_item_append(m_share_list, BR_STRING_EMAIL, NULL, NULL, __send_via_email_cb, this);
+
+	evas_object_show(m_share_list);
+
+	Evas_Object *cancel_button = elm_button_add(m_share_popup);
+	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(m_share_popup, "button1", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __popup_response_cb, this);
+
+	elm_object_content_set(m_share_popup, m_share_list);
+
+	evas_object_show(m_share_popup);
+
+	return EINA_TRUE;
+}
+
 void Browser_Common_View::__popup_response_cb(void* data, Evas_Object* obj, void* event_info)
 {
 	BROWSER_LOGD("%s, event_info=%d", __func__, (int)event_info);

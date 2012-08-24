@@ -96,6 +96,7 @@ void Browser_Context_Menu::__get_context_menu_from_proposed_context_menu_cb(void
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY, true);
+			ewk_context_menu_item_append_as_action(menu, CustomContextMenuItemSelectedTextShareTag, BR_STRING_CTXMENU_SHARE, true);
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_SELECT_ALL, true);
@@ -122,9 +123,15 @@ void Browser_Context_Menu::__custom_context_menu_item_selected_cb(void *data, Ev
 	BROWSER_LOGD("link url=[%s]", link_url_string.c_str());
 	std::string image_url_string = ewk_context_menu_item_image_url_get(item);
 	BROWSER_LOGD("image url=[%s]", image_url_string.c_str());
+	const char *selected_text = ewk_view_text_selection_text_get(context_menu->m_ewk_view);
 
 	Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
 	switch (tag) {
+	case CustomContextMenuItemSelectedTextShareTag:
+		BROWSER_LOGD("Share selected text[%s]", selected_text);
+		if (selected_text && strlen(selected_text) > 0)
+			context_menu->_show_share_popup(selected_text);
+		break;
 
 	default:
 		break;

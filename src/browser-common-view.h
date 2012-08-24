@@ -53,6 +53,7 @@ protected:
 	Evas_Object *_capture_snapshot(Browser_Window *window, float scale);
 	void _set_navigationbar_title(const char *title);
 	Eina_Bool _has_url_sheme(const char *url);
+	Eina_Bool _show_share_popup(const char *url);
 	Eina_Bool _launch_streaming_player(const char *url, const char *cookie = NULL);
 	Eina_Bool _send_via_message(std::string url, std::string to, Eina_Bool attach_file = EINA_FALSE);
 	Eina_Bool _send_via_email(std::string url, Eina_Bool attach_file = EINA_FALSE);

@@ -77,6 +77,7 @@ private:
 	static void __edit_mode_item_check_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_mode_select_all_check_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __slide_add_to_bookmark_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __slide_share_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_confirm_response_by_edit_mode_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __delete_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info);
