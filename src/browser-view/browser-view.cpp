@@ -1306,7 +1306,7 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	BROWSER_LOGD("__ewk_view_mouse_down_cb");
 
 #ifdef ZOOM_BUTTON
-	double sacle_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
+	double scale_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
 	double min_scale = 0;
 	double max_scale = 0;
 
@@ -1319,10 +1319,15 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	if (zoom_button_flag == false)
 		return;
 
-	if (browser_view->m_zoom_button_timer)
-		ecore_timer_del(browser_view->m_zoom_button_timer);
-	browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_buttons,signal", "");
+
+	ewk_view_scale_range_get(browser_view->m_focused_window->m_ewk_view,
+					&min_scale, &max_scale);
+	if (scale_factor > min_scale && scale_factor < max_scale) {
+		if (browser_view->m_zoom_button_timer)
+			ecore_timer_del(browser_view->m_zoom_button_timer);
+		browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_buttons,signal", "");
+	}
 #endif
 }
 
