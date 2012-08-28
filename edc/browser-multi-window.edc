@@ -304,7 +304,7 @@ collections {
 			program { name: "show,grid_mode";
 				signal: "show,grid_mode,signal";
 				action: STATE_SET "invisible" 0.0;
-				transition: ACCELERATE 0.3;
+				//transition: ACCELERATE 0.3;
 				target: "elm.swallow.scroller";
 				target: "elm.title";
 				target: "elm.url";
@@ -319,7 +319,7 @@ collections {
 			program { name: "show,grid_mode,clipper";
 				signal: "show,grid_mode,signal";
 				action: STATE_SET "visible" 0.0;
-				transition: ACCELERATE 0.3;
+				//transition: ACCELERATE 0.3;
 				target: "rect.gengrid_clipper";
 			}
 
