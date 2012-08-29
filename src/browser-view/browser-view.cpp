@@ -2991,11 +2991,9 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 				if (m_focused_window->m_favicon)
 					edje_object_signal_emit(elm_layout_edje_get(m_url_entry_layout),
 											"show,favicon,signal", "");
-				_set_secure_icon();
-			}
-			if (m_focused_window->m_option_header_favicon) {
-				edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
-										"show,favicon,signal", "");
+				if (m_focused_window->m_option_header_favicon)
+					edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_entry_layout),
+											"show,favicon,signal", "");
 				_set_secure_icon();
 			}
 
