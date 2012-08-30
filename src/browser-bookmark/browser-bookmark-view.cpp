@@ -1140,9 +1140,6 @@ void Browser_Bookmark_View::__rename_folder_button_clicked_cb(void *data, Evas_O
 
 	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
-	/* If landscape mode, the folder edit field is hided by keypad. So turn to portrait. */
-	elm_win_rotation_with_resize_set(bookmark_view->m_win, 0);
-
 	evas_object_data_set(bookmark_view->_get_current_folder_genlist(), "selected_it", it);
 }
 
