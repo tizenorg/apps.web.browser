@@ -204,6 +204,8 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 									add_to_bookmark_view->m_input_url.c_str());
 				add_to_bookmark_view->m_input_url.clear();
 			} else {
+				if (url.empty())
+					url = "http://";
 				char *mark_up = elm_entry_utf8_to_markup(url.c_str());
 				if (!mark_up) {
 					BROWSER_LOGE("elm_entry_utf8_to_markup failed");
