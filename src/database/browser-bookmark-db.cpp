@@ -659,7 +659,7 @@ Eina_Bool Browser_Bookmark_DB::get_untitled_folder_count(int *count)
 		return EINA_FALSE;
 
 	sqlite3_stmt *sqlite3_stmt = NULL;
-	std::string statement = "select title from bookmarks where type=1 and title like '%Folder_%' order by length(title), title";
+	std::string statement = "select title from bookmarks where type=1 and length(title)>8 and title like '%Folder_%' order by length(title), title";
 	int error = sqlite3_prepare_v2(m_db_descriptor, statement.c_str(), -1, &sqlite3_stmt, NULL);
 	if (error != SQLITE_OK) {
 		BROWSER_LOGD("SQL error=%d", error);
@@ -677,7 +677,7 @@ Eina_Bool Browser_Bookmark_DB::get_untitled_folder_count(int *count)
 		error = sqlite3_step(sqlite3_stmt);
 		if (error == SQLITE_ROW) {
 			snprintf(buf, sizeof(buf)-1, "Folder_%02d", i);
-			title = buf; 
+			title = buf;
 			title_from_db = reinterpret_cast<const char *>(sqlite3_column_text(sqlite3_stmt,0));
 			if (title_from_db != title)
 				break;
