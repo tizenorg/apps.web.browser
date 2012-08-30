@@ -590,7 +590,7 @@ msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
 msgstr "Web sayfasını daha sonra tekrar yükle"
 
 msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "Yer imi"
+msgstr "Yer İmi"
 
 msgid "IDS_BR_BODY_TITLE"
 msgstr "Başlık"
@@ -828,4 +828,34 @@ msgstr "Websitesi ayarları"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Yüksek"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Bağlantıyı kaydet"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Bağlantıyı paylaş"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Gizlilik ve güvenlik"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Çevrimdışı okuma için kaydet"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Konum"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Form verileri"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Veri formunu sil"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Tüm kaydedilmiş parolaları silin"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Yer imlerine eklendi"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Yer imlerinden kaldırıldı"
 

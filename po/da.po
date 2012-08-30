@@ -26,7 +26,7 @@ msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valgte"
 
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "Download annulleret"
+msgstr "Download blev annulleret"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Fortsæt fra sidste side"
@@ -62,7 +62,7 @@ msgid "IDS_BR_BODY_HOMEPAGE"
 msgstr "Startside"
 
 msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Liggende"
+msgstr "Liggende visning"
 
 msgid "IDS_BR_BODY_NO_BOOKMARKS"
 msgstr "Ingen bogmærker"
@@ -146,7 +146,7 @@ msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
 msgstr "Filstørrelse overskrider maks. grænse for overførsel"
 
 msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "Indtast navn:"
+msgstr "Angiv navn:"
 
 msgid "IDS_BR_SK_NEXT"
 msgstr "Næste"
@@ -248,7 +248,7 @@ msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
 msgstr "Bogmærke findes allerede"
 
 msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "Mappenavn findes allerede"
+msgstr "Mappenavnet findes allerede"
 
 msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
 msgstr "Kan ikke gemme objekt. Der er ikke nok plads i cachen"
@@ -422,10 +422,10 @@ msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
 msgstr "Vis overførselsliste"
 
 msgid "IDS_BR_BODY_COPY_URL"
-msgstr "Kopier URL"
+msgstr "Kopiér URL"
 
 msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "Kopier URL til"
+msgstr "Kopiér URL-adresse til"
 
 msgid "IDS_BR_BODY_VIEW_IMAGE"
 msgstr "Vis billede"
@@ -434,13 +434,13 @@ msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
 msgstr "Indstillinger for privatlivsbeskyttelse"
 
 msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "Tøm cache"
+msgstr "Ryd cache"
 
 msgid "IDS_BR_BODY_CLEAR_HISTORY"
 msgstr "Ryd oversigt"
 
 msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "Aktiver plug-ins"
+msgstr "Aktivér plug-ins"
 
 msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
 msgstr "Vælg søgemaskine"
@@ -518,7 +518,7 @@ msgid "IDS_BR_BODY_BOOKMARKS"
 msgstr "Bogmærker"
 
 msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "Indtast navn"
+msgstr "Angiv navn"
 
 msgid "IDS_BR_BODY_NAME"
 msgstr "Navn"
@@ -584,7 +584,7 @@ msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
 msgstr "Netværksforbindelse ikke etableret normalt"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "Kontroller websidens URL"
+msgstr "Kontrollér websidens URL"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
 msgstr "Genindlæs webside senere"
@@ -596,7 +596,7 @@ msgid "IDS_BR_BODY_TITLE"
 msgstr "Titel"
 
 msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "Indtast titel"
+msgstr "Angiv titel"
 
 msgid "IDS_BR_OPT_FOLDERS"
 msgstr "Mapper"
@@ -653,7 +653,7 @@ msgid "IDS_BR_BUTTON_CANCEL_ABB"
 msgstr "Annuller"
 
 msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopier link-URL"
+msgstr "Kopiér link-URL"
 
 msgid "IDS_BR_OPT_VIEW_IMAGE"
 msgstr "Vis billede"
@@ -725,7 +725,7 @@ msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "Version"
 
 msgid "IDS_BR_SK_INSTALL"
-msgstr "Inst."
+msgstr "Installér"
 
 msgid "IDS_BR_BODY_CURRENT_PAGE"
 msgstr "Aktuel side"
@@ -776,19 +776,19 @@ msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
 msgstr "Alle indstillinger til standard. Vil du fortsætte?"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "Tøm cache?"
+msgstr "Ryd cache?"
 
 msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
 msgstr "Vil du slette hele oversigten?"
 
 msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "Browserens navigationsoversigt vil blive tømt"
+msgstr "Browserens navigationsoversigt vil blive ryddet"
 
 msgid "IDS_BR_BODY_ALWAYS_ON"
 msgstr "Altid til"
 
 msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Aktiver placering"
+msgstr "Aktivér placering"
 
 msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
 msgstr "Ryd placeringsadgang"
@@ -824,8 +824,38 @@ msgid "IDS_BR_POP_INSTALLATION_FAILED"
 msgstr "Installationen mislykkedes"
 
 msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "Website-indstillinger"
+msgstr "Webside indstillinger"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Høj"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Gem link"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Del link"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Fortrolighed og sikkerhed"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Gem for at læse offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Placering"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formulardata"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Tøm formulardata"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Slet alle de gemte adgangskoder"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Føjet til bogmærker"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Fjernet fra bogmærker"
 

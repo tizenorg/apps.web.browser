@@ -143,7 +143,7 @@ msgid "IDS_BR_POP_NOSSLCERTI"
 msgstr "SSL​証明書​が​ありません"
 
 msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "ファイル​サイズ​がアップロード​の​最大​​容量​を​超えて​います"
+msgstr "ファイル​サイズ​がアップロード​の​最大​容量​を​超えて​います。"
 
 msgid "IDS_BR_BODY_ENTER_NAME_C"
 msgstr "名前​を​入力："
@@ -602,7 +602,7 @@ msgid "IDS_BR_OPT_FOLDERS"
 msgstr "フォルダ"
 
 msgid "IDS_BR_OPT_ALLOW"
-msgstr "許可"
+msgstr "許可する"
 
 msgid "IDS_BR_POP_REFUSE"
 msgstr "拒否"
@@ -638,7 +638,7 @@ msgid "IDS_BR_BODY_INTERNET"
 msgstr "インターネット"
 
 msgid "IDS_BR_OPT_LIST"
-msgstr "リスト​表示"
+msgstr "リスト"
 
 msgid "IDS_BR_BODY_SELECT_ALL"
 msgstr "全て​選択"
@@ -828,4 +828,34 @@ msgstr "サイト​設定"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "高"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "リンク​を​保存"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "リンク​を​共有"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "プライバシーとセキュリティ"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "オフライン用に保存"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "場所"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "文字入力履歴"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "文字入力履歴を消去"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "保存された全てのパスワードを消去"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "ブックマークに追加しました。"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "削除しました。"
 

@@ -829,3 +829,33 @@ msgstr "Nastavenia webovej lokality"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Vysoká"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Uložiť prepojenie"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Zdieľať prepojenie"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Ochrana osobných údajov a zabezpečenie"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Uložiť na čítanie offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Miesto"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Údaje formulára"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Vymazať údaje formulára"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Vymazať všetky uložené heslá"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Pridané do záložiek"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Odstránené zo záložiek"
+

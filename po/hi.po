@@ -829,3 +829,33 @@ msgstr "वेबसाइट सेटिंग"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "उच्च"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "लिंक सुरक्षित करें"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "लिंक साझा करें"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "गोपनीयता और सुरक्षा"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "ऑफ़लाइन रीडिंग के लिए सुरक्षित करें"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "स्थान"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "फ़ॉर्म डेटा"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "फ़ॉर्म डेटा साफ़ करें"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "सेव किए सभी पासवर्ड्स साफ़ करें"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "बुकमार्क मे जोड़ा गया"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "बुकमार्क्स से हटाया गया"
+

@@ -653,7 +653,7 @@ msgid "IDS_BR_BUTTON_CANCEL_ABB"
 msgstr "Peruuta"
 
 msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopioi l. URL"
+msgstr "Kopioi linkin URL"
 
 msgid "IDS_BR_OPT_VIEW_IMAGE"
 msgstr "Näytä kuva"
@@ -828,4 +828,34 @@ msgstr "Sivuston asetukset"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Korkea"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Tallenna linkki"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Jaa linkki"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Yksityisyys ja tietoturva"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Tallenna luettavaksi offline-tilassa"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Osoite"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Lomaketiedot"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Poista lomaketiedot"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Poista kaikki tallennetut salasanat"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Lisätty kirjanmerkkeihin"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Poistettu kirjanmerkeistä"
 

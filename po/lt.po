@@ -829,3 +829,33 @@ msgstr "Svetainės nustatymai"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Didelė"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Įrašyti nuorodą"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Dalytis nuoroda"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privatumas ir sauga"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Išsaugoti norint skaityti neprisijungus"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Vieta"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formos duomenys"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Išvalyti formos duomenis"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Naikinti visus išsaugotus slaptažodžius"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Įtraukta į adresyną"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Pašalinta iš adresyno"
+

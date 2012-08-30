@@ -829,3 +829,33 @@ msgstr "網站設定"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "高"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "儲存連結"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "分享連結"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "隱私權與安全性"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "儲存以供離線閱讀"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "位置"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "表單資料"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "清除表單資料"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "清除所有已儲存的密碼"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "已新增至書籤"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "已自書籤中移除"
+

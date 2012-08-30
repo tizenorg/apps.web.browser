@@ -829,3 +829,33 @@ msgstr "Website settings"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "High"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Save link"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Share link"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privacy and security"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Save for offline reading"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Location"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Form data"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Clear form data"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Clear all saved passwords"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Added to bookmarks"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Removed from bookmarks"
+

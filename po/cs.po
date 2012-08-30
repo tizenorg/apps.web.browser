@@ -332,10 +332,10 @@ msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
 msgstr "Automatické uložení ID/hesla"
 
 msgid "IDS_BR_BODY_ON"
-msgstr "Zapnout"
+msgstr "Zap"
 
 msgid "IDS_BR_BODY_OFF"
-msgstr "Vypnout"
+msgstr "Vyp"
 
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Výchozí umístění"
@@ -828,4 +828,34 @@ msgstr "Nastavení webového serveru"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Vysoká"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Uložit odkaz"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Sdílet odkaz"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Ochrana osobních údajů a zabezpečení"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Uložit pro čtení offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Místo"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Data formuláře"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Vymazat data formuláře"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Vymazat všechna uložená hesla"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Přidáno do záložek"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Odstraněno ze záložek"
 

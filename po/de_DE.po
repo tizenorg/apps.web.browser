@@ -482,10 +482,10 @@ msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
 msgstr "Browserdaten löschen"
 
 msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "Lade..."
+msgstr "Lädt..."
 
 msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "Lade..."
+msgstr "Lädt..."
 
 msgid "IDS_BR_HEADER_ENTERURL"
 msgstr "URL eingeben"
@@ -770,7 +770,7 @@ msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
 msgstr "Formulardaten speichern"
 
 msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Auf Standardeinstellungen zurücksetzen"
+msgstr "Auf Standard zurücksetzen"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
 msgstr "Alle Einstellungen auf Standard. Fortfahren?"
@@ -782,7 +782,7 @@ msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
 msgstr "Gesamten Verlauf löschen?"
 
 msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "Der Navigationsverlauf im Browser wird gelöscht"
+msgstr "Der Navigationsverlauf im Browser wird gelöscht."
 
 msgid "IDS_BR_BODY_ALWAYS_ON"
 msgstr "Immer ein"
@@ -828,4 +828,34 @@ msgstr "Website-Einstellungen"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Hoch"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Link speichern"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Link senden"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Datenschutz und Sicherheit"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Zum Lesen im Offline-Modus speichern"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Standortzugriff"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formulardaten"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Formulardaten löschen"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Alle gespeicherten Passwörter löschen"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Zu Lesezeichen hinzugefügt"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Aus Lesezeichen entfernt"
 

@@ -593,7 +593,7 @@ msgid "IDS_BR_OPT_BOOKMARK"
 msgstr "书签"
 
 msgid "IDS_BR_BODY_TITLE"
-msgstr "题目"
+msgstr "标题"
 
 msgid "IDS_BR_BODY_ENTER_TITLE"
 msgstr "输入标题"
@@ -828,4 +828,34 @@ msgstr "网站设置"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "高"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "保存链接"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "共享链接"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "隐私和安全"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "保存以备离线阅读"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "位置"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "格式数据"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "清除表单数据"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "清除所有保存的密码"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "已添加到书签"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "已从书签移除"
 

@@ -829,3 +829,33 @@ msgstr "Ajustaments de lloc web"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Alta"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Desar enllaç"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Compartir enllaç"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privadesa i seguretat"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Desar per a lectura fora de línia"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Ubicació"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Dades del formulari"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Esborrar dades de formularis"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Esborrar totes les contrasenyes desades"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Afegit a Preferits"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Esborrat dels preferits"
+

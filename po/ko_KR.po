@@ -829,3 +829,33 @@ msgstr "웹사이트 설정"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "높음"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "링크 저장"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "링크 공유"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "개인정보 보호 및 보안"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "오프라인 보기로 저장"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "위치"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "양식 데이터"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "양식 데이터 삭제"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "저장된 비밀번호를 모두 삭제합니다"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "북마크에 추가되었습니다"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "북마크에서 삭제되었습니다"
+

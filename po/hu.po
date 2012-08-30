@@ -829,3 +829,33 @@ msgstr "Webhelybeállítások"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Magas"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Hivatkozás mentése"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Link megosztása"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Adatvédelem és biztonság"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Mentés offline olvasáshoz"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Hely"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Űrlap adatok"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Űrlapadatok törlése"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Minden mentett jelszó törlése"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Könyvjelzőkhöz adva"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Törölve a könyvjelzők közül"
+

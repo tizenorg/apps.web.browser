@@ -100,8 +100,8 @@
 //share menu
 #define BR_STRING_BOOKMARKS             _("IDS_BR_BODY_BOOKMARKS")
 #define BR_STRING_BOOKMARK              _("IDS_BR_OPT_BOOKMARK")
-#define BR_STRING_SAVE_FOR_OFFLINE_READING  _("Save for offline reading")//stms, new text
-#define BR_STRING_PRIVATE               _("Private")//STMS request design ID
+#define BR_STRING_SAVE_FOR_OFFLINE_READING  _("IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB")//stms, new text
+#define BR_STRING_PRIVATE                   dgettext("sys_string", "IDS_COM_BODY_PRIVATE")//private
 //brightness
 #define BR_STRING_HIGH                  _("IDS_BR_BODY_HIGH_MPRIORITY")
 #define BR_STRING_MEDIUM                _("IDS_BR_BODY_MEDIUM")
@@ -116,9 +116,9 @@
 #define BR_STRING_MOST_VISITED_SITES    _("IDS_BR_BODY_MOST_VISITED_SITES")
 #endif
 #define BR_STRING_BLANK_PAGE            _("IDS_BR_BODY_BLANK_PAGE")
-#define BR_STRING_RECENTLY_VISITED_SITE _("IDS_BR_HEADER_RECENTLY_VISITED_PAGES")
+#define BR_STRING_RECENTLY_VISITED_SITE     _("Recently visited site")//IDS_BR_HEADER_RECENTLY_VISITED_PAGES
 #define BR_STRING_CURRENT_PAGE          _("IDS_BR_BODY_CURRENT_PAGE")
-#define BR_STRING_USER_HOMEPAGE         _("User homepage")//stms, new text
+#define BR_STRING_USER_HOMEPAGE             _("User homepage")//not visible text
 #define BR_STRING_CONTENT_SETTINGS      _("IDS_BR_MBODY_PAGE_CONTENT_SETTINGS")
 #define BR_STRING_DEFAULT_VIEW_LEVEL    _("Default view level")//stms, new text
 #define BR_STRING_FIT_TO_WIDTH          _("IDS_BR_BODY_FIT_TO_WIDTH")
@@ -126,32 +126,29 @@
 #define BR_STRING_RUN_JAVASCRIPT        _("IDS_BR_BODY_RUN_JAVASCRIPT")
 #define BR_STRING_SHOW_IMAGES           _("IDS_BR_BODY_SHOW_IMAGES")
 #define BR_STRING_ALWAYS_ON             _("IDS_BR_BODY_ALWAYS_ON")
-#define BR_STRING_CLICK_TO_PLAY         _("Click to play")//stms, new text
 #define BR_STRING_BLOCK_POPUP           _("Block popup")//stms, new text
-#define BR_STRING_PRIVACY_AND_SECURTY   _("Privacy & Security")//stms, new text
+#define BR_STRING_PRIVACY_AND_SECURTY       _("IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB")
+#define BR_STRING_ALWAYS_ASK                _("IDS_BR_BODY_ALWAYS_ASK")
+#define BR_STRING_DELETE_BROWSING_DATA      _("IDS_BR_BODY_DELETE_BROWSING_DATA")
 #define BR_STRING_CLEAR_CACHE           _("IDS_BR_BODY_CLEAR_CACHE")
 #define BR_STRING_CLEAR_ALL_CACHE_DATA_Q      _("Clear all cache data?")//stms, new text
-//#define BR_STRING_CLEAR_ALL_CACHE_DATA_Q        _("IDS_BR_POP_CLEAR_CACHE_Q?")
 #define BR_STRING_CLEAR_HISTORY         _("IDS_BR_BODY_CLEAR_HISTORY")
-#define BR_STRING_CLEAR_ALL_HISTORY_DATA_Q    _("Clear all history?")//Need to request new text in STMS
-//#define BR_STRING_CLEAR_ALL_HISTORY_DATA_Q      _("IDS_BR_POP_HISTORYREMOVEALLHISTORY")
+#define BR_STRING_CLEAR_ALL_HISTORY_DATA_Q  _("Clear all history?")//stms, new text
 #define BR_STRING_SHOW_SECURITY_WARNINGS        _("IDS_BR_BODY_SHOW_SECURITY_WARNINGS")
 #define BR_STRING_COOKIES               _("IDS_BR_BODY_COOKIES")
 #define BR_STRING_ACCEPT_COOKIES        _("IDS_BR_BODY_ACCEPT_COOKIES")
 #define BR_STRING_CLEAR_ALL_COOKIE_DATA _("IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA")
-#define BR_STRING_CLEAR_ALL_COOKIE_DATA_Q       _("Clear all cookie data?")
-//#define BR_STRING_CLEAR_ALL_COOKIE_DATA_Q       _("IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q")
-#define BR_STRING_FROM_DATA             _("From data")//stms, new text
+#define BR_STRING_CLEAR_ALL_COOKIE_DATA_Q   _("Clear all cookie data?")//stms, new text
 #define BR_STRING_REMEMBER_FROM_DATA    _("IDS_BR_BODY_REMEMBER_FORM_DATA")
 #define BR_STRING_CLEAR_FROM_DATA       _("Clear from data")//stms, new text
 #define BR_STRING_CLEAR_ALL_FROM_DATA_Q _("Clear all from data?")//stms, new text
-#define BR_STRING_LOCATION              _("Location")//stms, new text
+#define BR_STRING_LOCATION                  dgettext("sys_string", "IDS_COM_BODY_LOCATION")//_("Location")//stms, new text
 #define BR_STRING_ENABLE_LOCATION       _("IDS_BR_BODY_ENABLE_LOCATION")
 #define BR_STRING_CLEAR_LOCATION_ACCESS _("IDS_BR_BODY_CLEAR_LOCATION_ACCESS")
 #define BR_STRING_CLEAR_ALL_LOCATION_DATA_Q     _("Clear all location data?")//stms, new text
-#define BR_STRING_FORMDATA             _("Form data")
-#define BR_STRING_REMEMBER_FORMDATA    _("Remember form data")
-#define BR_STRING_CLEAR_FORMDATA       _("Clear form data")
+#define BR_STRING_FORMDATA                  _("IDS_BR_HEADER_FORM_DATA")
+#define BR_STRING_REMEMBER_FORMDATA         _("IDS_BR_BODY_REMEMBER_FORM_DATA")
+#define BR_STRING_CLEAR_FORMDATA            _("IDS_BR_BODY_CLEAR_FORM_DATA")
 #define BR_STRING_CLEAR_ALL_FORMDATA_Q _("Clear all form data?")
 #define BR_STRING_PASSWORDS             _("Passwords")//stms, new text
 #define BR_STRING_REMEMBER_PASSWORDS    _("IDS_BR_BODY_REMEMBER_PASSWORDS")
@@ -159,24 +156,22 @@
 #define BR_STRING_CLEAR_ALL_SAVED_PASSWORDS_Q   _("IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q")
 #define BR_STRING_SEARCH                _("IDS_BR_BODY_SEARCH")
 #define BR_STRING_WEBSITE_SETTINGS      _("IDS_BR_BODY_WEBSITE_SETTINGS")//stms, new text
-#define BR_STRING_MULTI_WINDOW_PREVIEW  _("Multi window preview")//stms, new text
 #define BR_STRING_RESET_TO_DEFAULT      _("IDS_BR_BODY_RESET_TO_DEFAULT")
 #define BR_STRING_RESET_TO_DEFAULT_Q    _("Reset all settings to default?")//stms, new text
 #define BR_STRING_RESET_ALL_SETTINGS_TO_DEFAULT_Q	_("IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q")
-#define BR_STRING_DEVELOPER_MODE        _("IDS_BR_BODY_DEVELOPER_MODE")
 #define BR_STRING_USER_AGENT            _("IDS_BR_HEADER_USER_AGENT")
+
+//website settings
 #define BR_STRING_ABOUT_BROWSER         _("IDS_BR_BODY_ABOUT_BROWSER")
-#define BR_STRING_RUN_FLASH             _("IDS_BR_BODY_RUN_FLASH")
-#define BR_STRING_PAUSE_FLASH_AT_PANNING        _("Pause flash at panning")//Need to request new text in STMS
-#define BR_STRING_NAVIGATION_HISTORY_WILL_BE_CLEARED	_("IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED")
-#define BR_STRING_ALWAYS_ASK            _("IDS_BR_BODY_ALWAYS_ASK")
-#define BR_STRING_DELETE_BROWSING_DATA  _("IDS_BR_BODY_DELETE_BROWSING_DATA")
 #define BR_STRING_SAVED_ID_PASSWORD     _("IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD")
 #define BR_STRING_CLEAR_STORED_DATA     _("Clear stored data")
 #define BR_STRING_CLEAR_LOCATION_ACCESS_FOR_THIS_WEBSITE     _("Clear location access for this website?")
 #define BR_STRING_DELETE_ALL_STORED_DATA_BY_THIS_WEBSITE     _("Delete all data stored by this website?")
 #define BR_STRING_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS     _("Delete all website data and location permissions?")
 #define BR_STRING_DELETE_ALL     _("Delete all")
+
+//developer mode
+#define BR_STRING_DEVELOPER_MODE                _("IDS_BR_BODY_DEVELOPER_MODE")
 /*************************************************************************************************************/
 
 
@@ -211,8 +206,8 @@
 #define BR_STRING_MOST_VISITED_GUIDE_TEXT       _("Offer 3 thumbnails of most visited sites to let you access to each site easily")//stms, new text
 #define BR_STRING_ADD_TO_MOST_VISITED_SITES     _("Add to Most visited sites")//STMS, new text
 #define BR_STRING_MY_SITES_GUIDE_TEXT           _("You can add, delete, pin or unpin each item of \"My sites\" by doing a long press. <br>You can also reorder items of \"My sites\" by drag and drop.")//STMS, 
-#define BR_STRING_ADDED_TO_BOOKMARKS      _("Added to bookmarks")//_("IDS_BR_POP_ADDED_TO_BOOKMARKS")
-#define BR_STRING_REMOVED_TO_BOOKMARKS    _("Removed from bookmarks")//_("IDS_BR_POP_REMOVED_FROM_BOOKMARKS")
+#define BR_STRING_ADDED_TO_BOOKMARKS            _("IDS_BR_POP_ADDED_TO_BOOKMARKS")
+#define BR_STRING_REMOVED_TO_BOOKMARKS          _("IDS_BR_POP_REMOVED_FROM_BOOKMARKS")
 // new text
 #define BR_STRING_MSG_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q  _("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
 /*************************************************************************************************************/
@@ -220,8 +215,8 @@
 
 /* Others */
 /*************************************************************************************************************/
-#define BR_STRING_HOUR                  _("hour")//IDS_COM_BODY_1_HOUR
-#define BR_STRING_HOURS                 _("hours")//IDS_COM_POP_PD_HOURS
+#define BR_STRING_HOUR                  dgettext("sys_string", "IDS_COM_BODY_1_HOUR")
+#define BR_STRING_HOURS                 dgettext("sys_string", "IDS_COM_POP_PD_HOURS")
 #define BR_STRING_NEVER_AUTO_UPDATE     _("Never auto update")
 /*************************************************************************************************************/
 
@@ -232,7 +227,7 @@
 #define BR_STRING_CTXMENU_COPY_LINK_LOCATION            _("IDS_BR_OPT_COPY_LINK_URL")
 #define BR_STRING_CTXMENU_OPEN_IMAGE_IN_NEW_WINDOW      _("IDS_BR_BODY_VIEW_IMAGE")
 #define BR_STRING_CTXMENU_OPEN_MEDIA_IN_NEW_WINDOW      _("IDS_BR_BODY_PLAY")
-#define BR_STRING_CTXMENU_COPY_IMAGE_LOCATION           _("IDS_BR_BODY_COPY_URL")
+#define BR_STRING_CTXMENU_COPY_IMAGE_LOCATION           _("IDS_BR_OPT_COPY_LINK_URL")
 #define BR_STRING_CTXMENU_SAVE_IMAGE_AS                 _("Save image as")
 #define BR_STRING_CTXMENU_COPY_IMAGE                    _("IDS_BR_OPT_COPY_IMAGE")
 #define BR_STRING_CTXMENU_SAVE_IMAGE                    _("IDS_BR_OPT_SAVE_IMAGE")
@@ -255,6 +250,10 @@
 #define BR_STRING_CTXMENU_SEARCH                        dgettext("sys_string", "IDS_COM_BODY_SEARCH")
 #define BR_STRING_CTXMENU_SHARE                         dgettext("sys_string", "IDS_COM_BUTTON_SHARE")
 #define BR_STRING_CTXMENU_DELETE                        dgettext("sys_string", "IDS_COM_BODY_DELETE")
+#define BR_STRING_CTXMENU_PASTE_AND_GO                  _("Paste & Go")
+#define BR_STRING_CTXMENU_SHARE_IMAGE_URL               _("Share image URL")
+#define BR_STRING_CTXMENU_SHARE_LINK                    _("IDS_BR_BODY_SHARE_LINK")
+#define BR_STRING_CTXMENU_SAVE_LINK                     _("IDS_BR_BODY_SAVE_LINK")
 #define BR_STRING_CTXMENU_SELECT_ALL                    _("IDS_BR_OPT_SELECT_ALL")
 #define BR_STRING_CTXMENU_SELECT                        _("IDS_BR_OPT_SELECT")
 #define BR_STRING_CTXMENU_INSERT_UNICODE_CON_CHAR       _("Insert unicode control character")
@@ -272,7 +271,7 @@
 #define BR_STRING_CTXMENU_SEARCH_THE_WEB                _("Search the Web")
 #define BR_STRING_CTXMENU_SEARCH_IN_SPOTLIGHT           _("Search in Spotlight")
 #define BR_STRING_CTXMENU_LOCK_UP_IN_DIRECTORY          _("Look up in dictionary")
-#define BR_STRING_CTXMENU_OPEN_LINK                     _("IDS_BR_OPT_OPEN_URL")//"Open link"
+#define BR_STRING_CTXMENU_OPEN                          _("IDS_BR_OPT_OPEN")
 #define BR_STRING_CTXMENU_IGNORE_GRAMMAR                _("Ignore grammar")
 #define BR_STRING_CTXMENU_SPELLING_AND_GRAMMAR          _("Spelling and grammar")
 #define BR_STRING_CTXMENU_SHOW_SPELLING_AND_GRAMMAR     _("Show spelling and grammar")
@@ -295,7 +294,6 @@
 #define BR_STRING_CTXMENU_SPEECH                        _("Speech")
 #define BR_STRING_CTXMENU_START_SPEAKING                _("Start speaking")
 #define BR_STRING_CTXMENU_STOP_SPEAKING                 _("Stop speaking")
-#define BR_STRING_CTXMENU_TEXT_SELECTION_MODE                 _("Text selection mode")
-#define BR_STRING_CTXMENU_SHARE_IMAGE                 _("Share image")
+#define BR_STRING_CTXMENU_TEXT_SELECTION_MODE           _("Text selection mode")
 
 #endif /* BROWSER_STRING_H */

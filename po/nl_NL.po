@@ -829,3 +829,33 @@ msgstr "Website-instellingen"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Hoog"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Koppeling opslaan"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Koppeling delen"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privacy en beveiliging"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Opslaan voor offline lezen"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Locatie"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formuliergegevens"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Formuliergegevens wissen"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Alle opgeslagen wachtwoorden wissen"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Toegevoegd aan favorieten"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Verwijderd uit favorieten"
+

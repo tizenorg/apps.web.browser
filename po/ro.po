@@ -829,3 +829,33 @@ msgstr "Setări pentru site-uri web"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Ridicată"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Salvare link"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Partajare link"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Confidenţialitate şi securitate"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Salvare pentru citire offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Locaţie"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Date formular"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Ştergere date formular"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Ştergere integrală parole salvate"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Adăugat la marcaje"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Eliminat din marcaje"
+

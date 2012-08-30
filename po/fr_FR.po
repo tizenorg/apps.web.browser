@@ -401,7 +401,7 @@ msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
 msgstr "Page suivante"
 
 msgid "IDS_BR_OPT_STOP"
-msgstr "Arrêt"
+msgstr "Arrêter"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Recharger"
@@ -828,4 +828,34 @@ msgstr "Paramètres des sites Web"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Haute"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Enregistrer le lien"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Partager le lien"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Confidentialité et sécurité"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Enregistrer pour la lecture hors connexion"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Position"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Données formulaire"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Supprimer les données de formulaire"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Supprimer tous les mots de passe enregistrés"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Ajouté aux favoris"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Supprimé des favoris"
 

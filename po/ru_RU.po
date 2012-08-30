@@ -2,163 +2,163 @@ msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Уведомление..."
 
 msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "?б?або?ка..."
+msgstr "Обработка..."
 
 msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "?б?або?ка заве??ена"
+msgstr "Обработка завершена"
 
 msgid "IDS_BR_SK_RETRY"
-msgstr "?ов?о?"
+msgstr "Повтор"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "?и?пе??е? заг??зки"
+msgstr "Диспетчер загрузки"
 
 msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "?еве?н?й де?к?ип?о?"
+msgstr "Неверный дескриптор"
 
 msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "?евозможно о?к???? ?айл"
+msgstr "Невозможно открыть файл"
 
 msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "?аг??зи???"
+msgstr "Загрузить?"
 
 msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "??б?анное"
+msgstr "Выбранное"
 
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "?аг??зка о?менена"
+msgstr "Загрузка отменена"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "С по?ледней ???ани??"
+msgstr "С последней страницы"
 
 msgid "IDS_BR_BODY_PAGE"
-msgstr "С??ани?а"
+msgstr "Страница"
 
 msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "Слова??"
+msgstr "Словарь"
 
 msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "? б?а?зе?е"
+msgstr "О браузере"
 
 msgid "IDS_BR_BODY_BROWSER_TYPE"
 msgstr "Тип"
 
 msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "??дан"
+msgstr "Выдан"
 
 msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "?оказ?ва?? ка??инки"
+msgstr "Показывать картинки"
 
 msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "?аг??зи??"
+msgstr "Загрузить"
 
 msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "?веди?е URL-ад?е?"
+msgstr "Введите URL-адрес"
 
 msgid "IDS_BR_BODY_FOLDER"
-msgstr "?апка"
+msgstr "Папка"
 
 msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "?ома?н?? ???ани?а"
+msgstr "Домашняя страница"
 
 msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "?ейзаж"
+msgstr "Пейзаж"
 
 msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "?е? закладок"
+msgstr "Нет закладок"
 
 msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "?и?его не найдено"
+msgstr "Ничего не найдено"
 
 msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "??бо?о?но"
+msgstr "Выборочно"
 
 msgid "IDS_BR_BODY_RSS"
 msgstr "RSS"
 
 msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "?ап??ка?? Flash"
+msgstr "Запускать Flash"
 
 msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "??полн??? JavaScript"
+msgstr "Выполнять JavaScript"
 
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "?м?:"
+msgstr "Имя:"
 
 msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "?од?азделение:"
+msgstr "Подразделение:"
 
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "??ганиза?и?:"
+msgstr "Организация:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "?ген? пол?зова?ел?"
+msgstr "Агент пользователя"
 
 msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
 msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "?а?аме???"
+msgstr "Параметры"
 
 msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "??ибка ак?ива?ии"
+msgstr "Ошибка активации"
 
 msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "Уже зап??ено"
+msgstr "Уже запущено"
 
 msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "?е ?еализовано"
+msgstr "Не реализовано"
 
 msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "Сбой п?ове?ки подлинно??и"
+msgstr "Сбой проверки подлинности"
 
 msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "?е?езапи?а???"
+msgstr "Перезаписать?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
 
 msgid "IDS_BR_TAB_HISTORY"
-msgstr "???нал"
+msgstr "Журнал"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "Спи?ок заг??зки"
+msgstr "Список загрузки"
 
 msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "Уже ???ановлено"
+msgstr "Уже установлено"
 
 msgid "IDS_BR_POP_NOTIFYING"
 msgstr "Уведомление..."
 
 msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "Соде?жимое не подде?живае???"
+msgstr "Содержимое не поддерживается"
 
 msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "??ибка: не ?дало?? п?еоб?азова?? им? ?зла"
+msgstr "Ошибка: не удалось преобразовать имя узла"
 
 msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "?евозможно ?в?за???? ? п?ок?и-?е?ве?ом"
+msgstr "Невозможно связаться с прокси-сервером"
 
 msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "?е? ?е??и?ика?а SSL"
+msgstr "Нет сертификата SSL"
 
 msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "?азме? ?айла п?ев??ае? лими? заг??зки"
+msgstr "Размер файла превышает лимит загрузки"
 
 msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "?веди?е им?:"
+msgstr "Введите имя:"
 
 msgid "IDS_BR_SK_NEXT"
-msgstr "?алее"
+msgstr "Далее"
 
 msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "?ова? папка"
+msgstr "Новая папка"
 
 msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "?обави?? к закладкам"
+msgstr "Добавить к закладкам"
 
 msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "?овое окно"
+msgstr "Новое окно"
 
 msgid "IDS_BR_BODY_URL"
 msgstr "URL"
@@ -167,665 +167,695 @@ msgid "IDS_BR_BODY_URL_C"
 msgstr "URL:"
 
 msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "URL-ад?е? недо???пен"
+msgstr "URL-адрес недоступен"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "URL-ад?е? %s недо???пен. ?озможно, он в?еменно не ?або?ае? или бол??е не и?пол?з?е???"
+msgstr "URL-адрес %s недоступен. Возможно, он временно не работает или больше не используется"
 
 msgid "IDS_BR_HEADER_FOLDER"
-msgstr "?апка"
+msgstr "Папка"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "?м? папки"
+msgstr "Имя папки"
 
 msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "?м? папки ?же ???е??в?е?"
+msgstr "Имя папки уже существует"
 
 msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "?е? названи?"
+msgstr "Нет названия"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "?е?кол?ко окон"
+msgstr "Несколько окон"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "?е? ж??налов"
+msgstr "Нет журналов"
 
 msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "?обави?? в ?акладки"
+msgstr "Добавить в Закладки"
 
 msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "?едак?и?ова?? закладк?"
+msgstr "Редактировать закладку"
 
 msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "?м? папки:"
+msgstr "Имя папки:"
 
 msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "??б?а?? в?е"
+msgstr "Выбрать все"
 
 msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "?и?пе??е? заг??зки"
+msgstr "Диспетчер загрузки"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "?обави?? RSS-ново???"
+msgstr "Добавить RSS-новость"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "?обави?? RSS-канал?"
+msgstr "Добавить RSS-каналы"
 
 msgid "IDS_BR_OPT_SETTINGS"
-msgstr "?а???ойки"
+msgstr "Настройки"
 
 msgid "IDS_BR_POP_ENTER_URL"
-msgstr "?веди?е URL"
+msgstr "Введите URL"
 
 msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "?а?ол?"
+msgstr "Пароль"
 
 msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "?еве?н?й ад?е?"
+msgstr "Неверный адрес"
 
 msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "Уже ???е??в?е? в ?пи?ке заг??зки"
+msgstr "Уже существует в списке загрузки"
 
 msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "?веди?е им? папки"
+msgstr "Введите имя папки"
 
 msgid "IDS_BR_POP_NO_PAGE"
-msgstr "?е? ???ани??"
+msgstr "Нет страницы"
 
 msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "?е? п?ед?д??и? ???ани?"
+msgstr "Нет предыдущих страниц"
 
 msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "?е? по?лед???и? ???ани?"
+msgstr "Нет последующих страниц"
 
 msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "?е? ???ани?? дл? пов?о?ной заг??зки"
+msgstr "Нет страницы для повторной загрузки"
 
 msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "Т?еб?е??? п?ове?ка подлинно??и"
+msgstr "Требуется проверка подлинности"
 
 msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "?акладка ?же ???е??в?е?"
+msgstr "Закладка уже существует"
 
 msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "?м? папки ?же ???е??в?е?"
+msgstr "Имя папки уже существует"
 
 msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "?евозможно ?о??ани?? об?ек?. ?едо??а?о?но п?о???ан??ва в к??е"
+msgstr "Невозможно сохранить объект. Недостаточно пространства в кэше"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
-msgstr "??бе?и?е ?лемен??"
+msgstr "Выберите элементы"
 
 msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "?н?о?ма?и? о ?е??и?ика?е"
+msgstr "Информация о сертификате"
 
 msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "??п?ави?? по ?лек??онной по??е"
+msgstr "Отправить по электронной почте"
 
 msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "??п?ави?? ? помо??? ?ооб?ени?"
+msgstr "Отправить с помощью сообщения"
 
 msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "??п?ави?? ?е?ез"
+msgstr "Отправить через"
 
 msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "?е ?дае??? зап???и?? б?а?зе?"
+msgstr "Не удается запустить браузер"
 
 msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "?е? ад?е?а"
+msgstr "Нет адреса"
 
 msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "?ол??е не показ?ва??"
+msgstr "Больше не показывать"
 
 msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "?е ?казано им? ?айла"
+msgstr "Не указано имя файла"
 
 msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "Созда?? папк?"
+msgstr "Создать папку"
 
 msgid "IDS_BR_OPT_SELECTED"
-msgstr "??б?анное"
+msgstr "Выбранное"
 
 msgid "IDS_BR_OPT_SHARE"
-msgstr "??п?ави??"
+msgstr "Поделиться"
 
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "?едавно по?е?енн?е ???ани??"
+msgstr "Недавно посещенные страницы"
 
 msgid "IDS_BR_OPT_DISPLAY"
-msgstr "?и?плей"
+msgstr "Дисплей"
 
 msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "?о ?и?ине"
+msgstr "По ширине"
 
 msgid "IDS_BR_BODY_READABLE"
-msgstr "?л? ??ени?"
+msgstr "Для чтения"
 
 msgid "IDS_BR_BODY_PRIVACY"
-msgstr "?он?иден?иал?но???"
+msgstr "Конфиденциальность"
 
 msgid "IDS_BR_BODY_COOKIES"
-msgstr "Файл? Cookie"
+msgstr "Файлы Cookie"
 
 msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "??инима?? в?е"
+msgstr "Принимать все"
 
 msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "Сп?а?ива??"
+msgstr "Спрашивать"
 
 msgid "IDS_BR_HEADER_COOKIES"
-msgstr "Файл? Cookie"
+msgstr "Файлы Cookie"
 
 msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "?аз?е?и?? cookies"
+msgstr "Разрешить cookies"
 
 msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "?аз?е?и?? cookies"
+msgstr "Разрешить cookies"
 
 msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "??инима?? в?е"
+msgstr "Принимать все"
 
 msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "??клон??? в?е"
+msgstr "Отклонять все"
 
 msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "?в?ома?и?е?кое ?о??анение иден?и?ика?о?а и па?ол?"
+msgstr "Автоматическое сохранение идентификатора и пароля"
 
 msgid "IDS_BR_BODY_ON"
-msgstr "?кл??ено"
+msgstr "Включено"
 
 msgid "IDS_BR_BODY_OFF"
-msgstr "??кл??ено"
+msgstr "Выключено"
 
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "Х?анили?е по ?мол?ани?"
+msgstr "Хранилище по умолчанию"
 
 msgid "IDS_BR_BODY_SEARCH"
-msgstr "?ои?к"
+msgstr "Поиск"
 
 msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Со??ани?? ка??инк?"
+msgstr "Сохранить картинку"
 
 msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "?кк?м?л??о? ?аз??жен. ?евозможно зап???и?? б?а?зе?"
+msgstr "Аккумулятор разряжен. Невозможно запустить браузер"
 
 msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "?ои?к ?лова"
+msgstr "Поиск слова"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "?обави?? на главн?й ?к?ан"
+msgstr "Добавить на главный экран"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "?обави?? на главн?й ?к?ан"
+msgstr "Добавить на главный экран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Ча??о по?е?аем?е ?ай??"
+msgstr "Часто посещаемые сайты"
 
 msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "??п?ави?? в Facebook"
+msgstr "Отправить в Facebook"
 
 msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "??п?ави?? в Twitter"
+msgstr "Отправить в Twitter"
 
 msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "?змени?? вид"
+msgstr "Изменить вид"
 
 msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "??бе?и?е URL-ад?е?а"
+msgstr "Выберите URL-адреса"
 
 msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "Э?о? ?ай? п??ае??? о?к???? в?пл?ва??ее окно"
+msgstr "Этот сайт пытается открыть всплывающее окно"
 
 msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "?локи?ова?? в?пл?в. окна"
+msgstr "Блокировать всплыв. окна"
 
 msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "Тек??"
+msgstr "Текст"
 
 msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "?опи?ова?? изоб?ажение"
+msgstr "Копировать изображение"
 
 msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Со??ани?? ка??инк?"
+msgstr "Сохранить картинку"
 
 msgid "IDS_BR_BODY_PLAY"
-msgstr "?о?п?оизве??и"
+msgstr "Воспроизвести"
 
 msgid "IDS_BR_OPT_SELECT"
-msgstr "??б?а??"
+msgstr "Выбрать"
 
 msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "?азад"
+msgstr "Назад"
 
 msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "?пе?ед"
+msgstr "Вперед"
 
 msgid "IDS_BR_OPT_STOP"
-msgstr "С?оп"
+msgstr "Стоп"
 
 msgid "IDS_BR_OPT_RELOAD"
-msgstr "?бнови??"
+msgstr "Обновить"
 
 msgid "IDS_BR_OPT_PASTE"
-msgstr "???ави??"
+msgstr "Вставить"
 
 msgid "IDS_BR_BUTTON_MORE"
-msgstr "??е"
+msgstr "Еще"
 
 msgid "IDS_BR_POP_FAIL"
 msgstr "Сбой"
 
 msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "??к???? в новом окне"
+msgstr "Открыть в новом окне"
 
 msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "??о?мо?? ?пи?ка заг??зок"
+msgstr "Просмотр списка загрузок"
 
 msgid "IDS_BR_BODY_COPY_URL"
-msgstr "?опи?ова?? URL"
+msgstr "Копировать URL"
 
 msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "?опи?ова?? URL"
+msgstr "Копировать URL"
 
 msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "??о?мо?? ка??инки"
+msgstr "Просмотр картинки"
 
 msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "?а???ойки кон?иден?иал?но??и"
+msgstr "Настройки конфиденциальности"
 
 msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "??и??и?? к??"
+msgstr "Очистить кэш"
 
 msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "??и??и?? ж??нал"
+msgstr "Очистить журнал"
 
 msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "?аз?е?и?? плагин?"
+msgstr "Разрешить плагины"
 
 msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "??бо? пои?ковой ?и??ем?"
+msgstr "Выбор поисковой системы"
 
 msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "Удали?? логин/па?ол?"
+msgstr "Удалить логин/пароль"
 
 msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Удали?? cookies"
+msgstr "Удалить cookies"
 
 msgid "IDS_BR_BODY_UP"
-msgstr "?ве??"
+msgstr "Вверх"
 
 msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "?азме? ??и??а"
+msgstr "Размер шрифта"
 
 msgid "IDS_BR_POP_DELETED"
 msgstr "Удалено"
 
 msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "?о ?мол?ани?"
+msgstr "По умолчанию"
 
 msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "?а?аме??? ?оде?ж.???ани??"
+msgstr "Параметры содерж.страницы"
 
 msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "С ??е?ом ?еги???а"
+msgstr "С учетом регистра"
 
 msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "?ополни?ел?н?й мод?л?"
+msgstr "Дополнительный модуль"
 
 msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "Спи?ок подкл??аем?? мод?лей"
+msgstr "Список подключаемых модулей"
 
 msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "?окал?ное ??анили?е"
+msgstr "Локальное хранилище"
 
 msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "Удали?? данн?е б?а?зе?а"
+msgstr "Удалить данные браузера"
 
 msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "?аг??зка..."
+msgstr "Загрузка..."
 
 msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "?аг??зка..."
+msgstr "Загрузка..."
 
 msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "?веди?е URL-ад?е?"
+msgstr "Введите URL-адрес"
 
 msgid "IDS_BR_OPT_LOCK"
-msgstr "?аблоки?ова??"
+msgstr "Заблокировать"
 
 msgid "IDS_BR_OPT_UNLOCK"
-msgstr "?азблоки?ова??"
+msgstr "Разблокировать"
 
 msgid "IDS_BR_BODY_MODIFY"
-msgstr "?змени??"
+msgstr "Изменить"
 
 msgid "IDS_BR_SK_PAGE_UP"
-msgstr "?ве??"
+msgstr "Вверх"
 
 msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "?низ"
+msgstr "Вниз"
 
 msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "?ежим ?аз?або??ика"
+msgstr "Режим разработчика"
 
 msgid "IDS_BR_BODY_EMPTY"
-msgstr "????о"
+msgstr "Пусто"
 
 msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "Се??и?ика??"
+msgstr "Сертификаты"
 
 msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "?акладки"
+msgstr "Закладки"
 
 msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "?веди?е им?"
+msgstr "Введите имя"
 
 msgid "IDS_BR_BODY_NAME"
-msgstr "?м?"
+msgstr "Имя"
 
 msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "??п?ави?? по E-mail"
+msgstr "Отправить по E-mail"
 
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "??п?ави?? в ?ооб?ении"
+msgstr "Отправить в сообщении"
 
 msgid "IDS_BR_BODY_SETTINGS"
-msgstr "?а???ойки"
+msgstr "Настройки"
 
 msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "?м? пол?зова?ел?"
+msgstr "Имя пользователя"
 
 msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "Уже ???е??в?е?"
+msgstr "Уже существует"
 
 msgid "IDS_BR_POP_SAVED"
-msgstr "Соx?анено"
+msgstr "Соxранено"
 
 msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "?едо??а?о?но пам??и"
+msgstr "Недостаточно памяти"
 
 msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "??ибка ?е?и"
+msgstr "Ошибка сети"
 
 msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "??егда ?п?а?ива??"
+msgstr "Всегда спрашивать"
 
 msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "?а??а пам??и"
+msgstr "Карта памяти"
 
 msgid "IDS_BR_BODY_PHONE"
-msgstr "Теле?он"
+msgstr "Телефон"
 
 msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "?е? ??е?н?? запи?ей"
+msgstr "Нет учетных записей"
 
 msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "С??ани?а о?ибки"
+msgstr "Страница ошибки"
 
 msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "?еб-???ани?а в?еменно недо???пна"
+msgstr "Веб-страница временно недоступна"
 
 msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "?еб-???ани?а недо???пна"
+msgstr "Веб-страница недоступна"
 
 msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "Сбой заг??зки ??еймов"
+msgstr "Сбой загрузки фреймов"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "??и пол??ении веб-???ани?? %s п?оизо?ла ?лед???а? о?ибка."
+msgstr "При получении веб-страницы %s произошла следующая ошибка."
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "?евозможно пол??и?? веб-???ани??. (?озможно, она в?еменно не ?або?ае? или пе?еме?ена на нов?й URL)"
+msgstr "Невозможно получить веб-страницу. (Возможно, она временно не работает или перемещена на новый URL)"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "?иже ?казана наиболее ве?о??на? п?и?ина"
+msgstr "Ниже указана наиболее вероятная причина"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "Се?евое подкл??ение ???ановлено ? о?ибками"
+msgstr "Сетевое подключение установлено с ошибками"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "??ове???е URL веб-???ани??"
+msgstr "Проверьте URL веб-страницы"
 
 msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "?е?езаг??зи?е веб-???ани?? позднее"
+msgstr "Перезагрузите веб-страницу позднее"
 
 msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "?акладка"
+msgstr "Закладка"
 
 msgid "IDS_BR_BODY_TITLE"
-msgstr "?азвание"
+msgstr "Название"
 
 msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "?веди?е название"
+msgstr "Введите название"
 
 msgid "IDS_BR_OPT_FOLDERS"
-msgstr "?апки"
+msgstr "Папки"
 
 msgid "IDS_BR_OPT_ALLOW"
-msgstr "?аз?е?и??"
+msgstr "Разрешить"
 
 msgid "IDS_BR_POP_REFUSE"
-msgstr "??каза??"
+msgstr "Отказать"
 
 msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "??ибка за?и??: не име??ий дове?и? ?е??и?ика? ?е?ве?а"
+msgstr "Ошибка защиты: не имеющий доверия сертификат сервера"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
-msgstr "??б?ано ?лемен?ов: %d"
+msgstr "Выбрано элементов: %d"
 
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
-msgstr "??б?ан 1 ?лемен?"
+msgstr "Выбран 1 элемент"
 
 msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "?обави?? как видже?"
+msgstr "Добавить как виджет"
 
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "Создана ???лка"
+msgstr "Создана ссылка"
 
 msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "??бе?и?е ?лово"
+msgstr "Выберите слово"
 
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "?ай?и на ???ани?е"
+msgstr "Найти на странице"
 
 msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "?ай?и на ???ани?е"
+msgstr "Найти на странице"
 
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
-msgstr "?н?е?не?"
+msgstr "Интернет"
 
 msgid "IDS_BR_OPT_LIST"
-msgstr "Спи?ок ?айлов"
+msgstr "Список файлов"
 
 msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "??б?а?? в?е"
+msgstr "Выбрать все"
 
 msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Сооб?ение"
+msgstr "Сообщение"
 
 msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
 msgstr "E-mail"
 
 msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "??мена"
+msgstr "Отмена"
 
 msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "?опи?ова?? URL ???лки"
+msgstr "Копировать URL ссылки"
 
 msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "??о?мо?? ка??инки"
+msgstr "Просмотр картинки"
 
 msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "??к???? в новом окне"
+msgstr "Открыть в новом окне"
 
 msgid "IDS_BR_OPT_OPEN"
-msgstr "??к????"
+msgstr "Открыть"
 
 msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "??дели?? ?ек??"
+msgstr "Выделить текст"
 
 msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "?акладки"
+msgstr "Закладки"
 
 msgid "IDS_BR_SK_EDIT"
-msgstr "?змени??"
+msgstr "Изменить"
 
 msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Удали??"
+msgstr "Удал."
 
 msgid "IDS_BR_SK_DELETE"
-msgstr "Удали??"
+msgstr "Удалить"
 
 msgid "IDS_BR_SK_CANCEL"
-msgstr "??мена"
+msgstr "Отмена"
 
 msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "?едак?и?ова?? закладк?"
+msgstr "Редактировать закладку"
 
 msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Сооб?ени?"
+msgstr "Сообщения"
 
 msgid "IDS_BR_OPT_EMAIL_M_BOX"
 msgstr "E-mail"
 
 msgid "IDS_BR_HEADER_EDIT"
-msgstr "?змени??"
+msgstr "Изменить"
 
 msgid "IDS_BR_SK3_DELETE"
-msgstr "Удали??"
+msgstr "Удалить"
 
 msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "?обави?? в ?акладки"
+msgstr "Добавить в Закладки"
 
 msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "?азме? ??и??а"
+msgstr "Размер шрифта"
 
 msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "?ол??ой"
+msgstr "Большой"
 
 msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "?ален?кий"
+msgstr "Маленький"
 
 msgid "IDS_BR_BODY_SPEED"
-msgstr "Ско?о???"
+msgstr "Скорость"
 
 msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "?д?е? п?ок?и"
+msgstr "Адрес прокси"
 
 msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "?о?? п?ок?и"
+msgstr "Порт прокси"
 
 msgid "IDS_BR_SK_DONE"
-msgstr "?о?ово"
+msgstr "Готово"
 
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "?е??и?"
+msgstr "Версия"
 
 msgid "IDS_BR_SK_INSTALL"
-msgstr "У??ан."
+msgstr "Устан."
 
 msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Тек??а? ???ани?а"
+msgstr "Текущая страница"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
-msgstr "?веди?е им? папки"
+msgstr "Введите имя папки"
 
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
-msgstr "?веди?е им? закладки"
+msgstr "Введите имя закладки"
 
 msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "?ол??е не ?п?а?ива??"
+msgstr "Больше не спрашивать"
 
 msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URL-ад?е? не найден"
+msgstr "URL-адрес не найден"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s зап?а?ивае? ?ведени? о ва?ем ме??оположении"
+msgstr "%s запрашивает сведения о вашем местоположении"
 
 msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "?апомни?? на???ойки"
+msgstr "Запомнить настройки"
 
 msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "?оказа?? изоб?ажени?"
+msgstr "Показать изображения"
 
 msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "??ед?п?ежда?? о безопа?но??и"
+msgstr "Предупреждать о безопасности"
 
 msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "Со??ан??? па?оли"
+msgstr "Сохранять пароли"
 
 msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "??и??и?? па?оли"
+msgstr "Очистить пароли"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "Удали?? в?е ?о??аненн?е па?оли?"
+msgstr "Удалить все сохраненные пароли?"
 
 msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "??е ?айл? cookie б?д?? ?дален?. ??одолжи???"
+msgstr "Все файлы cookie будут удалены. Продолжить?"
 
 msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "Со??ан??? данн?е ?о?м"
+msgstr "Сохранять данные форм"
 
 msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "?о???анови?? на???ойки по ?мол?ани?"
+msgstr "Восстановить настройки по умолчанию"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "??е па?аме??? б?д?? ?б?о?ен?. ??одолжи???"
+msgstr "Все параметры будут сброшены. Продолжить?"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "??и??и?? к???"
+msgstr "Очистить кэш?"
 
 msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "??и??и?? ве?? ж??нал?"
+msgstr "Очистить весь журнал?"
 
 msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "???нал б?а?зе?а б?де? ?дален"
+msgstr "Журнал браузера будет удален"
 
 msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "??егда вкл."
+msgstr "Всегда вкл."
 
 msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "?кл??и?? ме??оположение"
+msgstr "Включить местоположение"
 
 msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "Удали?? данн?е о ме??оположении"
+msgstr "Удалить данные о местоположении"
 
 msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "?евозможно добави?? закладк?. ?о??игн??о мак?имал?ное ?и?ло закладок"
+msgstr "Невозможно добавить закладку. Достигнуто максимальное число закладок"
 
 msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Удали?? ?ведени? о до???пе к веб-?ай???"
+msgstr "Удалить сведения о доступе к веб-сайту?"
 
 msgid "IDS_BR_BODY_PRINT"
-msgstr "?е?а??"
+msgstr "Печать"
 
 msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "??полни?е пои?к или введи?е URL-ад?е?"
+msgstr "Выполните поиск или введите URL-адрес"
 
 msgid "IDS_BR_BODY_AUTO"
-msgstr "?в?о"
+msgstr "Авто"
 
 msgid "IDS_BR_OPT_MANUAL"
-msgstr "????н??"
+msgstr "Вручную"
 
 msgid "IDS_BR_BODY_LOW"
-msgstr "?изкий"
+msgstr "Низкий"
 
 msgid "IDS_BR_BODY_MEDIUM"
-msgstr "С?едний"
+msgstr "Средний"
 
 msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "????а? ???ани?а"
+msgstr "Пустая страница"
 
 msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Сбой ???ановки"
+msgstr "Сбой установки"
 
 msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "?а???ойки веб-?ай?ов"
+msgstr "Настройки веб-сайтов"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "???окий"
+msgstr "Высокий"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Сохранить ссылку"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Отправить ссылку"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Конфиденциальность и безопасность"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Сохранить для автономного чтения"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Местоположение"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Данные формы"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Очистить данные форм"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Удалить все сохраненные пароли"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Добавлено к закладкам"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Удалено из закладок"
 

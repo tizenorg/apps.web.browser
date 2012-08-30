@@ -829,3 +829,33 @@ msgstr "Webbplatsinställningar"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Hög"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Spara länk"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Dela länk"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Sekretess och säkerhet"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Spara för offlineläsning"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Plats"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formulärdata"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Ta bort formulärdata"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Rensa alla sparade lösenord"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Tillagt i bokmärken"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Borttaget från bokmärken"
+

@@ -829,3 +829,33 @@ msgstr "Ustawienia witryn internetowych"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Wysoki"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Zapisz łącze"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Udost. adres URL"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Prywatność i bezpieczeństwo"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Zapisz do odczytu w trybie offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Miejsce"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Dane formularzy"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Wyczyść dane formularza"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Usuń wszystkie zapisane hasła"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Dodana do zakładek"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Usunięto z zakładek"
+

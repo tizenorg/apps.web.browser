@@ -829,3 +829,33 @@ msgstr "Postavke web stranice"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Visoki"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Spremi vezu"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Pošalji vezu"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privatnost i sigurnost"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Spremi za izvanmrežno čitanje"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Lokacija"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Podaci formi"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Obriši unose obrazaca"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Obriši sve spremljene šifre"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Dodano u Favorite"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Uklonjeno iz Favorita"
+

@@ -829,3 +829,33 @@ msgstr "Definições de site da Web"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Alta"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Guardar ligação"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Partilhar ligação"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privacidade e segurança"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Guardar para leitura offline"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Localização"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Dados do formulário"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Limpar dados de formulário"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Limpar todas as palavras-passe guardadas"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Adicionado aos favoritos"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Removido dos favoritos"
+

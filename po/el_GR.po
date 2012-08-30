@@ -344,7 +344,7 @@ msgid "IDS_BR_BODY_SEARCH"
 msgstr "Αναζήτηση"
 
 msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Αποθήκευση εικόνας"
+msgstr "Αποθ. εικόνας"
 
 msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
 msgstr "Χαμηλή μπαταρία. Δεν είναι δυνατή η εκτέλεση του προγράμματος περιήγησης"
@@ -386,7 +386,7 @@ msgid "IDS_BR_OPT_COPY_IMAGE"
 msgstr "Αντιγραφή εικόνας"
 
 msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Αποθήκευση εικόνας"
+msgstr "Αποθ. εικόνας"
 
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Αναπαραγωγή"
@@ -828,4 +828,34 @@ msgstr "Ρυθμίσεις τοποθεσίας Web"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Υψηλή"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Αποθήκευση σύνδεσης"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Κοινή χρήση σύνδεσης"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Ιδιωτικό απόρρητο και ασφάλεια"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Αποθήκευση για ανάγνωση εκτός σύνδεσης"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Θέση"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Δεδομένα φορμών"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Διαγραφή δεδομένων φορμών"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Διαγραφή όλων των αποθηκευμένων κωδικών πρόσβασης"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Προστέθηκε στους σελιδοδείκτες"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Καταργήθηκε από τους σελιδοδείκτες"
 

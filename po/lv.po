@@ -829,3 +829,33 @@ msgstr "Tīmekļa vietnes iestatījumi"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Augsta"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Saglabāt saiti"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Koplietot saiti"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Konfidencialitāte un drošība"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Saglabāt lasīšanai bezsaistē"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Atrašanās vieta"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Veidlapas dati"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Notīrīt veidlapas datus"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Notīrīt visas saglabātās paroles"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Pievienots grāmatzīmēm"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Noņemts no grāmatzīmēm"
+

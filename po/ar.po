@@ -829,3 +829,33 @@ msgstr "إعدادات موقع الويب"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "مرتفعة"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "حفظ الارتباط"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "مشاركة الارتباط"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "الخصوصية والأمان"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "حفظ للقراءة عند عدم الاتصال"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "الموقع"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "بيانات النموذج"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "مسح بيانات النموذج"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "مسح كافة كلمات المرور المحفوظة"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "مضافة إلى الإشارات المرجعية"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "تمت الإزالة من الإشارات المرجعية"
+

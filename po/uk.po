@@ -353,10 +353,10 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Пошук слова"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Додавання на екран оформлення"
+msgstr "Додати на головний екран"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Додати на екран оформлення"
+msgstr "Додати на головний екран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Найбільш відвідувані сайти"
@@ -828,4 +828,34 @@ msgstr "Установки веб-сайта"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Високий"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Збер. посилання"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Відкрити доступ до посилання"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Конфіденційність і безпека"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Зберегти для перегляду в режимі без зв’язку"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Розташування"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Дані форми"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Очистити дані форми"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Очистити всі збережені паролі"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Додано до закладок"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Видалено із закладок"
 

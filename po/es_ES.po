@@ -829,3 +829,33 @@ msgstr "Ajustes del sitio web"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Alta"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Guardar vínculo"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Compartir vínculo"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Privacidad y seguridad"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Guardar para lectura fuera de línea"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Ubicación"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Datos de formulario"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Borrar datos del formulario"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Borrar todas las contraseñas guardadas"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Añadido a favoritos"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Eliminado de favoritos"
+

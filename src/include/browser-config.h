@@ -61,6 +61,9 @@
 #include "browser-string.h"
 
 #define BUILDING_EFL__
+#include <EWebKit2.h>
+
+#if 0
 #include <WebKit2/WebKit2.h>
 #include <WebKit2/EWebKit2.h>
 
@@ -83,6 +86,7 @@
 #include <WebKit2/WKSecurityOrigin.h>
 #include <WebKit2/WKURLRequestEfl.h>
 #include <WebKit2/WKURLResponseEfl.h>
+#endif
 
 #define BROWSER_PACKAGE_NAME "browser"
 #define BROWSER_EDJE_DIR "/opt/apps/org.tizen.browser/res/edje"

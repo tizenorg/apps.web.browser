@@ -5,7 +5,7 @@ SRCROOT=..
 POTFILES=POTFILES.in
 
 #ALL_LINGUAS= am az be ca cs da de_DE el_GR en es_ES et fi fr_FR hr hu it_IT ja_JP ko_KR lv mk ml ms nb ne nl_NL pa pl pt_PT pt_BR ru_RU rw sk sl sr sr@Latn sv ta tr_TR uk vi zh_CN zh_TW
-ALL_LINGUAS="en ja ko zh_CN"
+ALL_LINGUAS="en.po en_PH.po en_US.po ar.po az.po bg.po ca.po cs.po da.po de_DE.po el_GR.po es_ES.po es_US.po et.po eu.po fi.po fr_CA.po fr_FR.po ga.po gl.po hi.po hr.po hu.po hy.po is.po it_IT.po ja_JP.po ka.po kk.po ko_KR.po lt.po lv.po mk.po nb.po nl_NL.po pl.po pt_BR.po pt_PT.po ro.po ru_RU.po sk.po sl.po sr.po sv.po tr_TR.po uk.po uz.po zh_CN.po zh_HK.po zh_SG.po zh_TW.po"
 
 XGETTEXT=/usr/bin/xgettext
 MSGMERGE=/usr/bin/msgmerge

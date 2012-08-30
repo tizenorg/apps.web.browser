@@ -829,3 +829,33 @@ msgstr "Настройки на уеб сайт"
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
 msgstr "Висок"
 
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Записване на връзка"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Споделяне на връзка"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Поверителност и защита"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Записване за офлайн четене"
+
+msgid "IDS_BR_HEADER_LOCATION"
+msgstr "Позиция"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Данни за формуляра"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Изчистване на данни за формуляри"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
+msgstr "Изчистване на всички запаметени пароли"
+
+msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
+msgstr "Добавено към показалците"
+
+msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
+msgstr "Премахнато от показалците"
+
