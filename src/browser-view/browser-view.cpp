@@ -1849,6 +1849,11 @@ string Browser_View::get_url(Browser_Window *window)
 
 string Browser_View::get_url(void)
 {
+	if (!m_focused_window) {
+		BROWSER_LOGE("m_focused_window is NULL");
+		return std::string();
+	}
+
 	const char *uri = ewk_view_uri_get(m_focused_window->m_ewk_view);
 	BROWSER_LOGD("uri = [%s]", uri);
 
