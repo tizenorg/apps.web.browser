@@ -435,7 +435,7 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 	evas_object_smart_callback_add(ewk_view, "request,geolocation,permission",
 					Browser_Geolocation::__geolocation_permission_request_cb, m_browser_view);
 
-	m_download_policy->init(ewk_view_WKPage_get(ewk_view));
+	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);
 #ifdef USE_META_TAG
 	m_browser_view->m_meta_tag->init(ewk_view);

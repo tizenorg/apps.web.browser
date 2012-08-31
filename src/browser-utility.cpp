@@ -575,28 +575,3 @@ bool br_preference_unset_changed_cb(const char *key)
 	return true;
 }
 
-Browser_Utility::Browser_Utility(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-}
-
-Browser_Utility::~Browser_Utility(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-}
-
-std::string Browser_Utility::convert_WKStringRef(WKStringRef string_ref)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	std::string return_string;
-	int string_length = WKStringGetMaximumUTF8CStringSize(string_ref);
-	char *buffer =(char *)calloc(string_length + 1, sizeof(char));
-	if (buffer) {
-		WKStringGetUTF8CString(string_ref, buffer, string_length);
-		return_string = std::string(buffer);
-		free(buffer);
-	}
-
-	return return_string;
-}
-

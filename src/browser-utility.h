@@ -56,14 +56,5 @@ bool br_preference_unset_changed_cb(const char *key);
 }
 #endif
 
-class Browser_Utility {
-public:
-	Browser_Utility(void);
-	~Browser_Utility(void);
-
-	std::string convert_WKStringRef(WKStringRef string_ref);
-private:
-};
-
 #endif /* BROWSER_UTILITY_H */
 

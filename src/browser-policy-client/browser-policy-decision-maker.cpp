@@ -22,13 +22,15 @@
 #include "browser-common-view.h"
 #include "browser-policy-decision-maker.h"
 
+#include "ewk_policy_decision.h"
 Browser_Policy_Decision_Maker::Browser_Policy_Decision_Maker(Evas_Object *navi_bar, Browser_View *browser_view)
 :
-	m_wk_page_ref(NULL)
+	m_ewk_view(NULL)
 	,m_list_popup(NULL)
 	,m_app_list(NULL)
 	,m_navi_bar(navi_bar)
 	,m_browser_view(browser_view)
+	,m_found_matched_app(EINA_FALSE)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
@@ -49,31 +51,24 @@ Browser_Policy_Decision_Maker::~Browser_Policy_Decision_Maker(void)
 	}
 }
 
-void Browser_Policy_Decision_Maker::init(WKPageRef page_ref)
+void Browser_Policy_Decision_Maker::init(Evas_Object *ewk_view)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	m_wk_page_ref = page_ref;
+	deinit();
+	m_ewk_view = ewk_view;
 
-	WKPagePolicyClient policy_client = {
-	        kWKPagePolicyClientCurrentVersion,	/* version */
-	        this,	/* clientInfo */
-	        __decide_policy_for_navigation_action,	/* decidePolicyForNavigationAction */
-	        0,	/* decidePolicyForNewWindowAction; */
-	        __decide_policy_for_response_cb,	/* decidePolicyForResponse */
-	        0,	/* unableToImplementPolicy */
-	};
-
-	WKPageSetPagePolicyClient(m_wk_page_ref, &policy_client);
+	evas_object_smart_callback_add(m_ewk_view, "policy,navigation,decide", __decide_policy_for_navigation_action, this);
+	evas_object_smart_callback_add(m_ewk_view, "policy,response,decide", __decide_policy_for_response_cb, this);
 }
 
 void Browser_Policy_Decision_Maker::deinit(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	if (m_wk_page_ref) {
-		WKPagePolicyClient policy_client = {0, };
-		WKPageSetPagePolicyClient(m_wk_page_ref, &policy_client);
+	if (m_ewk_view) {
+		evas_object_smart_callback_del(m_ewk_view, "policy,navigation,decide", __decide_policy_for_navigation_action);
+		evas_object_smart_callback_del(m_ewk_view, "policy,response,decide", __decide_policy_for_response_cb);
 	}
 }
 
@@ -203,138 +198,84 @@ Eina_Bool Browser_Policy_Decision_Maker::_handle_exscheme(void)
 	return EINA_FALSE;
 }
 
-void Browser_Policy_Decision_Maker::__decide_policy_for_navigation_action(
-		WKPageRef page, WKFrameRef frame, WKFrameNavigationType navigationType,
-		WKEventModifiers modifiers, WKEventMouseButton mouseButton,
-		WKURLRequestRef request, WKFramePolicyListenerRef listener,
-		WKTypeRef userData, const void* client_info)
+void Browser_Policy_Decision_Maker::__decide_policy_for_navigation_action(void *data, Evas_Object *obj, void *event_info)
 {
-	if (!client_info)
+	if (!data)
 		return;
 
 	BROWSER_LOGD("%s", __func__);
-	Browser_Policy_Decision_Maker *decision_maker = (Browser_Policy_Decision_Maker *)client_info;
+	Browser_Policy_Decision_Maker *decision_maker = (Browser_Policy_Decision_Maker *)data;
+	Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
 
-	WKURLRef url_ref = WKURLRequestCopyURL(request);
-	WKStringRef url_string_ref = WKURLCopyString(url_ref);
-	decision_maker->m_url = decision_maker->_convert_WKStringRef_to_string(url_string_ref);
-	WKRelease(url_string_ref);
-	WKRelease(url_ref);
+	const char *url = ewk_policy_decision_url_get(policy_decision);
+	BROWSER_LOGD("<<< url = [%s]", url);
+	if (url && strlen(url))
+		decision_maker->m_url = std::string(url);
 
 	decision_maker->m_cookies.clear();
 
 	if (decision_maker->_handle_exscheme())
-		WKFramePolicyListenerIgnore(listener);
+		ewk_policy_decision_ignore(policy_decision);
 	else
-		WKFramePolicyListenerUse(listener);
+		ewk_policy_decision_use(policy_decision);
 }
 
-void Browser_Policy_Decision_Maker::__decide_policy_for_response_cb(
-		WKPageRef page, WKFrameRef frame,
-                WKURLResponseRef response, WKURLRequestRef request,
-                WKFramePolicyListenerRef listener, WKTypeRef user_data,
-                const void *client_info)
+void Browser_Policy_Decision_Maker::__decide_policy_for_response_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	if (!client_info)
+	if (!data)
 		return;
 
-	Browser_Policy_Decision_Maker *decision_maker = (Browser_Policy_Decision_Maker *)client_info;
+	Browser_Policy_Decision_Maker *decision_maker = (Browser_Policy_Decision_Maker *)data;
+	Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
 
-	WKStringRef content_type_ref = WKURLResponseEflCopyContentType(response);
-	string content_type = decision_maker->_convert_WKStringRef_to_string(content_type_ref);
-	int policy_type = decision_maker->_decide_policy_type(frame, content_type_ref, content_type);
-	WKRelease(content_type_ref);
+	Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
 
 	switch (policy_type) {
-	case policy_use:
+	case EWK_POLICY_DECISION_USE:
 		BROWSER_LOGD("policy_use");
-		WKFramePolicyListenerUse(listener);
+		ewk_policy_decision_use(policy_decision);
 		break;
 
-	case policy_download:
+	case EWK_POLICY_DECISION_DOWNLOAD:
 		BROWSER_LOGD("policy_download");
-		decision_maker->_request_download(request, response, content_type);
-		WKFramePolicyListenerIgnore(listener);
+		ewk_policy_decision_suspend(policy_decision);
+		decision_maker->_request_download(policy_decision);
+		ewk_policy_decision_ignore(policy_decision);
 		break;
 
-	case policy_ignore:
+	case EWK_POLICY_DECISION_IGNORE:
 	default:
 		BROWSER_LOGD("policy_ignore");
-		WKFramePolicyListenerIgnore(listener);
+		ewk_policy_decision_ignore(policy_decision);
 		break;
 	}
 }
 
-/* Warning : MUST free() returned char* */
-char *Browser_Policy_Decision_Maker::_convert_WKStringRef_to_cstring(WKStringRef string_ref)
-{
-	if (!string_ref)
-		return NULL;
-
-	size_t length = WKStringGetMaximumUTF8CStringSize(string_ref);
-	if (length <= 1)	/* returned length is 1 if string_ref is blank. */
-		return NULL;
-
-	char *cstring = (char *)calloc(length, sizeof(char));
-	if (!cstring) {
-		BROWSER_LOGE("calloc failed!");
-		return NULL;
-	}
-
-	WKStringGetUTF8CString(string_ref, cstring, length);
-	return cstring;
-}
-
-string Browser_Policy_Decision_Maker::_convert_WKStringRef_to_string(WKStringRef string_ref)
-{
-	char *cstring = _convert_WKStringRef_to_cstring(string_ref);
-	if (!cstring)
-		return string();
-
-	string str(cstring);
-	free(cstring);
-	return str;
-}
-
-int Browser_Policy_Decision_Maker::_decide_policy_type(WKFrameRef frame, WKStringRef content_type_ref, string &content_type)
-{
-	/* ToDo making a decision for SLP browser's policy system first */
-	if (content_type.empty())
-		return policy_download;
-
-	if (WKFrameCanShowMIMEType(frame, content_type_ref))
-		return policy_use;
-
-	return policy_download;
-}
-
-void Browser_Policy_Decision_Maker::_request_download(WKURLRequestRef request, WKURLResponseRef response, string& content_type)
+void Browser_Policy_Decision_Maker::_request_download(Ewk_Policy_Decision *policy_decision)
 {
 
 	string extension_name;
 	string ambiguous_mime1 = "text/plain";
 	string ambiguous_mime2 = "application/octet-stream";
 	int ret = 0;
-	char buff[256] = {0,};
 
 	BROWSER_LOGD("[%s]", __func__);
 
 	m_url.clear();
 	m_cookies.clear();
 	m_default_player_pkg_name.clear();
+	m_found_matched_app = EINA_FALSE;
 
-	WKURLRef url_ref = WKURLRequestCopyURL(request);
-	WKStringRef url_string_ref = WKURLCopyString(url_ref);
-	m_url = _convert_WKStringRef_to_string(url_string_ref);
-	WKRelease(url_string_ref);
-	WKRelease(url_ref);
+	m_url = std::string(ewk_policy_decision_url_get(policy_decision));
 
-	WKStringRef cookies_ref = WKURLRequestEflCopyCookies(request);
-	m_cookies = _convert_WKStringRef_to_string(cookies_ref);
-	WKRelease(cookies_ref);
+	m_cookies = std::string(ewk_policy_decision_cookie_get(policy_decision));
 
 	BROWSER_LOGD("url=[%s]", m_url.c_str());
 	BROWSER_LOGD("cookie=[%s]", m_cookies.c_str());
+
+	std::string content_type;
+	content_type = std::string(ewk_policy_decision_response_mime_get(policy_decision));
+	BROWSER_LOGD("content_type=[%s]", content_type.c_str());
 
 	if (content_type.empty()) {
 		BROWSER_LOGD("Download linked file from cotent menu");
@@ -390,26 +331,44 @@ void Browser_Policy_Decision_Maker::_request_download(WKURLRequestRef request, W
 	}
 #endif
 
-	/* If the default player is registered at AUL db, show list popup with the name of it */
-	ret = aul_get_defapp_from_mime(content_type.c_str(), buff, (sizeof(buff)-1));
-	if (ret == AUL_R_OK) {
-		m_default_player_pkg_name = buff;
-		BROWSER_LOGD("default app [%s]", m_default_player_pkg_name.c_str());
-	} else {
-		BROWSER_LOGE("Fail to get default app");
+	service_h service_handle = NULL;
+	if (service_create(&service_handle) < 0) {
+		BROWSER_LOGE("Fail to create service handle");
+		return;
 	}
 
-	/* Call streaming player app only if the default player is samsung music player or samsung video plyaer
-	*  Otherwiser, call download app
-	*/
-	if (!m_default_player_pkg_name.empty() && (m_default_player_pkg_name.compare(SEC_VIDEO_PLAYER) == 0 ||
-		m_default_player_pkg_name.compare(SEC_MUSIC_PLAYER) == 0)) {
-		if (!_show_app_list_popup())
-			BROWSER_LOGE("_show_app_list_popup failed");
-	} else {
+	if (!service_handle) {
+		BROWSER_LOGE("service handle is NULL");
+		return;
+	}
+
+	if (service_set_operation(service_handle, SERVICE_OPERATION_VIEW) < 0) {
+		BROWSER_LOGE("Fail to set service operation");
+		service_destroy(service_handle);
+		return;
+	}
+
+	if (service_set_mime(service_handle, content_type.c_str()) < 0) {
+		BROWSER_LOGE("Fail to set mime type");
+		service_destroy(service_handle);
+		return;
+	}
+
+	ret = service_foreach_app_matched(service_handle, __launch_matched_application_cb, this);
+
+	if (ret < 0) {
+		BROWSER_LOGE("Fail to get default application by mime type");
+		service_destroy(service_handle);
+	}
+
+	if (m_found_matched_app == EINA_FALSE) {
 		if (!_launch_download_app(m_url.c_str(), m_cookies.c_str()))
 			BROWSER_LOGE("_launch_download_app failed");
+
+		service_destroy(service_handle);
 	}
+
+	return;
 }
 
 Eina_Bool Browser_Policy_Decision_Maker::_launch_download_app(const char *url, const char* cookie)
@@ -544,6 +503,38 @@ void Browser_Policy_Decision_Maker::__internet_cb(void *data, Evas_Object *obj, 
 	__popup_response_cb(decision_maker, NULL, NULL);
 }
 
+bool Browser_Policy_Decision_Maker::__launch_matched_application_cb(service_h service_handle, const char *package, void *data)
+{
+	BROWSER_LOGD("%s", __func__);
+
+	if (!data) {
+		BROWSER_LOGD("unable to set Browser_Policy_Decision_Maker pointer");
+		service_destroy(service_handle);
+		return false;
+	}
+
+	Browser_Policy_Decision_Maker *decision_maker = (Browser_Policy_Decision_Maker *)data;
+	string pkg_name = package;
+	decision_maker->m_default_player_pkg_name = pkg_name;
+
+
+	if (!pkg_name.empty() && (pkg_name.compare(SEC_VIDEO_PLAYER) == 0 || pkg_name.compare(SEC_MUSIC_PLAYER) == 0)) {
+		BROWSER_LOGD("default app [%s]", pkg_name.c_str());
+		if (!decision_maker->_show_app_list_popup())
+			BROWSER_LOGE("_show_app_list_popup failed");
+		else
+			decision_maker->m_found_matched_app = EINA_TRUE;
+	} else {
+		BROWSER_LOGE("Fail to get default app");
+		if (!decision_maker->_launch_download_app(decision_maker->m_url.c_str(), decision_maker->m_cookies.c_str()))
+			BROWSER_LOGE("_launch_download_app failed");
+	}
+
+	service_destroy(service_handle);
+
+	return true;
+}
+
 Eina_Bool Browser_Policy_Decision_Maker::_show_app_list_popup(void)
 {
 	if (m_url.empty()) {
@@ -585,6 +576,7 @@ Eina_Bool Browser_Policy_Decision_Maker::_show_app_list_popup(void)
 	}
 	elm_object_text_set(cancel_button, BR_STRING_CLOSE);
 	elm_object_part_content_set(m_list_popup, "button1", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
 	evas_object_smart_callback_add(cancel_button, "clicked", __popup_response_cb, this);
 
 	return EINA_TRUE;
