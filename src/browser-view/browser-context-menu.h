@@ -25,7 +25,7 @@
 
 class Browser_View;
 
-class Browser_Context_Menu : public Browser_Utility, public Browser_Common_View {
+class Browser_Context_Menu : public Browser_Common_View {
 public:
 	Browser_Context_Menu(Browser_View *browser_view);
 	~Browser_Context_Menu(void);
