@@ -63,31 +63,6 @@
 #define BUILDING_EFL__
 #include <EWebKit2.h>
 
-#if 0
-#include <WebKit2/WebKit2.h>
-#include <WebKit2/EWebKit2.h>
-
-#include <WebKit2/WKArray.h>
-#include <WebKit2/WKContextMenuItem.h>
-#include <WebKit2/WKContextMenuItemTypes.h>
-#include <WebKit2/WKContextTizen.h>
-#include <WebKit2/WKContextPrivate.h>
-#include <WebKit2/WKCookieManager.h>
-#include <WebKit2/WKDictionary.h>
-#include <WebKit2/WKDownload.h>
-#include <WebKit2/WKIconDatabase.h>
-#include <WebKit2/WKIconDatabaseEfl.h>
-#include <WebKit2/WKImageCairo.h>
-#include <WebKit2/WKGeolocationManager.h>
-#include <WebKit2/WKGeolocationPermissionRequest.h>
-#include <WebKit2/WKPageTizen.h>
-#include <WebKit2/WKPreferencesEfl.h>
-#include <WebKit2/WKResourceCacheManager.h>
-#include <WebKit2/WKSecurityOrigin.h>
-#include <WebKit2/WKURLRequestEfl.h>
-#include <WebKit2/WKURLResponseEfl.h>
-#endif
-
 #define BROWSER_PACKAGE_NAME "browser"
 #define BROWSER_EDJE_DIR "/opt/apps/org.tizen.browser/res/edje"
 #define BROWSER_LOCALE_DIR "/opt/apps/org.tizen.browser/res/locale"
