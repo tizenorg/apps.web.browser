@@ -83,6 +83,10 @@ void Browser_Select_Folder_View::__folder_item_selected_cb(void *data, Evas_Obje
 
 	elm_list_item_selected_set(it, EINA_FALSE);
 
+	if (elm_naviframe_bottom_item_get(select_folder_view->m_navi_bar)
+	    != elm_naviframe_top_item_get(select_folder_view->m_navi_bar))
+		elm_naviframe_item_pop(select_folder_view->m_navi_bar);
+
 	if (m_data_manager->get_edit_bookmark_view())
 		m_data_manager->get_edit_bookmark_view()->return_to_add_to_bookmark_view(select_folder_view->m_current_folder_id);
 	else if (m_data_manager->get_add_to_bookmark_view())

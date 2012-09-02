@@ -283,7 +283,7 @@ void Browser_Add_To_Bookmark_View::_select_folder_clicked_cb(void *data, Evas_Ob
 		return;
 
 	Browser_Add_To_Bookmark_View *add_to_bookmark_view = (Browser_Add_To_Bookmark_View *)data;
-	if (!m_data_manager->create_select_folder_view(add_to_bookmark_view->m_current_folder_id)) {
+	if (!m_data_manager->create_select_folder_view(add_to_bookmark_view->m_folder_id_to_save)) {
 		BROWSER_LOGE("m_data_manager->create_select_folder_view failed");
 		return;
 	}
