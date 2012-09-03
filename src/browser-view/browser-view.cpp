@@ -2644,6 +2644,8 @@ void Browser_View::__more_cb(void *data, Evas_Object *obj, void *event_info)
 	} else {
 		browser_view->_destroy_more_context_popup();
 	}
+	/* To give focus out signal to webkit(for destructing webkit context menu), give focus set in unvisible button */
+	elm_object_focus_set(browser_view->m_option_header_cancel_button, EINA_TRUE);
 
 	browser_view->_navigationbar_visible_set(EINA_TRUE);
 }
