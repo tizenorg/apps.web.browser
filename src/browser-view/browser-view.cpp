@@ -1980,6 +1980,11 @@ void Browser_View::__url_editfield_share_clicked_cb(void *data, Evas_Object *obj
 	Browser_View *browser_view = (Browser_View *)data;
 	const char *selected_text = elm_entry_selection_get(br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field));
 
+	if (!selected_text || !strlen(selected_text)) {
+		BROWSER_LOGD("There is no selected_text. Share the URL");
+		selected_text = (const char *)browser_view->get_url().c_str();
+	}
+
 	if (browser_view->_show_share_popup(selected_text))
 		BROWSER_LOGE("_show_share_popup failed");
 }
