@@ -71,14 +71,18 @@ Browser_Bookmark_View::~Browser_Bookmark_View(void)
 	hide_notify_popup();
 
 	for(int i = 0 ; i < m_sub_folder_list.size() ; i++ ) {
-		if (m_sub_folder_list[i])
+		if (m_sub_folder_list[i]) {
 			delete m_sub_folder_list[i];
+			m_sub_folder_list.erase(m_sub_folder_list.begin() + i);
+		}
 	}
 	m_sub_folder_list.clear();
 
 	for(int i = 0 ; i < m_main_folder_list.size() ; i++ ) {
-		if (m_main_folder_list[i])
+		if (m_main_folder_list[i]) {
 			delete m_main_folder_list[i];
+			m_main_folder_list.erase(m_main_folder_list.begin() + i);
+		}
 	}
 	m_main_folder_list.clear();
 
