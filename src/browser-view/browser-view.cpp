@@ -1980,6 +1980,11 @@ void Browser_View::__url_editfield_share_clicked_cb(void *data, Evas_Object *obj
 	Browser_View *browser_view = (Browser_View *)data;
 	const char *selected_text = elm_entry_selection_get(br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field));
 
+	if (!selected_text || !strlen(selected_text)) {
+		BROWSER_LOGD("There is no selected_text. Share the URL");
+		selected_text = (const char *)browser_view->get_url().c_str();
+	}
+
 	if (browser_view->_show_share_popup(selected_text))
 		BROWSER_LOGE("_show_share_popup failed");
 }
@@ -2644,6 +2649,8 @@ void Browser_View::__more_cb(void *data, Evas_Object *obj, void *event_info)
 	} else {
 		browser_view->_destroy_more_context_popup();
 	}
+	/* To give focus out signal to webkit(for destructing webkit context menu), give focus set in unvisible button */
+	elm_object_focus_set(browser_view->m_option_header_cancel_button, EINA_TRUE);
 
 	browser_view->_navigationbar_visible_set(EINA_TRUE);
 }
