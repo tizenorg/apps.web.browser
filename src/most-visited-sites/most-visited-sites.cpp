@@ -326,6 +326,7 @@ void Most_Visited_Sites::__item_clicked_cb(void *data, Evas_Object *obj, void *e
 
 	if (most_visited_sites->m_edit_mode) {
 		BROWSER_LOGE("edit mode");
+		elm_gengrid_item_selected_set((Elm_Object_Item *)event_info, EINA_FALSE);
 		return;
 	}
 
