@@ -94,6 +94,36 @@ Eina_Bool Most_Visited_Sites_DB::is_in_bookmark(const char* url, int *bookmark_i
 	return (error == SQLITE_ROW);
 }
 
+Eina_Bool Most_Visited_Sites_DB::delete_most_visited_sites_item(const char * url)
+{
+	int error = db_util_open(BROWSER_MOST_VISITED_SITES_DB_PATH, &m_db_descriptor, DB_UTIL_REGISTER_HOOK_METHOD);
+	if (error != SQLITE_OK) {
+		db_util_close(m_db_descriptor);
+		m_db_descriptor = NULL;
+		BROWSER_LOGD("check here");
+		return EINA_FALSE;
+	}
+
+	sqlite3_stmt *sqlite3_stmt = NULL;
+	error = sqlite3_prepare_v2(m_db_descriptor, "delete from mostvisited where address=?",
+								-1, &sqlite3_stmt, NULL);
+	if (error != SQLITE_OK) {
+		db_util_close(m_db_descriptor);
+		return EINA_FALSE;
+	}
+
+	if (sqlite3_bind_text(sqlite3_stmt, 1, url, -1, NULL) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_bind_int is failed.");
+
+	error = sqlite3_step(sqlite3_stmt);
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_finalize is failed.");
+
+	db_util_close(m_db_descriptor);
+
+	return (error == SQLITE_OK || error == SQLITE_DONE);
+}
+
 Eina_Bool Most_Visited_Sites_DB::delete_most_visited_sites_item(int index)
 {
 	int error = db_util_open(BROWSER_MOST_VISITED_SITES_DB_PATH, &m_db_descriptor, DB_UTIL_REGISTER_HOOK_METHOD);

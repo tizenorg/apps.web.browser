@@ -406,7 +406,7 @@ void Most_Visited_Sites::__context_popup_unpin_clicked_cb(void *data, Evas_Objec
 		index++;
 	} while (it = elm_gengrid_item_next_get(it));
 
-	if (!most_visited_sites->m_most_visited_sites_db->delete_most_visited_sites_item(index)) {
+	if (!most_visited_sites->m_most_visited_sites_db->delete_most_visited_sites_item(most_visited_sites->m_selected_item->url)) {
 		BROWSER_LOGE("delete_most_visited_sites_item failed");
 		return;
 	}
@@ -506,13 +506,17 @@ Eina_Bool Most_Visited_Sites::_delete_selected_item(void)
 			index++;
 		} while (it = elm_gengrid_item_next_get(it));
 
-		if (!m_most_visited_sites_db->delete_most_visited_sites_item(index)) {
+
+		BROWSER_LOGD("delete_most_visited_sites_item index = %d", m_selected_item->item);
+		if (!m_most_visited_sites_db->delete_most_visited_sites_item(m_selected_item->url)) {
 			BROWSER_LOGE("delete_most_visited_sites_item failed");
 			return EINA_FALSE;
 		}
 
 		std::string history_id;
 		history_id = m_most_visited_sites_db->get_history_id_by_url(m_selected_item->url);
+
+		BROWSER_LOGD("delete_most_visited_sites_item history_id = %s, atoi(m_selected_item->history_id) = %d", history_id.c_str(), atoi(m_selected_item->history_id));
 		if (!m_most_visited_sites_db->delete_most_visited_sites_history_item(atoi(m_selected_item->history_id))) {
 			BROWSER_LOGE("delete_most_visited_sites_history_item failed");
 			return EINA_FALSE;
@@ -520,6 +524,7 @@ Eina_Bool Most_Visited_Sites::_delete_selected_item(void)
 
 		is_ranked = EINA_TRUE;
 	} else {
+		BROWSER_LOGD("delete_most_visited_sites_item atoi(m_selected_item->history_id) = %d", atoi(m_selected_item->history_id));
 		if (!m_most_visited_sites_db->delete_most_visited_sites_history_item(atoi(m_selected_item->history_id))) {
 			BROWSER_LOGE("delete_most_visited_sites_history_item failed");
 			return EINA_FALSE;
@@ -828,7 +833,7 @@ Eina_Bool Most_Visited_Sites::_item_moved(void)
 	int index = 0;
 	Elm_Object_Item *it = elm_gengrid_first_item_get(m_gengrid);
 	do {
-		if (!m_most_visited_sites_db->delete_most_visited_sites_item(index))
+		if (!m_most_visited_sites_db->delete_most_visited_sites_item(m_selected_item->url))
 			BROWSER_LOGE("fail to delete slot %d", index);
 
 		most_visited_sites_item *item = (most_visited_sites_item *)elm_object_item_data_get(it);

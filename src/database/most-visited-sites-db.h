@@ -46,6 +46,7 @@ public:
 	Eina_Bool save_most_visited_sites_item(int index, const char *url,
 						const char *title, const char *screen_shot);
 	Eina_Bool delete_most_visited_sites_item(int index);
+	Eina_Bool delete_most_visited_sites_item(const char *url);
 	Eina_Bool delete_most_visited_sites_history_item(int history_id);
 	std::string get_history_id_by_url(const char* url);
 	std::string get_history_title_by_id(const char* id);
