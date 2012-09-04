@@ -30,6 +30,7 @@ Browser_Bookmark_View::Browser_Bookmark_View(void)
 	,m_top_control_bar(NULL)
 	,m_conformant(NULL)
 	,m_content_layout(NULL)
+	,m_sub_main_layout(NULL)
 	,m_genlist_content_layout(NULL)
 	,m_genlist_content_box(NULL)
 	,m_main_folder_genlist(NULL)
@@ -68,7 +69,7 @@ Browser_Bookmark_View::Browser_Bookmark_View(void)
 Browser_Bookmark_View::~Browser_Bookmark_View(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	hide_notify_popup();
+	hide_notify_popup_layout(m_sub_main_layout);
 
 	for(int i = 0 ; i < m_sub_folder_list.size() ; i++ ) {
 		if (m_sub_folder_list[i]) {
@@ -906,13 +907,13 @@ void Browser_Bookmark_View::_show_selection_info(void)
 
 	if (editable_folder_count == 0 && editable_item_count == 0) {
 		elm_object_item_disabled_set(m_bookmark_delete_controlbar_item, EINA_TRUE);
-		hide_notify_popup();
+		hide_notify_popup_layout(m_sub_main_layout);
 		return;
 	} else
 		elm_object_item_disabled_set(m_bookmark_delete_controlbar_item, EINA_FALSE);
 
 	if (editable_folder_count + editable_item_count == 1) {
-		show_notify_popup(BR_STRING_ONE_ITEM_SELECTED, 0, EINA_TRUE);
+		show_notify_popup_layout(BR_STRING_ONE_ITEM_SELECTED, 0, m_sub_main_layout);
 	} else if (editable_folder_count + editable_item_count > 1) {
 		char *small_popup_text = NULL;
 		int string_len = strlen(BR_STRING_ITEMS_SELECTED) + 4; /* 4 : reserved for maximun count */
@@ -921,7 +922,7 @@ void Browser_Bookmark_View::_show_selection_info(void)
 		memset(small_popup_text, 0x00, string_len);
 
 		snprintf(small_popup_text, string_len, BR_STRING_ITEMS_SELECTED, editable_folder_count + editable_item_count);
-		show_notify_popup(small_popup_text, 0, EINA_TRUE);
+		show_notify_popup_layout(small_popup_text, 0, m_sub_main_layout);
 
 		if (small_popup_text)
 			free(small_popup_text);
@@ -932,7 +933,7 @@ void Browser_Bookmark_View::_show_selection_info(void)
 void Browser_Bookmark_View::_set_edit_mode(Eina_Bool edit_mode)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	hide_notify_popup();
+	hide_notify_popup_layout(m_sub_main_layout);
 
 	if (edit_mode) {
 		elm_object_style_set(m_bg, "edit_mode");
@@ -1101,13 +1102,14 @@ void Browser_Bookmark_View::__controlbar_tab_changed_cb(void *data, Evas_Object 
 			}
 		}
 
-		bookmark_view->hide_notify_popup();
+		bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
 		bookmark_view->_set_view_mode(HISTORY_VIEW);
 
 	} else {
 		BROWSER_LOGD("tab bookmark");
 		if (m_data_manager->get_history_layout()) {
-			m_data_manager->get_history_layout()->hide_notify_popup();
+			m_data_manager->get_history_layout()->hide_notify_popup_layout(
+				m_data_manager->get_history_layout()->m_sub_main_history_layout);
 			bookmark_view->_set_view_mode(BOOKMARK_VIEW);
 		}
 	}
@@ -1128,7 +1130,7 @@ void Browser_Bookmark_View::__edit_bookmark_item_button_clicked_cb(void *data, E
 
 	elm_check_state_set(bookmark_view->m_edit_mode_select_all_check_button, EINA_FALSE);
 
-	bookmark_view->hide_notify_popup();
+	bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
 
 	bookmark_view->_set_edit_mode(EINA_FALSE);
 
@@ -2419,8 +2421,22 @@ Eina_Bool Browser_Bookmark_View::_create_main_layout(void)
 	evas_object_show(m_conformant);
 
 	elm_object_style_set(m_bg, "default");
+	m_sub_main_layout = elm_layout_add(m_main_layout);
+	if (!m_sub_main_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return EINA_FALSE;
+	}
+	elm_layout_file_set(m_sub_main_layout,
+				BROWSER_EDJE_DIR"/browser-bookmark-view.edj",
+				"browser/selectioninfo");
+	evas_object_size_hint_weight_set(
+				m_sub_main_layout,
+				EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(
+				m_sub_main_layout,
+				EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-	m_genlist_content_layout = elm_layout_add(m_main_layout);
+	m_genlist_content_layout = elm_layout_add(m_sub_main_layout);
 	if (!m_genlist_content_layout) {
 		BROWSER_LOGE("elm_layout_add failed");
 		return EINA_FALSE;
@@ -2461,7 +2477,8 @@ Eina_Bool Browser_Bookmark_View::_create_main_layout(void)
 	evas_object_smart_callback_add(m_back_button, "clicked", __back_button_clicked_cb, this);
 	evas_object_show(m_back_button);
 
-	elm_object_part_content_set(m_main_layout, "elm.swallow.content", m_genlist_content_layout);
+	elm_object_part_content_set(m_sub_main_layout, "genlist.swallow.contents", m_genlist_content_layout);
+	elm_object_part_content_set(m_main_layout, "elm.swallow.content", m_sub_main_layout);
 
 	m_top_control_bar = elm_toolbar_add(m_main_layout);
 	if (!m_top_control_bar) {

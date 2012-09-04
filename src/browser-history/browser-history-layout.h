@@ -44,7 +44,7 @@ public:
 	~Browser_History_Layout(void);
 
 	Eina_Bool init(void);
-	Evas_Object *get_main_layout(void) { return m_searchbar_layout; }
+	Evas_Object *get_main_layout(void) { return m_sub_main_history_layout; }
 protected:
 	void _set_edit_mode(Eina_Bool edit_mode);
 
@@ -106,6 +106,7 @@ private:
 
 	Elm_Object_Item *m_current_sweep_item;
 
+	Evas_Object *m_sub_main_history_layout;
 	Evas_Object *m_searchbar_layout;
 	Evas_Object *m_searchbar;
 	Evas_Object *m_history_genlist;

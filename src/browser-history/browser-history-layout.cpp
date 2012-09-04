@@ -61,6 +61,7 @@ Browser_History_Layout::Browser_History_Layout(void)
 	,m_processing_popup_layout(NULL)
 	,m_processing_progress_bar(NULL)
 	,m_select_all_check_value(EINA_FALSE)
+	,m_sub_main_history_layout(NULL)
 	,m_searchbar_layout(NULL)
 	,m_searched_history_genlist(NULL)
 	,m_no_content_search_result(NULL)
@@ -74,7 +75,7 @@ Browser_History_Layout::Browser_History_Layout(void)
 Browser_History_Layout::~Browser_History_Layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	hide_notify_popup();
+	hide_notify_popup_layout(m_sub_main_history_layout);
 
 	for(int i = 0 ; i < m_history_list.size() ; i++ ) {
 		if (m_history_list[i])
@@ -332,7 +333,7 @@ void Browser_History_Layout::_set_edit_mode(Eina_Bool edit_mode)
 	BROWSER_LOGD("[%s]", __func__);
 	Browser_Bookmark_View *bookmark_view = m_data_manager->get_bookmark_view();
 
-	hide_notify_popup();
+	hide_notify_popup_layout(m_sub_main_history_layout);
 
 	_enable_searchbar_layout(!edit_mode);
 
@@ -455,13 +456,13 @@ void Browser_History_Layout::_show_selection_info(void)
 
 	if (selected_count == 0) {
 		elm_object_item_disabled_set(m_data_manager->get_bookmark_view()->m_bookmark_delete_controlbar_item, EINA_TRUE);
-		hide_notify_popup();
+		hide_notify_popup_layout(m_sub_main_history_layout);
 		return;
 	} else
 		elm_object_item_disabled_set(m_data_manager->get_bookmark_view()->m_bookmark_delete_controlbar_item, EINA_FALSE);
 
 	if (selected_count == 1) {
-		show_notify_popup(BR_STRING_ONE_ITEM_SELECTED, 0, EINA_TRUE);
+		show_notify_popup_layout(BR_STRING_ONE_ITEM_SELECTED, 0, m_sub_main_history_layout);
 	} else if (selected_count > 1) {
 		char *small_popup_text = NULL;
 		int string_len = strlen(BR_STRING_ITEMS_SELECTED) + 1;
@@ -470,7 +471,7 @@ void Browser_History_Layout::_show_selection_info(void)
 		memset(small_popup_text, 0x00, string_len);
 
 		snprintf(small_popup_text, string_len, BR_STRING_ITEMS_SELECTED, selected_count);
-		show_notify_popup(small_popup_text, 0, EINA_TRUE);
+		show_notify_popup_layout(small_popup_text, 0, m_sub_main_history_layout);
 
 		if (small_popup_text)
 			free(small_popup_text);
@@ -1139,7 +1140,22 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 	BROWSER_LOGD("[%s]", __func__);
 	elm_object_style_set(m_bg, "default");	
 
-	m_searchbar_layout = elm_layout_add(m_navi_bar);
+	m_sub_main_history_layout = elm_layout_add(m_navi_bar);
+	if (!m_sub_main_history_layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return EINA_FALSE;
+	}
+	elm_layout_file_set(m_sub_main_history_layout,
+				BROWSER_EDJE_DIR"/browser-bookmark-view.edj",
+				"browser/selectioninfo");
+	evas_object_size_hint_weight_set(
+				m_sub_main_history_layout,
+				EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(
+				m_sub_main_history_layout,
+				EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	m_searchbar_layout = elm_layout_add(m_sub_main_history_layout);
 	if (!m_searchbar_layout) {
 		BROWSER_LOGE("elm_layout_add failed");
 		return EINA_FALSE;
@@ -1179,6 +1195,7 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 
 	evas_object_show(m_content_box);
 	elm_object_part_content_set(m_searchbar_layout, "elm.swallow.content", m_content_box);
+	elm_object_part_content_set(m_sub_main_history_layout, "genlist.swallow.contents", m_searchbar_layout);
 
 	return EINA_TRUE;
 }

@@ -31,6 +31,7 @@ Browser_Common_View::Browser_Common_View(void)
 :
 	m_selection_info(NULL)
 	,m_selection_info_layout(NULL)
+	,m_selinfo_layout(NULL)
 	,m_popup(NULL)
 	,m_ug(NULL)
 	,m_share_popup(NULL)
@@ -175,6 +176,47 @@ void Browser_Common_View::show_notify_popup(const char *msg, int timeout, Eina_B
 		elm_notify_timeout_set(m_selection_info, timeout);
 
 	evas_object_show(m_selection_info);
+}
+
+void Browser_Common_View::show_notify_popup_layout(const char *msg, int timeout, Evas_Object *parent)
+{
+	if (m_selinfo_layout) {
+		evas_object_del(m_selinfo_layout);
+		m_selinfo_layout = NULL;
+	}
+
+	m_selinfo_layout = elm_layout_add(parent);
+	if (!m_selinfo_layout) {
+		BROWSER_LOGD("elm_layout_add failed");
+		return;
+	}
+	elm_object_part_content_set(parent,
+			"selinfo.swallow.contents",
+			m_selinfo_layout);
+	evas_object_size_hint_weight_set(m_selinfo_layout,
+			EVAS_HINT_EXPAND,
+			EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(m_selinfo_layout,
+			EVAS_HINT_FILL,
+			EVAS_HINT_FILL);
+
+	elm_object_content_set(m_selection_info, m_selection_info_layout);
+
+	/* Set the layout theme */
+	elm_layout_theme_set(m_selinfo_layout, "standard", "selectioninfo", "default");
+	/* Set the text */
+	elm_object_part_text_set(m_selinfo_layout, "elm.text", msg);
+	elm_object_signal_emit(parent, "show,selection,info", "elm");
+}
+
+void Browser_Common_View::hide_notify_popup_layout(Evas_Object *parent)
+{
+	if (m_selinfo_layout) {
+		evas_object_del(m_selinfo_layout);
+		m_selinfo_layout = NULL;
+	}
+
+	elm_object_signal_emit(parent, "hide,selection,info", "elm");
 }
 
 Eina_Bool Browser_Common_View::find_word_with_text(const char *text_to_find)

@@ -124,6 +124,7 @@ private:
 	Evas_Object *m_sub_folder_genlist;
 	Evas_Object *m_content_layout;
 	Evas_Object *m_main_layout;
+	Evas_Object *m_sub_main_layout;
 	Evas_Object *m_genlist_content_layout;
 	Evas_Object *m_genlist_content_box;
 	Evas_Object *m_top_control_bar;
