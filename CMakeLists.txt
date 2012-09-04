@@ -84,13 +84,6 @@ FIND_LIBRARY(LIB_GNUTLS gnutls)
 FOREACH(flag ${pkgs_CFLAGS})
 	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
-SET (USE_META_TAG ON)
-IF (USE_META_TAG)
-    ADD_DEFINITIONS("-DUSE_META_TAG")
-    LIST(APPEND SRCS
-        src/browser-extension/browser-meta-tag.cpp
-    )
-ENDIF ()
 
 # set extra defines
 SET(PREFIX ${CMAKE_INSTALL_PREFIX})

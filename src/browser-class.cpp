@@ -19,9 +19,6 @@
 #include "browser-context-menu.h"
 #include "browser-find-word.h"
 #include "browser-geolocation.h"
-#ifdef USE_META_TAG
-#include "browser-meta-tag.h"
-#endif
 #include "browser-multi-window-view.h"
 #include "browser-network-manager.h"
 #include "browser-user-agent-db.h"
@@ -382,10 +379,6 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 					Browser_Geolocation::__geolocation_permission_request_cb);
 	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
-#ifdef USE_META_TAG
-	m_browser_view->m_meta_tag->deinit();
-#endif
-
 	m_browser_view->suspend_ewk_view(ewk_view);
 }
 
@@ -437,9 +430,6 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 
 	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);
-#ifdef USE_META_TAG
-	m_browser_view->m_meta_tag->init(ewk_view);
-#endif
 	m_geolocation->init(ewk_view);
 	m_browser_view->resume_ewk_view(ewk_view);
 }

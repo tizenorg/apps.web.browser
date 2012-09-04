@@ -19,9 +19,6 @@
 #define BROWSER_VIEW_H
 
 #include "browser-common-view.h"
-#ifdef USE_META_TAG
-#include "browser-meta-tag.h"
-#endif
 #include "browser-config.h"
 #if defined(FEATURE_MOST_VISITED_SITES)
 #include "browser-most-visited.h"
@@ -32,9 +29,6 @@ class Browser_Bookmark_DB;
 class Browser_Context_Menu;
 class Browser_Class;
 class Browser_Find_Word;
-#ifdef USE_META_TAG
-class Browser_Meta_Tag;
-#endif
 class Browser_Multi_Window_View;
 class Browser_Scissorbox_View;
 class Browser_Settings_Class;
@@ -216,12 +210,6 @@ private:
 	/* elm transit callback functions */
 	static void __new_window_transit_finished_cb(void *data, Elm_Transit *transit);
 
-#ifdef USE_META_TAG
-	static void __web_app_capable_get_cb(Eina_Bool capable, void* user_data);
-	static void __web_app_icon_url_get_cb(const char* icon_url, void* user_data);
-
-#endif
-
 	/* normal member functions */
 	Eina_Bool _create_main_layout(void);
 	Evas_Object *_create_url_layout(void);
@@ -352,9 +340,6 @@ private:
 	int m_rotate_degree;
 	Ecore_Timer *m_multi_window_rotate_timer;
 	Eina_Bool m_is_rotated;
-#endif
-#ifdef USE_META_TAG
-	Browser_Meta_Tag *m_meta_tag;
 #endif
 	Eina_Bool m_is_full_screen;
 #ifdef ZOOM_BUTTON

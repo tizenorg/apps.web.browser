@@ -90,9 +90,6 @@ Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object 
 	,m_find_word(NULL)
 	,m_scissorbox_view(NULL)
 	,m_share_controlbar_button(NULL)
-#ifdef USE_META_TAG
-	,m_meta_tag(NULL)
-#endif
 	,m_context_menu(NULL)
 	,m_multi_window_button(NULL)
 	,m_new_window_button(NULL)
@@ -181,12 +178,6 @@ Browser_View::~Browser_View()
 		m_multi_window_rotate_timer = NULL;
 	}
 #endif
-#ifdef USE_META_TAG
-	if (m_meta_tag) {
-		delete m_meta_tag;
-		m_meta_tag = NULL;
-	}
-#endif
 #ifdef ZOOM_BUTTON
 	if (m_zoom_in_button)
 		evas_object_del(m_zoom_in_button);
@@ -242,13 +233,7 @@ Eina_Bool Browser_View::init(void)
 		BROWSER_LOGE("new Browser_Context_Menu failed");
 		return EINA_FALSE;
 	}
-#ifdef USE_META_TAG
-	m_meta_tag = new(nothrow) Browser_Meta_Tag();
-	if (!m_meta_tag) {
-		BROWSER_LOGE("new Browser_Meta_Tag failed");
-		return EINA_FALSE;
-	}
-#endif
+
 	UG_INIT_EFL(m_win, UG_OPT_INDICATOR_ENABLE);
 
 	char *last_url = NULL;
@@ -1933,43 +1918,6 @@ void Browser_View::__forward_cb(void *data, Evas_Object *obj, void *event_info)
 		&& ewk_view_forward_possible(browser_view->m_focused_window->m_ewk_view))
 		ewk_view_forward(browser_view->m_focused_window->m_ewk_view);
 }
-
-#ifdef USE_META_TAG
-void Browser_View::__web_app_capable_get_cb(Eina_Bool capable, void* user_data)
-{
-	BROWSER_LOGD("[%s]", __func__);
-
-	if (!user_data)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)user_data;
-	Evas_Object *webkit = browser_view->m_focused_window->m_ewk_view;
-	if (capable) {
-		ewk_view_web_application_icon_url_get(webkit, __web_app_icon_url_get_cb, browser_view);
-	}
-}
-
-void Browser_View::__web_app_icon_url_get_cb(const char* icon_url, void* user_data)
-{
-	BROWSER_LOGD("icon_url:%s", icon_url);
-
-	if (!user_data)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)user_data;
-
-	/* make configure file */
-	browser_view->m_meta_tag->create_config_xml((browser_view->get_url()).c_str(), browser_view->get_title().c_str(), NULL);
-	if (!icon_url || strlen(icon_url) == 0) {
-		BROWSER_LOGD("Failed to get webapp icon url, make widget with default icon");
-		browser_view->m_meta_tag->wgt_install(NULL);
-	} else {
-		BROWSER_LOGD("Succeed to get webapp icon url, make widget after icon downloaded");
-		/* get icon */
-		browser_view->m_meta_tag->request_download_icon(icon_url);
-	}
-}
-#endif
 
 void Browser_View::__url_editfield_share_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
