@@ -1273,6 +1273,9 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	Evas_Object *main_layout = browser_view->m_main_layout;
 	Evas_Object *ewk_view = browser_view->m_focused_window->m_ewk_view;
 
+	browser_view->m_context_menu->set_pressed_position_x(event.output.x);
+	browser_view->m_context_menu->set_pressed_position_y(event.output.y);
+
 #if defined(FEATURE_MOST_VISITED_SITES)
 	if (browser_view->is_most_visited_sites_running())
 		return;
@@ -1979,8 +1982,6 @@ Eina_Bool Browser_View::__show_scissorbox_view_idler_cb(void *data)
 Eina_Bool Browser_View::_show_scissorbox_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-
-//	_hide_scroller_url_layout();
 
 	ecore_idler_add(__show_scissorbox_view_idler_cb, this);
 
@@ -3737,6 +3738,28 @@ Eina_Bool Browser_View::_is_loading(void)
 		return EINA_FALSE;
 	else
 		return EINA_TRUE;
+}
+
+Eina_Bool Browser_View::launch_find_word_with_text(const char *text_to_find)
+{
+	BROWSER_LOGD("\n");
+
+	if (_get_edit_mode() == BR_FIND_WORD_MODE)
+		return EINA_FALSE;
+
+	_navigationbar_visible_set_signal(EINA_TRUE);
+	_set_edit_mode(BR_FIND_WORD_MODE);
+
+	if (!text_to_find || !strlen(text_to_find))
+		elm_object_focus_set(m_find_word_edit_field, EINA_TRUE);
+	else
+		elm_object_focus_set(m_find_word_edit_field, EINA_FALSE);
+	edje_object_part_text_set(elm_layout_edje_get(m_option_header_find_word_layout), "elm.index_text", "0/0");
+
+	Evas_Object *find_word_edit_field_entry = br_elm_editfield_entry_get(m_find_word_edit_field);
+	elm_entry_entry_set(find_word_edit_field_entry, text_to_find);
+
+	return EINA_TRUE;
 }
 
 #if defined(HORIZONTAL_UI)

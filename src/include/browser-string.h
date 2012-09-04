@@ -231,6 +231,7 @@
 #define BR_STRING_CTXMENU_SAVE_IMAGE_AS                 _("Save image as")
 #define BR_STRING_CTXMENU_COPY_IMAGE                    _("IDS_BR_OPT_COPY_IMAGE")
 #define BR_STRING_CTXMENU_SAVE_IMAGE                    _("IDS_BR_OPT_SAVE_IMAGE")
+#define BR_STRING_CTXMENU_SHARE_IMAGE                   _("Share image")
 #define BR_STRING_CTXMENU_COPY_MEDIA                    dgettext("sys_string", "IDS_COM_BODY_COPY")
 #define BR_STRING_CTXMENU_SEND_IMAGE_VIA_EMAIL          _("IDS_BR_OPT_SEND_VIA_EMAIL")
 #define BR_STRING_CTXMENU_SEND_IMAGE_VIA_MESSAGE        _("IDS_BR_OPT_SEND_VIA_MESSAGE")
@@ -250,6 +251,7 @@
 #define BR_STRING_CTXMENU_SEARCH                        dgettext("sys_string", "IDS_COM_BODY_SEARCH")
 #define BR_STRING_CTXMENU_SHARE                         dgettext("sys_string", "IDS_COM_BUTTON_SHARE")
 #define BR_STRING_CTXMENU_DELETE                        dgettext("sys_string", "IDS_COM_BODY_DELETE")
+#define BR_STRING_CTXMENI_FIND_ON_PAGE                  _("IDS_BR_OPT_FIND_ON_PAGE")
 #define BR_STRING_CTXMENU_PASTE_AND_GO                  _("Paste & Go")
 #define BR_STRING_CTXMENU_SHARE_IMAGE_URL               _("Share image URL")
 #define BR_STRING_CTXMENU_SHARE_LINK                    _("IDS_BR_BODY_SHARE_LINK")
@@ -294,6 +296,6 @@
 #define BR_STRING_CTXMENU_SPEECH                        _("Speech")
 #define BR_STRING_CTXMENU_START_SPEAKING                _("Start speaking")
 #define BR_STRING_CTXMENU_STOP_SPEAKING                 _("Stop speaking")
-#define BR_STRING_CTXMENU_TEXT_SELECTION_MODE           _("Text selection mode")
+#define BR_STRING_CTXMENU_SELECTION_MODE                _("Selection mode")
 
 #endif /* BROWSER_STRING_H */

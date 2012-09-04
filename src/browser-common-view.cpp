@@ -177,6 +177,17 @@ void Browser_Common_View::show_notify_popup(const char *msg, int timeout, Eina_B
 	evas_object_show(m_selection_info);
 }
 
+Eina_Bool Browser_Common_View::find_word_with_text(const char *text_to_find)
+{
+	BROWSER_LOGD("[%s], text_to_find[%s]", __func__, text_to_find);
+
+	if (!text_to_find)
+		return EINA_FALSE;
+
+	Browser_View *browser_view = m_data_manager->get_browser_view();
+	return browser_view->launch_find_word_with_text(text_to_find);;
+}
+
 /* Capture snapshot with current focused ewk view. */
 Evas_Object *Browser_Common_View::_capture_snapshot(Browser_Window *window, float scale)
 {

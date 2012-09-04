@@ -89,6 +89,7 @@ public:
 	Evas_Object *get_favicon(const char *url);
 	void delete_non_user_created_windows(void);
 	Eina_Bool _is_loading(void);
+	Eina_Bool launch_find_word_with_text(const char *text_to_find);
 private:
 	typedef enum _homepage_mode {
 #if defined(FEATURE_MOST_VISITED_SITES)
