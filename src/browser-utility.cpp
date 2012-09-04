@@ -222,9 +222,10 @@ static void __searchbar_changed_cb(void *data, Evas_Object *obj, void *event_inf
 			elm_object_signal_emit(layout, "elm,state,eraser,hide", "elm");
 		else {
 			elm_object_signal_emit(layout, "elm,state,eraser,show", "elm");
-			elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
 		}
 	}
+	if (!elm_entry_is_empty(obj))
+		elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
 }
 
 static void __searchbar_focused_cb(void *data, Evas_Object *obj, void *event_info)

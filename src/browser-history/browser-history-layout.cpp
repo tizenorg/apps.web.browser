@@ -258,6 +258,8 @@ void Browser_History_Layout::__search_delay_changed_cb(void *data, Evas_Object *
 		return;
 
 	Browser_History_Layout *history_layout = (Browser_History_Layout *)data;
+	if (!elm_entry_is_empty(obj))
+		elm_object_signal_emit(history_layout->m_searchbar, "elm,state,guidetext,hide", "elm");
 	if (!history_layout->_show_searched_history(utf8_text))
 		BROWSER_LOGE("_show_searched_history failed");
 
