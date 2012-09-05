@@ -49,6 +49,8 @@ public:
 	void show_msg_popup(const char *title, const char *msg, int timeout);
 	void show_notify_popup(const char *msg, int timeout = 0, Eina_Bool has_control_bar = EINA_FALSE);
 	void hide_notify_popup(void);
+	void show_notify_popup_layout(const char *msg, int timeout, Evas_Object *parent);
+	void hide_notify_popup_layout(Evas_Object *parent);
 	Eina_Bool find_word_with_text(const char *text_to_find);
 protected:
 	Evas_Object *_capture_snapshot(Browser_Window *window, float scale);
@@ -97,6 +99,7 @@ private:
 	Evas_Object *m_popup;
 	Evas_Object *m_selection_info;
 	Evas_Object *m_selection_info_layout;
+	Evas_Object *m_selinfo_layout;
 	Evas_Object *m_share_popup;
 	Evas_Object *m_share_list;
 	Evas_Object *m_call_confirm_popup;
