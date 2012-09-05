@@ -125,7 +125,7 @@ Browser_Bookmark_View *Browser_Data_Manager::create_bookmark_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_bookmark_view)
-		destroy_bookmark_view();
+		return NULL;
 
 	m_bookmark_view = new(nothrow) Browser_Bookmark_View;
 	if (!m_bookmark_view)
