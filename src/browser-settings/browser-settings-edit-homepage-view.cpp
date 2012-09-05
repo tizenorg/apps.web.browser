@@ -22,7 +22,8 @@
 Browser_Settings_Edit_Homepage_View::Browser_Settings_Edit_Homepage_View(Browser_Settings_Main_View *main_view)
 :
 	m_main_view(main_view)
-	,m_content_layout(NULL)
+	,m_conformant(NULL)
+	,m_genlist(NULL)
 	,m_edit_field(NULL)
 	,m_done_button(NULL)
 	,m_cancel_button(NULL)
@@ -33,6 +34,10 @@ Browser_Settings_Edit_Homepage_View::Browser_Settings_Edit_Homepage_View(Browser
 Browser_Settings_Edit_Homepage_View::~Browser_Settings_Edit_Homepage_View(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
+
+	if (m_conformant)
+		evas_object_del(m_conformant);
+	m_conformant = NULL;
 }
 
 void Browser_Settings_Edit_Homepage_View::__back_button_clicked_cb(void *data,
@@ -118,52 +123,40 @@ void Browser_Settings_Edit_Homepage_View::__edit_field_changed_cb(void *data,
 Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
+	elm_win_conformant_set(m_win, EINA_TRUE);
 
-	m_content_layout = elm_layout_add(m_navi_bar);
-	if (!m_content_layout) {
-		BROWSER_LOGE("elm_layout_add failed");
+	m_conformant = elm_conformant_add(m_win);
+	if (!m_conformant) {
+		BROWSER_LOGE("elm_conformant_add failed");
 		return EINA_FALSE;
 	}
-	if (!elm_layout_file_set(m_content_layout, BROWSER_EDJE_DIR"/browser-settings.edj",
-					"edit_homepage_view")) {
-		BROWSER_LOGE("elm_layout_file_set failed");
+	elm_object_style_set(m_conformant, "internal_layout");
+	evas_object_size_hint_align_set(m_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	m_genlist = elm_genlist_add(m_conformant);
+	if (!m_genlist) {
+		BROWSER_LOGE("elm_genlist_add failed");
 		return EINA_FALSE;
 	}
-	evas_object_show(m_content_layout);
 
-	m_edit_field = br_elm_editfield_add(m_content_layout, EINA_TRUE);
-	if (!m_edit_field) {
-		BROWSER_LOGE("elm_editfield_add failed");
-		return EINA_FALSE;
-	}
-	br_elm_editfield_entry_single_line_set(m_edit_field, EINA_TRUE);
-	br_elm_editfield_label_set(m_edit_field, BR_STRING_URL);
-	elm_object_part_content_set(m_content_layout, "elm.swallow.entry", m_edit_field);
+	m_item_class.item_style = "1icon";
+	m_item_class.func.text_get = NULL;
+	m_item_class.func.content_get = __genlist_icon_get_cb;
+	m_item_class.func.state_get = NULL;
+	m_item_class.func.del = NULL;
 
-	char *homepage = NULL;
-	if (br_preference_get_str(USER_HOMEPAGE_KEY, &homepage) == false) {
-		BROWSER_LOGE("failed to get %s preference\n", USER_HOMEPAGE_KEY);
-		return EINA_FALSE;
-	}
-	Evas_Object *entry = br_elm_editfield_entry_get(m_edit_field);
-	if (homepage) {
-		elm_entry_entry_set(entry, homepage);
-		free(homepage);
-	}
-	elm_entry_input_panel_layout_set(entry, ELM_INPUT_PANEL_LAYOUT_URL);
-	evas_object_size_hint_weight_set(m_edit_field, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(m_edit_field, 1, 0.5);
-	elm_entry_cursor_end_set(entry);
+	elm_genlist_item_append(m_genlist, &m_item_class, this, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+	evas_object_show(m_genlist);
+	elm_object_content_set(m_conformant, m_genlist);
 
-	evas_object_show(m_edit_field);
-	elm_object_focus_set(m_edit_field, EINA_TRUE);
-	evas_object_smart_callback_add(entry, "changed", __edit_field_changed_cb, this);
+	m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_HOMEPAGE, NULL, NULL,
+											m_conformant, "browser_titlebar");
 
-	Elm_Object_Item *navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_HOMEPAGE,
-							NULL, NULL, m_content_layout, "browser_titlebar");
-	elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
+	evas_object_smart_callback_add(m_navi_bar, "transition,finished", __naviframe_pop_finished_cb, this);
 
-	m_done_button = elm_button_add(m_content_layout);
+	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
+
+	m_done_button = elm_button_add(m_conformant);
 	if (!m_done_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;
@@ -172,9 +165,9 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	elm_object_text_set(m_done_button, BR_STRING_DONE);
 	evas_object_show(m_done_button);
 	evas_object_smart_callback_add(m_done_button, "clicked", __done_button_clicked_cb, this);
-	elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_TITLE_RIGHT_BTN, m_done_button);
+	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_RIGHT_BTN, m_done_button);
 
-	m_cancel_button = elm_button_add(m_content_layout);
+	m_cancel_button = elm_button_add(m_conformant);
 	if (!m_cancel_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;
@@ -183,8 +176,41 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	elm_object_text_set(m_cancel_button, BR_STRING_CANCEL);
 	evas_object_show(m_cancel_button);
 	evas_object_smart_callback_add(m_cancel_button, "clicked", __cancel_button_clicked_cb, this);
-	elm_object_item_part_content_set(navi_it, ELM_NAVIFRAME_ITEM_TITLE_LEFT_BTN, m_cancel_button);
+	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_LEFT_BTN, m_cancel_button);
 
 	return EINA_TRUE;
 }
+
+Evas_Object *Browser_Settings_Edit_Homepage_View::__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part)
+{
+	if (!data)
+		return NULL;
+
+	Browser_Settings_Edit_Homepage_View *edit_homepage_view = (Browser_Settings_Edit_Homepage_View *)data;
+
+	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		edit_homepage_view->m_edit_field = br_elm_editfield_add(obj, EINA_TRUE);
+		if (!edit_homepage_view->m_edit_field) {
+			BROWSER_LOGE("elm_editfield_add failed");
+			return NULL;
+		}
+		br_elm_editfield_entry_single_line_set(edit_homepage_view->m_edit_field, EINA_TRUE);
+		br_elm_editfield_label_set(edit_homepage_view->m_edit_field, BR_STRING_URL);
+
+		char *homepage = NULL;
+		if (br_preference_get_str(USER_HOMEPAGE_KEY, &homepage) == false)
+			BROWSER_LOGE("failed to get %s preference\n", USER_HOMEPAGE_KEY);
+
+		elm_entry_entry_set(br_elm_editfield_entry_get(edit_homepage_view->m_edit_field), homepage);
+
+		evas_object_smart_callback_add(br_elm_editfield_entry_get(edit_homepage_view->m_edit_field),
+						"changed", __edit_field_changed_cb, edit_homepage_view);
+
+		ecore_idler_add(edit_homepage_view->__set_focus_editfield_idler_cb, edit_homepage_view->m_edit_field);
+		return edit_homepage_view->m_edit_field;
+	}
+
+	return NULL;
+}
+
 

@@ -37,11 +37,16 @@ private:
 	static void __done_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __cancel_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_field_changed_cb(void *data, Evas_Object *obj, void *event_info);
+	static Evas_Object *__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part);
 
-	Evas_Object *m_content_layout;
+	Evas_Object *m_conformant;
+	Evas_Object *m_genlist;
 	Evas_Object *m_edit_field;
 	Evas_Object *m_done_button;
 	Evas_Object *m_cancel_button;
+
+	Elm_Genlist_Item_Class m_item_class;
+	Elm_Object_Item *m_navi_it;
 
 	Browser_Settings_Main_View *m_main_view;
 };
