@@ -2933,6 +2933,7 @@ void Browser_View::_set_edit_mode(edit_mode mode)
 	} else if (mode == BR_NO_EDIT_MODE || mode == BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF) {
 		if (m_edit_mode == BR_FIND_WORD_MODE) {
 			edje_object_signal_emit(elm_layout_edje_get(m_option_header_layout), "hide,find_word_layout,signal", "");
+			edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "show,control_bar,no_animation,signal", "");
 			m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
 		} else {
 			/* change layout of url layout for normal mode. */
@@ -3385,7 +3386,7 @@ Evas_Object *Browser_View::_create_find_word_layout(void)
 	elm_entry_prediction_allow_set(find_word_edit_field_entry, EINA_FALSE);
 	ecore_imf_context_input_panel_event_callback_add((Ecore_IMF_Context *)elm_entry_imf_context_get(find_word_edit_field_entry),
 			ECORE_IMF_INPUT_PANEL_STATE_EVENT, __find_word_entry_imf_event_cb, this);
-	elm_entry_text_style_user_push(find_word_edit_field_entry, "DEFAULT='font_size=35 color=#3C363 2 ellipsis=1'");
+	elm_entry_text_style_user_push(find_word_edit_field_entry, "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
 	evas_object_show(m_find_word_edit_field);
 
 	m_find_word_cancel_button = elm_button_add(m_navi_bar);
