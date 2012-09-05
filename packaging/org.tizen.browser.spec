@@ -226,5 +226,5 @@ chown -R 5000:5000 /opt/apps/org.tizen.browser/data
 /opt/apps/org.tizen.browser/res/locale/*/*/browser.mo
 /opt/apps/org.tizen.browser/data/default_application_icon.png
 /opt/apps/org.tizen.browser/data/config_sample.xml
-/opt/share/applications/org.tizen.browser.desktop
 /opt/apps/org.tizen.browser/data/xml/
+/opt/share/packages/*
