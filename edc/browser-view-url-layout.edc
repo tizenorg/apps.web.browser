@@ -863,7 +863,7 @@ group { name: "elm/layout/browser-editfield/default";
 			image: "browser-view-images/url-layout/41_browser_search_icon_refresh.png" COMP;
 			image: "browser-view-images/url-layout/icon_stop.png" COMP;
 			image: "icon/00_close_icon.png" COMP;
-			image: "browser-view-images/url-layout/private-badge.png" COMP;
+			image: "browser-view-images/url-layout/I01_icon_secretmode.png" COMP;
 			image: "browser-view-images/url-layout/I01_search_icon.png" COMP;
 		}
 
@@ -1049,20 +1049,20 @@ group { name: "elm/layout/browser-editfield/default";
 				description {
 					state: "default" 0.0;
 					visible: 0;
-					min: 0 45;
-					max: 0 45;
+					min: 0 42;
+					max: 0 42;
 					fixed: 1 1;
 					align: 0.0 0.5;
 					rel1 { relative: 1.0 0.0; to: "elm.swallow.favicon"; }
 					rel2 { relative: 1.0 1.0; to: "elm.swallow.favicon"; }
-					image.normal: "browser-view-images/url-layout/private-badge.png";
+					image.normal: "browser-view-images/url-layout/I01_icon_secretmode.png";
 				}
 				description {
 					state: "visible" 0.0;
 					inherit: "default" 0.0;
 					visible: 1;
-					min: 45 45;
-					max: 45 45;
+					min: 42 42;
+					max: 42 42;
 				}
 			}
 			PADDING("padding.progress.left", 9, 0, 1, 0, 1.0, 0.5,
