@@ -150,7 +150,7 @@ Browser_Bookmark_DB *Browser_Data_Manager::create_bookmark_db(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_bookmark_db)
-		destroy_bookmark_db();
+		return NULL;
 
 	m_bookmark_db = new(nothrow) Browser_Bookmark_DB;
 	if (!m_bookmark_db)
@@ -173,7 +173,7 @@ Browser_Add_To_Bookmark_View *Browser_Data_Manager::create_add_to_bookmark_view(
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_add_to_bookmark_view)
-		destroy_add_to_bookmark_view();
+		return NULL;
 
 	m_add_to_bookmark_view = new(nothrow) Browser_Add_To_Bookmark_View(title, url,
 								EINA_FALSE, current_folder_id);
@@ -200,7 +200,7 @@ Browser_Add_To_Bookmark_View *Browser_Data_Manager::create_edit_bookmark_view(st
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_edit_bookmark_view)
-		destroy_edit_bookmark_view();
+		return NULL;
 
 	m_edit_bookmark_view = new(nothrow) Browser_Add_To_Bookmark_View(title, url,
 								EINA_TRUE, current_folder_id);
@@ -227,7 +227,7 @@ Add_To_Most_Visited_Sites_View *Browser_Data_Manager::create_add_to_most_visited
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_add_to_most_visited_sites_view)
-		destroy_add_to_most_visited_sites_view();
+		return NULL;
 
 	m_add_to_most_visited_sites_view = new(nothrow) Add_To_Most_Visited_Sites_View(most_visited_sites);
 	if (!m_add_to_most_visited_sites_view)
@@ -255,7 +255,7 @@ Browser_New_Folder_View *Browser_Data_Manager::create_new_folder_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_new_folder_view)
-		destroy_new_folder_view();
+		return NULL;
 
 	m_new_folder_view = new(nothrow) Browser_New_Folder_View;
 	if (!m_new_folder_view)
@@ -281,7 +281,7 @@ Browser_Select_Folder_View *Browser_Data_Manager::create_select_folder_view(int 
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_select_folder_view)
-		destroy_select_folder_view();
+		return NULL;
 
 	m_select_folder_view = new(nothrow) Browser_Select_Folder_View(current_folder_id);
 	if (!m_select_folder_view)
@@ -306,7 +306,7 @@ Browser_Multi_Window_View* Browser_Data_Manager::create_multi_window_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_multi_window_view)
-		destroy_multi_window_view();
+		return NULL;
 
 	m_multi_window_view = new(nothrow) Browser_Multi_Window_View;
 	if (!m_multi_window_view) {
@@ -332,7 +332,7 @@ Browser_History_Layout *Browser_Data_Manager::create_history_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_history_layout)
-		destroy_history_layout();
+		return NULL;
 
 	m_history_layout = new(nothrow) Browser_History_Layout;
 	if (!m_history_layout)
@@ -354,7 +354,7 @@ Browser_History_DB *Browser_Data_Manager::create_history_db(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_history_db)
-		destroy_history_db();
+		return NULL;
 
 	m_history_db = new(nothrow) Browser_History_DB;
 	if (!m_history_db)
@@ -376,7 +376,7 @@ Browser_Geolocation_DB *Browser_Data_Manager::create_geolocation_db(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_geolocation_db)
-		destroy_geolocation_db();
+		return NULL;
 
 	m_geolocation_db = new(nothrow) Browser_Geolocation_DB;
 	if (!m_geolocation_db)
