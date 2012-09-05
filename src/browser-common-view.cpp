@@ -927,16 +927,11 @@ char *Browser_Common_View::_trim(char *str)
 #if defined(HORIZONTAL_UI)
 Eina_Bool Browser_Common_View::is_landscape(void)
 {
-	int window_w = 0;
-	int window_h = 0;
-	evas_object_geometry_get(m_win, NULL, NULL, &window_w, &window_h);
-	if (window_h > window_w) {
-		BROWSER_LOGD("portrait");
+	app_device_orientation_e rotation_value = app_get_device_orientation();
+	if (rotation_value == APP_DEVICE_ORIENTATION_0 || rotation_value == APP_DEVICE_ORIENTATION_180)
 		return EINA_FALSE;
-	} else {
-		BROWSER_LOGD("landscape");
+	else
 		return EINA_TRUE;
-	}
 }
 #endif
 
