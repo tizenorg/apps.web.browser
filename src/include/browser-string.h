@@ -251,7 +251,7 @@
 #define BR_STRING_CTXMENU_SEARCH                        dgettext("sys_string", "IDS_COM_BODY_SEARCH")
 #define BR_STRING_CTXMENU_SHARE                         dgettext("sys_string", "IDS_COM_BUTTON_SHARE")
 #define BR_STRING_CTXMENU_DELETE                        dgettext("sys_string", "IDS_COM_BODY_DELETE")
-#define BR_STRING_CTXMENI_FIND_ON_PAGE                  _("IDS_BR_OPT_FIND_ON_PAGE")
+#define BR_STRING_CTXMENU_FIND_ON_PAGE                  _("IDS_BR_OPT_FIND_ON_PAGE")
 #define BR_STRING_CTXMENU_PASTE_AND_GO                  _("Paste & Go")
 #define BR_STRING_CTXMENU_SHARE_IMAGE_URL               _("Share image URL")
 #define BR_STRING_CTXMENU_SHARE_LINK                    _("IDS_BR_BODY_SHARE_LINK")

@@ -152,8 +152,6 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_HOMEPAGE, NULL, NULL,
 											m_conformant, "browser_titlebar");
 
-	evas_object_smart_callback_add(m_navi_bar, "transition,finished", __naviframe_pop_finished_cb, this);
-
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
 
 	m_done_button = elm_button_add(m_conformant);

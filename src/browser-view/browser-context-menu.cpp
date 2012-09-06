@@ -124,54 +124,10 @@ void Browser_Context_Menu::__custom_context_menu_item_selected_cb(void *data, Ev
 
 	Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
 	switch (tag) {
-	case CUSTOM_CONTEXT_MENU_ITEM_TEXT_SHARE_TAG:
-		BROWSER_LOGD("Share selected text[%s]", selected_text);
-		if (selected_text && strlen(selected_text) > 0)
-			context_menu->_show_share_popup(selected_text);
-		break;
 	case CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_TAG:
 		BROWSER_LOGD("Find selected text[%s] on the page", selected_text);
 		if (selected_text && strlen(selected_text) > 0)
 			context_menu->find_word_with_text(selected_text);
-		break;
-	case CUSTOM_CONTEXT_MENU_ITEM_LINK_SHARE_TAG:
-		BROWSER_LOGD("Share popup for link show");
-		context_menu->_show_share_popup(link_url_string.c_str());
-		break;
-	case CUSTOM_CONTEXT_MENU_ITEM_IMAGE_SHARE_TAG:
-		BROWSER_LOGD("Share popup for image show");
-		context_menu->_show_share_popup(image_url_string.c_str());
-		break;
-	case CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_TEXT_WITH_HYPERLINK_TAG:
-	{
-		/* FIXME - put text selection mode activating code when it is ready */
-		Evas_Object *ewk_view = context_menu->m_ewk_view;
-		Ewk_View_Smart_Data *smart_data = 0;
-		int pressed_x = context_menu->get_pressed_position_x();
-		int pressed_y = context_menu->get_pressed_position_y();
-
-		if (!ewk_view) {
-			BROWSER_LOGD("ewk_view is NULL");
-			break;
-		}
-		smart_data = (Ewk_View_Smart_Data *)evas_object_smart_data_get(ewk_view);
-		if (!smart_data) {
-			BROWSER_LOGD("smart_Data is NULL");
-			break;
-		}
-		if (smart_data->api->text_selection_down(smart_data, pressed_x, pressed_y) == EINA_FALSE)
-			BROWSER_LOGD("text_selection_down failed");
-
-		if (smart_data->api->text_selection_up(smart_data, pressed_x, pressed_y) == EINA_FALSE)
-			BROWSER_LOGD("text_selection_up failed");
-
-		break;
-	}
-	case CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_TEXT_TAG:
-	case CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_IMAGE_TAG:
-	case CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_IMAGE_WITH_HYPERLINK_TAG:
-		/* FIXME - put text selection mode activating code when it is ready */
-		BROWSER_LOGD("Selection mode");
 		break;
 	default:
 		break;
@@ -308,8 +264,7 @@ Eina_Bool Browser_Context_Menu::_append_text_only_mode_context_menu(Ewk_Context_
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_TAG, BR_STRING_CTXMENI_FIND_ON_PAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_TEXT_SHARE_TAG, BR_STRING_CTXMENU_SHARE, true);
+			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_TAG, BR_STRING_CTXMENU_FIND_ON_PAGE, true);
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_SELECT_ALL, true);
@@ -414,8 +369,6 @@ Eina_Bool Browser_Context_Menu::_append_hyperlink_only_mode_context_menu(Ewk_Con
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_LINK_LOCATION, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_LINK_SHARE_TAG, BR_STRING_CTXMENU_SHARE, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_TEXT_WITH_HYPERLINK_TAG, BR_STRING_CTXMENU_SELECTION_MODE, true);
 			break;
 #if 0
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK:
@@ -487,7 +440,6 @@ Eina_Bool Browser_Context_Menu::_append_image_only_mode_context_menu(Ewk_Context
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_IMAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_IMAGE_SHARE_TAG, BR_STRING_CTXMENU_SHARE_IMAGE, true);
 			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_IMAGE_TAG, BR_STRING_CTXMENU_SELECTION_MODE, true);
 			break;
 		default:
@@ -572,7 +524,6 @@ Eina_Bool Browser_Context_Menu::_append_image_with_hyperlink_mode_context_menu(E
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_LINK_LOCATION, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_TEXT_SHARE_TAG, BR_STRING_CTXMENU_SHARE, true);
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_IMAGE, true);
@@ -582,7 +533,6 @@ Eina_Bool Browser_Context_Menu::_append_image_with_hyperlink_mode_context_menu(E
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_IMAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_LINK_SHARE_TAG, BR_STRING_CTXMENU_SHARE_IMAGE, true);
 			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SELECTION_MODE_FROM_IMAGE_TAG, BR_STRING_CTXMENU_SELECTION_MODE, true);
 			break;
 		default:
@@ -631,8 +581,6 @@ Eina_Bool Browser_Context_Menu::_append_normal_mode_context_menu(Ewk_Context_Men
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_OPEN_LINK_IN_NEW_WINDOW, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_LINK_SHARE_TAG, BR_STRING_CTXMENU_SHARE_LINK, true);
-			show_hyperlink_item_flag = true;
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_LINK, true);
@@ -642,8 +590,6 @@ Eina_Bool Browser_Context_Menu::_append_normal_mode_context_menu(Ewk_Context_Men
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_IMAGE, true);
-			ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_IMAGE_SHARE_TAG, BR_STRING_CTXMENU_SHARE_IMAGE_URL, true);
-			show_imagemode_flag = true;
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_COPY_IMAGE, true);
