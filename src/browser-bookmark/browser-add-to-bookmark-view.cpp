@@ -186,6 +186,9 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 					free(mark_up);
 			}
 
+			if (elm_entry_is_empty(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field)))
+				elm_object_signal_emit(add_to_bookmark_view->m_title_edit_field, "elm,state,guidetext,show", "elm");
+
 			return add_to_bookmark_view->m_title_edit_field;
 		} else {
 			add_to_bookmark_view->m_url_edit_field = br_elm_editfield_add(obj, EINA_TRUE);
