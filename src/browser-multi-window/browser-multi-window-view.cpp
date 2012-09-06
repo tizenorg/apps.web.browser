@@ -199,12 +199,10 @@ void Browser_Multi_Window_View::__zoom_out_finished(void)
 		}
 	} else {
 		BROWSER_LOGD("[%s][%s]", title, url);
-		char *markup = elm_entry_utf8_to_markup(title);
-		if (markup) {
-			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", markup);
-			free(markup);
-		}
 
+		edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.title", title);
+
+		char *markup = NULL;
 		markup = elm_entry_utf8_to_markup(url);
 		if (markup) {
 			edje_object_part_text_set(elm_layout_edje_get(m_main_layout), "elm.url", markup);
