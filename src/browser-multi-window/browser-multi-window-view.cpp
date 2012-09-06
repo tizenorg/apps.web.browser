@@ -749,12 +749,16 @@ void Browser_Multi_Window_View::_show_grey_effect(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	for (int i = 0 ; i < m_item_list.size() ; i++) {
-		if (i == m_current_position_index)
+		if (i == m_current_position_index) {
 			edje_object_signal_emit(elm_layout_edje_get(m_item_list[i]),
 							"non_grey,snapshot,signal", "");
-		else
+			if (m_item_list.size() > 1)
+				edje_object_signal_emit(elm_layout_edje_get(m_item_list[i]),
+						"show,delete_window_icon,signal", "");
+		} else {
 			edje_object_signal_emit(elm_layout_edje_get(m_item_list[i]),
 							"grey,snapshot,signal", "");
+		}
 	}
 }
 

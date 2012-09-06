@@ -468,6 +468,7 @@ collections {
 				action: STATE_SET "grey" 0.0;
 				transition: ACCELERATE 0.3;
 				target: "rect.clipper";
+				after: "hide,delete_window_icon";
 			}
 			program { name: "non_grey,snapshot";
 				signal: "non_grey,snapshot,signal";
