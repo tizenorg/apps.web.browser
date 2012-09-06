@@ -936,6 +936,12 @@ void Browser_Bookmark_View::_set_edit_mode(Eina_Bool edit_mode)
 	hide_notify_popup_layout(m_sub_main_layout);
 
 	if (edit_mode) {
+#if defined(GENLIST_SWEEP)
+		if (m_current_folder_id = BROWSER_BOOKMARK_MAIN_FOLDER_ID)
+			br_elm_genlist_sweep_item_recover(m_main_folder_genlist);
+		else
+			br_elm_genlist_sweep_item_recover(m_sub_folder_genlist);
+#endif
 		elm_object_style_set(m_bg, "edit_mode");
 
 		m_edit_mode_select_all_layout = elm_layout_add(m_genlist_content_box);

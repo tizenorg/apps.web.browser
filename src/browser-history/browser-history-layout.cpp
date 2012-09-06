@@ -338,6 +338,9 @@ void Browser_History_Layout::_set_edit_mode(Eina_Bool edit_mode)
 	_enable_searchbar_layout(!edit_mode);
 
 	if (edit_mode) {
+#if defined(GENLIST_SWEEP)
+		br_elm_genlist_sweep_item_recover(m_history_genlist);
+#endif
 		elm_object_style_set(m_bg, "edit_mode");
 
 		m_edit_mode_select_all_layout = elm_layout_add(m_content_box);

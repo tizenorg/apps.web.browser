@@ -39,6 +39,10 @@ char *br_elm_searchbar_text_get(Evas_Object *obj);
 Evas_Object *br_elm_searchbar_entry_get(Evas_Object *obj);
 Evas_Object *br_elm_find_word_editfield_add(Evas_Object *parent);
 
+#if defined(GENLIST_SWEEP)
+void br_elm_genlist_sweep_item_recover(Evas_Object *obj);
+#endif
+
 /* preference APIs */
 bool br_preference_set_bool(const char *key, bool value);
 bool br_preference_get_bool(const char *key, bool *value);

@@ -343,6 +343,25 @@ Evas_Object *br_elm_searchbar_entry_get(Evas_Object *obj)
 	return elm_object_part_content_get(obj, "elm.swallow.content");
 }
 
+#if defined(GENLIST_SWEEP)
+void br_elm_genlist_sweep_item_recover(Evas_Object *obj)
+{
+	if (obj == NULL) {
+		BROWSER_LOGD("obj is NULL");
+		return;
+	}
+
+	Elm_Object_Item *it = (Elm_Object_Item *) elm_genlist_decorated_item_get(obj);
+
+	/* Finish genlist sweep*/
+	if (it) {
+		elm_genlist_item_decorate_mode_set(it, "slide", EINA_FALSE);
+		elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DEFAULT);
+		elm_genlist_item_update(it);
+	}
+}
+#endif
+
 bool br_preference_set_bool(const char *key, bool value)
 {
 	int ret;
