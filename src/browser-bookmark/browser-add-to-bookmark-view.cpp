@@ -231,6 +231,16 @@ Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 		BROWSER_LOGE("elm_genlist_add failed");
 		return NULL;
 	}
+	elm_object_style_set(genlist, "dialogue");
+
+	m_seperator_item_class.item_style = "dialogue/seperator.2";
+	m_seperator_item_class.func.text_get = NULL;
+	m_seperator_item_class.func.del = NULL;
+	m_seperator_item_class.func.content_get = NULL;
+	m_seperator_item_class.func.state_get = NULL;
+	Elm_Object_Item *it = elm_genlist_item_append(genlist, &m_seperator_item_class, NULL, NULL,
+								ELM_GENLIST_ITEM_NONE, NULL, NULL);
+	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 	m_edit_field_item_class.item_style = "dialogue/1icon";
 	m_edit_field_item_class.func.text_get = NULL;
@@ -243,12 +253,7 @@ Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 	elm_genlist_item_append(genlist, &m_edit_field_item_class, &m_title_param, NULL,
 								ELM_GENLIST_ITEM_NONE, NULL, NULL);
 
-	m_seperator_item_class.item_style = "dialogue/seperator";
-	m_seperator_item_class.func.text_get = NULL;
-	m_seperator_item_class.func.del = NULL;
-	m_seperator_item_class.func.content_get = NULL;
-	m_seperator_item_class.func.state_get = NULL;
-	Elm_Object_Item *it = elm_genlist_item_append(genlist, &m_seperator_item_class, NULL, NULL,
+	it = elm_genlist_item_append(genlist, &m_seperator_item_class, NULL, NULL,
 								ELM_GENLIST_ITEM_NONE, NULL, NULL);
 	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
