@@ -3024,6 +3024,10 @@ void Browser_View::__url_entry_clicked_cb(void *data, Evas_Object *obj, const ch
 		Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
 
 		elm_object_focus_set(browser_view->m_option_header_url_edit_field, EINA_TRUE);
+
+		const char *url_text = elm_entry_entry_get(entry);
+		if (url_text && strlen(url_text))
+			elm_entry_select_all(entry);
 		elm_entry_cursor_end_set(entry);
 
 //		ecore_idler_add(__url_entry_focus_idler_cb, browser_view->m_option_header_url_edit_field);
