@@ -1181,14 +1181,14 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 	}
 
 	m_history_genlist_item_class.decorate_item_style = "mode/slide3";
-	m_history_genlist_item_class.item_style = "2text.2icon.4";
-	m_history_genlist_item_class.decorate_all_item_style = "edit_default";
+	m_history_genlist_item_class.item_style = "dialogue/2text.2icon.3";
+	m_history_genlist_item_class.decorate_all_item_style = "dialogue/edit";
 	m_history_genlist_item_class.func.text_get = __genlist_label_get_cb;
 	m_history_genlist_item_class.func.content_get = __genlist_icon_get_cb;
 	m_history_genlist_item_class.func.state_get = NULL;
 	m_history_genlist_item_class.func.del = NULL;
 
-	m_history_group_title_class.item_style = "grouptitle";
+	m_history_group_title_class.item_style = "dialogue/title";
 	m_history_group_title_class.func.text_get = __genlist_date_label_get_cb;
 	m_history_group_title_class.func.content_get = NULL;
 	m_history_group_title_class.func.state_get = NULL;
