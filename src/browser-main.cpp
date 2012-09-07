@@ -100,10 +100,6 @@ static bool __init_preference()
 		return false;
 	if (!br_preference_create_bool(ACCEPT_COOKIES_KEY, true))
 		return false;
-	if (!br_preference_create_bool(AUTO_SAVE_ID_PASSWORD_KEY, false))
-		return false;
-	if (!br_preference_create_bool(AUTO_SAVE_FORM_DATA_KEY, false))
-		return false;
 	if (!br_preference_create_bool(ENABLE_LOCATION_KEY, true))
 		return false;
 #ifdef ZOOM_BUTTON

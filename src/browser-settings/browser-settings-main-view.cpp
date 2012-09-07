@@ -49,9 +49,6 @@ Browser_Settings_Main_View::Browser_Settings_Main_View(void)
 	,m_navi_it(NULL)
 	,m_show_security_warnings_check(NULL)
 	,m_clear_all_cookies_data_confirm_popup(NULL)
-	,m_auto_save_id_pass_check(NULL)
-	,m_clear_passwords_confirm_popup(NULL)
-	,m_clear_form_data_confirm_popup(NULL)
 	,m_website_setting(NULL)
 	,m_user_agent_view(NULL)
 {
@@ -391,36 +388,6 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			}
 			return main_view->m_show_security_warnings_check;
 		}
-	} else if (type == BR_PRIVACY_MENU_REMEMBER_FORM_DATA) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
-			main_view->m_auto_save_form_data_check = elm_check_add(obj);
-			if (main_view->m_auto_save_form_data_check) {
-				elm_object_style_set(main_view->m_auto_save_form_data_check, "on&off");
-				evas_object_smart_callback_add(main_view->m_auto_save_form_data_check, "changed",
-						__auto_save_form_data_check_changed_cb, main_view->m_auto_save_form_data_check);
-
-				bool auto_save_form = false;
-				br_preference_get_bool(AUTO_SAVE_FORM_DATA_KEY, &auto_save_form);
-				elm_check_state_set(main_view->m_auto_save_form_data_check, auto_save_form);
-				evas_object_propagate_events_set(main_view->m_auto_save_form_data_check, EINA_FALSE);
-			}
-			return main_view->m_auto_save_form_data_check;
-		}
-	} else if (type == BR_PRIVACY_MENU_REMEMBER_PASSWORDS) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
-			main_view->m_auto_save_id_pass_check = elm_check_add(obj);
-			if (main_view->m_auto_save_id_pass_check) {
-				elm_object_style_set(main_view->m_auto_save_id_pass_check, "on&off");
-				evas_object_smart_callback_add(main_view->m_auto_save_id_pass_check, "changed",
-						__auto_save_id_pass_check_changed_cb, main_view->m_auto_save_id_pass_check);
-
-				bool auto_save = false;
-				br_preference_get_bool(AUTO_SAVE_ID_PASSWORD_KEY, &auto_save);
-				elm_check_state_set(main_view->m_auto_save_id_pass_check, auto_save);
-				evas_object_propagate_events_set(main_view->m_auto_save_id_pass_check, EINA_FALSE);
-			}
-			return main_view->m_auto_save_id_pass_check;
-		}
 	} else if (type == BR_PRIVACY_MENU_ACCEPT_COOKIES) {
 		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
 			main_view->m_accept_cookies_check = elm_check_add(obj);
@@ -451,50 +418,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			}
 			return main_view->m_enable_location_check;
 		}
-	} else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ASK
-	    || type == BR_PRIVACY_SUBMENU_ALWAYS_ON
-	    || type == BR_PRIVACY_SUBMENU_ALWAYS_OFF) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
-			Evas_Object *radio_button = elm_radio_add(obj);
-			if (radio_button) {
-				if (type == BR_PRIVACY_SUBMENU_ALWAYS_ASK)
-					elm_radio_state_value_set(radio_button, 0);
-				else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ON)
-					elm_radio_state_value_set(radio_button, 1);
-				else if (type == BR_PRIVACY_SUBMENU_ALWAYS_OFF)
-					elm_radio_state_value_set(radio_button, 2);
-
-				elm_radio_group_add(radio_button, main_view->m_auto_save_id_pass_radio_group);
-
-				char* auto_save = NULL;
-				if (br_preference_get_str(AUTO_SAVE_ID_PASSWORD_KEY, &auto_save) == false) {
-					BROWSER_LOGE("failed to get %s preference\n", AUTO_SAVE_ID_PASSWORD_KEY);
-					return NULL;
-				}
-				if (!auto_save) {
-					br_preference_set_str(AUTO_SAVE_ID_PASSWORD_KEY, ALWAYS_ASK);
-					auto_save = strdup(ALWAYS_ASK);
-				}
-
-				if (!auto_save) {
-					BROWSER_LOGE("strdup failed");
-					return NULL;
-				}
-
-				if (!strncmp(auto_save, ALWAYS_ASK, strlen(ALWAYS_ASK)))
-					elm_radio_value_set(main_view->m_auto_save_id_pass_radio_group, 0);
-				else if (!strncmp(auto_save, ALWAYS_ON, strlen(ALWAYS_ON)))
-					elm_radio_value_set(main_view->m_auto_save_id_pass_radio_group, 1);
-				else
-					elm_radio_value_set(main_view->m_homepage_radio_group, 2);
-
-				free(auto_save);
-			}
-
-			return radio_button;
-		}
 	}
-
 	return NULL;
 }
 
@@ -530,24 +454,6 @@ void Browser_Settings_Main_View::__show_security_warnings_check_changed_cb(void 
 {
 	BROWSER_LOGD("[%s]", __func__);
 	const char *key = SHOW_SECURITY_WARNINGS_KEY;
-	Eina_Bool state = elm_check_state_get((Evas_Object*)data);
-	br_preference_set_bool(key, state);
-}
-
-void Browser_Settings_Main_View::__auto_save_form_data_check_changed_cb(void *data,
-							Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	const char *key = AUTO_SAVE_FORM_DATA_KEY;
-	Eina_Bool state = elm_check_state_get((Evas_Object*)data);
-	br_preference_set_bool(key, state);
-}
-
-void Browser_Settings_Main_View::__auto_save_id_pass_check_changed_cb(void *data,
-							Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	const char *key = AUTO_SAVE_ID_PASSWORD_KEY;
 	Eina_Bool state = elm_check_state_get((Evas_Object*)data);
 	br_preference_set_bool(key, state);
 }
@@ -709,21 +615,6 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 			return strdup(BR_STRING_COOKIES);
 		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
 			return strdup(BR_STRING_CLEAR_ALL_COOKIE_DATA);
-	} else if (type == BR_PRIVACY_MENU_REMEMBER_FORM_DATA) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
-			return strdup(BR_STRING_FORMDATA);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
-			return strdup(BR_STRING_REMEMBER_FORMDATA);
-	} else if (type == BR_PRIVACY_CLEAR_FORM_DATA) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
-			return strdup(BR_STRING_FORMDATA);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
-			return strdup(BR_STRING_CLEAR_FORMDATA);
-	} else if (type == BR_PRIVACY_MENU_REMEMBER_PASSWORDS) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
-			return strdup(BR_STRING_PASSWORDS);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
-			return strdup(BR_STRING_REMEMBER_PASSWORDS);
 	} else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ASK) {
 		if (!strncmp(part, "elm.text", strlen("elm.text")))
 			return strdup(BR_STRING_ALWAYS_ASK);
@@ -746,11 +637,6 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 			return strdup(BR_STRING_LOCATION);
 		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
 			return strdup(BR_STRING_CLEAR_LOCATION_ACCESS);
-	} else if (type == BR_PRIVACY_CLEAR_PASSWORDS) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
-			return strdup(BR_STRING_PASSWORDS);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
-			return strdup(BR_STRING_CLEAR_PASSWORDS);
 	} else if (type == BR_PRIVACY_WEBSITE_SETTING) {
 		if (!strncmp(part, "elm.text", strlen("elm.text")))
 			return strdup(BR_STRING_WEBSITE_SETTINGS);
@@ -859,39 +745,6 @@ void Browser_Settings_Main_View::__default_view_level_sub_item_clicked_cb(void *
 	elm_genlist_item_selected_set(callback_data->it, EINA_FALSE);
 }
 
-void Browser_Settings_Main_View::__auto_save_id_pass_sub_item_clicked_cb(void *data,
-							Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-	genlist_callback_data *callback_data = (genlist_callback_data *)data;
-	Browser_Settings_Main_View::menu_type type = callback_data->type;
-	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)(callback_data->user_data);
-
-	int radio_value = 0;
-	if (type == BR_PRIVACY_SUBMENU_ALWAYS_ASK)
-		radio_value = 0;
-	else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ON)
-		radio_value = 1;
-	else if (type == BR_PRIVACY_SUBMENU_ALWAYS_OFF)
-		radio_value = 2;
-
-	if (elm_radio_value_get(main_view->m_auto_save_id_pass_radio_group) != radio_value) {
-		elm_radio_value_set(main_view->m_auto_save_id_pass_radio_group, radio_value);
-		if (radio_value == 0)
-			br_preference_set_str(AUTO_SAVE_ID_PASSWORD_KEY, ALWAYS_ASK);
-		else if (radio_value == 1)
-			br_preference_set_str(AUTO_SAVE_ID_PASSWORD_KEY, ALWAYS_ON);
-		else if (radio_value == 2)
-			br_preference_set_str(AUTO_SAVE_ID_PASSWORD_KEY, ALWAYS_OFF);
-
-		elm_genlist_item_update(main_view->m_auto_save_item_callback_data.it);
-	}
-
-	elm_genlist_item_selected_set(callback_data->it, EINA_FALSE);
-}
-
 void Browser_Settings_Main_View::__expandable_icon_clicked_cb(void *data, Evas_Object *obj,
 										void *event_info)
 {
@@ -970,28 +823,6 @@ void Browser_Settings_Main_View::__expandable_icon_clicked_cb(void *data, Evas_O
 										&(main_view->m_readable_item_callback_data), it,
 										ELM_GENLIST_ITEM_NONE, __default_view_level_sub_item_clicked_cb,
 										&(main_view->m_readable_item_callback_data));
-		} else if (it == main_view->m_auto_save_item_callback_data.it) {
-			BROWSER_LOGD("__expandable_icon_clicked_cb - autosave");
-			main_view->m_auto_save_always_ask_item_callback_data.type = BR_PRIVACY_SUBMENU_ALWAYS_ASK;
-			main_view->m_auto_save_always_ask_item_callback_data.user_data = main_view;
-			main_view->m_auto_save_always_ask_item_callback_data.it = elm_genlist_item_append(genlist, &(main_view->m_radio_text_item_class),
-										&(main_view->m_auto_save_always_ask_item_callback_data), it,
-										ELM_GENLIST_ITEM_NONE, __auto_save_id_pass_sub_item_clicked_cb,
-										&(main_view->m_auto_save_always_ask_item_callback_data));
-
-			main_view->m_auto_save_always_on_item_callback_data.type = BR_PRIVACY_SUBMENU_ALWAYS_ON;
-			main_view->m_auto_save_always_on_item_callback_data.user_data = main_view;
-			main_view->m_auto_save_always_on_item_callback_data.it = elm_genlist_item_append(genlist, &(main_view->m_radio_text_item_class),
-										&(main_view->m_auto_save_always_on_item_callback_data), it,
-										ELM_GENLIST_ITEM_NONE, __auto_save_id_pass_sub_item_clicked_cb,
-										&(main_view->m_auto_save_always_on_item_callback_data));
-
-			main_view->m_auto_save_always_off_item_callback_data.type = BR_PRIVACY_SUBMENU_ALWAYS_OFF;
-			main_view->m_auto_save_always_off_item_callback_data.user_data = main_view;
-			main_view->m_auto_save_always_off_item_callback_data.it = elm_genlist_item_append(genlist, &(main_view->m_radio_text_item_class),
-										&(main_view->m_auto_save_always_off_item_callback_data), it,
-										ELM_GENLIST_ITEM_NONE, __auto_save_id_pass_sub_item_clicked_cb,
-										&(main_view->m_auto_save_always_off_item_callback_data));
 		}
 	}
 
@@ -1026,14 +857,6 @@ void Browser_Settings_Main_View::__on_off_check_clicked_cb(void *data, Evas_Obje
 		state = elm_check_state_get(main_view->m_show_security_warnings_check);
 		elm_check_state_set(main_view->m_show_security_warnings_check, !state);
 		__show_security_warnings_check_changed_cb(main_view->m_show_security_warnings_check, NULL, NULL);
-	} else if (type == BR_PRIVACY_MENU_REMEMBER_FORM_DATA) {
-		state = elm_check_state_get(main_view->m_auto_save_form_data_check);
-		elm_check_state_set(main_view->m_auto_save_form_data_check, !state);
-		__auto_save_form_data_check_changed_cb(main_view->m_auto_save_form_data_check, NULL, NULL);
-	}else if (type == BR_PRIVACY_MENU_REMEMBER_PASSWORDS) {
-		state = elm_check_state_get(main_view->m_auto_save_id_pass_check);
-		elm_check_state_set(main_view->m_auto_save_id_pass_check, !state);
-		__auto_save_id_pass_check_changed_cb(main_view->m_auto_save_id_pass_check, NULL, NULL);
 	} else if (type == BR_PRIVACY_MENU_ACCEPT_COOKIES) {
 		state = elm_check_state_get(main_view->m_accept_cookies_check);
 		elm_check_state_set(main_view->m_accept_cookies_check, !state);
@@ -1094,10 +917,6 @@ void Browser_Settings_Main_View::__genlist_item_clicked_cb(void *data, Evas_Obje
 		main_view->_show_clear_history_confirm_popup();
 	} else if (type == BR_PRIVATE_MENU_CLEAR_ALL_COOKIE_DATA) {
 		main_view->_show_clear_all_cookie_data_confirm_popup();
-	} else if (type == BR_PRIVACY_CLEAR_FORM_DATA) {
-		main_view->_show_clear_form_data_confirm_popup();
-	} else if (type == BR_PRIVACY_CLEAR_PASSWORDS) {
-		main_view->_show_clear_passwords_confirm_popup();
 	} else if (type == BR_PRIVACY_WEBSITE_SETTING) {
 		BROWSER_LOGD("Web sites setting");
 		if (main_view->m_website_setting)
@@ -1140,7 +959,6 @@ void Browser_Settings_Main_View::_reset_settings(void)
 	br_preference_set_bool(BLOCK_POPUP_KEY, true);
 	br_preference_set_bool(SHOW_SECURITY_WARNINGS_KEY, true);
 	br_preference_set_bool(ACCEPT_COOKIES_KEY, true);
-	br_preference_set_bool(AUTO_SAVE_ID_PASSWORD_KEY, false);
 	if (vconf_set_int(VCONFKEY_SETAPPL_DEFAULT_MEM_WAP_INT, SETTING_DEF_MEMORY_PHONE) < 0)
 		BROWSER_LOGE("vconf_set_int(VCONFKEY_SETAPPL_DEFAULT_MEM_WAP_INT, SETTING_DEF_MEMORY_PHONE) failed");
 	if (vconf_set_str(USERAGENT_KEY, DEFAULT_USER_AGENT_STRING) < 0)
@@ -1419,133 +1237,6 @@ Eina_Bool Browser_Settings_Main_View::_show_clear_all_cookie_data_confirm_popup(
 	return EINA_TRUE;
 }
 
-void Browser_Settings_Main_View::__clear_passwords_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)data;
-	if (main_view->m_clear_passwords_confirm_popup) {
-		evas_object_del(main_view->m_clear_passwords_confirm_popup);
-		main_view->m_clear_passwords_confirm_popup = NULL;
-	}
-
-	main_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
-}
-
-void Browser_Settings_Main_View::__cancel_clear_passwords_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)data;
-	if (main_view->m_clear_passwords_confirm_popup) {
-		evas_object_del(main_view->m_clear_passwords_confirm_popup);
-		main_view->m_clear_passwords_confirm_popup = NULL;
-	}
-}
-
-void Browser_Settings_Main_View::__clear_form_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)data;
-	if (main_view->m_clear_form_data_confirm_popup) {
-		evas_object_del(main_view->m_clear_form_data_confirm_popup);
-		main_view->m_clear_form_data_confirm_popup = NULL;
-	}
-
-	main_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
-}
-
-void Browser_Settings_Main_View::__cancel_clear_form_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)data;
-	if (main_view->m_clear_form_data_confirm_popup) {
-		evas_object_del(main_view->m_clear_form_data_confirm_popup);
-		main_view->m_clear_form_data_confirm_popup = NULL;
-	}
-}
-Eina_Bool Browser_Settings_Main_View::_show_clear_passwords_confirm_popup(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (m_clear_passwords_confirm_popup)
-		evas_object_del(m_clear_passwords_confirm_popup);
-
-	m_clear_passwords_confirm_popup = elm_popup_add(m_genlist);
-	if (!m_clear_passwords_confirm_popup) {
-		BROWSER_LOGE("elm_popup_add failed");
-		return EINA_FALSE;
-	}
-
-	evas_object_size_hint_weight_set(m_clear_passwords_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-	std::string confirm_msg = std::string(BR_STRING_CLEAR_ALL_SAVED_PASSWORDS_Q);
-	elm_object_text_set(m_clear_passwords_confirm_popup, confirm_msg.c_str());
-
-	Evas_Object *ok_button = elm_button_add(m_clear_passwords_confirm_popup);
-	if (!ok_button) {
-		BROWSER_LOGE("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_text_set(ok_button, BR_STRING_YES);
-	elm_object_part_content_set(m_clear_passwords_confirm_popup, "button1", ok_button);
-	evas_object_smart_callback_add(ok_button, "clicked", __clear_passwords_confirm_response_cb, this);
-
-	Evas_Object *cancel_button = elm_button_add(m_clear_passwords_confirm_popup);
-	elm_object_text_set(cancel_button, BR_STRING_NO);
-	elm_object_part_content_set(m_clear_passwords_confirm_popup, "button2", cancel_button);
-	evas_object_smart_callback_add(cancel_button, "clicked", __cancel_clear_passwords_confirm_response_cb, this);
-
-	evas_object_show(m_clear_passwords_confirm_popup);
-
-	return EINA_TRUE;
-}
-
-Eina_Bool Browser_Settings_Main_View::_show_clear_form_data_confirm_popup(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (m_clear_form_data_confirm_popup)
-		evas_object_del(m_clear_form_data_confirm_popup);
-
-	m_clear_form_data_confirm_popup = elm_popup_add(m_genlist);
-	if (!m_clear_form_data_confirm_popup) {
-		BROWSER_LOGE("elm_popup_add failed");
-		return EINA_FALSE;
-	}
-
-	evas_object_size_hint_weight_set(m_clear_form_data_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-	std::string confirm_msg = std::string(BR_STRING_CLEAR_ALL_FORMDATA_Q);
-	elm_object_text_set(m_clear_form_data_confirm_popup, confirm_msg.c_str());
-
-	Evas_Object *ok_button = elm_button_add(m_clear_form_data_confirm_popup);
-	if (!ok_button) {
-		BROWSER_LOGE("elm_button_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_text_set(ok_button, BR_STRING_YES);
-	elm_object_part_content_set(m_clear_form_data_confirm_popup, "button1", ok_button);
-	evas_object_smart_callback_add(ok_button, "clicked", __clear_form_data_confirm_response_cb, this);
-
-	Evas_Object *cancel_button = elm_button_add(m_clear_form_data_confirm_popup);
-	elm_object_text_set(cancel_button, BR_STRING_NO);
-	elm_object_part_content_set(m_clear_form_data_confirm_popup, "button2", cancel_button);
-	evas_object_smart_callback_add(cancel_button, "clicked", __cancel_clear_form_data_confirm_response_cb, this);
-
-	evas_object_show(m_clear_form_data_confirm_popup);
-
-	return EINA_TRUE;
-}
-
 void Browser_Settings_Main_View::__clear_location_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -1755,18 +1446,6 @@ Evas_Object *Browser_Settings_Main_View::_create_content_genlist(void)
 	m_1_text_item_class.func.state_get = NULL;
 	m_1_text_item_class.func.del = NULL;
 
-	m_auto_save_form_data_callback_data.type = BR_PRIVACY_MENU_REMEMBER_FORM_DATA;
-	m_auto_save_form_data_callback_data.user_data = this;
-	m_auto_save_form_data_callback_data.it = elm_genlist_item_append(genlist, &m_2_text_1_icon_item_class,
-							&m_auto_save_form_data_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
-							__on_off_check_clicked_cb, &m_auto_save_form_data_callback_data);
-
-	m_clear_form_data_callback_data.type = BR_PRIVACY_CLEAR_FORM_DATA;
-	m_clear_form_data_callback_data.user_data = this;
-	m_clear_form_data_callback_data.it = elm_genlist_item_append(genlist, &m_2_text_3_item_class,
-							&m_clear_form_data_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
-							__genlist_item_clicked_cb, &m_clear_form_data_callback_data);
-
 	m_enable_location_callback_data.type = BR_PRIVACY_MENU_ENABLE_LOCATION;
 	m_enable_location_callback_data.user_data = this;
 	m_enable_location_callback_data.it = elm_genlist_item_append(genlist, &m_2_text_1_icon_item_class,
@@ -1783,17 +1462,6 @@ Evas_Object *Browser_Settings_Main_View::_create_content_genlist(void)
 	if (!enable_location)
 		elm_object_item_disabled_set(m_clear_location_access_callback_data.it, EINA_TRUE);
 
-	m_auto_save_item_callback_data.type = BR_PRIVACY_MENU_REMEMBER_PASSWORDS;
-	m_auto_save_item_callback_data.user_data = this;
-	m_auto_save_item_callback_data.it = elm_genlist_item_append(genlist, &m_2_text_1_icon_item_class,
-							&m_auto_save_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
-							__on_off_check_clicked_cb, &m_auto_save_item_callback_data);
-
-	m_clear_passwords_callback_data.type = BR_PRIVACY_CLEAR_PASSWORDS;
-	m_clear_passwords_callback_data.user_data = this;
-	m_clear_passwords_callback_data.it = elm_genlist_item_append(genlist, &m_2_text_3_item_class,
-							&m_clear_passwords_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
-							__genlist_item_clicked_cb, &m_clear_passwords_callback_data);
 	/* Others */
 	m_seperator_item_class.item_style = "grouptitle.dialogue.seperator";
 	m_seperator_item_class.func.text_get = NULL;

@@ -114,8 +114,6 @@
 #define BLOCK_POPUP_KEY	"BlockPopup"
 #define SHOW_SECURITY_WARNINGS_KEY	"ShowSecurityWarnings"
 #define ACCEPT_COOKIES_KEY	"AcceptCookies"
-#define AUTO_SAVE_ID_PASSWORD_KEY	"AutoSaveIDPassword"
-#define AUTO_SAVE_FORM_DATA_KEY	"AutoSaveFormData"
 #define ENABLE_LOCATION_KEY	"EnableLocation"
 #ifdef ZOOM_BUTTON
 #define ZOOM_BUTTON_KEY	"Zoombutton"

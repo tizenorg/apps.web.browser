@@ -40,33 +40,29 @@ public:
 		BR_HOMEPAGE_SUBMENU_USER_HOMEPAGE,
 		BR_HOMEPAGE_SUBMENU_EMPTY_PAGE,
 		BR_HOMEPAGE_SUBMENU_CURRENT_PAGE,
-		BR_CONTENT_TITLE = 10,
+		BR_CONTENT_TITLE,
 		BR_CONTENT_MENU_DEFAULT_VIEW_LEVEL,
 		BR_CONTENT_SUBMENU_FIT_TO_WIDTH,
 		BR_CONTENT_SUBMENU_READABLE,
 		BR_CONTENT_MENU_RUN_JAVASCRIPT,
 		BR_CONTENT_MENU_DISPLAY_IMAGES,
 		BR_CONTENT_MENU_BLOCK_POPUP,
-		BR_PRIVACY_TITLE = 20,
+		BR_PRIVACY_TITLE,
 		BR_PRIVATE_MENU_CLEAR_CACHE,
 		BR_PRIVATE_MENU_CLEAR_HISTORY,
 		BR_PRIVATE_MENU_SHOW_SECURITY_WARNINGS,
 		BR_PRIVACY_MENU_ACCEPT_COOKIES,
 		BR_PRIVATE_MENU_CLEAR_ALL_COOKIE_DATA,
-		BR_PRIVACY_MENU_REMEMBER_FORM_DATA,
-		BR_PRIVACY_CLEAR_FORM_DATA,
-		BR_PRIVACY_MENU_REMEMBER_PASSWORDS = 30,
-		BR_PRIVACY_CLEAR_PASSWORDS,
 		BR_PRIVACY_WEBSITE_SETTING,
 		BR_PRIVACY_SUBMENU_ALWAYS_ASK,
 		BR_PRIVACY_SUBMENU_ALWAYS_ON,
 		BR_PRIVACY_SUBMENU_ALWAYS_OFF,
-		BR_PRIVACY_MENU_CLEAR_PRIVATE_DATA = 40,
+		BR_PRIVACY_MENU_CLEAR_PRIVATE_DATA,
 		BR_PRIVACY_MENU_ENABLE_LOCATION,
 		BR_PRIVACY_MENU_CLEAR_LOCATION_ACCESS,
-		BR_MENU_CERTIFICATES = 60,
+		BR_MENU_CERTIFICATES,
 		BR_MENU_RESET_TO_DEFAULT,
-		BR_DEBUG_TITLE = 70,
+		BR_DEBUG_TITLE,
 		BR_MENU_USER_AGENT,
 		BR_MENU_UNKNOWN
 	}menu_type;
@@ -92,8 +88,6 @@ private:
 	Eina_Bool _show_clear_cache_confirm_popup(void);
 	Eina_Bool _show_clear_history_confirm_popup(void);
 	Eina_Bool _show_clear_all_cookie_data_confirm_popup(void);
-	Eina_Bool _show_clear_passwords_confirm_popup(void);
-	Eina_Bool _show_clear_form_data_confirm_popup(void);
 
 	Eina_Bool _show_clear_location_confirm_popup(void);
 	static void __clear_location_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
@@ -113,8 +107,6 @@ private:
 	static void __homepage_sub_item_clicked_cb(void *data, Evas_Object *obj,
 								void *event_info);
 	static void __default_view_level_sub_item_clicked_cb(void *data,
-						Evas_Object *obj, void *event_info);
-	static void __auto_save_id_pass_sub_item_clicked_cb(void *data,
 						Evas_Object *obj, void *event_info);
 	static void __run_javascript_check_changed_cb(void *data,
 						Evas_Object *obj, void *event_info);
@@ -141,10 +133,6 @@ private:
 	static void __cancel_clear_history_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __clear_all_cookie_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __cancel_clear_all_cookie_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __clear_passwords_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __cancel_clear_passwords_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __clear_form_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __cancel_clear_form_data_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __naviframe_pop_finished_cb(void *data , Evas_Object *obj, void *event_info);
 	static void __application_cache_origin_get_cb(Eina_List* origins, void* user_data);
 	static void __web_storage_origin_get_cb(Eina_List* origins, void* user_data);
@@ -191,13 +179,6 @@ private:
 	genlist_callback_data m_show_security_warnings_item_callback_data;
 	genlist_callback_data m_accept_cookies_item_callback_data;
 	genlist_callback_data m_clear_all_cookies_data_item_callback_data;
-	genlist_callback_data m_auto_save_item_callback_data;
-	genlist_callback_data m_auto_save_form_data_callback_data;
-	genlist_callback_data m_clear_form_data_callback_data;
-	genlist_callback_data m_auto_save_always_ask_item_callback_data;
-	genlist_callback_data m_auto_save_always_on_item_callback_data;
-	genlist_callback_data m_auto_save_always_off_item_callback_data;
-	genlist_callback_data m_clear_passwords_callback_data;
 	genlist_callback_data m_website_setting_callback_data;
 	genlist_callback_data m_clear_private_data_item_callback_data;
 	genlist_callback_data m_enable_location_callback_data;
@@ -216,12 +197,8 @@ private:
 	Evas_Object *m_display_images_check;
 	Evas_Object *m_block_popup_check;
 	Evas_Object *m_clear_cache_confirm_popup;
-	Evas_Object *m_clear_passwords_confirm_popup;
-	Evas_Object *m_clear_form_data_confirm_popup;
 	Evas_Object *m_clear_history_confirm_popup;
 	Evas_Object *m_accept_cookies_check;
-	Evas_Object *m_auto_save_id_pass_check;
-	Evas_Object *m_auto_save_form_data_check;
 	Evas_Object *m_clear_all_cookies_data_confirm_popup;
 	Evas_Object *m_enable_location_check;
 	Evas_Object *m_clear_location_confirm_popup;
