@@ -11,7 +11,7 @@ msgid "IDS_BR_SK_RETRY"
 msgstr "Réessayer"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "Gestionnaire de téléchargement"
+msgstr "Gestion des téléchargements"
 
 msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
 msgstr "Descripteur non valide"
@@ -626,7 +626,7 @@ msgid "IDS_BR_BODY_SELECT_WORD"
 msgstr "Sélect. mot"
 
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "Rech. sur page"
+msgstr "Rechercher sur la page"
 
 msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
 msgstr "Rech. sur page"
@@ -641,7 +641,7 @@ msgid "IDS_BR_OPT_LIST"
 msgstr "Liste"
 
 msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Sélect. tout"
+msgstr "Sélectionner tout"
 
 msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
 msgstr "Message"
@@ -773,7 +773,7 @@ msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
 msgstr "Restaurer valeurs par défaut"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Tous les paramètres par défaut. Continuer ?"
+msgstr "Tous les paramètres par défaut seront rétablis. Continuer ?"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
 msgstr "Vider le cache ?"
@@ -803,7 +803,7 @@ msgid "IDS_BR_BODY_PRINT"
 msgstr "Imprimer"
 
 msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Rechercher ou entrer une URL"
+msgstr "Saisir une adresse"
 
 msgid "IDS_BR_BODY_AUTO"
 msgstr "Auto."

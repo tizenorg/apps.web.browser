@@ -92,7 +92,7 @@ msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "組織："
 
 msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "エージェント​を​利用​します"
+msgstr "利用するエージェント"
 
 msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
 msgstr "Last Viewed Page"
@@ -290,16 +290,16 @@ msgid "IDS_BR_OPT_SHARE"
 msgstr "共有"
 
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "最近見たページ"
+msgstr "最近見たサイト"
 
 msgid "IDS_BR_OPT_DISPLAY"
 msgstr "画面"
 
 msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "幅​に​合わせる"
+msgstr "画面幅に合わせる"
 
 msgid "IDS_BR_BODY_READABLE"
-msgstr "判読可能"
+msgstr "読みやすさ"
 
 msgid "IDS_BR_BODY_PRIVACY"
 msgstr "プライバシー"
@@ -449,7 +449,7 @@ msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
 msgstr "保存したＩＤ/パスワードを削除する"
 
 msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Cookieを消去"
+msgstr "全てのCoockieを消去"
 
 msgid "IDS_BR_BODY_UP"
 msgstr "上"
@@ -635,7 +635,7 @@ msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
-msgstr "インターネット"
+msgstr "ブラウザ"
 
 msgid "IDS_BR_OPT_LIST"
 msgstr "リスト"
@@ -773,7 +773,7 @@ msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
 msgstr "初期値にリセット"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "全て​の​設定​は​標準​に​戻り​ました。​続行​しますか？"
+msgstr "全ての設定が標準に戻ります。続行しますか？"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
 msgstr "キャッシュ​を​消去​しますか？"

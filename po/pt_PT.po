@@ -92,7 +92,7 @@ msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organização:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Agente de utilizador"
+msgstr "User Agent"
 
 msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
 msgstr "Last Viewed Page"

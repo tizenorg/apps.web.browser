@@ -92,7 +92,7 @@ msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organización:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Agente de usuario"
+msgstr "User agent"
 
 msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
 msgstr "Última página visitada"
@@ -464,7 +464,7 @@ msgid "IDS_BR_BODY_DEFAULT_VIEW"
 msgstr "Vista predeterminada"
 
 msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Ajuste. del cont. de pág."
+msgstr "Ajustes del contenido de página"
 
 msgid "IDS_BR_POP_CASE_SENSITIVE"
 msgstr "Distinción mayúsculas/minúsculas"

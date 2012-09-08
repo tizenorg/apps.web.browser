@@ -34,6 +34,7 @@
 #define BR_STRING_DONE          dgettext("sys_string", "IDS_COM_SK_DONE")
 #define BR_STRING_DELETE        dgettext("sys_string", "IDS_COM_SK_DELETE")
 #define BR_STRING_DELETE_Q      dgettext("sys_string", "IDS_COM_POP_DELETE_Q")
+#define BR_STRING_DELETE_ALL           dgettext("sys_string", "IDS_COM_BODY_DELETE_ALL")
 #define BR_STRING_CLOSE         dgettext("sys_string", "IDS_COM_POP_CLOSE")
 #define BR_STRING_ON            dgettext("sys_string", "IDS_COM_BODY_ON")
 #define BR_STRING_OFF           dgettext("sys_string", "IDS_COM_BODY_OFF")
@@ -120,7 +121,7 @@
 #define BR_STRING_CURRENT_PAGE          _("IDS_BR_BODY_CURRENT_PAGE")
 #define BR_STRING_USER_HOMEPAGE             _("User homepage")//not visible text
 #define BR_STRING_CONTENT_SETTINGS      _("IDS_BR_MBODY_PAGE_CONTENT_SETTINGS")
-#define BR_STRING_DEFAULT_VIEW_LEVEL    _("Default view level")//stms, new text
+#define BR_STRING_DEFAULT_VIEW_LEVEL    _("IDS_BR_BODY_DEFAULT_VIEW")//stms, new text
 #define BR_STRING_FIT_TO_WIDTH          _("IDS_BR_BODY_FIT_TO_WIDTH")
 #define BR_STRING_READABLE              _("IDS_BR_BODY_READABLE")
 #define BR_STRING_RUN_JAVASCRIPT        _("IDS_BR_BODY_RUN_JAVASCRIPT")
@@ -168,7 +169,6 @@
 #define BR_STRING_CLEAR_LOCATION_ACCESS_FOR_THIS_WEBSITE     _("Clear location access for this website?")
 #define BR_STRING_DELETE_ALL_STORED_DATA_BY_THIS_WEBSITE     _("Delete all data stored by this website?")
 #define BR_STRING_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS     _("Delete all website data and location permissions?")
-#define BR_STRING_DELETE_ALL     _("Delete all")
 
 //developer mode
 #define BR_STRING_DEVELOPER_MODE                _("IDS_BR_BODY_DEVELOPER_MODE")

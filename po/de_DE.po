@@ -464,7 +464,7 @@ msgid "IDS_BR_BODY_DEFAULT_VIEW"
 msgstr "Standardansicht"
 
 msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Einstell. f. Seiteninhalt"
+msgstr "Seiteninhaltseinstellungen"
 
 msgid "IDS_BR_POP_CASE_SENSITIVE"
 msgstr "Groß- und Kleinschreibung beachten"

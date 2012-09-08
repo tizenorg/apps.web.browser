@@ -92,7 +92,7 @@ msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizzazione:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Agente utente"
+msgstr "Utente del dispositivo"
 
 msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
 msgstr "Last Viewed Page"
@@ -464,7 +464,7 @@ msgid "IDS_BR_BODY_DEFAULT_VIEW"
 msgstr "Vista predefinita"
 
 msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Impost. contenuto pagina"
+msgstr "Impostazioni contenuto pagina"
 
 msgid "IDS_BR_POP_CASE_SENSITIVE"
 msgstr "Maiuscole/minuscole"
@@ -773,7 +773,7 @@ msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
 msgstr "Ripristina impostazioni predefinite"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Tutti i valori corrispondono alle impostazioni predefinite. Continuare?"
+msgstr "Verranno ripristinate tutte le impostazioni predefinite. Continuare?"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
 msgstr "Svuotare cache?"
@@ -797,13 +797,13 @@ msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
 msgstr "Impossibile aggiungere preferito. Raggiunto numero massimo di preferiti"
 
 msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Eliminare le informazioni di accesso alla posizione del sito Web?"
+msgstr "Eliminare le informazioni di accesso alla posizione?"
 
 msgid "IDS_BR_BODY_PRINT"
 msgstr "Stampa"
 
 msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Cerca o immetti URL"
+msgstr "Cerca o inserisci URL"
 
 msgid "IDS_BR_BODY_AUTO"
 msgstr "Automatica"
