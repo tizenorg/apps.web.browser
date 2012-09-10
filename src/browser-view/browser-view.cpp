@@ -2007,18 +2007,6 @@ void Browser_View::_destroy_scissorbox_view(void)
 	evas_object_show(m_control_bar);
 }
 
-void Browser_View::__share_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->_destroy_more_context_popup();
-	browser_view->_show_share_popup(browser_view->get_url().c_str());
-}
-
-
 void Browser_View::__private_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -2521,9 +2509,6 @@ Eina_Bool Browser_View::_show_more_context_popup(void)
 		get_url().empty()
 	    || _get_edit_mode() == BR_FIND_WORD_MODE)
 		elm_object_item_disabled_set(sub_menu, EINA_TRUE);
-
-	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_SHARE, NULL,
-							__share_cb, this);
 
 	m_bookmark_on_off_icon = elm_icon_add(m_more_context_popup);
 
