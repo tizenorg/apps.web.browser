@@ -1180,7 +1180,7 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 		return EINA_FALSE;
 	}
 
-	m_history_genlist_item_class.decorate_item_style = "mode/slide3";
+	m_history_genlist_item_class.decorate_item_style = "mode/slide2";
 	m_history_genlist_item_class.item_style = "dialogue/2text.2icon.3";
 	m_history_genlist_item_class.decorate_all_item_style = "dialogue/edit";
 	m_history_genlist_item_class.func.text_get = __genlist_label_get_cb;
@@ -1606,22 +1606,11 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 			LOGD("elm_button_add() is failed.");
 			return NULL;
 		}
-
-		elm_object_style_set(button, "sweep/multiline");
-		elm_object_text_set(button, BR_STRING_SHARE);
-		evas_object_smart_callback_add(button, "clicked", __slide_share_button_clicked_cb, item);
-		return button;
-	} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
-		Evas_Object *button = elm_button_add(obj);
-		if (!button) {
-			LOGD("elm_button_add() is failed.");
-			return NULL;
-		}
 		elm_object_style_set(button, "sweep/multiline");
 		elm_object_text_set(button, BR_STRING_ADD_TO_BOOKMARKS);
 		evas_object_smart_callback_add(button, "clicked", __slide_add_to_bookmark_button_clicked_cb, item);
-		return button;	
-	} else if (!strncmp(part, "elm.slide.swallow.3", strlen("elm.slide.swallow.3"))) {
+		return button;
+	} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
 		Evas_Object *button = elm_button_add(obj);
 		if (!button) {
 			LOGD("elm_button_add() is failed.");
