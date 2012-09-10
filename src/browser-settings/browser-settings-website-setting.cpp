@@ -739,6 +739,7 @@ void Browser_Settings_Website_Setting::__application_cache_origin_get_cb(Eina_Li
 				    && !strcmp(website_setting->m_website_setting_list[i]->url.c_str(), ewk_security_origin_host_get(origin))) {
 					duplicated = EINA_TRUE;
 					website_setting->m_website_setting_list[i]->storage = EINA_TRUE;
+					website_setting->m_website_setting_list[i]->origin = origin;
 
 					elm_genlist_item_update((Elm_Object_Item *)(website_setting->m_website_setting_list[i]->user_data));
 					break;
@@ -798,6 +799,7 @@ void Browser_Settings_Website_Setting::__web_storage_origin_get_cb(Eina_List* or
 				    && !strcmp(website_setting->m_website_setting_list[i]->url.c_str(), ewk_security_origin_host_get(origin))) {
 					duplicated = EINA_TRUE;
 					website_setting->m_website_setting_list[i]->storage = EINA_TRUE;
+					website_setting->m_website_setting_list[i]->origin = origin;
 
 					elm_genlist_item_update((Elm_Object_Item *)(website_setting->m_website_setting_list[i]->user_data));
 					break;
@@ -857,6 +859,7 @@ void Browser_Settings_Website_Setting::__web_database_origin_get_cb(Eina_List* o
 				    && !strcmp(website_setting->m_website_setting_list[i]->url.c_str(), ewk_security_origin_host_get(origin))) {
 					duplicated = EINA_TRUE;
 					website_setting->m_website_setting_list[i]->storage = EINA_TRUE;
+					website_setting->m_website_setting_list[i]->origin = origin;
 
 					elm_genlist_item_update((Elm_Object_Item *)(website_setting->m_website_setting_list[i]->user_data));
 					break;
