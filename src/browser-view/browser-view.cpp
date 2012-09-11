@@ -1500,7 +1500,7 @@ void Browser_View::_reload(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	if (m_focused_window->m_ewk_view)
-		ewk_view_reload_bypass_cache(m_focused_window->m_ewk_view);
+		ewk_view_reload(m_focused_window->m_ewk_view);
 }
 
 void Browser_View::set_focused_window(Browser_Window *window
