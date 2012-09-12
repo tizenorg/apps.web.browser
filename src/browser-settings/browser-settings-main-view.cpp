@@ -953,7 +953,7 @@ void Browser_Settings_Main_View::_reset_settings(void)
 	br_preference_set_str(HOMEPAGE_KEY, USER_HOMEPAGE);
 #endif
 	br_preference_set_str(USER_HOMEPAGE_KEY, BROWSER_DEFAULT_USER_HOMEPAGE);
-	br_preference_set_str(DEFAULT_VIEW_LEVEL_KEY, FIT_TO_WIDTH);
+	br_preference_set_str(DEFAULT_VIEW_LEVEL_KEY, READABLE);
 	br_preference_set_bool(RUN_JAVASCRIPT_KEY, true);
 	br_preference_set_bool(DISPLAY_IMAGES_KEY, true);
 	br_preference_set_bool(BLOCK_POPUP_KEY, true);

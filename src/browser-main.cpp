@@ -88,7 +88,7 @@ static bool __init_preference()
 		return false;
 	if (!br_preference_create_str(SEARCHURL_KEY, "http://search.yahoo.com/search?p="))
 		return false;
-	if (!br_preference_create_str(DEFAULT_VIEW_LEVEL_KEY, "READABLE"))
+	if (!br_preference_create_str(DEFAULT_VIEW_LEVEL_KEY, READABLE))
 		return false;
 	if (!br_preference_create_bool(RUN_JAVASCRIPT_KEY, true))
 		return false;
