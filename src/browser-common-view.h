@@ -53,10 +53,16 @@ public:
 	void hide_notify_popup_layout(Evas_Object *parent);
 	Eina_Bool find_word_with_text(const char *text_to_find);
 protected:
+	typedef struct _quota_size_change_callback_data {
+		Browser_Common_View *common_view;
+		Ewk_Context_Exceeded_Quota *database_quota;
+	} quota_size_change_callback_data;
+
 	Evas_Object *_capture_snapshot(Browser_Window *window, float scale);
 	void _set_navigationbar_title(const char *title);
 	Eina_Bool _has_url_sheme(const char *url);
 	Eina_Bool _show_share_popup(const char *url);
+	Eina_Bool _show_database_quota_size_change_popup(Ewk_Context_Exceeded_Quota *database_quota);
 	Eina_Bool _launch_streaming_player(const char *url, const char *cookie = NULL);
 	Eina_Bool _send_via_message(std::string url, std::string to, Eina_Bool attach_file = EINA_FALSE);
 	Eina_Bool _send_via_email(std::string url, Eina_Bool attach_file = EINA_FALSE);
@@ -65,6 +71,9 @@ protected:
 	Eina_Bool _check_available_sns_account(void);
 	Eina_Bool _post_to_sns(std::string sns_name, std::string url);
 	Eina_Bool _get_available_sns_list(void);
+
+	static void __database_quota_size_change_popup_ok_cb(void* data, Evas_Object* obj, void* event_info);
+	static void __database_quota_size_change_popup_cancel_cb(void* data, Evas_Object* obj, void* event_info);
 	static bool __get_sns_list(account_h account, void *data);
 
 	/* Elementary event callback functions */
@@ -102,10 +111,12 @@ private:
 	Evas_Object *m_selinfo_layout;
 	Evas_Object *m_share_popup;
 	Evas_Object *m_share_list;
+	Evas_Object *m_database_quota_change_confirm_popup;
 	Evas_Object *m_call_confirm_popup;
 	std::string m_share_url;
 	std::string m_tel_number;
 	call_type m_call_type;
+	quota_size_change_callback_data m_quota_data;
 	ui_gadget_h m_ug;
 };
 #endif /* BROWSER_COMMON_VIEW_H */

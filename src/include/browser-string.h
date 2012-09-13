@@ -213,6 +213,7 @@
 #define BR_STRING_REMOVED_TO_BOOKMARKS          _("IDS_BR_POP_REMOVED_FROM_BOOKMARKS")
 // new text
 #define BR_STRING_MSG_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q  _("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
+#define BR_STRING_MSG_ASK_INCREASING_QUOTA_Q    _("Do you want to allow %s to use up to %dMB of storage?")
 /*************************************************************************************************************/
 
 

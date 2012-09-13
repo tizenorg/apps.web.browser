@@ -675,6 +675,21 @@ Eina_Bool Browser_View::_haptic_device_close(void)
 	return EINA_TRUE;
 }
 
+Eina_Bool Browser_View::_change_ewk_database_quota_size(Ewk_Context_Exceeded_Quota *database_quota)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	const unsigned long default_database_quota_size = 5 * 1024 * 1024; /* 5MB size as default */
+	unsigned long expected_database_quota_size = ewk_context_web_database_exceeded_quota_expected_usage_get(database_quota);
+
+	if (expected_database_quota_size < default_database_quota_size) {
+		ewk_context_web_database_exceeded_quota_new_quota_set(database_quota, default_database_quota_size);
+		return EINA_FALSE;
+	} else {
+		return _show_database_quota_size_change_popup(database_quota);
+	}
+}
+
 void Browser_View::__create_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -1379,6 +1394,20 @@ void Browser_View::__ewk_view_vibration_cancel_cb(void *data, Evas_Object *obj, 
 	Browser_View *browser_view = (Browser_View*)data;
 
 	browser_view->_haptic_device_stop();
+}
+
+void Browser_View::__ewk_view_database_quota_exceeded_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!data)
+		return;
+
+	if (!event_info)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_change_ewk_database_quota_size((Ewk_Context_Exceeded_Quota *)event_info);
 }
 
 void Browser_View::__ewk_view_mouse_up_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)

@@ -36,6 +36,7 @@ Browser_Common_View::Browser_Common_View(void)
 	,m_ug(NULL)
 	,m_share_popup(NULL)
 	,m_share_list(NULL)
+	,m_database_quota_change_confirm_popup(NULL)
 	,m_call_confirm_popup(NULL)
 	,m_call_type(CALL_UNKNOWN)
 {
@@ -68,6 +69,10 @@ Browser_Common_View::~Browser_Common_View(void)
 	if (m_ug) {
 		ug_destroy(m_ug);
 		m_ug = NULL;
+	}
+	if (m_database_quota_change_confirm_popup) {
+		evas_object_del(m_database_quota_change_confirm_popup);
+		m_database_quota_change_confirm_popup = NULL;
 	}
 	if (m_call_confirm_popup) {
 		evas_object_del(m_call_confirm_popup);
@@ -434,6 +439,61 @@ void Browser_Common_View::__share_via_nfc_cb(void *data, Evas_Object *obj, void 
 	__popup_response_cb(common_view, NULL, NULL);
 }
 
+Eina_Bool Browser_Common_View::_show_database_quota_size_change_popup(Ewk_Context_Exceeded_Quota *database_quota)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	Ewk_Security_Origin* origin = ewk_context_web_database_exceeded_quota_security_origin_get(database_quota);
+	Browser_View *browser_view = m_data_manager->get_browser_view();
+
+	const char *host_name = ewk_security_origin_host_get(origin);
+	unsigned long expected_quota_size = ewk_context_web_database_exceeded_quota_expected_usage_get(database_quota);
+
+	m_quota_data.common_view = this;
+	m_quota_data.database_quota = database_quota;
+
+	/* Make confirm msg */
+	std::string::size_type pos = std::string::npos;
+	std::string confirm_msg = std::string(BR_STRING_MSG_ASK_INCREASING_QUOTA_Q);
+	char quota_size_str[21] = {0, };
+	snprintf(quota_size_str, 20, "%d", (int)(expected_quota_size / (1024 * 1024)));
+
+	while ((pos = confirm_msg.find("%s")) != std::string::npos) {
+		if (host_name && strlen(host_name))
+			confirm_msg.replace(pos, strlen("%s"), host_name);
+		else
+			confirm_msg.replace(pos, strlen("%s"), browser_view->get_url().c_str());
+	}
+
+	while ((pos = confirm_msg.find("%d")) != std::string::npos)
+		confirm_msg.replace(pos, strlen("%d"), quota_size_str);
+
+	if (m_database_quota_change_confirm_popup) {
+		evas_object_del(m_database_quota_change_confirm_popup);
+		m_database_quota_change_confirm_popup = NULL;
+	}
+	m_database_quota_change_confirm_popup = elm_popup_add(m_navi_bar);
+	evas_object_size_hint_weight_set(m_database_quota_change_confirm_popup,
+									EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_text_set(m_database_quota_change_confirm_popup, confirm_msg.c_str());
+	evas_object_show(m_database_quota_change_confirm_popup);
+
+	Evas_Object *ok_button = elm_button_add(m_database_quota_change_confirm_popup);
+	elm_object_text_set(ok_button, BR_STRING_OK);
+	elm_object_part_content_set(m_database_quota_change_confirm_popup, "button1", ok_button);
+	elm_object_style_set(ok_button, "popup_button/default");
+	evas_object_smart_callback_add(ok_button, "clicked", __database_quota_size_change_popup_ok_cb, &m_quota_data);
+
+	Evas_Object *cancel_button = elm_button_add(m_database_quota_change_confirm_popup);
+	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(m_database_quota_change_confirm_popup, "button2", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __database_quota_size_change_popup_cancel_cb, &m_quota_data);
+
+	return EINA_TRUE;
+
+}
+
 Eina_Bool Browser_Common_View::_launch_streaming_player(const char *url, const char *cookie)
 {
 	BROWSER_LOGD("%s", __func__);
@@ -574,6 +634,37 @@ Eina_Bool Browser_Common_View::_get_available_sns_list(void)
 	return EINA_TRUE;
 }
 
+void Browser_Common_View::__database_quota_size_change_popup_ok_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	if (!data)
+		return;
+
+	quota_size_change_callback_data *quota_data = (quota_size_change_callback_data *)data;
+	Browser_Common_View *common_view = quota_data->common_view;
+	unsigned long expected_database_quota_size = ewk_context_web_database_exceeded_quota_expected_usage_get(quota_data->database_quota);
+
+	/* Added default_quota_database_size is reserved for memory space */
+	ewk_context_web_database_exceeded_quota_new_quota_set(quota_data->database_quota, expected_database_quota_size);
+
+	evas_object_del(common_view->m_database_quota_change_confirm_popup);
+	common_view->m_database_quota_change_confirm_popup = NULL;
+}
+
+void Browser_Common_View::__database_quota_size_change_popup_cancel_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	if (!data)
+		return;
+
+	quota_size_change_callback_data *quota_data = (quota_size_change_callback_data *)data;
+	Browser_Common_View *common_view = quota_data->common_view;
+
+	evas_object_del(common_view->m_database_quota_change_confirm_popup);
+	common_view->m_database_quota_change_confirm_popup = NULL;
+}
 
 bool Browser_Common_View::__get_sns_list(account_h account, void *data)
 {

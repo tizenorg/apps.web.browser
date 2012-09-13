@@ -371,6 +371,8 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 					Browser_View::__ewk_view_vibration_vibrate_cb);
 	evas_object_smart_callback_del(ewk_view, "vibration,cancel",
 					Browser_View::__ewk_view_vibration_cancel_cb);
+	evas_object_smart_callback_del(ewk_view, "database,quota,exceeded",
+					Browser_View::__ewk_view_database_quota_exceeded_cb);
 
 	evas_object_smart_callback_del(ewk_view, "create,window", Browser_View::__create_window_cb);
 	evas_object_smart_callback_del(ewk_view, "close,window", Browser_View::__close_window_cb);
@@ -424,6 +426,8 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 					Browser_View::__ewk_view_vibration_vibrate_cb, m_browser_view);
 	evas_object_smart_callback_add(ewk_view, "vibration,cancel",
 					Browser_View::__ewk_view_vibration_cancel_cb, m_browser_view);
+	evas_object_smart_callback_add(ewk_view, "database,quota,exceeded",
+					Browser_View::__ewk_view_database_quota_exceeded_cb, m_browser_view);
 
 	evas_object_smart_callback_add(ewk_view, "create,window", Browser_View::__create_window_cb, m_browser_view);
 	evas_object_smart_callback_add(ewk_view, "close,window", Browser_View::__close_window_cb, m_browser_view);
