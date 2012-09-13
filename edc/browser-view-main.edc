@@ -645,6 +645,26 @@ collections {
 				target: "elm.swallow.zoom_out_button";
 				target: "elm.swallow.zoom_in_button";
 			}
+			program { name: "show,zoom_in_buttons";
+				signal: "show,zoom_in_buttons,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.zoom_in_button";
+			}
+			program { name: "hide,zoom_in_buttons";
+				signal: "hide,zoom_in_buttons,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.zoom_in_button";
+			}
+			program { name: "show,zoom_out_buttons";
+				signal: "show,zoom_out_buttons,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.zoom_out_button";
+			}
+			program { name: "hide,zoom_out_buttons";
+				signal: "hide,zoom_out_buttons,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.zoom_out_button";
+			}
 			/* endif ZOOM_BUTTON */
 
 			/////////////////////////////

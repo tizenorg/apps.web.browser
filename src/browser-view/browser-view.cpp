@@ -1307,13 +1307,17 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	if (zoom_button_flag == false)
 		return;
 
-
 	ewk_view_scale_range_get(browser_view->m_focused_window->m_ewk_view,
 					&min_scale, &max_scale);
+
+	if (min_scale < scale_factor)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_out_buttons,signal", "");
+	if (max_scale > scale_factor)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_in_buttons,signal", "");
+
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
 	browser_view->m_zoom_button_timer = ecore_timer_add(3, __zoom_button_timeout_cb, browser_view);
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_buttons,signal", "");
 #endif
 }
 
@@ -4004,7 +4008,8 @@ Eina_Bool Browser_View::__zoom_button_timeout_cb(void *data)
 	Browser_View *browser_view = (Browser_View *)data;
 	browser_view->m_zoom_button_timer = NULL;
 
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_buttons,signal", "");
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_in_buttons,signal", "");
+	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_out_buttons,signal", "");
 
 	return ECORE_CALLBACK_CANCEL;
 }
@@ -4016,8 +4021,18 @@ void Browser_View::__zoom_out_clicked_cb(void *data, Evas_Object *obj, void *eve
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	double min_scale = 0;
+	double max_scale = 0;
 	double scale_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
 	ewk_view_scale_set(browser_view->m_focused_window->m_ewk_view, scale_factor - 0.5f, 0, 0);
+	ewk_view_scale_range_get(browser_view->m_focused_window->m_ewk_view,
+					&min_scale, &max_scale);
+
+	if ((scale_factor - 0.5f) <= min_scale)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_out_buttons,signal", "");
+
+	if (scale_factor == max_scale)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_in_buttons,signal", "");
 
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
@@ -4031,8 +4046,18 @@ void Browser_View::__zoom_in_clicked_cb(void *data, Evas_Object *obj, void *even
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	double min_scale = 0;
+	double max_scale = 0;
 	double scale_factor = ewk_view_scale_get(browser_view->m_focused_window->m_ewk_view);
 	ewk_view_scale_set(browser_view->m_focused_window->m_ewk_view, scale_factor + 0.5f, 0, 0);
+	ewk_view_scale_range_get(browser_view->m_focused_window->m_ewk_view,
+					&min_scale, &max_scale);
+
+	if ((scale_factor + 0.5f) >= max_scale)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_in_buttons,signal", "");
+
+	if (scale_factor == min_scale)
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_out_buttons,signal", "");
 
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
