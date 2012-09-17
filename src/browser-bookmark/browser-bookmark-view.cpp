@@ -2255,17 +2255,16 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
 
+		m_bookmark_delete_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
+								NULL, BR_STRING_DELETE,
+								__delete_controlbar_item_clicked_cb, this);
+
 		Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 		elm_object_item_disabled_set(empty_item, EINA_TRUE);
-
-		m_bookmark_delete_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
-									BROWSER_IMAGE_DIR"/01_controlbar_icon_delete.png",
-									NULL, __delete_controlbar_item_clicked_cb, this);
-
 		empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 
-		elm_toolbar_item_append(m_bottom_control_bar, BROWSER_IMAGE_DIR"/01_controllbar_icon_close.png", NULL,
+		elm_toolbar_item_append(m_bottom_control_bar, NULL, BR_STRING_CANCEL,
 										__edit_controlbar_item_clicked_cb, this);
 
 		if (type == BOOKMARK_VIEW_EDIT_MODE) {
@@ -2328,13 +2327,12 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
 
-		Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
-		elm_object_item_disabled_set(empty_item, EINA_TRUE);
-
 		m_bookmark_edit_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
-								BROWSER_IMAGE_DIR"/01_controlbar_icon_compose.png", NULL,
+								NULL, BR_STRING_DELETE,
 								__edit_controlbar_item_clicked_cb, this);
 
+		Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
+		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 		empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 
