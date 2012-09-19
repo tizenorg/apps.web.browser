@@ -1310,10 +1310,15 @@ void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object*
 	ewk_view_scale_range_get(browser_view->m_focused_window->m_ewk_view,
 					&min_scale, &max_scale);
 
-	if (min_scale < scale_factor)
-		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_out_buttons,signal", "");
-	if (max_scale > scale_factor)
-		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_in_buttons,signal", "");
+	BROWSER_LOGD("------min_scale:%.15f, max_scale:%.15f scale_factor:%.15f", min_scale, max_scale, scale_factor);
+	if (min_scale < scale_factor) {
+		if (!((min_scale - 0.0000001 <= scale_factor) && (scale_factor <= min_scale + 0.0000001)))
+			edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_out_buttons,signal", "");
+	}
+	if (max_scale > scale_factor) {
+		if (!((max_scale - 0.0000001 <= scale_factor) && (scale_factor <= max_scale + 0.0000001)))
+			edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_in_buttons,signal", "");
+	}
 
 	if (browser_view->m_zoom_button_timer)
 		ecore_timer_del(browser_view->m_zoom_button_timer);
@@ -4031,7 +4036,7 @@ void Browser_View::__zoom_out_clicked_cb(void *data, Evas_Object *obj, void *eve
 	if ((scale_factor - 0.5f) <= min_scale)
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_out_buttons,signal", "");
 
-	if (scale_factor == max_scale)
+	if ((max_scale - 0.0000001 <= scale_factor) && (scale_factor <= max_scale + 0.0000001))
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_in_buttons,signal", "");
 
 	if (browser_view->m_zoom_button_timer)
@@ -4056,7 +4061,7 @@ void Browser_View::__zoom_in_clicked_cb(void *data, Evas_Object *obj, void *even
 	if ((scale_factor + 0.5f) >= max_scale)
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,zoom_in_buttons,signal", "");
 
-	if (scale_factor == min_scale)
+	if ((min_scale - 0.0000001 <= scale_factor) && (scale_factor <= min_scale + 0.0000001))
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,zoom_out_buttons,signal", "");
 
 	if (browser_view->m_zoom_button_timer)
