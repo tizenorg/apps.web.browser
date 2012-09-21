@@ -1271,22 +1271,29 @@ void Browser_Bookmark_View::__drag_genlist_cb(void *data, Evas_Object *obj, void
 void Browser_Bookmark_View::__sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
+	if (event_info == NULL)
 		return;
+	if (data == NULL)
+		return;
+	if (!obj)
+		return;
+
 	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)data;
 
-	if (elm_genlist_decorate_mode_get(obj))
-		return;
-	else {
+	Elm_Object_Item *it = (Elm_Object_Item *)elm_genlist_decorated_item_get(obj);
+	if (it && (it != (Elm_Object_Item *)event_info)) {
+		elm_genlist_item_decorate_mode_set(it, "slide", EINA_FALSE);
+		elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DEFAULT);
+	} else {
+		BROWSER_LOGD("no decorated mode item");
+	}
+
+	if (!elm_genlist_decorate_mode_get(obj)) {
 		elm_genlist_item_decorate_mode_set((Elm_Object_Item *)event_info, "slide", EINA_TRUE);
 		elm_genlist_item_select_mode_set((Elm_Object_Item *)event_info, ELM_OBJECT_SELECT_MODE_NONE);
 	}
 
-	if (bookmark_view->m_current_sweep_item
-	    && (Elm_Object_Item *)event_info != bookmark_view->m_current_sweep_item) {
-		elm_genlist_item_select_mode_set(bookmark_view->m_current_sweep_item, ELM_OBJECT_SELECT_MODE_DEFAULT);
-		bookmark_view->m_current_sweep_item = (Elm_Object_Item *)event_info;
-	}
+	bookmark_view->m_current_sweep_item = (Elm_Object_Item *)event_info;
 }
 
 void Browser_Bookmark_View::__sweep_cancel_genlist_cb(void *data,
