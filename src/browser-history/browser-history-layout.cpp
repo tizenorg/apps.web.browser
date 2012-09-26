@@ -147,6 +147,7 @@ Eina_Bool Browser_History_Layout::_show_searched_history(const char *search_text
 			if (m_history_list.size() == 0) {
 				if (m_no_history_label) {
 					elm_box_unpack_all(m_content_box);
+					evas_object_show(m_no_history_label);
 					elm_box_pack_start(m_content_box, m_no_history_label);
 				}
 			}
@@ -239,6 +240,7 @@ Eina_Bool Browser_History_Layout::_show_searched_history(const char *search_text
 
 		elm_box_unpack_all(m_content_box);
 		evas_object_hide(m_history_genlist);
+		evas_object_hide(m_no_history_label);
 		elm_box_pack_start(m_content_box, m_no_content_search_result);
 		evas_object_show(m_no_content_search_result);
 	}
