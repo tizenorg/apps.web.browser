@@ -819,8 +819,10 @@ void Browser_Class::pause(void)
 	m_browser_view->pause();
 	m_download_policy->pause();
 
-	if (m_clean_up_windows_timer)
+	if (m_clean_up_windows_timer) {
 		ecore_timer_del(m_clean_up_windows_timer);
+		m_clean_up_windows_timer = NULL;
+	}
 	m_clean_up_windows_timer = ecore_timer_add(BROWSER_CLEAN_UP_WINDOWS_TIMEOUT,
 						__clean_up_windows_timer_cb, this);
 }
