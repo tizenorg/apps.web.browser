@@ -24,7 +24,11 @@
 
 class Browser_New_Folder_View : public Browser_Common_View {
 public:
+#ifdef EDIT_FOLDER_VIEW
+	Browser_New_Folder_View(Eina_Bool is_edit_mode, string foldername, int folder_id);
+#else
 	Browser_New_Folder_View(void);
+#endif
 	~Browser_New_Folder_View(void);
 
 	Eina_Bool init(void);
@@ -52,6 +56,10 @@ private:
 	Elm_Object_Item *m_navi_it;
 
 	string m_folder_name;
+#ifdef EDIT_FOLDER_VIEW
+	Eina_Bool m_is_edit_mode;
+	int m_folder_id;
+#endif
 };
 
 #endif /* BROWSER_NEW_FOLDER_VIEW_H */

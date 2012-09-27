@@ -1160,12 +1160,35 @@ void Browser_Bookmark_View::__rename_folder_button_clicked_cb(void *data, Evas_O
 		return;
 	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
 	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)(item->user_data_1);
+#ifdef EDIT_FOLDER_VIEW
+	/* Pass the selected genlist item as parameter when bookmark -> Edit item
+	    because of increase performance. */
+	bookmark_view->m_current_genlist_item_to_edit = (Elm_Object_Item *)(item->user_data_2);
+
+	elm_check_state_set(bookmark_view->m_edit_mode_select_all_check_button, EINA_FALSE);
+
+	bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
+
+	bookmark_view->_set_edit_mode(EINA_FALSE);
+
+	if (!m_data_manager->create_edit_folder_view(item->title, item->id)) {
+		BROWSER_LOGE("create_edit_folder_view failed");
+		return;
+	}
+
+	if (!m_data_manager->get_edit_folder_view()->init()) {
+		BROWSER_LOGE("get_edit_folder_view()->init() failed");
+		m_data_manager->destroy_edit_folder_view();
+		return;
+	}
+#else
 	Elm_Object_Item *it = (Elm_Object_Item *)(item->user_data_2);
 	elm_genlist_item_flip_set(it, EINA_TRUE);
 
 	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 	evas_object_data_set(bookmark_view->_get_current_folder_genlist(), "selected_it", it);
+#endif
 }
 
 void Browser_Bookmark_View::__rename_folder_entry_enter_key_cb(void *data, Evas_Object *obj,
@@ -2373,6 +2396,9 @@ void Browser_Bookmark_View::__naviframe_pop_finished_cb(void *data , Evas_Object
 	m_data_manager->destroy_add_to_bookmark_view();
 
 	m_data_manager->destroy_new_folder_view();
+#ifdef EDIT_FOLDER_VIEW
+	m_data_manager->destroy_edit_folder_view();
+#endif
 }
 
 Eina_Bool Browser_Bookmark_View::_create_main_layout(void)

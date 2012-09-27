@@ -91,6 +91,9 @@
 #define BR_STRING_URL_GUIDE_TEXT        _("IDS_BR_BODY_SEARCH_OR_ENTER_URL")
 #define BR_STRING_AUTO                  _("IDS_BR_BODY_AUTO")
 #define BR_STRING_MANUAL                _("IDS_BR_OPT_MANUAL")
+#ifdef EDIT_FOLDER_VIEW
+#define BR_STRING_EDIT_FOLDER         _("Edit folder")
+#endif
 /*************************************************************************************************************/
 
 

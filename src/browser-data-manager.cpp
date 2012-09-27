@@ -44,6 +44,9 @@ Browser_Data_Manager::Browser_Data_Manager(void)
 	,m_add_to_most_visited_sites_view(NULL)
 #endif
 	,m_new_folder_view(NULL)
+#ifdef EDIT_FOLDER_VIEW
+	,m_edit_folder_view(NULL)
+#endif
 	,m_select_folder_view(NULL)
 	,m_history_layout(NULL)
 	,m_multi_window_view(NULL)
@@ -80,6 +83,12 @@ Browser_Data_Manager::~Browser_Data_Manager(void)
 		delete m_new_folder_view;
 		m_new_folder_view = NULL;
 	}
+#ifdef EDIT_FOLDER_VIEW
+	if (m_edit_folder_view) {
+		delete m_edit_folder_view;
+		m_edit_folder_view = NULL;
+	}
+#endif
 	if (m_select_folder_view) {
 		delete m_select_folder_view;
 		m_select_folder_view = NULL;
@@ -250,7 +259,59 @@ void Browser_Data_Manager::destroy_add_to_most_visited_sites_view(void)
 	}
 }
 #endif
+#ifdef EDIT_FOLDER_VIEW
+Browser_New_Folder_View *Browser_Data_Manager::create_new_folder_view(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_new_folder_view)
+		return NULL;
 
+	m_new_folder_view = new(nothrow) Browser_New_Folder_View(EINA_FALSE, NULL, 0);
+	if (!m_new_folder_view)
+		BROWSER_LOGE("new Browser_New_Folder_View failed");
+	else
+		m_stack_status = m_stack_status | BR_NEW_FOLDER_VIEW;
+
+	return m_new_folder_view;
+}
+
+void Browser_Data_Manager::destroy_new_folder_view(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_new_folder_view) {
+		delete m_new_folder_view;
+		m_new_folder_view = NULL;
+		m_stack_status = m_stack_status - BR_NEW_FOLDER_VIEW;
+	}
+}
+
+Browser_New_Folder_View *Browser_Data_Manager::create_edit_folder_view(string folder_name, int folder_id)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_edit_folder_view) {
+		BROWSER_LOGD("[%s]m_edit_folder_view is not initialized", __func__);
+		return NULL;
+	}
+
+	m_edit_folder_view = new(nothrow) Browser_New_Folder_View(EINA_TRUE, folder_name, folder_id);;
+	if (!m_edit_folder_view)
+		BROWSER_LOGE("new Browser_New_Folder_View failed");
+	else
+		m_stack_status = m_stack_status | BR_EDIT_FOLDER_VIEW;
+
+	return m_edit_folder_view;
+}
+
+void Browser_Data_Manager::destroy_edit_folder_view(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_edit_folder_view) {
+		delete m_edit_folder_view;
+		m_edit_folder_view = NULL;
+		m_stack_status = m_stack_status - BR_EDIT_FOLDER_VIEW;
+	}
+}
+#else
 Browser_New_Folder_View *Browser_Data_Manager::create_new_folder_view(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -275,7 +336,7 @@ void Browser_Data_Manager::destroy_new_folder_view(void)
 		m_stack_status = m_stack_status - BR_NEW_FOLDER_VIEW;
 	}
 }
-
+#endif
 /* 'current_folder_id' is used to mark the current folder radio button in select folder view. */
 Browser_Select_Folder_View *Browser_Data_Manager::create_select_folder_view(int current_folder_id)
 {

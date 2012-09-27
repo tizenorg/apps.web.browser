@@ -20,8 +20,12 @@
 #include "browser-bookmark-view.h"
 #include "browser-new-folder-view.h"
 #include "browser-select-folder-view.h"
-
+#ifdef EDIT_FOLDER_VIEW
+Browser_New_Folder_View::Browser_New_Folder_View(Eina_Bool is_edit_mode, string foldername,
+				int folder_id)
+#else
 Browser_New_Folder_View::Browser_New_Folder_View(void)
+#endif
 :
 	m_genlist(NULL)
 	,m_conformant(NULL)
@@ -29,8 +33,16 @@ Browser_New_Folder_View::Browser_New_Folder_View(void)
 	,m_cancel_button(NULL)
 	,m_folder_name_edit_field(NULL)
 	,m_navi_it(NULL)
+#ifdef EDIT_FOLDER_VIEW
+	,m_is_edit_mode(is_edit_mode)
+	,m_folder_id(folder_id)
+#endif
 {
 	BROWSER_LOGD("[%s]", __func__);
+#ifdef EDIT_FOLDER_VIEW
+	if (is_edit_mode)
+		m_folder_name = foldername;
+#endif
 }
 
 Browser_New_Folder_View::~Browser_New_Folder_View(void)
@@ -43,7 +55,19 @@ Eina_Bool Browser_New_Folder_View::init(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	m_folder_name = _get_default_new_folder_name();
+#ifdef EDIT_FOLDER_VIEW
+	if (m_is_edit_mode) {
+		if (m_folder_name.empty()) {
+			BROWSER_LOGD("[%s] Folder name is empty", __func__);
+			return EINA_FALSE;
+		}
+		BROWSER_LOGD("m_folder_name[%s]", m_folder_name.c_str());
+	} else
+		m_folder_name = _get_default_new_folder_name();
+#else
+		m_folder_name = _get_default_new_folder_name();
+#endif
+
 	return _create_main_layout();
 }
 
@@ -58,6 +82,11 @@ void Browser_New_Folder_View::__cancel_button_clicked_cb(void *data, Evas_Object
 	if (elm_naviframe_bottom_item_get(new_folder_view->m_navi_bar)
 	    != elm_naviframe_top_item_get(new_folder_view->m_navi_bar))
 		elm_naviframe_item_pop(new_folder_view->m_navi_bar);
+#ifdef EDIT_FOLDER_VIEW
+	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)
+	    && !m_data_manager->is_in_view_stack(BR_SELECT_FOLDER_VIEW))
+		m_data_manager->get_bookmark_view()->return_to_bookmark_view();
+#endif
 }
 
 void Browser_New_Folder_View::__save_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -104,9 +133,19 @@ void Browser_New_Folder_View::__save_button_clicked_cb(void *data, Evas_Object *
 
 	Browser_Bookmark_View *bookmark_view = m_data_manager->get_bookmark_view();
 
+#ifdef EDIT_FOLDER_VIEW
+	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)
+	    && !m_data_manager->is_in_view_stack(BR_SELECT_FOLDER_VIEW)) {
+		if (new_folder_view->m_is_edit_mode)
+			bookmark_view->return_to_bookmark_view(new_folder_view->m_folder_id);
+		else
+			bookmark_view->return_to_bookmark_view();
+	}
+#else
 	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)
 	    && !m_data_manager->is_in_view_stack(BR_SELECT_FOLDER_VIEW))
 		bookmark_view->return_to_bookmark_view();
+#endif
 }
 
 Eina_Bool Browser_New_Folder_View::_create_new_folder(const char *folder_name)
@@ -125,12 +164,24 @@ Eina_Bool Browser_New_Folder_View::_create_new_folder(const char *folder_name)
 		return EINA_FALSE;
 	}
 	else {
+#ifdef EDIT_FOLDER_VIEW
+		Eina_Bool ret = EINA_FALSE;
+		if (m_is_edit_mode)
+			ret = bookmark_db->modify_bookmark_title(m_folder_id, folder_name);
+		else
+			ret = bookmark_db->save_folder(folder_name);
+#else
 		Eina_Bool ret = bookmark_db->save_folder(folder_name);
+#endif
 		if (!ret)
 			BROWSER_LOGD("bookmark_db->save_folder failed");
 	}
 
-	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)) {
+	if (m_data_manager->is_in_view_stack(BR_BOOKMARK_VIEW)
+#ifdef EDIT_FOLDER_VIEW
+		&& !m_is_edit_mode
+#endif
+		) {
 		/* If new folder is created, append the folder item to the main bookmark list. */
 		vector<Browser_Bookmark_DB::bookmark_item *> folder_list;
 		bookmark_db->get_folder_list(folder_list);
@@ -265,9 +316,18 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 	evas_object_show(m_genlist);
 	elm_object_content_set(m_conformant, m_genlist);
 
+#ifdef EDIT_FOLDER_VIEW
+	if (m_is_edit_mode) {
+		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_EDIT_FOLDER, NULL, NULL,
+											m_conformant, "browser_titlebar");
+	} else {
+		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_CREATE_FOLDER, NULL, NULL,
+											m_conformant, "browser_titlebar");
+	}
+#else
 	m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_CREATE_FOLDER, NULL, NULL,
 											m_conformant, "browser_titlebar");
-
+#endif
 	evas_object_smart_callback_add(m_navi_bar, "transition,finished", __naviframe_pop_finished_cb, this);
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);

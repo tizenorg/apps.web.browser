@@ -31,6 +31,9 @@ typedef enum _view_stack_status {
 	BR_SELECT_FOLDER_VIEW = 1 << 5,
 	BR_MULTI_WINDOW_VIEW = 1 << 6,
 	ADD_TO_MOST_VISITED_SITES_VIEW = 1 << 7
+#ifdef EDIT_FOLDER_VIEW
+	,BR_EDIT_FOLDER_VIEW = 1 << 8
+#endif
 } view_stack_status;
 
 class Browser_Add_To_Bookmark_View;
@@ -88,7 +91,11 @@ public:
 	Browser_New_Folder_View *get_new_folder_view(void) { return m_new_folder_view; }
 	Browser_New_Folder_View *create_new_folder_view(void);
 	void destroy_new_folder_view(void);
-
+#ifdef EDIT_FOLDER_VIEW
+	Browser_New_Folder_View *get_edit_folder_view(void) { return m_edit_folder_view; }
+	Browser_New_Folder_View *create_edit_folder_view(string folder_name, int folder_id);
+	void destroy_edit_folder_view(void);
+#endif
 	Browser_Select_Folder_View *get_select_folder_view(void) { return m_select_folder_view; }
 	Browser_Select_Folder_View *create_select_folder_view(int current_folder_id);
 	void destroy_select_folder_view(void);
@@ -118,6 +125,9 @@ private:
 #endif
 	Browser_Add_To_Bookmark_View *m_edit_bookmark_view;
 	Browser_New_Folder_View *m_new_folder_view;
+#ifdef EDIT_FOLDER_VIEW
+	Browser_New_Folder_View *m_edit_folder_view;
+#endif
 	Browser_Select_Folder_View *m_select_folder_view;
 	Browser_History_Layout *m_history_layout;
 	Browser_Multi_Window_View *m_multi_window_view;
