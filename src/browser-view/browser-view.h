@@ -160,6 +160,7 @@ private:
 	static void __scroller_resize_cb(void* data, Evas* evas, Evas_Object* obj, void* ev);
 	static void __url_layout_mouse_down_cb(void *data, Evas* evas, Evas_Object *obj,
 										void *event_info);
+	static void __ewk_icon_received_cb(void *data, Evas_Object *obj, void *event_info);
 
 	/* elementary event callback functions */
 	static void __title_back_button_clicked_cb(void *data , Evas_Object *obj, void *event_info);

@@ -1436,6 +1436,17 @@ void Browser_View::__ewk_view_scroll_up_cb(void *data, Evas_Object *obj, void *e
 #endif
 }
 
+void Browser_View::__ewk_icon_received_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+	Browser_View *browser_view = (Browser_View *)data;
+
+	if (!browser_view->_set_favicon())
+		BROWSER_LOGE("_set_favicon failed");
+}
+
 void Browser_View::_set_navigationbar_title(const char *title)
 {
 	BROWSER_LOGD("title=[%s]", title);

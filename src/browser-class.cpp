@@ -377,6 +377,9 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 
 	evas_object_smart_callback_del(ewk_view, "request,geolocation,permission",
 					Browser_Geolocation::__geolocation_permission_request_cb);
+
+	evas_object_smart_callback_del(ewk_view, "icon,received",
+					Browser_View::__ewk_icon_received_cb);
 	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
 	m_browser_view->suspend_ewk_view(ewk_view);
@@ -428,6 +431,8 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 	evas_object_smart_callback_add(ewk_view, "request,geolocation,permission",
 					Browser_Geolocation::__geolocation_permission_request_cb, m_browser_view);
 
+	evas_object_smart_callback_add(ewk_view, "icon,received",
+					Browser_View::__ewk_icon_received_cb, m_browser_view);
 	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);
 	m_geolocation->init(ewk_view);
