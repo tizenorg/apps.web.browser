@@ -266,7 +266,8 @@ Browser_New_Folder_View *Browser_Data_Manager::create_new_folder_view(void)
 	if (m_new_folder_view)
 		return NULL;
 
-	m_new_folder_view = new(nothrow) Browser_New_Folder_View(EINA_FALSE, NULL, 0);
+	string dummystring;
+	m_new_folder_view = new(nothrow) Browser_New_Folder_View(EINA_FALSE, dummystring, 0);
 	if (!m_new_folder_view)
 		BROWSER_LOGE("new Browser_New_Folder_View failed");
 	else
@@ -293,7 +294,7 @@ Browser_New_Folder_View *Browser_Data_Manager::create_edit_folder_view(string fo
 		return NULL;
 	}
 
-	m_edit_folder_view = new(nothrow) Browser_New_Folder_View(EINA_TRUE, folder_name, folder_id);;
+	m_edit_folder_view = new(nothrow) Browser_New_Folder_View(EINA_TRUE, folder_name, folder_id);
 	if (!m_edit_folder_view)
 		BROWSER_LOGE("new Browser_New_Folder_View failed");
 	else
