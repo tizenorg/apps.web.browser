@@ -56,6 +56,9 @@ bool br_preference_create_str(const char *key, const char *value);
 bool br_preference_set_changed_cb(const char *key, br_preference_changed_cb callback, void *user_data);
 bool br_preference_unset_changed_cb(const char *key);
 
+char *br_convert_url_to_domain(const char *url);
+char *br_convert_url_to_domain_without_scheme(const char *url);
+
 #ifdef __cplusplus
 }
 #endif

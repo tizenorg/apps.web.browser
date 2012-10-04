@@ -1376,7 +1376,11 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 				return folder_icon;
 			} else {
 				Evas_Object *favicon = NULL;
+#ifdef STORE_FAVICON
+				favicon = m_data_manager->get_bookmark_db()->get_bookmark_icon(obj, item->id);
+#else
 				favicon = m_data_manager->get_browser_view()->get_favicon(item->url.c_str());
+#endif
 				if (favicon)
 					return favicon;
 				else {

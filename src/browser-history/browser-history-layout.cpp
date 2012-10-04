@@ -1541,6 +1541,11 @@ void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void* data, Evas*
 			BROWSER_LOGE("elm_icon_file_set is failed.\n");
 		}
 		m_data_manager->get_bookmark_view()->append_bookmark_item(item->title.c_str(), item->url.c_str());
+#ifdef STORE_FAVICON
+		m_data_manager->get_bookmark_db()->save_bookmark_icon(item->url.c_str(),
+					m_data_manager->get_history_db()->get_history_icon(
+								history_layout->m_history_genlist, item->url.c_str()));
+#endif
 	}
 }
 
@@ -1556,7 +1561,11 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 
 	if (!strncmp(part, "elm.icon.1", strlen("elm.icon.1"))) {
 		Evas_Object *favicon = NULL;
+#ifdef STORE_FAVICON
+		favicon = m_data_manager->get_history_db()->get_history_icon(obj, item->url.c_str());
+#else
 		favicon = m_data_manager->get_browser_view()->get_favicon(item->url.c_str());
+#endif
 		if (favicon)
 			return favicon;
 		else {

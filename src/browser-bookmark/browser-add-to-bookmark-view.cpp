@@ -17,6 +17,7 @@
 
 #include "browser-add-to-bookmark-view.h"
 #include "browser-bookmark-db.h"
+#include "browser-history-db.h"
 #include "browser-bookmark-view.h"
 #include "browser-view.h"
 #include "browser-select-folder-view.h"
@@ -447,7 +448,10 @@ void Browser_Add_To_Bookmark_View::_done_button_clicked(const char *title, const
 				ret = _save_bookmark_item(title, url);
 			else
 				ret = _modify_bookmark_item(title, url);
-
+#ifdef STORE_FAVICON
+			bookmark_db->save_bookmark_icon(url,
+				m_data_manager->get_history_db()->get_history_icon(m_genlist, url));
+#endif
 			if (!ret) {
 				show_msg_popup(BR_STRING_FAILED);
 				return;

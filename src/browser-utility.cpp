@@ -595,3 +595,76 @@ bool br_preference_unset_changed_cb(const char *key)
 	return true;
 }
 
+char *br_convert_url_to_domain(const char *url)
+{
+	BROWSER_LOGD("");
+
+	using namespace std;
+
+	if (!url || strlen(url) == 0)
+		return NULL;
+
+	char *output = new(nothrow) char[strlen(url) + sizeof(char)];
+	if (!output) {
+		BROWSER_LOGE("output is NULL");
+		return NULL;
+	}
+	memset(output, 0x00, strlen(url) + sizeof(char));
+	strcpy(output, url);
+
+	char *after = strtok(output, "/");
+	if (!after) {
+		BROWSER_LOGE("Url is NULL");
+		delete [] output;
+		return NULL;
+	}
+	string domain_string;
+	domain_string = domain_string + after + "//";
+	after = strtok(NULL, "/");
+	BROWSER_LOGD("%s", after);
+	domain_string = domain_string + after;
+	BROWSER_LOGD("%s", domain_string.c_str());
+
+	delete [] output;
+
+	char *result_string = new(nothrow) char[domain_string.size() + sizeof(char)];
+	memset(result_string, 0x00, domain_string.size() + sizeof(char));
+	strcpy(result_string, domain_string.c_str());
+
+	return result_string;
+}
+
+char *br_convert_url_to_domain_without_scheme(const char *url)
+{
+	BROWSER_LOGD("");
+
+	using namespace std;
+
+	if (!url || strlen(url) == 0)
+		return NULL;
+
+	char *output = new(nothrow) char[strlen(url) + sizeof(char)];
+	if (!output) {
+		BROWSER_LOGE("output is NULL");
+		return NULL;
+	}
+	memset(output, 0x00, strlen(url) + sizeof(char));
+	strcpy(output, url);
+
+	char *after = strtok(output, "/");
+	if (!after) {
+		BROWSER_LOGE("Url is NULL");
+		delete [] output;
+		return NULL;
+	}
+	after = strtok(NULL, "/");
+	BROWSER_LOGD("%s", after);
+
+	char *result_string = new(nothrow) char[strlen(after) + sizeof(char)];
+	memset(result_string, 0x00, strlen(after) + sizeof(char));
+	strcpy(result_string, after);
+	delete [] output;
+
+	return result_string;
+}
+

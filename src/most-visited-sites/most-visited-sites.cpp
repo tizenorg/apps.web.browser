@@ -187,7 +187,14 @@ void Most_Visited_Sites::__bookmark_button_clicked_cb(void *data, Evas_Object *o
 		BROWSER_LOGE("create_bookmark_db failed");
 		return;
 	}
-
+#ifdef STORE_FAVICON
+	Browser_History_DB *history_db = m_data_manager->get_history_db();
+	if (!history_db) {
+		BROWSER_LOGE("get_history_db failed");
+		m_data_manager->destroy_bookmark_db();
+		return;
+	}
+#endif
 	int bookmark_id = -1;
 	if (most_visited_sites->m_most_visited_sites_db->is_in_bookmark(item->url, &bookmark_id)) {
 		edje_object_signal_emit(elm_layout_edje_get(item->layout), "bookmark_icon,off,signal", "");
@@ -198,6 +205,13 @@ void Most_Visited_Sites::__bookmark_button_clicked_cb(void *data, Evas_Object *o
 		edje_object_signal_emit(elm_layout_edje_get(item->layout), "bookmark_icon,on,signal", "");
 		if (item->title && item->url)
 			bookmark_db->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID, item->title, item->url);
+#ifdef STORE_FAVICON
+			/* Save favicon to Bookmark DB if there are same URLs */
+			bookmark_db->save_bookmark_icon(
+					item->url,
+					history_db->get_history_icon(item->layout, item->url)
+					);
+#endif
 		most_visited_sites->m_browser_view->show_notify_popup(BR_STRING_ADDED_TO_BOOKMARKS, 3, EINA_TRUE);
 	}
 

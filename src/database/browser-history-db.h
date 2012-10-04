@@ -56,6 +56,10 @@ public:
 	Eina_Bool delete_history(const char *url);
 	Eina_Bool clear_history(void);
 	Eina_Bool is_in_bookmark(const char* url, int *bookmark_id);
+#ifdef STORE_FAVICON
+	Eina_Bool save_history_icon(const char* url, const Evas_Object *icon);
+	Evas_Object *get_history_icon(Evas_Object *parent, const char* url);
+#endif
 private:
 	Eina_Bool _open_db(void);
 	Eina_Bool _close_db(void);

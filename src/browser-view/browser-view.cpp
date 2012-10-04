@@ -1204,10 +1204,28 @@ void Browser_View::_load_finished(void)
 	if (m_data_manager->get_history_db() && !m_is_private) {
 		m_data_manager->get_history_db()->save_history(m_last_visited_url.c_str(),
 							get_title().c_str(), &is_full);
+#ifdef STORE_FAVICON
+		/* Save favicon to history DB - if the icon already was in icon DB*/
+		m_data_manager->get_history_db()->save_history_icon(
+				m_last_visited_url.c_str(), get_favicon(m_last_visited_url.c_str()));
+#endif
 		if (is_full)
 			BROWSER_LOGE("history is full, delete the first one");
 	}
-
+#ifdef STORE_FAVICON
+	Browser_Bookmark_DB *bookmark_db = m_data_manager->create_bookmark_db();
+	if (!bookmark_db) {
+		BROWSER_LOGE("create_bookmark_db failed");
+		return;
+	}
+	/* Save favicon to Bookmark DB if there are same URLs */
+	if (m_data_manager->get_bookmark_db()) {
+		m_data_manager->get_bookmark_db()->save_bookmark_icon(
+				m_last_visited_url.c_str(),
+				get_favicon(m_last_visited_url.c_str()));
+	}
+	m_data_manager->destroy_bookmark_db();
+#endif
 	_hide_scroller_url_layout();
 
 #if defined(FEATURE_MOST_VISITED_SITES)
@@ -1445,6 +1463,42 @@ void Browser_View::__ewk_icon_received_cb(void *data, Evas_Object *obj, void *ev
 
 	if (!browser_view->_set_favicon())
 		BROWSER_LOGE("_set_favicon failed");
+
+#ifdef STORE_FAVICON
+	/* Save favicon to history DB - if the icon was not in icon DB*/
+	if (browser_view->m_data_manager->get_history_db() && !browser_view->m_is_private) {
+		BROWSER_LOGD("URL: %s", browser_view->m_last_visited_url.c_str());
+		browser_view->m_data_manager->get_history_db()->save_history_icon(
+				browser_view->m_last_visited_url.c_str(),
+				browser_view->get_favicon(browser_view->m_last_visited_url.c_str()));
+	}
+
+	Browser_Bookmark_DB *bookmark_db = m_data_manager->create_bookmark_db();
+	if (!bookmark_db) {
+		BROWSER_LOGE("create_bookmark_db failed");
+		return;
+	}
+	/* Save favicon to Bookmark DB if there are same URLs */
+	char * domain = br_convert_url_to_domain_without_scheme(browser_view->m_last_visited_url.c_str());
+	const char *url_string = NULL;
+	if (domain != NULL )
+		url_string = (const char*)domain;
+	else
+		url_string = browser_view->m_last_visited_url.c_str();
+
+	if (browser_view->m_data_manager->get_bookmark_db()) {
+		browser_view->m_data_manager->get_bookmark_db()->save_bookmark_icon(
+				url_string,
+				browser_view->get_favicon(browser_view->m_last_visited_url.c_str()));
+	}
+	m_data_manager->destroy_bookmark_db();
+
+	if (domain != NULL ) {
+		BROWSER_LOGD("Domain: %s", domain);
+		delete [] domain;
+	}
+#endif
+
 }
 
 void Browser_View::_set_navigationbar_title(const char *title)
@@ -2067,6 +2121,14 @@ void Browser_View::__bookmark_cb(void *data, Evas_Object *obj, void *event_info)
 		}
 		m_data_manager->create_bookmark_db()->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID,
 					browser_view->get_title().c_str(), browser_view->get_url().c_str());
+#ifdef STORE_FAVICON
+		/* Save favicon to Bookmark DB if there are same URLs */
+		if (m_data_manager->get_bookmark_db()) {
+			m_data_manager->get_bookmark_db()->save_bookmark_icon(
+					browser_view->get_url().c_str(),
+					browser_view->get_favicon(browser_view->get_url().c_str()));
+		}
+#endif
 		browser_view->show_notify_popup(BR_STRING_ADDED_TO_BOOKMARKS, 3, EINA_TRUE);
 	} else {
 		if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {

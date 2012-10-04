@@ -69,7 +69,11 @@ public:
 	Eina_Bool delete_folder(int folder_id);
 	Eina_Bool modify_bookmark_title(int bookmark_id, const char *title);
 	Eina_Bool modify_bookmark(int bookmark_id, int folder_id, const char *title, const char *url);
-	Eina_Bool modify_bookmark_order_index(int bookmark_id, int folder_id, int order_index);	
+	Eina_Bool modify_bookmark_order_index(int bookmark_id, int folder_id, int order_index);
+#ifdef STORE_FAVICON
+	Eina_Bool save_bookmark_icon(const char *url, Evas_Object *icon);
+	Evas_Object *get_bookmark_icon(Evas_Object *parent, int bookmark_id);
+#endif
 private:
 	Eina_Bool _open_db(void);
 	Eina_Bool _close_db(void);
