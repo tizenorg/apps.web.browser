@@ -1195,6 +1195,7 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 	m_history_group_title_class.func.content_get = NULL;
 	m_history_group_title_class.func.state_get = NULL;
 	m_history_group_title_class.func.del = NULL;
+	m_history_group_title_class.decorate_all_item_style = NULL;
 
 	_reload_history_genlist();
 
