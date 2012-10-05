@@ -2140,7 +2140,7 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 		evas_object_smart_callback_add(genlist, "moved", __genlist_move_cb, this);
 
 		m_bookmark_genlist_item_class.item_style = "1text.1icon.2";
-		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide2.text";
+		m_bookmark_genlist_item_class.decorate_item_style = "mode/slide2";
 		m_bookmark_genlist_item_class.decorate_all_item_style = "edit_default";
 		m_bookmark_genlist_item_class.func.text_get = __genlist_label_get_cb;
 		m_bookmark_genlist_item_class.func.content_get = __genlist_icon_get_cb;
@@ -2149,7 +2149,8 @@ Evas_Object *Browser_Bookmark_View::_create_main_folder_genlist(void)
 //		m_bookmark_genlist_item_class.func.moved = __genlist_move_cb;
 
 		m_folder_genlist_item_class.item_style = "1text.1icon.2";
-		m_folder_genlist_item_class.decorate_item_style = "mode/slide2.text";
+		/*mode/slide2.text is not supported anymore.*/
+		m_folder_genlist_item_class.decorate_item_style = "mode/slide2";
 		m_folder_genlist_item_class.decorate_all_item_style = "edit_default";
 		m_folder_genlist_item_class.func.text_get = __genlist_label_get_cb;
 		m_folder_genlist_item_class.func.content_get = __genlist_icon_get_cb;
