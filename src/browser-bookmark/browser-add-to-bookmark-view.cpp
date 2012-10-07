@@ -170,6 +170,8 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 
 			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
 							"changed", __title_entry_changed_cb, add_to_bookmark_view);
+			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
+							"preedit,changed", __title_entry_changed_cb, add_to_bookmark_view);
 
 			if (!add_to_bookmark_view->m_input_title.empty()) {
 				elm_entry_entry_set(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
@@ -202,6 +204,8 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 
 			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),
 							"changed", __title_entry_changed_cb, add_to_bookmark_view);
+			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),
+							"preedit,changed", __title_entry_changed_cb, add_to_bookmark_view);
 
 			if (!add_to_bookmark_view->m_input_url.empty()) {
 				elm_entry_entry_set(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),

@@ -250,6 +250,8 @@ Evas_Object *Browser_New_Folder_View::__genlist_icon_get_cb(void *data, Evas_Obj
 
 		evas_object_smart_callback_add(br_elm_editfield_entry_get(new_folder_view->m_folder_name_edit_field),
 						"changed", __title_entry_changed_cb, new_folder_view);
+		evas_object_smart_callback_add(br_elm_editfield_entry_get(new_folder_view->m_folder_name_edit_field),
+						"preedit,changed", __title_entry_changed_cb, new_folder_view);
 
 		ecore_idler_add(new_folder_view->__set_focus_editfield_idler_cb, new_folder_view->m_folder_name_edit_field);
 		return new_folder_view->m_folder_name_edit_field;
