@@ -1252,6 +1252,7 @@ void Browser_Settings_Main_View::__clear_location_confirm_response_cb(void *data
 	//main_view->_clear_location_settings();
 	Browser_Geolocation_DB *geo_db = main_view->get_data_manager()->get_geolocation_db();
 	geo_db->remove_all_geolocation_data();
+	main_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
 }
 
 void Browser_Settings_Main_View::__clear_location_cancel_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
