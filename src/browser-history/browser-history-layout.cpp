@@ -1548,6 +1548,8 @@ void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void* data, Evas*
 								history_layout->m_history_genlist, item->url.c_str()));
 #endif
 	}
+	Elm_Object_Item *seleted_item = elm_genlist_selected_item_get(history_layout->m_history_genlist);
+	elm_genlist_item_selected_set(seleted_item, EINA_FALSE);
 }
 
 Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part)
