@@ -315,10 +315,9 @@ static Eina_Bool __br_keydown_event(void *data, int type, void *event)
 }
 
 #if defined(HORIZONTAL_UI)
-static void __br_rotate_cb(app_device_orientation_e mode, void *data)
+static void __br_rotate(app_device_orientation_e mode, void *app_data)
 {
-	BROWSER_LOGD("[%s] rotation mode = %d", __func__, mode);
-	struct browser_data *ad = (struct browser_data *)data;
+	struct browser_data *ad = (struct browser_data *)app_data;
 	int rotation_value;
 
 	switch (mode) {
@@ -348,6 +347,42 @@ static void __br_rotate_cb(app_device_orientation_e mode, void *data)
 			elm_win_rotation_with_resize_set(ad->main_win, rotation_value);
 			ad->browser_instance->rotate(rotation_value);
 		}
+	}
+}
+
+static void __br_rotate_cb(app_device_orientation_e mode, void *data)
+{
+	BROWSER_LOGD("[%s] rotation mode = %d", __func__, mode);
+	__br_rotate(mode, data);
+	return;
+}
+
+static void __rotation_lock_changed_cb(keynode_t *keynode, void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	char *key = vconf_keynode_get_name(keynode);
+	if (strncmp(key, VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL, strlen(VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL))) {
+		BROWSER_LOGE("vconf key for rotation lock is not matched with parameter");
+		return;
+	}
+
+	struct browser_data *ad = (struct browser_data *)data;
+	int rotation_lock = false;
+
+	if (vconf_get_bool(VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL, &rotation_lock) != 0) {
+		BROWSER_LOGE("rotation is not allowed");
+		__br_rotate(APP_DEVICE_ORIENTATION_0, ad);
+		return;
+	}
+
+	if (rotation_lock == true) {
+		BROWSER_LOGD("rotation lock is disabled");
+		__br_rotate(APP_DEVICE_ORIENTATION_0, ad);
+	} else {
+		BROWSER_LOGD("rotation lock is abled");
+		app_device_orientation_e rotation_value = app_get_device_orientation();
+		__br_rotate(rotation_value, ad);
 	}
 }
 #endif
@@ -499,11 +534,21 @@ static bool __br_app_create(void *app_data)
 	}
 
 #if defined(HORIZONTAL_UI)
-	app_device_orientation_e rotation_value = app_get_device_orientation();
+	int rotation_lock = 0;
+	if (vconf_get_bool(VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL, &rotation_lock) == 0
+		&& rotation_lock == false)
+	{
+		app_device_orientation_e rotation_value = app_get_device_orientation();
+		if (rotation_value != APP_DEVICE_ORIENTATION_0) {
+			elm_win_rotation_with_resize_set(ad->main_win, rotation_value);
+			ad->browser_instance->rotate(rotation_value);
+		}
+	} else
+		BROWSER_LOGE("rotation is not allowed");
 
-	if (rotation_value != APP_DEVICE_ORIENTATION_0) {
-		elm_win_rotation_with_resize_set(ad->main_win, rotation_value);
-		ad->browser_instance->rotate(rotation_value);
+	if (vconf_notify_key_changed(VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL, __rotation_lock_changed_cb, ad) < 0) {
+		BROWSER_LOGE("VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL vconf_notify_key_changed failed");
+		return EINA_FALSE;
 	}
 #endif
 
@@ -554,6 +599,11 @@ static void __br_app_terminate(void *app_data)
 
 	if (ad->browser_instance)
 		delete ad->browser_instance;
+
+#if defined(HORIZONTAL_UI)
+	if (vconf_ignore_key_changed(VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL, __rotation_lock_changed_cb) < 0)
+		BROWSER_LOGE("VCONFKEY_SETAPPL_ROTATE_LOCK_BOOL vconf_ignore_key_changed failed");
+#endif
 
 	BROWSER_LOGD("[Browser-Launching time measure] << __br_app_terminate ends >>");
 }
