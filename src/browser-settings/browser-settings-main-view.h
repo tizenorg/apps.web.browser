@@ -148,6 +148,7 @@ private:
 	Elm_Genlist_Item_Class m_2_text_1_icon_item_class;
 	Elm_Genlist_Item_Class m_radio_text_item_class;
 	Elm_Genlist_Item_Class m_seperator_item_class;
+	Elm_Genlist_Item_Class m_seperator_with_bottom_line_item_class;
 
 	/* Homepage */
 	genlist_callback_data m_homepage_title_callback_data;

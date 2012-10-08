@@ -1500,6 +1500,16 @@ Evas_Object *Browser_Settings_Main_View::_create_content_genlist(void)
 							&m_user_agent_item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
 							__genlist_item_clicked_cb, &m_user_agent_item_callback_data);
 
+	m_seperator_with_bottom_line_item_class.item_style = "dialogue/seperator.2";
+	m_seperator_with_bottom_line_item_class.func.text_get = NULL;
+	m_seperator_with_bottom_line_item_class.func.content_get = NULL;
+	m_seperator_with_bottom_line_item_class.func.state_get = NULL;
+	m_seperator_with_bottom_line_item_class.func.del = NULL;
+	Elm_Object_Item *bottom = elm_genlist_item_append(genlist, &m_seperator_with_bottom_line_item_class,
+						NULL, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+
+	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_NONE);
+
 	return genlist;
 }
 
