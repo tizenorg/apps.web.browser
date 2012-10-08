@@ -172,6 +172,7 @@ Evas_Object *br_elm_editfield_add(Evas_Object *parent, Eina_Bool title)
 	evas_object_data_set(layout, "eraser", (void *)EINA_TRUE);
 
 	evas_object_smart_callback_add(entry, "changed", __changed_cb, layout);
+	evas_object_smart_callback_add(entry, "preedit,changed", __changed_cb, layout);
 	evas_object_smart_callback_add(entry, "focused", __focused_cb, layout);
 	evas_object_smart_callback_add(entry, "unfocused", __unfocused_cb, layout);
 	elm_object_signal_callback_add(layout, "elm,eraser,clicked", "elm",
