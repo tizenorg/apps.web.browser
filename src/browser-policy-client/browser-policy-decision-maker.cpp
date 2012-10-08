@@ -249,6 +249,15 @@ void Browser_Policy_Decision_Maker::__decide_policy_for_response_cb(void *data, 
 		ewk_policy_decision_ignore(policy_decision);
 		break;
 	}
+
+	Ewk_History *history =» ewk_view_history_get(decision_maker->m_ewk_view);
+	Ewk_History_Item *history_item = ewk_history_nth_item_get(history, 0);
+	BROWSER_LOGD("<<<<< history_item = [%d] >>>", history_item);
+	int history_count = ewk_history_back_list_length_get(history);
+	ewk_history_free(history);
+	BROWSER_LOGD("<<<<< history_count = [%d] >>>", history_count);
+	if (!history_item && history_count == 0)
+		ecore_idler_add(Browser_View::__close_window_idler_cb, decision_maker->m_browser_view);
 }
 
 void Browser_Policy_Decision_Maker::_request_download(Ewk_Policy_Decision *policy_decision)
