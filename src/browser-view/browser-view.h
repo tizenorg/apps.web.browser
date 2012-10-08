@@ -90,6 +90,7 @@ public:
 	void delete_non_user_created_windows(void);
 	Eina_Bool _is_loading(void);
 	Eina_Bool launch_find_word_with_text(const char *text_to_find);
+	static Eina_Bool __close_window_idler_cb(void *data);
 private:
 	typedef enum _homepage_mode {
 #if defined(FEATURE_MOST_VISITED_SITES)
@@ -139,7 +140,6 @@ private:
 #if defined(FEATURE_MOST_VISITED_SITES)
 	static Eina_Bool __capture_most_visited_sites_screen_shot_idler_cb(void *data);
 #endif
-	static Eina_Bool __close_window_idler_cb(void *data);
 	static Eina_Bool __scroller_bring_in_idler_cb(void *data);
 	static Eina_Bool __show_scissorbox_view_idler_cb(void *data);
 
