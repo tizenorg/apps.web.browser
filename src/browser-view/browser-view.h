@@ -157,6 +157,7 @@ private:
 	static void __ewk_view_vibration_vibrate_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ewk_view_vibration_cancel_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ewk_view_database_quota_exceeded_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __ewk_view_filesystem_permission_request_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __scroller_resize_cb(void* data, Evas* evas, Evas_Object* obj, void* ev);
 	static void __url_layout_mouse_down_cb(void *data, Evas* evas, Evas_Object *obj,
 										void *event_info);
@@ -265,6 +266,7 @@ private:
 	Eina_Bool _haptic_device_stop(void);
 	Eina_Bool _haptic_device_close(void);
 	Eina_Bool _change_ewk_database_quota_size(Ewk_Context_Exceeded_Quota *database_quota);
+	Eina_Bool _change_ewk_filesystem_permission(Ewk_Context_File_System_Permission *file_system_permission);
 	Evas_Object *_create_brightness_control_bar(void);
 	Eina_Bool _show_brightness_layout(void);
 	void _destroy_brightness_layout(void);

@@ -690,6 +690,13 @@ Eina_Bool Browser_View::_change_ewk_database_quota_size(Ewk_Context_Exceeded_Quo
 	}
 }
 
+Eina_Bool Browser_View::_change_ewk_filesystem_permission(Ewk_Context_File_System_Permission *file_system_permission)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	return _show_file_system_permission_change_popup(file_system_permission);
+}
+
 void Browser_View::__create_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -1400,14 +1407,22 @@ void Browser_View::__ewk_view_database_quota_exceeded_cb(void *data, Evas_Object
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	if (!data)
-		return;
-
-	if (!event_info)
+	if (!data || !event_info)
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
 	browser_view->_change_ewk_database_quota_size((Ewk_Context_Exceeded_Quota *)event_info);
+}
+
+void Browser_View::__ewk_view_filesystem_permission_request_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if (!data || !event_info)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->_change_ewk_filesystem_permission((Ewk_Context_File_System_Permission *)event_info);
 }
 
 void Browser_View::__ewk_view_mouse_up_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)

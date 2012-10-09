@@ -37,6 +37,7 @@ Browser_Common_View::Browser_Common_View(void)
 	,m_share_popup(NULL)
 	,m_share_list(NULL)
 	,m_database_quota_change_confirm_popup(NULL)
+	,m_file_system_change_confirm_popup(NULL)
 	,m_call_confirm_popup(NULL)
 	,m_call_type(CALL_UNKNOWN)
 {
@@ -73,6 +74,10 @@ Browser_Common_View::~Browser_Common_View(void)
 	if (m_database_quota_change_confirm_popup) {
 		evas_object_del(m_database_quota_change_confirm_popup);
 		m_database_quota_change_confirm_popup = NULL;
+	}
+	if (m_file_system_change_confirm_popup) {
+		evas_object_del(m_file_system_change_confirm_popup);
+		m_file_system_change_confirm_popup = NULL;
 	}
 	if (m_call_confirm_popup) {
 		evas_object_del(m_call_confirm_popup);
@@ -431,7 +436,56 @@ Eina_Bool Browser_Common_View::_show_database_quota_size_change_popup(Ewk_Contex
 	evas_object_smart_callback_add(cancel_button, "clicked", __database_quota_size_change_popup_cancel_cb, &m_quota_data);
 
 	return EINA_TRUE;
+}
 
+Eina_Bool Browser_Common_View::_show_file_system_permission_change_popup(Ewk_Context_File_System_Permission *file_system_permission)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	Ewk_Security_Origin* origin = ewk_context_file_system_permission_origin_get(file_system_permission);
+	Browser_View *browser_view = m_data_manager->get_browser_view();
+
+	m_file_system_permission.common_view = this;
+	m_file_system_permission.file_system_permission = file_system_permission;
+
+	/* Make confirm msg */
+	std::string confirm_msg = std::string(BR_STRING_MSG_ASK_FILE_PERMISSION_CHANGE_Q);
+
+	if (m_file_system_change_confirm_popup) {
+		evas_object_del(m_file_system_change_confirm_popup);
+		m_file_system_change_confirm_popup = NULL;
+	}
+	m_file_system_change_confirm_popup = elm_popup_add(m_navi_bar);
+	if (!m_file_system_change_confirm_popup) {
+		BROWSER_LOGE("Failed to add popup");
+		return EINA_FALSE;
+	}
+	evas_object_size_hint_weight_set(m_file_system_change_confirm_popup,
+									EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_text_set(m_file_system_change_confirm_popup, confirm_msg.c_str());
+	evas_object_show(m_file_system_change_confirm_popup);
+
+	Evas_Object *ok_button = elm_button_add(m_file_system_change_confirm_popup);
+	if (!ok_button) {
+		BROWSER_LOGE("Failed to add ok button");
+		return EINA_FALSE;
+	}
+	elm_object_text_set(ok_button, BR_STRING_OK);
+	elm_object_part_content_set(m_file_system_change_confirm_popup, "button1", ok_button);
+	elm_object_style_set(ok_button, "popup_button/default");
+	evas_object_smart_callback_add(ok_button, "clicked", __file_system_permission_change_popup_ok_cb, &m_file_system_permission);
+
+	Evas_Object *cancel_button = elm_button_add(m_file_system_change_confirm_popup);
+	if (!cancel_button) {
+		BROWSER_LOGE("Failed to add cancel button");
+		return EINA_FALSE;
+	}
+	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(m_file_system_change_confirm_popup, "button2", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __file_system_permission_change_popup_cancel_cb, &m_file_system_permission);
+
+	return EINA_TRUE;
 }
 
 Eina_Bool Browser_Common_View::_launch_streaming_player(const char *url, const char *cookie)
@@ -527,6 +581,40 @@ void Browser_Common_View::__database_quota_size_change_popup_cancel_cb(void* dat
 
 	evas_object_del(common_view->m_database_quota_change_confirm_popup);
 	common_view->m_database_quota_change_confirm_popup = NULL;
+}
+
+void Browser_Common_View::__file_system_permission_change_popup_ok_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	if (!data)
+		return;
+
+	file_system_permission_change_callback_data *permission_change_data = (file_system_permission_change_callback_data *)data;
+	Browser_Common_View *common_view = permission_change_data->common_view;
+	Ewk_Context_File_System_Permission *file_system_permission = permission_change_data->file_system_permission;
+
+	ewk_context_file_system_permission_allow_set(file_system_permission, EINA_TRUE);
+
+	evas_object_del(common_view->m_file_system_change_confirm_popup);
+	common_view->m_file_system_change_confirm_popup = NULL;
+}
+
+void Browser_Common_View::__file_system_permission_change_popup_cancel_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	if (!data)
+		return;
+
+	file_system_permission_change_callback_data *permission_change_data = (file_system_permission_change_callback_data *)data;
+	Browser_Common_View *common_view = permission_change_data->common_view;
+	Ewk_Context_File_System_Permission *file_system_permission = permission_change_data->file_system_permission;
+
+	ewk_context_file_system_permission_allow_set(file_system_permission, EINA_FALSE);
+
+	evas_object_del(common_view->m_file_system_change_confirm_popup);
+	common_view->m_file_system_change_confirm_popup = NULL;
 }
 
 Eina_Bool Browser_Common_View::_send_via_email(std::string url, Eina_Bool attach_file)
