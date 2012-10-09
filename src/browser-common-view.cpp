@@ -670,8 +670,15 @@ Eina_Bool Browser_Common_View::_send_via_email(std::string url, Eina_Bool attach
 		}
 	}
 
-	if (service_set_package(service_handle, SEC_EMAIL) < 0) {
-		BROWSER_LOGE("Fail to launch service operation");
+	if (service_set_app_id(service_handle, SEC_EMAIL_UG) < 0) {
+		BROWSER_LOGE("Fail to service_set_app_id");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+
+	Ecore_X_Window win_id = elm_win_xwindow_get(m_win);
+	if (service_set_window(service_handle, win_id) < 0) {
+		BROWSER_LOGE("Fail to service_set_window");
 		service_destroy(service_handle);
 		return EINA_FALSE;
 	}

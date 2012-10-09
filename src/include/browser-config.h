@@ -194,6 +194,8 @@
 #define SEC_VT_CALL "org.tizen.vtmain"
 #define SEC_MESSAGE "org.tizen.message"
 #define SEC_EMAIL "org.tizen.email"
+#define SEC_MESSAGE_UG		"msg-composer-efl"
+#define SEC_EMAIL_UG 		"email-composer-efl"
 #define SEC_SAMSUNG_APPS "org.tizen.samsungapps"
 
 #define ELM_NAVIFRAME_ITEM_CONTENT "default"
