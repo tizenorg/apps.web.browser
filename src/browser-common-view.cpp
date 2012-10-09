@@ -400,18 +400,31 @@ Eina_Bool Browser_Common_View::_show_database_quota_size_change_popup(Ewk_Contex
 		m_database_quota_change_confirm_popup = NULL;
 	}
 	m_database_quota_change_confirm_popup = elm_popup_add(m_navi_bar);
+	if (!m_database_quota_change_confirm_popup) {
+		BROWSER_LOGE("Failed to add popup");
+		return EINA_FALSE;
+	}
+
 	evas_object_size_hint_weight_set(m_database_quota_change_confirm_popup,
 									EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_object_text_set(m_database_quota_change_confirm_popup, confirm_msg.c_str());
 	evas_object_show(m_database_quota_change_confirm_popup);
 
 	Evas_Object *ok_button = elm_button_add(m_database_quota_change_confirm_popup);
+	if (!ok_button) {
+		BROWSER_LOGE("Failed to add ok button");
+		return EINA_FALSE;
+	}
 	elm_object_text_set(ok_button, BR_STRING_OK);
 	elm_object_part_content_set(m_database_quota_change_confirm_popup, "button1", ok_button);
 	elm_object_style_set(ok_button, "popup_button/default");
 	evas_object_smart_callback_add(ok_button, "clicked", __database_quota_size_change_popup_ok_cb, &m_quota_data);
 
 	Evas_Object *cancel_button = elm_button_add(m_database_quota_change_confirm_popup);
+	if (!cancel_button) {
+		BROWSER_LOGE("Failed to add cancel button");
+		return EINA_FALSE;
+	}
 	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
 	elm_object_part_content_set(m_database_quota_change_confirm_popup, "button2", cancel_button);
 	elm_object_style_set(cancel_button, "popup_button/default");
