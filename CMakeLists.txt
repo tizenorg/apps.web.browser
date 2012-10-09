@@ -73,7 +73,7 @@ pkg_check_modules(pkgs REQUIRED
 		eina ecore evas ecore-evas edbus elementary
 		dlog db-util utilX ui-gadget-1 tapi
 		secure-storage libsoup-2.4 libxml-2.0 libssl capi-location-manager capi-system-haptic devman
-		accounts-svc ecore-input ecore-imf edje cairo ecore-x ewebkit2 appsvc capi-appfw-application
+		ecore-input ecore-imf edje cairo ecore-x ewebkit2 appsvc capi-appfw-application
 		capi-appfw-app-manager capi-web-url-download shortcut syspopup-caller capi-network-connection pkgmgr
 		vconf-internal-keys
 		capi-system-device

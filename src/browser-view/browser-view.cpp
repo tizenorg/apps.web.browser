@@ -2535,25 +2535,6 @@ void Browser_View::__send_via_email_cb(void *data, Evas_Object *obj, void *event
 		BROWSER_LOGE("_send_via_email failed");
 }
 
-void Browser_View::__post_to_sns_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_View *browser_view = (Browser_View*)data;
-
-	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
-	const char *label = elm_object_item_text_get(it);
-	BROWSER_LOGD("label=[%s]", label);
-	if (label && strlen(label)) {
-		if (!browser_view->_post_to_sns(std::string(label), browser_view->get_url()))
-			BROWSER_LOGE("_post_to_sns failed");
-	}
-
-	browser_view->_destroy_more_context_popup();
-}
-
 void Browser_View::_destroy_more_context_popup(void)
 {
 	if (m_more_context_popup) {

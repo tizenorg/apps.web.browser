@@ -78,10 +78,6 @@ Browser_Common_View::~Browser_Common_View(void)
 		evas_object_del(m_call_confirm_popup);
 		m_call_confirm_popup = NULL;
 	}
-
-	m_sns_path_list.clear();
-	m_sns_name_list.clear();
-	m_sns_icon_list.clear();
 }
 
 void Browser_Common_View::show_msg_popup(const char *msg, int timeout)
@@ -252,75 +248,6 @@ Evas_Object *Browser_Common_View::_capture_snapshot(Browser_Window *window, floa
 	return rectangle;
 }
 
-void Browser_Common_View::__post_to_sns_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	if (!data)
-		return;
-
-	Browser_Common_View *common_view = (Browser_Common_View *)data;
-
-	Elm_Object_Item *selected_item = elm_list_selected_item_get(common_view->m_share_list);
-	const char *sns_name = elm_object_item_text_get(selected_item);
-	BROWSER_LOGD("sns_name=[%s]", sns_name);
-
-	if (!common_view->_post_to_sns(std::string(sns_name), common_view->m_share_url))
-		BROWSER_LOGE("_post_to_sns failed");
-
-	__popup_response_cb(common_view, NULL, NULL);
-}
-
-Eina_Bool Browser_Common_View::_post_to_sns(std::string sns_name, std::string url)
-{
-	BROWSER_LOGD("sns_name=[%s],  url=[%s]", sns_name.c_str(), url.c_str());
-	if (url.empty() || sns_name.empty()) {
-		show_msg_popup(BR_STRING_EMPTY);
-		return EINA_FALSE;
-	}
-
-	int index = 0;
-	for (index = 0 ; index < m_sns_name_list.size() ; index++) {
-		if (m_sns_name_list[index].find(sns_name) != string::npos)
-			break;
-	}
-
-	if (m_sns_path_list[index].find("twitter") != string::npos
-	    || m_sns_path_list[index].find("facebook") != string::npos) {
-
-		int ret = 0;
-		service_h service_handle = NULL;
-		if (service_create(&service_handle) < 0) {
-			BROWSER_LOGE("Fail to create service handle");
-			return EINA_FALSE;
-		}
-		if (!service_handle) {
-			BROWSER_LOGE("service handle is NULL");
-			return EINA_FALSE;
-		}
-		if (service_set_operation(service_handle, SERVICE_OPERATION_SEND_TEXT) < 0) {
-			BROWSER_LOGE("Fail to set service operation");
-			service_destroy(service_handle);
-			return EINA_FALSE;
-		}
-		if (service_add_extra_data(service_handle, SERVICE_DATA_TEXT, (char *)url.c_str()) < 0) {
-			BROWSER_LOGE("Fail to set post data");
-			service_destroy(service_handle);
-			return EINA_FALSE;
-		}
-		if (service_set_package(service_handle, m_sns_path_list[index].c_str()) < 0) {
-			BROWSER_LOGE("Fail to set SNS");
-			service_destroy(service_handle);
-			return EINA_FALSE;
-		}
-		if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
-			BROWSER_LOGE("Fail to launch service operation");
-			service_destroy(service_handle);
-			return EINA_FALSE;
-		}
-		service_destroy(service_handle);
-	}
-
-	return EINA_TRUE;
-}
 
 void Browser_Common_View::__send_via_message_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -557,83 +484,6 @@ Eina_Bool Browser_Common_View::_launch_streaming_player(const char *url, const c
 	return EINA_TRUE;
 }
 
-Eina_Bool Browser_Common_View::_check_available_sns_account(void)
-{
-	BROWSER_LOGD("%s", __func__);
-
-	int error_code = account_connect();
-	bool result = EINA_FALSE;
-
-	if(error_code != ACCOUNT_ERROR_NONE) {
-		BROWSER_LOGD("account_connect failed with error_code[%d].\n", error_code);
-		return EINA_FALSE;
-	}
-
-	if (account_query_account_by_package_name(__check_available_sns_account_cb,
-				"org.tizen.facebook", NULL) == ACCOUNT_ERROR_NONE) {
-		BROWSER_LOGD("Account for Facebook was set\n");
-	} else if (account_query_account_by_package_name(__check_available_sns_account_cb,
-				"org.tizen.twitter", NULL) == ACCOUNT_ERROR_NONE) {
-		BROWSER_LOGD("Account for Twitter was set\n");
-	} else {
-		BROWSER_LOGD("Account Queried failed \n");
-		error_code = account_disconnect();
-		if(error_code != ACCOUNT_ERROR_NONE) {
-			BROWSER_LOGD("(%d)-[Account] ret = %d, \n", __LINE__, error_code);
-			return EINA_FALSE;
-		}
-	}
-
-	error_code = account_disconnect();
-	if(error_code != ACCOUNT_ERROR_NONE) {
-		BROWSER_LOGD("(%d)-[Account] ret = %d, \n", __LINE__, error_code);
-		return EINA_FALSE;
-	}
-
-	return EINA_TRUE;
-}
-
-bool Browser_Common_View::__check_available_sns_account_cb(account_h handle, void *data)
-{
-	BROWSER_LOGD("%s", __func__);
-
-	char *pkg_name = NULL;
-	account_get_package_name(handle, &pkg_name);
-	BROWSER_LOGD("pkg_name [%s]", pkg_name);
-
-	if (pkg_name)
-		free(pkg_name);
-	pkg_name = NULL;
-
-	return true;
-}
-
-Eina_Bool Browser_Common_View::_get_available_sns_list(void)
-{
-	BROWSER_LOGD("[%s]\n", __func__);
-
-	int  error_code = 0;
-	error_code = account_connect();
-
-	if (error_code == ACCOUNT_ERROR_RECORD_NOT_FOUND) {
-		show_msg_popup(BR_STRING_ERROR, BR_STRING_NOT_FOUND_URL, 2);
-		return EINA_FALSE;
-	} else if (error_code == ACCOUNT_ERROR_NONE) {
-		error_code = account_foreach_account_from_db(__get_sns_list, this);
-		error_code = account_disconnect();
-
-		if (error_code !=ACCOUNT_ERROR_NONE) {
-			BROWSER_LOGD("account_svc_disconnect failed with error code [%d]\n", error_code);
-			return EINA_FALSE;
-		}
-	} else {
-		BROWSER_LOGD("account_connect failed with error code [%d]\n", error_code);
-		return EINA_FALSE;
-	}
-
-	return EINA_TRUE;
-}
-
 void Browser_Common_View::__database_quota_size_change_popup_ok_cb(void* data, Evas_Object* obj, void* event_info)
 {
 	BROWSER_LOGD("[%s]\n", __func__);
@@ -664,92 +514,6 @@ void Browser_Common_View::__database_quota_size_change_popup_cancel_cb(void* dat
 
 	evas_object_del(common_view->m_database_quota_change_confirm_popup);
 	common_view->m_database_quota_change_confirm_popup = NULL;
-}
-
-bool Browser_Common_View::__get_sns_list(account_h account, void *data)
-{
-	BROWSER_LOGD("[%s]\n", __func__);
-
-	if (!data)
-		return false;
-
-	Browser_Common_View *common_view = (Browser_Common_View *)data;
-
-	int account_id = 0;
-	char *service_name = NULL;
-	char *lib_path = NULL;
-	char *icon_path = NULL;
-
-	Eina_Bool can_post = EINA_FALSE;
-
-	account_get_capability(account, __get_post_capability_cb, &can_post);
-	account_get_account_id(account, &account_id);
-	BROWSER_LOGD("account_id: %d\n", account_id);
-
-	account_get_domain_name(account, &service_name);
-	BROWSER_LOGD("service_name: %s\n", service_name);
-
-	if (!can_post) {
-		BROWSER_LOGD("cannot post to : [%s] in browser\n", service_name);
-		if (service_name)
-			free(service_name);
-		service_name = NULL;
-		return false;
-	} else {
-		account_get_package_name(account, &lib_path);
-		BROWSER_LOGD("lib_path: %s\n", lib_path);
-
-		account_get_icon_path(account, &icon_path);
-		BROWSER_LOGD("icon_path: %s\n", icon_path);
-
-		if (icon_path && strlen(icon_path) > 0) {
-			BROWSER_LOGD("icon_path: %s\n", icon_path);
-			Evas_Object *icon = elm_icon_add(common_view->m_share_popup);
-			if (icon) {
-				elm_icon_file_set(icon, icon_path, NULL);
-				BROWSER_LOGD("icon_path: %s\n", icon_path);
-				common_view->m_sns_icon_list.push_back(icon);
-			}
-		}
-
-		if (service_name && strlen(service_name) && lib_path && strlen(lib_path)) {
-			common_view->m_sns_path_list.push_back(std::string(lib_path));
-			common_view->m_sns_name_list.push_back(std::string(service_name));
-		}
-	}
-	if (service_name)
-		free(service_name);
-	service_name = NULL;
-
-	if (icon_path)
-		free(icon_path);
-	icon_path = NULL;
-
-	if (lib_path)
-		free(lib_path);
-	lib_path= NULL;
-
-	return true;
-}
-
-bool Browser_Common_View::__get_post_capability_cb(account_capability_type_e type,
-						account_capability_state_e state, void *data)
-{
-	Eina_Bool *can_post = (Eina_Bool *)data;
-	if (!can_post) {
-		BROWSER_LOGD("unable to post");
-		return false;
-	}
-
-	if (ACCOUNT_CAPABILITY_STATUS_POST != type)
-		return true;
-
-	if (ACCOUNT_CAPABILITY_DISABLED == state)
-		return true;
-
-	*can_post = EINA_TRUE;
-
-	return true;
 }
 
 Eina_Bool Browser_Common_View::_send_via_email(std::string url, Eina_Bool attach_file)
@@ -937,10 +701,6 @@ Eina_Bool Browser_Common_View::_show_share_popup(const char *url)
 
 	m_share_url = std::string(url);
 
-	m_sns_path_list.clear();
-	m_sns_name_list.clear();
-	m_sns_icon_list.clear();
-
 	m_share_popup = elm_popup_add(m_navi_bar);
 	if (!m_share_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
@@ -992,10 +752,6 @@ void Browser_Common_View::__popup_response_cb(void* data, Evas_Object* obj, void
 		evas_object_del(common_view->m_share_list);
 		common_view->m_share_list = NULL;
 	}
-
-	common_view->m_sns_name_list.clear();
-	common_view->m_sns_path_list.clear();
-
 }
 
 char *Browser_Common_View::_trim(char *str)
