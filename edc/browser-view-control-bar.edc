@@ -1820,6 +1820,7 @@ group { name: "browser-view-controlbar";
 		}
 		part { name: "elm.rect.back_button";
 			type: RECT;
+			scale: 1;
 			description {
 				state: "default" 0.0;
 				visible: 0;
