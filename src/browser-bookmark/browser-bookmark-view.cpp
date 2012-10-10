@@ -1537,6 +1537,20 @@ void Browser_Bookmark_View::__slide_edit_button_clicked_cb(void *data, Evas_Obje
 	bookmark_view->m_current_genlist_item_to_edit = (Elm_Object_Item *)(item->user_data_2);
 
 	if (item->is_folder) {
+#ifdef EDIT_FOLDER_VIEW
+		bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
+
+		if (!m_data_manager->create_edit_folder_view(item->title, item->id)) {
+			BROWSER_LOGE("create_edit_folder_view failed");
+			return;
+		}
+
+		if (!m_data_manager->get_edit_folder_view()->init()) {
+			BROWSER_LOGE("get_edit_folder_view()->init() failed");
+			m_data_manager->destroy_edit_folder_view();
+			return;
+		}
+#else
 		/* edit folder by slide genlist item */
 		if (bookmark_view->_is_empty_folder(item->title)) {
 			bookmark_view->show_msg_popup(BR_STRING_EMPTY);
@@ -1553,6 +1567,7 @@ void Browser_Bookmark_View::__slide_edit_button_clicked_cb(void *data, Evas_Obje
 
 		edje_object_signal_emit(elm_layout_edje_get(bookmark_view->m_main_layout),
 					"expand_header_no_animation,signal", "");
+#endif
 	} else {
 		/* edit bookmark item by slide genlist item */
 		/* Pass the selected genlist item as parameter when bookmark -> Edit item
