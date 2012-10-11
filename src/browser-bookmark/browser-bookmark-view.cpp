@@ -215,6 +215,13 @@ void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
 			_show_empty_content_layout(EINA_TRUE);
 		else
 			_show_empty_content_layout(EINA_FALSE);
+
+		if (m_view_mode == BOOKMARK_VIEW) {
+			if (elm_genlist_decorate_mode_get(_get_current_folder_genlist())) {
+				if (!_set_controlbar_type(BOOKMARK_VIEW_EDIT_MODE))
+					BROWSER_LOGE("_set_controlbar_type(BOOKMARK_VIEW_DEFAULT) failed");
+			}
+		}
 	} else {
 		if (!m_data_manager->get_history_layout())
 			return;
@@ -1138,8 +1145,6 @@ void Browser_Bookmark_View::__edit_bookmark_item_button_clicked_cb(void *data, E
 
 	bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
 
-	bookmark_view->_set_edit_mode(EINA_FALSE);
-
 	if (!m_data_manager->create_edit_bookmark_view(item->title, item->url,
 					bookmark_view->m_current_folder_id)) {
 		BROWSER_LOGE("create_edit_bookmark_view failed");
@@ -1168,8 +1173,6 @@ void Browser_Bookmark_View::__rename_folder_button_clicked_cb(void *data, Evas_O
 	elm_check_state_set(bookmark_view->m_edit_mode_select_all_check_button, EINA_FALSE);
 
 	bookmark_view->hide_notify_popup_layout(bookmark_view->m_sub_main_layout);
-
-	bookmark_view->_set_edit_mode(EINA_FALSE);
 
 	if (!m_data_manager->create_edit_folder_view(item->title, item->id)) {
 		BROWSER_LOGE("create_edit_folder_view failed");
@@ -2222,6 +2225,7 @@ void Browser_Bookmark_View::__add_to_bookmark_cb(void *data, Evas_Object *obj, v
 
 Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 {
+	BROWSER_LOGD("");
 	if (m_bottom_control_bar)
 		evas_object_del(m_bottom_control_bar);
 
