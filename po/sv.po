@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Tidigare"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Lägg till bokmärke"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mapp"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Inställningar"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Dela"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Sök"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Lägg till på hemskärmen"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Spara bild"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Klistra in"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Inställningar"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Välj ord"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Sök på sidan"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Meddelar..."
 
@@ -25,8 +64,92 @@ msgstr "Hämta?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Markerade"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lista"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Välj alla"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Meddelande"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-post"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Avbryt"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopiera URL-länk"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Visa bild"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Öppna på ny sida"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Öppna"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Textmarkering på"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bokmärken"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Redigera"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Radera"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Radera"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Avbryt"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Redigera bokmärke"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Meddelanden"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Redigera"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Radera"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Lägg till i Bokmärken"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Teckenstorlek"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Liten"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxyport"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Klar"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Version"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Nedladdning avbruten"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopiera bild"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Urklipp"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Från sista sidan"
@@ -85,17 +208,11 @@ msgstr "Kör JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Allmänt namn:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisationsenhet:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisation:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "User agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Inställningar"
@@ -117,9 +234,6 @@ msgstr "Skriva över?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Tidigare"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Hämta lista"
@@ -154,9 +268,6 @@ msgstr "Nästa"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ny mapp"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Lägg till bokmärke"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nytt fönster"
 
@@ -171,9 +282,6 @@ msgstr "URL inte tillgänglig"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL:en %s är inte tillgänglig. Den fungerar kanske inte för tillfället eller så används den inte längre"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mapp"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mappnamn"
@@ -210,9 +318,6 @@ msgstr "Lägg till RSS-feed"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Lägg till RSS-feeds"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Inställningar"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Ange URL"
@@ -286,9 +391,6 @@ msgstr "Skapa mapp"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Markerade"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Dela"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Nyligen besökta sidor"
 
@@ -340,9 +442,6 @@ msgstr "Av"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Standardlagring"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Sök"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Spara bild"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Sök ord"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Lägg till på hemskärmen"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Lägg till på hemskärmen"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Blockera popup-fönster"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Textläsare"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopiera bild"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Spara bild"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Spela"
 
@@ -405,9 +495,6 @@ msgstr "Stopp"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Uppdatera"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Klistra in"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Mer"
@@ -529,9 +616,6 @@ msgstr "Skicka via e-post"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Skicka i meddelande"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Inställningar"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Användarnamn"
 
@@ -622,107 +706,14 @@ msgstr "Lägg till till webbklipp"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Genväg skapades"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Välj ord"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Sök på sidan"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Sök på sidan"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Lista"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Välj alla"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Meddelande"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-post"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Avbryt"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopiera URL-länk"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Visa bild"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Öppna på ny sida"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Öppna"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Textmarkering på"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Bokmärken"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Redigera"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Radera"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Radera"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Avbryt"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Redigera bokmärke"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Meddelanden"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-post"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Redigera"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Radera"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Lägg till i Bokmärken"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Teckenstorlek"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Stor"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Liten"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Hastighet"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy-adress"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxyport"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Klar"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Version"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Installera"
@@ -858,4 +849,28 @@ msgstr "Tillagt i bokmärken"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Borttaget från bokmärken"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blockera popuper"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Bilder"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Läser in. Vänta..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Anpassa användaragent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Användarens startsida"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Lösenord"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Sökmotor"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Genvägen %s har skapats"
 

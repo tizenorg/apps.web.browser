@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "ისტორია"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "სანიშნეებში დამატება"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "საქაღალდე"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "პარამეტრები"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "გაზიარება"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "ძიება"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "საწყის ეკრანზე დამატება"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "სურათის შენახვა"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "ჩასმა"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "პარამეტრები"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "აირჩიეთ სიტყვა"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "გვერდზე პოვნა"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "შეტყობინება..."
 
@@ -25,8 +64,92 @@ msgstr "ჩამოტვირთავთ?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "შერჩეული"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "სია"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "ყველას არჩევა"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "შეტყობინება"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "ელ.ფოსტა"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "გაუქმება"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL–ს კოპირება"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "სურათის ნახვა"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "ახ. გვერდზე გახსნა"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "გახსნა"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "ტექსტის შერჩევა ჩართულია"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "სანიშნი"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "შესწორება"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "წაშლა"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "წაშლა"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "გაუქმება"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "ნიშნულის შეცვლა"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "შეტყობინებები"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "შეცვლა"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "წაშლა"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "სანიშნეებში დამატება"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "შრიფტის ზომა"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "დიდი"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "პატარა"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "პროქსი სერვერის პორტი"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "შესრულდა"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "ვერსია"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "ჩამოტვირთვა შეწყდა"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "სურათის ასლის გადაღება"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "ბუფერული მეხს."
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "ბოლო გვერდიდან გაგრძ."
@@ -85,17 +208,11 @@ msgstr "JavaScript-ის გაშვება"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "საერთო სახელი:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "ორგანიზაციის ერთეული:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "ორგანიზაცია:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "მომხმარებლის აგენტი"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "პრეფერენციები"
@@ -117,9 +234,6 @@ msgstr "გადააწერთ?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "ისტორია"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "ჩამოტვირთვების სია"
@@ -154,9 +268,6 @@ msgstr "შემდეგი"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "ახალი საქაღალდე"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "სანიშნეებში დამატება"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "ახალი ფანჯარა"
 
@@ -172,9 +283,6 @@ msgstr "URL მიუწვდომელია"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s მიუწვდომელია. შეიძლება დროებით გამორთულია ან აღარ გამოიყენება"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "საქაღალდე"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "საქაღალდის სახელი"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "თემა არ არის"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "მულტი–ფანჯარა"
+msgstr "რამდენიმე ფანჯარა"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "ისტორიები არ არის"
@@ -210,9 +318,6 @@ msgstr "RSS ნაკადის დამატება"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS ვებ-არხების დამატება"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "პარამეტრები"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "შეიყვანეთ URL"
@@ -286,9 +391,6 @@ msgstr "საქაღალდის შექმნა"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "შერჩეული"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "გაზიარება"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "ბოლო დროს ნანახი გვერდები"
 
@@ -340,9 +442,6 @@ msgstr "გამორთ."
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "ნაგულისხმევი შესანახი ადგილი"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "ძიება"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "სურათის შენახვა"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "სიტყვის ძებნა"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "საწყის ეკრანზე დამატება"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "საწყის ეკრანზე დამატება"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "დიალოგის ფანჯრის დაბლოკვა"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "ტექსტის წამკითხველი"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "სურათის ასლის გადაღება"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "სურათის შენახვა"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "დაკვრა"
 
@@ -405,9 +495,6 @@ msgstr "შეჩერება"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "განახლება"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "ჩასმა"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "სხვა"
@@ -529,9 +616,6 @@ msgstr "ელ.ფოსტით გაგზავნა"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "წერილით გაგზავნა"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "პარამეტრები"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "მომხმარებლის სახელი"
 
@@ -622,107 +706,14 @@ msgstr "ვებ–კლიპზე დამატება"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "შეიქმნა სწრაფი ღილაკი"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "აირჩიეთ სიტყვა"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "გვერდზე პოვნა"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "გვერდზე პოვნა"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "ინტერნეტი"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "სია"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "ყველას არჩევა"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "შეტყობინება"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "ელ.ფოსტა"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "გაუქმება"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL–ს კოპირება"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "სურათის ნახვა"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "ახ. გვერდზე გახსნა"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "გახსნა"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "ტექსტის შერჩევა ჩართულია"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "სანიშნი"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "შესწორება"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "წაშლა"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "წაშლა"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "გაუქმება"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "ნიშნულის შეცვლა"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "შეტყობინებები"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "ელ.ფოსტა"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "შეცვლა"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "წაშლა"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "სანიშნეებში დამატება"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "შრიფტის ზომა"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "დიდი"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "პატარა"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "სიჩქარე"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "პროქსი სერვერის მისამართი"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "პროქსი სერვერის პორტი"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "შესრულდა"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "ვერსია"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "დაყენება"
@@ -842,7 +833,7 @@ msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
 msgstr "შეინახოს ინტერნეტის გარეშე წასაკითხად"
 
 msgid "IDS_BR_HEADER_LOCATION"
-msgstr "ადგილმდებარეობა"
+msgstr "ადგილმდებ."
 
 msgid "IDS_BR_HEADER_FORM_DATA"
 msgstr "ფორმის მონაცემები"
@@ -858,4 +849,28 @@ msgstr "დაემატა სანიშნეებში"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "ამოიშალა სანიშნეებიდან"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "ამოსახტომი ფანჯრების დაბლოკვა"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "სურათები"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "იტვირთება. გთხოვთ, დაელოდოთ..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "შერჩეული მომხმარებლის სააგენტო"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "მომხმარებლის საწყისი გვერდი"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "პაროლი"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "საძიებო სისტემა"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "სწრაფი ღილაკი ”%s” შექმნილია"
 

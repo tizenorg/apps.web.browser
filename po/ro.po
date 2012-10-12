@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Istoric"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Adăugare la Marcaje"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Folder"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Setări"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Partajare"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Căutare"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Adăug. la ecran. de pornire"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Salvare imagine"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Lipire"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Setări"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Selectaţi un cuvânt"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Găsire în pag."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Se notifică..."
 
@@ -25,8 +64,92 @@ msgstr "Descărcaţi?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Selectat"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Listă"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Selectare toate"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mesaj"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Anulare"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Cop. link URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Viz. imagine"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Desc. în pag. nouă"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Deschidere"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Selecţie text activă"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Marcaje"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Editare"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Şter."
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Ştergere"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Anulare"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Editare marcaj"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mesaje"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Editare"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Ştergere"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Adăugare la Marcaje"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Dimensiune font"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Mare"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Mic"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Port proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Gata"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versiune"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Descărcare anulată"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Copiere imagine"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Clipboard"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Contin. cu ultim. pag."
@@ -85,17 +208,11 @@ msgstr "Executare JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Nume comun:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Unitate organizaţională:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizaţie:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Agent utilizator"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferinţe"
@@ -117,9 +234,6 @@ msgstr "Suprascrieţi?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Istoric"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Descărcare listă"
@@ -154,9 +268,6 @@ msgstr "Următor"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Folder nou"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Adăugare la Marcaje"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Fereastră nouă"
 
@@ -172,9 +283,6 @@ msgstr "URL nedisponibil"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL-ul %s nu este disponibil. Poate fi temporar scos din funcţiune sau nu mai este utilizat"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Folder"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Nume director"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Nici un titlu"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Feres. multiple"
+msgstr "Ferestre"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Niciun istoric"
@@ -210,9 +318,6 @@ msgstr "Adăugare alimentare RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Adăugare alimentări RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Setări"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Introduceţi URL"
@@ -286,9 +391,6 @@ msgstr "Creare folder"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Selectat"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Partajare"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Pagini vizitate recent"
 
@@ -340,9 +442,6 @@ msgstr "Oprit"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Stocare implicită"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Căutare"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Salvare imagine"
 
@@ -354,9 +453,6 @@ msgstr "Găsire cuvânt"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Adăugare la Ecranul de pornire"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Adăug. la ecran. de pornire"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Site-urile cele mai vizitate"
@@ -382,12 +478,6 @@ msgstr "Blocare ferestre pop-up"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Cititor de text"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Copiere imagine"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Salvare imagine"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Redare"
 
@@ -405,9 +495,6 @@ msgstr "Oprire"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Reîncărcare"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Lipire"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Mai multe"
@@ -529,9 +616,6 @@ msgstr "Trimite prin e-mail"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Trimitere prin mesaj"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Setări"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Nume utilizator"
 
@@ -622,107 +706,14 @@ msgstr "Adăugare la clip Web"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Comanda rapidă a fost creată"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Selectaţi un cuvânt"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Găsire în pag."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Găsire în pag."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Listă"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Selectare toate"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Mesaj"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Anulare"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Cop. link URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Viz. imagine"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Desc. în pag. nouă"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Deschidere"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Selecţie text activă"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Marcaje"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Editare"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Şter."
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Ştergere"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Anulare"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Editare marcaj"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Mesaje"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Editare"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Ştergere"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Adăugare la Marcaje"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Dimensiune font"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Mare"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Mic"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Viteză"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Adresă proxy"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Port proxy"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Gata"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versiune"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instalare"
@@ -858,4 +849,28 @@ msgstr "Adăugat la marcaje"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Eliminat din marcaje"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blocare ferestre de tip pop-up"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Imagini"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Se încarcă. Aşteptaţi..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Personalizare user agent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Pagina de pornire a utilizatorului"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parolă"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Motor de căutare"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "A fost creată comanda rapidă %s"
 

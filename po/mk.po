@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Историја"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Додај во омил.стр."
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Папка"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Опции"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Сподели"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Побарај"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Додај на почетниот екран"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Меморирај слика"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Пресликај"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Опции"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Изберете збор"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Најди на стр."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Се известува..."
 
@@ -25,8 +64,92 @@ msgstr "Преземи?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Избраните"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Листа"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Избери ги сите"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Порака"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Откажи"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Коп. линк за URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Види слика"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Отвори нова стр."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Отвори"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Вкл.селектирање текст"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Сочувани адреси"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Измени"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Избр."
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Избриши"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Откажи"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Измени омилена стр."
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Пораки"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Измени"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Избриши"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Додај во Омилени"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Големина на букви"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Голема"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Мала"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Порт за прокси"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Готово"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Верзија"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Преземањето е откажано"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Копирај слика"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Посредна меморија"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Прод.од посл.стр."
@@ -85,17 +208,11 @@ msgstr "Активирај JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Општо име:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Оддел:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Организација:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Кориснички агент"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Преференци"
@@ -117,9 +234,6 @@ msgstr "Запиши врз постоечкото?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Историја"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Листа за преземање"
@@ -154,9 +268,6 @@ msgstr "Следно"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Нова папка"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Додај во омил.стр."
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Нов прозорец"
 
@@ -171,9 +282,6 @@ msgstr "Недостапно URL"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL-то %s не е достапно. Може да е привремено недостапно или да не се користи веќе"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Папка"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Име на папката"
@@ -210,9 +318,6 @@ msgstr "Додај RSS-канал"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Додај RSS-канали"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Опции"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Внеси URL"
@@ -286,9 +391,6 @@ msgstr "Нова папка"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Избраните"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Сподели"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Скоро посетени страници"
 
@@ -340,9 +442,6 @@ msgstr "Исклучено"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Основна меморија"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Побарај"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Меморирај слика"
 
@@ -354,9 +453,6 @@ msgstr "Најди збор"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Додај на основниот екран"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Додај на почетниот екран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Најпосетувани сајтови"
@@ -382,12 +478,6 @@ msgstr "Блок. појавни прозорци"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Читач на текст"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Копирај слика"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Меморирај слика"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Емитувај"
 
@@ -405,9 +495,6 @@ msgstr "Запри"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Отвори повторно"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Пресликај"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Повеќе"
@@ -529,9 +616,6 @@ msgstr "Прати преку email"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Прати преку порака"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Опции"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Корисничко име"
 
@@ -622,107 +706,14 @@ msgstr "Додај во веб-запис"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Направена е кратенка"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Изберете збор"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Најди на стр."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Најди на стр."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Интернет"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Листа"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Избери ги сите"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Порака"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Откажи"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Коп.линк за URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Види слика"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Отвори нова стр."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Отвори"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Вкл.селектирање текст"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Сочувани адреси"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Измени"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Избр."
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Избриши"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Откажи"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Измени омилена стр."
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Пораки"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Измени"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Избриши"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Додај во Омилени"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Големина на букви"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Голема"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Мала"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Брзина"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Адреса на прокси"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Порт за прокси"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Готово"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Верзија"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Инсталирај"
@@ -858,4 +849,28 @@ msgstr "Додадено во ознаки"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Отстрането од ознаките"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Блокирај појавни прозорци"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Слики"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Се вчитува. Почекајте..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Прилагоден кориснички агент"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Корисничка почетна страница"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Лозинка"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Пребарувач"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Направена е кратенка %s"
 

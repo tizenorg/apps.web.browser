@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historikk"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Legg til i Bokmerker"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mappe"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Innstillinger"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Del"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Søk"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Legg til på startskjerm"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Lagre bilde"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Lim inn"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Innstillinger"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Velg ord"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Finn på side"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Varsler..."
 
@@ -25,8 +64,92 @@ msgstr "Laste ned?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valgt"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Liste"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Merk alt"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Melding"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-post"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Avbryt"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopier URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Vis bilde"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Åpne i en ny side"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Åpne"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstmerking på"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bokmerker"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Rediger"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Slett"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Slett"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Avbryt"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Rediger bokmerke"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Meldinger"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Rediger"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Slett"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Legg til i Bokmerker"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Skriftstørrelse"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Liten"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy-port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Utført"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versjon"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Nedlasting avbrutt"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopier bilde"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Utklippstavle"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Fortsett fra siste side"
@@ -85,17 +208,11 @@ msgstr "Kjør Java-skript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Felles navn:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisasjonsenhet:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisasjon:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Brukeragent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferanser"
@@ -117,9 +234,6 @@ msgstr "Overskrive?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historikk"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Nedlastingsliste"
@@ -154,9 +268,6 @@ msgstr "Neste"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ny mappe"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Legg til i Bokmerker"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nytt vindu"
 
@@ -171,9 +282,6 @@ msgstr "URL ikke tilgjengelig"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s er ikke tilgjengelig. Det kan være midlertidig eller den er ikke lenger i bruk"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mappe"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mappenavn"
@@ -210,9 +318,6 @@ msgstr "Legg til RSS-tilførsel"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Legg til RSS-tilførsel"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Innstillinger"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Tast inn URL"
@@ -286,9 +391,6 @@ msgstr "Lag mappe"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Valgt"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Del"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Nylig besøkte sider"
 
@@ -340,9 +442,6 @@ msgstr "Av"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Standardlagring"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Søk"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Lagre bilde"
 
@@ -355,11 +454,8 @@ msgstr "Finn ord"
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Legg til på startskjermbildet"
 
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Legg til på startskjerm"
-
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Mest besøkte-områder"
+msgstr "Mest besøkte sider"
 
 msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
 msgstr "Del via Facebook"
@@ -382,12 +478,6 @@ msgstr "Blokker pop-up-vinduer"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Tekstleser"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopier bilde"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Lagre bilde"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Spill av"
 
@@ -405,9 +495,6 @@ msgstr "Stopp"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Oppdater"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Lim inn"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Mer"
@@ -529,9 +616,6 @@ msgstr "Send via e-post"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Send via melding"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Innstillinger"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Brukernavn"
 
@@ -622,113 +706,20 @@ msgstr "Legg til nettklipp"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Snarvei opprettet"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Velg ord"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Finn på side"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Finn på side"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internett"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Liste"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Merk alt"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Melding"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-post"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Avbryt"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopier URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Vis bilde"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Åpne i en ny side"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Åpne"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Tekstmerking på"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Bokmerker"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Rediger"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Slett"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Slett"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Avbryt"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Rediger bokmerke"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Meldinger"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-post"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Rediger"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Slett"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Legg til i Bokmerker"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Skriftstørrelse"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Stor"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Liten"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Hastighet"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy-adresse"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy-port"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Utført"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versjon"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Installere"
 
 msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Aktuell side"
+msgstr "Gjeldende side"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "Angi mappenavn"
@@ -858,4 +849,28 @@ msgstr "Lagt til i bokmerker"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Fjernet fra bokmerker"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokker popups"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Bilder"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Åpner. Vennligst vent..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Tilpass brukeragent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Brukerangitt hjemmeside"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Passord"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Søkemotor"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Snarvei %s opprettet"
 

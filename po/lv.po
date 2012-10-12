@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Vēsture"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Pievien. grāmatzīmēm"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mape"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Iestatījumi"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Koplietot"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Meklēt"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Pievienot sākuma ekrānam"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Saglabāt attēlu"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Ielīmēt"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Iestatījumi"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Izv. vārdu"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Meklēt lapā"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Paziņo..."
 
@@ -25,8 +64,92 @@ msgstr "Vai lejupielādēt?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Izvēlēts"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Saraksts"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Izv. visu"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Ziņa"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-pasts"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Atcelt"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kop. saites URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Skatīt attēlu"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Atvērt jaunā lapā"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Atvērt"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Teksta izvēle ieslēgta"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Grāmatzīmes"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Rediģēt"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Dzēst"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Dzēst"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Atcelt"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Rediģēt grāmatzīmi"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Ziņas"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Rediģēt"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Dzēst"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Pievienot grāmatzīmēm"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Fonta lielums"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Liels"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Mazs"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Starpniekservera ports"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Gatavs"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versija"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Lejupielāde atcelta"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopēt attēlu"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Starpliktuve"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Turpināt no pēd. lapas"
@@ -85,17 +208,11 @@ msgstr "Palaist JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Vispārējais nosaukums:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizācijas vienība:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizācija:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Lietotāja aģents"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferences"
@@ -117,9 +234,6 @@ msgstr "Vai pārrakstīt?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Vēsture"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Lejupielāžu saraksts"
@@ -154,9 +268,6 @@ msgstr "Nāk."
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Jauna mape"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Pievien. grāmatzīmēm"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Jauns logs"
 
@@ -172,9 +283,6 @@ msgstr "URL nav pieejams"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s nav pieejams. Iespējams, tas pagaidām nedarbojas vai netiek vairs lietots"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mape"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mapes nosaukums"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Nav nosaukuma"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Vairāklogu"
+msgstr "Vairāki logi"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Nav vēstures"
@@ -210,9 +318,6 @@ msgstr "Pievienot RSS plūsmu"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Pievienot RSS plūsmas"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Iestatījumi"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Ievadiet URL"
@@ -286,9 +391,6 @@ msgstr "Izveidot mapi"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Izvēlēts"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Koplietot"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Nesen apmeklētās lapas"
 
@@ -340,9 +442,6 @@ msgstr "Izslēgt"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Noklusējuma krātuve"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Meklēt"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Saglabāt attēlu"
 
@@ -354,9 +453,6 @@ msgstr "Atrast vārdu"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Pievienošana sākuma ekrānam"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Pievienot sākuma ekrānam"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Biežāk apmeklētās vietnes"
@@ -382,12 +478,6 @@ msgstr "Bloķēt uznirstošos logus"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Teksta lasītājs"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopēt attēlu"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Saglabāt attēlu"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Atskaņot"
 
@@ -405,9 +495,6 @@ msgstr "Apturēt"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Ielādēt vēlreiz"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Ielīmēt"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Citi"
@@ -521,16 +608,13 @@ msgid "IDS_BR_BODY_ENTER_NAME"
 msgstr "Ievadiet vārdu"
 
 msgid "IDS_BR_BODY_NAME"
-msgstr "Vārds"
+msgstr "Nosaukums"
 
 msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
 msgstr "Sūtīt, izmantojot e-pastu"
 
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Sūtīt, izmantojot ziņu"
-
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Iestatījumi"
 
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Lietotājvārds"
@@ -622,107 +706,14 @@ msgstr "Pievienot tīmekļa klipam"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Izveidots īsceļš"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Izv. vārdu"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Meklēt lapā"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Meklēt lapā"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internets"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Saraksts"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Izv. visu"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Ziņa"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-pasts"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Atcelt"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kop. saites URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Skatīt attēlu"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Atvērt jaunā lapā"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Atvērt"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Teksta izvēle ieslēgta"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Grāmatzīmes"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Rediģēt"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Dzēst"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Dzēst"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Atcelt"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Rediģēt grāmatzīmi"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Ziņas"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-pasts"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Rediģēt"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Dzēst"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Pievienot grāmatzīmēm"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Fonta lielums"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Liels"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Mazs"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Ātrums"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Starpniekservera adrese"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Starpniekservera ports"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Gatavs"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versija"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instalēt"
@@ -858,4 +849,28 @@ msgstr "Pievienots grāmatzīmēm"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Noņemts no grāmatzīmēm"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Bloķēt uznirstošos logus"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Attēli"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Notiek ielāde. Lūdzu, uzgaidiet..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Pielāgots lietotāja aģents"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Lietotāja sākumlapa"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parole"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Meklētājprogramma"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Izveidots īsceļš %s"
 

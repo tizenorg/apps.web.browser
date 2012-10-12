@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "歷程記錄"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "加到書籤"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "資料夾"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "設定"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "分享"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "搜尋"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "加入至主螢幕"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "儲存圖像"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "貼上"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "設定"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "擇擇字詞"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "在頁面上尋找"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "正在通知..."
 
@@ -25,8 +64,92 @@ msgstr "要下載嗎？"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "已選擇"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "清單"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "選擇全部"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "訊息"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "電子郵件"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "取消"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "複製連結網址"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "檢視圖像"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "在新頁面開啟"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "開啟"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "文字選擇開"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "書籤"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "編輯"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "刪除"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "刪除"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "取消"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "編輯書籤"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "訊息"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "編輯"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "刪除"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "加到書籤"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "字體大小"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "大"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "小"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "代理伺服器端口"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "完成"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "版本"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "下載已取消"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "複製圖像"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "剪貼板"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "從上一頁繼續"
@@ -85,17 +208,11 @@ msgstr "執行 JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "一般名稱："
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "機構單位："
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "機構："
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "用戶代理"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "偏好設定"
@@ -117,9 +234,6 @@ msgstr "要覆蓋嗎？"
 
 msgid "IDS_BR_POP_URL"
 msgstr "網址"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "歷程記錄"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "下載清單"
@@ -154,9 +268,6 @@ msgstr "下一個"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "新資料夾"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "加到書籤"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "新視窗"
 
@@ -172,9 +283,6 @@ msgstr "網址不可用"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "網址 %s 不可用。可能暫時無法使用或不能再使用"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "資料夾"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "資料夾名稱"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "無標題"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "多個視窗"
+msgstr "多重視窗"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "無歷史記錄"
@@ -210,9 +318,6 @@ msgstr "加入 RSS Feed"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "加入 RSS Feed"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "設定"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "輸入網址"
@@ -286,9 +391,6 @@ msgstr "建立資料夾"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "已選擇"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "分享"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "最近瀏覽的頁面"
 
@@ -335,13 +437,10 @@ msgid "IDS_BR_BODY_ON"
 msgstr "開"
 
 msgid "IDS_BR_BODY_OFF"
-msgstr "關閉"
+msgstr "關"
 
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "預設儲存裝置"
-
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "搜尋"
 
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "儲存圖像"
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "尋找字詞"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "加入至主螢幕"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "加入至主螢幕"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "封鎖彈出視窗"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "文字閱讀器"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "複製圖像"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "儲存圖像"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "播放"
 
@@ -405,9 +495,6 @@ msgstr "停止"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "重新載入"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "貼上"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "更多"
@@ -529,9 +616,6 @@ msgstr "透過電子郵件發送"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "透過訊息發送"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "設定"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "用戶名稱"
 
@@ -622,107 +706,14 @@ msgstr "加到網上短片"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "捷徑已建立"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "擇擇字詞"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "在頁面上尋找"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "在頁面上尋找"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
-
 msgid "IDS_BR_BODY_INTERNET"
-msgstr "互聯網"
-
-msgid "IDS_BR_OPT_LIST"
-msgstr "清單"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "選擇全部"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "訊息"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "電子郵件"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "取消"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "複製連結網址"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "檢視圖像"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "在新頁面開啟"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "開啟"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "文字選擇開"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "書籤"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "編輯"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "刪除"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "刪除"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "取消"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "編輯書籤"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "訊息"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "電子郵件"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "編輯"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "刪除"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "加到書籤"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "字體大小"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "大"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "小"
+msgstr "瀏覽器"
 
 msgid "IDS_BR_BODY_SPEED"
 msgstr "速度"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "代理伺服器位址"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "代理伺服器端口"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "完成"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "版本"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "安裝"
@@ -773,13 +764,13 @@ msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
 msgstr "重設為預設"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "將全部設定值設定為預設值。要繼續嗎？"
+msgstr "將全部設定重設為預設。繼續嗎？"
 
 msgid "IDS_BR_POP_CLEAR_CACHE_Q"
 msgstr "要清除緩存嗎？"
 
 msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "要清除全部歷程記錄嗎？"
+msgstr "清除全部歷程記錄嗎？"
 
 msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
 msgstr "瀏覽器導覽歷程記錄將被清除"
@@ -858,4 +849,28 @@ msgstr "已加到書籤"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "已從書籤中移除"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "封鎖彈出視窗"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "圖片"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "正在載入。請稍候..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "自訂用戶代理程式"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "用戶首頁"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "密碼"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "搜尋引擎"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "快捷鍵%s已建立"
 

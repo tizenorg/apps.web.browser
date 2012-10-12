@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historie"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Přidat do Záložek"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Složka"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Nastavení"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Sdílet"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Hledat"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Přidat na dom. obrazovku"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Uložit obrázek"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Vložit"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Nastavení"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Vybrat slovo"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Najít na str."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Probíhá oznamování..."
 
@@ -25,8 +64,92 @@ msgstr "Stáhnout?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Vybráno"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Seznam"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Vybrat vše"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Zpráva"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Zrušit"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kop. URL odkazu"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Zobr. obrázek"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Otev. v novém okně"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Otevřít"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Zapnout výběr textu"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Záložky"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Upravit"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Odstr"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Odstranit"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Zrušit"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Upravit záložku"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Zprávy"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Upravit"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Odstranit"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Přidat záložku"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Velikost písma"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Velké"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Malé"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Port serveru proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Hotovo"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Verze"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Stahování zrušeno"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopírovat obrázek"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Schránka"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Pokračovat od pos. str."
@@ -85,17 +208,11 @@ msgstr "Spustit JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Běžný název:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizační jednotka:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizace:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Uživatelský agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Předvolby"
@@ -117,9 +234,6 @@ msgstr "Přepsat?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historie"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Seznam stažených položek"
@@ -154,9 +268,6 @@ msgstr "Další"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Nová složka"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Přidat do Záložek"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nové okno"
 
@@ -171,9 +282,6 @@ msgstr "Adresa URL není k dispozici"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "Adresa URL %s není k dispozici. Možná je dočasně vypnutá nebo již není používána"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Složka"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Název složky"
@@ -210,9 +318,6 @@ msgstr "Přidat zdroj RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Přidat zdroje RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Nastavení"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Zadat adresu URL"
@@ -286,9 +391,6 @@ msgstr "Vytvořit složku"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Vybráno"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Sdílet"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Poslední navštívené stránky"
 
@@ -340,9 +442,6 @@ msgstr "Vyp"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Výchozí umístění"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Hledat"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Uložit obrázek"
 
@@ -354,9 +453,6 @@ msgstr "Najít slovo"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Přidat na domovskou obrazovku"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Přidat na dom. obrazovku"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Nejnavštěvovanější stránky"
@@ -382,12 +478,6 @@ msgstr "Blok. aut. otevíraná okna"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Čtečka textu"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopírovat obrázek"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Uložit obrázek"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Přehrát"
 
@@ -405,9 +495,6 @@ msgstr "Zastavit"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Načíst znovu"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Vložit"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Další"
@@ -529,9 +616,6 @@ msgstr "Odeslat pomocí e-mailu"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Odeslat prostřednictvím zprávy"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Nastavení"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Uživatelské jméno"
 
@@ -622,107 +706,14 @@ msgstr "Přidat do webového klipu"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Zástupce byl vytvořen"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Vybrat slovo"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Najít na str."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Najít na str."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Seznam"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Vybrat vše"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Zpráva"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Zrušit"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kop. URL odkazu"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Zobr. obrázek"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Otev. v novém okně"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Otevřít"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Zapnout výběr textu"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Záložky"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Upravit"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Odstr"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Odstranit"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Zrušit"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Upravit záložku"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Zprávy"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Upravit"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Odstranit"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Přidat záložku"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Velikost písma"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Velké"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Malé"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Rychlost"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Adresa proxy"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Port serveru proxy"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Hotovo"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Verze"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instalovat"
@@ -858,4 +849,28 @@ msgstr "Přidáno do záložek"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Odstraněno ze záložek"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokovat autom. otevíraná okna"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Obrázky"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Načítání. Počkejte prosím..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Vlastní uživatelský agent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Domovská stránka uživatele"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Heslo"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Vyhledávač"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Zástupce %s byl vytvořen"
 

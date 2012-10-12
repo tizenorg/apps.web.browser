@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Stair"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Cuir le Leabharmharcanna"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Fillteán"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Socruithe"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Comhroinn"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Cuardaigh"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Cuir leis an scáileán baile"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Sábháil íomhá"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Greamaigh"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Socruithe"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Roghnaigh focal"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Aimsigh ar lch."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Ag cur in iúl"
 
@@ -25,8 +64,92 @@ msgstr "Íoslódáil?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Roghnaithe"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Liostaigh"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Roghnaigh gach"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Teachtaireacht"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "R-phost"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Cealaigh"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Cóipeáil nasc URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Amharc ar íomhá"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Oscail i lch. Nua"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Oscail"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Roghnú téacs ar siúl"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Leabharmharcanna"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Eagraigh"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Scrs"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Scrios"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Cuir ar ceal"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Cuir leabharmharc in eagar"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Teachtaireachtaí"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Cuir in eagar"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Scrios"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Cuir le Leabharmharcanna"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Méid an chló"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Mór"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Beag"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Seachphort"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Déanta"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Leagan"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Íoslódáil curtha ar ceal"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Cóipeáil íomhá"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Gearrthaisce"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Ar lean ón lch. deiridh"
@@ -68,7 +191,7 @@ msgid "IDS_BR_BODY_NO_BOOKMARKS"
 msgstr "Níl leabharmharcanna ann"
 
 msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "Ní bhfuarthas torthaí"
+msgstr "Níor aimsíodh torthaí"
 
 msgid "IDS_BR_BODY_OPTIONAL"
 msgstr "Roghnach"
@@ -85,17 +208,11 @@ msgstr "Rith JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Ainm coitianta:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Aonad eagrúcháin:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Eagraíocht:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Gníomhaire úsáideora"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Sainroghanna"
@@ -117,9 +234,6 @@ msgstr "Forscríobh?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Stair"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Liosta íoslódálacha"
@@ -154,9 +268,6 @@ msgstr "Ar aghaidh"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Fillteán nua"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Cuir le Leabharmharcanna"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Fuinneog nua"
 
@@ -172,9 +283,6 @@ msgstr "Níl an URL ar fáil"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "Níl an URL %s ar fáil. Is féidir go bhfuil sé as ord go sealadach nó nach bhfuil sé in úsáid a thuilleadh"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Fillteán"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Ainm an fhillteáin"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Níl teideal ann"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Ilfuinneog"
+msgstr "Multi window"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Níl stair ann"
@@ -210,9 +318,6 @@ msgstr "Cuir fotha RSS leis"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Cuir fothaí RSS leis"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Socruithe"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Iontráil URL"
@@ -286,9 +391,6 @@ msgstr "Déan fillteán"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Roghnaithe"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Comhroinn"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Leathanaigh ar tugadh cuairt orthu le déanaí"
 
@@ -340,9 +442,6 @@ msgstr "As"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Stóras réamhshocraithe"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Cuardaigh"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Sábháil íomhá"
 
@@ -353,10 +452,7 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Aimsigh focal"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Cuir le Scáileán baile"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Cuir leis an scáileán baile"
+msgstr "Cuir le scáileán baile"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Láithreáin is mó cuairt orthu"
@@ -382,12 +478,6 @@ msgstr "Bac ar fhuinneoga aníos"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Léitheoir téacs"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Cóipeáil íomhá"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Sábháil íomhá"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Seinn"
 
@@ -405,9 +495,6 @@ msgstr "Stop"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Athlódáil"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Greamaigh"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Tuilleadh"
@@ -529,9 +616,6 @@ msgstr "Seol le R-phost"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Seol le teachtaireacht"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Socruithe"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Ainm úsáideora"
 
@@ -622,107 +706,14 @@ msgstr "Cuir leis an ngearrthóg Gréasáin"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Aicearra cruthaithe"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Roghnaigh focal"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Aimsigh ar leathanach"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Aimsigh ar lch."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "an tIdirlíon"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Liostaigh"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Roghnaigh gach"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Teachtaireacht"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "R-phost"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Cealaigh"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Cóipeáil nasc URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Amharc ar íomhá"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Oscail i lch. Nua"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Oscail"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Roghnú téacs ar siúl"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Leabharmharcanna"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Eagraigh"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Scrs"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Scrios"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Cuir ar ceal"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Cuir leabharmharc in eagar"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Teachtaireachtaí"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "R-phost"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Cuir in eagar"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Scrios"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Cuir le Leabharmharcanna"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Méid an chló"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Mór"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Beag"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Luas"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Seoladh seachfhreastalaí"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Seachphort"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Déanta"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Leagan"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Suiteáil"
@@ -815,7 +806,7 @@ msgid "IDS_BR_BODY_LOW"
 msgstr "Íseal"
 
 msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Meán"
+msgstr "Meánach"
 
 msgid "IDS_BR_BODY_BLANK_PAGE"
 msgstr "Leathanach bán"
@@ -857,5 +848,29 @@ msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "Curtha le leabharmharcanna"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
-msgstr "Bainte de leabharmharcanna"
+msgstr "Bainte ó leabharmharcanna"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Cuir bac ar mhíreanna aníos"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Pictiúir"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Ag lódáil. Fan go fóill..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Saincheap gníomhaire úsáideora"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Leathanach baile d'úsáideoirí"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Pasfhocal"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Inneall cuardaigh"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Aicearra a chruthaigh %s"
 

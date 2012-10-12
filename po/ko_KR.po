@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "기록"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "북마크에 추가"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "폴더"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "설정"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "공유"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "검색"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "홈 화면에 추가"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "이미지 저장"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "붙여넣기"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "설정"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "단어 선택"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "페이지 내에서 검색"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "알림 준비 중..."
 
@@ -25,8 +64,92 @@ msgstr "다운로드할까요?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "이 항목만"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "목록"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "모두 선택"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "메시지"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "이메일"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "취소"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL 복사"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "이미지 보기"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "새 창에서 열기"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "열기"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "문자 선택 켜기"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "북마크"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "편집"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "삭제"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "삭제"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "취소"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "북마크 편집"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "메시지"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "편집"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "삭제"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "북마크에 추가"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "글자 크기"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "크게"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "작게"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "프록시 포트"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "완료"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "버전"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "다운로드가 취소되었습니다"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "이미지 복사"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "클립보드"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "마지막 페이지 계속 보기"
@@ -85,17 +208,11 @@ msgstr "자바 스크립트 실행"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "일반 이름:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "기관명:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "기관:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "사용자 에이전트"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "속성"
@@ -117,9 +234,6 @@ msgstr "덮어쓸까요?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "기록"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "다운로드 목록"
@@ -154,9 +268,6 @@ msgstr "다음"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "새 폴더"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "북마크에 추가"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "새 창"
 
@@ -172,9 +283,6 @@ msgstr "사용할 수 없는 URL입니다"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "사용할 수 없는 URL입니다. 일시적으로 다운되었거나 더 이상 사용되지 않습니다"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "폴더"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "폴더 이름"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "제목이 없습니다"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "실행 창 보기"
+msgstr "멀티윈도우"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "기록이 없습니다"
@@ -210,9 +318,6 @@ msgstr "RSS 피드 추가"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS 피드 추가"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "설정"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL을 입력하세요"
@@ -286,9 +391,6 @@ msgstr "폴더 추가"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "이 항목만"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "공유"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "최근 방문한 웹사이트"
 
@@ -340,9 +442,6 @@ msgstr "끄기"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "기본 저장 위치"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "검색"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "이미지 저장"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "단어 검색"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "홈 화면에 추가"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "홈 화면에 추가"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "팝업 차단"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "텍스트 판독"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "이미지 복사"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "이미지 저장"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "재생"
 
@@ -405,9 +495,6 @@ msgstr "중지"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "새로고침"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "붙여넣기"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "더보기"
@@ -529,9 +616,6 @@ msgstr "이메일로 전송"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "메시지로 전송"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "설정"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "사용자 이름"
 
@@ -542,7 +626,7 @@ msgid "IDS_BR_POP_SAVED"
 msgstr "저장되었습니다"
 
 msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "메모리가 부족합니다"
+msgstr "저장 공간이 부족합니다"
 
 msgid "IDS_BR_POP_NETWORK_ERROR"
 msgstr "네트워크 오류가 발생하였습니다"
@@ -622,107 +706,14 @@ msgstr "Web clip에 추가"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "단축메뉴가 추가되었습니다"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "단어 선택"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "페이지 내에서 검색"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "페이지 내에서 검색"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "인터넷"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "목록"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "모두 선택"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "메시지"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "이메일"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "취소"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL 복사"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "이미지 보기"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "새 창에서 열기"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "열기"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "문자 선택 켜기"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "북마크"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "편집"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "삭제"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "삭제"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "취소"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "북마크 편집"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "메시지"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "이메일"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "편집"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "삭제"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "북마크에 추가"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "글자 크기"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "크게"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "작게"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "속도"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "프록시 주소"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "프록시 포트"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "완료"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "버전"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "설치"
@@ -858,4 +849,28 @@ msgstr "북마크에 추가되었습니다"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "북마크에서 삭제되었습니다"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "팝업 차단"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "사진"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "불러오는 중... 잠시만 기다리세요"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "사용자 에이전트 설정"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "사용자 홈페이지"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "비밀번호"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "검색 엔진"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s 단축메뉴가 추가되었습니다"
 

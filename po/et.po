@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Ajalugu"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Lisa järjehoidja"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Kaust"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Seaded"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Jaga"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Otsi"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Lisa avaekraanile"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Salvesta pilt"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Kleebi"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Seaded"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Valige sõna"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Otsi lehelt"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Teavitamine..."
 
@@ -25,8 +64,92 @@ msgstr "Laadida alla?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valitud"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Loend"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Vali kõik"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Sõnum"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-kiri"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Tühista"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kop. lingi URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Kuva pilt"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Ava uuel lehel"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Ava"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstivalik sees"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Järjehoidjad"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Muuda"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Kustuta"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Kustuta"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Tühista"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Muuda järjehoidjat"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Sõnumid"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Muuda"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Kustuta"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Lisa järjehoidjatesse"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Fondi suurus"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Suur"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Väike"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Puhverserveri port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Valmis"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versioon"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Allalaadimine tühistatud"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopeeri pilt"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Lõikelaud"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Jätka viimaselt lehelt"
@@ -85,17 +208,11 @@ msgstr "Käivita JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Üldnimi:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisatsiooni üksus:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organsatsioon:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Kasutaja esindaja"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Eelistused"
@@ -117,9 +234,6 @@ msgstr "Kas kirjutan üle?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Ajalugu"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Allalaadimiste loend"
@@ -154,9 +268,6 @@ msgstr "Järgmine"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Uus kaust"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Lisa järjehoidja"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Uus aken"
 
@@ -171,9 +282,6 @@ msgstr "URL pole saadaval"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s pole saadaval. See võib olla ajutiselt maas või mitte enam kasutusel"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Kaust"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Kausta nimi"
@@ -210,9 +318,6 @@ msgstr "Lisa RSS-kanal"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Lisa RSS-kanaleid"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Seaded"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Sisesta URL"
@@ -286,9 +391,6 @@ msgstr "Loo kaust"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Valitud"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Jaga"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Hiljuti külastatud leheküljed"
 
@@ -340,9 +442,6 @@ msgstr "Väljas"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Vaikemälu"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Otsi"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Salvesta pilt"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Otsi sõna"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Lisa avaekraanile"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Lisa avaekraanile"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Blokeeri hüpikaknad"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Tekstilugeja"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopeeri pilt"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Salvesta pilt"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Esita"
 
@@ -405,9 +495,6 @@ msgstr "Peata"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Laadi uuesti"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Kleebi"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Veel"
@@ -529,9 +616,6 @@ msgstr "Saada e-kirjaga"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Saada sõnumiga"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Seaded"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Kasutajanimi"
 
@@ -622,107 +706,14 @@ msgstr "Lisa veebiklipile"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Otsetee on loodud"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Valige sõna"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Otsi lehelt"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Otsi lehelt"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Loend"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Vali kõik"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Sõnum"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-kiri"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Tühista"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kop. lingi URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Kuva pilt"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Ava uuel lehel"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Ava"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Tekstivalik sees"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Järjehoidjad"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Muuda"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Kustuta"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Kustuta"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Tühista"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Muuda järjehoidjat"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Sõnumid"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-kiri"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Muuda"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Kustuta"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Lisa järjehoidjatesse"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Fondi suurus"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Suur"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Väike"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Kiirus"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Puhverserveri aadress"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Puhverserveri port"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Valmis"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versioon"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Installi"
@@ -858,4 +849,28 @@ msgstr "Lisatud järjehoidjatesse"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Eemaldatud järjehoidjatest"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokeeri hüpikud"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Pildid"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Laadimine. Palun oodake..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Kohandatud kasutaja agent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Kasutaja avaleht"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parool"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Otsingumootor"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Üksuse %s otsetee on loodud"
 

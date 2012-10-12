@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Oversigt"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Føj til bogmærker"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mappe"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Indstillinger"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Del"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Søg"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Føj til startskærm"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Gem billede"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Indsæt"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Indstillinger"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Vælg ord"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Find på side"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Giver besked..."
 
@@ -25,8 +64,92 @@ msgstr "Download?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valgte"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Liste"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Vælg alle"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Meddelelse"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Annullér"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopiér link-URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Vis billede"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Åbn på ny side"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Åbn"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstmarkering til"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bogmærker"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Redigér"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Slet"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Slet"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Annullér"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Redigér bogmærke"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Meddelelser"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Redigér"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Slet"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Føj til Bogmærker"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Skriftstørrelse"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Lille"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy-port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Udført"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Version"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Download blev annulleret"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopiér billede"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Udklipsholder"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Fortsæt fra sidste side"
@@ -85,17 +208,11 @@ msgstr "Kør JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Fælles navn:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisationsenhed:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisation:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Brugeragent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Indstillinger"
@@ -117,9 +234,6 @@ msgstr "Overskriv?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Oversigt"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Download-liste"
@@ -154,9 +268,6 @@ msgstr "Næste"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ny mappe"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Føj til bogmærker"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nyt vindue"
 
@@ -171,9 +282,6 @@ msgstr "URL ikke tilgængelig"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s ikke tilgængelig. Det er muligvis midlertidigt ude af drift eller ikke længere i brug"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mappe"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mappenavn"
@@ -194,7 +302,7 @@ msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
 msgstr "Føj til Bogmærker"
 
 msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Rediger bogmærke"
+msgstr "Redigér bogmærke"
 
 msgid "IDS_BR_BODY_FOLDER_NAME_C"
 msgstr "Mappenavn:"
@@ -210,9 +318,6 @@ msgstr "Tilføj RSS-kilde"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Tilføj RSS-feeds"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Indstillinger"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Angiv URL-adresse"
@@ -286,9 +391,6 @@ msgstr "Opret mappe"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Valgte"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Del"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Sider besøgt for nylig"
 
@@ -340,9 +442,6 @@ msgstr "Fra"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Standardlagring"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Søg"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Gem billede"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Find ord"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Føj til startskærm"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Føj til startskærm"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Blokér popup-vinduer"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Tekstlæser"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopiér billede"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Gem billede"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Afspil"
 
@@ -405,9 +495,6 @@ msgstr "Stop"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Genindlæs"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Indsæt"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Mere"
@@ -529,9 +616,6 @@ msgstr "Send via e-mail"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Send via meddelelse"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Indstillinger"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Brugernavn"
 
@@ -622,107 +706,14 @@ msgstr "Føj til Web-klip"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Genvej oprettet"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Vælg ord"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Find på side"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Find på side"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Liste"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Vælg alle"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Meddelelse"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Annuller"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopiér link-URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Vis billede"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Åbn på ny side"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Åbn"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Tekstmarkering til"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Bogmærker"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Rediger"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Slet"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Slet"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Annuller"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Rediger bogmærke"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Meddelelser"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Rediger"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Slet"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Føj til Bogmærker"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Skriftstørrelse"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Stor"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Lille"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Hastighed"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy-adresse"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy-port"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Udført"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Version"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Installér"
@@ -770,7 +761,7 @@ msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
 msgstr "Husk formulardata"
 
 msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Nulstil til standardindstillingen"
+msgstr "Nulstil til standard"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
 msgstr "Alle indstillinger til standard. Vil du fortsætte?"
@@ -858,4 +849,28 @@ msgstr "Føjet til bogmærker"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Fjernet fra bogmærker"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokér popup-vinduer"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Billeder"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Indlæser. Vent..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Tilpas brugeragent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Brugers startside"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Adgangskode"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Søgemaskine"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Genvej %s oprettet"
 

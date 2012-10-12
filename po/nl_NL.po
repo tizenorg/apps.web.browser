@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Geschiedenis"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Toev. als favoriet"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Map"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Instellingen"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Delen"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Zoeken"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Toevoegen aan startscherm"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Afbeelding opslaan"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Plakken"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Instellingen"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Woord selecteren"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Zoek op pagina"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Melden..."
 
@@ -25,8 +64,92 @@ msgstr "Downloaden?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Geselecteerd"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lijst"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Alles selecteren"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Bericht"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Annuleer"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL kopiëren"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Afbeelding bekijken"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Open in nw venster"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Openen"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstselectie aan"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favorieten"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Bewerken"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Wissen"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Wissen"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Annuleren"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Favoriet bewerken"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Berichten"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Bewerken"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Wissen"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Toevoegen aan Favorieten"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Tekstgrootte"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Groot"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Klein"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Poort proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Gereed"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versie"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Downloaden geannuleerd"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Afbeelding kopiëren"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Klembord"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Verder na ltst pag"
@@ -85,17 +208,11 @@ msgstr "JavaScript uitvoeren"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Algemene naam:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisatorische eenheid:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisatie:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "User-agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Voorkeuren"
@@ -117,9 +234,6 @@ msgstr "Overschrijven?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Geschiedenis"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Downloadlijst"
@@ -154,9 +268,6 @@ msgstr "Volgende"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Nieuwe map"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Toev. als favoriet"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nieuw venster"
 
@@ -171,9 +282,6 @@ msgstr "URL niet beschikbaar"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s niet beschikbaar. Deze is mogelijk tijdelijk uitgevallen of niet langer in gebruik"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Map"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mapnaam"
@@ -210,9 +318,6 @@ msgstr "RSS-feed toevoegen"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS-feeds toevoegen"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Instellingen"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL invoeren"
@@ -286,9 +391,6 @@ msgstr "Map maken"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Geselecteerd"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Delen"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Onlangs bezochte pagina's"
 
@@ -340,9 +442,6 @@ msgstr "Uit"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Standaardopslag"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Zoeken"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Afbeelding opslaan"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Woord zoeken"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Toevoegen aan startscherm"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Toevoegen aan startscherm"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Pop-upvensters blokkeren"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Tekstlezer"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Afbeelding kopiëren"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Afbeelding opslaan"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Afspelen"
 
@@ -405,9 +495,6 @@ msgstr "Stoppen"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Opnieuw laden"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Plakken"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Meer"
@@ -494,7 +581,7 @@ msgid "IDS_BR_OPT_LOCK"
 msgstr "Vergrendelen"
 
 msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Ontgrendelen"
+msgstr "Ontgrendel"
 
 msgid "IDS_BR_BODY_MODIFY"
 msgstr "Wijzigen"
@@ -528,9 +615,6 @@ msgstr "Verzenden via e-mail"
 
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Verzenden via bericht"
-
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Instellingen"
 
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Gebruikersnaam"
@@ -622,107 +706,14 @@ msgstr "Toevoegen aan webclip"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Sneltoets gemaakt"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Woord selecteren"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Zoek op pagina"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Zoek op pagina"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Lijst"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Alles selecteren"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Bericht"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Annuleer"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL kopiëren"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Afbeelding bekijken"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Open in nw venster"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Openen"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Tekstselectie aan"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Favorieten"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Bewerken"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Wissen"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Wissen"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Annuleren"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Favoriet bewerken"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Berichten"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Bewerken"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Wissen"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Toevoegen aan Favorieten"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Tekstgrootte"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Groot"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Klein"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Snelheid"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxyadres"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Poort proxy"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Gereed"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versie"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Install."
@@ -858,4 +849,28 @@ msgstr "Toegevoegd aan favorieten"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Verwijderd uit favorieten"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Pop-ups blokkeren"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Foto's"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Laden. Even geduld..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "User-agent aanpassen"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Startpagina gebruiker"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Wachtwoord"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Zoekmachine"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Sneltoets %s gemaakt"
 

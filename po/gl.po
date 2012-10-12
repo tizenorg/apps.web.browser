@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historial"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Engadir a Favoritos"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Carpeta"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Axustes"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Compartir"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Buscar"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Engadir á pant. de inicio"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Gardar imaxe"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Pegar"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Axustes"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Seleccionar palabra"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Buscar en páx."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Notificando..."
 
@@ -25,8 +64,92 @@ msgstr "Descargar?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Seleccionada"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lista"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Seleccionar todo"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mensaxe"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Correo"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Cancelar"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Copiar vínc URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Ver imaxe"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Abrir en nova páx."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Abrir"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Selección de texto activada"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favoritos"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Elim."
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Eliminar"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Cancelar"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Editar favorito"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mensaxes"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Eliminar"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Engadir a Favoritos"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Tamaño da fonte"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Pequeno"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Porto do proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Finalizado"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versión"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Descarga cancelada"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Copiar imaxe"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Portapapeis"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Cont desde últ pax"
@@ -85,17 +208,11 @@ msgstr "Executar JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Nome común:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Unidade organizativa:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organización:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Axente de usuario"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferencias"
@@ -117,9 +234,6 @@ msgstr "Sobrescribir?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historial"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Lista de descargas"
@@ -154,9 +268,6 @@ msgstr "Seguinte"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Nova carpeta"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Engadir a Favoritos"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nova ventá"
 
@@ -172,9 +283,6 @@ msgstr "URL non dispoñible"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "O URL %s non está dispoñible. É posible que non funcione temporalmente ou que xa non estea en uso"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Carpeta"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Nome de carpeta"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Sen título"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Varias fiestras"
+msgstr "Multi window"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Non hai historiais"
@@ -210,9 +318,6 @@ msgstr "Engadir fonte RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Engadir fontes RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Axustes"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Introducir URL"
@@ -286,9 +391,6 @@ msgstr "Crear carpeta"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Seleccionada"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Compartir"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Páxinas visitadas recentemente"
 
@@ -340,9 +442,6 @@ msgstr "Desactivado"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Almacenamento predeterminado"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Buscar"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Gardar imaxe"
 
@@ -354,9 +453,6 @@ msgstr "Buscar palabra"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Engadir á pantalla de Inicio"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Engadir á pant. de inicio"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Sitios máis visitados"
@@ -382,12 +478,6 @@ msgstr "Bloq ventás de elem emerx"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Lector de texto"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Copiar imaxe"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Gardar imaxe"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Reproducir"
 
@@ -405,9 +495,6 @@ msgstr "Deter"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Volver cargar"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Pegar"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Máis"
@@ -529,9 +616,6 @@ msgstr "Enviar por correo electrónico"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Enviar por mensaxe"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Axustes"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Nome de usuario"
 
@@ -622,107 +706,14 @@ msgstr "Engadir a clip web"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Atallo creado"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Seleccionar palabra"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Buscar en páx."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Buscar en páx."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Lista"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Seleccionar todo"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Mensaxe"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Correo"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Cancelar"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Copiar vínc URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Ver imaxe"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Abrir en nova páx."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Abrir"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Selección de texto activada"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Favoritos"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Editar"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Elim."
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Eliminar"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Cancelar"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Editar favorito"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Mensaxes"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Correo"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Editar"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Eliminar"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Engadir a Favoritos"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Tamaño da fonte"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Grande"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Pequeno"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Velocidade"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Enderezo proxy"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Porto do proxy"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Finalizado"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versión"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instalar"
@@ -858,4 +849,28 @@ msgstr "Engadido a favoritos"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Eliminar de favoritos"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Bloquear ventás emerxentes"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Imaxes"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Cargando. Espera por favor..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Personalizar axente de usuario"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Páxina de inicio de usuario"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Contrasinal"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Motor de busca"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Creouse o atallo %s"
 

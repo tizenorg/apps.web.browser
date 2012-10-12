@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Хронология"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Добави към Показалци"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Папка"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Настройки"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Споделям"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Търси"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Добавяне към началния екран"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Запис на изображение"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Поставяне"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Настройки"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Избор на дума"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Търсене в стр."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Известяване..."
 
@@ -25,8 +64,92 @@ msgstr "Изтегляне?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Избран"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Списък"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Избери всички"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Съобщение"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Отказ"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Копиране на URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Покажи изображ."
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Отвори в нова стр."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Отваряне"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Избор на текст включен"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Показалци"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Редактиране"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Изтрий"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Изтрий"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Отмени"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Редактиране на показалец"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Съобщения"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Редактиране"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Изтрий"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Добави към маркери"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Размер на шрифта"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Едър"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Малък"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Порт за прокси"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Готово"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Версия"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Изтеглянето отменено"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Копиране на изображение"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Системен буфер"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Продължи от посл. стр."
@@ -85,17 +208,11 @@ msgstr "Изпълнение на JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Общо име:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Организационна единица:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Организация:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Потребителски агент"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Предпочитания"
@@ -117,9 +234,6 @@ msgstr "Презапис?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Хронология"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Списък за изтегляне"
@@ -154,9 +268,6 @@ msgstr "Следващ"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ръчно"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Добави към Показалци"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Нов прозорец"
 
@@ -171,9 +282,6 @@ msgstr "URL не е достъпен"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s не е достъпен. Вероятно временно е спрян или вече не се използва"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Папка"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Име на папка"
@@ -210,9 +318,6 @@ msgstr "Добави RSS емисия"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Добавяне на RSS емисии"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Настройки"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Въведете URL"
@@ -286,9 +391,6 @@ msgstr "Създай папка"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Избран"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Споделям"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Наскоро посещавани страници"
 
@@ -340,9 +442,6 @@ msgstr "Изключено"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Основно съхранение"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Търси"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Запис на изображение"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Търсене на дума"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Добавяне към началния екран"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Добавяне към началния екран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Блок. изскачащи прозорци"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Четец на текст"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Копиране на изображение"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Запис на изображение"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Изпълняване"
 
@@ -405,9 +495,6 @@ msgstr "Спри"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Презареждане"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Поставяне"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Още"
@@ -529,9 +616,6 @@ msgstr "Изпращане чрез email"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Изпращане като съобщение"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Настройки"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Потребителско име"
 
@@ -622,107 +706,14 @@ msgstr "Добави в уеб клип"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Създаден е бърз клавиш"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Избор на дума"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Търсене в стр."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Търсене в стр."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Интернет"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Списък"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Избери всички"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Съобщение"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Отказ"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Копиране на URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Покажи изображ."
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Отвори в нова стр."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Отваряне"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Избор на текст включен"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Показалци"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Редактиране"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Изтрий"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Изтрий"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Отмени"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Редактиране на показалец"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Съобщения"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Редактиране"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Изтрий"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Добави към маркери"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Размер на шрифта"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Едър"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Малък"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Скорост"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Адрес на прокси"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Порт за прокси"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Готово"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Версия"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Инсталир."
@@ -858,4 +849,28 @@ msgstr "Добавено към показалците"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Премахнато от показалците"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Блокирай изскачащи прозорци"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Изображения"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Зареждане. Моля, изчакайте..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Потребителски агент по избор"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Потребителска начална страница"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Парола"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Търсачка"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Създаден е бърз клавиш %s"
 

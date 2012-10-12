@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Istorija"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Pridėti į žymeklius"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Aplankas"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Nustat."
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Dalytis"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Ieškoti"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Pridėt prie pradžios ekrano"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Išsaugoti vaizdą"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Įklijuoti"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Nustat."
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Pasirinkite žodį"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Iešk. puslapyje"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "„Picasa“"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Informuojama..."
 
@@ -25,8 +64,92 @@ msgstr "Ar atsisiųsti?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Pasirinkta"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Sąrašas"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Pasirinkti viską"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Žinutė"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "El. paštas"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Atšaukti"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kop. nuor. URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Žiūrėti pav."
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Atid. nauj. lange"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Atidaryti"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Teksto atranka įjungta"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Žymelės"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Redaguoti"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Trinti"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Trinti"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Atšaukti"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Redaguoti žymelę"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Žinutės"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Redaguoti"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Trinti"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Pridėti prie adresyno įrašų"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Šrifto dydis"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Didelis"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Mažas"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy prievadas"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Atlikta"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versija"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Atsisiuntimas atšauktas"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopijuoti vaizdą"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Iškarpinė"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Tęsti nuo pask. puslapio"
@@ -85,17 +208,11 @@ msgstr "Vykdyti „JavaScript“"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Bendrasis pavadinimas:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizacijos skyrius:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizacija:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Vartotojo agentas"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Pirmenybės"
@@ -117,9 +234,6 @@ msgstr "Ar perrašyti?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Istorija"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Įkeltų siuntų sąrašas"
@@ -154,9 +268,6 @@ msgstr "Kitas"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Naujas aplankas"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Pridėti į žymeklius"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Naujas langas"
 
@@ -171,9 +282,6 @@ msgstr "URL nepasiekiamas"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s nepasiekiamas. Gali laikinai neveikti arba būti nebenaudojamas"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Aplankas"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Aplanko pavadinimas"
@@ -210,9 +318,6 @@ msgstr "Pridėti RSS naujienų kanalą"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Prid. RSS naujienų kanalą"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Nustat."
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Įvesti URL"
@@ -286,9 +391,6 @@ msgstr "Kurti aplanką"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Pasirinkta"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Dalytis"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Vėliausiai aplankyti puslapiai"
 
@@ -340,9 +442,6 @@ msgstr "Išjungta"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Numatytoji saugykla"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Ieškoti"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Išsaugoti vaizdą"
 
@@ -354,9 +453,6 @@ msgstr "Rasti žodį"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Pridėti pradžios ekrane"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Pridėt prie pradžios ekrano"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Dažniausiai lankomos svetainės"
@@ -382,12 +478,6 @@ msgstr "Blokuoti iškylanč. langus"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Teksto skaitytuvas"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopijuoti vaizdą"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Išsaugoti vaizdą"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Paleisti"
 
@@ -405,9 +495,6 @@ msgstr "Stabdyti"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Įkelti iš naujo"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Įklijuoti"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Daug."
@@ -529,9 +616,6 @@ msgstr "Siųsti el. paštu"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Siųsti kaip žinutę"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Nustat."
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Naudotojo vardas"
 
@@ -622,107 +706,14 @@ msgstr "Pridėti prie vaizdinės žiniatinklio nuorodos"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Sukurtas šaukinys"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Pasirinkite žodį"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Iešk. puslapyje"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Iešk. puslapyje"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "„Picasa“"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internetas"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Sąrašas"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Pasirinkti viską"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Žinutė"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "El. paštas"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Atšaukti"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kop. nuor. URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Žiūrėti pav."
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Atid. nauj. lange"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Atidaryti"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Teksto atranka įjungta"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Žymelės"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Redaguoti"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Trinti"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Trinti"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Atšaukti"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Redaguoti žymelę"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Žinutės"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "El. paštas"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Redaguoti"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Trinti"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Pridėti prie adresyno įrašų"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Šrifto dydis"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Didelis"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Mažas"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Greitis"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy serverio adresas"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy prievadas"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Atlikta"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versija"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Įdiegti"
@@ -858,4 +849,28 @@ msgstr "Įtraukta į adresyną"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Pašalinta iš adresyno"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokuoti iškylančiuosius lang."
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Paveikslėliai"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Įkeliama. Palaukite..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Pasirinktinis naudotojo agentas"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Pagrindinis naudotojo puslapis"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Slaptažodis"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Paieškos sistema"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Šaukinys %s sukurtas"
 

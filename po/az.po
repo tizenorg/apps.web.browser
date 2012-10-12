@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Tarix"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Əlfəcin-rə əlavə edin"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Qovluq"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Parametrlər"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Paylaş"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Axtarış"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Ana ekrana əlavə et"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Təsviri yaddaşa yaz"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Yapışdır"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Parametrlər"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Sözü seçin"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Səhifədə tapın"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Bildirilir..."
 
@@ -25,8 +64,92 @@ msgstr "Yüklənsin?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Seçilmişi"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Siyahı"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Hamısını seç"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mesaj"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Elektron poçtu"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Ləğv edin"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL linkn kopyl"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Şəkil göstərlsn"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Yeni səhifədə açın"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Aç"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Mətn seçimi qoşulub"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Çevik keçidlər"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Redaktə et"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Sil"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Sil"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Ləğv et"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Nişanı redaktə et"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mesajlar"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Redaktə et"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Sil"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Nişanlara əlavə et"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Şriftin ölçüsü"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Geniş"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Kiçik"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proksi portu"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Bitdi"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versiya"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Yükləmədən imtina edildi"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Şəkli köçür"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Mübadilə buferi"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Son səhifdən davm edn"
@@ -85,17 +208,11 @@ msgstr "JavaScript-i işə sal"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Ümumi ad:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Təşkilat bölmə:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Təşkilat:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "İstifadəçi agenti"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Üstünlüklər"
@@ -117,9 +234,6 @@ msgstr "Üzərindən yazılsın?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Tarix"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Yükləmə siyahısı"
@@ -154,9 +268,6 @@ msgstr "Növbəti"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Yeni qovluq"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Əlfəcin-rə əlavə edin"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Yeni pəncərə"
 
@@ -171,9 +282,6 @@ msgstr "URL mümkün deyil"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s mümkün deyil. O müvəqqəti olaraq işləməyə və ya artıq istifadə olunmaya bilər"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Qovluq"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Qovluğun adı"
@@ -210,9 +318,6 @@ msgstr "RSS buraxılışı əlavə edin"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS verilişləri əlavə et"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Parametrlər"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL daxil et"
@@ -286,9 +391,6 @@ msgstr "Qovluq yaradın"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Seçilmişi"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Paylaş"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Təzəliklə daxil olunmuş səhifələr"
 
@@ -340,9 +442,6 @@ msgstr "Söndür"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "İlkin təyin edilmiş yaddaş"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Axtarış"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Təsviri yaddaşa yaz"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Sözü tapın"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Ana ekrana əlavə et"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Ana ekrana əlavə et"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Çixan pəncələrini blokla"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Mətn oxuyucusu"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Şəkli köçür"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Təsviri yaddaşa yaz"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Səsləndir"
 
@@ -405,9 +495,6 @@ msgstr "Dayandır"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Yenidən yüklə"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Yapışdır"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Daha çox"
@@ -529,9 +616,6 @@ msgstr "Epoçt ilə göndərin"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Mesaj vasitəsilə göndər"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Parametrlər"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "İstifadəçinin adı"
 
@@ -622,107 +706,14 @@ msgstr "Veb klipə əlavə edin"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Qısa yol yaradılmışdır"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Sözü seçin"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Səhifədə tapın"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Səhifədə tapın"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Siyahı"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Hamısını seç"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Mesaj"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Elektron poçtu"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Ləğv edin"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL linkn kopyl"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Şəkil göstərlsn"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Yeni səhifədə açın"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Aç"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Mətn seçimi qoşulub"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Çevik keçidlər"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Redaktə et"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Sil"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Sil"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Ləğv et"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Nişanı redaktə et"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Mesajlar"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Elektron poçtu"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Redaktə et"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Sil"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Nişanlara əlavə et"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Şriftin ölçüsü"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Geniş"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Kiçik"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Sürət"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Giriş modulu ünvanı"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proksi portu"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Bitdi"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versiya"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Yerləşdir"
@@ -858,4 +849,28 @@ msgstr "Əlfəcinlərə əlavə olunmuşdur"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Əlfəcinlərdən silinmişdir"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Peyda olan menyuları blokla"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Şəkillər"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Yüklənir. Lütfən gözləyin..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Fərdi istifadəçi agenti"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "İstifadəçinin baş səhifəsi"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Şifrə"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Axtarış mexanizmi"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s qısayolu yaradıldı"
 

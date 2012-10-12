@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Előzmények"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Könyvjel. mentése"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mappa"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Beállítások"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Megosztás"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Keresés"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Kezdőképernyőhöz adás"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Kép mentése"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Beilleszt"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Beállítások"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Szó kiválasztása"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Keresés az oldalon"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Értesítés..."
 
@@ -25,8 +64,92 @@ msgstr "Letöltés?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Kiválasztott"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Lista"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Összes kijelölése"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Üzenet"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Mégse"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL másolása"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Képet megtekint"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Megny. új oldalon"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Megnyitás"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Szövegkijelölés be"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Könyvjelzők"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Szerkeszt"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Töröl"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Töröl"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Mégse"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Könyvjelző szerkesztése"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Üzenetek"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Szerkeszt"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Töröl"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Könyvjelző mentése"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Betűméret"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Nagy"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Kicsi"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Kész"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Verzió"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Letöltés megszakítva"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kép másolása"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Vágólap"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Folyt. utolsó oldallal"
@@ -85,17 +208,11 @@ msgstr "JavaScript futtatása"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Köznapi név:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Szervezeti egység:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Szervezet:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "User agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Beállítások"
@@ -117,9 +234,6 @@ msgstr "Felülírja?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Előzmények"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Letöltési lista"
@@ -154,9 +268,6 @@ msgstr "Tovább"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Új mappa"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Könyvjel. mentése"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Új ablak"
 
@@ -171,9 +282,6 @@ msgstr "Az URL nem érhető el"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "A(z) %s URL nem érhető el. Lehet, hogy átmenetileg nem működik, vagy teljesen megszűnt"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mappa"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mappa neve"
@@ -210,9 +318,6 @@ msgstr "RSS-feed hozzáadása"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS-feedek hozzáadása"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Beállítások"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Írja be az URL-t"
@@ -286,9 +391,6 @@ msgstr "Mappát létrehoz"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Kiválasztott"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Megosztás"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Legutóbb meglátogatott oldalak"
 
@@ -340,9 +442,6 @@ msgstr "Ki"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Alapértelmezett tárhely"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Keresés"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Kép mentése"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Szókeresés"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Kezdőképernyőhöz adás"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Kezdőképernyőhöz adás"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Előugró abl. blokkolása"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Szövegolvasó"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kép másolása"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Kép mentése"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Lejátszás"
 
@@ -405,9 +495,6 @@ msgstr "Leállít"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Újratöltés"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Beilleszt"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Egyebek"
@@ -529,9 +616,6 @@ msgstr "Küldés e-mailben"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Küldés üzenetben"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Beállítások"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Felhasználónév"
 
@@ -622,107 +706,14 @@ msgstr "Webklip hozzáadása"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Alkalmazásindító létrehozva"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Szó kiválasztása"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Keresés az oldalon"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Keresés az oldalon"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Lista"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Összes kijelölése"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Üzenet"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Mégse"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL másolása"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Képet megtekint"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Megny. új oldalon"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Megnyitás"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Szövegkijelölés be"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Könyvjelzők"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Szerkeszt"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Töröl"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Töröl"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Mégse"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Könyvjelző szerkesztése"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Üzenetek"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Szerkeszt"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Töröl"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Könyvjelző mentése"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Betűméret"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Nagy"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Kicsi"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Sebesség"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy címe"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy port"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Kész"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Verzió"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Telepít"
@@ -858,4 +849,28 @@ msgstr "Könyvjelzőkhöz adva"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Törölve a könyvjelzők közül"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Előugró ablakok blokkolása"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Képek"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Betöltés. Kis türelmet..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "User agent testreszabása"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Felhasználó kezdőlapja"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Jelszó"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Kereső"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s gyorsgomb létrehozva"
 

@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Saga"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Bæta við bókamerki"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mappa"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Stillingar"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Samnýta"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Leit"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Setja á heimaskjá"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Vista mynd"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Líma"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Stillingar"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Velja orð"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Finna á síðu"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Tilkynni..."
 
@@ -25,8 +64,92 @@ msgstr "Á að hala niður?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valið"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Listi"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Velja allt"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Skilaboð"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Tölvupóstur"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Hætta við"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Afrita tengil"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Skoða mynd"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Opna á nýrri síðu"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Opna"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Það er kveikt á textavali"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bókamerki"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Breyta"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Eyða"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Eyða"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Hætta við"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Breyta bókamerki"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Skilaboð"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Breyta"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Eyða"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Bæta við Bókamerki"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Leturstærð"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Stórt"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Lítið"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Tengi fyrir staðgengilnetþjón"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Lokið"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Útgáfa"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Það var hætt við niðurhal"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Afrita mynd"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Klippiborð"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Áfram frá síðustu síðu"
@@ -85,17 +208,11 @@ msgstr "Keyra Java-vefforskrift"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Sameiginlegt nafn:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Deild fyrirtækis:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Fyrirtæki:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Fulltrúi notanda"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Sérstillingar"
@@ -117,9 +234,6 @@ msgstr "Viltu skrifa yfir?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "Vefslóð"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Saga"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Niðurhalslisti"
@@ -154,9 +268,6 @@ msgstr "Næsta"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ný mappa"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Bæta við bókamerki"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nýr gluggi"
 
@@ -171,9 +282,6 @@ msgstr "Slóðin er ekki tiltæk"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "Slóðin %s er ekki tiltæk. Hugsanlega liggur hún tímabundið niðri eða er ekki lengur í notkun"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mappa"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Heiti möppu"
@@ -210,9 +318,6 @@ msgstr "Bæta við RSS-straumi"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Bæta við RSS-straumum"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Stillingar"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Slá inn slóð"
@@ -286,9 +391,6 @@ msgstr "Búa til möppu"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Valið"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Samnýta"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Nýlega opnaðar vefsíður"
 
@@ -340,9 +442,6 @@ msgstr "Slökkt"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Sjálfgefinn vistunarstaður"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Leit"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Vista mynd"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Finna orð"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Setja á heimaskjá"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Setja á heimaskjá"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Loka fyrir sprettiglugga"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Textalesari"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Afrita mynd"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Vista mynd"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Spila"
 
@@ -405,9 +495,6 @@ msgstr "Stöðva"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Endurhlaða"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Líma"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Meira"
@@ -529,9 +616,6 @@ msgstr "Senda í tölvupósti"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Á að senda með skilaboðum?"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Stillingar"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Notandanafn"
 
@@ -622,107 +706,14 @@ msgstr "Bæta við vefklippur"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Flýtileið var búin til"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Velja orð"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Finna á síðu"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Finna á síðu"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internetið"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Listi"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Velja allt"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Skilaboð"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Tölvupóstur"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Hætta við"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Afrita tengil"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Skoða mynd"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Opna á nýrri síðu"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Opna"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Það er kveikt á textavali"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Bókamerki"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Breyta"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Eyða"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Eyða"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Hætta við"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Breyta bókamerki"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Skilaboð"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Tölvupóstur"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Breyta"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Eyða"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Bæta við Bókamerki"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Leturstærð"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Stórt"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Lítið"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Hraði"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Vistfang staðgengilsnetþjóns"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Tengi fyrir staðgengilnetþjón"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Lokið"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Útgáfa"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Setja upp"
@@ -858,4 +849,28 @@ msgstr "Bætt við bókamerki"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Fjarlægt úr bókamerkjum"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Loka fyrir sprettiglugga"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Myndir"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Hleður. Andartak..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Sérstilla biðlara notanda"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Heimasíða notanda"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Aðgangsorð"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Leitarvél"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Flýtivísunin %s var búin til"
 

@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Պատմություն"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Ավելաց. Էջանիշերում"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Թղթապանակ"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Պարամետրեր"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Համատեղ օգտագործում"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Որոնել"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Ավելացնել հիմնական էկրանին"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Պահպանել պատկերը"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Տեղադրել"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Պարամետրեր"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Ընտրել բառ"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Գտնել էջում"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Ծանուցում..."
 
@@ -25,8 +64,92 @@ msgstr "Ներբեռնե՞լ"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Ընտրված"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Ցանկ"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Ընտրել բոլորը"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Հաղորդագրություն"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Էլ. Փոստ"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Դդրեցնել"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Պատճենել URL-ն"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Տեսնել պատկերը"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Բացել նոր էջում"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Բացել"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Տեքստի ընտրությունը միացված է"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Էջանիշեր"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Խմբագրել"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Ջնջել"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Ջնջել"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Չեղարկել"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Խմբագրել էջանիշը"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Հղրդգրթ"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Խմբագրել"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Ջնջել"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Ավելացնել Էջանիշերում"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Տառաչափ"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Մեծ"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Փոքր"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Պրոքսիի պորտ"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Պատրաստ"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Տարբերակ"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Ներբեռնումը չեղարկված է"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Պատճենել պատկեր"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Գզրոց"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Շարունակել վերջին էջից"
@@ -85,17 +208,11 @@ msgstr "Գործարկել JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Հասարակ անունը՝"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Կազմակերպական միավոր՝"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Կազմակերպությունը՝"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Օգտվողի գործակալ"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Պարամետրեր"
@@ -117,9 +234,6 @@ msgstr "Վերագրանցե՞լ"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Պատմություն"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Ներբեռնել ցուցակ"
@@ -154,9 +268,6 @@ msgstr "Հաջորդ"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Նոր թղթապանակ"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Ավելաց. Էջանիշերում"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Նոր պատուհան"
 
@@ -171,9 +282,6 @@ msgstr "URL-ը հասանելի չէ"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "%s URL-ը հասանելի չէ: Հնարավոր է, որ այն ժամանակավորապես փակվել է կամ այլևս չի օգտագործվում"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Թղթապանակ"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Թղթապանակի անունը"
@@ -210,9 +318,6 @@ msgstr "Ավելացնել RSS աղբյուր"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Ավելացնել RSS մատուցումներ"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Պարամետրեր"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Մուտքագրեք հասցեն"
@@ -286,9 +391,6 @@ msgstr "Ստեղծել թղթպանակ"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Ընտրված"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Համատեղ օգտագործում"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Վերջերս այցելված էջեր"
 
@@ -340,9 +442,6 @@ msgstr "Անջատված է"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Լռելյայն տարողություն"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Որոնել"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Պահպանել պատկերը"
 
@@ -354,9 +453,6 @@ msgstr "Գտնել բառ"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Ավելացնել Հիմնական էկրանին"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Ավելացնել հիմնական էկրանին"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Առավել այցելված կայքեր"
@@ -382,12 +478,6 @@ msgstr "Արգլփկլ բցվղ պատուհանները"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Տեքստի ընթերցիչ"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Պատճենել պատկեր"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Պահպանել պատկերը"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Նվագել"
 
@@ -405,9 +495,6 @@ msgstr "Դադարեցնել"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Վերաբեռնել"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Տեղադրել"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Ավելին"
@@ -529,9 +616,6 @@ msgstr "Ուղարկել էլփոստով"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Ուղարկել հաղորդագրության միջոցով"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Պարամետրեր"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Օգտվողի անուն"
 
@@ -622,107 +706,14 @@ msgstr "Ավելացնել Ինտերնետ հոլովակում"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Ստեղծված է կարճատ"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Ընտրել բառ"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Գտնել էջում"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Գտնել էջում"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Ինտերնետ"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Ցանկ"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Ընտրել բոլորը"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Հաղորդագրություն"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Էլ. Փոստ"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Դդրեցնել"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Պատճենել URL-ն"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Տեսնել պատկերը"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Բացել նոր էջում"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Բացել"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Տեքստի ընտրությունը միացված է"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Էջանիշեր"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Խմբագրել"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Ջնջել"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Ջնջել"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Չեղարկել"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Խմբագրել էջանիշը"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Հղրդգրթ"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Էլ. Փոստ"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Խմբագրել"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Ջնջել"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Ավելացնել Էջանիշերում"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Տառաչափ"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Մեծ"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Փոքր"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Արագություն"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Պրոքսիի հասցե"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Պրոքսիի պորտ"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Պատրաստ"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Տարբերակ"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Տեղադրել"
@@ -858,4 +849,28 @@ msgstr "Հավելված է էջանիշներին"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Հեռացված է էջանիշերից"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Արգելափակել ելնող պատուհանները"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Նկարներ"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Բեռնվում է: Խնդրում ենք սպասել..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Օգտվողի ընտրովի գործակալ"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Օգտվողի հիմնաէջ"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Գաղտնաբառ"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Որոնիչ"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Ստեղծվել է %s դյուրանցում"
 

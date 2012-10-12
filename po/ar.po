@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "المحفوظات"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "إضافة لإش.مرجعية"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "المجلد"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "الضبط"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "مشاركة"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "بحث"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "إضافة إلى الشاشة الرئيسية"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "حفظ الصورة"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "لصق"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "الضبط"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "تحديد كلمة"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "البحث في الصفحة"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "جاري الإخطار..."
 
@@ -25,8 +64,92 @@ msgstr "تنزيل؟"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "محدد"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "اللائحة"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "اختيار الكل"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "رسالة"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "بريد إلكتروني"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "إلغاء"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "نسخ عنوان الارتباط"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "عرض الصور"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "فتح في صفحة جديدة"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "فتح"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "اختيار النص فعال"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "العلامات"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "تعديل"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "مسح"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "مسح"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "إلغاء"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "تعديل العلامة"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "الرسائل"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "تعديل"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "مسح"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "أضف للعلامات"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "حجم الخط"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "كبير"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "صغير"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "منفذ الوكيل"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "تمت"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "النسخة"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "تم إلغاء التنزيل"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "نسخ الصورة"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "الحافظة"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "المتابعة من آخر صفحة"
@@ -85,17 +208,11 @@ msgstr "تشغيل JAVAscript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "الاسم الشائع:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "الوحدة التابعة للمؤسسة:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "المؤسسة:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "عميل مستخدم"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "الأولويات"
@@ -117,9 +234,6 @@ msgstr "احفظ فوق؟"
 
 msgid "IDS_BR_POP_URL"
 msgstr "الموقع"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "المحفوظات"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "قائمة التحميل"
@@ -154,9 +268,6 @@ msgstr "التالي"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "مجلد جديد"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "إضافة لإش.مرجعية"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "إطار جديد"
 
@@ -171,9 +282,6 @@ msgstr "عنوان URL غير متاح"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "عنوان URL %s غير متاح. قد يكون معطلا بشكل مؤقت أو لم يعد مستخدما"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "المجلد"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "اسم المجلد"
@@ -210,9 +318,6 @@ msgstr "إضافة موجز RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "إضافة RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "الضبط"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "أدخل الموقع الالكتروني"
@@ -286,9 +391,6 @@ msgstr "إنشاء مجلد"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "محدد"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "مشاركة"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "الصفحات التي تمت زيارتها مؤخرا"
 
@@ -340,9 +442,6 @@ msgstr "غير مفعل"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "ذاكرة التخزين الافتراضية"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "بحث"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "حفظ الصورة"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "البحث عن الكلمة"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "إضافة إلى الشاشة الرئيسية"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "إضافة إلى الشاشة الرئيسية"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "منع الإطارات المنبثقة"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "قارئ النص"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "نسخ الصورة"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "حفظ الصورة"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "تشغيل"
 
@@ -405,9 +495,6 @@ msgstr "إيقاف"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "إعادة التحميل"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "لصق"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "المزيد"
@@ -529,9 +616,6 @@ msgstr "إرسال بالبريد الإلكتروني"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "إرسال عبر رسالة"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "الضبط"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "اسم المستخدم"
 
@@ -622,107 +706,14 @@ msgstr "إضافة إلى مقطع ويب"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "تم إنشاء اختصارا"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "تحديد كلمة"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "البحث في الصفحة"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "البحث في الصفحة"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "الإنترنت"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "اللائحة"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "اختيار الكل"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "رسالة"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "بريد إلكتروني"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "إلغاء"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "نسخ عنوان الارتباط"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "عرض الصور"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "فتح في صفحة جديدة"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "فتح"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "اختيار النص فعال"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "العلامات"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "تعديل"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "مسح"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "مسح"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "إلغاء"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "تعديل العلامة"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "الرسائل"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "بريد إلكتروني"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "تعديل"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "مسح"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "أضف للعلامات"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "حجم الخط"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "كبير"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "صغير"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "السرعة"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "عنوان التفويض"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "منفذ الوكيل"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "تمت"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "النسخة"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "تثبيت"
@@ -858,4 +849,28 @@ msgstr "مضافة إلى الإشارات المرجعية"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "تمت الإزالة من الإشارات المرجعية"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "منع الإطارات المنبثقة"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "الصور"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "يتم التحميل. يرجى الانتظار..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "تخصيص وكيل المستخدم"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "صفحة المستخدم الرئيسية"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "كلمة المرور"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "محرك البحث"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "تم إنشاء الاختصار %s"
 

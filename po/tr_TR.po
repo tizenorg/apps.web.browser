@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Geçmiş"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Sık kullan. ekle"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Klasör"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Ayarlar"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Paylaşıma aç"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Akıllı Arama"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Ana ekrana ekle"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Resmi kaydet"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Yapıştır"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Ayarlar"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Kelime seç"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Sayfada bul"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Bildiriliyor..."
 
@@ -25,8 +64,92 @@ msgstr "Yüklensin mi?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Seçili"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Listele"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Hepsini seç"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mesaj"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-posta"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "İptal"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL'yi kopyala"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Resmi görüntüle"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Yeni sayfada aç"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Aç"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Metin seçimi açık"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Yer imleri"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Düzenle"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Sil"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Sil"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "İptal"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Yer imini düzelt"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mesajlar"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Düzenle"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Sil"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Yer imlerine ekle"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Yazı tipi boyutu"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Büyük"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Küçük"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy portu"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Kaydet"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Sürüm"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Yükleme iptal edildi"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Resmi kopyala"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Pano"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Son syfdn devam et"
@@ -85,17 +208,11 @@ msgstr "JavaScript'i çalıştır"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Ortak isim:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizasyonel birim:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizasyon:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "User Agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Tercihler"
@@ -117,9 +234,6 @@ msgstr "Üstüne yazdırılsın mı?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Geçmiş"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "İndirme listesi"
@@ -154,9 +268,6 @@ msgstr "İleri"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Yeni klasör"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Sık kullan. ekle"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Yeni pencere"
 
@@ -172,9 +283,6 @@ msgstr "URL'ye erişilemiyor"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s erişilemiyor. Geçici olarak çalışmıyor veya artık kullanımda olmayabilir"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Klasör"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Klasör adı"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Başlık yok"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Çoklu pencere"
+msgstr "Çoklu Pencere"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Geçmiş yok"
@@ -210,9 +318,6 @@ msgstr "RSS kaynağı ekle"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS beslemesi ekle"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Ayarlar"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL gir"
@@ -286,9 +391,6 @@ msgstr "Klasör oluştur"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Seçili"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Paylaşıma aç"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Yeni kapatılan sayfalar"
 
@@ -340,9 +442,6 @@ msgstr "Kapalı"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Varsayılan depolama"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Akıllı Arama"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Resmi kaydet"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Kelime bul"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Ana ekrana ekle"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Ana ekrana ekle"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Açılır pencerelri engelle"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Metin okuyucu"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Resmi kopyala"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Resmi kaydet"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Çal"
 
@@ -405,9 +495,6 @@ msgstr "Durdur"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Yeniden yükle"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Yapıştır"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Diğer"
@@ -529,9 +616,6 @@ msgstr "E-posta ile gönder"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Mesaj ile gönder"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Ayarlar"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Kullanıcı adı"
 
@@ -622,107 +706,14 @@ msgstr "Web klibine ekle"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Kısayol oluşturuldu"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Kelime seç"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Sayfada bul"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Sayfada bul"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "İnternet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Listele"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Hepsini seç"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Mesaj"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-posta"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "İptal"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL'yi kopyala"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Resmi görüntüle"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Yeni sayfada aç"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Aç"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Metin seçimi açık"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Yer imleri"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Düzenle"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Sil"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Sil"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "İptal"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Yer imini düzelt"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Mesajlar"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-posta"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Düzenle"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Sil"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Yer imlerine ekle"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Yazı tipi boyutu"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Büyük"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Küçük"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Hız"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy adresi"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy portu"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Kaydet"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Sürüm"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Yükle"
@@ -858,4 +849,28 @@ msgstr "Yer imlerine eklendi"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Yer imlerinden kaldırıldı"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Açılır pencereleri engelle"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Resimler"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Yükleniyor. Lütfen bekleyin..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Kullanıcı ajanını özelleştirin"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Kullanıcı ana sayfası"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Şifre"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Arama motoru"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s kısayolu oluşturuldu"
 

@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Тарих"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Бетбелгіге қосу"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Қалта"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Қондырғ-р"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Байланысқа жол"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Іздеу"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Бастапқы экранға қосу"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Көріністі сақтау"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Қою"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Қондырғ-р"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Сөз таңдау"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Беттен табу"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Хабарлауда..."
 
@@ -25,8 +64,92 @@ msgstr "Жазасыз ба?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Таңдалған"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Тізім"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Бәрін бөлектеу"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Хабарлама"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Бас тарту"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Сілт. URL көш-у"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Суретті көру"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Жаңа беттен ашу"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Ашу"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Мәтінді бөлектеуді орындау"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Қосымшалар"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Өзгер."
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Жою"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Жою"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Тоқтату"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Қосымшаны өзгерту"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Хабарламалар"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Өзгерту"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Жою"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Бетбелгілерге қосу"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Шрифт өлшемі"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Үлкен"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Ұсақ"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Порт прокси"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Дайын"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Нұсқа"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Жазу тоқтатылды"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Сурет көшіру"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Буфер"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Соңғы бет. баст. жалғ-у"
@@ -85,17 +208,11 @@ msgstr "JavaScript орындау"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Жалпы атауы:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Ұйымдастыру бірлігі:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Ұйым:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Тұтынушын агент"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Ұнамдылар"
@@ -117,9 +234,6 @@ msgstr "Үстіне жазу керек пе?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Тарих"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Жүктеу тізімі"
@@ -154,9 +268,6 @@ msgstr "Сосын"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Жаңа қалта"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Бетбелгіге қосу"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Жаңа терезе"
 
@@ -171,9 +282,6 @@ msgstr "URL қол жетімді емес"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s қол жетімді емес. Ол уақытша өшкен болуы мүмкін немесе енді пайдаланылмайды"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Қалта"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Папка аты"
@@ -210,9 +318,6 @@ msgstr "RSS берілімін қосу"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS арналарын қосу"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Қондырғ-р"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL енгізіңіз"
@@ -286,9 +391,6 @@ msgstr "Қалта жасау"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Таңдалған"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Байланысқа жол"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Соңғы рет кірген беттер"
 
@@ -340,9 +442,6 @@ msgstr "Өшірілген"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Өздігінен сақталады"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Іздеу"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Көріністі сақтау"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Сөзді табу"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Бастапқы экранға қосу"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Бастапқы экранға қосу"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Қалқ. терезелер. бұғаттау"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Мәтін оқу құралы"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Сурет көшіру"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Көріністі сақтау"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Ойнату"
 
@@ -405,9 +495,6 @@ msgstr "Тоқтату"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Қайта қосу"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Қою"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Басқа"
@@ -529,9 +616,6 @@ msgstr "Электрондық пошта арқылы жіберу"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Хабар арқылы жіберу"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Қондырғ-р"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Тұтынушы аты"
 
@@ -622,107 +706,14 @@ msgstr "Веб-клипке қосу"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Тіркесім жасалған"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Сөз таңдау"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Беттен табу"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Беттен табу"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Шолушы"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Тізім"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Бәрін бөлектеу"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Хабарлама"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Бас тарту"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Сілт. URL көш-у"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Суретті көру"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Жаңа беттен ашу"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Ашу"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Мәтінді бөлектеуді орындау"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Қосымшалар"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Өзгер."
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Жою"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Жою"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Тоқтату"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Қосымшаны өзгерту"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Хабарламалар"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Өзгерту"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Жою"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Бетбелгілерге қосу"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Шрифт өлшемі"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Үлкен"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Ұсақ"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Жылдамдық"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Прокси адресі"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Порт прокси"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Дайын"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Нұсқа"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Орнату"
@@ -858,4 +849,28 @@ msgstr "Бетбелгілерге қосылған"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Бетбелгілерден жойылған"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Қалқымалы терезелерді бұғаттау"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Суреттер"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Жүктелуде. Күте тұрыңыз..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Реттелмелі пайдаланушы агенті"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Пайдаланушының бастапқы беті"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Кілтсөз"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Іздеу механизмі"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s тез шақыру пернесі жасалды"
 

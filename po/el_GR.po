@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Ιστορικό"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Προσθ.στους σελιδ."
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Φάκελος"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Ρυθμίσεις"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Κοινόχρηστο"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Αναζήτηση"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Προσθήκη στην αρχική οθόνη"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Αποθ. εικόνας"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Επικόλληση"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Ρυθμίσεις"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Επιλογή λέξης"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Εύρ. σε σελίδα"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Ειδοποίηση..."
 
@@ -25,8 +64,92 @@ msgstr "Λήψη;"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Επιλεγμένο"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Λίστα"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Επιλογή όλων"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Μήνυμα"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Άκυρο"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Αντ. URL σύνδ."
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Προβολή εικόνας"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Άνοιγμ.σε νέα σελ."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Άνοιγμα"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Επιλογή κειμένου ενεργό"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Προσθ.στους σελιδ/τες"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Επεξεργ."
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Διαγρ."
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Διαγραφή"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Άκυρο"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Επεξεργασία σελιδοδείκτη"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Μηνύματα"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Επεξεργασία"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Διαγραφή"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Προσθήκη στους σελιδ/τες"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Μέγεθος γραμματοσειράς"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Μεγάλο"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Μικρό"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Θύρα proxy"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Ok"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Έκδοση"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Ακύρωση λήψης"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Αντιγραφή εικόνας"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Πρόχειρο"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Συνέχ.από τελευτ. σελ."
@@ -85,17 +208,11 @@ msgstr "Εκτέλεση JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Κοινό όνομα:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Οργανωτική μονάδα:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Οργανισμός:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Παράγοντας χρήστη"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Προτιμήσεις"
@@ -117,9 +234,6 @@ msgstr "Αντικατάσταση;"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Ιστορικό"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Λίστα λήψεων"
@@ -154,9 +268,6 @@ msgstr "Επόμενο"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Νέος φάκελος"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Προσθ.στους σελιδ."
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Νέο παράθυρο"
 
@@ -172,9 +283,6 @@ msgstr "Μη διαθέσιμο URL"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "Το URL %s δεν είναι διαθέσιμο. Ίσως να είναι προσωρινά εκτός λειτουργίας ή δε χρησιμοποιείται πια"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Φάκελος"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Όνομα φακέλου"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Χωρίς τίτλο"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Παράθ. πολ. Χρ."
+msgstr "Πολλαπλά Παράθυρα"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Κανένα ιστορικό"
@@ -210,9 +318,6 @@ msgstr "Προσθήκη τροφοδοσίας RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Προσθήκη τροφοδοσιών RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Ρυθμίσεις"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Εισαγωγή URL"
@@ -286,9 +391,6 @@ msgstr "Δημ/ργία φακέλου"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Επιλεγμένο"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Κοινόχρηστο"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Σελίδες που επισκεφθήκατε πρόσφατα"
 
@@ -340,9 +442,6 @@ msgstr "Ανενεργό"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Προεπιλεγμένη αποθήκευση"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Αναζήτηση"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Αποθ. εικόνας"
 
@@ -354,9 +453,6 @@ msgstr "Εύρεση λέξης"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Προσθήκη στην Αρχική οθόνη"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Προσθήκη στην αρχική οθόνη"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Δημοφιλέστερες τοποθεσίες"
@@ -382,12 +478,6 @@ msgstr "Αποκλ. αναδυόμενων παραθ."
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Πρόγραμμα ανάγνωσης κειμένου"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Αντιγραφή εικόνας"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Αποθ. εικόνας"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Αναπαραγωγή"
 
@@ -405,9 +495,6 @@ msgstr "Διακοπή"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Επαναφόρτιση"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Επικόλληση"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Περισσότερα"
@@ -529,9 +616,6 @@ msgstr "Αποστολή μέσω email"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Αποστολή μέσω μηνύματος"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Ρυθμίσεις"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Όνομα χρήστη"
 
@@ -622,107 +706,14 @@ msgstr "Προσθήκη κλιπ στο Web"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Δημιουργήθηκε συντόμευση"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Επιλογή λέξης"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Εύρ. σε σελίδα"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Εύρ. σε σελίδα"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Λίστα"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Επιλογή όλων"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Μήνυμα"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Άκυρο"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Αντ. URL σύνδ."
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Προβολή εικόνας"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Άνοιγμ.σε νέα σελ."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Άνοιγμα"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Επιλογή κειμένου ενεργό"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Προσθ.στους σελιδ/τες"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Επεξεργ."
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Διαγρ."
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Διαγραφή"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Άκυρο"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Επεξεργασία σελιδοδείκτη"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Μηνύματα"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Επεξεργασία"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Διαγραφή"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Προσθήκη στους σελιδ/τες"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Μέγεθος γραμματοσειράς"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Μεγάλο"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Μικρή"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Ταχύτητα"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Διεύθ.διακ.μεσολάβ."
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Θύρα proxy"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Ok"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Έκδοση"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Εγκατ."
@@ -858,4 +849,28 @@ msgstr "Προστέθηκε στους σελιδοδείκτες"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Καταργήθηκε από τους σελιδοδείκτες"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Αποκλεισμός αναδυόμ. παραθύρων"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Εικόνες"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Φόρτωση. Περιμένετε..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Προσαρμογή παράγοντα χρήστη"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Αρχική σελίδα χρήστη"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Κωδικός πρόσβασης"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Μηχανή αναζήτησης"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Δημιουργήθηκε συντόμευση %s"
 

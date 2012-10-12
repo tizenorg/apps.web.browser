@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Povijest"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Dodaj u favorite"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Mapa"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Postavke"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Dijeli"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Traži"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Dodaj na početni zaslon"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Spremi sliku"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Zalijepi"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Postavke"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Odaberite riječ"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Traži na stranici"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Obaviješćivanje..."
 
@@ -25,8 +64,92 @@ msgstr "Skinuti?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Odabrano"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Popis"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Odaberi sve"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Poruka"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Prekid"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopiraj adresu"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Prikaži sliku"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Otv. u novoj str."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Početna"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Odabir teksta uključen"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Favoriti"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Uredi"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Obriši"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Obriši"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Prekid"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Uredi favorita"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Poruke"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Uredi"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Obriši"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Dodaj u Favorite"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Veličina slova"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Velika"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Mala"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy ulaz"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "OK"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Verzija"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Skidanje prekinuto"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopiraj sliku"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Međuspremnik"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Nastavi od zadnje strane"
@@ -85,17 +208,11 @@ msgstr "Pokreni JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Zajednički naziv:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizacijska jedinica:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizacija:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Korisnički agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Odrednice"
@@ -117,9 +234,6 @@ msgstr "Prebrisati?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "Adresa"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Povijest"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Popis skidanja"
@@ -154,9 +268,6 @@ msgstr "Dalje"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Nova mapa"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Dodaj u favorite"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Novi prozor"
 
@@ -171,9 +282,6 @@ msgstr "URL nedostupan"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s nije dostupan. URL je privremeno nedostupan ili se više ne koristi"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Mapa"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Ime mape"
@@ -210,9 +318,6 @@ msgstr "Dodajte RSS kanal"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Dodaj RSS sažetke"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Postavke"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Unesite adresu"
@@ -286,9 +391,6 @@ msgstr "Nova mapa"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Odabrano"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Dijeli"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Nedavno posjećene stranice"
 
@@ -340,9 +442,6 @@ msgstr "Isključeno"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Postavljena memorija"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Traži"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Spremi sliku"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Traži pojam"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Dodaj na početni zaslon"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Dodaj na početni zaslon"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Blokiraj pop-up prozore"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Čitač teksta"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopiraj sliku"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Spremi sliku"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Reproduciraj"
 
@@ -405,9 +495,6 @@ msgstr "Prekid"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Učitaj ponovo"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Zalijepi"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Više"
@@ -529,9 +616,6 @@ msgstr "Pošalji emailom"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Pošalji putem poruke"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Postavke"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Korisničko ime"
 
@@ -622,107 +706,14 @@ msgstr "Dodaj u Internet zapise"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Prečac spremljen"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Odaberite riječ"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Traži na stranici"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Traži na stranici"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Popis"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Odaberi sve"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Poruka"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Prekid"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopiraj adresu"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Prikaži sliku"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Otv. u novoj str."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Početna"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Odabir teksta uključen"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Favoriti"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Uredi"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Obriši"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Obriši"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Prekid"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Uredi favorita"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Poruke"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Uredi"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Obriši"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Dodaj u Favorite"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Veličina slova"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Velika"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Mala"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Brzina"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy adresa"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy ulaz"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "OK"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Verzija"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instaliraj"
@@ -858,4 +849,28 @@ msgstr "Dodano u Favorite"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Uklonjeno iz Favorita"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokiraj pop-up prozore"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Slike"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Učitavanje. Pričekajte..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "prilagodi korisničkog agenta"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Poč. str. korisnika"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Šifra"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Pretraživač"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Prečac %s napravljen"
 

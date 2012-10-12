@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historia"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Lisää kirjanmerkk."
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Kansio"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Asetukset"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Jaa"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Etsi"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Lisää alkunäyttöön"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Tallenna kuva"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Liitä"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Asetukset"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Valitse sana"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Etsi sivulta"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Ilmoitetaan..."
 
@@ -25,8 +64,92 @@ msgstr "Ladataanko?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Valittu"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Luettelo"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Valitse kaikki"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Viesti"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Sähköposti"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Peruuta"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopioi linkin URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Näytä kuva"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Avaa uud. sivulle"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Avoin"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Tekstin valinta päällä"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Kirjanmerkit"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Muokkaa"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Poista"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Poista"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Peruuta"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Muokkaa kirjanmerkkiä"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Viestit"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Muokkaa"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Poista"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Lisää kirjanmerkkeihin"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Kirjasinkoko"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Iso"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Pieni"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Välityspalvelimen portti"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Valmis"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versio"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Lataus peruutettu"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopioi kuva"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Leikepöytä"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Jatka edel. sivulta"
@@ -85,17 +208,11 @@ msgstr "Suorita JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Yleinen nimi:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisaatioyksikkö:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisaatio:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Käyttäjäagentti"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Valinnat"
@@ -117,9 +234,6 @@ msgstr "Korvataanko?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL-osoite"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historia"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Latausluettelo"
@@ -154,9 +268,6 @@ msgstr "Seuraava"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Uusi kansio"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Lisää kirjanmerkk."
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Uusi ikkuna"
 
@@ -171,9 +282,6 @@ msgstr "URL-osoite ei ole käytettävissä"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL-osoite %s ei ole käytettävissä. Se voi olla väliaikaisesti tai lopullisesti poissa käytöstä"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Kansio"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Kansion nimi"
@@ -210,9 +318,6 @@ msgstr "Lisää RSS-syöte"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Lisää RSS-syötteet"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Asetukset"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Kirjoita URL-osoite"
@@ -286,9 +391,6 @@ msgstr "Luo kansio"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Valittu"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Jaa"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Viimeksi avatut sivut"
 
@@ -340,9 +442,6 @@ msgstr "Pois"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Oletustallennuspaikka"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Etsi"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Tallenna kuva"
 
@@ -354,9 +453,6 @@ msgstr "Etsi sana"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Lisää alkunäytöksi"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Lisää alkunäyttöön"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Useimmin katsotut sivustot"
@@ -382,12 +478,6 @@ msgstr "Estä ponnahdusikkunat"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Tekstinlukija"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopioi kuva"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Tallenna kuva"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Toista"
 
@@ -405,9 +495,6 @@ msgstr "Lopeta"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Lataa uudelleen"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Liitä"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Lisää"
@@ -529,9 +616,6 @@ msgstr "Lähetä sähköpostiviestinä"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Lähetä viestinä"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Asetukset"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Käyttäjän nimi"
 
@@ -622,107 +706,14 @@ msgstr "Lisää Web-leikkeeseen"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Pikanäppäin luotu"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Valitse sana"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Etsi sivulta"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Etsi sivulta"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Luettelo"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Valitse kaikki"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Viesti"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Sähköposti"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Peruuta"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopioi linkin URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Näytä kuva"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Avaa uud. sivulle"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Avoin"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Tekstin valinta päällä"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Kirjanmerkit"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Muokkaa"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Poista"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Poista"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Peruuta"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Muokkaa kirjanmerkkiä"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Viestit"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Sähköposti"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Muokkaa"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Poista"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Lisää kirjanmerkkeihin"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Kirjasinkoko"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Iso"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Pieni"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Nopeus"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Välityspalvelimen osoite"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Välityspalvelimen portti"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Valmis"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versio"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Asenna"
@@ -858,4 +849,28 @@ msgstr "Lisätty kirjanmerkkeihin"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Poistettu kirjanmerkeistä"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Estä ponnahdusikkunat"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Kuvat"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Ladataan. Odota..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Mukauta käyttäjäagentti"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Käyttäjän kotisivu"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Salasana"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Hakukone"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Pikanäppäin %s luotu"
 

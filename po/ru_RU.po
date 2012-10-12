@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Журнал"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Добавить к закладкам"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Папка"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Настройки"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Поделиться"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Поиск"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Добавить на главный экран"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Сохранить картинку"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Вставить"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Настройки"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Выберите слово"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Найти на странице"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Уведомление..."
 
@@ -25,8 +64,92 @@ msgstr "Загрузить?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Выбранное"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Список файлов"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Выбрать все"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Сообщение"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Отмена"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Копировать URL ссылки"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Просмотр картинки"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Открыть в новом окне"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Открыть"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Выделить текст"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Закладки"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Изменить"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Удал."
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Удалить"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Отмена"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Редактировать закладку"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Сообщения"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Изменить"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Удалить"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Добавить в Закладки"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Размер шрифта"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Большой"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Маленький"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Порт прокси"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Готово"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Версия"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Загрузка отменена"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Копировать изображение"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Буфер обмена"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "С последней страницы"
@@ -85,17 +208,11 @@ msgstr "Выполнять JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Имя:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Подразделение:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Организация:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Агент пользователя"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Параметры"
@@ -117,9 +234,6 @@ msgstr "Перезаписать?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Журнал"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Список загрузки"
@@ -154,9 +268,6 @@ msgstr "Далее"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Новая папка"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Добавить к закладкам"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Новое окно"
 
@@ -171,9 +282,6 @@ msgstr "URL-адрес недоступен"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL-адрес %s недоступен. Возможно, он временно не работает или больше не используется"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Папка"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Имя папки"
@@ -210,9 +318,6 @@ msgstr "Добавить RSS-новость"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Добавить RSS-каналы"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Настройки"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Введите URL"
@@ -286,9 +391,6 @@ msgstr "Создать папку"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Выбранное"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Поделиться"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Недавно посещенные страницы"
 
@@ -340,9 +442,6 @@ msgstr "Выключено"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Хранилище по умолчанию"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Поиск"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Сохранить картинку"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Поиск слова"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Добавить на главный экран"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Добавить на главный экран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Блокировать всплыв. окна"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Текст"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Копировать изображение"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Сохранить картинку"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Воспроизвести"
 
@@ -405,9 +495,6 @@ msgstr "Стоп"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Обновить"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Вставить"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Еще"
@@ -529,9 +616,6 @@ msgstr "Отправить по E-mail"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Отправить в сообщении"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Настройки"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Имя пользователя"
 
@@ -622,107 +706,14 @@ msgstr "Добавить как виджет"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Создана ссылка"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Выберите слово"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Найти на странице"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Найти на странице"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Интернет"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Список файлов"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Выбрать все"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Сообщение"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Отмена"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Копировать URL ссылки"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Просмотр картинки"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Открыть в новом окне"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Открыть"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Выделить текст"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Закладки"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Изменить"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Удал."
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Удалить"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Отмена"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Редактировать закладку"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Сообщения"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Изменить"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Удалить"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Добавить в Закладки"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Размер шрифта"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Большой"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Маленький"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Скорость"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Адрес прокси"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Порт прокси"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Готово"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Версия"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Устан."
@@ -858,4 +849,28 @@ msgstr "Добавлено к закладкам"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Удалено из закладок"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Блокировать всплыв. сообщения"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Картинки"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Загрузка. Подождите..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Настраиваемый агент пользователя"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Домашняя страница пользователя"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Пароль"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Поисковая система"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Создана ссылка %s"
 

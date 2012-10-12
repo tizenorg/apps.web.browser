@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "History"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Add to Bookmarks"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Folder"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Settings"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Share"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Search"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Add to home screen"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Save image"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Paste"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Settings"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Select word"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Find on page"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Notifying..."
 
@@ -25,8 +64,92 @@ msgstr "Download?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Selected"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "List"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Select all"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Message"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Cancel"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Copy link URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "View image"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Open in new page"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Open"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Text selection on"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Bookmarks"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Edit"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Delete"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Delete"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Cancel"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Edit bookmark"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Messages"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Edit"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Delete"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Add to Bookmarks"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Font size"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Large"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Small"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy port"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Done"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Version"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Download cancelled"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Copy image"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Clipboard"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Continue from last page"
@@ -85,17 +208,11 @@ msgstr "Run JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Common name:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organisational unit:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organisation:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "User agent"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferences"
@@ -117,9 +234,6 @@ msgstr "Overwrite?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "History"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Download list"
@@ -154,9 +268,6 @@ msgstr "Next"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "New folder"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Add to Bookmarks"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "New window"
 
@@ -171,9 +282,6 @@ msgstr "URL not available"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s not available. It might be down temporarily or no longer in use"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Folder"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Folder name"
@@ -210,9 +318,6 @@ msgstr "Add RSS feed"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Add RSS feeds"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Settings"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Enter URL"
@@ -286,9 +391,6 @@ msgstr "Create folder"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Selected"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Share"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Recently visited pages"
 
@@ -340,9 +442,6 @@ msgstr "Off"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Default storage"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Search"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Save image"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Find word"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Add to home screen"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Add to home screen"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Block pop-up windows"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Text reader"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Copy image"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Save image"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Play"
 
@@ -405,9 +495,6 @@ msgstr "Stop"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Reload"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Paste"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "More"
@@ -529,9 +616,6 @@ msgstr "Send via Email"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Send via Message"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Settings"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Username"
 
@@ -622,107 +706,14 @@ msgstr "Add to Web clip"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Shortcut created"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Select word"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Find on page"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Find on page"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "List"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Select all"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Message"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Cancel"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Copy link URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "View image"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Open in new page"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Open"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Text selection on"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Bookmarks"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Edit"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Delete"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Delete"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Cancel"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Edit bookmark"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Messages"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Edit"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Delete"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Add to Bookmarks"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Font size"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Large"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Small"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Speed"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy address"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy port"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Done"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Version"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Install"
@@ -858,4 +849,28 @@ msgstr "Added to bookmarks"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Removed from bookmarks"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Block pop-ups"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Pictures"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Loading. Please wait..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Custom user agent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "User homepage"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Password"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Search engine"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Shortcut %s created"
 

@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historial"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Afegir a Preferits"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Carpeta"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Ajustaments"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Compartir"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Cercar"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Afegir a pantalla d'inici"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Desar imatge"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Enganxar"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Ajustaments"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Seleccionar paraula"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Cercar a pàgina"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Notificant..."
 
@@ -25,8 +64,92 @@ msgstr "Descarregar?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Seleccionat"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Llista"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Seleccioni-ho tot"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Missatge"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Correu electrònic"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Cancel"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Copiar URL enll"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Veure imatge"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Obrir en pàg nova"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Obrir"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Selecció de text activada"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Preferits"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Esborrar"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Esborrar"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Cancel·lar"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Editar preferit"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Missatges"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Editar"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Esborrar"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Afegir a Preferits"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Mida de font"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Gran"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Petit"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Port de servidor intermediari"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Finalit."
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versió"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Descàrrega cancel·lada"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Copiar la imatge"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Porta-retalls"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Cont des d'últ pàg"
@@ -85,17 +208,11 @@ msgstr "Executar JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Nom comú:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Unitat organitzativa:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organització:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Agent d'usuari"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Preferències"
@@ -117,9 +234,6 @@ msgstr "Sobreescriure?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historial"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Llista de descàrregues"
@@ -154,9 +268,6 @@ msgstr "Següent"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Carpeta nova"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Afegir a Preferits"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Finestra nova"
 
@@ -171,9 +282,6 @@ msgstr "URL no disponible"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "L'URL %s no està disponible. Pot estar caiguda temporalment o no estar operativa"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Carpeta"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Nom carpeta"
@@ -210,9 +318,6 @@ msgstr "Afegir canal RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Afegir canals RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Ajustaments"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Introdueixi URL"
@@ -286,9 +391,6 @@ msgstr "Crear carpeta"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Seleccionat"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Compartir"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Pàgines visitades fa poc"
 
@@ -340,9 +442,6 @@ msgstr "Desactivat"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Emmagatzematge predeterminat"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Cercar"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Desar imatge"
 
@@ -354,9 +453,6 @@ msgstr "Trobar paraula"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Afegir a la pantalla d'inici"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Afegir a pantalla d'inici"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Llocs més visitats"
@@ -382,12 +478,6 @@ msgstr "Bloq finestres emergents"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Lector de text"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Copiar la imatge"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Desar imatge"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Reproduir"
 
@@ -405,9 +495,6 @@ msgstr "Aturar"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Recarregar"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Enganxar"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Més"
@@ -529,9 +616,6 @@ msgstr "Enviar per correu electrònic"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Enviar a través de missatge"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Ajustaments"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Nom d'usuari"
 
@@ -622,107 +706,14 @@ msgstr "Afegir a clip web"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "S'ha creat l'accés directe"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Seleccionar paraula"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Cercar a pàgina"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Cercar a pàgina"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Llista"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Seleccioni-ho tot"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Missatge"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Correu electrònic"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Cancel"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Copiar URL enll"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Veure imatge"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Obrir en pàg nova"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Obrir"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Selecció de text activada"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Preferits"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Editar"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Esborrar"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Esborrar"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Cancel·lar"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Editar preferit"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Missatges"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Correu electrònic"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Editar"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Esborrar"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Afegir a Preferits"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Mida de font"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Gran"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Petit"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Velocitat"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Adreça de proxy"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Port de servidor intermediari"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Finalit."
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versió"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instal·lar"
@@ -858,4 +849,28 @@ msgstr "Afegit a Preferits"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Esborrat dels preferits"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Bloquejar finestres emergents"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Imatges"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Carregant. Esperi..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Personalitzar agent d'usuari"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Pàgina d'inici d'usuari"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Contrasenya"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Cercador"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "S'ha creat l'accés directe %s"
 

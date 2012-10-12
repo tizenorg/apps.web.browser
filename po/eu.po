@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Historia"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Geh. laster-mark.-ra"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Karpeta"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Ezarpenak"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Partekatu"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Bilatu"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Gehitu hasierako pantailara"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Irudia gorde"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Itsatsi"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Ezarpenak"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Aukeratu hitza"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Aurkitu orrian"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Jakinarazten..."
 
@@ -25,8 +64,92 @@ msgstr "Deskargatu?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Aukeratutakoa(k)"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Zerrenda"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Denak aukeratu"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Mezua"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Posta elektronikoa"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Ezeztatu"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kopiatu URL es."
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Ikusi irudia"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Ireki orri berrian"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Ireki"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Testu aukeraketa aktibatuta"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Laster-markak"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Editatu"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Ezabatu"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Ezabatu"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Ezeztatu"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Laster-marka editatu"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Mezuak"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Editatu"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Ezabatu"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Laster-marketara gehitu"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Letraren tamaina"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Handia"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Txikia"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proxy ataka"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Amaituta"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Bertsioa"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Deskarga ezeztatua"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopiatu irudia"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Arbela"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Azken orritik jarraitu"
@@ -85,17 +208,11 @@ msgstr "JavaScript abiarazi"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Ohiko izena:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Erakunde unitatea:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Erakundea:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Erabiltzailearen agentea"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Lehentasunak"
@@ -117,9 +234,6 @@ msgstr "Gainidatzi?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URLa"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Historia"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Deskarga zerrenda"
@@ -154,9 +268,6 @@ msgstr "Hurrengoa"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Karpeta berria"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Geh. laster-mark.-ra"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Leiho berria"
 
@@ -172,9 +283,6 @@ msgstr "URLa ez dago eskuragarri"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URLaren %s ez dago eskuragarri. Aldi baterako ez dago erabilgarri edo behin betiko"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Karpeta"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Karpetaren izena"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Izenbururik ez"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Hainbat leiho"
+msgstr "Multi window"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Historiarik ez"
@@ -210,9 +318,6 @@ msgstr "Gehitu RSS jarioa"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Gehitu RSS jarioak"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Ezarpenak"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URLa idatzi"
@@ -286,9 +391,6 @@ msgstr "Sortu karpeta"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Aukeratutakoa(k)"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Partekatu"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Berriki bisitatutako orriak"
 
@@ -340,9 +442,6 @@ msgstr "Desaktibatuta"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Biltegiratze lehenetsia"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Bilatu"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Irudia gorde"
 
@@ -354,9 +453,6 @@ msgstr "Aurkitu hitza"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "Gehitu pantaila nagusira"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "Gehitu hasierako pantailara"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Gehien bisitatutako guneak"
@@ -382,12 +478,6 @@ msgstr "Blokeatu agerkar. leihoak"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Testu irakurgailua"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopiatu irudia"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Irudia gorde"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Erreproduzitu"
 
@@ -405,9 +495,6 @@ msgstr "Gelditu"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Birkargatu"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Itsatsi"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Gehiago"
@@ -529,9 +616,6 @@ msgstr "Bidali posta elektroniko bidez"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Mezu bidez bidali"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Ezarpenak"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Erabiltzaile izena"
 
@@ -622,107 +706,14 @@ msgstr "Gehitu web klipera"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Lastebidea sortuta"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Aukeratu hitza"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Aurkitu orrian"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Aurkitu orrian"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Zerrenda"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Denak aukeratu"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Mezua"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Posta elektronikoa"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Ezeztatu"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kopiatu URL es."
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Ikusi irudia"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Ireki orri berrian"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Ireki"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Testu aukeraketa aktibatuta"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Laster-markak"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Editatu"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Ezabatu"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Ezabatu"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Ezeztatu"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Laster-marka editatu"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Mezuak"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Posta elektronikoa"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Editatu"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Ezabatu"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Laster-marketara gehitu"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Letraren tamaina"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Handia"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Txikia"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Abiadura"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proxy helbidea"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proxy ataka"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Amaituta"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Bertsioa"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Instalatu"
@@ -858,4 +849,28 @@ msgstr "Lastermarketara gehituta"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Lastermarketatik kenduta"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokeatu agerkariak"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Irudiak"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Kargatzen. Itxaron mesedez..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Pertsonalizatu erabiltzailearen agentea"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Erabiltzailearen orri nagusia"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Pasahitza"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Bilaketa motorra"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s lastermarka sortuta"
 

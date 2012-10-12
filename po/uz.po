@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Jurnal"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Veb-huj.ga qo‘sh"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Jild"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Parametrlar"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Ulashish"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Qidirish"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Asosiy ekranga qo‘shish"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Tasvirni saqlash"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Qo‘shib qo‘yish"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Parametrlar"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "So‘z tanlang"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Sahifada topish"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Xabar berilmoqda..."
 
@@ -25,8 +64,92 @@ msgstr "Yuklab olinsinmi?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Tanlangan"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Ro‘yxat"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Barchasini tanlash"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Xabar"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-pochta"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Bek/qil."
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "URL havolasidan nusxa olish"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Rasmni ko‘rish"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Yangi sahifada ochish"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Ochish"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Matn tanlash yoq."
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Veb-hujjatlar"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Tahrirl."
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "O'chr"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "O'chirish"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Bekor q."
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Veb-hujjatni tahrirlash"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Xabarlar"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Tahrirlash"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "O'chirish"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Saqlangan veb-hujjatlarga qo‘shish"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Shrift o‘lchami"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Katta"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Kichik"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Proksi porti"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Bajarildi"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Versiya"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Yuklab olish bekor qilindi"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Suratdan nusxa olish"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Bufer"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Oxirgi sah-dan davom et"
@@ -85,17 +208,11 @@ msgstr "JavaScriptni ishga tushirish"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Umumiy nomi:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Tashkilot birligi:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Tashkilot:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Foydalanuvchi agenti"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Imtiyozlilar"
@@ -117,9 +234,6 @@ msgstr "Qayta yozilsinmi?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL-manzil"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Jurnal"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Yuklanmalar ro‘yxati"
@@ -154,9 +268,6 @@ msgstr "Keyingi"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Yangi jild"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Veb-huj.ga qo‘sh"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Yangi oyna"
 
@@ -171,9 +282,6 @@ msgstr "URLdan foydalanib bo‘lmaydi"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "%s URLdan foydalanib bo‘lmaydi. U vaqtincha ishlamayotgan yoki boshqa foydalanib bo‘lmaydigan bo‘lishi mumkin"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Jild"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Jild nomi"
@@ -210,9 +318,6 @@ msgstr "RSS-kanalni qo‘shish"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS-kanalarni qo‘shish"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Parametrlar"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "URL kiritish"
@@ -286,9 +391,6 @@ msgstr "Jild yaratish"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Tanlangan"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Ulashish"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Oxirgi tashrif etilgan sahifalar"
 
@@ -340,9 +442,6 @@ msgstr "O‘ch."
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Birlamchi xotiraga saqlash"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Qidirish"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Tasvirni saqlash"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "So‘z topish"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Asosiy ekranga qo‘shish"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Asosiy ekranga qo‘shish"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Qalquvchi oynani bloklash"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Matnni o‘qish vositasi"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Suratdan nusxa olish"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Tasvirni saqlash"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "O‘ynatmoq"
 
@@ -405,9 +495,6 @@ msgstr "To‘xtat"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Qayta yuklash"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Qo‘shib qo‘yish"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Yana"
@@ -529,9 +616,6 @@ msgstr "E-pochta orqali yuborish"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Xabar orqali yuborish"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Parametrlar"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Foydalanuvchi nomi"
 
@@ -622,107 +706,14 @@ msgstr "Veb-klipga qo‘shish"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Yorliq yaratildi"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "So‘z tanlang"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Sahifada topish"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Sahifada topish"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Ro‘yxat"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Barchasini tanlash"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Xabar"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-pochta"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Bek/qil."
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "URL havolasidan nusxa olish"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Rasmni ko‘rish"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Yangi sahifada ochish"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Ochish"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Matn tanlash yoq."
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Veb-hujjatlar"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Tahrirl."
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "O'chr"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "O'chirish"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Bekor q."
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Veb-hujjatni tahrirlash"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Xabarlar"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-pochta"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Tahrirlash"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "O'chirish"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Saqlangan veb-hujjatlarga qo‘shish"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Shrift o‘lchami"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Katta"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Kichik"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Tezlik"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Proksi manzili"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Proksi porti"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Bajarildi"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Versiya"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "O‘rnatish"
@@ -858,4 +849,28 @@ msgstr "Saqlangan veb-hujjatlarga qo‘shildi"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Veb-hujjatlardan olib tashlandi"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Qalqib chiquvchi oyna bloki"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Rasmlar"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Yuklanmoqda. iltimos, kuting..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Ixtiyoriy foydalanuvchi agenti"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Foydalanuvchi asosiy sahifasi"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parol"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Qidirish mexanizmi"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "%s yorlig‘i yaratildi"
 

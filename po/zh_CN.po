@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "历史记录"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "添加到书签"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "文件夹"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "设定"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "共享"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "搜索"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "添加到主屏幕"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "保存图像"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "粘贴"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "设定"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "选择单词"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "在页面上查找"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "通知中..."
 
@@ -25,14 +64,98 @@ msgstr "下载？"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "已选定"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "列表"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "全选"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "信息"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "电子邮件"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "取消"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "复制链接网址"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "查看图像"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "在新页面打开"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "打开"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "文本选择开启"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "书签"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "编辑"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "删除"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "删除"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "取消"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "编辑书签"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "信息"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "编辑"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "删除"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "添加到书签"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "字体大小"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "大"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "小"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "代理服务器端口"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "完成"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "版本"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "已取消下载"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "复制图像"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "剪贴板"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "从最后一页继续"
 
 msgid "IDS_BR_BODY_PAGE"
-msgstr "页面"
+msgstr "页"
 
 msgid "IDS_BR_OPT_DICTIONARY"
 msgstr "字典"
@@ -85,17 +208,11 @@ msgstr "运行 Java 脚本"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "公用名："
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "组织单位："
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "组织："
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "WAP UA"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "参数选择"
@@ -117,9 +234,6 @@ msgstr "覆盖？"
 
 msgid "IDS_BR_POP_URL"
 msgstr "网址"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "历史记录"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "下载列表"
@@ -154,9 +268,6 @@ msgstr "下一步"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "新文件夹"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "添加到书签"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "新窗口"
 
@@ -171,9 +282,6 @@ msgstr "URL不可用"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL %s不可用。它可能暂时不能使用或不能再使用了"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "文件夹"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "文件夹名称"
@@ -210,9 +318,6 @@ msgstr "添加RSS源"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "添加RSS订阅源"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "设定"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "输入网址"
@@ -286,9 +391,6 @@ msgstr "新文件夹"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "已选定"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "共享"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "最近访问的页面"
 
@@ -340,9 +442,6 @@ msgstr "关"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "默认存储器"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "搜索"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "保存图像"
 
@@ -354,9 +453,6 @@ msgstr "查找文字"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
 msgstr "添加到主屏"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
-msgstr "添加到主屏幕"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "访问最多的站点"
@@ -382,12 +478,6 @@ msgstr "阻止跳出窗口"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "文本阅读器"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "复制图像"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "保存图像"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "播放"
 
@@ -405,9 +495,6 @@ msgstr "停止"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "刷新"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "粘贴"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "更多"
@@ -529,9 +616,6 @@ msgstr "通过电子邮件发送"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "通过信息发送"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "设定"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "用户名"
 
@@ -622,107 +706,14 @@ msgstr "添加到网页夹"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "已创建快捷键"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "选择单词"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "在页面上查找"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "在页面上查找"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "互联网"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "列表"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "全选"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "信息"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "电子邮件"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "取消"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "复制链接网址"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "查看图像"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "在新页面打开"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "打开"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "文本选择开启"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "书签"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "编辑"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "删除"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "删除"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "取消"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "编辑书签"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "信息"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "电子邮件"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "编辑"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "删除"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "添加到书签"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "字体大小"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "大"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "小"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "速度"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "代理服务器地址"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "代理服务器端口"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "完成"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "版本"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "安装"
@@ -858,4 +849,28 @@ msgstr "已添加到书签"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "已从书签移除"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "阻止弹出窗口"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "图片"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "加载中，请稍等…"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "定制用户代理"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "用户主页"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "密码"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "搜索引擎"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "快捷键%1$s已添加"
 

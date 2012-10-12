@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "इतिहास"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "बुकमार्क्स में शामिल करें"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "फोल्डर"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "सेटिंग्स"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "शेयर करें"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "खोजें"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "होम स्क्रीन पर जोड़े"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "छवि सुरक्षित करें"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "पेस्ट करें"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "सेटिंग्स"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "शब्‍द चुनें"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "पेज़ पर ढूँढें"
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "सूचित किया जा रहा है..."
 
@@ -25,8 +64,92 @@ msgstr "डाउनलोड?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "चयनित"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "सूची"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "सभी चुनें"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "सन्देश"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "ईमेल"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "रद्द करें"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "लिंक URL कॉपी करें"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "छवि देखें"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "नए पेज में खोलें"
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "खोलें"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "टेक्स्ट चयन चालू"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "बुकमार्क्स"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "संपादन"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "हटाएँ"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "हटाएँ"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "रद्द"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "बुकमार्क संपादित करें"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "सन्देश"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "संपादित करें"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "हटाएँ"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "बुकमार्क्स में जोड़ें"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "फॉन्ट आकार"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "बड़ा"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "छोटा"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "प्रॉक्‍सी पोर्ट"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "हुआ"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "संस्करण"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "डाउनलोड रद्द"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "छवि कॉपी करें"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "क्लिपबोर्ड"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "अंतिम पेज से जारी रखें"
@@ -85,17 +208,11 @@ msgstr "जावा स्क्रिप्ट चलाएँ"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "सामान्य नाम:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "संगठनात्मक इकाई:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "संगठन:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "उपभोक्ता एजेन्ट"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "प्राथमिकताएँ"
@@ -117,9 +234,6 @@ msgstr "ओवरराइट?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "इतिहास"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "डाउनलोड सूची"
@@ -154,9 +268,6 @@ msgstr "अगला"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "नया फ़ोल्‍डर"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "बुकमार्क्स में शामिल करें"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "नई विंडो"
 
@@ -171,9 +282,6 @@ msgstr "वेब पता उपलब्‍ध नहीं"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "वेब पता %s उपलब्ध नहीं। वह अस्‍थायी रूप से बंद या अब उपयोग में नहीं रहेगी"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "फोल्डर"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "फोल्डर का नाम"
@@ -210,9 +318,6 @@ msgstr "RSS फीड जोड़ें"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "RSS फ़ीड्स जोड़ें"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "सेटिंग्स"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "यूआरएल प्रविष्ट करें"
@@ -286,9 +391,6 @@ msgstr "फ़ोल्‍डर बनाएँ"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "चयनित"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "शेयर करें"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "हाल ही में भेंट दिए पेजेस"
 
@@ -340,9 +442,6 @@ msgstr "बंद"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "डिफॉल्ट स्टोरेज"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "खोजें"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "छवि सुरक्षित करें"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "शब्द ढूँढें"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "होम स्क्रीन पर जोड़े"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "होम स्क्रीन पर जोड़े"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "पॉप-अप विंडो अवरुद्ध करें"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "पाठ पाठक"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "छवि कॉपी करें"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "छवि सुरक्षित करें"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "चलाएँ"
 
@@ -405,9 +495,6 @@ msgstr "रोकें"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "पुनः लोड करें"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "पेस्ट करें"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "अधिक"
@@ -529,9 +616,6 @@ msgstr "ईमेल द्वारा भेजें"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Message द्वारा भेजें"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "सेटिंग्स"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "उपभोक्ता नाम"
 
@@ -622,107 +706,14 @@ msgstr "Web क्लीप में जोड़ें"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "शॉर्टकट बनाया है"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "शब्‍द चुनें"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "पेज़ पर ढूँढें"
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "पेज़ पर ढूँढें"
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "इंटरनेट"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "सूची"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "सभी चुनें"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "सन्देश"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "ईमेल"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "रद्द करें"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "लिंक URL कॉपी करें"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "छवि देखें"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "नए पेज में खोलें"
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "खोलें"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "टेक्स्ट चयन चालू"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "बुकमार्क्स"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "संपादन"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "हटाएँ"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "हटाएँ"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "रद्द"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "बुकमार्क संपादित करें"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "सन्देश"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "ईमेल"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "संपादित करें"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "हटाएँ"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "बुकमार्क्स में जोड़ें"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "फॉन्ट आकार"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "बड़ा"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "छोटा"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "गति"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "प्रॉक्‍सी पता"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "प्रॉक्‍सी पोर्ट"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "हुआ"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "संस्करण"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "स्थापना"
@@ -858,4 +849,28 @@ msgstr "बुकमार्क मे जोड़ा गया"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "बुकमार्क्स से हटाया गया"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "पॉप-अप अवरुद्ध करें"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "तस्वीरें"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "लोड किया जा रहा है। कृपया प्रतीक्षा करें..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "कस्टम उपयोगकर्ता एजेंट"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "उपयोगकर्ता होमपेज"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "पासवर्ड"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "खोज इंजन"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "शॉर्टकट %s बनाया है"
 

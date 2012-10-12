@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "Історія"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Додати до закладок"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Папка"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Установки"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Надіслати"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Пошук"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Додати на головний екран"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Зберегти зображення"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Вставити"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Установки"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Виберіть слово"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Знайти на стор."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Сповіщення..."
 
@@ -25,8 +64,92 @@ msgstr "Завантажити?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Вибране"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Список"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Вибрати всі"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Повідомлення"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "Email"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Скасувати"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Скопіювати URL"
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Перегл. зображ."
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Відкр.на нов.стор."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Відкрити"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Увімкнути вибір тексту"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Закладки"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Редагув."
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Вида-\nлити"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Видалити"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Скасувати"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Редагувати закладку"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Повідомлення"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Редагувати"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Видал."
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Додати до закладок"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Розмір шрифту"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Великий"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Малий"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Порт проксі"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Готово"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Версія"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Завантаження скасовано"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Копіювати зображення"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Буфер обміну"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Продовж. з ост. стор."
@@ -85,17 +208,11 @@ msgstr "Запуск JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Загальне ім’я:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Підрозділ організації:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Організація:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Агент користувача"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Додаткові установки"
@@ -117,9 +234,6 @@ msgstr "Перезаписати?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "Історія"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Список завантажень"
@@ -154,9 +268,6 @@ msgstr "Далі"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Ручний"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Додати до закладок"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Нове вікно"
 
@@ -171,9 +282,6 @@ msgstr "URL-адреса недоступна"
 
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "URL-адреса %s недоступна. Вона може бути тимчасово недоступна або більше не використовуватися"
-
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Папка"
 
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Ім'я папки"
@@ -210,9 +318,6 @@ msgstr "Додати RSS-канал"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Додати RSS-канали"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Установки"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Введіть URL"
@@ -286,9 +391,6 @@ msgstr "Створити папку"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Вибране"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Надіслати"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Нещодавно відвідані сторінки"
 
@@ -340,9 +442,6 @@ msgstr "Вимкнено"
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Стандартне місце збереження"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Пошук"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Зберегти зображення"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Пошук слова"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Додати на головний екран"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Додати на головний екран"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Блокувати спливаючі вікна"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Пристрій для читання тексту"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Копіювати зображення"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Зберегти зображення"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Відтворити"
 
@@ -405,9 +495,6 @@ msgstr "Стоп"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Перезавантажити"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Вставити"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Додатково"
@@ -491,10 +578,10 @@ msgid "IDS_BR_HEADER_ENTERURL"
 msgstr "Введіть URL"
 
 msgid "IDS_BR_OPT_LOCK"
-msgstr "Блокування"
+msgstr "Блокувати"
 
 msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Розблокувати"
+msgstr "Розблокування"
 
 msgid "IDS_BR_BODY_MODIFY"
 msgstr "Змінити"
@@ -528,9 +615,6 @@ msgstr "Надіслати в Email"
 
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Надіслати повідомленням"
-
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Установки"
 
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Ім'я користувача"
@@ -622,107 +706,14 @@ msgstr "Додати до веб-посилання"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Створено клавішу швидкого доступу"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Виберіть слово"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Знайти на стор."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Знайти на стор."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Браузер"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Список"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Вибрати всі"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Повідомлення"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "Email"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Скасувати"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Скопіювати URL"
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Перегл. зображ."
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Відкр.на нов.стор."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Відкрити"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Увімкнути вибір тексту"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Закладки"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Редагув."
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Вида-\nлити"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Видалити"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Скасувати"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Редагувати закладку"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Повідомлення"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "Email"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Редагувати"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Видал."
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Додати до закладок"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Розмір шрифту"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Великий"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Малий"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Швидкість"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Адреса проксі"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Порт проксі"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Готово"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Версія"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Встанов."
@@ -858,4 +849,28 @@ msgstr "Додано до закладок"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Видалено із закладок"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Блокувати спливаючі вікна"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Картинки"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Завантаження. Зачекайте..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Настроюваний агент користувача"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Домашня сторінка користувача"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Пароль"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Система веб-пошуку"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Створено ярлик для %s"
 

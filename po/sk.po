@@ -1,3 +1,42 @@
+msgid "IDS_BR_TAB_HISTORY"
+msgstr "História"
+
+msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
+msgstr "Pridať medzi záložky"
+
+msgid "IDS_BR_HEADER_FOLDER"
+msgstr "Priečinok"
+
+msgid "IDS_BR_OPT_SETTINGS"
+msgstr "Nastavenia"
+
+msgid "IDS_BR_OPT_SHARE"
+msgstr "Zdieľať"
+
+msgid "IDS_BR_BODY_SEARCH"
+msgstr "Hľadať"
+
+msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
+msgstr "Pridať na úvodnú obrazovku"
+
+msgid "IDS_BR_OPT_SAVE_IMAGE"
+msgstr "Uložiť obrázok"
+
+msgid "IDS_BR_OPT_PASTE"
+msgstr "Vložiť"
+
+msgid "IDS_BR_BODY_SETTINGS"
+msgstr "Nastavenia"
+
+msgid "IDS_BR_BODY_SELECT_WORD"
+msgstr "Vybrať slovo"
+
+msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
+msgstr "Hľadať na str."
+
+msgid "IDS_BR_HEADER_PICASA"
+msgstr "Picasa"
+
 msgid "IDS_BR_BODY_NOTIFYING_ING"
 msgstr "Odosiela sa notifikácia..."
 
@@ -25,8 +64,92 @@ msgstr "Stiahnuť?"
 msgid "IDS_BR_OPT_DELETE_SELECTED"
 msgstr "Vybrané"
 
+msgid "IDS_BR_OPT_LIST"
+msgstr "Zoznam"
+
+msgid "IDS_BR_BODY_SELECT_ALL"
+msgstr "Vybrať všetky"
+
+msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
+msgstr "Správa"
+
+msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
+msgstr "E-mail"
+
+msgid "IDS_BR_BUTTON_CANCEL_ABB"
+msgstr "Zrušiť"
+
+msgid "IDS_BR_OPT_COPY_LINK_URL"
+msgstr "Kop. adr. odk."
+
+msgid "IDS_BR_OPT_VIEW_IMAGE"
+msgstr "Zobr. obrázok"
+
+msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
+msgstr "Otv. na novej str."
+
+msgid "IDS_BR_OPT_OPEN"
+msgstr "Otvoriť"
+
+msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
+msgstr "Zapnúť výber textu"
+
+msgid "IDS_BR_TAB_BOOKMARKS"
+msgstr "Záložky"
+
+msgid "IDS_BR_SK_EDIT"
+msgstr "Upraviť"
+
+msgid "IDS_BR_SK_DELETE_ABB"
+msgstr "Odstrániť"
+
+msgid "IDS_BR_SK_DELETE"
+msgstr "Odstrániť"
+
+msgid "IDS_BR_SK_CANCEL"
+msgstr "Zrušiť"
+
+msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
+msgstr "Upraviť záložku"
+
+msgid "IDS_BR_OPT_MESSAGES"
+msgstr "Správy"
+
+msgid "IDS_BR_HEADER_EDIT"
+msgstr "Upraviť"
+
+msgid "IDS_BR_SK3_DELETE"
+msgstr "Odstrániť"
+
+msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
+msgstr "Pridať do priečinka Záložky"
+
+msgid "IDS_BR_HEADER_FONT_SIZE"
+msgstr "Veľkosť písma"
+
+msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
+msgstr "Veľké"
+
+msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
+msgstr "Malé"
+
+msgid "IDS_BR_BODY_PROXY_PORT"
+msgstr "Port proxy servera"
+
+msgid "IDS_BR_SK_DONE"
+msgstr "Hotovo"
+
+msgid "IDS_BR_BODY_SETTINGS_VERSION"
+msgstr "Verzia"
+
 msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
 msgstr "Sťahovanie zrušené"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopírovať obrázok"
+
+msgid "IDS_IME_BODY_CLIPBOARD"
+msgstr "Schránka"
 
 msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "Pokr. z poslednej str."
@@ -85,17 +208,11 @@ msgstr "Spustiť JavaScript"
 msgid "IDS_BR_HEADER_COMMON_NAME_C"
 msgstr "Všeobecný názov:"
 
-msgid "IDS_BR_HEADER_ORGANIZATIONAL_UNIT_C"
-msgstr "Organizačná jednotka:"
-
 msgid "IDS_BR_HEADER_ORGANIZATION_C"
 msgstr "Organizácia:"
 
 msgid "IDS_BR_HEADER_USER_AGENT"
 msgstr "Agent používateľa"
-
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE_ATNT"
-msgstr "Last Viewed Page"
 
 msgid "IDS_BR_OPT_PREFERENCES"
 msgstr "Predvoľby"
@@ -117,9 +234,6 @@ msgstr "Prepísať?"
 
 msgid "IDS_BR_POP_URL"
 msgstr "URL"
-
-msgid "IDS_BR_TAB_HISTORY"
-msgstr "História"
 
 msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
 msgstr "Zoznam stiahnutých"
@@ -154,9 +268,6 @@ msgstr "Ďalej"
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "Nový priečinok"
 
-msgid "IDS_BR_SK3_ADD_TO_BOOKMARKS"
-msgstr "Pridať medzi záložky"
-
 msgid "IDS_BR_SK1_NEW_WINDOW"
 msgstr "Nové okno"
 
@@ -172,9 +283,6 @@ msgstr "Adresa URL nie je k dispozícii"
 msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
 msgstr "Adresa URL %s nie je k dispozícii. Možno je dočasne mimo prevádzky alebo sa už nepoužíva"
 
-msgid "IDS_BR_HEADER_FOLDER"
-msgstr "Priečinok"
-
 msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Názov priečinka"
 
@@ -185,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Žiadny názov"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Viacnás. okno"
+msgstr "Viac okien"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Žiadne histórie"
@@ -210,9 +318,6 @@ msgstr "Pridať informačný kanál RSS"
 
 msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
 msgstr "Pridať informačné kanály RSS"
-
-msgid "IDS_BR_OPT_SETTINGS"
-msgstr "Nastavenia"
 
 msgid "IDS_BR_POP_ENTER_URL"
 msgstr "Zadajte adresu URL"
@@ -286,9 +391,6 @@ msgstr "Vytvoriť priečinok"
 msgid "IDS_BR_OPT_SELECTED"
 msgstr "Vybrané"
 
-msgid "IDS_BR_OPT_SHARE"
-msgstr "Zdieľať"
-
 msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
 msgstr "Naposledy navštívené stránky"
 
@@ -340,9 +442,6 @@ msgstr "Vyp."
 msgid "IDS_BR_BODY_DEFAULT_STORAGE"
 msgstr "Predvolené umiestnenie"
 
-msgid "IDS_BR_BODY_SEARCH"
-msgstr "Hľadať"
-
 msgid "IDS_BR_BODY_SAVE_IMAGE"
 msgstr "Uložiť obrázok"
 
@@ -353,9 +452,6 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Hľadať slovo"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Pridať na úvodnú obrazovku"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Pridať na úvodnú obrazovku"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
@@ -382,12 +478,6 @@ msgstr "Blokovať autom. otv. okná"
 msgid "IDS_BR_BODY_TEXT_READER"
 msgstr "Textová čítačka"
 
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopírovať obrázok"
-
-msgid "IDS_BR_OPT_SAVE_IMAGE"
-msgstr "Uložiť obrázok"
-
 msgid "IDS_BR_BODY_PLAY"
 msgstr "Prehrať"
 
@@ -405,9 +495,6 @@ msgstr "Zastaviť"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Načítať znova"
-
-msgid "IDS_BR_OPT_PASTE"
-msgstr "Vložiť"
 
 msgid "IDS_BR_BUTTON_MORE"
 msgstr "Ďalšie"
@@ -529,9 +616,6 @@ msgstr "Odoslať cez e-mail"
 msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
 msgstr "Odoslať cez správu"
 
-msgid "IDS_BR_BODY_SETTINGS"
-msgstr "Nastavenia"
-
 msgid "IDS_BR_BODY_AUTHUSERNAME"
 msgstr "Užívateľské meno"
 
@@ -622,107 +706,14 @@ msgstr "Pridať do webového klipu"
 msgid "IDS_BR_POP_SHORTCUT_CREATED"
 msgstr "Odkaz bol vytvorený"
 
-msgid "IDS_BR_BODY_SELECT_WORD"
-msgstr "Vybrať slovo"
-
 msgid "IDS_BR_OPT_FIND_ON_PAGE"
 msgstr "Hľadať na str."
-
-msgid "IDS_BR_OPT_FIND_ON_PAGE_ABB"
-msgstr "Hľadať na str."
-
-msgid "IDS_BR_HEADER_PICASA"
-msgstr "Picasa"
 
 msgid "IDS_BR_BODY_INTERNET"
 msgstr "Internet"
 
-msgid "IDS_BR_OPT_LIST"
-msgstr "Zoznam"
-
-msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Vybrať všetky"
-
-msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
-msgstr "Správa"
-
-msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
-
-msgid "IDS_BR_BUTTON_CANCEL_ABB"
-msgstr "Zrušiť"
-
-msgid "IDS_BR_OPT_COPY_LINK_URL"
-msgstr "Kop. adr. odk."
-
-msgid "IDS_BR_OPT_VIEW_IMAGE"
-msgstr "Zobr. obrázok"
-
-msgid "IDS_BR_OPT_OPEN_IN_NEW_PAGE_ABB"
-msgstr "Otv. na novej str."
-
-msgid "IDS_BR_OPT_OPEN"
-msgstr "Otvoriť"
-
-msgid "IDS_BR_OPT_TEXT_SELECTION_ON"
-msgstr "Zapnúť výber textu"
-
-msgid "IDS_BR_TAB_BOOKMARKS"
-msgstr "Záložky"
-
-msgid "IDS_BR_SK_EDIT"
-msgstr "Upraviť"
-
-msgid "IDS_BR_SK_DELETE_ABB"
-msgstr "Odstrániť"
-
-msgid "IDS_BR_SK_DELETE"
-msgstr "Odstrániť"
-
-msgid "IDS_BR_SK_CANCEL"
-msgstr "Zrušiť"
-
-msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Upraviť záložku"
-
-msgid "IDS_BR_OPT_MESSAGES"
-msgstr "Správy"
-
-msgid "IDS_BR_OPT_EMAIL_M_BOX"
-msgstr "E-mail"
-
-msgid "IDS_BR_HEADER_EDIT"
-msgstr "Upraviť"
-
-msgid "IDS_BR_SK3_DELETE"
-msgstr "Odstrániť"
-
-msgid "IDS_BR_OPT_ADDTOBOOKMARKS"
-msgstr "Pridať do priečinka Záložky"
-
-msgid "IDS_BR_HEADER_FONT_SIZE"
-msgstr "Veľkosť písma"
-
-msgid "IDS_BR_OPT_PAGE_SIZE_LARGE"
-msgstr "Veľké"
-
-msgid "IDS_BR_BODY_PREFERENCESTEXTSIZESMALL"
-msgstr "Malé"
-
 msgid "IDS_BR_BODY_SPEED"
 msgstr "Rýchlosť"
-
-msgid "IDS_BR_BRSETTINGS_BODY_CONNECTIONPROXYADRS"
-msgstr "Adresa proxy"
-
-msgid "IDS_BR_BODY_PROXY_PORT"
-msgstr "Port proxy servera"
-
-msgid "IDS_BR_SK_DONE"
-msgstr "Hotovo"
-
-msgid "IDS_BR_BODY_SETTINGS_VERSION"
-msgstr "Verzia"
 
 msgid "IDS_BR_SK_INSTALL"
 msgstr "Inštal."
@@ -858,4 +849,28 @@ msgstr "Pridané do záložiek"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Odstránené zo záložiek"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokovať kontextové okná"
+
+msgid "IDS_BR_BODY_PICTURES"
+msgstr "Obrázky"
+
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Načítava sa. Počkajte, prosím..."
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Prispôsobený používateľský agent"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Používateľská domovská stránka"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Heslo"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Vyhľadávací nástroj"
+
+msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
+msgstr "Odkaz %s vytvorený"
 
