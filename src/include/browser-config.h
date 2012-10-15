@@ -18,7 +18,6 @@
 #ifndef BROWSER_CONFIG_H
 #define BROWSER_CONFIG_H
 
-#include <account.h>
 #include <appsvc.h>
 #include <app_service.h>
 #include <app_manager.h>
