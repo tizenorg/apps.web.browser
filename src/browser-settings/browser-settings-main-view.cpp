@@ -959,6 +959,8 @@ void Browser_Settings_Main_View::_reset_settings(void)
 	br_preference_set_bool(BLOCK_POPUP_KEY, true);
 	br_preference_set_bool(SHOW_SECURITY_WARNINGS_KEY, true);
 	br_preference_set_bool(ACCEPT_COOKIES_KEY, true);
+	br_preference_set_bool(ENABLE_LOCATION_KEY, true);
+
 	if (vconf_set_int(VCONFKEY_SETAPPL_DEFAULT_MEM_WAP_INT, SETTING_DEF_MEMORY_PHONE) < 0)
 		BROWSER_LOGE("vconf_set_int(VCONFKEY_SETAPPL_DEFAULT_MEM_WAP_INT, SETTING_DEF_MEMORY_PHONE) failed");
 	if (vconf_set_str(USERAGENT_KEY, DEFAULT_USER_AGENT_STRING) < 0)
