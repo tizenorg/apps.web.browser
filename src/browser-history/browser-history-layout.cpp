@@ -1238,16 +1238,28 @@ Evas_Object *Browser_History_Layout::_show_delete_confirm_popup(void)
 void Browser_History_Layout::__sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (!data || elm_genlist_decorate_mode_get(obj))
+	if (event_info == NULL)
 		return;
-	else {
+	if (data == NULL)
+		return;
+	if (!obj)
+		return;
+
+	Browser_History_Layout *history_layout = (Browser_History_Layout *)data;
+
+	Elm_Object_Item *it = (Elm_Object_Item *)elm_genlist_decorated_item_get(obj);
+	if (it && (it != (Elm_Object_Item *)event_info)) {
+		elm_genlist_item_decorate_mode_set(it, "slide", EINA_FALSE);
+		elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DEFAULT);
+	} else {
+		BROWSER_LOGD("no decorated mode item");
+	}
+
+	if (!elm_genlist_decorate_mode_get(obj)) {
 		elm_genlist_item_decorate_mode_set((Elm_Object_Item *)event_info, "slide", EINA_TRUE);
 		elm_genlist_item_select_mode_set((Elm_Object_Item *)event_info, ELM_OBJECT_SELECT_MODE_NONE);
 	}
 
-	Browser_History_Layout *history_layout = (Browser_History_Layout *)data;
-	if (history_layout->m_current_sweep_item)
-		elm_genlist_item_select_mode_set(history_layout->m_current_sweep_item, ELM_OBJECT_SELECT_MODE_DEFAULT);
 	history_layout->m_current_sweep_item = (Elm_Object_Item *)event_info;
 }
 
@@ -1256,7 +1268,11 @@ void Browser_History_Layout::__sweep_cancel_genlist_cb(void *data,
 {
 	BROWSER_LOGD("[%s]", __func__);
 
-	if (!data)
+	if (event_info == NULL)
+		return;
+	if (data == NULL)
+		return;
+	if (!obj)
 		return;
 
 	Browser_History_Layout *history_layout = (Browser_History_Layout *)data;
@@ -1273,7 +1289,15 @@ void Browser_History_Layout::__sweep_cancel_genlist_cb(void *data,
 void Browser_History_Layout::__sweep_left_genlist_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (!data || elm_genlist_decorate_mode_get(obj))
+
+	if (event_info == NULL)
+		return;
+	if (data == NULL)
+		return;
+	if (!obj)
+		return;
+
+	if (elm_genlist_decorate_mode_get(obj))
 		return;
 	else {
 		elm_genlist_item_decorate_mode_set((Elm_Object_Item *)event_info, "slide", EINA_FALSE);
