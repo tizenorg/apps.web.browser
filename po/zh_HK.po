@@ -874,3 +874,30 @@ msgstr "搜尋引擎"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "快捷鍵%s已建立"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "名稱"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "從書籤移除"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "儲存頁面"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "全部刪除"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "已加入書籤"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "刪除本機緩存的內容和數據庫嗎？"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "刪除瀏覽器紀錄嗎？"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "要刪除全部 Cookie 嗎？"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "刪除所有已儲存的表格數據嗎？"
+

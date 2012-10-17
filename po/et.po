@@ -874,3 +874,30 @@ msgstr "Otsingumootor"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Üksuse %s otsetee on loodud"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nimi"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Eemalda järjehoidjatest"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Salvesta leht"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Kustuta kõik"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Järjehoidja lisatud"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Kas tühjendada kohaliku vahemälu sisu ja andmebaasid?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Kas kustutada baruseri ajalugu?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Kas kustutada kõik küpsised?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Kas kustutada kõik salvestatud ankeedi andmed?"
+

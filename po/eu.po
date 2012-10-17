@@ -874,3 +874,30 @@ msgstr "Bilaketa motorra"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "%s lastermarka sortuta"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Izena"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Kendu lastermarketatik"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Gorde orria"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Dena(k) ezabatu"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Lastermarka gehitu da"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Ezabatu lokalki katxean gordetako edukia eta datu baseak?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Ezabatu nabigatzailearen historia?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Cookie guztiak ezabatu?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Ezabatu formulariotik gordetako datu guztiak?"
+

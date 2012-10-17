@@ -874,3 +874,30 @@ msgstr "Motore di ricerca"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Collegamento %s creato"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nome"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Rimuovi da Preferiti"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Salva pagina"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Elimina tutto"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Preferito aggiunto"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Eliminare contenuto della cache e database locali?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Eliminare cronologia browser?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Eliminare tutti i cookie?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Eliminare tutti i dati moduli salvati?"
+

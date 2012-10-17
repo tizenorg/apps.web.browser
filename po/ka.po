@@ -874,3 +874,30 @@ msgstr "საძიებო სისტემა"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "სწრაფი ღილაკი ”%s” შექმნილია"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "სახელი"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "სანიშნეებიდან ამოშლა"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "გვერდის შენახვა"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "ყველას წაშლა"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "სანიშნე დაემატა"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "წაშლით ადგილობრივ ქეშ-მეხსიერებაში შენახული მასალებსა და მონაცემთა ბაზებს?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "წაშლით ბრაუზერის ისტორიას?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "წავშალო ყველა ფუნთუშა-ფაილი?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "წაიშალოს ყველა შენახული ფორმის მონაცემები?"
+

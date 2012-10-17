@@ -800,7 +800,7 @@ msgid "IDS_BR_BODY_AUTO"
 msgstr "自動"
 
 msgid "IDS_BR_OPT_MANUAL"
-msgstr "手動で選択"
+msgstr "手動"
 
 msgid "IDS_BR_BODY_LOW"
 msgstr "低"
@@ -873,4 +873,31 @@ msgstr "検索​エンジン"
 
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "ショートカット​「%s」​を​作成​しました。"
+
+msgid "IDS_BR_POP_NAME"
+msgstr "名前"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "ブック​マーク​から​削除"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "ページ​を​保存​"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "全て​削除"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "ブックマーク​が​追加​されました"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "保存​された​全て​の​キャッシュ​情報​を​消去​しますか？"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "保存​された​閲覧​履歴​を​消去​しますか？"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "保存​された​全て​の​Cookieを​消去​しますか？"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "保存​された​全て​の​文字​入力​履歴​を​消去​しま​すか？"
 

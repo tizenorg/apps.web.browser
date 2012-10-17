@@ -874,3 +874,30 @@ msgstr "Qidirish mexanizmi"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "%s yorlig‘i yaratildi"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nom"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Veb-hujjatlardan olib tashlash"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Sahifani saqlash"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Barchasi o'chirish"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Saqlangan veb-hujjat qo‘shildi"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Mahalliy keshlangan tarkib va ma'lumot bazalari o'chirilsinmi?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Brauzer jurnali o'chirilsinmi?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Barcha cookie-fayllar yo‘q qilinsinmi?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Ma'lumotlardan barcha saqlanganlar yo‘q qilinsinmi?"
+

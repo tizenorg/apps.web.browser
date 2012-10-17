@@ -874,3 +874,30 @@ msgstr "Motor de căutare"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "A fost creată comanda rapidă %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nume"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Eliminare din Marcaje"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Salvare pagină"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Ştergere toate"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Marcaj adăugat"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Ştergeţi conţinutul stocat în memoria cache la nivel local şi bazele de date?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Ştergeţi istoricul browserului?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Ştergeţi toate modulele cookie?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Ştergeţi toate datele salvate din formular?"
+

@@ -874,3 +874,30 @@ msgstr "Wyszukiwarka"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Utworzono skrót %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nazwa"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Usuń z zakładek"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Zapisz stronę"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Usuń wszystko"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Zakładka została dodana"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Usunąć zawartość lokalnej pamięci podręcznej oraz bazy danych?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Usunąć historię przeglądania?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Usunąć wszystkie pliki cookie?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Usunąć wszystkie zapisane dane formularzy?"
+

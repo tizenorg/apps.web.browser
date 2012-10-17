@@ -874,3 +874,30 @@ msgstr "Søgemaskine"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Genvej %s oprettet"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Navn"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Fjern fra bogmærker"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Gem siden"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Slet alle"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Bogmærke tilføjet"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Slet lokalt gemt indhold og databaser?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Slet browseroversigt?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Slet alle cookies?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Slet alle gemte formulardata?"
+

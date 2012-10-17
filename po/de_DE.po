@@ -874,3 +874,30 @@ msgstr "Suchmaschine"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Verknüpfung %s erstellt"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Name"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Aus den Lesezeichen entfernen"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Seite speichern"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Alle löschen"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Lesezeichen hinzugefügt"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Lokalen Inhalt und lokale Datenbanken aus dem Cache löschen?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Browser-Verlauf löschen?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Alle Cookies löschen?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Alle gespeicherten Formulardaten löschen?"
+

@@ -874,3 +874,30 @@ msgstr "Որոնիչ"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Ստեղծվել է %s դյուրանցում"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Անուն"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Հեռացնել Էջանիշերից"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Պահպանել էջը"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Ջնջել բոլորը"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Էջանիշն ավելացվել է"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Վերացնե՞լ հիշապահեստում տեղայնորեն պահված բովանդակությունն ու տվյալների շտեմարանները:"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Վերացնե՞լ զննարկչի պատմությունը:"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Ջնջե՞լ բոլոր թխուկները"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Վերացնե՞լ բոլոր պահպանված ձևի տվյալները:"
+

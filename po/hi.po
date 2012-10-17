@@ -874,3 +874,30 @@ msgstr "खोज इंजन"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "शॉर्टकट %s बनाया है"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "नाम"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "बुकमार्क से निकालें"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "पेज सेव करें"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "सभी हटाएँ"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "बुकमार्क जोड़ा गया"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "स्थानीय कैचे सामग्री और डाटाबेस हटाएँ?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "ब्राउज़र इतिहास हटाएँ?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "सभी कुकीज़ डिलीट करें?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "सुरक्षित किया सभी फॉर्म डाटा हटाएँ?"
+

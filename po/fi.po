@@ -293,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Otsikko puuttuu"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Usea ikkuna"
+msgstr "Moni-ikkuna"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Historioita ei ole"
@@ -873,4 +873,31 @@ msgstr "Hakukone"
 
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Pikanäppäin %s luotu"
+
+msgid "IDS_BR_POP_NAME"
+msgstr "Nimi"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Poista kirjanmerkeistä"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Tallenna sivu"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Poista kaikki"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Kirjanmerkki lisätty"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Poistetaanko paikallisessa välimuistissa olevat sisällöt ja tietokannat?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Poistetaanko selainhistoria?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Poistetaanko kaikki evästeet?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Poistetaanko kaikki tallennetut lomaketiedot?"
 

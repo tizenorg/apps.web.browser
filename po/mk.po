@@ -874,3 +874,30 @@ msgstr "Пребарувач"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Направена е кратенка %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Име"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Отстрани од ознаките"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Сочувај страница"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Избриши сè"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Омилената страница е додадена"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Да се избрише локално кешираната содржина и бази?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Да се избрише историјата на прегледникот?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Избриши сите колачиња?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Да се избришат сите сочувани податоци за формулари?"
+

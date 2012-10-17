@@ -874,3 +874,30 @@ msgstr "搜索引擎"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "快捷键%1$s已添加"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "名称"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "从书签移除"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "存储页面"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "全部删除"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "已添加书签"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "是否删除本地缓存的内容和数据库？"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "是否删除浏览器历史记录？"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "删除所有 Cookies 吗？"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "是否删除全部已保存的表单数据？"
+

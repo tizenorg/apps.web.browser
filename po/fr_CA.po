@@ -874,3 +874,30 @@ msgstr "Moteur de recherche"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Raccourci %s créé"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nom"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Supprimer des favoris"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Enregistrer page"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Tout supprimer"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Marque-page ajouté"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Supprimer les bases de données et le contenu en cache ?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Supprimer l'historique du navigateur ?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Supprimer tous les témoins?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Supprimer toutes les données de formulaire enregistrées ?"
+

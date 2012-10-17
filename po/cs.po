@@ -874,3 +874,30 @@ msgstr "Vyhledávač"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Zástupce %s byl vytvořen"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Jméno"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Odstranit ze záložek"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Uložit stránku"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Odstranit vše"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Záložka přidána"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Odstranit obsah a databáze uložené v místní paměti?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Odstranit historii prohlížeče?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Odstranit všechny soubory cookie?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Odstranit všechna data uloženého formuláře?"
+

@@ -874,3 +874,30 @@ msgstr "Leitarvél"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Flýtivísunin %s var búin til"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Heiti"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Fjarlægja úr bókamerkjum"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Vista síðu"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Eyða öllu"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Bókamerki bætt við"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Eyða gagnagrunnum og staðbundnu efni í skyndiminni?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Eyða vafrasögu?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Viltu eyða öllum fótsporum?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Eyða öllum vistuðum upplýsingum um innslátt?"
+

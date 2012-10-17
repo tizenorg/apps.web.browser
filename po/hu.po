@@ -874,3 +874,30 @@ msgstr "Kereső"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "%s gyorsgomb létrehozva"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Név"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Eltávolítás a Kedvencek közül"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Oldal mentése"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Összes törlése"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Könyvjelző hozzáadva"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Törli a helyi gyorsítótárba helyezett tartalmat és adatbázisokat?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Törli a böngészőelőzményeket?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Törli a cookie-kat?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Töröl minden mentett űrlapadatot?"
+

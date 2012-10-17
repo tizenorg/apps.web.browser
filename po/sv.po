@@ -874,3 +874,30 @@ msgstr "Sökmotor"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Genvägen %s har skapats"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Namn"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Ta bort från Bokmärken"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Spara sidan"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Radera alla"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Bokmärke har lagts till"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Ta bort lokalt cachat innehåll och lokala cachade databaser?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Ta bort webbläsarhistorik?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Radera alla cookies?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Ta bort alla sparade formulärdata?"
+

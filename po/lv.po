@@ -874,3 +874,30 @@ msgstr "Meklētājprogramma"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Izveidots īsceļš %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nosaukums"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Noņemt no mapes Grāmatzīmes"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Saglabāt lapu"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Dzēst visu"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Pievienota grāmatzīme"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Vai dzēst vietējās kešatmiņas saturu un datu bāzes?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Vai dzēst pārlūka vēsturi?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Vai izdzēst visus sīkfailus?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Vai dzēst visus saglabātos veidlapas datus?"
+

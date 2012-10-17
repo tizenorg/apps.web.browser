@@ -874,3 +874,30 @@ msgstr "Søkemotor"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Snarvei %s opprettet"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Navn"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Fjern fra bokmerker"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Lagre side"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Slett alle"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Bokmerke lagt til"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Slette lokalt bufret innhold og databaser?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Slette nettleserhistorikk?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Slette alle informasjonskapsler?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Slette alle lagrede skjemadata?"
+

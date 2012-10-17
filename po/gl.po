@@ -874,3 +874,30 @@ msgstr "Motor de busca"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Creouse o atallo %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nome"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Eliminar de Favoritos"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Gardar páxina"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Eliminar todo"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Favorito engadido"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Desexas borrar contidos e bases de datos gardados localmente na caché?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Desexas borrar o historial do navegador?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Eliminar Todas as Cookies?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Desexas eliminar todos os datos de formularios gardados?"
+

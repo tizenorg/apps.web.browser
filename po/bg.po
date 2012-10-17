@@ -874,3 +874,30 @@ msgstr "Търсачка"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Създаден е бърз клавиш %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Име"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Премахни от Предпочитани"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Запиши страницата"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Изтриване на всички"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Добавен е маркер"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Изтриване на локално кешираното съдържание и бази данни?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Изтриване на хронологията на браузъра?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Желаете ли да изтриете всички cookies?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Изтриване на всички запаметени данни за формуляри?"
+

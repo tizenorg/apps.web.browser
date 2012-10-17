@@ -874,3 +874,30 @@ msgstr "محرك البحث"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "تم إنشاء الاختصار %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "الاسم"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "إزالة من الإشارات المرجعية"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "حفظ الصفحة"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "مسح الكل"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "تمت إضافة إشارة مرجعية"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "هل تريد حذف المحتوى المخزن محليا وقواعد البيانات؟"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "هل تريد حذف محفوظات المستعرض؟"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "هل تريد حذف كافة ملفات تعريف الارتباط؟"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "هل تريد حذف كل‏‫ بيانات النموذج‬ المحفوظة؟"
+

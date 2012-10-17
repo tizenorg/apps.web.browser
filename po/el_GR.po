@@ -874,3 +874,30 @@ msgstr "Μηχανή αναζήτησης"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Δημιουργήθηκε συντόμευση %s"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Όνομα"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Κατάργηση από τους σελιδοδείκτες"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Αποθήκευση σελίδας"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Διαγραφή όλων"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Προστέθηκε σελιδοδείκτης"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Διαγραφή περιεχομένου και βάσεις δεδομένων της τοπικής μνήμης cache;"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Διαγραφή ιστορικού προγράμματος περιήγησης;"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Διαγραφή όλων των cookies;"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Διαγραφή όλων των αποθηκευμένων δεδομένων φορμών;"
+

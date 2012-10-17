@@ -874,3 +874,30 @@ msgstr "Pretraživač"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Prečica %s kreirana"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Ime"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Ukloni iz obeleživača"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Sačuvaj stranu"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Obriši sve"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Obeleživač dodat"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Obrisati lokalno keširan sadržaj i baze podataka?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Izbrisati istorije pretraživača?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Izbrisati sve kolačiće?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Obrisati sve sačuvane podatke?"
+

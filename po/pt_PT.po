@@ -874,3 +874,30 @@ msgstr "Motor de pesquisa"
 msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
 msgstr "Atalho %s criado"
 
+msgid "IDS_BR_POP_NAME"
+msgstr "Nome"
+
+msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
+msgstr "Remover dos Favoritos"
+
+msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
+msgstr "Guardar página"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Eliminar tudo"
+
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Favorito adicionado"
+
+msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
+msgstr "Eliminar conteúdo na memória cache local e bases de dados?"
+
+msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
+msgstr "Eliminar o histórico do browser?"
+
+msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
+msgstr "Eliminar todos os cookies?"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
+msgstr "Todos os dados de formulários guardados serão eliminados"
+
