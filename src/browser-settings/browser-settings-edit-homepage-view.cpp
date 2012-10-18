@@ -194,6 +194,8 @@ Evas_Object *Browser_Settings_Edit_Homepage_View::__genlist_icon_get_cb(void *da
 		}
 		br_elm_editfield_entry_single_line_set(edit_homepage_view->m_edit_field, EINA_TRUE);
 		br_elm_editfield_label_set(edit_homepage_view->m_edit_field, BR_STRING_URL);
+		Evas_Object *entry = br_elm_editfield_entry_get(edit_homepage_view->m_edit_field);
+		elm_entry_input_panel_layout_set(entry, ELM_INPUT_PANEL_LAYOUT_URL);
 
 		char *homepage = NULL;
 		if (br_preference_get_str(USER_HOMEPAGE_KEY, &homepage) == false)
