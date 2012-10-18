@@ -944,7 +944,7 @@ void Browser_Bookmark_View::_set_edit_mode(Eina_Bool edit_mode)
 
 	if (edit_mode) {
 #if defined(GENLIST_SWEEP)
-		if (m_current_folder_id = BROWSER_BOOKMARK_MAIN_FOLDER_ID)
+		if (m_current_folder_id == BROWSER_BOOKMARK_MAIN_FOLDER_ID)
 			br_elm_genlist_sweep_item_recover(m_main_folder_genlist);
 		else
 			br_elm_genlist_sweep_item_recover(m_sub_folder_genlist);
