@@ -220,6 +220,7 @@ void Browser_Bookmark_View::return_to_bookmark_view(int added_bookmark_id)
 			if (elm_genlist_decorate_mode_get(_get_current_folder_genlist())) {
 				if (!_set_controlbar_type(BOOKMARK_VIEW_EDIT_MODE))
 					BROWSER_LOGE("_set_controlbar_type(BOOKMARK_VIEW_DEFAULT) failed");
+				_show_selection_info();
 			}
 		}
 	} else {
