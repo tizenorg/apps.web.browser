@@ -557,6 +557,7 @@ void Browser_Class::set_focused_window(Browser_Window *window
 	/* If the ewk view is deleted because of unused case.(etc. low memory)
 	  * create the ewk view and load url. */
 	if (!m_focused_window->m_ewk_view) {
+		BROWSER_LOGD("m_ewk_view is deleted");
 		int index = 0;
 		for (index = 0 ; index < m_window_list.size() ; index++) {
 			if (m_focused_window == m_window_list[index])
@@ -580,6 +581,7 @@ void Browser_Class::set_focused_window(Browser_Window *window
 			);
 		m_browser_view->load_url(m_focused_window->m_url.c_str());
 	} else {
+		BROWSER_LOGD("m_ewk_view is existed");
 		ewk_view_init(m_focused_window->m_ewk_view);
 		m_browser_view->set_focused_window(m_focused_window
 #if defined(FEATURE_MOST_VISITED_SITES)
