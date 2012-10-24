@@ -3255,6 +3255,7 @@ void Browser_View::__option_header_url_layout_mouse_down_cb(void *data, Evas* ev
 	    event.output.y > entry_y && event.output.y < entry_y + entry_h) {
 		elm_object_signal_emit(browser_view->m_option_header_url_edit_field, "ellipsis_hide,signal", "elm");
 		elm_object_signal_emit(browser_view->m_url_edit_field, "ellipsis_hide,signal", "elm");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout),"url_guide_text,off,signal", "");
 	}
 
 	int icon_y = 0;
