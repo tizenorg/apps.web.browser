@@ -208,8 +208,11 @@ chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db-journal
 ##################################################
 # set default vconf values
 ##################################################
+#internal keys
 vconftool set -t string db/browser/browser_user_agent "System user agent" -g 5000 -f
 vconftool set -t string db/browser/custom_user_agent "" -g 5000 -f
+#public keys
+vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0; en-us) AppleWebKit/537.1 (KHTML, like Gecko) Mobile TizenBrowser/2.0" -g 5000 -f
 
 # Change file owner
 chown -R 5000:5000 /opt/apps/org.tizen.browser/data

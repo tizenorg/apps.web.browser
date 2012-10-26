@@ -494,7 +494,13 @@ Eina_Bool Browser_Class::_set_user_agent(Evas_Object *ewk_view)
 #define CHROME_USER_AGENT "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11"
 
     if (strncmp(user_agent_title, "Chrome 20", strlen("Chrome 20"))) {
-        if (!ewk_view_user_agent_set(ewk_view, TIZEN_USER_AGENT));
+	char *tizen_user_agent = vconf_get_str(VCONFKEY_BROWSER_USER_AGENT);
+	if (!tizen_user_agent) {
+		BROWSER_LOGE("vconf_get_str(VCONFKEY_BROWSER_USER_AGENT) failed.");
+		tizen_user_agent = TIZEN_USER_AGENT;
+	}
+	BROWSER_LOGD("UA: %s", tizen_user_agent);
+        if (!ewk_view_user_agent_set(ewk_view, tizen_user_agent));
             BROWSER_LOGE("ewk_view_setting_user_agent_set failed");
     } else {
         if (!ewk_view_user_agent_set(ewk_view, CHROME_USER_AGENT));
