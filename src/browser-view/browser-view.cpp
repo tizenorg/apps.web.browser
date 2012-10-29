@@ -3122,6 +3122,9 @@ void Browser_View::__url_entry_clicked_cb(void *data, Evas_Object *obj, const ch
 	if (mode == BR_NO_EDIT_MODE) {
 		Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_option_header_url_edit_field);
 
+		/* IMF doesn't show up if it has pulled down last time the entry is focused.
+		    so unfocus the entry and focus it due to this issue */
+		elm_object_focus_set(browser_view->m_option_header_url_edit_field, EINA_FALSE);
 		elm_object_focus_set(browser_view->m_option_header_url_edit_field, EINA_TRUE);
 
 		const char *url_text = elm_entry_entry_get(entry);
