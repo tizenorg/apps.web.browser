@@ -364,10 +364,16 @@ void Browser_View::return_to_browser_view(Eina_Bool saved_most_visited_sites_ite
 					"show,control_bar,no_animation,signal", "");
 		_set_navigationbar_title(BR_STRING_MOST_VISITED_SITES);
 	}
-	if (saved_most_visited_sites_item && is_most_visited_sites_running())
+	if (saved_most_visited_sites_item && is_most_visited_sites_running()) {
 		/* If longpress on speed dial item, then add to bookmark. */
-		edje_object_signal_emit(elm_layout_edje_get(m_most_visited_sites->m_selected_item->layout),
-										"bookmark_icon", "");
+		if (m_most_visited_sites
+			&& m_most_visited_sites->m_selected_item
+			&& m_most_visited_sites->m_selected_item->layout)
+			edje_object_signal_emit(elm_layout_edje_get(
+						m_most_visited_sites->m_selected_item->layout)
+						, "bookmark_icon"
+						, "");
+	}
 #endif
 	_set_secure_icon();
 
