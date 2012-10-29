@@ -1016,6 +1016,13 @@ void Browser_View::__did_finish_load_for_frame_cb(void *data, Evas_Object *obj, 
 
 void Browser_View::_set_secure_icon(void)
 {
+	BROWSER_LOGD("");
+
+	if (m_focused_window == NULL) {
+		BROWSER_LOGD("m_focused_window is NULL");
+		return;
+	}
+
 	std::string url = get_url();
 	BROWSER_LOGD("url=[%s]", url.c_str());
 
