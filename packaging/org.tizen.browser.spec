@@ -167,19 +167,9 @@ then
 fi
 
 
-# create cookies db
-if [ ! -f /opt/apps/org.tizen.browser/data/db/.browser-cookies.db ];
-then
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db 'CREATE TABLE moz_cookies (id INTEGER PRIMARY KEY, name TEXT, value TEXT, host TEXT, path TEXT,expiry INTEGER, lastAccessed INTEGER, isSecure INTEGER, isHttpOnly INTEGER);'
-	#test cookie
-	#sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db 'INSERT INTO moz_cookies values(NULL, "cookies_name_test", "cookies_value_test", "www.cookies_test.com", "cookies_path_test", 2011, NULL, 1, 0);'
-fi
-
 # Change db file owner & permission
 #chown :5000 /opt/apps/org.tizen.browser/data/db/.browser.db
 #chown :5000 /opt/apps/org.tizen.browser/data/db/.browser.db-journal
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db-journal
 chown :5000 /opt/dbspace/.browser-history.db
 chown :5000 /opt/dbspace/.browser-history.db-journal
 chown :5000 /opt/dbspace/.internet_bookmark.db
@@ -192,8 +182,6 @@ chown :5000 /opt/dbspace/.internet_bookmark.db-journal
 #chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db-journal
 chmod 660 /opt/apps/org.tizen.browser/data/db/.browser.db
 chmod 660 /opt/apps/org.tizen.browser/data/db/.browser.db-journal
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-cookies.db-journal
 chmod 666 /opt/dbspace/.browser-history.db
 chmod 666 /opt/dbspace/.browser-history.db-journal
 chmod 666 /opt/dbspace/.internet_bookmark.db
