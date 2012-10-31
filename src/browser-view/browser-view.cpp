@@ -245,10 +245,8 @@ Eina_Bool Browser_View::init(void)
 		m_last_visited_url = std::string(last_url);
 		free(last_url);
 	}
-	if (_haptic_device_init() == EINA_FALSE) {
+	if (_haptic_device_init() == EINA_FALSE)
 		BROWSER_LOGE("Failed to init haptic device");
-		return EINA_FALSE;
-	}
 
 	/* create brower view layout */
 	return _create_main_layout();
