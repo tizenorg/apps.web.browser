@@ -221,7 +221,7 @@ collections {
 					rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "elm.swallow.page_control"; }
 					rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "elm.swallow.page_control"; }
 					text {
-						font: FONT_ROM;
+						font: "SLP:style=Roman";
 						size: 30;
 						min: 0 0;
 						align: 0.5 1.0;
@@ -248,7 +248,7 @@ collections {
 					rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "elm.title"; }
 					rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "elm.title"; }
 					text {
-						font: FONT_ROM;
+						font: "SLP:style=Roman";
 						size: 26;
 						min: 0 0;
 						align: 0.5 1.0;

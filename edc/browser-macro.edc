@@ -51,10 +51,10 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=30 align=center color=#FFFFFF wrap=char"; \
+				base: "font=SLP:style=Roman font_size=30 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \
@@ -284,10 +284,10 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=30 align=center color=#4E4945 wrap=char"; \
+				base: "font=SLP:style=Roman font_size=30 align=center color=#4E4945 wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \
@@ -519,10 +519,10 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=30 align=center color=#FFFFFF wrap=char"; \
+				base: "font=SLP:style=Roman font_size=30 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \
@@ -753,8 +753,8 @@
 			style { name: #button_name"btn_textblock_style"; \
 				base: "font=FONT_CONTENT font_size=24 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \
@@ -989,10 +989,10 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=21 align=center color=#FFFFFF wrap=char"; \
+				base: "font=SLP:style=Roman font_size=21 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \
@@ -1250,10 +1250,10 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=21 align=center color=#FFFFFF wrap=char"; \
+				base: "font=SLP:style=Roman font_size=21 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
-				tag:  "hilight" "+ font=FONT_CONTENT:style=Bold"; \
-				tag:  "b" "+ font=FONT_CONTENT:style=Bold"; \
+				tag:  "hilight" "+ font=SLP:style=Bold"; \
+				tag:  "b" "+ font=SLP:style=Bold"; \
 				tag:  "tab" "\t"; \
 			} \
 		} \

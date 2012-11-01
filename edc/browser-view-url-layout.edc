@@ -1027,7 +1027,7 @@ group { name: "elm/layout/browser-editfield/default";
 					state: "default" 0.0;
 					visible: 0;
 					align: 0.0 0.5;
-					text { font: FONT_ROM;
+					text { font: "SLP:style=Roman";
 						size: 32;
 						align: 0.0 0.5;
 					}

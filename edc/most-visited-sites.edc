@@ -219,7 +219,7 @@ collections {
 					align: 0.0 0.0;
 					rel1 {relative: 0.0 1.0; to: "elm.swallow.snapshot"; }
 					rel2 {relative: 1.0 1.0; to: "bg"; }
-					text { font: FONT_ROM;
+					text { font: "SLP:style=Roman";
                             size: 22;
                             min: 0 0;
                             align: 0.5 0.5;
@@ -474,7 +474,7 @@ collections {
 					align: 0.5 1.0;
 					rel1 {relative: 0.0 0.0; to: title_rect;}
 					rel2 {relative: 1.0 1.0; to: title_rect;}
-					text { font: FONT_ROM;
+					text { font: "SLP:style=Roman";
                             size: 22;
                             min: 0 0;
                             align: 0.5 1.0;
