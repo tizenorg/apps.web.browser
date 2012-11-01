@@ -879,7 +879,9 @@ void Browser_View::_load_start(void)
 
 	set_full_sreen(EINA_FALSE);
 
-	elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
+	if (m_edit_mode != BR_URL_ENTRY_EDIT_MODE)
+		elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
+
 	elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
 	elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
 
@@ -1265,9 +1267,11 @@ void Browser_View::_load_finished(void)
 	ecore_idler_add(__capture_most_visited_sites_screen_shot_idler_cb, this);
 #endif
 
-	elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
-	elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
-	elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
+	if (m_edit_mode != BR_URL_ENTRY_EDIT_MODE) {
+		elm_object_focus_set(m_option_header_cancel_button, EINA_TRUE);
+		elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
+		elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
+	}
 
 	_update_back_forward_buttons();
 }
@@ -3109,9 +3113,6 @@ void Browser_View::__url_entry_clicked_cb(void *data, Evas_Object *obj, const ch
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
-
-	if (browser_view->_is_loading())
-		browser_view->_stop_loading();
 
 	if (!browser_view->_navigationbar_visible_get()) {
 		/* The edit field in option header is only for edit url. */
