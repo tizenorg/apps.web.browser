@@ -333,6 +333,8 @@ void Most_Visited_Sites::__item_clicked_cb(void *data, Evas_Object *obj, void *e
 
 	if (!item->history_id || !item->url) {
 		BROWSER_LOGE("empty item");
+		item->url = strdup("about:blank");
+		ecore_idler_add(__load_url_idler_cb, item);
 		return;
 	}
 
