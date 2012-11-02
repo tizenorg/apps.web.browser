@@ -204,8 +204,11 @@ vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0;
 
 # Change file owner
 chown -R 5000:5000 /opt/apps/org.tizen.browser/data
+chsmack -a 'org.tizen.browser::db_external' /opt/dbspace/.internet_bookmark.db*
+chsmack -a 'org.tizen.browser::db_external' /opt/dbspace/.browser-history.db*
 
 %files
+%manifest org.tizen.browser.manifest
 %defattr(-,root,root,-)
 /opt/apps/org.tizen.browser/bin/browser
 /opt/apps/org.tizen.browser/data/screenshots/default_*

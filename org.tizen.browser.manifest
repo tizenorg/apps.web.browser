@@ -1,0 +1,15 @@
+<manifest>
+	<define>
+		<domain name="org.tizen.browser" policy="shared"/>
+		<provide>
+			<label name="org.tizen.browser::db_external"/>
+		</provide>
+	</define>
+	<assign>
+		<filesystem path="/opt/share/applications/org.tizen.browser.desktop" label="_" />
+		<filesystem path="/opt/share/icons/default/small/org.tizen.browser.png" label="_" />
+	</assign>
+	<request>
+		<domain name="org.tizen.browser"/>
+	</request>
+</manifest>
