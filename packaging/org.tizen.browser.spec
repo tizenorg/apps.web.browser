@@ -37,7 +37,7 @@ BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(capi-appfw-app-manager)
 BuildRequires:  pkgconfig(capi-web-url-download)
 BuildRequires:  pkgconfig(capi-network-connection)
-BuildRequires:  pkgconfig(capi-system-haptic)
+BuildRequires:  pkgconfig(haptic)
 BuildRequires:  pkgconfig(shortcut)
 
 BuildRequires:  pkgconfig(appcore-common)

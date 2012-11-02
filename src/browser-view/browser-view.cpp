@@ -622,12 +622,12 @@ Eina_Bool Browser_View::_haptic_device_init(void)
 		BROWSER_LOGD("device handle for haptic is already set");
 		return EINA_FALSE;
 	}
-
+#if 0
 	if (haptic_initialize() != HAPTIC_ERROR_NONE) {
 		BROWSER_LOGD("failed to initiate haptic device");
 		return EINA_FALSE;
 	}
-
+#endif
 	m_vibration_device_handle_id = BROWSER_HAPTIC_DEVICE_HANDLE;
 
 	return EINA_TRUE;
@@ -641,12 +641,12 @@ Eina_Bool Browser_View::_haptic_device_play(long haptic_play_time)
 		BROWSER_LOGD("device handle for haptic is not set. Unable to play haptic");
 		return EINA_FALSE;
 	}
-
+#if 0
 	if (haptic_vibrate_monotone(BROWSER_HAPTIC_DEVICE_HANDLE, haptic_play_time, HAPTIC_LEVEL_AUTO) != HAPTIC_ERROR_NONE) {
 		BROWSER_LOGD("haptic_vibrate_monotone failed.");
 		return EINA_FALSE;
 	}
-
+#endif
 	return EINA_TRUE;
 }
 
@@ -658,24 +658,24 @@ Eina_Bool Browser_View::_haptic_device_stop(void)
 		BROWSER_LOGD("device handle for haptic is not set. Unable to play haptic");
 		return EINA_FALSE;
 	}
-
+#if 0
 	if (haptic_stop_device(BROWSER_HAPTIC_DEVICE_HANDLE) != HAPTIC_ERROR_NONE) {
 		BROWSER_LOGD("haptic_stop_device failed.");
 		return EINA_FALSE;
 	}
-
+#endif
 	return EINA_TRUE;
 }
 
 Eina_Bool Browser_View::_haptic_device_close(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-
+#if 0
 	if (haptic_deinitialize() != HAPTIC_ERROR_NONE) {
 		BROWSER_LOGD("haptic_deinitialize failed.");
 		return EINA_FALSE;
 	}
-
+#endif
 	return EINA_TRUE;
 }
 
