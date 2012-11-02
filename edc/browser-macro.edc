@@ -751,7 +751,7 @@
 		} \
 		styles { \
 			style { name: #button_name"btn_textblock_style"; \
-				base: "font=FONT_CONTENT font_size=24 align=center color=#FFFFFF wrap=char"; \
+				base: "font=SLP:style=Roman font_size=24 align=center color=#FFFFFF wrap=char"; \
 				tag:  "br" "\n"; \
 				tag:  "hilight" "+ font=SLP:style=Bold"; \
 				tag:  "b" "+ font=SLP:style=Bold"; \
