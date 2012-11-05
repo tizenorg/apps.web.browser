@@ -338,6 +338,7 @@ void Browser_Add_To_Bookmark_View::__cancel_button_clicked_cb(void *data, Evas_O
 /* bookmark -> edit -> edit each bookmark item then bookmark edit view -> done */
 Eina_Bool Browser_Add_To_Bookmark_View::_modify_bookmark_item(const char *title, const char *url)
 {	
+	BROWSER_LOGD("[%s]", __func__);
 	int bookmark_id = 0;
 	int ret = EINA_TRUE;
 	Browser_Bookmark_DB *bookmark_db = m_data_manager->get_bookmark_db();

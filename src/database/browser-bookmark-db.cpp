@@ -187,7 +187,7 @@ Eina_Bool Browser_Bookmark_DB::get_bookmark_id_by_title_url(int folder_id, const
 		return EINA_FALSE;
 
 	sqlite3_stmt *sqlite3_stmt = NULL;
-	int error = sqlite3_prepare_v2(m_db_descriptor, "select id from bookmarks where parent=? and title=?",
+	int error = sqlite3_prepare_v2(m_db_descriptor, "select id from bookmarks where parent=? and title=? and address=?",
 					-1, &sqlite3_stmt, NULL);
 	if (error != SQLITE_OK) {
 		BROWSER_LOGD("SQL error=%d", error);
@@ -200,6 +200,8 @@ Eina_Bool Browser_Bookmark_DB::get_bookmark_id_by_title_url(int folder_id, const
 	if (sqlite3_bind_int(sqlite3_stmt, 1, folder_id) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_bind_int is failed.\n");
 	if (sqlite3_bind_text(sqlite3_stmt, 2, title, -1, NULL) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
+	if (sqlite3_bind_text(sqlite3_stmt, 3, url, -1, NULL) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
 
 	error = sqlite3_step(sqlite3_stmt);
@@ -379,7 +381,7 @@ Eina_Bool Browser_Bookmark_DB::is_duplicated(int folder_id, const char* title, c
 		return EINA_FALSE;
 
 	sqlite3_stmt *sqlite3_stmt = NULL;
-	int error = sqlite3_prepare_v2(m_db_descriptor, "select id from bookmarks where parent=? and title=?",
+	int error = sqlite3_prepare_v2(m_db_descriptor, "select id from bookmarks where parent=? and title=? and address=?",
 					-1, &sqlite3_stmt, NULL);
 	if (error != SQLITE_OK) {
 		BROWSER_LOGD("SQL error=%d", error);
@@ -395,6 +397,11 @@ Eina_Bool Browser_Bookmark_DB::is_duplicated(int folder_id, const char* title, c
 	}
 
 	if (sqlite3_bind_text(sqlite3_stmt, 2, title, -1, NULL) != SQLITE_OK) {
+		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
+		return EINA_FALSE;
+	}
+
+	if (sqlite3_bind_text(sqlite3_stmt, 3, url, -1, NULL) != SQLITE_OK) {
 		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
 		return EINA_FALSE;
 	}
