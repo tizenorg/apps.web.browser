@@ -62,11 +62,10 @@ Eina_Bool Browser_Network_Manager::init(Browser_View *browser_view)
 	m_network_state = get_network_connection_state();
 	BROWSER_LOGD("get_proxy_address[%s]", m_proxy_address.c_str());
 
-	if (!m_proxy_address.length()) {
+	if (!m_proxy_address.length() || !m_proxy_address.compare("0.0.0.0"))
 		ewk_context_proxy_uri_set(ewk_context_default_get(), NULL);
-	} else {
+	else
 		ewk_context_proxy_uri_set(ewk_context_default_get(), m_proxy_address.c_str());
-	}
 
 	return EINA_TRUE;
 }
@@ -303,7 +302,8 @@ void Browser_Network_Manager::network_configure_changed(void)
 	get_proxy_address();
 
 	BROWSER_LOGD("get_proxy_address[%s]", m_proxy_address.c_str());
-	if (!m_proxy_address.length())
+
+	if (!m_proxy_address.length() || !m_proxy_address.compare("0.0.0.0"))
 		ewk_context_proxy_uri_set(ewk_context_default_get(), NULL);
 	else
 		ewk_context_proxy_uri_set(ewk_context_default_get(), m_proxy_address.c_str());
