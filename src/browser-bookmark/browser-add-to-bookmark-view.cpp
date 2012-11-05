@@ -309,8 +309,14 @@ void Browser_Add_To_Bookmark_View::_select_folder_clicked_cb(void *data, Evas_Ob
 	Elm_Object_Item *it = elm_genlist_selected_item_get(obj);
 	elm_genlist_item_selected_set(it, EINA_FALSE);
 
-	add_to_bookmark_view->m_input_title = std::string(elm_entry_entry_get(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field)));
-	add_to_bookmark_view->m_input_url = std::string(elm_entry_entry_get(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field)));
+	const char *title = NULL;
+	const char *url = NULL;
+	title = elm_entry_entry_get(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field));
+	if (title != NULL)
+		add_to_bookmark_view->m_input_title = title;
+	url = elm_entry_entry_get(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field));
+	if (url != NULL)
+		add_to_bookmark_view->m_input_url = url;
 }
 
 void Browser_Add_To_Bookmark_View::__cancel_button_clicked_cb(void *data, Evas_Object *obj, void *eventInfo)
