@@ -749,7 +749,18 @@ Evas_Object *Most_Visited_Sites::__gengrid_icon_get_cb(void *data, Evas_Object *
 			BROWSER_LOGE("elm_layout_add failed");
 			return NULL;
 		}
-		ecore_idler_add(__gengrid_icon_get_idler_cb, item);
+
+		if (item->history_id)
+			ecore_idler_add(__gengrid_icon_get_idler_cb, item);
+		else {
+			if (!elm_layout_file_set(item->layout, BROWSER_EDJE_DIR"/most-visited-sites.edj", "most_visited_sites_empty_item")) {
+				BROWSER_LOGE("elm_layout_file_set failed");
+				return NULL;
+			}
+			evas_object_size_hint_weight_set(item->layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+			evas_object_size_hint_align_set(item->layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+		}
+
 		return item->layout;
 	}
 	return NULL;
