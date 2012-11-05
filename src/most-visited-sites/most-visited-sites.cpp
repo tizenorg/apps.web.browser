@@ -1126,7 +1126,7 @@ Evas_Object *Most_Visited_Sites::create_most_visited_sites_main_layout(void)
 //	elm_gengrid_reorder_mode_set(m_gengrid, EINA_TRUE);
 //	m_gengrid_item_class = elm_gengrid_item_class_new();
 //	m_gengrid_item_class->item_style = "default_grid/browser/most_visited_sites";
-	m_gengrid_item_class.item_style = "default_grid";
+	m_gengrid_item_class.item_style = "default_grid/browser/most_visited_sites";
 	m_gengrid_item_class.func.text_get = NULL;
 	m_gengrid_item_class.func.content_get = __gengrid_icon_get_cb;
 	m_gengrid_item_class.func.state_get = NULL;
