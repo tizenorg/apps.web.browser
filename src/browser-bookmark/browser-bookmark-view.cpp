@@ -135,6 +135,7 @@ Eina_Bool Browser_Bookmark_View::append_bookmark_item(const char *title, const c
 	item->title = std::string(title);
 	item->is_folder = EINA_FALSE;
 	item->id = bookmark_id;
+	item->is_editable = EINA_TRUE;
 	item->user_data_2 = (void *)elm_genlist_item_append(m_main_folder_genlist, &m_bookmark_genlist_item_class,
 							item, NULL, ELM_GENLIST_ITEM_NONE,
 							__bookmark_item_clicked_cb, this);
