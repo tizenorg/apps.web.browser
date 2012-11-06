@@ -86,7 +86,7 @@ private:
 	static void __delete_processing_popup_response_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __search_delay_changed_cb(void *data, Evas_Object *obj, void *event_info);
 
-	static void __bookmark_on_off_icon_clicked_cb(void* data, Evas* evas, Evas_Object* obj, void* ev);
+	static void __bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
 	/* evas object event callback functions */
 	static void __edit_mode_select_all_clicked_cb(void *data, Evas *evas, Evas_Object *obj, void *event_info);

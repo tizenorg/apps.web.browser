@@ -1547,7 +1547,7 @@ void Browser_History_Layout::__slide_delete_button_clicked_cb(void *data, Evas_O
 			__delete_confirm_response_by_slide_button_cb, item);
 }
 
-void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
+void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	Browser_History_DB::history_item *item = (Browser_History_DB::history_item *)data;
@@ -1622,8 +1622,7 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 		evas_object_propagate_events_set(bookmark_icon, EINA_FALSE);
 		evas_object_repeat_events_set(bookmark_icon, EINA_FALSE);
 
-		evas_object_event_callback_add(bookmark_icon, EVAS_CALLBACK_MOUSE_DOWN,
-						__bookmark_on_off_icon_clicked_cb, item);
+		evas_object_smart_callback_add(bookmark_icon, "clicked", __bookmark_on_off_icon_clicked_cb, item);
 
 		return bookmark_icon;
 	} else if (!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
