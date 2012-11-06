@@ -101,7 +101,10 @@ void Browser_Add_To_Bookmark_View::__title_entry_changed_cb(void *data, Evas_Obj
 		}
 		if (space_count == strlen(title))
 			only_has_space = EINA_TRUE;
+		else
+			add_to_bookmark_view->m_input_title = title;
 	}
+	BROWSER_LOGD("m_input_title[%s]", add_to_bookmark_view->m_input_title.c_str());
 
 	space_count = 0;
 	if (url && strlen(url)) {
@@ -111,7 +114,10 @@ void Browser_Add_To_Bookmark_View::__title_entry_changed_cb(void *data, Evas_Obj
 		}
 		if (space_count == strlen(url))
 			only_has_space = EINA_TRUE;
+		else
+			add_to_bookmark_view->m_input_url = url;
 	}
+	BROWSER_LOGD("m_input_url[%s]", add_to_bookmark_view->m_input_url.c_str());
 
 	char *text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
 	if (!text || strlen(text) == 0 || !title || strlen(title) == 0
