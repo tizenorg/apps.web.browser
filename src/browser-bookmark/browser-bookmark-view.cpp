@@ -109,6 +109,7 @@ Eina_Bool Browser_Bookmark_View::init(void)
 
 Eina_Bool Browser_Bookmark_View::append_bookmark_item(const char *title, const char *url)
 {
+	BROWSER_LOGD("[%s]", __func__);
 	if (!url || !title) {
 		BROWSER_LOGE("url or title is null");
 		return EINA_FALSE;
@@ -118,6 +119,11 @@ Eina_Bool Browser_Bookmark_View::append_bookmark_item(const char *title, const c
 		BROWSER_LOGE("save_bookmark failed");
 		return EINA_FALSE;
 	}
+#ifdef STORE_FAVICON
+	m_data_manager->get_bookmark_db()->save_bookmark_icon(url,
+				m_data_manager->get_history_db()->get_history_icon(
+							m_main_folder_genlist, url));
+#endif
 
 	Browser_Bookmark_DB::bookmark_item *item = new(nothrow) Browser_Bookmark_DB::bookmark_item;
 	if (!item) {

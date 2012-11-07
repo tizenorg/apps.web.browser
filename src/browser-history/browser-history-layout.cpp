@@ -1566,11 +1566,6 @@ void Browser_History_Layout::__bookmark_on_off_icon_clicked_cb(void *data, Evas_
 			BROWSER_LOGE("elm_icon_file_set is failed.\n");
 		}
 		m_data_manager->get_bookmark_view()->append_bookmark_item(item->title.c_str(), item->url.c_str());
-#ifdef STORE_FAVICON
-		m_data_manager->get_bookmark_db()->save_bookmark_icon(item->url.c_str(),
-					m_data_manager->get_history_db()->get_history_icon(
-								history_layout->m_history_genlist, item->url.c_str()));
-#endif
 	}
 	Elm_Object_Item *seleted_item = elm_genlist_selected_item_get(history_layout->m_history_genlist);
 	elm_genlist_item_selected_set(seleted_item, EINA_FALSE);
