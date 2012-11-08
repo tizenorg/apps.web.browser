@@ -17,6 +17,7 @@
 
 #include "browser-macro.edc"
 
+#define GENLIST_HEIGHT_1LINE 113  // excep bottom 1 line
 collections {
 	group {
 		name: "bookmark/content_layout";
@@ -50,8 +51,8 @@ collections {
 					state: "show_upper_folder" 0.0;
 					inherit: "default" 0.0;
 					visible: 1;
-					min: 0 115;
-					max: 999999 115;
+					min: 0 GENLIST_HEIGHT_1LINE;
+					max: 999999 GENLIST_HEIGHT_1LINE;
 					fixed: 0 1;
 					align: 0.0 0.0;
 				}
@@ -353,7 +354,7 @@ collections {
 #define NOCONTENT_BASE_SEARCH_PADDING_INC    40
 #define NOCONTENT_IMAGE_REL1_WIDTH_HEIGHT_INC 0.282 0.294
 #define NOCONTENT_IMAGE_REL2_WIDTH_HEIGHT_INC 0.718 0.54
-#define NOCONTENT_BG_COLOR_INC               0 0 0 255
+#define NOCONTENT_BG_COLOR_INC                       248 246 239 255
 #define NOCONTENT_TEXT_STYLE_BG_MIN_INC       0 120
 
 group {
