@@ -63,9 +63,11 @@
 #include <EWebKit2.h>
 
 #define BROWSER_PACKAGE_NAME "browser"
-#define BROWSER_EDJE_DIR "/opt/apps/org.tizen.browser/res/edje"
-#define BROWSER_LOCALE_DIR "/opt/apps/org.tizen.browser/res/locale"
-#define BROWSER_IMAGE_DIR "/opt/apps/org.tizen.browser/res/images"
+#define BROWSER_APP_DIR "/usr/apps/org.tizen.browser"
+#define BROWSER_DATA_DIR "/opt/usr/apps/org.tizen.browser"
+#define BROWSER_EDJE_DIR BROWSER_APP_DIR"/res/edje"
+#define BROWSER_LOCALE_DIR BROWSER_APP_DIR"/res/locale"
+#define BROWSER_IMAGE_DIR BROWSER_APP_DIR"/res/images"
 
 #define BROWSER_URL_SCHEME_CHECK "://"
 #define BROWSER_HTTP_SCHEME "http://"
@@ -137,7 +139,7 @@
 #define ALWAYS_OFF	"OFF"
 
 /* bookmark definition */
-#define BROWSER_BOOKMARK_DB_PATH	"/opt/dbspace/.internet_bookmark.db"
+#define BROWSER_BOOKMARK_DB_PATH	"/opt/usr/dbspace/.internet_bookmark.db"
 #define BROWSER_BOOKMARK_GENLIST_BLOCK_COUNT	50
 #define BROWSER_BOOKMARK_MAIN_FOLDER_ID	1
 #define BROWSER_BOOKMARK_COUNT_LIMIT	1000
@@ -146,7 +148,7 @@
 #define BROWSER_BOOKMARK_PROCESS_BLOCK_COUNT	100
 
 /* history definition */
-#define BROWSER_HISTORY_DB_PATH	"/opt/dbspace/.browser-history.db"
+#define BROWSER_HISTORY_DB_PATH	"/opt/usr/dbspace/.browser-history.db"
 #define BROWSER_HISTORY_COUNT_LIMIT	1000
 #define BROWSER_MAX_DATE_LEN	40
 #define BROWSER_PREDICTIVE_HISTORY_COUNT	2
@@ -155,7 +157,7 @@
 #define BROWSER_MULTI_WINDOW_MAX_COUNT	9
 #define BROWSER_MULTI_WINDOW_ITEM_RATIO	0.60f
 
-#define BROWSER_USER_AGENT_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser.db"
+#define BROWSER_USER_AGENT_DB_PATH	BROWSER_DATA_DIR"/data/db/.browser.db"
 #define BROWSER_DEFAULT_USER_AGENT_TITLE	"Tizen"
 
 /* Most visited definition */
@@ -163,7 +165,7 @@
 
 #if defined(FEATURE_MOST_VISITED_SITES)
 /* Speed dial definition */
-#define BROWSER_MOST_VISITED_SITES_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db"
+#define BROWSER_MOST_VISITED_SITES_DB_PATH	BROWSER_DATA_DIR"/data/db/.browser-mostvisited.db"
 #define BROWSER_MOST_VISITED_SITES_ITEM_MAX	9
 #define BROWSER_MOST_VISITED_SITES_URL	""
 #define DEFAULT_ICON_PREFIX "default_"
@@ -171,11 +173,11 @@
 #define BROWSER_BLANK_PAGE_URL	"about:blank"
 
 /* Geolocation definition */
-#define BROWSER_GEOLOCATION_DB_PATH	"/opt/apps/org.tizen.browser/data/db/.browser-geolocation.db"
+#define BROWSER_GEOLOCATION_DB_PATH	BROWSER_DATA_DIR"/data/db/.browser-geolocation.db"
 
 /* Screen shot path definition */
-#define BROWSER_SCREEN_SHOT_DIR	"/opt/apps/org.tizen.browser/data/screenshots/"
-#define BROWSER_FAVICON_DB_PATH	"/opt/apps/org.tizen.browser/data/db/WebpageIcons.db"
+#define BROWSER_SCREEN_SHOT_DIR	BROWSER_DATA_DIR"/data/screenshots/"
+#define BROWSER_FAVICON_DB_PATH	BROWSER_DATA_DIR"/data/db/WebpageIcons.db"
 
 #define BROWSER_CLEAN_UP_WINDOWS_TIMEOUT	(60 * 30) // 30 min
 

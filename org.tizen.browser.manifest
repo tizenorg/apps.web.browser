@@ -6,8 +6,8 @@
 		</provide>
 	</define>
 	<assign>
-		<filesystem path="/opt/share/applications/org.tizen.browser.desktop" label="_" />
-		<filesystem path="/opt/share/icons/default/small/org.tizen.browser.png" label="_" />
+		<filesystem path="/usr/share/applications/org.tizen.browser.desktop" label="_" />
+		<filesystem path="/usr/share/icons/default/small/org.tizen.browser.png" label="_" />
 	</assign>
 	<request>
 		<domain name="org.tizen.browser"/>

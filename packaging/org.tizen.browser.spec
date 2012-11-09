@@ -1,4 +1,5 @@
-%define appdir /opt/apps/org.tizen.browser
+%define appdir /usr/apps/org.tizen.browser
+%define appdatadir /opt/usr/apps/org.tizen.browser
 
 Name:       org.tizen.browser
 Summary:    webkit browser with EFL
@@ -79,48 +80,48 @@ make %{?jobs:-j%jobs}
 %make_install
 
 %post
-mkdir -p /opt/dbspace/
+mkdir -p /opt/usr/dbspace/
 ##### History ######
-if [ ! -f /opt/dbspace/.browser-history.db ];
+if [ ! -f /opt/usr/dbspace/.browser-history.db ];
 then
-	sqlite3 /opt/dbspace/.browser-history.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 /opt/usr/dbspace/.browser-history.db 'PRAGMA journal_mode=PERSIST;
 	CREATE TABLE history(id INTEGER PRIMARY KEY AUTOINCREMENT, address, title, counter INTEGER, visitdate DATETIME, favicon BLOB, favicon_length INTEGER, favicon_w INTEGER, favicon_h INTEGER);'
 fi
 
 ### Bookmark ###
-if [ ! -f /opt/dbspace/.internet_bookmark.db ];
+if [ ! -f /opt/usr/dbspace/.internet_bookmark.db ];
 then
-	sqlite3 /opt/dbspace/.internet_bookmark.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 /opt/usr/dbspace/.internet_bookmark.db 'PRAGMA journal_mode=PERSIST;
 	CREATE TABLE bookmarks(id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER, parent INTEGER, address, title, creationdate, sequence INTEGER, updatedate, visitdate, editable INTEGER, accesscount INTEGER, favicon BLOB, favicon_length INTEGER, favicon_w INTEGER, favicon_h INTEGER);
 	create index idx_bookmarks_on_parent_type on bookmarks(parent, type);
 
 	insert into bookmarks (type, parent, title, creationdate, editable, sequence, accesscount) values(1, 0, "Bookmarks", DATETIME("now"),  0, 1, 0);'
 fi
 
-mkdir -p /opt/apps/org.tizen.browser/data/db/
+mkdir -p %{appdatadir}/data/db/
 
 ##### Geolocation ######
-if [ ! -f /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db ];
+if [ ! -f %{appdatadir}/data/db/.browser-geolocation.db ];
 then
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser-geolocation.db 'PRAGMA journal_mode=PERSIST;
 	create table geolocation(id integer primary key autoincrement, address, accept INTEGER,updatedate DATETIME);'
 fi
 
 ##### Password ######
-if [ ! -f /opt/apps/org.tizen.browser/data/db/.browser-credential.db ];
+if [ ! -f %{appdatadir}/data/db/.browser-credential.db ];
 then
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-credential.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser-credential.db 'PRAGMA journal_mode=PERSIST;
 	create table passwords(id integer primary key autoincrement, address, login, password)'
 fi
 
 ##### Most visited ######
-if [ ! -f /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db ];
+if [ ! -f %{appdatadir}/data/db/.browser-mostvisited.db ];
 then
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser-mostvisited.db 'PRAGMA journal_mode=PERSIST;
 	create table mostvisited(id integer primary key, address, title, image)'
 
 	#default Sites
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser-mostvisited.db 'PRAGMA journal_mode=PERSIST;
 	insert into mostvisited values(0, "http://mobile.twitter.com/", "Twitter", "default_0");
 	insert into mostvisited values(1, "http://m.facebook.com/", "Facebook", "default_1");
 	insert into mostvisited values(2, "http://m.naver.com/", "Naver", "default_2");
@@ -128,12 +129,12 @@ then
 fi
 
 #### USER AGENTS #####
-if [ ! -f /opt/apps/org.tizen.browser/data/db/.browser.db ];
+if [ ! -f %{appdatadir}/data/db/.browser.db ];
 then
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
 	create table user_agents(name primary key, value)'
 	# mobile
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
 	insert into user_agents values("Galaxy S", "Mozilla/5.0 (Linux; U; Android 2.3.7; en-gb; GT-I9000 Build/GRJ22) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
 	insert into user_agents values("Galaxy S II", "Mozilla/5.0 (Linux; U; Android 2.3.5; en-gb; GT-I9100 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
 	insert into user_agents values("Galaxy S III", "Mozilla/5.0 (Linux; U; Android 4.0.3; en-gb; GT-I9300 Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
@@ -155,7 +156,7 @@ then
 	insert into user_agents values("Samsung Bada 2.0", "Mozilla/5.0 (SAMSUNG; SAMSUNG-GT-S8500/1.0; U; Bada/2.0; en-us) AppleWebKit/534.20 (KHTML, like Gecko) Mobile WVGA SMM-MMS/1.2.0 OPN-B Dolfin/3.0")'
 
 	# desktop
-	sqlite3 /opt/apps/org.tizen.browser/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
+	sqlite3 %{appdatadir}/data/db/.browser.db 'PRAGMA journal_mode=PERSIST;
 	insert into user_agents values("Samsung Desktop", "Mozilla/5.0 (U; Linux/SLP/2.0; ko-kr) AppleWebKit/533.1 (KHTML, like Gecko)");
 	insert into user_agents values("Firefox 5", "Mozilla/5.0 (Windows NT 6.1; rv:9.0.1) Gecko/20100101 Firefox/9.0.1");
 	insert into user_agents values("Firefox 5 Fennec(Mobile)", "Mozilla/5.0 (Android; Linux armv7l; rv:5.0) Gecko/20110615 Firefox/5.0 Fennec/5.0");
@@ -168,30 +169,30 @@ fi
 
 
 # Change db file owner & permission
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser.db
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser.db-journal
-chown :5000 /opt/dbspace/.browser-history.db
-chown :5000 /opt/dbspace/.browser-history.db-journal
-chown :5000 /opt/dbspace/.internet_bookmark.db
-chown :5000 /opt/dbspace/.internet_bookmark.db-journal
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-credential.db
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-credential.db-journal
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db-journal
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db
-#chown :5000 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db-journal
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser.db
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser.db-journal
-chmod 666 /opt/dbspace/.browser-history.db
-chmod 666 /opt/dbspace/.browser-history.db-journal
-chmod 666 /opt/dbspace/.internet_bookmark.db
-chmod 666 /opt/dbspace/.internet_bookmark.db-journal
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-credential.db
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-credential.db-journal
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-mostvisited.db-journal
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db
-chmod 660 /opt/apps/org.tizen.browser/data/db/.browser-geolocation.db-journal
+#chown :5000 %{appdatadir}/data/db/.browser.db
+#chown :5000 %{appdatadir}/data/db/.browser.db-journal
+chown :5000 /opt/usr/dbspace/.browser-history.db
+chown :5000 /opt/usr/dbspace/.browser-history.db-journal
+chown :5000 /opt/usr/dbspace/.internet_bookmark.db
+chown :5000 /opt/usr/dbspace/.internet_bookmark.db-journal
+#chown :5000 %{appdatadir}/data/db/.browser-credential.db
+#chown :5000 %{appdatadir}/data/db/.browser-credential.db-journal
+#chown :5000 %{appdatadir}/data/db/.browser-mostvisited.db
+#chown :5000 %{appdatadir}/data/db/.browser-mostvisited.db-journal
+#chown :5000 %{appdatadir}/data/db/.browser-geolocation.db
+#chown :5000 %{appdatadir}/data/db/.browser-geolocation.db-journal
+chmod 660 %{appdatadir}/data/db/.browser.db
+chmod 660 %{appdatadir}/data/db/.browser.db-journal
+chmod 666 /opt/usr/dbspace/.browser-history.db
+chmod 666 /opt/usr/dbspace/.browser-history.db-journal
+chmod 666 /opt/usr/dbspace/.internet_bookmark.db
+chmod 666 /opt/usr/dbspace/.internet_bookmark.db-journal
+chmod 660 %{appdatadir}/data/db/.browser-credential.db
+chmod 660 %{appdatadir}/data/db/.browser-credential.db-journal
+chmod 660 %{appdatadir}/data/db/.browser-mostvisited.db
+chmod 660 %{appdatadir}/data/db/.browser-mostvisited.db-journal
+chmod 660 %{appdatadir}/data/db/.browser-geolocation.db
+chmod 660 %{appdatadir}/data/db/.browser-geolocation.db-journal
 
 ##################################################
 # set default vconf values
@@ -203,21 +204,21 @@ vconftool set -t string db/browser/custom_user_agent "" -g 5000 -f
 vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0; en-us) AppleWebKit/537.1 (KHTML, like Gecko) Mobile TizenBrowser/2.0" -g 5000 -f
 
 # Change file owner
-chown -R 5000:5000 /opt/apps/org.tizen.browser/data
-chsmack -a 'org.tizen.browser::db_external' /opt/dbspace/.internet_bookmark.db*
-chsmack -a 'org.tizen.browser::db_external' /opt/dbspace/.browser-history.db*
+chown -R 5000:5000 %{appdatadir}/data
+chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.internet_bookmark.db*
+chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.browser-history.db*
 
 %files
 %manifest org.tizen.browser.manifest
 %defattr(-,root,root,-)
-/opt/apps/org.tizen.browser/bin/browser
-/opt/apps/org.tizen.browser/data/screenshots/default_*
-/opt/apps/org.tizen.browser/res/edje/*.edj
-/opt/apps/org.tizen.browser/res/html/*
-/opt/share/icons/default/small/org.tizen.browser.png
-/opt/apps/org.tizen.browser/res/images/*.png
-/opt/apps/org.tizen.browser/res/locale/*/*/browser.mo
-/opt/apps/org.tizen.browser/data/default_application_icon.png
-/opt/apps/org.tizen.browser/data/config_sample.xml
-/opt/apps/org.tizen.browser/data/xml/
-/opt/share/packages/*
+%{appdir}/bin/browser
+%{appdatadir}/data/screenshots/default_*
+%{appdir}/res/edje/*.edj
+%{appdir}/res/html/*
+/usr/share/icons/default/small/org.tizen.browser.png
+%{appdir}/res/images/*.png
+%{appdir}/res/locale/*/*/browser.mo
+%{appdatadir}/data/default_application_icon.png
+%{appdatadir}/data/config_sample.xml
+%{appdatadir}/data/xml/
+/usr/share/packages/*

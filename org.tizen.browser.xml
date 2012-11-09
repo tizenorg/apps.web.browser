@@ -3,7 +3,7 @@
 	<label>Browser</label>
 	<author email="sangpyo7.kim@samsung.com" href="www.samsung.com">Sangpyo Kim</author>
 	<description>webkit browser with EFL</description>
-	<ui-application  type="capp"  multiple="false" taskmanage="true" nodisplay="false" exec="/opt/apps/org.tizen.browser/bin/browser" appid="org.tizen.browser">
+	<ui-application  type="capp"  multiple="false" taskmanage="true" nodisplay="false" exec="/usr/apps/org.tizen.browser/bin/browser" appid="org.tizen.browser">
 		<icon>org.tizen.browser.png</icon>
 		<label>Internet</label>
 		<label xml:lang="en-us">Internet</label>

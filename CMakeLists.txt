@@ -95,7 +95,7 @@ SET(EDJE_DIR "${RESDIR}/edje/")
 SET(LOCALE_DIR "${RESDIR}/locale/")
 SET(IMAGES_DIR "${RESDIR}/images/")
 SET(HTML_DIR "${RESDIR}/html/")
-SET(ICON_DIR "/opt/share/icons/default/small/")
+SET(ICON_DIR "/usr/share/icons/default/small/")
 # data
 SET(XML_DIR "${DATADIR}/xml/")
 SET(OPML_DIR "${DATADIR}/opml/")
@@ -109,7 +109,7 @@ SET(DATABASENAME ".browser.db")
 SET(HISTORY_DATABASENAME ".browser-history.db")
 SET(CREDENTIAL_DATABASENAME ".browser-credential.db")
 SET(MOST_VISITED_DATABASENAME ".browser-mostvisited.db")
-SET(DESKTOP_DIR "/opt/share/applications")
+SET(DESKTOP_DIR "/usr/share/applications")
 ADD_DEFINITIONS(
 		-DPROJECT_NAME=\"${PROJECT_NAME}\"
 		-DDATABASENAME=\"${DATABASENAME}\"
@@ -354,7 +354,7 @@ INSTALL(DIRECTORY DESTINATION ${SCREENSHOTS_DIR})
 INSTALL(DIRECTORY DESTINATION ${WEBKIT_SOUP_CACHE_DIR})
 
 # install manifest file & icon
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/org.tizen.${PROJECT_NAME}.xml DESTINATION /opt/share/packages)
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/org.tizen.${PROJECT_NAME}.xml DESTINATION /usr/share/packages)
 
 # install desktop file & icon
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/org.tizen.${PROJECT_NAME}.png DESTINATION ${ICON_DIR})
