@@ -1234,6 +1234,76 @@ Evas_Object *Browser_History_Layout::_show_delete_confirm_popup(void)
 	return ok_button;
 }
 
+Eina_Bool Browser_History_Layout::_show_clear_history_confirm_popup(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_delete_confirm_popup)
+		evas_object_del(m_delete_confirm_popup);
+
+	m_delete_confirm_popup = elm_popup_add(m_navi_bar);
+	if (!m_delete_confirm_popup) {
+		BROWSER_LOGE("elm_popup_add failed");
+		return EINA_FALSE;
+	}
+
+	evas_object_size_hint_weight_set(m_delete_confirm_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+	std::string confirm_msg = std::string(BR_STRING_CLEAR_ALL_HISTORY_DATA_Q);
+	elm_object_text_set(m_delete_confirm_popup, confirm_msg.c_str());
+
+	Evas_Object *ok_button = elm_button_add(m_delete_confirm_popup);
+	if (!ok_button) {
+		BROWSER_LOGE("elm_button_add failed");
+		return EINA_FALSE;
+	}
+	elm_object_text_set(ok_button, BR_STRING_YES);
+	elm_object_part_content_set(m_delete_confirm_popup, "button1", ok_button);
+	elm_object_style_set(ok_button, "popup_button/default");
+	evas_object_smart_callback_add(ok_button, "clicked", __clear_history_confirm_response_cb, this);
+
+	Evas_Object *cancel_button = elm_button_add(m_delete_confirm_popup);
+	elm_object_text_set(cancel_button, BR_STRING_NO);
+	elm_object_part_content_set(m_delete_confirm_popup, "button2", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __cancel_clear_history_confirm_response_cb, this);
+
+	evas_object_show(m_delete_confirm_popup);
+
+	return EINA_TRUE;
+}
+
+void Browser_History_Layout::__clear_history_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_History_Layout *history_view = (Browser_History_Layout *)data;
+	if (history_view->m_delete_confirm_popup) {
+		evas_object_del(history_view->m_delete_confirm_popup);
+		history_view->m_delete_confirm_popup = NULL;
+	}
+	/* Clear history */
+	if (!history_view->m_data_manager->get_history_db()->clear_history())
+		BROWSER_LOGE("get_history_db()->clear_history() failed");
+
+	history_view->_reload_history_genlist();
+	history_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
+}
+
+void Browser_History_Layout::__cancel_clear_history_confirm_response_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_History_Layout *history_view = (Browser_History_Layout *)data;
+	if (history_view->m_delete_confirm_popup) {
+		evas_object_del(history_view->m_delete_confirm_popup);
+		history_view->m_delete_confirm_popup = NULL;
+	}
+}
+
 #if defined(GENLIST_SWEEP)
 void Browser_History_Layout::__sweep_right_genlist_cb(void *data, Evas_Object *obj, void *event_info)
 {

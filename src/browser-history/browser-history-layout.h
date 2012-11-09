@@ -66,6 +66,7 @@ private:
 	void _enable_searchbar_layout(Eina_Bool enable);
 	Eina_Bool _show_searched_history(const char *search_text);
 	void _delete_date_only_label_genlist_item(void);
+	Eina_Bool _show_clear_history_confirm_popup(void);
 
 	/* elementary event callback functions. */
 #if defined(GENLIST_SWEEP)
@@ -99,6 +100,9 @@ private:
 	/* ecore timer callback functions */
 	static Eina_Bool __select_processing_popup_timer_cb(void *data);
 	static Eina_Bool __delete_processing_popup_timer_cb(void *data);
+
+	static void __clear_history_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __cancel_clear_history_confirm_response_cb(void *data, Evas_Object *obj, void *event_info);
 
 	history_date_param m_date_param;
 	Elm_Genlist_Item_Class m_history_genlist_item_class;

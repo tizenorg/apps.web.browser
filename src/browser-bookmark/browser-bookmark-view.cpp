@@ -355,6 +355,7 @@ void Browser_Bookmark_View::__edit_controlbar_item_clicked_cb(void *data, Evas_O
 			bookmark_view->_set_edit_mode(EINA_FALSE);
 		}
 	} else if (history_layout) {
+#ifdef HISTORY_EDIT_MODE
 		if (!elm_genlist_decorate_mode_get(history_layout->m_history_genlist)) {
 			/* Delete history */
 			history_layout->_set_edit_mode(EINA_TRUE);
@@ -362,6 +363,9 @@ void Browser_Bookmark_View::__edit_controlbar_item_clicked_cb(void *data, Evas_O
 			/* Cancel Delete bookmark */
 			history_layout->_set_edit_mode(EINA_FALSE);
 		}
+#else
+		history_layout->_show_clear_history_confirm_popup();
+#endif
 	}
 
 	if (bookmark_view->m_rename_edit_field)
@@ -2389,11 +2393,15 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		}
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
-
+#ifdef HISTORY_EDIT_MODE
 		m_bookmark_edit_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 								NULL, BR_STRING_DELETE,
 								__edit_controlbar_item_clicked_cb, this);
-
+#else
+		m_bookmark_edit_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
+								NULL, BR_STRING_DELETE_ALL,
+								__edit_controlbar_item_clicked_cb, this);
+#endif
 		Elm_Object_Item *empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
 		elm_object_item_disabled_set(empty_item, EINA_TRUE);
 		empty_item = elm_toolbar_item_append(m_bottom_control_bar, NULL, NULL, NULL, NULL);
