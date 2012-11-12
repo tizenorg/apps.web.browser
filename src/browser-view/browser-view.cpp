@@ -1682,7 +1682,7 @@ void Browser_View::set_focused_window(Browser_Window *window
 		elm_box_pack_end(m_content_box, m_focused_window->m_ewk_view_layout);
 		evas_object_show(m_focused_window->m_ewk_view_layout);
 
-		BROWSER_LOGE("elm_object_part_content_set : m_ewk_view_layout");
+		BROWSER_LOGE("elm_object_part_content_set : m_focused_window->m_ewk_view = %d", m_focused_window->m_ewk_view);
 		elm_object_part_content_set(m_focused_window->m_ewk_view_layout, "elm.swallow.webview",
 					m_focused_window->m_ewk_view);
 		evas_object_show(m_focused_window->m_ewk_view);
