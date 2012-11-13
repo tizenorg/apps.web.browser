@@ -1185,7 +1185,11 @@ Eina_Bool Browser_History_Layout::_create_main_layout(void)
 	}
 
 	m_history_genlist_item_class.decorate_item_style = "mode/slide2";
+#ifdef HISTORY_BOOKMARK_TOGGLE
 	m_history_genlist_item_class.item_style = "dialogue/2text.2icon.3";
+#else
+	m_history_genlist_item_class.item_style = "dialogue/2text.1icon.3";
+#endif
 	m_history_genlist_item_class.decorate_all_item_style = "dialogue/edit";
 	m_history_genlist_item_class.func.text_get = __genlist_label_get_cb;
 	m_history_genlist_item_class.func.content_get = __genlist_icon_get_cb;
@@ -1653,7 +1657,11 @@ Evas_Object *Browser_History_Layout::__genlist_icon_get_cb(void *data, Evas_Obje
 	if (!history_layout)
 		return NULL;
 
+#ifdef HISTORY_BOOKMARK_TOGGLE
 	if (!strncmp(part, "elm.icon.1", strlen("elm.icon.1"))) {
+#else
+	if (!strcmp(part, "elm.icon")) {
+#endif
 		Evas_Object *favicon = NULL;
 #ifdef STORE_FAVICON
 		favicon = m_data_manager->get_history_db()->get_history_icon(obj, item->url.c_str());
