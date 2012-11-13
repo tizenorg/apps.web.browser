@@ -161,6 +161,8 @@ Eina_Bool Browser_History_Layout::_show_searched_history(const char *search_text
 		Browser_History_DB::history_item *item = NULL;
 		item = (Browser_History_DB::history_item *)elm_object_item_data_get(it);
 		if (item && elm_genlist_item_select_mode_get(it) != ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+			BROWSER_LOGD("source url: %s", item->url.c_str());
+			BROWSER_LOGD("source title: %s", item->title.c_str());
 			if (item->url.find(search_text) != string::npos || item->title.find(search_text) != string::npos) {
 				Browser_History_DB::history_item *searched_item = NULL;
 				searched_item = new(nothrow) Browser_History_DB::history_item;
