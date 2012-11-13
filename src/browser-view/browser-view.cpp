@@ -3858,8 +3858,10 @@ Eina_Bool Browser_View::launch_find_word_with_text(const char *text_to_find)
 {
 	BROWSER_LOGD("\n");
 
-	if (_get_edit_mode() == BR_FIND_WORD_MODE)
-		return EINA_FALSE;
+	if(!m_option_header_find_word_layout) {
+		m_option_header_find_word_layout = _create_find_word_layout();
+	}
+	elm_object_part_content_set(m_option_header_layout, "elm.swallow.find_word_layout", m_option_header_find_word_layout);
 
 	_navigationbar_visible_set_signal(EINA_TRUE);
 	_set_edit_mode(BR_FIND_WORD_MODE);
@@ -4402,13 +4404,6 @@ Eina_Bool Browser_View::_create_main_layout(void)
 
 	elm_object_part_content_set(m_option_header_layout, "elm.swallow.url_layout", m_option_header_url_layout);
 	evas_object_show(m_option_header_layout);
-
-	m_option_header_find_word_layout = _create_find_word_layout();
-	if (!m_option_header_find_word_layout) {
-		BROWSER_LOGE("_create_find_word_layout failed");
-		return EINA_FALSE;
-	}
-	elm_object_part_content_set(m_option_header_layout, "elm.swallow.find_word_layout", m_option_header_find_word_layout);
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_OPTIONHEADER, m_option_header_layout);
 	_navigationbar_visible_set_signal(EINA_FALSE);
