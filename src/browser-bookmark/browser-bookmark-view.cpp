@@ -659,8 +659,10 @@ Eina_Bool Browser_Bookmark_View::__delete_processing_popup_timer_cb(void *data)
 void Browser_Bookmark_View::_show_select_processing_popup(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (m_processing_popup)
+	if (m_processing_popup) {
 		evas_object_del(m_processing_popup);
+		m_processing_popup = NULL;
+	}
 
 	m_processing_popup = elm_popup_add(m_main_layout);
 	if (!m_processing_popup) {
@@ -668,8 +670,7 @@ void Browser_Bookmark_View::_show_select_processing_popup(void)
 		return;
 	}
 
-	if (m_processing_popup_layout)
-		evas_object_del(m_processing_popup_layout);
+	m_processing_popup_layout = NULL;
 	m_processing_popup_layout = elm_layout_add(m_processing_popup);
 	if (!m_processing_popup_layout) {
 		BROWSER_LOGE("elm_layout_add failed");
@@ -717,10 +718,13 @@ void Browser_Bookmark_View::_show_select_processing_popup(void)
 
 	elm_object_content_set(m_processing_popup, m_processing_popup_layout);
 
-	Evas_Object *cancel_button = elm_button_add(m_processing_popup);
-	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
-	elm_object_part_content_set(m_processing_popup, "button1", cancel_button);
-	evas_object_smart_callback_add(cancel_button, "clicked", __select_processing_popup_response_cb, this);
+	Evas_Object *cancel_button = NULL;
+	cancel_button = elm_button_add(m_processing_popup);
+	if (cancel_button != NULL) {
+		elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+		elm_object_part_content_set(m_processing_popup, "button1", cancel_button);
+		evas_object_smart_callback_add(cancel_button, "clicked", __select_processing_popup_response_cb, this);
+	}
 
 	evas_object_show(m_processing_popup);
 
