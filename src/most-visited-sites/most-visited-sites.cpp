@@ -1119,11 +1119,16 @@ Evas_Object *Most_Visited_Sites::create_most_visited_sites_main_layout(void)
 	elm_gengrid_item_size_set(m_gengrid, MOST_VISITED_SITES_ITEM_WIDTH, MOST_VISITED_SITES_ITEM_HEIGHT);
 
 #if defined(HORIZONTAL_UI)
-	if (m_browser_view->is_landscape())
+	if (m_browser_view->is_landscape()) {
 		elm_gengrid_align_set(m_gengrid, 0.5, 0.0);
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "rotate,landscape,signal", "");
+	}
 	else
 #endif
+	{
 		elm_gengrid_align_set(m_gengrid, 0.5, 0.5);
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "rotate,portrait,signal", "");
+	}
 
 	elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
 	elm_gengrid_bounce_set(m_gengrid, EINA_FALSE, EINA_FALSE);
