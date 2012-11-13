@@ -192,12 +192,9 @@ Eina_Bool Browser_History_DB::save_history(const char *url, const char *title, E
 			}
 		}
 
-		const string insert_url(url);
-		const string insert_title(title);
-
-		const string statement = "insert into history (address, title, counter, visitdate) values('" + insert_url 
-						+ "','" + insert_title + "', 0, DATETIME('now'))";
-		error = sqlite3_prepare_v2(m_db_descriptor, statement.c_str(), -1, &sqlite3_stmt, NULL);
+		error = sqlite3_prepare_v2(m_db_descriptor,
+			"insert into history (address, title, counter, visitdate) values(?, ?, 0,DATETIME('now'))",
+						-1, &sqlite3_stmt, NULL);
 		if (error != SQLITE_OK) {
 			BROWSER_LOGD("SQL error=%d", error);
 			if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
@@ -205,6 +202,21 @@ Eina_Bool Browser_History_DB::save_history(const char *url, const char *title, E
 			_close_db();
 			return EINA_FALSE;
 		}
+
+		std::string title_to_save = "";
+		std::string url_to_save = "";
+
+		title_to_save = title;
+		if (title_to_save.size() >= BROWSER_MAX_TITLE_LEN)
+			title_to_save.resize(BROWSER_MAX_TITLE_LEN - 1);
+		url_to_save = url;
+		if (url_to_save.size() >= BROWSER_MAX_URL_LEN)
+			url_to_save.resize(BROWSER_MAX_URL_LEN - 1);
+
+		if (sqlite3_bind_text(sqlite3_stmt, 1, url_to_save.c_str(), -1, NULL) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_bind_text is failed.\n");
+		if (sqlite3_bind_text(sqlite3_stmt, 2, title_to_save.c_str(), -1, NULL) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_bind_text is failed.\n");
 
 		error = sqlite3_step(sqlite3_stmt);
 
