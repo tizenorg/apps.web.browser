@@ -42,6 +42,7 @@ private:
 	static void __save_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __title_entry_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __naviframe_pop_finished_cb(void *data , Evas_Object *obj, void *event_info);
+	static void __title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
 
 	/* genlist event callback functions */
 	static Evas_Object *__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part);

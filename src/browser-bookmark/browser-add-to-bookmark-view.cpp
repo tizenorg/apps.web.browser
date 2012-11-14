@@ -130,6 +130,18 @@ void Browser_Add_To_Bookmark_View::__title_entry_changed_cb(void *data, Evas_Obj
 		free(text);
 }
 
+void Browser_Add_To_Bookmark_View::__title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_Add_To_Bookmark_View *add_to_bookmark_view = (Browser_Add_To_Bookmark_View *)data;
+
+	elm_object_focus_set(add_to_bookmark_view->m_title_done_button, EINA_TRUE);
+	add_to_bookmark_view->__done_button_clicked_cb(add_to_bookmark_view, NULL, NULL);
+}
+
 char *Browser_Add_To_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Object *obj, const char *part)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -178,6 +190,8 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 							"changed", __title_entry_changed_cb, add_to_bookmark_view);
 			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
 							"preedit,changed", __title_entry_changed_cb, add_to_bookmark_view);
+			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
+						"activated", __title_entry_enter_key_cb, add_to_bookmark_view);
 
 			if (!add_to_bookmark_view->m_input_title.empty()) {
 				elm_entry_entry_set(br_elm_editfield_entry_get(add_to_bookmark_view->m_title_edit_field),
@@ -212,6 +226,8 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 							"changed", __title_entry_changed_cb, add_to_bookmark_view);
 			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),
 							"preedit,changed", __title_entry_changed_cb, add_to_bookmark_view);
+			evas_object_smart_callback_add(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),
+						"activated", __title_entry_enter_key_cb, add_to_bookmark_view);
 
 			if (!add_to_bookmark_view->m_input_url.empty()) {
 				elm_entry_entry_set(br_elm_editfield_entry_get(add_to_bookmark_view->m_url_edit_field),

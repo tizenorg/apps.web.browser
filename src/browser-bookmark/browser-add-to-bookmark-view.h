@@ -60,6 +60,7 @@ private:
 	static void _select_folder_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __title_entry_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __naviframe_pop_finished_cb(void *data , Evas_Object *obj, void *event_info);
+	static void __title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
 
 	Elm_Genlist_Item_Class m_edit_field_item_class;
 	Elm_Genlist_Item_Class m_seperator_item_class;
