@@ -225,7 +225,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 	    || type == BR_HOMEPAGE_SUBMENU_USER_HOMEPAGE
 	    || type == BR_HOMEPAGE_SUBMENU_CURRENT_PAGE
 	    || type == BR_HOMEPAGE_SUBMENU_EMPTY_PAGE) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			Evas_Object *radio_button = elm_radio_add(obj);
 			if (radio_button) {
 #if defined(FEATURE_MOST_VISITED_SITES)
@@ -294,7 +294,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 		}
 	} else if (type == BR_CONTENT_SUBMENU_FIT_TO_WIDTH
 	     || type == BR_CONTENT_SUBMENU_READABLE) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			Evas_Object *radio_button = elm_radio_add(obj);
 			if (radio_button) {
 				if (type == BR_CONTENT_SUBMENU_FIT_TO_WIDTH)
@@ -329,7 +329,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return radio_button;
 		}
 	} else if (type == BR_CONTENT_MENU_RUN_JAVASCRIPT) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_run_javascript_check = elm_check_add(obj);
 			if (main_view->m_run_javascript_check) {
 				elm_object_style_set(main_view->m_run_javascript_check, "on&off");
@@ -344,7 +344,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return main_view->m_run_javascript_check;
 		}
 	} else if (type == BR_CONTENT_MENU_DISPLAY_IMAGES) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_display_images_check = elm_check_add(obj);
 			if (main_view->m_display_images_check) {
 				elm_object_style_set(main_view->m_display_images_check, "on&off");
@@ -359,7 +359,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return main_view->m_display_images_check;
 		}
 	} else if (type == BR_CONTENT_MENU_BLOCK_POPUP) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_block_popup_check = elm_check_add(obj);
 			if (main_view->m_block_popup_check) {
 				elm_object_style_set(main_view->m_block_popup_check, "on&off");
@@ -374,7 +374,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return main_view->m_block_popup_check;
 		}
 	} else if (type == BR_PRIVATE_MENU_SHOW_SECURITY_WARNINGS) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_show_security_warnings_check = elm_check_add(obj);
 			if (main_view->m_show_security_warnings_check) {
 				elm_object_style_set(main_view->m_show_security_warnings_check, "on&off");
@@ -389,7 +389,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return main_view->m_show_security_warnings_check;
 		}
 	} else if (type == BR_PRIVACY_MENU_ACCEPT_COOKIES) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_accept_cookies_check = elm_check_add(obj);
 			if (main_view->m_accept_cookies_check) {
 				elm_object_style_set(main_view->m_accept_cookies_check, "on&off");
@@ -404,7 +404,7 @@ Evas_Object *Browser_Settings_Main_View::__genlist_icon_get(void *data, Evas_Obj
 			return main_view->m_accept_cookies_check;
 		}
 	} else if (type == BR_PRIVACY_MENU_ENABLE_LOCATION) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			main_view->m_enable_location_check = elm_check_add(obj);
 			if (main_view->m_enable_location_check) {
 				elm_object_style_set(main_view->m_enable_location_check, "on&off");
@@ -496,12 +496,12 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 	Browser_Settings_Main_View *main_view = (Browser_Settings_Main_View *)(callback_data->user_data);
 
 	if (type == BR_HOMEPAGE_TITLE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_HOMEPAGE);
 	} else if (type == BR_HOMEPAGE_MENU) {
-		if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_HOMEPAGE);
-		else if (!strncmp(part, "elm.text.2", strlen("elm.text.2"))) {
+		else if (!strcmp(part, "elm.text.2")) {
 			char *homepage = NULL;
 			if (br_preference_get_str(HOMEPAGE_KEY, &homepage) == false) {
 				BROWSER_LOGE("failed to get %s preference\n", HOMEPAGE_KEY);
@@ -533,15 +533,15 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 	}
 #if defined(FEATURE_MOST_VISITED_SITES)
 	else if (type == BR_HOMEPAGE_SUBMENU_MOST_VISITED_SITES) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_MOST_VISITED_SITES);
 	}
 #endif
 	else if (type == BR_HOMEPAGE_SUBMENU_RECENTLY_VISITED_SITE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_RECENTLY_VISITED_SITE);
 	} else if (type == BR_HOMEPAGE_SUBMENU_USER_HOMEPAGE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text"))) {
+		if (!strcmp(part, "elm.text")) {
 			char *homepage = NULL;
 			if (br_preference_get_str(USER_HOMEPAGE_KEY, &homepage) == false) {
 				BROWSER_LOGE("failed to get %s preference\n", USER_HOMEPAGE_KEY);
@@ -550,15 +550,15 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 			return homepage;
 		}
 	} else if (type == BR_HOMEPAGE_SUBMENU_CURRENT_PAGE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CURRENT_PAGE);
 	} else if (type == BR_HOMEPAGE_SUBMENU_EMPTY_PAGE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_BLANK_PAGE);
 	} else if (type == BR_CONTENT_MENU_DEFAULT_VIEW_LEVEL) {
-		if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_DEFAULT_VIEW_LEVEL);
-		else if (!strncmp(part, "elm.text.2", strlen("elm.text.2"))) {
+		else if (!strcmp(part, "elm.text.2")) {
 			char *view_level = NULL;
 			if (br_preference_get_str(DEFAULT_VIEW_LEVEL_KEY, &view_level) == false) {
 				BROWSER_LOGE("failed to get %s preference\n", DEFAULT_VIEW_LEVEL_KEY);
@@ -576,78 +576,78 @@ char *Browser_Settings_Main_View::__genlist_label_get(void *data, Evas_Object *o
 			return NULL;
 		}
 	} else if (type == BR_CONTENT_SUBMENU_FIT_TO_WIDTH) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_FIT_TO_WIDTH);
 	} else if (type == BR_CONTENT_SUBMENU_READABLE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_READABLE);
 	} else if (type == BR_CONTENT_TITLE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CONTENT_SETTINGS);
 	} else if (type == BR_CONTENT_MENU_RUN_JAVASCRIPT) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_RUN_JAVASCRIPT);
 	} else if (type == BR_CONTENT_MENU_DISPLAY_IMAGES) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_SHOW_IMAGES);
 	} else if (type == BR_CONTENT_MENU_BLOCK_POPUP) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_BLOCK_POPUP);
 	} else if (type == BR_PRIVACY_TITLE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_PRIVACY_AND_SECURTY);
 	} else if (type == BR_PRIVATE_MENU_CLEAR_CACHE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CLEAR_CACHE);
 	} else if (type == BR_PRIVATE_MENU_CLEAR_HISTORY) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CLEAR_HISTORY);
 	} else if (type == BR_PRIVATE_MENU_SHOW_SECURITY_WARNINGS) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_SHOW_SECURITY_WARNINGS);
 	} else if (type == BR_PRIVACY_MENU_ACCEPT_COOKIES) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
+		if (!strcmp(part, "elm.text.2"))
 			return strdup(BR_STRING_COOKIES);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		else if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_ACCEPT_COOKIES);
 	} else if (type == BR_PRIVATE_MENU_CLEAR_ALL_COOKIE_DATA) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
+		if (!strcmp(part, "elm.text.2"))
 			return strdup(BR_STRING_COOKIES);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		else if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_CLEAR_ALL_COOKIE_DATA);
 	} else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ASK) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_ALWAYS_ASK);
 	} else if (type == BR_PRIVACY_SUBMENU_ALWAYS_ON) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_ON);
 	} else if (type == BR_PRIVACY_SUBMENU_ALWAYS_OFF) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_OFF);
 	} else if (type == BR_PRIVACY_MENU_CLEAR_PRIVATE_DATA) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_DELETE_BROWSING_DATA);
 	} else if (type == BR_PRIVACY_MENU_ENABLE_LOCATION) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
+		if (!strcmp(part, "elm.text.2"))
 			return strdup(BR_STRING_LOCATION);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		else if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_ENABLE_LOCATION);
 	} else if (type == BR_PRIVACY_MENU_CLEAR_LOCATION_ACCESS) {
-		if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
+		if (!strcmp(part, "elm.text.2"))
 			return strdup(BR_STRING_LOCATION);
-		else if (!strncmp(part, "elm.text.1", strlen("elm.text.1")))
+		else if (!strcmp(part, "elm.text.1"))
 			return strdup(BR_STRING_CLEAR_LOCATION_ACCESS);
 	} else if (type == BR_PRIVACY_WEBSITE_SETTING) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_WEBSITE_SETTINGS);
 	} else if (type == BR_DEBUG_TITLE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_DEVELOPER_MODE);
 	} else if (type == BR_MENU_USER_AGENT) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_USER_AGENT);
 	} else if (type == BR_MENU_RESET_TO_DEFAULT) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_RESET_TO_DEFAULT);
 	}
 

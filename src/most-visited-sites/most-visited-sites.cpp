@@ -743,7 +743,7 @@ Evas_Object *Most_Visited_Sites::__gengrid_icon_get_cb(void *data, Evas_Object *
 
 	most_visited_sites_item *item = (most_visited_sites_item *)data;
 	Most_Visited_Sites *most_visited_sites = (Most_Visited_Sites *)(item->data);
-	if (!strncmp(part, "elm.swallow.icon", strlen("elm.swallow.icon"))) {
+	if (!strcmp(part, "elm.swallow.icon")) {
 		item->layout = elm_layout_add(obj);
 		if (!item->layout) {
 			BROWSER_LOGE("elm_layout_add failed");

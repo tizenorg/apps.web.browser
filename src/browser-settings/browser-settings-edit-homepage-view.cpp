@@ -186,7 +186,7 @@ Evas_Object *Browser_Settings_Edit_Homepage_View::__genlist_icon_get_cb(void *da
 
 	Browser_Settings_Edit_Homepage_View *edit_homepage_view = (Browser_Settings_Edit_Homepage_View *)data;
 
-	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+	if (!strcmp(part, "elm.icon")) {
 		edit_homepage_view->m_edit_field = br_elm_editfield_add(obj, EINA_TRUE);
 		if (!edit_homepage_view->m_edit_field) {
 			BROWSER_LOGE("elm_editfield_add failed");

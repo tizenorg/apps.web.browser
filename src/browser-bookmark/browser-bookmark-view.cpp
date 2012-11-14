@@ -1364,14 +1364,14 @@ char *Browser_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Object *obj
 	BROWSER_LOGD("url(%p)=%s", url, url);
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part,"elm.text", strlen("elm.text"))
-		    || !strncmp(part, "elm.base.text", strlen("elm.base.text"))
-		    || !strncmp(part, "elm.slide.text.1", strlen("elm.slide.text.1"))) {
+		if (!strcmp(part,"elm.text")
+		    || !strcmp(part, "elm.base.text")
+		    || !strcmp(part, "elm.slide.text.1")) {
 		    	if (title && strlen(title))
 			    	return strdup(title);
 			else
 				return NULL;
-		} else if (!strncmp(part, "elm.text.sub", strlen("elm.text.sub"))) {
+		} else if (!strcmp(part, "elm.text.sub")) {
 			if (url && strlen(url))
 				return strdup(url);
 			else
@@ -1392,7 +1392,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 	Browser_Bookmark_View *bookmark_view = (Browser_Bookmark_View *)item->user_data_1;
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			if (item->is_folder) {
 				Evas_Object *folder_icon = elm_icon_add(obj);
 				if (!elm_icon_file_set(folder_icon, BROWSER_IMAGE_DIR"/folder.png", NULL)) {
@@ -1422,7 +1422,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 					return default_icon;
 				}
 			}
-		} else if (!strncmp(part, "elm.slide.swallow.1", strlen("elm.slide.swallow.1"))) {
+		} else if (!strcmp(part, "elm.slide.swallow.1")) {
 			Evas_Object *edit_button = elm_button_add(obj);
 			if (!edit_button) {
 				BROWSER_LOGE("elm_button_add is failed.\n");
@@ -1434,7 +1434,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 				elm_object_disabled_set(edit_button, EINA_TRUE);
 			evas_object_smart_callback_add(edit_button, "clicked", __slide_edit_button_clicked_cb, item);
 			return edit_button;
-		} else if (!strncmp(part, "elm.slide.swallow.2", strlen("elm.slide.swallow.2"))) {
+		} else if (!strcmp(part, "elm.slide.swallow.2")) {
 			Evas_Object *delete_button = elm_button_add(obj);
 			if (!delete_button) {
 				BROWSER_LOGE("elm_button_add is failed.\n");
@@ -1449,7 +1449,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 		}
 
 		if (elm_genlist_decorate_mode_get(obj)) {
-			if (!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
+			if (!strcmp(part, "elm.edit.icon.1")) {
 				Evas_Object *check_button = elm_check_add(obj);
 				if (!check_button) {
 					BROWSER_LOGE("elm_check_add is failed.\n");
@@ -1464,7 +1464,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 				evas_object_smart_callback_add(check_button, "changed",
 								__edit_mode_item_check_changed_cb, item);
 				return check_button;
-			} else if (!strncmp(part, "elm.edit.icon.2", strlen("elm.edit.icon.2"))) {
+			} else if (!strcmp(part, "elm.edit.icon.2")) {
 				Evas_Object *button = elm_button_add(obj);
 				if (!button) {
 					BROWSER_LOGE("elm_button_add is failed.\n");
@@ -1484,7 +1484,7 @@ Evas_Object *Browser_Bookmark_View::__genlist_icon_get_cb(void *data, Evas_Objec
 								__edit_bookmark_item_button_clicked_cb, item);
 				}
 				return button;
-			} else if (!strncmp(part, "elm.flip.content", strlen("elm.flip.content"))) {
+			}else if (!strcmp(part, "elm.flip.content")) {
 				Evas_Object *edit_field = br_elm_editfield_add(obj);
 				br_elm_editfield_entry_single_line_set(edit_field, EINA_TRUE);
 				br_elm_editfield_eraser_set(edit_field, EINA_TRUE);

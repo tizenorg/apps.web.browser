@@ -236,7 +236,7 @@ Evas_Object *Browser_New_Folder_View::__genlist_icon_get_cb(void *data, Evas_Obj
 
 	Browser_New_Folder_View *new_folder_view = (Browser_New_Folder_View *)data;
 
-	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+	if (!strcmp(part, "elm.icon")) {
 		new_folder_view->m_folder_name_edit_field = br_elm_editfield_add(obj, EINA_TRUE);
 		if (!new_folder_view->m_folder_name_edit_field) {
 			BROWSER_LOGE("elm_editfield_add failed");

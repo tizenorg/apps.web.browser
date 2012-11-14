@@ -77,7 +77,7 @@ Evas_Object *Browser_Settings_Website_Setting::__genlist_icon_get(void *data,
 	Browser_Geolocation_DB::geolocation_info *info = (Browser_Geolocation_DB::geolocation_info *)data;
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part, "elm.icon.1", strlen("elm.icon.1"))) {
+		if (!strcmp(part, "elm.icon.1")) {
 			Evas_Object *favicon = NULL;
 			favicon = m_data_manager->get_browser_view()->get_favicon(info->url.c_str());
 			if (favicon)
@@ -93,7 +93,7 @@ Evas_Object *Browser_Settings_Website_Setting::__genlist_icon_get(void *data,
 				evas_object_size_hint_aspect_set(default_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 				return default_icon;
 			}
-		} else if (!strncmp(part,"elm.icon.2", strlen("elm.icon.2"))) {
+		} else if (!strcmp(part,"elm.icon.2")) {
 			Evas_Object *location_icon = elm_icon_add(obj);
 			if (!location_icon)
 				return NULL;
@@ -115,7 +115,7 @@ Evas_Object *Browser_Settings_Website_Setting::__genlist_icon_get(void *data,
 					return location_icon;
 				}
 			}
-		} else if (!strncmp(part,"elm.icon.3", strlen("elm.icon.3"))) {
+		} else if (!strcmp(part,"elm.icon.3")) {
 			Evas_Object *storage_icon = elm_icon_add(obj);
 			if (!storage_icon)
 				return NULL;
@@ -145,7 +145,7 @@ char *Browser_Settings_Website_Setting::__genlist_label_get(void *data,
 	const char *url = info->url.c_str();
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part,"elm.text", strlen("elm.text"))) {
+		if (!strcmp(part,"elm.text")) {
 			if (url && strlen(url))
 				return strdup(url);
 		}
@@ -170,7 +170,7 @@ Evas_Object *Browser_Settings_Website_Setting::__details_genlist_icon_get(void *
 		(Browser_Geolocation_DB::geolocation_info *)(callback_data->user_data);
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+		if (!strcmp(part, "elm.icon")) {
 			if (type == BR_MENU_LOCATION) {
 				BROWSER_LOGD("location menu\n");
 				Evas_Object *location_icon = elm_icon_add(obj);
@@ -231,7 +231,7 @@ char *Browser_Settings_Website_Setting::__details_genlist_label_get(void *data,
 	const char *url = info->url.c_str();
 
 	if (part && strlen(part) > 0) {
-		if (!strncmp(part,"elm.text", strlen("elm.text"))) {
+		if (!strcmp(part,"elm.text")) {
 			if (type == BR_MENU_LOCATION) {
 				BROWSER_LOGD("location menu.\n");
 				return strdup(BR_STRING_CLEAR_LOCATION_ACCESS);

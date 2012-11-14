@@ -176,16 +176,16 @@ char *Browser_Settings_Clear_Data_View::__genlist_label_get(void *data,
 	menu_type type = callback_data->type;
 
 	if (type == BR_CLEAR_HISTORY) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_HISTORY);
 	} else if (type == BR_CLEAR_CACHE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CLEAR_CACHE);
 	} else if (type == BR_CLEAR_COOKIE) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_COOKIES);
 	} else if (type == BR_CLEAR_SAVED_PASSWORD) {
-		if (!strncmp(part, "elm.text", strlen("elm.text")))
+		if (!strcmp(part, "elm.text"))
 			return strdup(BR_STRING_CLEAR_PASSWORDS);
 	}
 
@@ -291,7 +291,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::__genlist_icon_get(void *data,
 	menu_type type = callback_data->type;
 
 	if (type == BR_CLEAR_HISTORY) {
-		if(!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
+		if(!strcmp(part, "elm.edit.icon.1")) {
 			clear_data_view->m_history_check_box = elm_check_add(obj);
 			if (clear_data_view->m_history_check_box) {
 				evas_object_smart_callback_add(clear_data_view->m_history_check_box,
@@ -301,7 +301,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::__genlist_icon_get(void *data,
 			return clear_data_view->m_history_check_box;
 		}
 	} else if (type == BR_CLEAR_CACHE) {
-		if(!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
+		if(!strcmp(part, "elm.edit.icon.1")) {
 			clear_data_view->m_cache_check_box = elm_check_add(obj);
 			if (clear_data_view->m_cache_check_box) {
 				evas_object_smart_callback_add(clear_data_view->m_cache_check_box,
@@ -311,7 +311,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::__genlist_icon_get(void *data,
 			return clear_data_view->m_cache_check_box;
 		}
 	} else if (type == BR_CLEAR_COOKIE) {
-		if(!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
+		if(!strcmp(part, "elm.edit.icon.1")) {
 			clear_data_view->m_cookie_check_box = elm_check_add(obj);
 			if (clear_data_view->m_cookie_check_box) {
 				evas_object_smart_callback_add(clear_data_view->m_cookie_check_box,
@@ -321,7 +321,7 @@ Evas_Object *Browser_Settings_Clear_Data_View::__genlist_icon_get(void *data,
 			return clear_data_view->m_cookie_check_box;
 		}
 	} else if (type == BR_CLEAR_SAVED_PASSWORD) {
-		if(!strncmp(part, "elm.edit.icon.1", strlen("elm.edit.icon.1"))) {
+		if(!strcmp(part, "elm.edit.icon.1")) {
 			clear_data_view->m_saved_id_password_check_box = elm_check_add(obj);
 			if (clear_data_view->m_saved_id_password_check_box) {
 				evas_object_smart_callback_add(clear_data_view->m_saved_id_password_check_box,

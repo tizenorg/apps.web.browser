@@ -62,7 +62,7 @@ char *Browser_Settings_User_Agent_View::__genlist_label_get_cb(void *data,
 	genlist_callback_data *callback_data = (genlist_callback_data *)data;
 	Browser_Settings_User_Agent_View::user_agent_type type = callback_data->type;
 
-	if (!strncmp(part, "elm.text", strlen("elm.text"))) {
+	if (!strcmp(part, "elm.text")) {
 		if (type == TIZEN)
 			return strdup("Tizen");
 		else if (type == CHROME)
@@ -80,7 +80,7 @@ Evas_Object *Browser_Settings_User_Agent_View::__genlist_icon_get_cb(void *data,
 	user_agent_view = (Browser_Settings_User_Agent_View *)(callback_data->user_data);
 	Browser_Settings_User_Agent_View::user_agent_type type = callback_data->type;
 
-	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+	if (!strcmp(part, "elm.icon")) {
 		if (type == TIZEN) {
 			user_agent_view->m_tizen_checkbox = elm_check_add(obj);
 			if (!user_agent_view->m_tizen_checkbox) {

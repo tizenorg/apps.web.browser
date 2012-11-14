@@ -60,7 +60,7 @@ Evas_Object *Add_To_Most_Visited_Sites_View::__genlist_icon_get_cb(void *data, E
 
 	Browser_History_DB::history_item *item = (Browser_History_DB::history_item *)data;
 
-	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+	if (!strcmp(part, "elm.icon")) {
 		Evas_Object *default_favicon = elm_icon_add(obj);
 		if (!default_favicon) {
 			BROWSER_LOGE("elm_icon_add is failed");
@@ -85,14 +85,14 @@ char *Add_To_Most_Visited_Sites_View::__genlist_label_get_cb(void *data, Evas_Ob
 	char *mark_up = NULL;
 
 	BROWSER_LOGD("item->title.c_str()=[%s]", item->title.c_str());
-	if (!strncmp(part, "elm.text.1", strlen("elm.text.1"))
-		|| !strncmp(part, "elm.base.text", strlen("elm.base.text"))
-		|| !strncmp(part, "elm.slide.text.1", strlen("elm.slide.text.1")))
+	if (!strcmp(part, "elm.text.1")
+		|| !strcmp(part, "elm.base.text")
+		|| !strcmp(part, "elm.slide.text.1"))
 	{
 		mark_up = elm_entry_utf8_to_markup(item->title.c_str());
 		return mark_up;
-	} else if (!strncmp(part, "elm.text.2", strlen("elm.text.2"))
-		|| !strncmp(part, "elm.slide.text.2", strlen("elm.slide.text.2"))) {
+	} else if (!strcmp(part, "elm.text.2")
+		|| !strcmp(part, "elm.slide.text.2")) {
 		mark_up = elm_entry_utf8_to_markup(item->url.c_str());
 		return mark_up;
 	}
@@ -107,7 +107,7 @@ char *Add_To_Most_Visited_Sites_View::__genlist_date_label_get_cb(void *data, Ev
 		return NULL;
 
 	char *date_label = (char *)data;
-	if (!strncmp(part, "elm.text", strlen("elm.text"))) {
+	if (!strcmp(part, "elm.text")) {
 		Date date;
 		char buffer[BROWSER_MAX_DATE_LEN] = {0, };
 

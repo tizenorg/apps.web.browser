@@ -1521,7 +1521,7 @@ Evas_Object *Browser_Multi_Window_View::_get_gengrid_icon_cb(void *data,
 	multi_window_view = (Browser_Multi_Window_View *)(param->multi_window_view);
 	int index = param->index;
 
-	if (!strncmp(part, "elm.swallow.icon", strlen("elm.swallow.icon"))) {
+	if (!strcmp(part, "elm.swallow.icon")) {
 		Evas_Object *snapshot_image = evas_object_image_add(evas_object_evas_get(obj));
 		if (!snapshot_image) {
 			BROWSER_LOGE("evas_object_image_add failed");

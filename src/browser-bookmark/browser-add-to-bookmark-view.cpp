@@ -136,7 +136,7 @@ char *Browser_Add_To_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Obje
 	if (!data || !part)
 		return NULL;
 
-	if (!strncmp(part, "elm.text.1", strlen("elm.text.1"))) {
+	if (!strcmp(part, "elm.text.1")) {
 		Browser_Add_To_Bookmark_View *add_to_bookmark_view = (Browser_Add_To_Bookmark_View *)data;
 		Browser_Bookmark_DB *bookmark_db = m_data_manager->get_bookmark_db();
 		int folder_id = add_to_bookmark_view->m_folder_id_to_save;
@@ -147,7 +147,7 @@ char *Browser_Add_To_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Obje
 			string default_folder_name = bookmark_db->get_folder_name_by_id(folder_id);
 			return strdup(default_folder_name.c_str());
 		}
-	} else if (!strncmp(part, "elm.text.2", strlen("elm.text.2")))
+	} else if (!strcmp(part, "elm.text.2"))
 		return strdup(BR_STRING_FOLDER);
 
 	return NULL;
@@ -165,7 +165,7 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 	string title = add_to_bookmark_view->m_title;
 	string url = add_to_bookmark_view->m_url;
 
-	if (!strncmp(part, "elm.icon", strlen("elm.icon"))) {
+	if (!strcmp(part, "elm.icon")) {
 		if (type == TITLE_EDIT_FIELD) {
 			add_to_bookmark_view->m_title_edit_field = br_elm_editfield_add(obj, EINA_TRUE);
 			if (!add_to_bookmark_view->m_title_edit_field)
