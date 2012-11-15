@@ -826,7 +826,6 @@ Eina_Bool Browser_Common_View::_show_share_popup(const char *url)
 	evas_object_size_hint_weight_set(m_share_list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(m_share_list, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-	elm_list_item_append(m_share_list, BR_STRING_MESSAGES, NULL, NULL, __send_via_message_cb, this);
 	elm_list_item_append(m_share_list, BR_STRING_EMAIL, NULL, NULL, __send_via_email_cb, this);
 
 	evas_object_show(m_share_list);
