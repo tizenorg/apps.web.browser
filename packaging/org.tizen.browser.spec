@@ -169,18 +169,10 @@ fi
 
 
 # Change db file owner & permission
-#chown :5000 %{appdatadir}/data/db/.browser.db
-#chown :5000 %{appdatadir}/data/db/.browser.db-journal
 chown :5000 /opt/usr/dbspace/.browser-history.db
 chown :5000 /opt/usr/dbspace/.browser-history.db-journal
 chown :5000 /opt/usr/dbspace/.internet_bookmark.db
 chown :5000 /opt/usr/dbspace/.internet_bookmark.db-journal
-#chown :5000 %{appdatadir}/data/db/.browser-credential.db
-#chown :5000 %{appdatadir}/data/db/.browser-credential.db-journal
-#chown :5000 %{appdatadir}/data/db/.browser-mostvisited.db
-#chown :5000 %{appdatadir}/data/db/.browser-mostvisited.db-journal
-#chown :5000 %{appdatadir}/data/db/.browser-geolocation.db
-#chown :5000 %{appdatadir}/data/db/.browser-geolocation.db-journal
 chmod 660 %{appdatadir}/data/db/.browser.db
 chmod 660 %{appdatadir}/data/db/.browser.db-journal
 chmod 666 /opt/usr/dbspace/.browser-history.db
@@ -207,6 +199,10 @@ vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0;
 chown -R 5000:5000 %{appdatadir}/data
 chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.internet_bookmark.db*
 chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.browser-history.db*
+chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser.db*
+chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-credential.db*
+chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-mostvisited.db*
+chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-geolocation.db*
 
 %files
 %manifest org.tizen.browser.manifest
