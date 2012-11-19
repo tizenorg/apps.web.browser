@@ -16,6 +16,7 @@
                         <smack request="org.tizen.browser::db_external" type="rw"/>
                         <smack request="efreet" type="rx"/>
                         <smack request="appsvc::db" type="rw"/>
+                        <smack request="webkit2-efl" type="x"/>
                 </request>
         </define>
         <assign>
