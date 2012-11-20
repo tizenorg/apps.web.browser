@@ -1632,7 +1632,7 @@ void Browser_View::_stop_loading(void)
 void Browser_View::_reload(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	if (m_focused_window->m_ewk_view)
+	if (m_focused_window && m_focused_window->m_ewk_view)
 		ewk_view_reload(m_focused_window->m_ewk_view);
 }
 
