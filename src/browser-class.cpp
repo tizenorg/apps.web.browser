@@ -285,7 +285,7 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 	ewk_context_icon_database_path_set(ewk_view_context_get(ewk_view), BROWSER_FAVICON_DB_PATH);
 
 	Ewk_Setting *setting = ewk_view_setting_get(ewk_view);
-	ewk_setting_show_ime_on_autofocus_set(setting, EINA_FALSE);
+	ewk_setting_show_ime_on_autofocus_set(setting, EINA_TRUE);
 
 	char *default_level = NULL;
 	if (br_preference_get_str(DEFAULT_VIEW_LEVEL_KEY, &default_level) == false) {

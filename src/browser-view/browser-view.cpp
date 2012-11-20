@@ -3934,6 +3934,7 @@ void Browser_View::resume_ewk_view(Evas_Object *ewk_view)
 
 	ewk_view_resume(ewk_view);
 	ewk_view_visibility_set(ewk_view, EINA_TRUE);
+	evas_object_focus_set(ewk_view, EINA_TRUE);
 }
 
 void Browser_View::pause(void)
