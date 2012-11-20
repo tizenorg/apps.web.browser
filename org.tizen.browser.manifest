@@ -16,8 +16,11 @@
                         <smack request="org.tizen.browser::db_external" type="rw"/>
                         <smack request="efreet" type="rx"/>
                         <smack request="appsvc::db" type="rw"/>
-                        <smack request="webkit2-efl" type="x"/>
+                        <smack request="webkit2-efl" type="rwx"/>
                 </request>
+                <permit>
+                        <smack permit="webkit2-efl" type="rwx"/>
+                </permit>
         </define>
         <assign>
                 <filesystem path="/usr/share/applications/org.tizen.browser.desktop" label="_" />
