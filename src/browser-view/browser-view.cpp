@@ -2177,21 +2177,26 @@ void Browser_View::__bookmark_cb(void *data, Evas_Object *obj, void *event_info)
 	Browser_View *browser_view = (Browser_View *)data;
 	int bookmark_id = -1;
 	if(!m_data_manager->get_history_db()->is_in_bookmark(browser_view->get_url().c_str(), &bookmark_id)) {
-		if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
-			BROWSER_LOGE("elm_icon_file_set is failed.\n");
-			return;
-		}
-		m_data_manager->create_bookmark_db()->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID,
-					browser_view->get_title().c_str(), browser_view->get_url().c_str());
+		if (browser_view->get_title().empty() || strlen(browser_view->get_title().c_str()) == 0 ) {
+			BROWSER_LOGD("Title is EMPTY...Add to bookmark view is launched[%s]", __func__);
+			browser_view->__add_bookmark_cb(browser_view, NULL, NULL);
+		} else {
+			if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
+				BROWSER_LOGE("elm_icon_file_set is failed.\n");
+				return;
+			}
+			m_data_manager->create_bookmark_db()->save_bookmark(BROWSER_BOOKMARK_MAIN_FOLDER_ID,
+						browser_view->get_title().c_str(), browser_view->get_url().c_str());
 #ifdef STORE_FAVICON
-		/* Save favicon to Bookmark DB if there are same URLs */
-		if (m_data_manager->get_bookmark_db()) {
-			m_data_manager->get_bookmark_db()->save_bookmark_icon(
-					browser_view->get_url().c_str(),
-					browser_view->get_favicon(browser_view->get_url().c_str()));
-		}
+			/* Save favicon to Bookmark DB if there are same URLs */
+			if (m_data_manager->get_bookmark_db()) {
+				m_data_manager->get_bookmark_db()->save_bookmark_icon(
+						browser_view->get_url().c_str(),
+						browser_view->get_favicon(browser_view->get_url().c_str()));
+			}
 #endif
-		browser_view->show_notify_popup(BR_STRING_ADDED_TO_BOOKMARKS, 3, EINA_TRUE);
+			browser_view->show_notify_popup(BR_STRING_ADDED_TO_BOOKMARKS, 3, EINA_TRUE);
+		}
 	} else {
 		if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_off.png", NULL)) {
 			BROWSER_LOGE("elm_icon_file_set is failed.\n");
