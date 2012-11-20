@@ -61,6 +61,7 @@ public:
 	void ewk_view_deinit(Evas_Object *ewk_view);
 	std::string get_user_agent(void);
 	void clean_up_windows(void);
+	void destroy_findonpage(void);
 	Browser_Window *create_deleted_window(int index);
 	Browser_Geolocation *get_geolocation(void) { return m_geolocation; }
 private:
