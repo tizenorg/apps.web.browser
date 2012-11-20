@@ -2529,19 +2529,6 @@ Eina_Bool Browser_View::_call_download_manager(void)
 	return EINA_TRUE;
 }
 
-void Browser_View::__download_manager_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	BROWSER_LOGD("[%s]", __func__);
-	if (!data)
-		return;
-
-	Browser_View *browser_view = (Browser_View *)data;
-	browser_view->_destroy_more_context_popup();
-
-	if (!browser_view->_call_download_manager())
-		BROWSER_LOGE("_call_download_manager failed");
-}
-
 void Browser_View::__send_via_message_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -2622,8 +2609,6 @@ Eina_Bool Browser_View::_show_more_context_popup(void)
 					__more_context_popup_dismissed_cb, this);
 
 	Elm_Object_Item *sub_menu = NULL;
-	elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_DOWNLOAD_MANAGER, NULL,
-							__download_manager_cb, this);
 
 	sub_menu = elm_ctxpopup_item_append(m_more_context_popup, BR_STRING_FIND_ON_PAGE, NULL,
 							__find_word_cb, this);

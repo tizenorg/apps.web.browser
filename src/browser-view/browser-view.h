@@ -178,7 +178,6 @@ private:
 	static void __more_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __scroller_scroll_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __send_via_message_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __download_manager_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __send_via_email_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __more_context_popup_dismissed_cb(void *data, Evas_Object *obj,
 									void *event_info);
