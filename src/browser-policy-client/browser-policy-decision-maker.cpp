@@ -367,9 +367,10 @@ void Browser_Policy_Decision_Maker::_request_download(Ewk_Policy_Decision *polic
 
 	ret = service_foreach_app_matched(service_handle, __launch_matched_application_cb, this);
 
-	if (ret < 0) {
+	if (ret != SERVICE_ERROR_NONE) {
 		BROWSER_LOGE("Fail to get default application by mime type");
 		service_destroy(service_handle);
+		return;
 	}
 
 	if (m_found_matched_app == EINA_FALSE) {
