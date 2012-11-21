@@ -197,12 +197,17 @@ vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0;
 
 # Change file owner
 chown -R 5000:5000 %{appdatadir}/data
-chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.internet_bookmark.db*
-chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.browser-history.db*
-chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser.db*
-chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-credential.db*
-chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-mostvisited.db*
-chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-geolocation.db*
+
+# Apply SMACK label to database files# Apply SMACK label to database files
+if [ -f /usr/lib/rpm-plugins/msm.so ]
+then
+	chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.internet_bookmark.db*
+	chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.browser-history.db*
+	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser.db*
+	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-credential.db*
+	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-mostvisited.db*
+	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-geolocation.db*
+fi
 
 %files
 %manifest org.tizen.browser.manifest
