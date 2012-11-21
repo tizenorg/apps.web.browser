@@ -177,7 +177,6 @@
 
 /* Screen shot path definition */
 #define BROWSER_SCREEN_SHOT_DIR	BROWSER_DATA_DIR"/data/screenshots/"
-#define BROWSER_FAVICON_DB_PATH	BROWSER_DATA_DIR"/data/db/WebpageIcons.db"
 
 #define BROWSER_CLEAN_UP_WINDOWS_TIMEOUT	(60 * 30) // 30 min
 
