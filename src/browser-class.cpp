@@ -282,8 +282,6 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 	if (!_set_user_agent(ewk_view))
 		BROWSER_LOGE("_set_user_agent failed");
 
-	ewk_context_icon_database_path_set(ewk_view_context_get(ewk_view), BROWSER_FAVICON_DB_PATH);
-
 	Ewk_Setting *setting = ewk_view_setting_get(ewk_view);
 	ewk_setting_show_ime_on_autofocus_set(setting, EINA_TRUE);
 
