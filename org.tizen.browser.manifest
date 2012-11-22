@@ -17,6 +17,7 @@
                         <smack request="efreet" type="rx"/>
                         <smack request="appsvc::db" type="rw"/>
                         <smack request="webkit2-efl" type="rwx"/>
+                        <smack request="sys-assert::core" type="wx"/>
                 </request>
                 <permit>
                         <smack permit="webkit2-efl" type="rwx"/>
