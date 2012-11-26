@@ -704,6 +704,18 @@ void Browser_Class::clean_up_windows(void)
 //	m_browser_view->show_msg_popup("This is a test message. Low memory - clean up windows.", 5);
 }
 
+void Browser_Class::destroy_findonpage(void)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (m_browser_view->m_option_header_find_word_layout) {
+		evas_object_del(m_browser_view->m_option_header_find_word_layout);
+		m_browser_view->m_option_header_find_word_layout = NULL;
+
+		m_browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
+		m_browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+	}
+}
+
 Browser_Window *Browser_Class::create_deleted_window(int index)
 {
 	if (m_window_list[index]->m_ewk_view == NULL) {

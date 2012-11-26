@@ -408,6 +408,9 @@ static void __br_lang_changed_cb(void *data)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	/* To do */
+	struct browser_data *ad = (struct browser_data *)data;
+
+	ad->browser_instance->destroy_findonpage();
 	return;
 }
 
