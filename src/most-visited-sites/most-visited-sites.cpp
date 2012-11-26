@@ -331,13 +331,6 @@ void Most_Visited_Sites::__item_clicked_cb(void *data, Evas_Object *obj, void *e
 		return;
 	}
 
-	if (!item->history_id || !item->url) {
-		BROWSER_LOGE("empty item");
-		item->url = strdup("about:blank");
-		ecore_idler_add(__load_url_idler_cb, item);
-		return;
-	}
-
 	most_visited_sites->m_selected_item = item;
 
 	if (most_visited_sites->m_edit_mode) {
@@ -346,6 +339,12 @@ void Most_Visited_Sites::__item_clicked_cb(void *data, Evas_Object *obj, void *e
 		return;
 	}
 
+	if (!item->history_id || !item->url) {
+		BROWSER_LOGE("empty item");
+		item->url = strdup("about:blank");
+		ecore_idler_add(__load_url_idler_cb, item);
+		return;
+	}
 #if 0
 	if (!most_visited_sites->m_selected_item) {
 		BROWSER_LOGE("most_visited_sites->m_selected_item is null");
