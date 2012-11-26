@@ -326,6 +326,11 @@ void Browser_Bookmark_View::__back_button_clicked_cb(void *data, Evas_Object *ob
 	if (elm_naviframe_bottom_item_get(navi_bar) != elm_naviframe_top_item_get(navi_bar))
 		elm_naviframe_item_pop(navi_bar);
 
+	if (bookmark_view->m_processing_popup_timer) {
+		BROWSER_LOGD("delete timer callback");
+		ecore_timer_del(bookmark_view->m_processing_popup_timer);
+		bookmark_view->m_processing_popup_timer = NULL;
+	}
 	/* Set the title if enter the add to bookmark while loading. */
 	m_data_manager->get_browser_view()->return_to_browser_view();
 }
