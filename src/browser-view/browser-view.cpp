@@ -2485,6 +2485,16 @@ void Browser_View::__find_word_cb(void *data, Evas_Object *obj, void *event_info
 	if (browser_view->_get_edit_mode() == BR_FIND_WORD_MODE)
 		return;
 
+	if (!browser_view->m_option_header_find_word_layout) {
+		browser_view->m_option_header_find_word_layout = browser_view->_create_find_word_layout();
+
+		if (!browser_view->m_option_header_find_word_layout) {
+			BROWSER_LOGE("_create_find_word_layout failed");
+			return;
+		}
+		elm_object_part_content_set(browser_view->m_option_header_layout, "elm.swallow.find_word_layout", browser_view->m_option_header_find_word_layout);
+	}
+
 	/* find word layout is only in naviframe optino header.
 	  * So expand the option header to show find word layout. */
 	browser_view->_navigationbar_visible_set_signal(EINA_TRUE);
