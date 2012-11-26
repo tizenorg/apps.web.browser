@@ -770,11 +770,6 @@ Eina_Bool Browser_Common_View::_share_via_nfc(std::string url)
 		BROWSER_LOGE("fail to service_create.");
 		return EINA_FALSE;
 	}
-	if (service_add_extra_data(data, "count", "1")) {
-		BROWSER_LOGE("service_add_extra_data is failed.");
-		service_destroy(data);
-		return EINA_FALSE;
-	}
 	if (service_add_extra_data(data, "request_type", "data_buffer")) {
 		BROWSER_LOGE("service_add_extra_data is failed.");
 		service_destroy(data);
