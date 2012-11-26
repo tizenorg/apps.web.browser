@@ -589,6 +589,7 @@ void Browser_Bookmark_View::_show_delete_processing_popup(void)
 
 Eina_Bool Browser_Bookmark_View::__delete_processing_popup_timer_cb(void *data)
 {
+	BROWSER_LOGD("");
 	if (!data)
 		return ECORE_CALLBACK_CANCEL;
 
@@ -601,6 +602,7 @@ Eina_Bool Browser_Bookmark_View::__delete_processing_popup_timer_cb(void *data)
 	if (value >= 1.0) {
 		__delete_processing_popup_response_cb(bookmark_view, NULL, NULL);
 
+		bookmark_view->_set_edit_mode(EINA_FALSE);
 		bookmark_view->m_processing_popup_timer = NULL;
 		bookmark_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
 
@@ -742,6 +744,7 @@ void Browser_Bookmark_View::_show_select_processing_popup(void)
 
 Eina_Bool Browser_Bookmark_View::__select_processing_popup_timer_cb(void *data)
 {
+	BROWSER_LOGD("[%s]", __func__);
 	if (!data)
 		return ECORE_CALLBACK_CANCEL;
 
@@ -1657,7 +1660,8 @@ void Browser_Bookmark_View::__delete_confirm_response_by_edit_mode_cb(void *data
 
 	bookmark_view->_delete_selected_bookmark();
 
-	bookmark_view->_set_edit_mode(EINA_FALSE);
+	if (bookmark_view->_get_current_folder_item_list().size() < BROWSER_BOOKMARK_PROCESS_BLOCK_COUNT)
+		bookmark_view->_set_edit_mode(EINA_FALSE);
 }
 
 Evas_Object *Browser_Bookmark_View::_show_delete_confirm_popup(void)
