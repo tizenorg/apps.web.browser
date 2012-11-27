@@ -81,6 +81,8 @@
 #define BROWSER_MMS_TO_SCHEME "mmsto:"
 #define BROWSER_WTAI_SCHEME "wtai://"
 #define BROWSER_WTAI_WP_AP_SCHEME "wtai://wp/ap;"
+#define BROWSER_WTAI_WP_MC_SCHEME "wtai://wp/mc;"
+#define BROWSER_TEL_SCHEME "tel:"
 
 #define BROWSER_DEFAULT_USER_HOMEPAGE	"www.tizen.org"
 

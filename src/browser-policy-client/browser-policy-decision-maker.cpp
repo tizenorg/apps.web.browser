@@ -181,17 +181,51 @@ Eina_Bool Browser_Policy_Decision_Maker::_handle_exscheme(void)
 
 		return EINA_TRUE;
 	} else if (!m_url.compare(0, strlen(BROWSER_WTAI_WP_AP_SCHEME), BROWSER_WTAI_WP_AP_SCHEME)) {
-		BROWSER_LOGD("wtai://wp/mc or wtai://wp/ap");
+		BROWSER_LOGD("wtai://wp/ap");
 		m_url = std::string(m_url.c_str() + strlen(BROWSER_WTAI_WP_AP_SCHEME));
-
 		if (m_url.find(";") != string::npos) {
 			m_url = m_url.substr(0, m_url.length() - m_url.substr(m_url.find(";")).length());
 		}
-
+		//erase the dash contained in the number
+		int pos=m_url.find("-");
+		while(pos!=-1)
+		{
+			m_url.replace(pos,1,"");
+			pos=m_url.find("-");
+		}
 		BROWSER_LOGD("phone number = [%s]", m_url.c_str());
-
 		_add_to_contact(m_url);
 
+		return EINA_TRUE;
+	} else if (!m_url.compare(0, strlen(BROWSER_WTAI_WP_MC_SCHEME), BROWSER_WTAI_WP_MC_SCHEME)) {
+		BROWSER_LOGD("wtai://wp/mc");
+		m_url = std::string(m_url.c_str() + strlen(BROWSER_WTAI_WP_MC_SCHEME));
+		if (m_url.find(";") != string::npos) {
+			m_url = m_url.substr(0, m_url.length() - m_url.substr(m_url.find(";")).length());
+		}
+		BROWSER_LOGD("wtai://wp/mc phone number = [%s]", m_url.c_str());
+		int pos=m_url.find("-");
+		while(pos!=-1)
+		{
+			m_url.replace(pos,1,"");
+			pos=m_url.find("-");
+		}
+		_call_number(m_url);
+		return EINA_TRUE;
+	} else if (!m_url.compare(0, strlen(BROWSER_TEL_SCHEME), BROWSER_TEL_SCHEME)) {
+		m_url = std::string(m_url.c_str() + strlen(BROWSER_TEL_SCHEME));
+		if (m_url.find(":") != string::npos) {
+			m_url = m_url.substr(0, m_url.length() - m_url.substr(m_url.find(":")).length());
+		}
+		BROWSER_LOGD("tel phone number = [%s]", m_url.c_str());
+		//erase the dash contained in the number
+		int pos=m_url.find("-");
+		while(pos!=-1)
+		{
+			m_url.replace(pos,1,"");
+			pos=m_url.find("-");
+		}
+		_call_number(m_url);
 		return EINA_TRUE;
 	}
 

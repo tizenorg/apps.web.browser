@@ -74,6 +74,7 @@ protected:
 	Eina_Bool _send_via_email(std::string url, Eina_Bool attach_file = EINA_FALSE);
 	Eina_Bool _share_via_nfc(std::string url);
 	Eina_Bool _add_to_contact(std::string number);
+	Eina_Bool _call_number(const std::string &url);
 
 	static void __database_quota_size_change_popup_ok_cb(void* data, Evas_Object* obj, void* event_info);
 	static void __database_quota_size_change_popup_cancel_cb(void* data, Evas_Object* obj, void* event_info);

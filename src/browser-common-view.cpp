@@ -744,6 +744,45 @@ CT_UG_REQUEST_ADD_WITH_WEB = 24,
 	free(phone_number);
 }
 
+Eina_Bool Browser_Common_View::_call_number(const std::string &url)
+{
+	if (url.empty()) {
+		show_msg_popup(BR_STRING_EMPTY);
+		return EINA_FALSE;
+	}
+	service_h service_handle = NULL;
+	if (service_create(&service_handle) < 0) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+	if (!service_handle) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(service_handle, "launch-type", "MO")) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	if (service_add_extra_data(service_handle, "number", url.c_str())) {
+		BROWSER_LOGE("service_add_extra_data is failed.");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	if (service_set_app_id(service_handle, "org.tizen.call") < 0) {
+		BROWSER_LOGE("Fail to service_set_app_id");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	service_destroy(service_handle);
+	return EINA_TRUE;
+}
+
 Eina_Bool Browser_Common_View::_share_via_nfc(std::string url)
 {
 	BROWSER_LOGD("[%s]", __func__);
