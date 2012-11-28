@@ -2302,6 +2302,7 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		}
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_select_mode_set(m_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 
 		m_create_folder_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 							BROWSER_IMAGE_DIR"/I01_controlbar_icon_create.png",
@@ -2334,6 +2335,7 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		}
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_select_mode_set(m_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 
 		m_bookmark_delete_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 								NULL, BR_STRING_DELETE,
@@ -2406,6 +2408,7 @@ Eina_Bool Browser_Bookmark_View::_set_controlbar_type(controlbar_type type)
 		}
 		elm_object_style_set(m_bottom_control_bar, "browser/default");
 		elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_select_mode_set(m_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 #ifdef HISTORY_EDIT_MODE
 		m_bookmark_edit_controlbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 								NULL, BR_STRING_DELETE,

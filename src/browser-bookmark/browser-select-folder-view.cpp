@@ -257,6 +257,7 @@ Eina_Bool Browser_Select_Folder_View::_create_main_layout(void)
 	}
 	elm_object_style_set(m_bottom_control_bar, "browser/default");
 	elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+	elm_toolbar_select_mode_set(m_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 
 	evas_object_show(m_bottom_control_bar);
 

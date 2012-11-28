@@ -1822,6 +1822,7 @@ Evas_Object *Browser_Multi_Window_View::_create_control_bar(void)
 		elm_object_style_set(control_bar, "browser/browser-view");
 
 		elm_toolbar_shrink_mode_set(control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_select_mode_set(control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 		m_new_window_button =  elm_toolbar_item_append(control_bar, BROWSER_IMAGE_DIR"/I01_controlbar_icon_new_window.png",
 										NULL, __new_window_button_clicked_cb, this);
 

@@ -651,6 +651,7 @@ void Browser_Settings_Website_Setting::_show_details_list(website_setting_item *
 	}
 	elm_object_style_set(m_details_bottom_control_bar, "browser/default");
 	elm_toolbar_shrink_mode_set(m_details_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+	elm_toolbar_select_mode_set(m_details_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 
 	m_delete_all_details_conbar_item = elm_toolbar_item_append(m_details_bottom_control_bar,
 							NULL, BR_STRING_DELETE_ALL,
@@ -986,6 +987,7 @@ Eina_Bool Browser_Settings_Website_Setting::_create_main_layout(void)
 	}
 	elm_object_style_set(m_bottom_control_bar, "browser/default");
 	elm_toolbar_shrink_mode_set(m_bottom_control_bar, ELM_TOOLBAR_SHRINK_EXPAND);
+	elm_toolbar_select_mode_set(m_bottom_control_bar, ELM_OBJECT_SELECT_MODE_NONE);
 
 	m_delete_all_website_list_conbar_item = elm_toolbar_item_append(m_bottom_control_bar,
 							NULL, BR_STRING_DELETE_ALL,
