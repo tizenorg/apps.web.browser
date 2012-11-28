@@ -47,6 +47,7 @@ public:
 		CUSTOM_CONTEXT_MENU_IMAGE_WITH_HYPERLINK_MODE,
 		CUSTOM_CONTEXT_MENU_HYPERLINK_ONLY_MODE,
 		CUSTOM_CONTEXT_MENU_TEXT_AND_IMAGE_SELECTION_MODE,
+		CUSTOM_CONTEXT_MENU_INPUT_TAG_MODE,
 
 		CUSTOM_CONTEXT_MENU_MODE_INDEX_END
 
@@ -77,6 +78,7 @@ private:
 	Eina_Bool _append_image_only_mode_context_menu(Ewk_Context_Menu *menu);
 	Eina_Bool _append_image_with_hyperlink_mode_context_menu(Ewk_Context_Menu *menu);
 	Eina_Bool _append_text_and_image_selection_mode_context_menu(Ewk_Context_Menu *menu);
+	Eina_Bool _append_input_tag_mode_context_menu(Ewk_Context_Menu *menu);
 	Eina_Bool _append_normal_mode_context_menu(Ewk_Context_Menu *menu);
 
 	Browser_View *m_browser_view;
