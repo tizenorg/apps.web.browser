@@ -253,6 +253,13 @@ Evas_Object *Browser_Add_To_Bookmark_View::__genlist_icon_get_cb(void *data, Eva
 	return NULL;
 }
 
+void Browser_Add_To_Bookmark_View::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo)
+{
+	Elm_Object_Item *it = elm_genlist_selected_item_get(obj);
+	if (it == NULL) return;
+	elm_genlist_item_selected_set(it, EINA_FALSE);
+}
+
 Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -281,7 +288,7 @@ Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 	m_title_param.type = TITLE_EDIT_FIELD;
 	m_title_param.add_to_bookmark_view = this;
 	elm_genlist_item_append(genlist, &m_edit_field_item_class, &m_title_param, NULL,
-								ELM_GENLIST_ITEM_NONE, NULL, NULL);
+								ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, NULL);
 
 	it = elm_genlist_item_append(genlist, &m_seperator_item_class, NULL, NULL,
 								ELM_GENLIST_ITEM_NONE, NULL, NULL);
@@ -290,7 +297,7 @@ Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 	m_url_param.type = URL_EDIT_FIELD;
 	m_url_param.add_to_bookmark_view = this;
 	elm_genlist_item_append(genlist, &m_edit_field_item_class, &m_url_param, NULL,
-								ELM_GENLIST_ITEM_NONE, NULL, NULL);
+								ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, NULL);
 
 	it = elm_genlist_item_append(genlist, &m_seperator_item_class, NULL, NULL,
 								ELM_GENLIST_ITEM_NONE, NULL, NULL);

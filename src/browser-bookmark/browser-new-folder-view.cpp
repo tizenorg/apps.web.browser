@@ -303,6 +303,13 @@ void Browser_New_Folder_View::__naviframe_pop_finished_cb(void *data , Evas_Obje
 		return;
 }
 
+void Browser_New_Folder_View::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo)
+{
+	Elm_Object_Item *it = elm_genlist_selected_item_get(obj);
+	if (it == NULL) return;
+	elm_genlist_item_selected_set(it, EINA_FALSE);
+}
+
 Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -328,7 +335,7 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 	m_item_class.func.state_get = NULL;
 	m_item_class.func.del = NULL;
 
-	elm_genlist_item_append(m_genlist, &m_item_class, this, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+	elm_genlist_item_append(m_genlist, &m_item_class, this, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, NULL);
 	evas_object_show(m_genlist);
 	elm_object_content_set(m_conformant, m_genlist);
 

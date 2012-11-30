@@ -53,6 +53,7 @@ private:
 	/* genlist data callback functions */
 	static char *__genlist_label_get_cb(void *data, Evas_Object *obj, const char *part);
 	static Evas_Object *__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part);
+	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo);
 
 	/* elementary event callback functions */
 	static void __cancel_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
