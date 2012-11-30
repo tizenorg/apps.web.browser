@@ -228,6 +228,19 @@ Eina_Bool Browser_Policy_Decision_Maker::_handle_exscheme(void)
 		_call_number(m_url);
 		return EINA_TRUE;
 	}
+	else if (!m_url.compare(0, strlen(BROWSER_INTENT_SCHEME), BROWSER_INTENT_SCHEME)) {
+		BROWSER_LOGD("intent:");
+		m_url = std::string(m_url.c_str() + strlen(BROWSER_INTENT_SCHEME));
+		BROWSER_LOGD("m_url:[%s]", m_url.c_str());
+
+		if (_handle_intent_scheme(m_url) == EINA_FALSE) {
+			BROWSER_LOGD("failed to _handle_intent_scheme, consider it as url");
+			m_browser_view->show_msg_popup("There is an error to use intent with pkg name and parameter");
+			return EINA_FALSE;
+		}
+
+		return EINA_TRUE;
+	}
 
 	return EINA_FALSE;
 }

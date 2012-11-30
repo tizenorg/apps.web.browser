@@ -83,6 +83,7 @@
 #define BROWSER_WTAI_WP_AP_SCHEME "wtai://wp/ap;"
 #define BROWSER_WTAI_WP_MC_SCHEME "wtai://wp/mc;"
 #define BROWSER_TEL_SCHEME "tel:"
+#define BROWSER_INTENT_SCHEME "intent:"
 
 #define BROWSER_DEFAULT_USER_HOMEPAGE	"www.tizen.org"
 

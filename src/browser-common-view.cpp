@@ -783,6 +783,73 @@ Eina_Bool Browser_Common_View::_call_number(const std::string &url)
 	return EINA_TRUE;
 }
 
+Eina_Bool Browser_Common_View::_handle_intent_scheme(std::string parameter)
+{
+	BROWSER_LOGD("[%s], parameter[%s]", __func__, parameter.c_str());
+
+	std::string designated_pkg;
+	std::string extra_data;
+	service_h service_handle = NULL;
+
+	/* parse pkg name */
+	size_t pkgname_start_pos = 0;
+	size_t pkgname_end_pos = 0;
+
+	if (parameter.find("package=") != string::npos) {
+		pkgname_start_pos = parameter.find("package=") + strlen("package=");
+		pkgname_end_pos = parameter.find(";", pkgname_start_pos);
+		designated_pkg = parameter.substr(pkgname_start_pos, pkgname_end_pos - pkgname_start_pos);
+	}
+
+	if (!designated_pkg.length()) {
+		BROWSER_LOGE("Failed to get pkg name from intent scheme");
+		return EINA_FALSE;
+	}
+
+	/* parse parameter */
+	size_t extra_data_start_pos = 0;
+	size_t extra_data_end_pos = 0;
+
+	if (parameter.find("param=") != string::npos) {
+		extra_data_start_pos = parameter.find("param=") + strlen("param=");
+		extra_data_end_pos = parameter.find(";", extra_data_start_pos);
+		extra_data = parameter.substr(extra_data_start_pos, extra_data_end_pos - extra_data_start_pos);
+	}
+
+	if (service_create(&service_handle) < 0) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (!service_handle) {
+		BROWSER_LOGE("Fail to create service handle");
+		return EINA_FALSE;
+	}
+
+	if (service_set_app_id(service_handle, designated_pkg.c_str()) < 0) {
+		BROWSER_LOGE("Fail to service_set_app_id");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+
+	if (extra_data.length()) {
+		if (service_add_extra_data(service_handle, "param", extra_data.c_str())) {
+			BROWSER_LOGE("service_add_extra_data is failed.");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+	}
+
+	if (service_send_launch_request(service_handle, NULL, NULL) < 0) {
+		BROWSER_LOGE("Fail to launch service operation");
+		service_destroy(service_handle);
+		return EINA_FALSE;
+	}
+	service_destroy(service_handle);
+
+	return EINA_TRUE;
+}
+
 Eina_Bool Browser_Common_View::_share_via_nfc(std::string url)
 {
 	BROWSER_LOGD("[%s]", __func__);
