@@ -55,7 +55,7 @@ BuildRequires:  pkgconfig(pkgmgr)
 BuildRequires:  pkgconfig(vconf-internal-keys)
 BuildRequires:  pkgconfig(capi-system-device)
 BuildRequires:  pkgconfig(capi-system-sensor)
-
+BuildRequires:  sys-assert
 
 BuildRequires:  cmake
 BuildRequires:  gettext
