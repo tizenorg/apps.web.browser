@@ -23,7 +23,6 @@
 #include "browser-history-db.h"
 #include "browser-find-word.h"
 #include "browser-multi-window-view.h"
-#include "browser-scissorbox-view.h"
 #include "browser-settings-class.h"
 #if defined(FEATURE_MOST_VISITED_SITES)
 #include "most-visited-sites.h"
@@ -88,7 +87,6 @@ Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object 
 	,m_browser_settings(NULL)
 	,m_navi_it(NULL)
 	,m_find_word(NULL)
-	,m_scissorbox_view(NULL)
 	,m_share_controlbar_button(NULL)
 	,m_context_menu(NULL)
 	,m_multi_window_button(NULL)
@@ -167,10 +165,6 @@ Browser_View::~Browser_View()
 	if (m_context_menu) {
 		delete m_context_menu;
 		m_context_menu = NULL;
-	}
-	if (m_scissorbox_view) {
-		delete m_scissorbox_view;
-		m_scissorbox_view = NULL;
 	}
 #if defined(HORIZONTAL_UI)
 	if (m_multi_window_rotate_timer) {
@@ -392,9 +386,6 @@ void Browser_View::_pop_other_views(void)
 
 	/* Pop all other views except browser view. */
 	elm_naviframe_item_pop_to(m_navi_it);
-
-	if (m_scissorbox_view)
-		_destroy_scissorbox_view();
 }
 
 /* set homepage from homepage vconf */
@@ -885,8 +876,6 @@ void Browser_View::_load_start(void)
 	elm_object_signal_emit(m_option_header_url_edit_field, "ellipsis_show,signal", "elm");
 	elm_object_signal_emit(m_url_edit_field, "ellipsis_show,signal", "elm");
 
-	if (m_scissorbox_view)
-		_destroy_scissorbox_view();
 	_destroy_more_context_popup();
 }
 
@@ -2072,75 +2061,6 @@ void Browser_View::__url_editfield_share_clicked_cb(void *data, Evas_Object *obj
 
 	if (browser_view->_show_share_popup(selected_text))
 		BROWSER_LOGE("_show_share_popup failed");
-}
-
-Eina_Bool Browser_View::__show_scissorbox_view_idler_cb(void *data)
-{
-	if (!data)
-		return ECORE_CALLBACK_CANCEL;
-
-	Browser_View *browser_view = (Browser_View *)data;
-
-	if (browser_view->m_scissorbox_view)
-		delete browser_view->m_scissorbox_view;
-
-	browser_view->m_scissorbox_view = new(nothrow) Browser_Scissorbox_View(browser_view);
-	if (!browser_view->m_scissorbox_view) {
-		BROWSER_LOGE("new Browser_Scissorbox_View failed");
-		return ECORE_CALLBACK_CANCEL;
-	}
-	if (!browser_view->m_scissorbox_view->init()) {
-		BROWSER_LOGE("m_scissorbox_view->init failed");
-		delete browser_view->m_scissorbox_view;
-		browser_view->m_scissorbox_view = NULL;
-		return ECORE_CALLBACK_CANCEL;
-	}
-
-	elm_object_part_content_set(browser_view->m_main_layout, "elm.swallow.scissorbox",
-						browser_view->m_scissorbox_view->get_layout());
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout),
-							"show,scissorbox,signal", "");
-
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_layout),
-							"show,scissorbox,signal", "");
-	edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_layout),
-							"show,scissorbox,signal", "");
-
-
-	elm_object_part_content_unset(browser_view->m_main_layout, "elm.swallow.control_bar");
-	evas_object_hide(browser_view->m_control_bar);
-
-	return ECORE_CALLBACK_CANCEL;
-}
-
-Eina_Bool Browser_View::_show_scissorbox_view(void)
-{
-	BROWSER_LOGD("[%s]", __func__);
-
-	ecore_idler_add(__show_scissorbox_view_idler_cb, this);
-
-	return EINA_TRUE;
-}
-
-void Browser_View::_destroy_scissorbox_view(void)
-{
-	elm_object_part_content_unset(m_main_layout, "elm.swallow.scissorbox");
-	edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "hide,scissorbox,signal", "");
-
-	edje_object_signal_emit(elm_layout_edje_get(m_url_layout),
-							"hide,scissorbox,signal", "");
-	edje_object_signal_emit(elm_layout_edje_get(m_option_header_url_layout),
-							"hide,scissorbox,signal", "");
-
-	elm_object_part_content_unset(m_main_layout, "elm.swallow.control_bar");
-
-	if (m_scissorbox_view) {
-		delete m_scissorbox_view;
-		m_scissorbox_view = NULL;
-	}
-
-	elm_object_part_content_set(m_main_layout, "elm.swallow.control_bar", m_control_bar);
-	evas_object_show(m_control_bar);
 }
 
 void Browser_View::__private_cb(void *data, Evas_Object *obj, void *event_info)
@@ -3887,9 +3807,6 @@ Eina_Bool Browser_View::is_available_to_rotate(void)
 			return EINA_FALSE;
 	}
 
-	if (m_scissorbox_view)
-		return EINA_FALSE;
-
 	return EINA_TRUE;
 }
 
@@ -3919,8 +3836,6 @@ void Browser_View::rotate(int degree)
 	if (m_most_visited_sites)
 		m_most_visited_sites->rotate();
 #endif
-	if (m_scissorbox_view)
-		_destroy_scissorbox_view();
 }
 #endif
 void Browser_View::suspend_ewk_view(Evas_Object *ewk_view)

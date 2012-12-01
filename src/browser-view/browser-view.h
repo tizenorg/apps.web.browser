@@ -30,7 +30,6 @@ class Browser_Context_Menu;
 class Browser_Class;
 class Browser_Find_Word;
 class Browser_Multi_Window_View;
-class Browser_Scissorbox_View;
 class Browser_Settings_Class;
 class Most_Visited_Sites;
 class Most_Visited_Sites_DB;
@@ -49,7 +48,6 @@ class Browser_View : public Browser_Common_View {
 	friend class Browser_Find_Word;
 	friend class Browser_Multi_Window_View;
 	friend class Most_Visited_Sites;
-	friend class Browser_Scissorbox_View;
 public:
 	Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object *bg, Browser_Class *browser);
 	~Browser_View(void);
@@ -141,7 +139,6 @@ private:
 	static Eina_Bool __capture_most_visited_sites_screen_shot_idler_cb(void *data);
 #endif
 	static Eina_Bool __scroller_bring_in_idler_cb(void *data);
-	static Eina_Bool __show_scissorbox_view_idler_cb(void *data);
 
 	void _update_back_forward_buttons(void);
 
@@ -258,8 +255,6 @@ private:
 	void _update_find_word_index_text(const char *index_text, int index, int max_match_cnt);
 	void _jump_to_top(void);
 	void _hide_scroller_url_layout(void);
-	Eina_Bool _show_scissorbox_view(void);
-	void _destroy_scissorbox_view(void);
 	Eina_Bool _haptic_device_init(void);
 	Eina_Bool _haptic_device_play(long haptic_play_time);
 	Eina_Bool _haptic_device_stop(void);
@@ -337,7 +332,6 @@ private:
 	Elm_Object_Item *m_navi_it;
 	Browser_Find_Word *m_find_word;
 	Browser_Context_Menu *m_context_menu;
-	Browser_Scissorbox_View *m_scissorbox_view;
 #if defined(HORIZONTAL_UI)
 	int m_rotate_degree;
 	Ecore_Timer *m_multi_window_rotate_timer;
