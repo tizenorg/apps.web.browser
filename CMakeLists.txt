@@ -26,7 +26,6 @@ SET(SRCS
 	src/browser-policy-client/browser-policy-decision-maker.cpp
 	src/browser-extension/browser-geolocation.cpp
 	src/browser-extension/browser-find-word.cpp
-	src/browser-extension/browser-scissorbox-view.cpp
 	src/browser-view/browser-view.cpp
 	src/browser-view/browser-context-menu.cpp
 	src/browser-multi-window/browser-multi-window-view.cpp
@@ -45,7 +44,6 @@ SET(SRCS
 	src/browser-settings/browser-settings-edit-homepage-view.cpp
 	src/browser-settings/browser-settings-clear-data-view.cpp
 	src/browser-settings/browser-settings-website-setting.cpp
-	src/scissorbox/scissorbox.cpp
 )
 
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -65,7 +63,6 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-history)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-settings)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-policy-client)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-extension)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/scissorbox)
 
 # set pkg-config modules
 INCLUDE(FindPkgConfig)
