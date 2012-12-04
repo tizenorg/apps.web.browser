@@ -2770,8 +2770,6 @@ Evas_Object *Browser_View::_create_option_header_url_layout(void)
 			BROWSER_LOGE("elm_editfield_add failed");
 			return NULL;
 		}
-		elm_entry_context_menu_item_add(br_elm_editfield_entry_get(m_option_header_url_edit_field),
-								BR_STRING_CTXMENU_SHARE, NULL, ELM_ICON_NONE, __url_editfield_share_clicked_cb, this);
 
 		elm_object_part_content_set(m_option_header_url_entry_layout, "elm.swallow.entry", m_option_header_url_edit_field);
 //		br_elm_editfield_entry_single_line_set(m_option_header_url_edit_field, EINA_TRUE);
