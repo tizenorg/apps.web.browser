@@ -3525,10 +3525,13 @@ void Browser_View::__find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context 
 	Browser_View *browser_view = (Browser_View *)data;
 	Evas_Object *find_word_editfield_entry = br_elm_editfield_entry_get(browser_view->m_find_word_edit_field);
 
-	if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE)
+	if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE) {
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "show,control_bar,no_animation,signal", "");
 		elm_object_focus_set(find_word_editfield_entry, EINA_FALSE);
-	else
+	} else {
 		elm_object_focus_set(find_word_editfield_entry, EINA_TRUE);
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_main_layout), "hide,control_bar,no_animation,signal", "");
+	}
 }
 
 void Browser_View::_enable_browser_scroller_scroll(void)
