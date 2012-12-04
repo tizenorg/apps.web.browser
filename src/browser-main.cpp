@@ -441,7 +441,7 @@ static int __browser_set_i18n(const char *domain, const char *dir)
     /* if locale is not set properly, try again to set as language base */
     if (r == NULL) {
         char *lang_set = vconf_get_str(VCONFKEY_LANGSET);
-        if (!lang_set && strlen(lang_set) > 0)
+        if (lang_set && strlen(lang_set) > 0)
             r = setlocale(LC_ALL, lang_set);
 
         BROWSER_LOGE("setlocale as [%s]", r);
