@@ -113,6 +113,10 @@ private:
 	static void __load_nonempty_layout_finished_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static void __url_editfield_share_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __request_certificate_confirm_cb(void *data, Evas_Object *obj, void *event_info);
+	void _show_certi_confirm_popup(const char *msg);
+	static void __certi_ok_cb(void* data, Evas_Object* obj, void* event_info);
+	static void __certi_cancel_cb(void* data, Evas_Object* obj, void* event_info);
 
 	/* imf event callback functions */
 	static void __url_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value);
@@ -375,6 +379,42 @@ private:
 	int m_vibration_device_handle_id;
 
 	Eina_Bool m_is_multi_window_grid_mode;
+<<<<<<< HEAD
+=======
+
+#ifdef APP_IN_APP
+	Eina_Bool m_is_app_in_app;
+	Elm_Object_Item *m_app_in_app_button;
+	Evas_Object *m_invisible_rect;
+	Ecore_Event_Handler *m_move_event_handle;
+	Ecore_Event_Handler *m_mouse_down_event_handle;
+	Ecore_Event_Handler *m_mouse_up_event_handle;
+	Eina_Bool m_is_app_in_app_downed;
+	int m_app_in_app_sx;
+	int m_app_in_app_sy;
+	int m_button_id;
+	Ecore_X_Window m_xwin;
+	Evas_Object *m_close_icon;
+	Evas_Object *m_resize_icon;
+	int m_app_in_app_w;
+	int m_app_in_app_h;
+	int m_window_w;
+	int m_window_h;
+	Eina_Bool m_is_resized;
+#endif
+#if defined(FEATURE_REMEMBER_FORM) || defined(FEATURE_REMEMBER_PASSWORD)
+	vector<submit_form_item *> m_form_submit_data_list;
+	std::string m_form_submit_url;
+#endif
+	Elm_Object_Item *m_bookmark_submenu;
+	Elm_Object_Item *m_private_submenu;
+	Evas_Object *m_auth_popup;
+	Ewk_Auth_Challenge *m_ewk_auth_challenge;
+	Evas_Object *m_id_field;
+	Evas_Object *m_passwd_field;;
+	Evas_Object *m_certi_popup;
+	Ewk_Certificate_Policy_Decision *m_certi_policy;
+>>>>>>> 3d35392... [Title] Add certificate handler.
 };
 #endif /* BROWSER_VIEW_H */
 

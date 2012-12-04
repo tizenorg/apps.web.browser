@@ -131,6 +131,7 @@ Eina_Bool Browser_Class::init(void)
 
 
 	ewk_context_cache_model_set(ewk_context_default_get(), EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
+	ewk_context_certificate_file_set(ewk_context_default_get(), "/opt/usr/share/certs/ca-certificate.crt");
 
 	return EINA_TRUE;
 }
@@ -384,6 +385,10 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 
 	evas_object_smart_callback_del(ewk_view, "icon,received",
 					Browser_View::__ewk_icon_received_cb);
+
+	evas_object_smart_callback_del(ewk_view, "request,certificate,confirm",
+					Browser_View::__request_certificate_confirm_cb);
+
 	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
 	m_browser_view->suspend_ewk_view(ewk_view);
@@ -444,6 +449,10 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 
 	evas_object_smart_callback_add(ewk_view, "icon,received",
 					Browser_View::__ewk_icon_received_cb, m_browser_view);
+
+	evas_object_smart_callback_add(ewk_view, "request,certificate,confirm",
+					Browser_View::__request_certificate_confirm_cb, m_browser_view);
+
 	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);
 	m_geolocation->init(ewk_view);

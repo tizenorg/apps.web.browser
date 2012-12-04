@@ -115,6 +115,8 @@ Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object 
 	,m_high_seg_it(NULL)
 	,m_vibration_device_handle_id(-1)
 	,m_is_multi_window_grid_mode(EINA_FALSE)
+	,m_certi_popup(NULL)
+	,m_certi_policy(NULL)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	m_win = win;
@@ -182,6 +184,8 @@ Browser_View::~Browser_View()
 		m_zoom_button_timer = NULL;
 	}
 #endif
+	if (m_certi_popup)
+		evas_object_del(m_certi_popup);
 }
 
 Eina_Bool Browser_View::init(void)
@@ -690,6 +694,70 @@ Eina_Bool Browser_View::_change_ewk_filesystem_permission(Ewk_Context_File_Syste
 	BROWSER_LOGD("[%s]", __func__);
 
 	return _show_file_system_permission_change_popup(file_system_permission);
+}
+
+
+void Browser_View::__certi_ok_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Browser_View *browser_view = (Browser_View *)data;
+	ewk_certificate_policy_decision_allowed_set(browser_view->m_certi_policy, EINA_TRUE);
+
+	evas_object_del(browser_view->m_certi_popup);
+	browser_view->m_certi_popup = NULL;
+}
+
+void Browser_View::__certi_cancel_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	Browser_View *browser_view = (Browser_View *)data;
+	ewk_certificate_policy_decision_allowed_set(browser_view->m_certi_policy, EINA_FALSE);
+
+	evas_object_del(browser_view->m_certi_popup);
+	browser_view->m_certi_popup = NULL;
+}
+
+void Browser_View::_show_certi_confirm_popup(const char *msg)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	m_certi_popup = elm_popup_add(m_win);
+	if (!m_certi_popup) {
+		BROWSER_LOGE("elm_popup_add failed");
+		return;
+	}
+	evas_object_size_hint_weight_set(m_certi_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_text_set(m_certi_popup, msg.c_str());
+
+	evas_object_show(m_certi_popup);
+
+	Evas_Object *ok_button = elm_button_add(m_certi_popup);
+	elm_object_text_set(ok_button, BR_STRING_ALLOW);
+	elm_object_part_content_set(m_certi_popup, "button1", ok_button);
+	elm_object_style_set(ok_button, "popup_button/default");
+	evas_object_smart_callback_add(ok_button, "clicked", __certi_ok_cb,  this);
+
+	Evas_Object *cancel_button = elm_button_add(m_certi_popup);
+	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(m_certi_popup, "button2", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __certi_cancel_cb, this);
+}
+
+void Browser_View::__request_certificate_confirm_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+	if (!data)
+		return;
+
+	Browser_View *browser_view = (Browser_View *)data;
+	Ewk_Certificate_Policy_Decision *certi_policy = (Ewk_Certificate_Policy_Decision *)event_info;
+	const char *url = ewk_certificate_policy_decision_url_get(certi_policy);
+	std::string msg = std::string(url) + " requests certificates."
+	BROWSER_LOGD("url=[%s]");
+	browser_view->m_certi_policy = certi_policy;
+
+	browser_view->_show_certi_confirm_popup(msg.c_str());
 }
 
 void Browser_View::__create_window_cb(void *data, Evas_Object *obj, void *event_info)
