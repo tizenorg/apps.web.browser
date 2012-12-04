@@ -328,8 +328,9 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 		BROWSER_LOGE("elm_genlist_add failed");
 		return EINA_FALSE;
 	}
+	elm_object_style_set(m_genlist, "dialogue");
 
-	m_item_class.item_style = "1icon";
+	m_item_class.item_style = "dialogue/1icon";
 	m_item_class.func.text_get = NULL;
 	m_item_class.func.content_get = __genlist_icon_get_cb;
 	m_item_class.func.state_get = NULL;
