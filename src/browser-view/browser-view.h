@@ -144,8 +144,11 @@ private:
 
 	static void __backward_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __forward_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __okbtn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __cancelbtn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
 	/* evas object smart callback functions */
+	static void __auth_challenge_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ewk_view_edge_top_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ewk_view_scroll_down_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ewk_view_scroll_up_cb(void *data, Evas_Object *obj, void *event_info);
@@ -348,6 +351,11 @@ private:
 	Evas_Object *m_title_forward_button;
 	Evas_Object *m_option_header_title_backward_button;
 	Evas_Object *m_option_header_title_forward_button;
+
+	Evas_Object *m_auth_popup;
+	Ewk_Auth_Challenge *m_ewk_auth_challenge;
+	Evas_Object *m_id_field;
+	Evas_Object *m_passwd_field;;
 
 	Ecore_Idler *m_resize_idler;
 	Eina_Bool m_is_private;

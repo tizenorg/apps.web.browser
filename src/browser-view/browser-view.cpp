@@ -1307,6 +1307,109 @@ void Browser_View::__load_progress_cb(void *data, Evas_Object *obj, void *event_
 		__load_finished_cb(data, obj, NULL);
 }
 
+void Browser_View::__auth_challenge_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("[%s]\n", __func__);
+
+	Browser_View *browser_view = (Browser_View *)data;
+	browser_view->m_ewk_auth_challenge = (Ewk_Auth_Challenge *)event_info;
+	const char* auth_alm = ewk_auth_challenge_realm_get(browser_view->m_ewk_auth_challenge);
+	const char *url = browser_view->get_url().c_str();
+
+	ewk_auth_challenge_suspend(browser_view->m_ewk_auth_challenge);
+
+	std::string msg;
+	msg = std::string("A username and password are being requested by ") + std::string(url) + std::string(". The site says: ")  + std::string(" \"") + std::string(auth_alm) + std::string("\"");
+
+	Evas_Object *conformant = elm_conformant_add(m_win);
+	if (!conformant) {
+		BROWSER_LOGE("elm_conformant_add is failed");
+		return;
+	}
+
+	elm_win_resize_object_add(m_win, conformant);
+	evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(conformant);
+
+	Evas_Object *dummyLaout = elm_layout_add(conformant);
+	if (!dummyLaout) {
+		BROWSER_LOGE("elm_layout_add is failed");
+		return;
+	}
+
+	elm_object_content_set(conformant, dummyLaout);
+	browser_view->m_auth_popup = elm_popup_add(dummyLaout);
+	evas_object_size_hint_weight_set(browser_view->m_auth_popup , EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(browser_view->m_auth_popup , EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_object_part_text_set(browser_view->m_auth_popup, "title,text", "Authentication Requested");
+
+	Evas_Object *label = elm_label_add(browser_view->m_auth_popup);
+	if (!label) {
+		BROWSER_LOGE("label_add is failed");
+		return;
+	}
+
+	evas_object_size_hint_weight_set(label , EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_label_line_wrap_set(label , ELM_WRAP_WORD);
+	elm_object_text_set(label, msg.c_str());
+
+	browser_view->m_id_field = br_elm_editfield_add(browser_view->m_auth_popup);
+	Evas_Object *entry = br_elm_editfield_entry_get(browser_view->m_id_field);
+	elm_entry_autocapital_type_set(entry, ELM_AUTOCAPITAL_TYPE_NONE);
+	br_elm_editfield_eraser_set(browser_view->m_id_field , EINA_TRUE);
+	elm_entry_text_style_user_push(browser_view->m_id_field , "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
+
+	browser_view->m_passwd_field = br_elm_editfield_add(browser_view->m_auth_popup);
+	elm_entry_password_set(br_elm_editfield_entry_get(browser_view->m_passwd_field), EINA_TRUE);
+	elm_entry_text_style_user_push(browser_view->m_passwd_field, "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
+
+	Evas_Object *popup_layout = elm_layout_add(browser_view->m_auth_popup);
+	elm_layout_file_set(popup_layout, BROWSER_EDJE_DIR"/browser-popup.edj", "auth_challenge_popup");
+	evas_object_size_hint_weight_set(popup_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	edje_object_part_text_set(elm_layout_edje_get(popup_layout), "idfield_text", " User Name: ");
+	edje_object_part_text_set(elm_layout_edje_get(popup_layout), "passwdfield_text", " Password: ");
+
+	elm_object_part_content_set(popup_layout, "elm.swallow.label", label);
+	elm_object_part_content_set(popup_layout, "elm.swallow.idfield", browser_view->m_id_field);
+	elm_object_part_content_set(popup_layout, "elm.swallow.passwdfield", browser_view->m_passwd_field);
+	elm_object_content_set(browser_view->m_auth_popup, popup_layout);
+
+	Evas_Object *ok_btn = elm_button_add(browser_view->m_auth_popup);
+	elm_object_text_set(ok_btn, BR_STRING_OK);
+	elm_object_style_set(ok_btn, "popup_button/default");
+	elm_object_part_content_set(browser_view->m_auth_popup, "button1", ok_btn);
+	evas_object_smart_callback_add(ok_btn, "clicked", __okbtn_clicked_cb, browser_view);
+
+	Evas_Object *cancel_btn = elm_button_add(browser_view->m_auth_popup);
+	elm_object_text_set(cancel_btn, BR_STRING_CANCEL);
+	elm_object_style_set(cancel_btn, "popup_button/default");
+	elm_object_part_content_set(browser_view->m_auth_popup, "button2", cancel_btn);
+	evas_object_smart_callback_add(cancel_btn, "clicked", __cancelbtn_clicked_cb, browser_view);
+
+	evas_object_show(browser_view->m_auth_popup);
+}
+
+void Browser_View::__okbtn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Browser_View *browser_view = (Browser_View *)data;
+
+	const char* input_id = elm_entry_entry_get(br_elm_editfield_entry_get(browser_view->m_id_field));
+	const char* input_pw = elm_entry_entry_get(br_elm_editfield_entry_get(browser_view->m_passwd_field));
+
+	ewk_auth_challenge_credential_use(browser_view->m_ewk_auth_challenge, (char *)input_id,  (char *)input_pw);
+	evas_object_del(browser_view->m_auth_popup);
+	browser_view->m_auth_popup = NULL;
+}
+void Browser_View::__cancelbtn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Browser_View *browser_view = (Browser_View *)data;
+
+	ewk_auth_challenge_credential_cancel(browser_view->m_ewk_auth_challenge);
+	evas_object_del(browser_view->m_auth_popup);
+	browser_view->m_auth_popup = NULL;
+}
+
 void Browser_View::__ewk_view_mouse_down_cb(void* data, Evas* evas, Evas_Object* obj, void* ev)
 {
 	if (!data)

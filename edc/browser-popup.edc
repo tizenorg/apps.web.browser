@@ -15,7 +15,165 @@
  *
  */
 
+#define ENTRY_TEXT_COLOR_WHITE_INC "#FFFFFF"
+#define ENTRY_TEXT_COLOR_BLACK_INC "#3C3632"
+#include "browser-macro.edc"
+
 collections {
+	group { name: "auth_challenge_popup";
+		parts{
+			part { name: "bg";
+				type: RECT;
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min:  0 450;
+					color: 0 0 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+					}
+				}
+			}
+			part{ name:"elm.swallow.label";
+				scale : 1;
+				type: SWALLOW;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 {
+						relative: 0.0 0.0; to: "bg";
+					}
+					rel2 {
+						relative: 1.0 0.0; to: "bg";
+					}
+				}
+			}
+			part { name: "pad_m";
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 250 30;
+					fixed: 0 1;
+					rel1 {
+						relative: 0.0 1.0; to: "elm.swallow.label";
+					}
+					rel2 {
+						relative: 1.0 1.0; to: "elm.swallow.label";
+					}
+				}
+			}
+			part{ name:"spacet_to_idfield";
+				type: RECT;
+				scale : 1;
+				description { state: "default" 0.0;
+					color: 0 0 0 0;
+					min: 200 40;
+					align: 0.0 0.0;
+					rel1 {
+						relative: 0.0 1.0; to: "pad_m";
+					}
+					rel2 { relative: 1.0 1.0; to: "pad_m";
+					}
+				}
+			}
+			part{ name:"idfield_text";
+				type: TEXT;
+				scale : 1;
+				description { state: "default" 0.0;
+					color: 168 168 168 255;
+					text {
+						font: "SLP:style=Medium";
+						size: 35;
+						align: 0.0 0.0;
+					}
+					min: 200 40;
+					align: 0.0 0.0;
+					rel1 {
+						relative: 0.0 1.0; to: "pad_m";
+					}
+					rel2 { relative: 0.4 1.0; to: "pad_m";
+					}
+				}
+			}
+			part{ name:"elm.swallow.idfield";
+				type: SWALLOW;
+				scale : 1;
+				description { state: "default" 0.0;
+					min: 200 40;
+					align: 0.0 0.0;
+					rel1 {
+						relative: 0.35 0.38; to: "pad_m";
+					}
+					rel2 { relative: 1.0 0.38; to: "pad_m";
+					}
+				}
+			}
+			part { name: "pad_text";
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 250 38;
+					fixed: 0 1;
+					rel1 {
+						relative: 0.0 1.0; to: "spacet_to_idfield";
+					}
+					rel2 {
+						relative: 1.0 1.0; to: "spacet_to_idfield";
+					}
+				}
+			}
+			part{ name:"passwdfield_text";
+				type: TEXT;
+				scale : 1;
+				description { state: "default" 0.0;
+					color: 168 168 168 255;
+					text {
+						font: "SLP:style=Medium";
+						size: 35;
+						align: 0.0 1.0;
+					}
+					min: 200 40;
+					align: 0.0 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 1.0; to: "pad_text";
+					}
+					rel2 { relative: 0.4 1.0; to: "pad_text";
+					}
+				}
+			}
+			part {	name: "elm.swallow.passwdfield";
+				type: SWALLOW;
+				scale: 1;
+				description { state: "default" 0.0;
+					min: 250 40;
+					align: 0.0 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.35 0.25; to: "pad_text";
+					}
+					rel2 { relative: 1.0 0.25; to: "pad_text";
+					}
+				}
+			}
+			part { name: "pad_b";
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 1.0;
+					min: 0 5;
+					fixed: 0 1;
+					rel1 {
+						relative: 0.0 1.0; to: "bg";
+					}
+					rel2 {
+						relative: 1.0 1.0; to: "bg";
+					}
+				}
+			}
+		}
+	}
 	group { name: "brightness_popup";
 		parts{
 			part { name: "pad_t";
