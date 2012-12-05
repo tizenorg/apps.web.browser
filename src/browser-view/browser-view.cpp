@@ -727,7 +727,7 @@ void Browser_View::_show_certi_confirm_popup(const char *msg)
 		return;
 	}
 	evas_object_size_hint_weight_set(m_certi_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_object_text_set(m_certi_popup, msg.c_str());
+	elm_object_text_set(m_certi_popup, msg);
 
 	evas_object_show(m_certi_popup);
 
@@ -756,8 +756,8 @@ void Browser_View::__request_certificate_confirm_cb(void *data, Evas_Object *obj
 	Browser_View *browser_view = (Browser_View *)data;
 	Ewk_Certificate_Policy_Decision *certi_policy = (Ewk_Certificate_Policy_Decision *)event_info;
 	const char *url = ewk_certificate_policy_decision_url_get(certi_policy);
-	std::string msg = std::string(url) + " requests certificates."
-	BROWSER_LOGD("url=[%s]");
+	std::string msg = std::string(url) + " requests certificates.";
+	BROWSER_LOGD("url=[%s]", url);
 	browser_view->m_certi_policy = certi_policy;
 
 	browser_view->_show_certi_confirm_popup(msg.c_str());
