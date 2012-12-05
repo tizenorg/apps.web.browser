@@ -55,11 +55,13 @@ BuildRequires:  pkgconfig(pkgmgr)
 BuildRequires:  pkgconfig(vconf-internal-keys)
 BuildRequires:  pkgconfig(capi-system-device)
 BuildRequires:  pkgconfig(capi-system-sensor)
-BuildRequires:  sys-assert
 
 BuildRequires:  cmake
 BuildRequires:  gettext
 BuildRequires:  edje-tools
+
+#This is for SMACK
+Requires: sys-assert
 
 %description
 webkit browser with EFL.
