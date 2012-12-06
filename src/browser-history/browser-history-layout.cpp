@@ -291,6 +291,10 @@ void Browser_History_Layout::_enable_searchbar_layout(Eina_Bool enable)
 		elm_entry_input_panel_layout_set(searchbar_entry, ELM_INPUT_PANEL_LAYOUT_URL);
 
 		evas_object_smart_callback_add(searchbar_entry, "changed", __search_delay_changed_cb, this);
+		evas_object_smart_callback_add(searchbar_entry,
+						"preedit,changed",
+						__search_delay_changed_cb,
+						this);
 	} else {
 		for(int i = 0 ; i < m_searched_history_item_list.size() ; i++ ) {
 			if (m_searched_history_item_list[i])
@@ -327,7 +331,10 @@ void Browser_History_Layout::_enable_searchbar_layout(Eina_Bool enable)
 
 		Evas_Object *searchbar_entry = br_elm_searchbar_entry_get(m_searchbar);
 		evas_object_smart_callback_del(searchbar_entry, "changed", __search_delay_changed_cb);
-
+		evas_object_smart_callback_add(searchbar_entry,
+						"preedit,changed",
+						__search_delay_changed_cb,
+						this);
 		elm_layout_theme_set(m_searchbar_layout, "layout", "application", "noindicator");
 	}
 }
