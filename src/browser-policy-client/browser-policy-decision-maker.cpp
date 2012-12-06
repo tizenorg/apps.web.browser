@@ -21,7 +21,8 @@
 
 #include "browser-common-view.h"
 #include "browser-policy-decision-maker.h"
-
+#include "custom-content-handler.h"
+#include "custom-protocol-handler.h"
 #include "ewk_policy_decision.h"
 Browser_Policy_Decision_Maker::Browser_Policy_Decision_Maker(Evas_Object *navi_bar, Browser_View *browser_view)
 :
@@ -97,6 +98,12 @@ Eina_Bool Browser_Policy_Decision_Maker::_handle_exscheme(void)
 	if (m_url.empty()) {
 		BROWSER_LOGE("url is null");
 		return EINA_FALSE;
+	}
+
+	const char *protocol_uri = m_browser->get_protocol_handler()->get_registered_converted_protocol(m_url.c_str());
+	if (protocol_uri) {
+		m_browser_view->load_url(protocol_uri);
+		return EINA_TRUE;
 	}
 
 	if (!m_url.compare(0, strlen(BROWSER_HTTP_SCHEME), BROWSER_HTTP_SCHEME)
@@ -267,6 +274,21 @@ void Browser_Policy_Decision_Maker::__decide_policy_for_navigation_action(void *
 		ewk_policy_decision_use(policy_decision);
 }
 
+static char *_get_base_uri(const char *uri)
+{
+	if (!uri || !strlen(uri))
+		return NULL;
+
+	std::string uri_str = std::string(uri);
+	int found = uri_str.rfind("/");
+	if (found != string::npos) {
+		std::string sub_str = uri_str.substr(0, found + 1);
+		return strdup(sub_str.c_str());
+	}
+
+	return NULL;
+}
+
 void Browser_Policy_Decision_Maker::__decide_policy_for_response_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	if (!data)
@@ -276,6 +298,23 @@ void Browser_Policy_Decision_Maker::__decide_policy_for_response_cb(void *data, 
 	Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
 
 	Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
+
+	const char *url = ewk_policy_decision_url_get(policy_decision);
+	const char *mime = ewk_policy_decision_response_mime_get(policy_decision);
+	BROWSER_LOGD("*********url=[%s], mime=[%s]", url, mime);
+
+	char *base_uri = _get_base_uri(url);
+	BROWSER_LOGD("base_uri=[%s]", base_uri);
+	if (base_uri) {
+		const char *redirect_uri = m_browser->get_custom_content_handler()->get_redirect_uri(url, base_uri, mime);
+		free(base_uri);
+		BROWSER_LOGD("redirect_uri=[%s]", redirect_uri);
+		if (redirect_uri && strlen(redirect_uri)) {
+			ewk_policy_decision_ignore(policy_decision);
+			decision_maker->m_browser_view->load_url(redirect_uri);
+			return;
+		}
+	}
 
 	switch (policy_type) {
 	case EWK_POLICY_DECISION_USE:

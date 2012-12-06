@@ -170,6 +170,12 @@ then
 fi
 
 
+if [ ! -f %{appdatadir}/data/db/.custom-protocol-handler.db ];
+then
+        sqlite3 %{appdatadir}/data/db/.custom-protocol-handler.db 'PRAGMA journal_mode=PERSIST;
+        create table custom_protocol(id INTEGER PRIMARY KEY, protocol TEXT, uri TEXT, allow INTEGER);
+        create table custom_content(id INTEGER PRIMARY KEY, base_uri TEXT, mime TEXT, uri TEXT, allow INTEGER);'
+fi
 # Change db file owner & permission
 chown :5000 /opt/usr/dbspace/.browser-history.db
 chown :5000 /opt/usr/dbspace/.browser-history.db-journal
@@ -187,6 +193,8 @@ chmod 660 %{appdatadir}/data/db/.browser-mostvisited.db
 chmod 660 %{appdatadir}/data/db/.browser-mostvisited.db-journal
 chmod 660 %{appdatadir}/data/db/.browser-geolocation.db
 chmod 660 %{appdatadir}/data/db/.browser-geolocation.db-journal
+chmod 660 %{appdatadir}/data/db/.custom-protocol-handler.db
+chmod 660 %{appdatadir}/data/db/.custom-protocol-handler.db-journal
 
 ##################################################
 # set default vconf values
@@ -209,6 +217,7 @@ then
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-credential.db*
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-mostvisited.db*
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-geolocation.db*
+	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.custom-protocol-handler.db*
 fi
 
 %files

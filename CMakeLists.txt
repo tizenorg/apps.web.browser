@@ -44,6 +44,8 @@ SET(SRCS
 	src/browser-settings/browser-settings-edit-homepage-view.cpp
 	src/browser-settings/browser-settings-clear-data-view.cpp
 	src/browser-settings/browser-settings-website-setting.cpp
+	src/html5-feature-manager/custom-protocol-handler.cpp
+	src/html5-feature-manager/custom-content-handler.cpp
 )
 
 IF("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -63,6 +65,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-history)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-settings)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-policy-client)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/browser-extension)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src/html5-feature-manager)
 
 # set pkg-config modules
 INCLUDE(FindPkgConfig)

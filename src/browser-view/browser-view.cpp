@@ -31,6 +31,9 @@
 #include "browser-string.h"
 #include "browser-view.h"
 #include "browser-window.h"
+
+#include "custom-protocol-handler.h"
+
 #include <devman.h>
 
 extern "C" {
@@ -3305,6 +3308,12 @@ void Browser_View::__url_entry_enter_key_cb(void *data, Evas_Object *obj, void *
 
 	char *url = elm_entry_markup_to_utf8(elm_entry_entry_get(edit_field_entry));
 	BROWSER_LOGD("input url = [%s]", url);
+	const char *protocol_uri = m_browser->get_protocol_handler()->get_registered_converted_protocol(url);
+	BROWSER_LOGD("******** protocol_uri = [%s]", protocol_uri);
+	if (protocol_uri) {
+		browser_view->load_url(protocol_uri);
+		return;
+	}
 
 	if (url && strlen(url)) {
 		browser_view->load_url(url);

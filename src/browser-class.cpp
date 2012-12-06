@@ -24,6 +24,8 @@
 #include "browser-user-agent-db.h"
 #include "browser-window.h"
 #include "browser-policy-decision-maker.h"
+#include "custom-protocol-handler.h"
+#include "custom-content-handler.h"
 
 Browser_Class::Browser_Class(Evas_Object *win, Evas_Object *navi_bar, Evas_Object *bg)
 :
@@ -37,6 +39,8 @@ Browser_Class::Browser_Class(Evas_Object *win, Evas_Object *navi_bar, Evas_Objec
 	,m_clean_up_windows_timer(NULL)
 	,m_geolocation(NULL)
 	,m_network_manager(NULL)
+	,m_custom_protocol_handler(NULL)
+	,m_custom_content_handler(NULL)
 {
 	m_window_list.clear();
 	BROWSER_LOGD("[%s]", __func__);
@@ -55,6 +59,10 @@ Browser_Class::~Browser_Class(void)
 		delete m_geolocation;
 	if (m_network_manager)
 		delete m_network_manager;
+	if (m_custom_protocol_handler)
+		delete m_custom_protocol_handler;
+	if (m_custom_content_handler)
+		delete m_custom_content_handler;
 
 	for (int i = 0 ; i < m_window_list.size() ; i++) {
 		if (m_window_list[i])
@@ -121,6 +129,18 @@ Eina_Bool Browser_Class::init(void)
 	}
 	if (!m_network_manager->init(m_browser_view)) {
 		BROWSER_LOGE("m_network_manager->init failed");
+		return EINA_FALSE;
+	}
+
+	m_custom_protocol_handler = new(nothrow) Custom_Protocol_Handler();
+	if (!m_custom_protocol_handler) {
+		BROWSER_LOGE("new Custom_Protocol_Handler failed");
+		return EINA_FALSE;
+	}
+
+	m_custom_content_handler = new(nothrow) Custom_Content_Handler();
+	if (!m_custom_content_handler) {
+		BROWSER_LOGE("new Custom_Content_Handler failed");
 		return EINA_FALSE;
 	}
 
@@ -391,6 +411,9 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 
 	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
+	m_custom_protocol_handler->deactivate(ewk_view);
+	m_custom_content_handler->deactivate(ewk_view);
+
 	m_browser_view->suspend_ewk_view(ewk_view);
 }
 
@@ -455,6 +478,9 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 
 	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);
+	m_custom_protocol_handler->activate(ewk_view);
+	m_custom_content_handler->activate(ewk_view);
+
 	m_geolocation->init(ewk_view);
 	m_browser_view->resume_ewk_view(ewk_view);
 }

@@ -27,6 +27,8 @@ class Browser_Policy_Decision_Maker;
 class Browser_View;
 class Browser_Window;
 class Browser_User_Agent_DB;
+class Custom_Protocol_Handler;
+class Custom_Content_Handler;
 
 class Browser_Class {
 public:
@@ -64,6 +66,8 @@ public:
 	void destroy_findonpage(void);
 	Browser_Window *create_deleted_window(int index);
 	Browser_Geolocation *get_geolocation(void) { return m_geolocation; }
+	Custom_Protocol_Handler *get_protocol_handler(void) { return m_custom_protocol_handler; }
+	Custom_Content_Handler *get_custom_content_handler(void) { return m_custom_content_handler; }
 private:
 	static Eina_Bool __create_network_manager_idler_cb(void *data);
 	Eina_Bool _set_ewk_view_options(Evas_Object *ewk_view);
@@ -88,6 +92,8 @@ private:
 	Browser_Policy_Decision_Maker *m_download_policy;
 	Browser_Geolocation *m_geolocation;
 	Browser_Network_Manager *m_network_manager;
+	Custom_Protocol_Handler *m_custom_protocol_handler;
+	Custom_Content_Handler *m_custom_content_handler;
 
 	std::vector<Browser_Window *> m_window_list;
 	Ecore_Timer *m_clean_up_windows_timer;
