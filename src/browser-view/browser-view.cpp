@@ -4345,8 +4345,16 @@ void Browser_View::__dim_area_clicked_cb(void *data, Evas_Object *obj, const cha
 		return;
 
 	Browser_View *browser_view = (Browser_View *)data;
+	Evas_Object *edit_field_entry;
 
 	elm_object_focus_set(m_data_manager->get_browser_view()->m_option_header_cancel_button, EINA_TRUE);
+
+	edit_field_entry = br_elm_editfield_entry_get(browser_view->_get_activated_url_entry());
+	elm_object_focus_set(edit_field_entry, EINA_FALSE);
+
+	if (browser_view->m_edit_mode != BR_URL_ENTRY_EDIT_MODE_WITH_NO_IMF
+	    && browser_view->m_edit_mode != BR_FIND_WORD_MODE)
+		browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
 }
 
 void Browser_View::__context_menu_bg_mouse_down_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
