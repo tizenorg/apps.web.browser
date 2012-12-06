@@ -2182,9 +2182,13 @@ void Browser_View::__private_cb(void *data, Evas_Object *obj, void *event_info)
 	if (browser_view->m_is_private) {
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,on,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,on,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout),"search_icon,off,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout),"search_icon,off,signal", "");
 	} else {
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout), "private,off,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,off,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout),"search_icon,on,signal", "");
+		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_url_entry_layout),"search_icon,on,signal", "");
 	}
 
 	Ewk_Setting *setting = ewk_view_setting_get(browser_view->m_focused_window->m_ewk_view);

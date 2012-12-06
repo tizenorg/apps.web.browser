@@ -1245,6 +1245,16 @@ group { name: "elm/layout/browser-editfield/default";
 				action: STATE_SET "default" 0.0;
 				target: "elm.swallow.rss_icon";
 			}
+			program { name: "search_icon,on";
+				signal: "search_icon,on,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.search_icon";
+			}
+			program { name: "search_icon,off";
+				signal: "search_icon,off,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.search_icon";
+			}
 			program { name: "loading_on";
 				signal: "loading,on,signal";
 				action: STATE_SET "loading_on" 0.0;
