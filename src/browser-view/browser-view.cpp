@@ -756,7 +756,7 @@ void Browser_View::_show_certi_confirm_popup(const char *msg, void *data)
 	elm_object_style_set(cancel_button, "popup_button/default");
 	evas_object_smart_callback_add(cancel_button, "clicked", __certi_cancel_cb, data);
 
-	ewk_certificate_policy_decision_suspend(m_certi_policy);
+	ewk_certificate_policy_decision_suspend((Ewk_Certificate_Policy_Decision *)data);
 
 }
 
