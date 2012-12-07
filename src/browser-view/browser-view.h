@@ -114,7 +114,7 @@ private:
 
 	static void __url_editfield_share_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __request_certificate_confirm_cb(void *data, Evas_Object *obj, void *event_info);
-	void _show_certi_confirm_popup(const char *msg);
+	void _show_certi_confirm_popup(const char *msg, void *data);
 	static void __certi_ok_cb(void* data, Evas_Object* obj, void* event_info);
 	static void __certi_cancel_cb(void* data, Evas_Object* obj, void* event_info);
 
@@ -379,9 +379,6 @@ private:
 	int m_vibration_device_handle_id;
 
 	Eina_Bool m_is_multi_window_grid_mode;
-
-	Evas_Object *m_certi_popup;
-	Ewk_Certificate_Policy_Decision *m_certi_policy;
 };
 #endif /* BROWSER_VIEW_H */
 
