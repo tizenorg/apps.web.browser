@@ -19,6 +19,7 @@
 #include <ail.h>
 #include <url_download.h>
 
+#include "browser-class.h"
 #include "browser-common-view.h"
 #include "browser-policy-decision-maker.h"
 #include "custom-content-handler.h"

@@ -19,6 +19,10 @@
  *
  */
 
+extern "C" {
+#include "db-util.h"
+}
+
 #include "browser-common-view.h"
 #include "custom-content-handler.h"
 
