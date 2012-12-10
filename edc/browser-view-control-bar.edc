@@ -725,9 +725,6 @@ group { name: "elm/toolbar/item/browser/default";
 
 group { name: "elm/toolbar/item/browser/item_horizontal";
    inherit: "elm/toolbar/item/browser/default";
-     script {
-      public item_state = ITEM_STATE_ENABLED;
-   }
    parts {
       part { name: "icon_rect";
          description { state: "default" 0.0;
