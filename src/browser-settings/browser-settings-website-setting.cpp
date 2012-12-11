@@ -289,7 +289,7 @@ Eina_Bool Browser_Settings_Website_Setting::_show_clear_location_confirm_popup(v
 	if (m_clear_confirm_popup)
 		evas_object_del(m_clear_confirm_popup);
 
-	m_clear_confirm_popup = elm_popup_add(m_details_genlist);
+	m_clear_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -324,7 +324,7 @@ Eina_Bool Browser_Settings_Website_Setting::_show_clear_web_storage_confirm_popu
 	if (m_clear_confirm_popup)
 		evas_object_del(m_clear_confirm_popup);
 
-	m_clear_confirm_popup = elm_popup_add(m_details_genlist);
+	m_clear_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -359,7 +359,7 @@ Eina_Bool Browser_Settings_Website_Setting::_show_delete_all_website_list_confir
 	if (m_delete_all_website_list_confirm_popup)
 		evas_object_del(m_delete_all_website_list_confirm_popup);
 
-	m_delete_all_website_list_confirm_popup = elm_popup_add(m_genlist);
+	m_delete_all_website_list_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_delete_all_website_list_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -394,7 +394,7 @@ Eina_Bool Browser_Settings_Website_Setting::_show_delete_all_details_list_confir
 	if (m_delete_all_details_list_confirm_popup)
 		evas_object_del(m_delete_all_details_list_confirm_popup);
 
-	m_delete_all_details_list_confirm_popup = elm_popup_add(m_details_genlist);
+	m_delete_all_details_list_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_delete_all_details_list_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
