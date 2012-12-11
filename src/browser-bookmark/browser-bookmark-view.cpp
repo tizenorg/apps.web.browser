@@ -28,7 +28,6 @@
 Browser_Bookmark_View::Browser_Bookmark_View(void)
 :	m_back_button(NULL)
 	,m_top_control_bar(NULL)
-	,m_conformant(NULL)
 	,m_content_layout(NULL)
 	,m_sub_main_layout(NULL)
 	,m_genlist_content_layout(NULL)
@@ -44,7 +43,6 @@ Browser_Bookmark_View::Browser_Bookmark_View(void)
 	,m_current_folder_id(BROWSER_BOOKMARK_MAIN_FOLDER_ID)
 	,m_no_contents(NULL)
 	,m_current_genlist_item_to_edit(NULL)
-	,m_sub_folder_conformant(NULL)
 	,m_processing_popup_timer(NULL)
 	,m_processing_progress_bar(NULL)
 	,m_processed_it(NULL)
@@ -2002,9 +2000,9 @@ void Browser_Bookmark_View::_go_up_to_main_folder(void)
 
 	m_current_folder_id = BROWSER_BOOKMARK_MAIN_FOLDER_ID;
 
-	elm_box_unpack(m_genlist_content_box, m_sub_folder_conformant);
-	elm_box_pack_end(m_genlist_content_box, m_conformant);
-	evas_object_show(m_conformant);
+	elm_box_unpack(m_genlist_content_box, m_sub_folder_genlist);
+	elm_box_pack_end(m_genlist_content_box, m_main_folder_genlist);
+	evas_object_show(m_main_folder_genlist);
 
 	edje_object_signal_emit(elm_layout_edje_get(m_genlist_content_layout), "hide,upper_folder,signal", "");
 
@@ -2032,11 +2030,6 @@ void Browser_Bookmark_View::_go_up_to_main_folder(void)
 		evas_object_del(m_sub_folder_genlist);
 		m_sub_folder_genlist = NULL;
 	}
-	if (m_sub_folder_conformant) {
-		evas_object_del(m_sub_folder_conformant);
-		m_sub_folder_conformant = NULL;
-	}
-
 	if (m_main_folder_list.size() == 0)
 		_show_empty_content_layout(EINA_TRUE);
 	else
@@ -2084,19 +2077,8 @@ Evas_Object *Browser_Bookmark_View::_create_sub_folder_genlist(int folder_id)
 	BROWSER_LOGD("[%s]", __func__);
 	Evas_Object *genlist = elm_genlist_add(m_main_layout);
 	if (genlist) {
-		elm_box_unpack(m_genlist_content_box, m_conformant);
-		evas_object_hide(m_conformant);
-
-		m_sub_folder_conformant = elm_conformant_add(m_main_layout);
-		if (!m_sub_folder_conformant) {
-			BROWSER_LOGE("elm_conformant_add failed");
-			return EINA_FALSE;
-		}
-		elm_object_style_set(m_sub_folder_conformant, "internal_layout");
-		evas_object_size_hint_weight_set(m_sub_folder_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		evas_object_size_hint_align_set(m_sub_folder_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		evas_object_show(m_sub_folder_conformant);
-		elm_box_pack_end(m_genlist_content_box, m_sub_folder_conformant);
+		elm_box_unpack(m_genlist_content_box, m_main_folder_genlist);
+		evas_object_hide(m_main_folder_genlist);
 
 		m_current_folder_id = folder_id;
 
@@ -2114,7 +2096,7 @@ Evas_Object *Browser_Bookmark_View::_create_sub_folder_genlist(int folder_id)
 
 		evas_object_smart_callback_add(genlist, "moved", __genlist_move_cb, this);
 
-		elm_object_content_set(m_sub_folder_conformant, genlist);
+		elm_object_content_set(m_main_layout, m_sub_folder_genlist);
 		evas_object_show(genlist);
 
 		m_upper_folder_list = elm_list_add(m_main_layout);
@@ -2479,17 +2461,6 @@ Eina_Bool Browser_Bookmark_View::_create_main_layout(void)
 		return EINA_FALSE;
 	}
 
-	elm_win_conformant_set(m_win, EINA_TRUE);
-	m_conformant = elm_conformant_add(m_main_layout);
-	if (!m_conformant) {
-		BROWSER_LOGE("elm_conformant_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_conformant, "internal_layout");
-	evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(m_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(m_conformant);
-
 	elm_object_style_set(m_bg, "default");
 	m_sub_main_layout = elm_layout_add(m_main_layout);
 	if (!m_sub_main_layout) {
@@ -2528,15 +2499,13 @@ Eina_Bool Browser_Bookmark_View::_create_main_layout(void)
 	evas_object_size_hint_weight_set(m_genlist_content_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_show(m_genlist_content_box);
 	elm_object_part_content_set(m_genlist_content_layout, "elm.swallow.content_box", m_genlist_content_box);
-	elm_box_pack_end(m_genlist_content_box, m_conformant);
 
 	m_main_folder_genlist = _create_main_folder_genlist();
 	if (!m_main_folder_genlist) {
 		BROWSER_LOGE("_create_main_folder_genlist failed");
 		return EINA_FALSE;
 	}
-
-	elm_object_content_set(m_conformant, m_main_folder_genlist);
+	elm_box_pack_end(m_genlist_content_box, m_main_folder_genlist);
 
 	m_back_button = elm_button_add(m_main_layout);
 	if (!m_back_button) {

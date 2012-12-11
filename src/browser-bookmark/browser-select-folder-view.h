@@ -42,7 +42,6 @@ private:
 
 	Evas_Object *m_list;
 	Evas_Object *m_content_layout;
-	Evas_Object *m_conformant;
 	Evas_Object *m_bottom_control_bar;
 	Evas_Object *m_cancel_button;
 	Evas_Object *m_done_button;

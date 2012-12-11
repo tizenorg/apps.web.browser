@@ -49,7 +49,6 @@ private:
 	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *eventInfo);
 
 	Evas_Object *m_genlist;
-	Evas_Object *m_conformant;
 	Evas_Object *m_save_button;
 	Evas_Object *m_cancel_button;
 	Evas_Object *m_folder_name_edit_field;

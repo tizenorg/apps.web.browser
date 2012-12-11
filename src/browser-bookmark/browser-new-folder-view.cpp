@@ -28,7 +28,6 @@ Browser_New_Folder_View::Browser_New_Folder_View(void)
 #endif
 :
 	m_genlist(NULL)
-	,m_conformant(NULL)
 	,m_save_button(NULL)
 	,m_cancel_button(NULL)
 	,m_folder_name_edit_field(NULL)
@@ -315,15 +314,7 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 	BROWSER_LOGD("[%s]", __func__);
 	elm_win_conformant_set(m_win, EINA_TRUE);
 
-	m_conformant = elm_conformant_add(m_win);
-	if (!m_conformant) {
-		BROWSER_LOGE("elm_conformant_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_conformant, "internal_layout");
-	evas_object_size_hint_align_set(m_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-	m_genlist = elm_genlist_add(m_conformant);
+	m_genlist = elm_genlist_add(m_navi_bar);
 	if (!m_genlist) {
 		BROWSER_LOGE("elm_genlist_add failed");
 		return EINA_FALSE;
@@ -338,25 +329,24 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 
 	elm_genlist_item_append(m_genlist, &m_item_class, this, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, NULL);
 	evas_object_show(m_genlist);
-	elm_object_content_set(m_conformant, m_genlist);
 
 #ifdef EDIT_FOLDER_VIEW
 	if (m_is_edit_mode) {
 		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_EDIT_FOLDER, NULL, NULL,
-											m_conformant, "browser_titlebar");
+											m_genlist, "browser_titlebar");
 	} else {
 		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_CREATE_FOLDER, NULL, NULL,
-											m_conformant, "browser_titlebar");
+											m_genlist, "browser_titlebar");
 	}
 #else
 	m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_CREATE_FOLDER, NULL, NULL,
-											m_conformant, "browser_titlebar");
+											m_genlist, "browser_titlebar");
 #endif
 	evas_object_smart_callback_add(m_navi_bar, "transition,finished", __naviframe_pop_finished_cb, this);
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
 
-	m_save_button = elm_button_add(m_conformant);
+	m_save_button = elm_button_add(m_navi_bar);
 	if (!m_save_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;
@@ -367,7 +357,7 @@ Eina_Bool Browser_New_Folder_View::_create_main_layout(void)
 	evas_object_smart_callback_add(m_save_button, "clicked", __save_button_clicked_cb, this);
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_RIGHT_BTN, m_save_button);
 
-	m_cancel_button = elm_button_add(m_conformant);
+	m_cancel_button = elm_button_add(m_navi_bar);
 	if (!m_cancel_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;

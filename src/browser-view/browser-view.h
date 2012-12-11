@@ -276,7 +276,6 @@ private:
 	Evas_Object *m_scroller;
 	Evas_Object *m_content_box;
 	Evas_Object *m_dummy_loading_progressbar;
-	Evas_Object *m_conformant;
 	Evas_Object *m_title_back_button;
 
 	/* url layout member variables */

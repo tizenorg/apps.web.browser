@@ -26,7 +26,6 @@ Browser_Add_To_Bookmark_View::Browser_Add_To_Bookmark_View(string title, string 
 							Eina_Bool is_edit_mode, int current_folder_id)
 :
 	m_genlist(NULL)
-	,m_conformant(NULL)
 	,m_title_cancel_button(NULL)
 	,m_title_done_button(NULL)
 	,m_title_edit_field(NULL)
@@ -263,7 +262,7 @@ void Browser_Add_To_Bookmark_View::__genlist_item_clicked_cb(void *data, Evas_Ob
 Evas_Object *Browser_Add_To_Bookmark_View::_create_content_genlist(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-	Evas_Object *genlist = elm_genlist_add(m_conformant);
+	Evas_Object *genlist = elm_genlist_add(m_navi_bar);
 	if (!genlist) {
 		BROWSER_LOGE("elm_genlist_add failed");
 		return NULL;
@@ -549,14 +548,6 @@ Eina_Bool Browser_Add_To_Bookmark_View::_create_main_layout(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
 	elm_win_conformant_set(m_win, EINA_TRUE);
-	m_conformant = elm_conformant_add(m_win);
-	if (!m_conformant) {
-		BROWSER_LOGE("elm_conformant_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_conformant, "internal_layout");
-	evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_show(m_conformant);
 
 	m_genlist = _create_content_genlist();
 	if (!m_genlist) {
@@ -564,19 +555,18 @@ Eina_Bool Browser_Add_To_Bookmark_View::_create_main_layout(void)
 		return EINA_FALSE;
 	}
 
-	elm_object_content_set(m_conformant, m_genlist);
 	if (m_is_edit_mode)
 		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_EDIT_BOOKMARK, NULL,
-								NULL, m_conformant, "browser_titlebar");
+								NULL, m_genlist, "browser_titlebar");
 	else
 		m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_ADD_TO_BOOKMARKS, NULL,
-								NULL, m_conformant, "browser_titlebar");
+								NULL, m_genlist, "browser_titlebar");
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
 
 	evas_object_smart_callback_add(m_navi_bar, "transition,finished", __naviframe_pop_finished_cb, this);
 
-	m_title_cancel_button = elm_button_add(m_conformant);
+	m_title_cancel_button = elm_button_add(m_navi_bar);
 	if (!m_title_cancel_button) {
 		BROWSER_LOGE("elm_button_add failed!");
 		return EINA_FALSE;
@@ -588,7 +578,7 @@ Eina_Bool Browser_Add_To_Bookmark_View::_create_main_layout(void)
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_LEFT_BTN, m_title_cancel_button);
 	evas_object_show(m_title_cancel_button);
 
-	m_title_done_button = elm_button_add(m_conformant);
+	m_title_done_button = elm_button_add(m_navi_bar);
 	if (!m_title_done_button) {
 		BROWSER_LOGE("elm_button_add failed!");
 		return EINA_FALSE;

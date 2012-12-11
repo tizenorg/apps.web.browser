@@ -46,7 +46,6 @@ Browser_View::Browser_View(Evas_Object *win, Evas_Object *navi_bar, Evas_Object 
 	,m_scroller(NULL)
 	,m_content_box(NULL)
 	,m_dummy_loading_progressbar(NULL)
-	,m_conformant(NULL)
 	,m_url_layout(NULL)
 	,m_url_entry_layout(NULL)
 	,m_url_edit_field(NULL)
@@ -4481,20 +4480,7 @@ Eina_Bool Browser_View::_create_main_layout(void)
 	elm_object_part_content_set(m_main_layout, "elm.swallow.waiting_progress", m_dummy_loading_progressbar);
 	evas_object_show(m_dummy_loading_progressbar);
 
-	/* create conformant */
-	elm_win_conformant_set(m_win, EINA_TRUE);
-	m_conformant = elm_conformant_add(m_main_layout);
-	if (!m_conformant) {
-		BROWSER_LOGE("elm_conformant_add failed!");
-		return EINA_FALSE;
-	}
-
-	elm_object_style_set(m_conformant, "internal_layout");
-	evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(m_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_object_content_set(m_conformant, m_scroller);
-	elm_object_part_content_set(m_main_layout, "elm.swallow.content", m_conformant);
-	evas_object_show(m_conformant);
+	elm_object_part_content_set(m_main_layout, "elm.swallow.content", m_scroller);
 
 	m_url_layout = _create_url_layout();
 	if (!m_url_layout) {

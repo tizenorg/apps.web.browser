@@ -70,7 +70,6 @@ private:
 	genlist_item_param m_url_param;
 
 	Evas_Object *m_genlist;
-	Evas_Object *m_conformant;
 	Evas_Object *m_title_cancel_button;
 	Evas_Object *m_title_done_button;
 	Evas_Object *m_title_edit_field;

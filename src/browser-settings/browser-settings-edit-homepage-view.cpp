@@ -22,7 +22,6 @@
 Browser_Settings_Edit_Homepage_View::Browser_Settings_Edit_Homepage_View(Browser_Settings_Main_View *main_view)
 :
 	m_main_view(main_view)
-	,m_conformant(NULL)
 	,m_genlist(NULL)
 	,m_edit_field(NULL)
 	,m_done_button(NULL)
@@ -34,10 +33,6 @@ Browser_Settings_Edit_Homepage_View::Browser_Settings_Edit_Homepage_View(Browser
 Browser_Settings_Edit_Homepage_View::~Browser_Settings_Edit_Homepage_View(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
-
-	if (m_conformant)
-		evas_object_del(m_conformant);
-	m_conformant = NULL;
 }
 
 void Browser_Settings_Edit_Homepage_View::__back_button_clicked_cb(void *data,
@@ -125,15 +120,7 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	BROWSER_LOGD("[%s]", __func__);
 	elm_win_conformant_set(m_win, EINA_TRUE);
 
-	m_conformant = elm_conformant_add(m_win);
-	if (!m_conformant) {
-		BROWSER_LOGE("elm_conformant_add failed");
-		return EINA_FALSE;
-	}
-	elm_object_style_set(m_conformant, "internal_layout");
-	evas_object_size_hint_align_set(m_conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-	m_genlist = elm_genlist_add(m_conformant);
+	m_genlist = elm_genlist_add(m_navi_bar);
 	if (!m_genlist) {
 		BROWSER_LOGE("elm_genlist_add failed");
 		return EINA_FALSE;
@@ -147,14 +134,13 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 
 	elm_genlist_item_append(m_genlist, &m_item_class, this, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 	evas_object_show(m_genlist);
-	elm_object_content_set(m_conformant, m_genlist);
 
 	m_navi_it = elm_naviframe_item_push(m_navi_bar, BR_STRING_HOMEPAGE, NULL, NULL,
-											m_conformant, "browser_titlebar");
+											m_genlist, "browser_titlebar");
 
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_PREV_BTN, NULL);
 
-	m_done_button = elm_button_add(m_conformant);
+	m_done_button = elm_button_add(m_navi_bar);
 	if (!m_done_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;
@@ -165,7 +151,7 @@ Eina_Bool Browser_Settings_Edit_Homepage_View::_create_main_layout(void)
 	evas_object_smart_callback_add(m_done_button, "clicked", __done_button_clicked_cb, this);
 	elm_object_item_part_content_set(m_navi_it, ELM_NAVIFRAME_ITEM_TITLE_RIGHT_BTN, m_done_button);
 
-	m_cancel_button = elm_button_add(m_conformant);
+	m_cancel_button = elm_button_add(m_navi_bar);
 	if (!m_cancel_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return EINA_FALSE;

@@ -24,7 +24,6 @@
 Browser_Select_Folder_View::Browser_Select_Folder_View(int current_folder_id)
 :
 	m_list(NULL)
-	,m_conformant(NULL)
 	,m_bottom_control_bar(NULL)
 	,m_content_layout(NULL)
 	,m_current_folder_id(current_folder_id)

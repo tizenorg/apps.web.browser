@@ -118,9 +118,7 @@ private:
 	static Evas_Object *__genlist_icon_get_cb(void *data, Evas_Object *obj, const char *part);
 	static void __genlist_move_cb(void *data, Evas_Object *obj, void *event_info);
 
-	Evas_Object *m_conformant;
 	Evas_Object *m_main_folder_genlist;
-	Evas_Object *m_sub_folder_conformant;
 	Evas_Object *m_sub_folder_genlist;
 	Evas_Object *m_content_layout;
 	Evas_Object *m_main_layout;
