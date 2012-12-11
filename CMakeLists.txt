@@ -150,7 +150,7 @@ IF (USER_AGENT_VIEW)
                 src/browser-settings/browser-settings-user-agent-view.cpp
         )
 ENDIF ()
-SET (FEATURE_MOST_VISITED_LIST ON)
+SET (FEATURE_MOST_VISITED_LIST OFF)
 IF (FEATURE_MOST_VISITED_LIST)
         ADD_DEFINITIONS("-DFEATURE_MOST_VISITED_SITES")
         LIST(APPEND SRCS

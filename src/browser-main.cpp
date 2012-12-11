@@ -490,7 +490,9 @@ static bool __br_app_create(void *app_data)
 	elm_theme_extension_add(ad->browser_theme, BROWSER_SETTINGS_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_BOOKMARK_THEME);
 	elm_theme_extension_add(ad->browser_theme, BROWSER_FIND_WORD_LAYOUT_THEME);
+#if defined(FEATURE_MOST_VISITED_SITES)
 	elm_theme_extension_add(ad->browser_theme, BROWSER_MOST_VISITED_SITES_THEME);
+#endif
 
 	BROWSER_LOGD("[Browser-Launching time measure] << create main window >>");
 	ad->main_win = __create_main_win(ad);
@@ -593,7 +595,9 @@ static void __br_app_terminate(void *app_data)
 	elm_theme_extension_del(ad->browser_theme, BROWSER_SETTINGS_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_BOOKMARK_THEME);
 	elm_theme_extension_del(ad->browser_theme, BROWSER_FIND_WORD_LAYOUT_THEME);
+#if defined(FEATURE_MOST_VISITED_SITES)
 	elm_theme_extension_del(ad->browser_theme, BROWSER_MOST_VISITED_SITES_THEME);
+#endif
 	elm_theme_free(ad->browser_theme);
 
 	/* GCF test requirement */
