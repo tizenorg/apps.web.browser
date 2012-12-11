@@ -2842,6 +2842,12 @@ void Browser_View::_set_controlbar_back_forward_status(void)
 void Browser_View::_set_multi_window_controlbar_text(int count)
 {
 	BROWSER_LOGD("[%s]", __func__);
+
+	Evas_Object * object = elm_toolbar_item_icon_object_get(m_multi_window_button);
+	if (object)
+		evas_object_del(object);
+	elm_toolbar_item_icon_set(m_multi_window_button, NULL);
+
 	if (count == 1) {
 		elm_toolbar_item_icon_set(m_multi_window_button, BROWSER_IMAGE_DIR"/01_controlbar_icon_multiview.png");
 	} else {
