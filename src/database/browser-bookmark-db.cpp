@@ -205,8 +205,9 @@ Eina_Bool Browser_Bookmark_DB::get_bookmark_id_by_title_url(int folder_id, const
 		BROWSER_LOGE("sqlite3_bind_text is failed.\n");
 
 	error = sqlite3_step(sqlite3_stmt);
-	if (error != SQLITE_ROW) {
-		BROWSER_LOGD("SQL error=%d", error);
+	if (error != SQLITE_ROW && error != SQLITE_DONE) {
+		BROWSER_LOGD("sqlite3_step is failed(%s).\n",
+			sqlite3_errmsg(m_db_descriptor));
 		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
 			BROWSER_LOGE("sqlite3_finalize is failed.\n");
 		_close_db();
@@ -218,7 +219,7 @@ Eina_Bool Browser_Bookmark_DB::get_bookmark_id_by_title_url(int folder_id, const
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_finalize is failed.\n");
 
-   	_close_db();
+	_close_db();
 
 	return (error == SQLITE_ROW);
 }
@@ -301,11 +302,7 @@ Eina_Bool Browser_Bookmark_DB::save_bookmark(int folder_id, const char* title, c
 	std::string url_to_save = "";
 
 	title_to_save = title;
-	if (title_to_save.size() >= BROWSER_MAX_TITLE_LEN)
-		title_to_save.resize(BROWSER_MAX_TITLE_LEN - 1);
 	url_to_save = url;
-	if (url_to_save.size() >= BROWSER_MAX_URL_LEN)
-		url_to_save.resize(BROWSER_MAX_URL_LEN - 1);
 
 	if (sqlite3_bind_int(sqlite3_stmt, 1, 0) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_bind_int is failed.\n");
@@ -325,7 +322,15 @@ Eina_Bool Browser_Bookmark_DB::save_bookmark(int folder_id, const char* title, c
 			BROWSER_LOGE("sqlite3_bind_int is failed.\n");
 	}
 
-  	error = sqlite3_step(sqlite3_stmt);
+	error = sqlite3_step(sqlite3_stmt);
+	if (error != SQLITE_ROW && error != SQLITE_DONE) {
+		BROWSER_LOGD("sqlite3_step is failed(%s).\n",
+			sqlite3_errmsg(m_db_descriptor));
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		_close_db();
+		return EINA_FALSE;
+	}
 
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_finalize is failed.\n");
@@ -407,6 +412,14 @@ Eina_Bool Browser_Bookmark_DB::is_duplicated(int folder_id, const char* title, c
 	}
 
 	error = sqlite3_step(sqlite3_stmt);
+	if (error != SQLITE_ROW && error != SQLITE_DONE) {
+		BROWSER_LOGD("sqlite3_step is failed(%s).\n",
+			sqlite3_errmsg(m_db_descriptor));
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		_close_db();
+		return EINA_FALSE;
+	}
 
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_finalize is failed.\n");

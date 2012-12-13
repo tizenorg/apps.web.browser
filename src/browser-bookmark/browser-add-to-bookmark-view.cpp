@@ -103,7 +103,9 @@ void Browser_Add_To_Bookmark_View::__title_entry_changed_cb(void *data, Evas_Obj
 		else
 			add_to_bookmark_view->m_input_title = title;
 	}
-	BROWSER_LOGD("m_input_title[%s]", add_to_bookmark_view->m_input_title.c_str());
+	BROWSER_LOGD("m_input_title(%d)[%s]",
+		strlen(add_to_bookmark_view->m_input_title.c_str())
+		,add_to_bookmark_view->m_input_title.c_str());
 
 	space_count = 0;
 	if (url && strlen(url)) {

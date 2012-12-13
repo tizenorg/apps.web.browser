@@ -1365,7 +1365,7 @@ char *Browser_Bookmark_View::__genlist_label_get_cb(void *data, Evas_Object *obj
 	Browser_Bookmark_DB::bookmark_item *item = (Browser_Bookmark_DB::bookmark_item *)data;
 
 	const char *title = item->title.c_str();
-	BROWSER_LOGD("title(%p)=%s", title, title);
+	BROWSER_LOGD("title(%p)(len:%d)=%s", title, strlen(title),title);
 	const char *url = item->url.c_str();
 	BROWSER_LOGD("url(%p)=%s", url, url);
 
