@@ -2288,6 +2288,7 @@ void Browser_View::__bookmark_cb(void *data, Evas_Object *obj, void *event_info)
 	if(!m_data_manager->get_history_db()->is_in_bookmark(browser_view->get_url().c_str(), &bookmark_id)) {
 		if (browser_view->get_title().empty() || strlen(browser_view->get_title().c_str()) == 0 ) {
 			BROWSER_LOGD("Title is EMPTY...Add to bookmark view is launched[%s]", __func__);
+			browser_view->_destroy_more_context_popup();
 			browser_view->__add_bookmark_cb(browser_view, NULL, NULL);
 		} else {
 			if (!elm_icon_file_set(browser_view->m_bookmark_on_off_icon, BROWSER_IMAGE_DIR"/I01_icon_bookmark_on.png", NULL)) {
