@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include <ui-gadget.h>
 #include <unistd.h>
-#include <url_download.h>
+#include <download.h>
 #include <utilX.h>
 #include <vconf.h>
 #include <Elementary.h>
