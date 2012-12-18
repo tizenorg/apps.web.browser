@@ -246,7 +246,9 @@ private:
 #if defined(FEATURE_MOST_VISITED_SITES)
 	Eina_Bool _show_most_visited_sites(Eina_Bool is_show);
 	Eina_Bool _capture_most_visited_sites_item_screen_shot(void);
+	void __destroy_mostvisit_editmode();
 #endif
+	void __destroy_findonpage_mode(void *data);
 	Eina_Bool _show_new_window_effect(Evas_Object *current_ewk_view,
 							Evas_Object *new_ewk_view);
 #if defined(HORIZONTAL_UI)

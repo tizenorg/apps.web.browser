@@ -2054,7 +2054,38 @@ Eina_Bool Browser_View::_show_most_visited_sites(Eina_Bool is_show)
 	}
 	return EINA_TRUE;
 }
+
+void Browser_View::__destroy_mostvisit_editmode()
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	if(m_most_visited_sites->m_edit_mode) {
+		elm_object_part_content_unset(m_most_visited_sites->m_main_layout, "elm.swallow.setting_button");
+		evas_object_hide(m_most_visited_sites->m_done_button);
+
+		elm_object_part_content_set(m_most_visited_sites->m_main_layout, "elm.swallow.setting_button", m_most_visited_sites->m_setting_button);
+		evas_object_show(m_most_visited_sites->m_setting_button);
+
+		elm_object_text_set(m_most_visited_sites->m_done_button, BR_STRING_DONE);
+		m_most_visited_sites->_set_edit_mode(EINA_FALSE);
+	}
+}
 #endif
+
+void Browser_View::__destroy_findonpage_mode(void *data)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	Browser_View *browser_view = (Browser_View *)data;
+
+	if (browser_view->m_option_header_find_word_layout) {
+		evas_object_del(browser_view->m_option_header_find_word_layout);
+		browser_view->m_option_header_find_word_layout = NULL;
+
+		browser_view->_set_edit_mode(BR_NO_EDIT_MODE);
+		browser_view->m_find_word->find_word("", Browser_Find_Word::BROWSER_FIND_WORD_FORWARD);
+	}
+}
 
 void Browser_View::load_url(const char *url)
 {
