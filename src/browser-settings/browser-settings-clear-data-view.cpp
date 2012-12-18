@@ -81,7 +81,7 @@ void Browser_Settings_Clear_Data_View::_delete_private_data(void)
 	if (elm_check_state_get(m_cookie_check_box)) {
 		/* Clear cookie */
 		Ewk_Context *ewk_context = ewk_context_default_get();
-		ewk_context_cookies_clear(ewk_context);
+		ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(ewk_context));
 	}
 	if (elm_check_state_get(m_saved_id_password_check_box)) {
 		/* Clear saved id & password */

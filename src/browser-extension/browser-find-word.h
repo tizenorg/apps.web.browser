@@ -41,10 +41,10 @@ public:
 	int get_match_max_value();
 
 private:
-	static void __did_find_string_cb(Evas_Object* o, const char* string, int match_count, void* user_data);
+	static void __did_find_string_cb(void *data, Evas_Object *obj, void *event_info);
 
-	int m_find_word_index;
-	int m_find_word_max_count;
+	unsigned int m_find_word_index;
+	unsigned int m_find_word_max_count;
 	Browser_View *m_browser_view;
 };
 

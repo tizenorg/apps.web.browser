@@ -1077,7 +1077,7 @@ void Browser_Settings_Main_View::__clear_all_cookie_data_confirm_response_cb(voi
 	}
 
 	Ewk_Context *ewk_context = ewk_context_default_get();
-	ewk_context_cookies_clear(ewk_context);
+	ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(ewk_context));
 
 	main_view->show_notify_popup(BR_STRING_DELETED, 3, EINA_TRUE);
 }

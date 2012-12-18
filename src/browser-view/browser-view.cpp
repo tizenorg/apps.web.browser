@@ -2084,7 +2084,7 @@ void Browser_View::load_url(const char *url)
 
 	_set_url_entry(full_url.c_str());
 
-	ewk_view_uri_set(m_focused_window->m_ewk_view, full_url.c_str());
+	ewk_view_url_set(m_focused_window->m_ewk_view, full_url.c_str());
 }
 
 string Browser_View::get_title(Browser_Window *window)
@@ -2134,7 +2134,7 @@ string Browser_View::get_url(Browser_Window *window)
 	if (!window->m_ewk_view)
 		return std::string();
 
-	const char *uri = ewk_view_uri_get(window->m_ewk_view);
+	const char *uri = ewk_view_url_get(window->m_ewk_view);
 	BROWSER_LOGD("uri = [%s]", uri);
 
 	if (!uri || strlen(uri) == 0)
@@ -2150,7 +2150,7 @@ string Browser_View::get_url(void)
 		return std::string();
 	}
 
-	const char *uri = ewk_view_uri_get(m_focused_window->m_ewk_view);
+	const char *uri = ewk_view_url_get(m_focused_window->m_ewk_view);
 	BROWSER_LOGD("uri = [%s]", uri);
 
 	if (!uri || strlen(uri) == 0)
@@ -2352,8 +2352,8 @@ void Browser_View::__private_check_change_cb(void *data, Evas_Object *obj, void 
 		edje_object_signal_emit(elm_layout_edje_get(browser_view->m_option_header_url_entry_layout), "private,off,signal", "");
 	}
 
-	Ewk_Setting *setting = ewk_view_setting_get(browser_view->m_focused_window->m_ewk_view);
-	ewk_setting_private_browsing_set(setting, browser_view->m_is_private);
+	Ewk_Settings *setting = ewk_view_settings_get(browser_view->m_focused_window->m_ewk_view);
+	ewk_settings_private_browsing_enabled_set(setting, browser_view->m_is_private);
 }
 
 void Browser_View::__expand_option_header_cb(void *data, Evas_Object *obj, void *event_info)

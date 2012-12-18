@@ -33,14 +33,17 @@ Browser_Find_Word::Browser_Find_Word(Browser_View *browser_view)
 Browser_Find_Word::~Browser_Find_Word(void)
 {
 	BROWSER_LOGD("[%s]", __func__);
+	evas_object_smart_callback_del(m_browser_view->m_focused_window->m_ewk_view, "text,found",  Browser_Find_Word::__did_find_string_cb);
 }
 
-void Browser_Find_Word::__did_find_string_cb(Evas_Object* o, const char* string, int match_count, void* user_data)
+void Browser_Find_Word::__did_find_string_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	BROWSER_LOGD("match_count = %d", match_count);
+	unsigned int match_count = *(unsigned int *)event_info;
 
-	Browser_Find_Word *find_word = (Browser_Find_Word *)user_data;
-	find_word->m_find_word_max_count = (unsigned int)match_count;
+	BROWSER_LOGD("match_count = %u", match_count);
+
+	Browser_Find_Word *find_word = (Browser_Find_Word *)data;
+	find_word->m_find_word_max_count = match_count;
 
 	if (match_count == 0) {
 		find_word->m_find_word_index = 0;
@@ -75,21 +78,20 @@ void Browser_Find_Word::__did_find_string_cb(Evas_Object* o, const char* string,
 
 int Browser_Find_Word::find_word(const char *word, Find_Word_Direction direction)
 {
+	evas_object_smart_callback_add(m_browser_view->m_focused_window->m_ewk_view, "text,found",  Browser_Find_Word::__did_find_string_cb, this);
+
 	BROWSER_LOGD("word to find=[%s]", word);
+
+	Ewk_Find_Options find_option = (Ewk_Find_Options)(EWK_FIND_OPTIONS_CASE_INSENSITIVE | EWK_FIND_OPTIONS_WRAP_AROUND
+			| EWK_FIND_OPTIONS_SHOW_FIND_INDICATOR | EWK_FIND_OPTIONS_SHOW_HIGHLIGHT);
 
 	if (direction == BROWSER_FIND_WORD_FORWARD) {
 		m_find_word_index++;
 
-		ewk_view_string_find(m_browser_view->m_focused_window->m_ewk_view, word,
-			EWK_FIND_OPTIONS_CASE_INSENSITIVE | EWK_FIND_OPTIONS_WRAP_AROUND
-			| EWK_FIND_OPTIONS_SHOW_FIND_INDICATOR | EWK_FIND_OPTIONS_SHOW_HIGHLIGHT, FIND_WORD_MAX_COUNT,
-			__did_find_string_cb, this);
+		ewk_view_text_find(m_browser_view->m_focused_window->m_ewk_view, word, find_option, FIND_WORD_MAX_COUNT);
 	} else if (direction == BROWSER_FIND_WORD_BACKWARD) {
 		m_find_word_index--;
-		ewk_view_string_find(m_browser_view->m_focused_window->m_ewk_view, word,
-			EWK_FIND_OPTIONS_CASE_INSENSITIVE | EWK_FIND_OPTIONS_BACKWARDS | EWK_FIND_OPTIONS_WRAP_AROUND
-			| EWK_FIND_OPTIONS_SHOW_FIND_INDICATOR | EWK_FIND_OPTIONS_SHOW_HIGHLIGHT, FIND_WORD_MAX_COUNT,
-			__did_find_string_cb, this);
+		ewk_view_text_find(m_browser_view->m_focused_window->m_ewk_view, word, find_option, FIND_WORD_MAX_COUNT);
 	}
 	if (m_find_word_index > FIND_WORD_MAX_COUNT)
 		m_find_word_index = FIND_WORD_MAX_COUNT;

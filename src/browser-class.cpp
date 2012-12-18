@@ -177,11 +177,11 @@ void Browser_Class::__preference_changed_cb(const char *key, void *data)
 				return;
 			}
 			if (default_level && browser->m_window_list[i]->m_ewk_view) {
-				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				Ewk_Settings *setting = ewk_view_settings_get(browser->m_window_list[i]->m_ewk_view);
 				if (!strncmp(default_level, FIT_TO_WIDTH, strlen(FIT_TO_WIDTH)))
-					ewk_setting_auto_fitting_set(setting, EINA_TRUE);
+					ewk_settings_auto_fitting_set(setting, EINA_TRUE);
 				else
-					ewk_setting_auto_fitting_set(setting, EINA_FALSE);
+					ewk_settings_auto_fitting_set(setting, EINA_FALSE);
 				free(default_level);
 				default_level = NULL;
 			}
@@ -191,44 +191,44 @@ void Browser_Class::__preference_changed_cb(const char *key, void *data)
 	} else if (!strncmp(key, RUN_JAVASCRIPT_KEY, strlen(RUN_JAVASCRIPT_KEY))) {
 		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
 			if (browser->m_window_list[i]->m_ewk_view) {
-				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				Ewk_Settings *setting = ewk_view_settings_get(browser->m_window_list[i]->m_ewk_view);
 				bool run_javascript = 1;
 				br_preference_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript);
 				if (run_javascript)
-					ewk_setting_enable_scripts_set(setting, EINA_TRUE);
+					ewk_settings_javascript_enabled_set(setting, EINA_TRUE);
 				else
-					ewk_setting_enable_scripts_set(setting, EINA_FALSE);
+					ewk_settings_javascript_enabled_set(setting, EINA_FALSE);
 			}
 		}
 	} else if (!strncmp(key, DISPLAY_IMAGES_KEY, strlen(DISPLAY_IMAGES_KEY))) {
 		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
 			if (browser->m_window_list[i]->m_ewk_view) {
-				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				Ewk_Settings *setting = ewk_view_settings_get(browser->m_window_list[i]->m_ewk_view);
 				bool display_images = 1;
 				br_preference_get_bool(DISPLAY_IMAGES_KEY, &display_images);
 				if (display_images)
-					ewk_setting_auto_load_images_set(setting, EINA_TRUE);
+					ewk_settings_loads_images_automatically_set(setting, EINA_TRUE);
 				else
-					ewk_setting_auto_load_images_set(setting, EINA_FALSE);
+					ewk_settings_loads_images_automatically_set(setting, EINA_FALSE);
 			}
 		}
 	} else if (!strncmp(key, ACCEPT_COOKIES_KEY, strlen(ACCEPT_COOKIES_KEY))) {
 		bool accept_cookies = 1;
 		br_preference_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies);
 		if (accept_cookies)
-			ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_ALWAYS);
+			ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
 		else
-			ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_NEVER);
+			ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_NEVER);
 	} else if (!strncmp(key, BLOCK_POPUP_KEY, strlen(BLOCK_POPUP_KEY))) {
 		for (int i = 0 ; i < browser->m_window_list.size() ; i++) {
 			if (browser->m_window_list[i]->m_ewk_view) {
-				Ewk_Setting *setting = ewk_view_setting_get(browser->m_window_list[i]->m_ewk_view);
+				Ewk_Settings *setting = ewk_view_settings_get(browser->m_window_list[i]->m_ewk_view);
 				bool block_popup = 0;
 				br_preference_get_bool(BLOCK_POPUP_KEY, &block_popup);
 				if (block_popup)
-					ewk_setting_scripts_window_open_set(setting, EINA_FALSE);
+					ewk_settings_scripts_window_open_set(setting, EINA_FALSE);
 				else
-					ewk_setting_scripts_window_open_set(setting, EINA_TRUE);
+					ewk_settings_scripts_window_open_set(setting, EINA_TRUE);
 			}
 		}
 	} else if (!strncmp(key, SHOW_SECURITY_WARNINGS_KEY, strlen(SHOW_SECURITY_WARNINGS_KEY))) {
@@ -303,8 +303,8 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 	if (!_set_user_agent(ewk_view))
 		BROWSER_LOGE("_set_user_agent failed");
 
-	Ewk_Setting *setting = ewk_view_setting_get(ewk_view);
-	ewk_setting_show_ime_on_autofocus_set(setting, EINA_TRUE);
+	Ewk_Settings *setting = ewk_view_settings_get(ewk_view);
+	ewk_settings_show_ime_on_autofocus_set(setting, EINA_TRUE);
 
 	char *default_level = NULL;
 	if (br_preference_get_str(DEFAULT_VIEW_LEVEL_KEY, &default_level) == false) {
@@ -313,43 +313,43 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 	}
 	if (default_level) {
 		if (!strncmp(default_level, FIT_TO_WIDTH, strlen(FIT_TO_WIDTH)))
-			ewk_setting_auto_fitting_set(setting, EINA_TRUE);
+			ewk_settings_auto_fitting_set(setting, EINA_TRUE);
 		else
-			ewk_setting_auto_fitting_set(setting, EINA_FALSE);
+			ewk_settings_auto_fitting_set(setting, EINA_FALSE);
 		free(default_level);
 	}
 
 	bool run_javascript = 1;
 	br_preference_get_bool(RUN_JAVASCRIPT_KEY, &run_javascript);
 	if (run_javascript)
-		ewk_setting_enable_scripts_set(setting, EINA_TRUE);
+		ewk_settings_javascript_enabled_set(setting, EINA_TRUE);
 	else
-		ewk_setting_enable_scripts_set(setting, EINA_FALSE);
+		ewk_settings_javascript_enabled_set(setting, EINA_FALSE);
 
 	bool display_images = 1;
 	br_preference_get_bool(DISPLAY_IMAGES_KEY, &display_images);
 	if (display_images)
-		ewk_setting_enable_plugins_set(setting, EINA_TRUE);
+		ewk_settings_loads_images_automatically_set(setting, EINA_TRUE);
 	else
-		ewk_setting_enable_plugins_set(setting, EINA_FALSE);
+		ewk_settings_loads_images_automatically_set(setting, EINA_FALSE);
 
 	bool accept_cookies = 1;
 	br_preference_get_bool(ACCEPT_COOKIES_KEY, &accept_cookies);
 	if (accept_cookies)
-		ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_ALWAYS);
+		ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
 	else
-		ewk_context_cookies_policy_set(ewk_context_default_get(), EWK_COOKIE_JAR_ACCEPT_NEVER);
+		ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_NEVER);
 
 	bool block_popup = 0;
 	br_preference_get_bool(BLOCK_POPUP_KEY, &block_popup);
 	if (block_popup)
-		ewk_setting_scripts_window_open_set(setting, EINA_FALSE);
+		ewk_settings_scripts_window_open_set(setting, EINA_FALSE);
 	else
-		ewk_setting_scripts_window_open_set(setting, EINA_TRUE);
+		ewk_settings_scripts_window_open_set(setting, EINA_TRUE);
 
 	ewk_view_recording_surface_enable_set(ewk_view, EINA_TRUE);
-	ewk_setting_layer_borders_enable_set(ewk_view_setting_get(ewk_view), false);
-	ewk_setting_enable_plugins_set(setting, EINA_TRUE);
+	ewk_settings_compositing_borders_visible_set(ewk_view_settings_get(ewk_view), false);
+	ewk_settings_plugins_enabled_set(setting, EINA_TRUE);
 
 	if (!_set_http_accepted_language_header(ewk_view)) {
 		BROWSER_LOGE("_set_http_accepted_language_header failed");
@@ -358,6 +358,7 @@ Eina_Bool Browser_Class::_set_ewk_view_options(Evas_Object *ewk_view)
 
 	return EINA_TRUE;
 }
+
 
 void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 {
