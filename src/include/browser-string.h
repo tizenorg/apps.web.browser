@@ -271,6 +271,7 @@
 #define BR_STRING_CTXMENU_CUT                           dgettext("sys_string", "IDS_COM_BODY_CUT")
 #define BR_STRING_CTXMENU_PASTE                         _("IDS_BR_OPT_PASTE")
 #define BR_STRING_CTXMENU_SELECT_WORD                   _("IDS_BR_BODY_SELECT_WORD")
+#define BR_STRING_CTXMENU_DRAG                          _("IDS_BR_OPT_DRAG")
 #define BR_STRING_CTXMENU_NO_GUESS_FOUND                _("No guesses found")
 #define BR_STRING_CTXMENU_IGNORE_SPELLING               _("Ignore spelling")
 #define BR_STRING_CTXMENU_LEARN_SPELLING                _("Learn spelling")

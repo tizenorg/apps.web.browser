@@ -283,6 +283,9 @@ Eina_Bool Browser_Context_Menu::_append_text_only_mode_context_menu(Ewk_Context_
 		case EWK_CONTEXT_MENU_ITEM_TAG_SELECT_WORD:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SELECT_WORD, true);
 			break;
+		case EWK_CONTEXT_MENU_ITEM_TAG_DRAG:
+			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_DRAG, true);
+			break;
 		default:
 			break;
 		}
@@ -388,6 +391,12 @@ Eina_Bool Browser_Context_Menu::_append_hyperlink_only_mode_context_menu(Ewk_Con
 #endif
 		case EWK_CONTEXT_MENU_ITEM_TAG_TEXT_SELECTION_MODE:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SELECTION_MODE, true);
+			break;
+
+		case EWK_CONTEXT_MENU_ITEM_TAG_DRAG:
+			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_DRAG, true);
+			break;
+
 		default:
 			break;
 		}
@@ -453,6 +462,9 @@ Eina_Bool Browser_Context_Menu::_append_image_only_mode_context_menu(Ewk_Context
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_IMAGE, true);
+			break;
+		case EWK_CONTEXT_MENU_ITEM_TAG_DRAG:
+			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_DRAG, true);
 			break;
 		default:
 			break;
@@ -545,6 +557,9 @@ Eina_Bool Browser_Context_Menu::_append_image_with_hyperlink_mode_context_menu(E
 			break;
 		case EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK:
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_IMAGE, true);
+			break;
+		case EWK_CONTEXT_MENU_ITEM_TAG_DRAG:
+			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_DRAG, true);
 			break;
 		default:
 			break;
