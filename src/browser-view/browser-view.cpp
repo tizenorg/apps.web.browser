@@ -3617,8 +3617,8 @@ Evas_Object *Browser_View::_create_find_word_layout(void)
 	evas_object_smart_callback_add(find_word_edit_field_entry, "activated", __find_word_entry_enter_key_cb, this);
 	elm_entry_input_panel_layout_set(find_word_edit_field_entry, ELM_INPUT_PANEL_LAYOUT_NORMAL);
 	elm_entry_prediction_allow_set(find_word_edit_field_entry, EINA_FALSE);
-	ecore_imf_context_input_panel_event_callback_add((Ecore_IMF_Context *)elm_entry_imf_context_get(find_word_edit_field_entry),
-			ECORE_IMF_INPUT_PANEL_STATE_EVENT, __find_word_entry_imf_event_cb, this);
+	//ecore_imf_context_input_panel_event_callback_add((Ecore_IMF_Context *)elm_entry_imf_context_get(find_word_edit_field_entry),
+	//		ECORE_IMF_INPUT_PANEL_STATE_EVENT, __find_word_entry_imf_event_cb, this);
 	elm_entry_text_style_user_push(find_word_edit_field_entry, "DEFAULT='font_size=35 color=#3C3632 ellipsis=1'");
 	evas_object_show(m_find_word_edit_field);
 
