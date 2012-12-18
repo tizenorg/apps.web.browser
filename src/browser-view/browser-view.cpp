@@ -940,9 +940,6 @@ void Browser_View::_load_start(void)
 		m_focused_window->m_option_header_favicon = NULL;
 	}
 
-	/* This makes the ewk view unfocused so that the ime can't be invoked. */
-	evas_object_focus_set(m_focused_window->m_ewk_view_layout, EINA_TRUE);
-
 	if (_get_edit_mode() != BR_NO_EDIT_MODE)
 		_set_edit_mode(BR_NO_EDIT_MODE);
 
@@ -970,6 +967,9 @@ void Browser_View::__load_committed_cb(void *data, Evas_Object *obj, void *event
 	Browser_View *browser_view = (Browser_View *)data;
 	if (browser_view->_get_edit_mode() != BR_NO_EDIT_MODE)
 		return;
+
+	/* This makes the ewk view unfocused so that the ime can't be invoked. */
+	evas_object_focus_set(browser_view->m_focused_window->m_ewk_view_layout, EINA_TRUE);
 
 	browser_view->_set_url_entry(browser_view->get_url().c_str());
 }
