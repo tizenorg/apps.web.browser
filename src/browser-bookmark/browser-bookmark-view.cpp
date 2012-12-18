@@ -23,7 +23,7 @@
 #include "browser-string.h"
 #include "browser-view.h"
 
-#define UPPER_FOLDER_ICON_SIZE	(64 * elm_scale_get())
+#define UPPER_FOLDER_ICON_SIZE	(64 * elm_config_scale_get())
 
 Browser_Bookmark_View::Browser_Bookmark_View(void)
 :	m_back_button(NULL)

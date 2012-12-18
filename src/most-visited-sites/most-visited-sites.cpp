@@ -23,8 +23,8 @@
 #include "browser-view.h"
 #include "browser-common-view.h"
 
-#define MOST_VISITED_SITES_ITEM_WIDTH	(226 * elm_scale_get())
-#define MOST_VISITED_SITES_ITEM_HEIGHT	(273 * elm_scale_get())
+#define MOST_VISITED_SITES_ITEM_WIDTH	(226 * elm_config_scale_get())
+#define MOST_VISITED_SITES_ITEM_HEIGHT	(273 * elm_config_scale_get())
 
 Most_Visited_Sites::Most_Visited_Sites(Evas_Object *navi_bar, Browser_View *browser_view,
 						Most_Visited_Sites_DB *most_visited_sites_db)

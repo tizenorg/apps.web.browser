@@ -1238,7 +1238,7 @@ Eina_Bool Browser_View::_capture_most_visited_sites_item_screen_shot(void)
 		int window_w = 0;
 		evas_object_geometry_get(m_win, NULL, NULL, &window_w, NULL);
 		int item_w = window_w / 3;
-		int item_h = item_w + 10 * elm_scale_get();
+		int item_h = item_w + 10 * elm_config_scale_get();
 
 		double ratio = (double)((double)item_h / (double)item_w);
 

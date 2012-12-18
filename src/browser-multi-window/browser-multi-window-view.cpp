@@ -405,7 +405,7 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_in_effect(Evas_Object *item)
 	elm_transit_objects_final_state_keep_set(m_zoom_move_transit, EINA_FALSE);
 
 	elm_transit_effect_translation_add(m_zoom_move_transit, 0, 0, 0,
-							(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_scale_get())));
+							(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_config_scale_get())));
 
 	elm_transit_duration_set(m_zoom_move_transit, 0.5);
 	elm_transit_go(m_zoom_move_transit);
@@ -506,9 +506,9 @@ Eina_Bool Browser_Multi_Window_View::_show_zoom_out_effect(void)
 	if (browser_scroller_y > url_layout_h)
 		browser_scroller_y = url_layout_h;
 
-	/* 4 * elm_scale_get() is to make the effect layout more smoothly. */
+	/* 4 * elm_config_scale_get() is to make the effect layout more smoothly. */
 	elm_transit_effect_translation_add(m_zoom_move_transit, 0, 0, 0,
-					(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_scale_get())) * (-1));
+					(url_layout_h - browser_scroller_y - scroller_y - (6 * elm_config_scale_get())) * (-1));
 
 	elm_transit_duration_set(m_zoom_move_transit, m_zoom_out_duration);
 	elm_transit_go(m_zoom_move_transit);
@@ -820,7 +820,7 @@ Eina_Bool Browser_Multi_Window_View::_fill_multi_window_items(void)
 		return EINA_FALSE;
 	}
 	int empty_item_width = 0;
-	int padding = 22 * elm_scale_get();
+	int padding = 22 * elm_config_scale_get();
 	int snapshot_width = ewk_view_current_w * BROWSER_MULTI_WINDOW_ITEM_RATIO;
 	int snapshot_height = ewk_view_current_h * BROWSER_MULTI_WINDOW_ITEM_RATIO;
 
@@ -1191,7 +1191,7 @@ int Browser_Multi_Window_View::_get_scroll_page_size(void)
 		evas_object_geometry_get(window_list[m_current_position_index]->m_portrait_snapshot_image,
 					NULL, NULL, &snapshot_w, NULL);
 
-	int padding = 22 * elm_scale_get();
+	int padding = 22 * elm_config_scale_get();
 
 	int scroll_size = snapshot_w + (padding * 2);
 
@@ -1203,7 +1203,7 @@ void Browser_Multi_Window_View::_scroller_animation_stop(void)
 	int scroller_x = 0;
 	elm_scroller_region_get(m_scroller, &scroller_x, NULL, NULL, NULL);
 
-	int padding = 22 * elm_scale_get();
+	int padding = 22 * elm_config_scale_get();
 	int scroll_size = _get_scroll_page_size();
 
 	/* Workaround.
