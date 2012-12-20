@@ -410,7 +410,7 @@ static void __br_lang_changed_cb(void *data)
 	/* To do */
 	struct browser_data *ad = (struct browser_data *)data;
 
-	ad->browser_instance->destroy_findonpage();
+	ad->browser_instance->destroy_active_view();
 	return;
 }
 
