@@ -386,6 +386,8 @@ Eina_Bool Browser_Context_Menu::_append_hyperlink_only_mode_context_menu(Ewk_Con
 			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SAVE_LINK, true);
 			break;
 #endif
+		case EWK_CONTEXT_MENU_ITEM_TAG_TEXT_SELECTION_MODE:
+			ewk_context_menu_item_append_as_action(menu, tag, BR_STRING_CTXMENU_SELECTION_MODE, true);
 		default:
 			break;
 		}
