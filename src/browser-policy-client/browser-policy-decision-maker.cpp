@@ -17,7 +17,7 @@
 
 
 #include <ail.h>
-#include <url_download.h>
+#include <download.h>
 
 #include "browser-class.h"
 #include "browser-common-view.h"
