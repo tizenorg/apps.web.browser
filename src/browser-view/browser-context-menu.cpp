@@ -82,6 +82,10 @@ Eina_Bool Browser_Context_Menu::launch_context_menu(Ewk_Context_Menu *menu)
 		_append_image_with_hyperlink_mode_context_menu(menu);
 		break;
 
+	case CUSTOM_CONTEXT_MENU_INPUT_TAG_MODE:
+		_append_input_tag_mode_context_menu(menu);
+		break;
+
 	case CUSTOM_CONTEXT_MENU_TEXT_AND_IMAGE_SELECTION_MODE:
 		/* To do */
 		break;
@@ -146,6 +150,7 @@ Eina_Bool Browser_Context_Menu::_check_context_menu_mode(Ewk_Context_Menu *menu)
 	Eina_Bool has_text = EINA_FALSE;
 	Eina_Bool has_image = EINA_FALSE;
 	Eina_Bool has_hyperlink = EINA_FALSE;
+	Eina_Bool has_input_tag = EINA_FALSE;
 
 	Ewk_Context_Menu_Item *item;
 	Ewk_Context_Menu_Item_Tag tag;
@@ -174,9 +179,15 @@ Eina_Bool Browser_Context_Menu::_check_context_menu_mode(Ewk_Context_Menu *menu)
 		|| (tag == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_FRAME_IN_NEW_WINDOW)
 		|| (tag == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_NEW_WINDOW))
 			has_image = EINA_TRUE;
+
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_CLIPBOARD)
+			has_input_tag = EINA_TRUE;
 	}
 
-	if (has_text == EINA_TRUE && has_hyperlink == EINA_FALSE && has_image == EINA_FALSE) {
+	if (has_input_tag == EINA_TRUE) {
+		BROWSER_LOGD("CUSTOM_CONTEXT_MENU_INPUT_TAG_MODE");
+		return CUSTOM_CONTEXT_MENU_INPUT_TAG_MODE;
+	} else if (has_text == EINA_TRUE && has_hyperlink == EINA_FALSE && has_image == EINA_FALSE) {
 		BROWSER_LOGD("CUSTOM_CONTEXT_MENU_TEXT_ONLY_MODE");
 		return CUSTOM_CONTEXT_MENU_TEXT_ONLY_MODE;
 	} else if (has_text == EINA_TRUE && has_hyperlink == EINA_FALSE && has_image == EINA_TRUE) {
@@ -541,6 +552,16 @@ Eina_Bool Browser_Context_Menu::_append_image_with_hyperlink_mode_context_menu(E
 	if (custom_context_menu_array)
 		free(custom_context_menu_array);
 	custom_context_menu_array = NULL;
+
+	return EINA_TRUE;
+}
+
+Eina_Bool Browser_Context_Menu::_append_input_tag_mode_context_menu(Ewk_Context_Menu *menu)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	/* There is nothing to reorder or change menu from webkit support.
+	   Use context menu as webkit made */
 
 	return EINA_TRUE;
 }
