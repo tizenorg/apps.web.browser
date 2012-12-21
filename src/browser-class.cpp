@@ -410,6 +410,9 @@ void Browser_Class::ewk_view_deinit(Evas_Object *ewk_view)
 //	evas_object_smart_callback_del(ewk_view, "request,certificate,confirm",
 //					Browser_View::__request_certificate_confirm_cb);
 
+	evas_object_smart_callback_del(ewk_view, "usermedia,permission,request",
+					Browser_View::__request_usermedia_cb);
+
 	m_download_policy->deinit();
 	m_browser_view->m_context_menu->deinit();
 	m_custom_protocol_handler->deactivate(ewk_view);
@@ -476,6 +479,9 @@ void Browser_Class::ewk_view_init(Evas_Object *ewk_view)
 
 //	evas_object_smart_callback_add(ewk_view, "request,certificate,confirm",
 //					Browser_View::__request_certificate_confirm_cb, m_browser_view);
+
+	evas_object_smart_callback_add(ewk_view, "usermedia,permission,request",
+					Browser_View::__request_usermedia_cb, m_browser_view);
 
 	m_download_policy->init(ewk_view);
 	m_browser_view->m_context_menu->init(ewk_view);

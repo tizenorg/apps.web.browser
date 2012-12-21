@@ -729,6 +729,22 @@ void Browser_View::__certi_cancel_cb(void* data, Evas_Object* obj, void* event_i
 	_destroy_popup(obj);
 }
 
+void Browser_View::__usermedia_ok_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	ewk_user_media_permission_set((Ewk_User_Media_Permission *)data, EINA_TRUE);
+	_destroy_popup(obj);
+}
+
+void Browser_View::__usermedia_cancel_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	BROWSER_LOGD("[%s]", __func__);
+
+	ewk_user_media_permission_set((Ewk_User_Media_Permission *)data, EINA_FALSE);
+	_destroy_popup(obj);
+}
+
 void Browser_View::_show_certi_confirm_popup(const char *msg, void *data)
 {
 	BROWSER_LOGD("[%s]", __func__);
@@ -772,6 +788,34 @@ void Browser_View::__request_certificate_confirm_cb(void *data, Evas_Object *obj
 	BROWSER_LOGD("url=[%s]", url);
 
 	browser_view->_show_certi_confirm_popup(msg.c_str(), (void *)certi_policy);
+}
+
+void Browser_View::__request_usermedia_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *popup = elm_popup_add(m_win);
+	if (!popup) {
+		BROWSER_LOGE("elm_popup_add failed");
+		return;
+	}
+
+	Ewk_User_Media_Permission *usermedia = (Ewk_User_Media_Permission *)event_info;
+
+	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_text_set(popup, BR_STRING_USERMEDIA);
+
+	evas_object_show(popup);
+
+	Evas_Object *ok_button = elm_button_add(popup);
+	elm_object_text_set(ok_button, BR_STRING_ALLOW);
+	elm_object_part_content_set(popup, "button1", ok_button);
+	elm_object_style_set(ok_button, "popup_button/default");
+	evas_object_smart_callback_add(ok_button, "clicked", __usermedia_ok_cb,  usermedia);
+
+	Evas_Object *cancel_button = elm_button_add(popup);
+	elm_object_text_set(cancel_button, BR_STRING_CANCEL);
+	elm_object_part_content_set(popup, "button2", cancel_button);
+	elm_object_style_set(cancel_button, "popup_button/default");
+	evas_object_smart_callback_add(cancel_button, "clicked", __usermedia_cancel_cb, usermedia);
 }
 
 void Browser_View::__create_window_cb(void *data, Evas_Object *obj, void *event_info)

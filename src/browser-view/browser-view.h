@@ -118,6 +118,9 @@ private:
 	static void __certi_ok_cb(void* data, Evas_Object* obj, void* event_info);
 	static void __certi_cancel_cb(void* data, Evas_Object* obj, void* event_info);
 
+	static void __request_usermedia_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __usermedia_ok_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __usermedia_cancel_cb(void *data, Evas_Object *obj, void *event_info);
 	/* imf event callback functions */
 	static void __url_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value);
 	static void __find_word_entry_imf_event_cb(void *data, Ecore_IMF_Context *ctx, int value);

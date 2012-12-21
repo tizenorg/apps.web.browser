@@ -214,6 +214,7 @@
 #define BR_STRING_MSG_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q  _("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
 #define BR_STRING_MSG_ASK_INCREASING_QUOTA_Q    _("Do you want to allow %s to use up to %dMB of storage?")
 #define BR_STRING_MSG_ASK_FILE_PERMISSION_CHANGE_Q                  _("Do you want to change file system permission?")
+#define BR_STRING_USERMEDIA                _("This application wants to use your media.")
 /*************************************************************************************************************/
 
 
