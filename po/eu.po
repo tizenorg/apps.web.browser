@@ -860,7 +860,7 @@ msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
 msgstr "Kargatzen. Itxaron mesedez..."
 
 msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "Pertsonalizatu erabiltzailearen agentea"
+msgstr "Pertsonalizatutako erabiltzailearen agentea"
 
 msgid "IDS_BR_BODY_USER_HOMEPAGE"
 msgstr "Erabiltzailearen orri nagusia"
@@ -900,4 +900,34 @@ msgstr "Cookie guztiak ezabatu?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Ezabatu formulariotik gordetako datu guztiak?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ez onartua"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Azken ikusitako orria"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Arrastatu"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Ezgaitu modu pribatua"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Gaitu modu pribatua"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web klipa"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Lastermarka kenduta"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Orria gordeta"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Deskargatzen..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Deskarga hasten..."
 

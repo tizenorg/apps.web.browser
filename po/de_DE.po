@@ -293,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Kein Titel"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Multi Window"
+msgstr "Multi-Window"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Keine Verläufe"
@@ -900,4 +900,34 @@ msgstr "Alle Cookies löschen?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Alle gespeicherten Formulardaten löschen?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Nicht zulässig"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Zuletzt besuchte Seite"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Ziehen"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Privaten Modus deaktivieren"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Privaten Modus aktivieren"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Internet-Clip"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Lesezeichen entfernt"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Seite wurde gespeichert."
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Herunterladen..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Download wird gestartet..."
 

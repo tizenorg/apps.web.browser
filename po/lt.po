@@ -901,3 +901,33 @@ msgstr "Ištrinti visus slapukus?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Trinti visų išsaugotų formų duomenis?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Neleidžiama"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Paskutinis peržiūrėtas puslapis"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Vilkti"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Išjungti privatųjį režimą"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Įjungti privatųjį režimą"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Žiniatinklio klipas"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Adresyno įrašas pašalintas"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Puslapis išsaugotas"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Atsisiunčiama..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Pradeda siųsti..."
+

@@ -581,7 +581,7 @@ msgid "IDS_BR_OPT_LOCK"
 msgstr "Блокувати"
 
 msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Розблокування"
+msgstr "Розблокувати"
 
 msgid "IDS_BR_BODY_MODIFY"
 msgstr "Змінити"
@@ -900,4 +900,34 @@ msgstr "Видалити всі файли cookie?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Видалити всі збережені дані форм?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Заборонено"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Остання переглянута сторінка"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Перетягнути"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Вимкнути режим конфіденційності"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Увімкнути режим конфіденційності"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Веб-вирізка"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Закладку видалено"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Сторінку збережено"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Завантаження..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Початок завантаження..."
 

@@ -14,7 +14,7 @@ msgid "IDS_BR_OPT_SHARE"
 msgstr "Paylaşıma aç"
 
 msgid "IDS_BR_BODY_SEARCH"
-msgstr "Akıllı Arama"
+msgstr "Buluyor"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Ana ekrana ekle"
@@ -900,4 +900,34 @@ msgstr "Tüm tanımlama bilgileri silinsin mi?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Tüm kaydedilen form verileri silinsin mi?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "İzin verilmiyor"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Görüntülenen son sayfa"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Sürükle"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Özel modu devre dışı bırak"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Özel modu etkinleştir"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web klibi"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Yer imi kaldırıldı"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Sayfa kaydedildi"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "İndiriliyor..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "İndirme başlıyor..."
 

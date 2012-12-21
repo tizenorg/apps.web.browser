@@ -110,7 +110,7 @@ msgid "IDS_BR_SK_CANCEL"
 msgstr "Annuler"
 
 msgid "IDS_BR_HEADER_EDIT_BOOKMARK"
-msgstr "Modifier le favori"
+msgstr "Modifier le marque-page"
 
 msgid "IDS_BR_OPT_MESSAGES"
 msgstr "Messages"
@@ -302,7 +302,7 @@ msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
 msgstr "Ajouter aux favoris"
 
 msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Modifier le favori"
+msgstr "Modifier le marque-page"
 
 msgid "IDS_BR_BODY_FOLDER_NAME_C"
 msgstr "Nom du dossier :"
@@ -602,7 +602,7 @@ msgid "IDS_BR_BODY_CERTIFICATES"
 msgstr "Certificats"
 
 msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "Favoris"
+msgstr "Marque-pages"
 
 msgid "IDS_BR_BODY_ENTER_NAME"
 msgstr "Saisissez votre nom"
@@ -887,7 +887,7 @@ msgid "IDS_BR_BODY_DELETE_ALL"
 msgstr "Tout supprimer"
 
 msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "Favori ajouté"
+msgstr "Marque-page ajouté"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "Supprimer les bases de données et le contenu en cache ?"
@@ -900,4 +900,34 @@ msgstr "Supprimer tous les cookies ?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Supprimer toutes les données de formulaire enregistrées ?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Non autorisé"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Page précédente"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Glisser"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Désactiver le mode privé"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activer le mode privé"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Clip Web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favori supprimé"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Page enregistrée"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Téléchargement..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Début du téléchargement..."
 

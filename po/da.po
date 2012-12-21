@@ -524,7 +524,7 @@ msgid "IDS_BR_BODY_CLEAR_CACHE"
 msgstr "Ryd cache"
 
 msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "Ryd oversigt"
+msgstr "Ryd historik"
 
 msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
 msgstr "Aktivér plug-ins"
@@ -900,4 +900,34 @@ msgstr "Slet alle cookies?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Slet alle gemte formulardata?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ikke tilladt"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Senest viste side"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Træk"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Deaktivér privattilstand"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Aktivér privattilstand"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web-klip"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Bogmærke fjernet"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Side gemt"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Downloader ..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Starter download..."
 

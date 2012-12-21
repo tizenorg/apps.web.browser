@@ -901,3 +901,33 @@ msgstr "هل تريد حذف كافة ملفات تعريف الارتباط؟"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "هل تريد حذف كل‏‫ بيانات النموذج‬ المحفوظة؟"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "غير مسموح"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "آخر صفحة معروضة"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "سحب"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "إلغاء تفعيل الوضع الخاص"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "تفعيل الوضع الخاص"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "اختصار للويب"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "تمت إزالة العلامة"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "تم حفظ الصفحة"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "جاري التنزيل..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "جاري بدء التنزيل..."
+

@@ -185,7 +185,7 @@ msgid "IDS_BR_BODY_HOMEPAGE"
 msgstr "Почетна стр."
 
 msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Положено"
+msgstr "Пејзажно"
 
 msgid "IDS_BR_BODY_NO_BOOKMARKS"
 msgstr "Нема сочувани страници"
@@ -491,7 +491,7 @@ msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
 msgstr "Оди напред"
 
 msgid "IDS_BR_OPT_STOP"
-msgstr "Запри"
+msgstr "Прекини"
 
 msgid "IDS_BR_OPT_RELOAD"
 msgstr "Отвори повторно"
@@ -900,4 +900,34 @@ msgstr "Избриши сите колачиња?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Да се избришат сите сочувани податоци за формулари?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Не е дозволено"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Последна гледана страница"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Влечи"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Исклучи приватен режим"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Вклучи приватен режим"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Веб-запис"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Омилената страница е отстранета"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Страницата е сочувана"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Се презема..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Почнува преземање..."
 

@@ -818,7 +818,7 @@ msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
 msgstr "Настройки веб-сайтов"
 
 msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "Высокое"
+msgstr "Высокий"
 
 msgid "IDS_BR_BODY_SAVE_LINK"
 msgstr "Сохранить ссылку"
@@ -830,7 +830,7 @@ msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
 msgstr "Конфиденциальность и безопасность"
 
 msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "Сохранить для автономного чтения"
+msgstr "Сохранить страницу"
 
 msgid "IDS_BR_HEADER_LOCATION"
 msgstr "Местоположение"
@@ -900,4 +900,34 @@ msgstr "Удалить все cookies?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Удалить все сохраненные данные форм?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Запрещено"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Последняя просматриваемая страница"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Перетащите"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Отключить приватный режим"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Включить приватный режим"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Веб-клип"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Закладка удалена"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Страница сохранена"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Загрузка..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Начало загрузки..."
 

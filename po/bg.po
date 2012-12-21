@@ -901,3 +901,33 @@ msgstr "Желаете ли да изтриете всички cookies?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Изтриване на всички запаметени данни за формуляри?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Не е разрешено"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Последно отваряна страница"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Плъзгане"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Деактивиране на личен режим"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Активиране на личен режим"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Уеб клип"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Показалецът е премахнат"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Страницата е запаметена"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Смъкване..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Начало на изтеглянето..."
+

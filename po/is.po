@@ -901,3 +901,33 @@ msgstr "Viltu eyða öllum fótsporum?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Eyða öllum vistuðum upplýsingum um innslátt?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Er óheimilt"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Síðasta síða sem var birt"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Draga"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Slökkva á einkastillingu"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Kveikja á einkastillingu"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Vefúrklippa"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Bókamerki fjarlægt"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Síða vistuð"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Verið er að hala niður..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Ræsi niðurhal..."
+

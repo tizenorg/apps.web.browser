@@ -901,3 +901,33 @@ msgstr "Ştergeţi toate modulele cookie?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Ştergeţi toate datele salvate din formular?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Nepermis!"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Ultima pagină vizualizată"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Tragere"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Dezactivare mod privat"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activare mod privat"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Decupaj web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Marcaj eliminat"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Pagină salvată"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Se descarcă..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Se începe descărcarea..."
+

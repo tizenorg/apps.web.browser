@@ -901,3 +901,33 @@ msgstr "Supprimer tous les témoins?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Supprimer toutes les données de formulaire enregistrées ?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Non autorisé"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Dernières page consultée"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Glisser"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Désactiver le mode privé"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activer le mode privé"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Clip Web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favori supprimé"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Page enregistrée"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Téléchargement..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Début du téléchargement..."
+

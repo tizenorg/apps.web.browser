@@ -901,3 +901,33 @@ msgstr "Барлық «куки» файлдарын жою керек пе?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Бүкіл сақталған пішін деректерін жою керек пе?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Рұқсатсыз"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Соңғы қаралған бет"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Сүйреу"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Құпиялылық режимін өшіру"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Құпиялылық режимін қосу"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Веб-клип"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Бетбелгі жойылды"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Бет сақталды"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Жазылуда..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Жүктеу басталуда..."
+

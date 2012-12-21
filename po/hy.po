@@ -901,3 +901,33 @@ msgstr "Ջնջե՞լ բոլոր թխուկները"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Վերացնե՞լ բոլոր պահպանված ձևի տվյալները:"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Թույլատրված չէ"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Վերջին դիտված էջ"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Քաշել"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Կասեցնել գաղտնի կապի ռեժիմը"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Ընձեռել գաղտնի կապի ռեժիմը"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Համացանցային հոլովակ"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Էջանիշը հեռացվեց"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Էջը պահպանվեց"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Բեռնում..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Ներբեռնման մեկնարկում..."
+

@@ -901,3 +901,33 @@ msgstr "Radera alla cookies?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Ta bort alla sparade formulärdata?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Inte tillåtet"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Senaste visade sida"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Dra"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Inaktivera sekretessläget"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Aktivera sekretessläget"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Webbklipp"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Bokmärket har tagits bort"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Sidan sparades"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Laddar ned..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Startar hämtning..."
+

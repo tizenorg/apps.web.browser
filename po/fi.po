@@ -901,3 +901,33 @@ msgstr "Poistetaanko kaikki evästeet?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Poistetaanko kaikki tallennetut lomaketiedot?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ei sallittu"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Viimeksi katsottu sivu"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Vedä"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Poista yksityinen tila käytöstä"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Ota yksityinen tila käyttöön"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web-leike"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Kirjanmerkki poistettu"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Sivu tallennettu"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Ladataan..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Lataus käynnistetään..."
+

@@ -263,7 +263,7 @@ msgid "IDS_BR_BODY_ENTER_NAME_C"
 msgstr "輸入名稱："
 
 msgid "IDS_BR_SK_NEXT"
-msgstr "下一個"
+msgstr "下一步"
 
 msgid "IDS_BR_OPT_NEW_FOLDER"
 msgstr "新資料夾"
@@ -900,4 +900,34 @@ msgstr "要刪除全部 Cookie 嗎？"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "刪除所有已儲存的表格數據嗎？"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "不允許"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "上次檢視的頁面"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "拖曳"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "停用私人模式"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "啟用私人模式"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "網絡剪輯"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "已移除書籤"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "頁面已儲存"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "正在下載..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "正在開始下載..."
 

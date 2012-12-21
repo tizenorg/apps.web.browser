@@ -901,3 +901,33 @@ msgstr "Kas kustutada kõik küpsised?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Kas kustutada kõik salvestatud ankeedi andmed?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Pole lubatud"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Viimati vaadatud leht"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Lohista"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Desaktiveeri privaatsusrežiim"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Aktiveeri privaatsusrežiim"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Veebiklipp"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Järjehoidja on eemaldatud"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Leht on salvestatud"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Allalaadimine..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Allalaadimise alustamine..."
+

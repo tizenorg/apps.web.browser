@@ -569,10 +569,10 @@ msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
 msgstr "Eliminar os dados do browser"
 
 msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "A carregar"
+msgstr "A carregar..."
 
 msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "A carregar"
+msgstr "A carregar..."
 
 msgid "IDS_BR_HEADER_ENTERURL"
 msgstr "Introduzir URL"
@@ -900,4 +900,34 @@ msgstr "Eliminar todos os cookies?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Todos os dados de formulários guardados serão eliminados"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Não permitido"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Última página visualizada"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Arrastar"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Desactivar modo privado"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activar modo privado"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web clip"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favorito removido"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Página guardada"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "A transferir..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "A iniciar transferência..."
 

@@ -901,3 +901,33 @@ msgstr "Obrisati sve kolačiće?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Obrisati sve spremljene podatke s obrazaca?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Nije dopušteno"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Posljednja pregledana stranica"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Povuci"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Isključi privatni način rada"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Uključi privatni način rada"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web-isječak"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favorit uklonjen"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Stranica spremljena"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Skidanje..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Pokretanje skidanja..."
+

@@ -155,7 +155,7 @@ msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
 msgstr "从最后一页继续"
 
 msgid "IDS_BR_BODY_PAGE"
-msgstr "页"
+msgstr "页面"
 
 msgid "IDS_BR_OPT_DICTIONARY"
 msgstr "字典"
@@ -900,4 +900,34 @@ msgstr "删除所有 Cookies 吗？"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "是否删除全部已保存的表单数据？"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "不允许"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "最新浏览的网页"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "拖动"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "禁用个人模式"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "启用个人模式"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "网络剪辑"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "书签已移除"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "页面已保存"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "下载中..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "正在开始下载..."
 

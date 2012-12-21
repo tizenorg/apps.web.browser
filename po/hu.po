@@ -901,3 +901,33 @@ msgstr "Törli a cookie-kat?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Töröl minden mentett űrlapadatot?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Nem engedélyezett"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Legutóbb megtekintett oldal"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Húzás"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Privát üzemmód letiltása"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Privát üzemmód engedélyezése"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Webmetszet"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Könyvjelző eltávolítva"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Oldal mentve"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Letöltés..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Letöltés indítása..."
+

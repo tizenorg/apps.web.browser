@@ -901,3 +901,33 @@ msgstr "Odstranit všechny soubory cookie?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Odstranit všechna data uloženého formuláře?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Není povoleno!!"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Poslední zobrazená stránka"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Přetáhnout"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Vypnout režim soukromí"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Zapnout režim soukromí"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Výřez z webu"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Záložka byla odebrána"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Stránka uložena"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Stahování..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Spouští se stahování..."
+

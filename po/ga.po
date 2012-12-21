@@ -901,3 +901,33 @@ msgstr "Scrios gach fianán?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Scrios gach sonra foirme a sábháladh?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Neamhcheadaithe"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Leathanach deireanach ar amharcadh air"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Tarraing"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Díchumasaigh mód príobháideach"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Cumasaigh mód príobháideach"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Gearrthóg gréasáin"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Leabharmharc bainte"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Leathanach sábháilte"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Ag íoslódáil..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Ag tosú ar íoslódáil..."
+

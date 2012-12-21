@@ -901,3 +901,33 @@ msgstr "Usunąć wszystkie pliki cookie?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Usunąć wszystkie zapisane dane formularzy?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Niedozwolone"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Ostatnio wyświetlana strona"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Przeciągnij"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Wyłącz tryb prywatności"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Włącz tryb prywatności"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Klip internetowy"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Usunięto zakładkę"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Zapisano stronę"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Pobieranie..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Rozpoczynanie pobierania..."
+

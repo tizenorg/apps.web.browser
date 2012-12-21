@@ -901,3 +901,33 @@ msgstr "सभी कुकीज़ डिलीट करें?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "सुरक्षित किया सभी फॉर्म डाटा हटाएँ?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "अनुमति नहीं"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "अंतिम देखे गए पेज"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "खींचें"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "निज़ी मोड अक्षम करें"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "निज़ी मोड"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "वेब क्लिप"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "बुकमार्क निकाला गया"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "पेज सु‍रक्षित किया गया"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "डाउनलोडिंग हो रहा है…"
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "डाउनलोड शुरू कर रहे है..."
+

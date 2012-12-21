@@ -293,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Ingen tittel"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Flere vinduer"
+msgstr "Flervindu"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Ingen poster"
@@ -452,7 +452,7 @@ msgid "IDS_BR_BODY_FIND_WORD"
 msgstr "Finn ord"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Legg til på startskjermbildet"
+msgstr "Legg til på startskjermen"
 
 msgid "IDS_BR_BODY_MOST_VISITED_SITES"
 msgstr "Mest besøkte sider"
@@ -900,4 +900,34 @@ msgstr "Slette alle informasjonskapsler?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Slette alle lagrede skjemadata?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ikke tillatt"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Siste viste side"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Dra"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Deaktiver privatmodus"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Aktiver privatmodus"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Nettklipp"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Bokmerke fjernet"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Side lagret"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Laster ned..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Starter nedlasting..."
 

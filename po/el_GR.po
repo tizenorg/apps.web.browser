@@ -806,7 +806,7 @@ msgid "IDS_BR_BODY_LOW"
 msgstr "Χαμηλή"
 
 msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Μεσαίο"
+msgstr "Μεσαία"
 
 msgid "IDS_BR_BODY_BLANK_PAGE"
 msgstr "Κενή σελίδα"
@@ -900,4 +900,34 @@ msgstr "Διαγραφή όλων των cookies;"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Διαγραφή όλων των αποθηκευμένων δεδομένων φορμών;"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Δεν επιτρέπεται"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Τελευταία σελίδα που προβλήθηκε"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Μεταφορά"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Απενεργοποίηση λειτουργίας απορρήτου"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Ενεργοποίηση λειτουργίας απορρήτου"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Κλιπ Web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Ο σελιδοδείκτης καταργήθηκε"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Η σελίδα αποθηκεύτηκε"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Λήψη..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Ξεκινά η λήψη..."
 

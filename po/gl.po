@@ -901,3 +901,33 @@ msgstr "Eliminar Todas as Cookies?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Desexas eliminar todos os datos de formularios gardados?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Non permitido"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Última páxina visitada"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Arrastrar"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Desactivar modo privado"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activar modo privado"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Clip web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favorito eliminado"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Páxina gardada"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Descargando..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Iniciando descarga..."
+

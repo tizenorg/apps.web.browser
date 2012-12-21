@@ -901,3 +901,33 @@ msgstr "წავშალო ყველა ფუნთუშა-ფაილ
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "წაიშალოს ყველა შენახული ფორმის მონაცემები?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "დაუშვებელია"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "ბოლოს დათვალიერებული გვერდი"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "გადაჩოჩება"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "პერსონალური რეჟიმის გამორთვა"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "პერსონალური რეჟიმის გააქტიურება"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "ვებ-კლიპი"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "სანიშნე მოცილდა"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "გვერდი შენახულია"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "ჩამოტვირთვა..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "იწყება ჩამოტვირთვა..."
+

@@ -293,7 +293,7 @@ msgid "IDS_BR_BODY_NO_TITLE"
 msgstr "Geen titel"
 
 msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Meer vensters"
+msgstr "Multi window"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
 msgstr "Geen geschiedenis"
@@ -900,4 +900,34 @@ msgstr "Alle cookies wissen?"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Alle opgeslagen formuliergegevens verwijderen?"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Niet toegestaan"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Laatst weergegeven pagina"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Slepen"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Privacystand uitschakelen"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Privacystand inschakelen"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Webclip"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favoriet verwijderd"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Pagina opgeslagen"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Downloaden..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Downloaden starten..."
 

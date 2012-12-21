@@ -901,3 +901,33 @@ msgstr "Bütün kukilər silinsin?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Saxlanmış bütün forma məlumatları silinsin?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "İcazə verilmir"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Son gözdən keçirilən səhifə"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Dart"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Gizli rejimi qeyri-aktiv et"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Gizli rejimi aktivləşdir"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Veb-klip"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Əlfəcin silindi"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Səhifə saxlandı"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Yüklənmə..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Yükləmə başladılır..."
+

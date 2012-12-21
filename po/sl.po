@@ -901,3 +901,33 @@ msgstr "Izbrišem vse piškotke?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Želite izbrisati vse shranjene podatke obrazcev?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ni dovoljeno"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Zadnja obiskana stran"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Povleci"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Onemogoči zasebni način"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Omogoči zasebni način"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Spletni izrezek"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Zaznamek je odstranjen"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Stran je shranjena"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Prenašam ..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Začenjam prenos ..."
+

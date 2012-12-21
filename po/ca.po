@@ -901,3 +901,33 @@ msgstr "Eliminar totes les cookies?"
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Esborrar totes les dades de formularis desades?"
 
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "No permès"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Última pàgina vista"
+
+msgid "IDS_BR_OPT_DRAG"
+msgstr "Arrossegar"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Deshabilitar mode privat"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Habilitar mode privat"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Clip web"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Preferit eliminat"
+
+msgid "IDS_BR_POP_PAGE_SAVED"
+msgstr "Pàgina desada"
+
+msgid "IDS_BR_POP_DOWNLOADING_ING"
+msgstr "Descarregant..."
+
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "S'està iniciant la descàrrega..."
+
