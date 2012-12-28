@@ -59,7 +59,7 @@ collections {
 	               align: 0.4 0.5;
 	               color: 57 57 57 255;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  min:  0 0;
 	                  align: 0.5 0.4;
@@ -70,7 +70,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "1";
 	                  min:  0 0;
@@ -82,7 +82,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "2";
 	                  min:  0 0;
@@ -94,7 +94,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "3";
 	                  min:  0 0;
@@ -106,7 +106,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "4";
 	                  min:  0 0;
@@ -118,7 +118,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "5";
 	                  min:  0 0;
@@ -130,7 +130,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "6";
 	                  min:  0 0;
@@ -142,7 +142,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "7";
 	                  min:  0 0;
@@ -154,7 +154,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "8";
 	                  min:  0 0;
@@ -166,7 +166,7 @@ collections {
 	               inherit: "default" 0.0;
 	               visible: 1;
 	               text {
-	                  font: "SLP:style=Medium";
+	                  font: "Tizen:style=Medium";
 	                  size: 25;
 	                  text: "9";
 	                  min:  0 0;
@@ -468,7 +468,7 @@ ZOOM_BUTTON(zoom_in, "browser-view-images/00_zoom_in.png",
                align: 0.5 0.5;
                color: 255 255 255 255;
                text {
-                  font: "SLP:style=Medium";
+                  font: "Tizen:style=Medium";
                   size: 30;
                   min:  0 0;
                   align: 0.5 0.6;

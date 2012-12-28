@@ -67,26 +67,26 @@ group { name: "elm/layout/browser-editfield/default";
    }
    styles {
       style { name: "ellipsis_textblock_style_white";
-         base: "font=SLP:style=Roman font_size=35 color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=none left_margin=1 right_margin=3 ellipsis=1";
+         base: "font=Tizen:style=Roman font_size=35 color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=none left_margin=1 right_margin=3 ellipsis=1";
          tag:  "br" "\n";
          tag:  "ps" "ps";
          tag:  "tab" "\t";
-         tag:  "em" "+ font=SLP:style=Oblique";
-         tag:  "b" "+ font=SLP:style=Bold";
+         tag:  "em" "+ font=Tizen:style=Oblique";
+         tag:  "b" "+ font=Tizen:style=Bold";
          tag:  "link" "+ color=#800 underline=on underline_color=#8008";
-         tag:  "hilight" "+ font=SLP:style=Bold";
+         tag:  "hilight" "+ font=Tizen:style=Bold";
          tag:  "preedit" "+ underline=on underline_color="ENTRY_PREEDIT_BACKGROUND_COLOR_INC"";
          tag:  "preedit_sel" "+ backing=on backing_color="ENTRY_PREEDIT_BACKGROUND_COLOR_INC" color="ENTRY_PREEDIT_TEXT_COLOR_INC"";
       }
       style { name: "ellipsis_textblock_style_black";
-         base: "font=SLP:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=none left_margin=1 right_margin=3 ellipsis=1";
+         base: "font=Tizen:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=none left_margin=1 right_margin=3 ellipsis=1";
          tag:  "br" "\n";
          tag:  "ps" "ps";
          tag:  "tab" "\t";
-         tag:  "em" "+ font=SLP:style=Oblique";
-         tag:  "b" "+ font=SLP:style=Bold";
+         tag:  "em" "+ font=Tizen:style=Oblique";
+         tag:  "b" "+ font=Tizen:style=Bold";
          tag:  "link" "+ color=#800 underline=on underline_color=#8008";
-         tag:  "hilight" "+ font=SLP:style=Bold";
+         tag:  "hilight" "+ font=Tizen:style=Bold";
          tag:  "preedit" "+ underline=on underline_color="ENTRY_PREEDIT_BACKGROUND_COLOR_INC"";
          tag:  "preedit_sel" "+ backing=on backing_color="ENTRY_PREEDIT_BACKGROUND_COLOR_INC" color="ENTRY_PREEDIT_TEXT_COLOR_INC"";
       }
@@ -253,7 +253,7 @@ group { name: "elm/layout/browser-editfield/default";
             rel2.to: "elm.swallow.content";
             color: EDITFIELD_GUIDE_TEXT_COLOR_INC;
             text {
-               font: "SLP:style=Roman";
+               font: "Tizen:style=Roman";
                size: ENTRY_TEXT_SIZE_INC;
                min: 0 0;
                align: 0.0 0.5;
@@ -1027,7 +1027,7 @@ group { name: "elm/layout/browser-editfield/default";
 					state: "default" 0.0;
 					visible: 0;
 					align: 0.0 0.5;
-					text { font: "SLP:style=Roman";
+					text { font: "Tizen:style=Roman";
 						size: 32;
 						align: 0.0 0.5;
 					}

@@ -131,11 +131,11 @@ group { name: "elm/toolbar/item/browser/default";
    }
    styles{
       style { name: "toolbar_style";
-         base: "font=SLP:style=Medium font_size="BUTTON_CONTROLBAR_ITEM_BUTTON_TEXT_SIZE_INC" align=center color="BUTTON_CONTROLBAR_ITEM_BUTTON_TEXTBLOCK_COLOR_INC" wrap=mixed ellipsis=1";
+         base: "font=Tizen:style=Medium font_size="BUTTON_CONTROLBAR_ITEM_BUTTON_TEXT_SIZE_INC" align=center color="BUTTON_CONTROLBAR_ITEM_BUTTON_TEXTBLOCK_COLOR_INC" wrap=mixed ellipsis=1";
          tag: "br" "\n";
          tag: "ps" "ps";
-         tag: "hilight" "+ font=SLP:style=Bold";
-         tag: "b" "+ font=SLP:style=Bold";
+         tag: "hilight" "+ font=Tizen:style=Bold";
+         tag: "b" "+ font=Tizen:style=Bold";
          tag: "tab" "\t";
       }
    }

@@ -64,14 +64,14 @@ collections {
 		}
 		styles {
 			style { name: "editfield_content_singleline_white_text_style";
-				base: "font=SLP:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=mixed ellipsis=1";
+				base: "font=Tizen:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=mixed ellipsis=1";
 				tag:  "br" "\n";
 				tag:  "ps" "ps";
 				tag:  "tab" "\t";
-				tag:  "em" "+ font=SLP:style=Oblique";
-				tag:  "b" "+ font=SLP:style=Bold";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
 				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
-				tag:  "hilight" "+ font=SLP:style=Bold";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
 			}
 		}
 		script {
@@ -282,7 +282,7 @@ collections {
 					}
 					color: EDITFIELD_TITLE_COLOR_INC;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: EDITFIELD_TITLE_SIZE_INC;
 						min: 1 1;
 						align: 0.0 0.0;
@@ -307,7 +307,7 @@ collections {
 					rel2.to: "elm.swallow.content";
 					color: EDITFIELD_GUIDE_TEXT_COLOR_INC;
 					text {
-						font: "SLP:style=Roman";
+						font: "Tizen:style=Roman";
 						size: ENTRY_TEXT_SIZE_INC;
 						min: 0 0;
 						align: 0.0 0.5;
@@ -546,14 +546,14 @@ collections {
 		}
 		styles {
 			style { name: "editfield_content_singleline_black_text_style";
-				base: "font=SLP:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=mixed ellipsis=1";
+				base: "font=Tizen:style=Roman font_size="ENTRY_TEXT_SIZE_INC" color="ENTRY_TEXT_COLOR_BLACK_INC" wrap=mixed ellipsis=1";
 				tag:  "br" "\n";
 				tag:  "ps" "ps";
 				tag:  "tab" "\t";
-				tag:  "em" "+ font=SLP:style=Oblique";
-				tag:  "b" "+ font=SLP:style=Bold";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
 				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
-				tag:  "hilight" "+ font=SLP:style=Bold";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
 			}
 		}
 		script {
@@ -764,7 +764,7 @@ collections {
 					}
 					color: EDITFIELD_TITLE_COLOR_INC;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: EDITFIELD_TITLE_SIZE_INC;
 						min: 1 1;
 						align: 0.0 0.0;
@@ -789,7 +789,7 @@ collections {
 					rel2.to: "elm.swallow.content";
 					color: EDITFIELD_GUIDE_TEXT_COLOR_INC;
 					text {
-						font: "SLP:style=Roman";
+						font: "Tizen:style=Roman";
 						size: ENTRY_TEXT_SIZE_INC;
 						min: 0 0;
 						align: 0.0 0.5;
@@ -1193,7 +1193,7 @@ collections {
 					rel2 { relative: 0.0 1.0; to_x: "padding,index_text,right"; to_y: "elm.swallow.url"; }
 					color: 120 120 120 255;
 					text {
-						font: "SLP:style=Roman";
+						font: "Tizen:style=Roman";
 						size: 30;
 						min: 0 0;
 						align: 1.0 0.5;

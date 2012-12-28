@@ -267,7 +267,7 @@ collections {
 	         description { state: "default" 0.0;
 	            max: 240 24;
 	            text {
-	               font: "SLP:style=Medium";
+	               font: "Tizen:style=Medium";
 	               size: 33;
 	               min: 0 0;
 	               align: 0.5 0.0;
@@ -305,7 +305,7 @@ collections {
 	         description { state: "default" 0.0;
 	            max: 225 24;
 	            text {
-	               font: "SLP:style=Medium";
+	               font: "Tizen:style=Medium";
 	               size: 24;
 	               min: 0 0;
 	               align: 0.0 1.0;
@@ -328,7 +328,7 @@ collections {
 	         description { state: "default" 0.0;
 	            max: 225 24;
 	            text {
-	               font: "SLP:style=Medium";
+	               font: "Tizen:style=Medium";
 	               size: 24;
 	               min: 0 0;
 	               align: 1.0 1.0;
@@ -363,10 +363,10 @@ group {
    alias: "elm/no_bookmark/base/default";
    styles{
       style { name: "nocontent_style";
-         base: "font=SLP:style=Roman font_size="NOCONTENT_TEXT_BLOCK_TEXT_SIZE_INC" align=center color=#ffffff wrap=mixed ellipsis=1.0";
+         base: "font=Tizen:style=Roman font_size="NOCONTENT_TEXT_BLOCK_TEXT_SIZE_INC" align=center color=#ffffff wrap=mixed ellipsis=1.0";
          tag:  "br" "\n";
-         tag:  "hilight" "+ font=SLP:style=Bold";
-         tag:  "b" "+ font=SLP:style=Bold";
+         tag:  "hilight" "+ font=Tizen:style=Bold";
+         tag:  "b" "+ font=Tizen:style=Bold";
          tag:  "tab" "\t";
       }
    }

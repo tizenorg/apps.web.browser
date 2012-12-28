@@ -84,7 +84,7 @@ collections {
 				description { state: "default" 0.0;
 					color: 168 168 168 255;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: 35;
 						align: 0.0 0.0;
 					}
@@ -130,7 +130,7 @@ collections {
 				description { state: "default" 0.0;
 					color: 168 168 168 255;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: 35;
 						align: 0.0 1.0;
 					}
@@ -275,7 +275,7 @@ collections {
 				scale : 1;
 				description { state: "default" 0.0;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: 24;
 						min: 0 0;
 						align: 0.5 0.5;
@@ -297,7 +297,7 @@ collections {
 				scale : 1;
 				description { state: "default" 0.0;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: 32;
 						min: 0 0;
 						align: 0.5 0.5;
@@ -417,7 +417,7 @@ collections {
 				scale : 1;
 				description { state: "default" 0.0;
 					text {
-						font: "SLP:style=Medium";
+						font: "Tizen:style=Medium";
 						size: 24;
 						min: 0 0;
 						align: 0.5 0.5;

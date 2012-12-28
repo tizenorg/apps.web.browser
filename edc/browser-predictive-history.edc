@@ -131,11 +131,11 @@ collections {
       data.item: "texts" "elm.text";
       styles {
          style { name: "text_style";
-            base: "font=SLP:style=Roman font_size=40 color=#F9F9F9 wrap=char ellipsis=1.0";
+            base: "font=Tizen:style=Roman font_size=40 color=#F9F9F9 wrap=char ellipsis=1.0";
             tag:  "br" "\n";
             tag:  "ps" "ps";
             tag:  "tab" "\t";
-            tag:  "b" "+ font=SLP:style=Bold";
+            tag:  "b" "+ font=Tizen:style=Bold";
             tag:  "match" "+ color=#008CD2FF";
         }
      }

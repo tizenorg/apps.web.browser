@@ -358,7 +358,7 @@ collections {
             scale: 1;
             clip_to: "title_clip";
             description { state: "default" 0.0;
-               text { font: "SLP:style=Medium";
+               text { font: "Tizen:style=Medium";
                   size: NAVIFRAME_TITLE_FONT_SIZE_INC;
                   min: 0 0;
                   max: 1 0;
@@ -1265,7 +1265,7 @@ collections {
             scale: 1;
             clip_to: "title_clip";
             description { state: "default" 0.0;
-               text { font: "SLP:style=Medium";
+               text { font: "Tizen:style=Medium";
                   size: NAVIFRAME_TITLE_FONT_SIZE_INC;
                   min: 0 0;
                   max: 1 0;

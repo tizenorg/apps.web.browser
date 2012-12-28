@@ -209,15 +209,6 @@ ADD_CUSTOM_TARGET(browser-naviframe.edj
 	)
 ADD_DEPENDENCIES(${PROJECT_NAME} browser-naviframe.edj)
 
-# browser-reader.edj
-ADD_CUSTOM_TARGET(browser-reader.edj
-	COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
-	${CMAKE_SOURCE_DIR}/edc/browser-reader.edc
-	${CMAKE_BINARY_DIR}/edc/browser-reader.edj
-	DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-reader.edc
-	)
-ADD_DEPENDENCIES(${PROJECT_NAME} browser-reader.edj)
-
 # browser-view-main.edj
 ADD_CUSTOM_TARGET(browser-view-main.edj
         COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images
@@ -333,7 +324,6 @@ INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-multi-window.edj DESTINATION ${EDJ
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-predictive-history.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/most-visited-sites.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-settings.edj DESTINATION ${EDJE_DIR})
-INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-reader.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/browser-popup.edj DESTINATION ${EDJE_DIR})
 
 # install images
