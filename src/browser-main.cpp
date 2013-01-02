@@ -27,6 +27,7 @@ extern "C" {
 struct browser_data {
 	Evas_Object *main_win;
 	Evas_Object *bg;
+	Evas_Object *conformant;
 	Evas_Object *main_layout;
 	Evas_Object *navi_bar;
 	Elm_Theme *browser_theme;
@@ -116,7 +117,7 @@ static Evas_Object *__create_main_win(void *app_data)
 		int w;
 		int h;
 		elm_win_title_set(window, BROWSER_PACKAGE_NAME);
-		elm_win_borderless_set(window, EINA_TRUE);
+		//elm_win_borderless_set(window, EINA_TRUE);
 		elm_win_conformant_set(window, EINA_TRUE);
 		evas_object_smart_callback_add(window, "delete,request",
 						__main_win_del_cb, app_data);
@@ -124,7 +125,6 @@ static Evas_Object *__create_main_win(void *app_data)
 					&w, &h);
 		evas_object_resize(window, w, h);
 		elm_win_indicator_mode_set(window, ELM_WIN_INDICATOR_SHOW);
-		evas_object_show(window);
 	}
 
 	return window;
@@ -144,10 +144,24 @@ static Evas_Object *__create_bg(Evas_Object *win)
 	return bg;
 }
 
-static Evas_Object *__create_main_layout(Evas_Object *win)
+static Evas_Object *__create_conformant(Evas_Object *win)
+{
+	Evas_Object *conformant;
+	conformant = elm_conformant_add(win);
+	if (!conformant)
+		return NULL;
+
+	evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_win_resize_object_add(win, conformant);
+	evas_object_show(conformant);
+
+	return conformant;
+}
+
+static Evas_Object *__create_main_layout(Evas_Object *conformant)
 {
 	Evas_Object *layout;
-	layout = elm_layout_add(win);
+	layout = elm_layout_add(conformant);
 	if (!layout)
 		return NULL;
 
@@ -155,8 +169,8 @@ static Evas_Object *__create_main_layout(Evas_Object *win)
 		BROWSER_LOGE("elm_layout_theme_set is failed.\n");
 
 	evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	elm_win_resize_object_add(win, layout);
-	edje_object_signal_emit(elm_layout_edje_get(layout), "elm,state,show,indicator", "elm");
+	elm_object_content_set(conformant, layout);
+//	edje_object_signal_emit(elm_layout_edje_get(layout), "elm,state,show,indicator", "elm");
 	evas_object_show(layout);
 
 	return layout;
@@ -508,8 +522,15 @@ static bool __br_app_create(void *app_data)
 		return false;
 	}
 
+	BROWSER_LOGD("[Browser-Launching time measure] << create conformant >>");
+	ad->conformant = __create_conformant(ad->main_win);
+	if (!ad->bg) {
+		BROWSER_LOGE("fail to create bg");
+		return false;
+	}
+
 	BROWSER_LOGD("[Browser-Launching time measure] << create layout main >>");
-	ad->main_layout = __create_main_layout(ad->main_win);
+	ad->main_layout = __create_main_layout(ad->conformant);
 	if (!ad->main_layout) {
 		BROWSER_LOGE("fail to create main layout");
 		return false;
@@ -531,6 +552,8 @@ static bool __br_app_create(void *app_data)
 		BROWSER_LOGE("fail to browser init");
 		return false;
 	}
+
+	evas_object_show(ad->main_win);
 
 	/* init internationalization */
 	int ret = __browser_set_i18n(BROWSER_PACKAGE_NAME, BROWSER_LOCALE_DIR);
