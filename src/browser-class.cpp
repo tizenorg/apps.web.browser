@@ -535,7 +535,7 @@ Eina_Bool Browser_Class::_set_user_agent(Evas_Object *ewk_view)
         }
     }
 
-#define TIZEN_USER_AGENT "Mozilla/5.0 (Linux; U; Tizen 2.0; en-us) AppleWebKit/537.1 (KHTML, like Gecko) Mobile TizenBrowser/2.0"
+#define TIZEN_USER_AGENT "Mozilla/5.0 (Linux; U; Tizen 2.0; en-us) AppleWebKit/537.1 (KHTML, like Gecko) Version/2.0 Mobile"
 #define CHROME_USER_AGENT "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11"
 
     if (strncmp(user_agent_title, "Chrome 20", strlen("Chrome 20"))) {
