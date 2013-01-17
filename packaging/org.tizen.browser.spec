@@ -82,24 +82,6 @@ make %{?jobs:-j%jobs}
 %make_install
 
 %post
-mkdir -p /opt/usr/dbspace/
-##### History ######
-if [ ! -f /opt/usr/dbspace/.browser-history.db ];
-then
-	sqlite3 /opt/usr/dbspace/.browser-history.db 'PRAGMA journal_mode=PERSIST;
-	CREATE TABLE history(id INTEGER PRIMARY KEY AUTOINCREMENT, address, title, counter INTEGER, visitdate DATETIME, favicon BLOB, favicon_length INTEGER, favicon_w INTEGER, favicon_h INTEGER);'
-fi
-
-### Bookmark ###
-if [ ! -f /opt/usr/dbspace/.internet_bookmark.db ];
-then
-	sqlite3 /opt/usr/dbspace/.internet_bookmark.db 'PRAGMA journal_mode=PERSIST;
-	CREATE TABLE bookmarks(id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER, parent INTEGER, address, title, creationdate, sequence INTEGER, updatedate, visitdate, editable INTEGER, accesscount INTEGER, favicon BLOB, favicon_length INTEGER, favicon_w INTEGER, favicon_h INTEGER);
-	create index idx_bookmarks_on_parent_type on bookmarks(parent, type);
-
-	insert into bookmarks (type, parent, title, creationdate, editable, sequence, accesscount) values(1, 0, "Bookmarks", DATETIME("now"),  0, 1, 0);'
-fi
-
 mkdir -p %{appdatadir}/data/db/
 
 ##### Geolocation ######
@@ -177,16 +159,8 @@ then
         create table custom_content(id INTEGER PRIMARY KEY, base_uri TEXT, mime TEXT, uri TEXT, allow INTEGER);'
 fi
 # Change db file owner & permission
-chown :5000 /opt/usr/dbspace/.browser-history.db
-chown :5000 /opt/usr/dbspace/.browser-history.db-journal
-chown :5000 /opt/usr/dbspace/.internet_bookmark.db
-chown :5000 /opt/usr/dbspace/.internet_bookmark.db-journal
 chmod 660 %{appdatadir}/data/db/.browser.db
 chmod 660 %{appdatadir}/data/db/.browser.db-journal
-chmod 666 /opt/usr/dbspace/.browser-history.db
-chmod 666 /opt/usr/dbspace/.browser-history.db-journal
-chmod 666 /opt/usr/dbspace/.internet_bookmark.db
-chmod 666 /opt/usr/dbspace/.internet_bookmark.db-journal
 chmod 660 %{appdatadir}/data/db/.browser-credential.db
 chmod 660 %{appdatadir}/data/db/.browser-credential.db-journal
 chmod 660 %{appdatadir}/data/db/.browser-mostvisited.db
@@ -196,23 +170,12 @@ chmod 660 %{appdatadir}/data/db/.browser-geolocation.db-journal
 chmod 660 %{appdatadir}/data/db/.custom-protocol-handler.db
 chmod 660 %{appdatadir}/data/db/.custom-protocol-handler.db-journal
 
-##################################################
-# set default vconf values
-##################################################
-#internal keys
-vconftool set -t string db/browser/browser_user_agent "System user agent" -g 5000 -f
-vconftool set -t string db/browser/custom_user_agent "" -g 5000 -f
-#public keys
-vconftool set -t string db/browser/user_agent "Mozilla/5.0 (Linux; U; Tizen 2.0; en-us) AppleWebKit/537.1 (KHTML, like Gecko) Version/2.0 Mobile" -g 5000 -f
-
 # Change file owner
 chown -R 5000:5000 %{appdatadir}/data
 
 # Apply SMACK label to database files# Apply SMACK label to database files
 if [ -f /usr/lib/rpm-plugins/msm.so ]
 then
-	chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.internet_bookmark.db*
-	chsmack -a 'org.tizen.browser::db_external' /opt/usr/dbspace/.browser-history.db*
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser.db*
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-credential.db*
 	chsmack -a 'org.tizen.browser' %{appdatadir}/data/db/.browser-mostvisited.db*
