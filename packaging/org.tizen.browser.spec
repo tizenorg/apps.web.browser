@@ -3,7 +3,7 @@
 
 Name:       org.tizen.browser
 Summary:    webkit browser with EFL
-Version: 0.0.33
+Version: 0.0.34
 Release:    1
 Group:      misc
 License:    TO_BE_FILLED
