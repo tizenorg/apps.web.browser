@@ -1101,7 +1101,7 @@ Eina_Bool Browser_Settings_Main_View::_show_reset_confirm_popup(void)
 	if (m_reset_confirm_popup)
 		evas_object_del(m_reset_confirm_popup);
 
-	m_reset_confirm_popup = elm_popup_add(m_genlist);
+	m_reset_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_reset_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -1137,7 +1137,7 @@ Eina_Bool Browser_Settings_Main_View::_show_clear_cache_confirm_popup(void)
 	if (m_clear_cache_confirm_popup)
 		evas_object_del(m_clear_cache_confirm_popup);
 
-	m_clear_cache_confirm_popup = elm_popup_add(m_genlist);
+	m_clear_cache_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_cache_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -1173,7 +1173,7 @@ Eina_Bool Browser_Settings_Main_View::_show_clear_history_confirm_popup(void)
 	if (m_clear_history_confirm_popup)
 		evas_object_del(m_clear_history_confirm_popup);
 
-	m_clear_history_confirm_popup = elm_popup_add(m_genlist);
+	m_clear_history_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_history_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -1209,7 +1209,7 @@ Eina_Bool Browser_Settings_Main_View::_show_clear_all_cookie_data_confirm_popup(
 	if (m_clear_all_cookies_data_confirm_popup)
 		evas_object_del(m_clear_all_cookies_data_confirm_popup);
 
-	m_clear_all_cookies_data_confirm_popup = elm_popup_add(m_genlist);
+	m_clear_all_cookies_data_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_all_cookies_data_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
@@ -1276,7 +1276,7 @@ Eina_Bool Browser_Settings_Main_View::_show_clear_location_confirm_popup(void)
 	if (m_clear_location_confirm_popup)
 		evas_object_del(m_clear_location_confirm_popup);
 
-	m_clear_location_confirm_popup = elm_popup_add(m_genlist);
+	m_clear_location_confirm_popup = elm_popup_add(m_navi_bar);
 	if (!m_clear_location_confirm_popup) {
 		BROWSER_LOGE("elm_popup_add failed");
 		return EINA_FALSE;
