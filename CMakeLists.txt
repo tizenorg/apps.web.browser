@@ -290,6 +290,15 @@ ADD_CUSTOM_TARGET(bookmark-edit-view.edj
         )
 ADD_DEPENDENCIES(${PROJECT_NAME} bookmark-edit-view.edj)
 
+# browser-genlist.edj
+ADD_CUSTOM_TARGET(browser-genlist.edj
+        COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images/genlist -sd ${CMAKE_SOURCE_DIR}/images/genlist/sounds
+        ${CMAKE_SOURCE_DIR}/edc/browser-genlist.edc
+        ${CMAKE_BINARY_DIR}/edc/browser-genlist.edj
+        DEPENDS ${CMAKE_SOURCE_DIR}/edc/browser-genlist.edc
+        )
+ADD_DEPENDENCIES(${PROJECT_NAME} browser-genlist.edj)
+
 # install browser
 INSTALL(PROGRAMS ${PROJECT_NAME} DESTINATION bin)
 # install edj

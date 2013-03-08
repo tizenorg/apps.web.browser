@@ -37,6 +37,7 @@ typedef struct _gl_cb_data {
 } gl_cb_data;
 
 #define bookmark_view_edj_path browser_edj_dir"/bookmark-view.edj"
+#define browser_genlist_edj_path browser_edj_dir"/browser-genlist.edj"
 
 bookmark_view::bookmark_view(void)
 :
@@ -48,6 +49,7 @@ bookmark_view::bookmark_view(void)
 {
 	BROWSER_LOGD("");
 	elm_theme_extension_add(NULL, bookmark_view_edj_path);
+	elm_theme_extension_add(NULL, browser_genlist_edj_path);
 
 	m_main_layout = _create_main_layout(m_window);
 
@@ -80,6 +82,7 @@ bookmark_view::~bookmark_view(void)
 		evas_object_del(m_gesture_layer);
 
 	elm_theme_extension_del(NULL, bookmark_view_edj_path);
+	elm_theme_extension_del(NULL, browser_genlist_edj_path);
 }
 
 char *bookmark_view::__genlist_get_label_cb(void *data, Evas_Object *obj, const char *part)
@@ -217,13 +220,13 @@ Eina_Bool bookmark_view::_set_genlist_folder_view(Evas_Object *genlist)
 	_clear_genlist_item_data(genlist, m_view_mode);
 	elm_genlist_clear(genlist);
 
-	m_itc_folder.item_style = "1text.1icon.2";
+	m_itc_folder.item_style = "browser/1text.1icon.2";
 	m_itc_folder.func.text_get = __genlist_get_label_cb;
 	m_itc_folder.func.content_get = __genlist_icon_get_cb;
 	m_itc_folder.func.state_get = NULL;
 	m_itc_folder.func.del = NULL;
 
-	m_itc_bookmark_folder.item_style = "1text.1icon.2";
+	m_itc_bookmark_folder.item_style = "browser/1text.1icon.2";
 	m_itc_bookmark_folder.func.text_get = __genlist_get_label_cb;
 	m_itc_bookmark_folder.func.content_get = __genlist_icon_get_cb;
 	m_itc_bookmark_folder.func.state_get = NULL;

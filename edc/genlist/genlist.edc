@@ -1,0 +1,656 @@
+/*
+ *  browser
+ *
+ * Copyright (c) 2013 Samsung Electronics Co., Ltd. All rights reserved.
+ *
+ * Contact: Sangpyo Kim <sangpyo7.kim@samsung.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+/*
+ * vim:ts=3
+*/
+
+#include "genlist_macro.edc"
+#include "genlist_textblock_style.edc"
+#include "genlist_normal.edc"
+#include "genlist_sweep.edc"
+#include "genlist_groupindex.edc"
+#include "genlist_expandable.edc"
+#include "genlist_decorate.edc"
+
+#if 0
+   group { name: "elm/genlist/base/dialogue";
+      alias: "elm/scroller/base/dialogue";
+      inherit: "elm/genlist/base/default";
+      parts {
+         part { name: "bg";
+            description { state: "default" 0.0;
+               color: GENLIST_LIST_BG_COLOR;
+            }
+         }
+         part { name: "elm.padding.left";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: DIALOGUE_PADDING_SCROLLER 0;
+               fixed: 1 0;
+               visible: 0;
+               align: 0.0 0.0;
+               rel2.relative: 0.0  1.0;
+               color: GENLIST_PART_DIALOGUE_GROUP_BG_COLOR;
+            }
+         }
+         part { name: "elm.padding.right";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: DIALOGUE_PADDING_SCROLLER 0;
+               fixed: 1 0;
+               visible: 0;
+               align: 1.0 0.0;
+               rel1.relative: 1.0  0.0;
+               color: GENLIST_PART_DIALOGUE_GROUP_BG_COLOR;
+            }
+         }
+         part { name: "elm.swallow.content";
+            clip_to: "clipper";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 1.0 0.0;
+                  to_x: "elm.padding.left";
+               }
+               rel2 {
+                  relative: 0.0 1.0;
+                  to_x: "elm.padding.right";
+               }
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "sb_vbar";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MIN_SIZE_INC;
+               align: 1.0 0.0;
+               rel1 {
+                  relative: 1.0 0.0;
+                  offset:   0 0;
+                  to_y:     "bg";
+                  to_x:     "bg";
+               }
+               rel2 {
+                  relative: 1.0 1.0;
+                  offset:   -1 -1;
+                  to_y:     "sb_hbar";
+                  to_x:     "bg";
+               }
+            }
+         }
+      }
+   }
+   group { name: "elm/list/base/matchlist";
+      script {
+         public sbvis_v, sbvis_h, sbnever_v, sbalways_v, sbalways_h, sbvis_timer;
+         public timer0(val) {
+            new v;
+            v = get_int(sbvis_v);
+            if (v) {
+               v = get_int(sbalways_v);
+               if (!v) {
+                  emit("do-hide-vbar", "");
+                  set_int(sbvis_v, 0);
+               }
+            }
+            v = get_int(sbvis_h);
+            if (v) {
+               v = get_int(sbalways_h);
+               if (!v) {
+                  emit("do-hide-hbar", "");
+                  set_int(sbvis_h, 0);
+               }
+            }
+            set_int(sbvis_timer, 0);
+            return 0;
+         }
+      }
+      images {
+         image: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_IMAGE COMP;
+         image: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_IMAGE COMP;
+         image: "bt_sm_shine.png" COMP;
+         image: "bt_sm_hilight.png" COMP;
+         image: "sb_runnerh.png" COMP;
+         image: "sb_runnerv.png" COMP;
+         image: "01_dialoguegroup_bg_default.png" COMP;
+      }
+      parts {
+         part { name: "bg";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.offset: 0 0;
+               rel2.offset: -1 -1;
+               color: 255 255 255 0;
+            }
+         }
+         part { name: "bg";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               rel1.offset: -5 -3;
+               rel2.offset: 4 10;
+               image {
+                  normal: "01_dialoguegroup_bg_default.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_BG_IMAGE_BORDER;
+                  border_scale: 1;
+               }
+               fill.smooth: 0;
+            }
+         }
+         part { name: "clipper";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+            }
+         }
+         part { name: "elm.swallow.content";
+            clip_to: "clipper";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.offset: 0 0;
+               rel2.offset: -1 -1;
+            }
+         }
+         part { name: "conf_over";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.offset: 0 0;
+               rel2.offset: -1 -1;
+               visible: 0;
+            }
+         }
+         part { name: "sb_vbar_clip_master";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+            description { state: "hidden" 0.0;
+               visible: 0;
+               color: 255 255 255 0;
+            }
+         }
+         part { name: "sb_vbar_clip";
+            clip_to: "sb_vbar_clip_master";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+            description { state: "hidden" 0.0;
+               visible: 0;
+               color: 255 255 255 0;
+            }
+         }
+         part {name: "vbar.padding";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_PADDING_SIZE 0;
+               max: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_PADDING_SIZE 0;
+               align: 1 0.5;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "elm.swallow.content";
+               }
+               rel2 {
+                  relative: 1.0 1.0;
+                  to: "elm.swallow.content";
+               }
+            }
+         }
+         part { name: "sb_vbar";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MIN_SIZE_INC;
+               align: 1.0 0.0;
+               rel1 {
+                  relative: 1.0 0.0;
+                  offset: 0 0;
+                  to_y: "elm.swallow.content";
+                  to_x: "elm.swallow.content";
+               }
+               rel2 {
+                  relative: 0.0 1.0;
+                  offset: -1 -1;
+                  to_y: "elm.swallow.content";
+                  to_x: "vbar.padding";
+               }
+            }
+         }
+         part { name: "sb_vbar_runner";
+            clip_to: "sb_vbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MIN_SIZE_INC;
+               max: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MAX_SIZE_INC;
+               rel1.to: "sb_vbar";
+               rel2.to: "sb_vbar";
+               visible: 0;
+               image {
+                  normal: "sb_runnerv.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_RUNNER_BORDER;
+                  border_scale: 1;
+               }
+               fill.smooth: 0;
+            }
+         }
+         part { name: "elm.dragable.vbar";
+            clip_to: "sb_vbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            dragable {
+               x: 0 0 0;
+               y: 1 1 0;
+               confine: "sb_vbar";
+            }
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MIN_SIZE_INC;
+               max: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_MAX_SIZE_INC;
+               rel1 {
+                  relative: 0.5  0.5;
+                  offset:   0    0;
+                  to: "sb_vbar";
+               }
+               rel2 {
+                  relative: 0.5  0.5;
+                  offset:   0    0;
+                  to: "sb_vbar";
+               }
+               image {
+				   normal: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_IMAGE;
+				   border: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_IMAGE_BORDER;
+				   border_scale: 1;
+				   middle: DEFAULT;
+               }
+            }
+         }
+         part { name: "sb_vbar_over1";
+            clip_to: "sb_vbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.dragable.vbar";
+               rel2.relative: 1.0 0.5;
+               rel2.to: "elm.dragable.vbar";
+               visible: 0;
+               image {
+                  normal: "bt_sm_hilight.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_OVER1;
+                  border_scale: 1;
+               }
+            }
+         }
+         part { name: "sb_vbar_over2";
+            clip_to: "sb_vbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.dragable.vbar";
+               rel2.to: "elm.dragable.vbar";
+               visible: 0;
+               image {
+                  normal: "bt_sm_shine.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_VBAR_OVER2;
+                  border_scale: 1;
+               }
+            }
+         }
+         part { name: "sb_hbar_clip_master";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+            }
+            description { state: "hidden" 0.0;
+               visible: 0;
+               color: 255 255 255 0;
+            }
+         }
+         part { name: "sb_hbar_clip";
+            clip_to: "sb_hbar_clip_master";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+            description { state: "hidden" 0.0;
+               visible: 0;
+               color: 255 255 255 0;
+            }
+         }
+         part {name: "hbar.padding";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               min: 0 SCROLLER_MATCHLIST_SCROLLBAR_HBAR_PADDING_SIZE;
+               max: 0 SCROLLER_MATCHLIST_SCROLLBAR_HBAR_PADDING_SIZE;
+               align: 1 1;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "elm.swallow.content";
+               }
+               rel2 {
+                  relative: 1.0 1.0;
+                  to: "elm.swallow.content";
+               }
+            }
+         }
+         part { name: "sb_hbar";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_MIN_SIZE_INC;
+               align: 0.0 1.0;
+               rel1 {
+                  relative: 0.0 1.0;
+                  offset: 0 0;
+                  to_y: "elm.swallow.content";
+                  to_x: "elm.swallow.content";
+               }
+               rel2 {
+                  relative: 0.0 1.0;
+                  offset: -1 -1;
+                  to_x: "sb_vbar";
+                  to_y: "hbar.padding";
+               }
+            }
+         }
+         part { name: "sb_hbar_runner";
+            clip_to: "sb_hbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_MIN_SIZE_INC;
+               max: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_MAX_SIZE_INC;
+               rel1.to: "sb_hbar";
+               rel2.to: "sb_hbar";
+               visible: 0;
+               image {
+                  normal: "sb_runnerh.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_RUNNER_BORDER;
+                  border_scale: 1;
+               }
+               fill.smooth: 0;
+            }
+         }
+         part { name: "elm.dragable.hbar";
+            clip_to: "sb_hbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            dragable {
+               x: 1 1 0;
+               y: 0 0 0;
+               confine: "sb_hbar";
+            }
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_MIN_SIZE_INC;
+               max: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_MAX_SIZE_INC;
+               rel1 {
+                  relative: 0.5  0.5;
+                  offset: 0 0;
+                  to: "sb_hbar";
+               }
+               rel2 {
+                  relative: 0.5  0.5;
+                  offset: 0 0;
+                  to: "sb_hbar";
+               }
+               color: 255 255 255 0;
+               image {
+				   normal: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_IMAGE;
+				   border: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_IMAGE_BORDER;
+				   border_scale: 1;
+               }
+               image.middle: SOLID;
+            }
+         }
+         part { name: "sb_hbar_over1";
+            clip_to: "sb_hbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.dragable.hbar";
+               rel2.relative: 1.0 0.5;
+               rel2.to: "elm.dragable.hbar";
+               visible: 0;
+               image {
+                  normal: "bt_sm_hilight.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_OVER1;
+                  border_scale: 1;
+               }
+            }
+         }
+         part { name: "sb_hbar_over2";
+            clip_to: "sb_hbar_clip";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.dragable.hbar";
+               rel2.to: "elm.dragable.hbar";
+               visible: 0;
+               image {
+                  normal: "bt_sm_shine.png";
+                  border: SCROLLER_MATCHLIST_SCROLLBAR_HBAR_OVER2;
+                  border_scale: 1;
+               }
+            }
+         }
+      }
+      programs {
+         program { name: "load";
+            signal: "load";
+            source: "";
+            script {
+               set_state(PART:"sb_hbar_clip", "hidden", 0.0);
+               set_state(PART:"sb_vbar_clip", "hidden", 0.0);
+               set_int(sbvis_h, 0);
+               set_int(sbvis_v, 0);
+               set_int(sbalways_v, 0);
+               set_int(sbalways_h, 0);
+               set_int(sbvis_timer, 0);
+               set_int(sbnever_v, 0);
+            }
+         }
+         program { name: "vbar_show";
+            signal: "elm,action,show,vbar";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "sb_vbar_clip_master";
+         }
+         program { name: "vbar_hide";
+            signal: "elm,action,hide,vbar";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "sb_vbar_clip_master";
+         }
+         program { name: "vbar_show_always";
+            signal: "elm,action,show_always,vbar";
+            source: "elm";
+            script {
+               new v;
+               v = get_int(sbvis_v);
+               v |= get_int(sbalways_v);
+               if (!v) {
+                  set_int(sbalways_v, 1);
+                  emit("do-show-vbar", "");
+                  set_int(sbvis_v, 1);
+               }
+               set_int(sbnever_v, 0);
+            }
+         }
+         program { name: "vbar_show_notalways";
+            signal: "elm,action,show_notalways,vbar";
+            source: "elm";
+            script {
+               new v;
+               v = get_int(sbalways_v);
+               if (v) {
+                  set_int(sbalways_v, 0);
+                  v = get_int(sbvis_v);
+                  if (!v) {
+                     emit("do-hide-vbar", "");
+                     set_int(sbvis_v, 0);
+                  }
+               }
+               set_int(sbnever_v, 0);
+            }
+         }
+         program { name: "vbar_hide_always";
+            signal: "elm,action,hide_always,vbar";
+            source: "elm";
+            script {
+               new v1, v2;
+               v1 = get_int(sbnever_v);
+               if (!v1) {
+                  set_int(sbnever_v, 1);
+                  set_int(sbalways_v, 0);
+                  v2 = get_int(sbvis_v);
+                  if (!v2) {
+                     emit("do-hide-vbar", "");
+                     set_int(sbvis_v, 0);
+                  }
+               }
+            }
+         }
+         program { name: "sb_vbar_show";
+            signal: "do-show-vbar";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            transition: LINEAR 1.0;
+            target: "sb_vbar_clip";
+         }
+         program { name: "sb_vbar_hide";
+            signal: "do-hide-vbar";
+            source: "";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 1.0;
+            target: "sb_vbar_clip";
+         }
+         program { name: "hbar_show";
+            signal: "elm,action,show,hbar";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "sb_hbar_clip_master";
+         }
+         program { name: "hbar_hide";
+            signal: "elm,action,hide,hbar";
+            source: "elm";
+            action:  STATE_SET "hidden" 0.0;
+            target: "sb_hbar_clip_master";
+         }
+         program { name: "hbar_show_always";
+            signal: "elm,action,show_always,hbar";
+            source: "elm";
+            script {
+               new v;
+               v = get_int(sbvis_h);
+               v |= get_int(sbalways_h);
+               if (!v) {
+                  set_int(sbalways_h, 1);
+                  emit("do-show-hbar", "");
+                  set_int(sbvis_h, 1);
+               }
+            }
+         }
+         program { name: "hbar_show_notalways";
+            signal: "elm,action,show_notalways,hbar";
+            source: "elm";
+            script {
+               new v;
+               v = get_int(sbalways_h);
+               if (v) {
+                  set_int(sbalways_h, 0);
+                  v = get_int(sbvis_h);
+                  if (!v) {
+                     emit("do-hide-hbar", "");
+                     set_int(sbvis_h, 0);
+                  }
+               }
+            }
+         }
+         program { name: "sb_hbar_show";
+            signal: "do-show-hbar";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            transition: LINEAR 1.0;
+            target: "sb_hbar_clip";
+         }
+         program { name: "sb_hbar_hide";
+            signal: "do-hide-hbar";
+            source: "";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 1.0;
+            target: "sb_hbar_clip";
+         }
+         program { name: "scroll";
+            signal: "elm,action,scroll";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            script {
+               new v, v1;
+               v = get_int(sbvis_v);
+               v |= get_int(sbalways_v);
+               v1 = get_int(sbnever_v);
+               if (!v && !v1) {
+                  emit("do-show-vbar", "");
+                  set_int(sbvis_v, 1);
+               }
+               v = get_int(sbvis_h);
+               v |= get_int(sbalways_h);
+               if (!v) {
+                  emit("do-show-hbar", "");
+                  set_int(sbvis_h, 1);
+               }
+               v = get_int(sbvis_timer);
+               if (v > 0) cancel_timer(v);
+               v = timer(0.5, "timer0", 0);
+               set_int(sbvis_timer, v);
+            }
+         }
+      }
+   }
+#endif
