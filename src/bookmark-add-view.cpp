@@ -166,6 +166,13 @@ void bookmark_add_view::__title_entry_changed_cb(void *data, Evas_Object *obj, v
 
 	if (text)
 		free(text);
+
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj))
+			elm_object_item_signal_emit(view_this->m_input_title_callback_data.it, "elm,state,eraser,hide", "");
+		else
+			elm_object_item_signal_emit(view_this->m_input_title_callback_data.it, "elm,state,eraser,show", "");
+	}
 }
 
 void bookmark_add_view::__title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info)
@@ -189,6 +196,41 @@ void bookmark_add_view::__title_entry_enter_key_cb(void *data, Evas_Object *obj,
 		}
 		view_this->_back_to_previous_view();
 	}
+}
+
+void bookmark_add_view::__title_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	if (!elm_entry_is_empty(obj))
+		elm_object_item_signal_emit(cp->m_input_title_callback_data.it, "elm,state,eraser,show", "");
+	elm_object_item_signal_emit(cp->m_input_title_callback_data.it, "elm,state,rename,hide", "");
+}
+
+void bookmark_add_view::__title_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	elm_object_item_signal_emit(cp->m_input_title_callback_data.it, "elm,state,eraser,hide", "");
+	elm_object_item_signal_emit(cp->m_input_title_callback_data.it, "elm,state,rename,show", "");
+}
+
+void bookmark_add_view::__title_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	Evas_Object *entry = elm_object_item_part_content_get(cp->m_input_title_callback_data.it, "elm.icon.entry");
+	elm_object_focus_set(entry, EINA_TRUE); // After button is clicked, entry should get focus again.
+	elm_entry_entry_set(entry, "");
 }
 
 void bookmark_add_view::__uri_entry_changed_cb(void *data, Evas_Object *obj, void *eventInfo)
@@ -232,6 +274,13 @@ void bookmark_add_view::__uri_entry_changed_cb(void *data, Evas_Object *obj, voi
 
 	if (text)
 		free(text);
+
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj))
+			elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,eraser,hide", "");
+		else
+			elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,eraser,show", "");
+	}
 }
 
 void bookmark_add_view::__uri_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info)
@@ -255,6 +304,41 @@ void bookmark_add_view::__uri_entry_enter_key_cb(void *data, Evas_Object *obj, v
 		view_this->_back_to_previous_view();
 	}
 #endif
+}
+
+void bookmark_add_view::__uri_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	if (!elm_entry_is_empty(obj))
+		elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,eraser,show", "");
+	elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,rename,hide", "");
+}
+
+void bookmark_add_view::__uri_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,eraser,hide", "");
+	elm_object_item_signal_emit(cp->m_input_uri_callback_data.it, "elm,state,rename,show", "");
+}
+
+void bookmark_add_view::__uri_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data)
+		return;
+
+	bookmark_add_view *cp = (bookmark_add_view *)data;
+	Evas_Object *entry = elm_object_item_part_content_get(cp->m_input_uri_callback_data.it, "elm.icon.entry");
+	elm_object_focus_set(entry, EINA_TRUE); // After button is clicked, entry should get focus again.
+	elm_entry_entry_set(entry, "");
 }
 
 char *bookmark_add_view::__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part)
@@ -388,6 +472,72 @@ Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object
 		default:
 			break;
 		}
+	} else if (!strcmp(part, "elm.icon.entry")) {
+		Evas_Object *entry = elm_entry_add(obj);
+		if (!entry)
+			return NULL;
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
+		switch (type) {
+		case TITLE_INPUT_FIELD:
+		{
+			BROWSER_LOGD("[%s] TITLE_INPUT_FIELD", part);
+			elm_object_part_text_set(entry, "elm.guide", BR_STRING_ENTER_BOOKMARK_NAME);
+
+			evas_object_smart_callback_add(entry,
+							"changed", __title_entry_changed_cb, view_this);
+			evas_object_smart_callback_add(entry,
+							"preedit,changed", __title_entry_changed_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"activated", __title_entry_enter_key_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"focused", __title_entry_focused_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"unfocused", __title_entry_unfocused_cb, view_this);
+
+			BROWSER_LOGD("m_input_title_string: %s", view_this->m_input_title_string.c_str());
+			elm_entry_entry_set(entry, view_this->m_input_title_string.c_str());
+
+			return entry;
+			break;
+		}
+		case URI_INPUT_FIELD:
+		{
+			BROWSER_LOGD("[%s] URI_INPUT_FIELD", part);
+			elm_object_part_text_set(entry, "elm.guide", BR_STRING_URL);
+
+			evas_object_smart_callback_add(entry,
+							"changed", __uri_entry_changed_cb, view_this);
+			evas_object_smart_callback_add(entry,
+							"preedit,changed", __uri_entry_changed_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"activated", __uri_entry_enter_key_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"focused", __uri_entry_focused_cb, view_this);
+			evas_object_smart_callback_add(entry,
+						"unfocused", __uri_entry_unfocused_cb, view_this);
+			elm_entry_input_panel_layout_set(entry, ELM_INPUT_PANEL_LAYOUT_URL);
+			elm_entry_prediction_allow_set(entry, EINA_FALSE);
+
+			BROWSER_LOGD("m_input_uri_string: %s", view_this->m_input_uri_string.c_str());
+			elm_entry_entry_set(entry, view_this->m_input_uri_string.c_str());
+
+			return entry;
+			break;
+		}
+		}
+	} else if (!strcmp(part, "elm.icon.eraser")) {
+		Evas_Object *btn = elm_button_add(obj);
+		elm_object_style_set(btn, "editfield_clear"); // Make "X" marked button by changing style.
+		switch (type) {
+		case TITLE_INPUT_FIELD:
+			evas_object_smart_callback_add(btn, "clicked", __title_entry_eraser_clicked_cb, view_this);
+			break;
+		case URI_INPUT_FIELD:
+			evas_object_smart_callback_add(btn, "clicked", __uri_entry_eraser_clicked_cb, view_this);
+			break;
+		}
+		return btn;
 	}
 	return NULL;
 }
@@ -624,7 +774,8 @@ Evas_Object *bookmark_add_view::_create_genlist(Evas_Object *parent)
 
 	m_itc_title = elm_genlist_item_class_new();
 	memset(m_itc_title, 0x00, sizeof(Elm_Genlist_Item_Class));
-	m_itc_title->item_style = "dialogue/1icon";
+
+	m_itc_title->item_style = "dialogue/editfield";
 	m_itc_title->func.content_get = __genlist_get_content_cb;
 	m_itc_title->func.state_get = NULL;
 	m_itc_title->func.del = NULL;
@@ -640,7 +791,8 @@ Evas_Object *bookmark_add_view::_create_genlist(Evas_Object *parent)
 
 	m_itc_uri = elm_genlist_item_class_new();
 	memset(m_itc_uri, 0x00, sizeof(Elm_Genlist_Item_Class));
-	m_itc_uri->item_style = "dialogue/1icon";
+
+	m_itc_uri->item_style = "dialogue/editfield";
 	m_itc_uri->func.content_get = __genlist_get_content_cb;
 	m_itc_uri->func.state_get = NULL;
 	m_itc_uri->func.del = NULL;

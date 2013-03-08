@@ -59,8 +59,14 @@ private:
 
 	static void __title_entry_changed_cb(void *data, Evas_Object *obj, void *eventInfo);
 	static void __title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_focused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __uri_entry_changed_cb(void *data, Evas_Object *obj, void *eventInfo);
 	static void __uri_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __uri_entry_focused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __uri_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __uri_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static char *__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part);
 	static Evas_Object *__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part);
