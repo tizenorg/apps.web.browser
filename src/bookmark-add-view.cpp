@@ -114,6 +114,8 @@ bookmark_add_view::~bookmark_add_view(void)
 		elm_genlist_item_class_free(m_itc_title);
 	if (m_itc_uri)
 		elm_genlist_item_class_free(m_itc_uri);
+	if (m_itc_separator)
+		elm_genlist_item_class_free(m_itc_separator);
 	if (m_itc_folder)
 		elm_genlist_item_class_free(m_itc_folder);
 #if defined(BROWSER_TAG)
@@ -256,7 +258,7 @@ void bookmark_add_view::__uri_entry_enter_key_cb(void *data, Evas_Object *obj, v
 
 char *bookmark_add_view::__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part)
 {
-	BROWSER_LOGD("[%s]", part);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(data, NULL);
 	genlist_callback_data *callback_data = (genlist_callback_data *)data;
 	bookmark_add_view::menu_type type = callback_data->type;
 	bookmark_add_view *cp = (bookmark_add_view *)callback_data->cp;
@@ -296,6 +298,7 @@ char *bookmark_add_view::__genlist_get_text_cb(void *data, Evas_Object *obj, con
 
 Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part)
 {
+	EINA_SAFETY_ON_NULL_RETURN_VAL(data, NULL);
 	genlist_callback_data *callback_data = (genlist_callback_data *)data;
 	bookmark_add_view::menu_type type = callback_data->type;
 	bookmark_add_view *view_this = (bookmark_add_view *)callback_data->cp;
@@ -391,8 +394,7 @@ Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object
 void bookmark_add_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
-	if (!event_info)
-		return;
+	EINA_SAFETY_ON_NULL_RETURN(event_info);
 	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
 
 	genlist_callback_data *callback_data = (genlist_callback_data *)elm_object_item_data_get(it);
@@ -422,6 +424,20 @@ void bookmark_add_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, 
 	}
 }
 
+void bookmark_add_view::__genlist_realized_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN(event_info);
+	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
+	genlist_callback_data *cb_data = (genlist_callback_data *)elm_object_item_data_get(it);
+
+	EINA_SAFETY_ON_NULL_RETURN(cb_data);
+	if (cb_data->type == TITLE_INPUT_FIELD)
+		elm_object_item_signal_emit(it, "elm,state,top", "");
+	else if (cb_data->type == URI_INPUT_FIELD)
+		elm_object_item_signal_emit(it, "elm,state,bottom", "");
+}
+
 void bookmark_add_view::__select_folder_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	bookmark_add_view *cp = (bookmark_add_view *)data;
@@ -449,6 +465,7 @@ void bookmark_add_view::__back_btn_clicked_cb(
 									void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN(data);
 	bookmark_add_view *view_this = (bookmark_add_view *)data;
 
 	view_this->_back_to_previous_view();
@@ -458,6 +475,7 @@ void bookmark_add_view::__naviframe_pop_finished_cb(
 									void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN(data);
 	bookmark_add_view *cp = (bookmark_add_view *)data;
 
 	if (cp->m_naviframe_item != elm_naviframe_top_item_get(cp->m_naviframe))
@@ -471,12 +489,14 @@ void bookmark_add_view::__naviframe_pop_finished_cb(
 
 void bookmark_add_view::__ime_show_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	EINA_SAFETY_ON_NULL_RETURN(data);
 	Elm_Object_Item *it = (Elm_Object_Item*)data;
 	elm_object_item_signal_emit(it, "elm,state,sip,shown", "");
 }
 
 void bookmark_add_view::__ime_hide_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	EINA_SAFETY_ON_NULL_RETURN(data);
 	bookmark_add_view *cp = (bookmark_add_view *)data;
 	elm_object_item_signal_emit(cp->m_naviframe_item, "elm,state,sip,hidden", "");
 }
@@ -591,6 +611,7 @@ Evas_Object *bookmark_add_view::_create_genlist(Evas_Object *parent)
 	// To use multiline textblock/entry/editfield in genlist, set height_for_width mode
 	// then the item's height is calculated while the item's width fits to genlist width.
 	elm_genlist_mode_set(genlist, ELM_LIST_COMPRESS);
+	evas_object_smart_callback_add(genlist, "realized", __genlist_realized_cb, NULL);
 
 	m_itc_title = elm_genlist_item_class_new();
 	memset(m_itc_title, 0x00, sizeof(Elm_Genlist_Item_Class));
@@ -623,6 +644,18 @@ Evas_Object *bookmark_add_view::_create_genlist(Evas_Object *parent)
 					ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, this);
 	elm_genlist_item_select_mode_set(m_input_uri_callback_data.it,
 						ELM_OBJECT_SELECT_MODE_NONE);
+
+	/* separator */
+	m_itc_separator = elm_genlist_item_class_new();
+	memset(m_itc_separator, 0x00, sizeof(Elm_Genlist_Item_Class));
+	m_itc_separator->item_style = "dialogue/separator";
+	m_itc_separator->func.text_get = NULL;
+	m_itc_separator->func.content_get = NULL;
+	m_itc_separator->func.state_get = NULL;
+	m_itc_separator->func.del = NULL;
+	Elm_Object_Item *it = elm_genlist_item_append(genlist, m_itc_separator, NULL, NULL,
+			ELM_GENLIST_ITEM_NONE, NULL, NULL);
+	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 	m_itc_folder = elm_genlist_item_class_new();
 	memset(m_itc_folder, 0x00, sizeof(Elm_Genlist_Item_Class));

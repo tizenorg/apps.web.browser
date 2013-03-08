@@ -30,6 +30,7 @@ public:
 	{
 		TITLE_INPUT_FIELD = 0,
 		URI_INPUT_FIELD,
+		SEPARATOR,
 		FOLDER_SELECT_MENU,
 #if defined(BROWSER_TAG)
 		TAG_SELECT_MENU,
@@ -64,6 +65,7 @@ private:
 	static char *__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part);
 	static Evas_Object *__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part);
 	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __genlist_realized_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static void __save_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
@@ -83,6 +85,7 @@ private:
 	Elm_Object_Item *m_naviframe_item;
 	Elm_Genlist_Item_Class *m_itc_title;
 	Elm_Genlist_Item_Class *m_itc_uri;
+	Elm_Genlist_Item_Class *m_itc_separator;
 	Elm_Genlist_Item_Class *m_itc_folder;
 	genlist_callback_data m_input_title_callback_data;
 	genlist_callback_data m_input_uri_callback_data;
