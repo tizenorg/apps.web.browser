@@ -30,6 +30,7 @@
 #include "browser-view.h"
 #include "multiwindow-view.h"
 #include "platform-service.h"
+#include "history.h"
 
 bookmark_add_view::bookmark_add_view(
 					const char *title, const char *uri, int folder_id_to_save, Eina_Bool edit_mode)
@@ -456,6 +457,14 @@ void bookmark_add_view::__save_btn_clicked_cb(
 		view_this->show_msg_popup(BR_STRING_ALREADY_EXISTS);
 		return;
 	}
+	if (view_this->m_edit_mode ==EINA_FALSE) {
+		const char *uri = view_this->m_input_uri_string.c_str();
+#if defined(BROWSER_THUMBNAIL_VIEW)
+		Evas_Object *snapshot = m_browser->get_history()->get_snapshot(uri);
+		m_browser->get_bookmark()->set_thumbnail(view_this->m_bookmark_id, snapshot);
+#endif
+	}
+
 	view_this->_back_to_previous_view();
 	if (view_this->m_browser->get_bookmark_edit_view())
 		view_this->m_browser->get_bookmark_edit_view()->refresh();
@@ -586,7 +595,7 @@ int bookmark_add_view::_save_bookmark(void)
 		BROWSER_LOGD("same bookmark is already exist");
 		return 0;
 	}
-
+	m_bookmark_id = saved_bookmark_id;
 	return 1;
 }
 

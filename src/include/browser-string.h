@@ -328,6 +328,7 @@
 #define BR_STRING_CERTI_MESSAGE        _("There are problems with the secuirty certificate for this site.")//registring
 #define BR_STRING_SECURITY_WARNING_MESSAGE	_("Security warning") //exist It will be adjust later
 #define BR_STRING_FAILED_TO_GET_WEB_NOTI_ICON _("Failed to get web notification icon")
+#define BR_STRING_THUMBNAIL_VIEW _("Thumbnail view")//not in stms
 /*************************************************************************************************************/
 
 

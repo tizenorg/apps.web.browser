@@ -36,6 +36,9 @@ typedef struct _gl_cb_data {
 	Elm_Object_Item *it;
 } gl_cb_data;
 
+#define THUMBNAIL_ITEM_W	((206 + 26) * efl_scale)
+#define THUMBNAIL_ITEM_H	((190 + 10 + 30) * efl_scale)
+
 #define bookmark_view_edj_path browser_edj_dir"/bookmark-view.edj"
 #define browser_genlist_edj_path browser_edj_dir"/browser-genlist.edj"
 
@@ -43,19 +46,21 @@ bookmark_view::bookmark_view(void)
 :
 	m_gesture_layer(NULL)
 	,m_toolbar_layout(NULL)
+	,m_box(NULL)
+	,m_contents_layout(NULL)
 	,m_genlist(NULL)
+	,m_gengrid(NULL)
 	,m_item_ic(NULL)
-	,m_current_folder_id(0)
 {
 	BROWSER_LOGD("");
 	elm_theme_extension_add(NULL, bookmark_view_edj_path);
 	elm_theme_extension_add(NULL, browser_genlist_edj_path);
 
+	m_bookmark = m_browser->get_bookmark();
+	m_curr_folder_id = m_bookmark->get_root_folder_id();
 	m_main_layout = _create_main_layout(m_window);
 
 	m_toolbar_layout = _create_toolbar_layout(m_window);
-
-	m_bookmark = m_browser->get_bookmark();
 }
 
 bookmark_view::~bookmark_view(void)
@@ -114,6 +119,7 @@ Evas_Object *bookmark_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, 
 	BROWSER_LOGD("[%s]", part);
 	gl_cb_data *cb_data = (gl_cb_data *)data;
 	bookmark_item *item = (bookmark_item *)cb_data->user_data;
+	bookmark_view *cp = (bookmark_view *)cb_data->cp;
 
 	if (!strcmp(part, "elm.icon")) {
 		if (item->is_folder()) {
@@ -151,6 +157,26 @@ Evas_Object *bookmark_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, 
 			return favicon;
 		}
 	}
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	else if (!strcmp(part, "elm.swallow.icon")) {
+		if (item->is_folder()) {
+			Evas_Object *folder_icon = elm_icon_add(obj);
+			BROWSER_LOGD("[%s]%s", part, item->get_title());
+			elm_icon_standard_set(folder_icon, browser_img_dir"/I01_bookmark_thumbnailview_folder.png");
+			evas_object_size_hint_aspect_set(folder_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+			return folder_icon;
+		} else {
+			//Evas_Object *thumbnail = m_webview_context->get_favicon(item->get_uri());
+			Evas_Object *thumbnail = cp->m_bookmark->get_thumbnail(item->get_id(), obj);
+			if (!thumbnail) {
+				thumbnail = elm_icon_add(obj);
+				elm_icon_standard_set(thumbnail, browser_img_dir"/I01_bookmark_02.png");
+				evas_object_size_hint_aspect_set(thumbnail, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+			}
+			return thumbnail;
+		}
+	}
+#endif
 	return NULL;
 }
 
@@ -197,6 +223,26 @@ void bookmark_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void
 	}
 }
 
+#if defined(BROWSER_THUMBNAIL_VIEW)
+void bookmark_view::__gengrid_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!event_info) return;
+	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
+	gl_cb_data *cb_data = (gl_cb_data *)elm_object_item_data_get(it);
+	bookmark_item *item = (bookmark_item *)cb_data->user_data;
+
+	if (item->is_folder()) {
+		BROWSER_LOGD("Folder Item clicked[Title:%s]", item->get_title());
+	} else {
+		BROWSER_LOGD("Bookmark Item clicked[URL:%s]", item->get_uri());
+		m_browser->get_browser_view()->get_current_webview()->load_uri(item->get_uri());
+
+		m_browser->get_multiwindow_view()->close_multiwindow_view();
+	}
+}
+#endif
+
 Evas_Object *bookmark_view::_create_genlist(Evas_Object *parent)
 {
 	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
@@ -212,6 +258,29 @@ Evas_Object *bookmark_view::_create_genlist(Evas_Object *parent)
 	return genlist;
 }
 
+#if defined(BROWSER_THUMBNAIL_VIEW)
+Evas_Object *bookmark_view::_create_gengrid(Evas_Object *parent)
+{
+	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
+
+	Evas_Object *gengrid = elm_gengrid_add(parent);
+	if (!gengrid) {
+		BROWSER_LOGE("elm_gengrid_add failed");
+		return NULL;
+	}
+	evas_object_size_hint_weight_set(gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	elm_gengrid_item_size_set(gengrid, THUMBNAIL_ITEM_W, THUMBNAIL_ITEM_H);
+	elm_gengrid_align_set(gengrid, 0.5, 0.0);
+	elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
+	elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
+	elm_gengrid_multi_select_set(gengrid, EINA_TRUE);
+
+	return gengrid;
+}
+#endif
+
 Eina_Bool bookmark_view::_set_genlist_folder_view(Evas_Object *genlist)
 {
 	BROWSER_LOGD("");
@@ -220,13 +289,13 @@ Eina_Bool bookmark_view::_set_genlist_folder_view(Evas_Object *genlist)
 	_clear_genlist_item_data(genlist, m_view_mode);
 	elm_genlist_clear(genlist);
 
-	m_itc_folder.item_style = "browser/1text.1icon.2";
+	m_itc_folder.item_style = "1text.1icon.2";
 	m_itc_folder.func.text_get = __genlist_get_label_cb;
 	m_itc_folder.func.content_get = __genlist_icon_get_cb;
 	m_itc_folder.func.state_get = NULL;
 	m_itc_folder.func.del = NULL;
 
-	m_itc_bookmark_folder.item_style = "browser/1text.1icon.2";
+	m_itc_bookmark_folder.item_style = "1text.1icon.2";
 	m_itc_bookmark_folder.func.text_get = __genlist_get_label_cb;
 	m_itc_bookmark_folder.func.content_get = __genlist_icon_get_cb;
 	m_itc_bookmark_folder.func.state_get = NULL;
@@ -276,10 +345,107 @@ Eina_Bool bookmark_view::_set_genlist_folder_tree_recursive(int folder_id,
 	return EINA_TRUE;
 }
 
+#if defined(BROWSER_THUMBNAIL_VIEW)
+Eina_Bool bookmark_view::_set_gengrid_thumbnail_view(Evas_Object *gengrid)
+{
+	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN_VAL(gengrid, EINA_FALSE);
+	_clear_genlist_item_data(gengrid, m_view_mode);
+	elm_gengrid_clear(gengrid);
+
+	m_itc_gengrid_folder.item_style = "default_gridtext";
+	m_itc_gengrid_folder.func.text_get = __genlist_get_label_cb;
+	m_itc_gengrid_folder.func.content_get = __genlist_icon_get_cb;
+	m_itc_gengrid_folder.func.state_get = NULL;
+	m_itc_gengrid_folder.func.del = NULL;
+
+	m_itc_gengrid_bookmark.item_style = "default_gridtext";
+	m_itc_gengrid_bookmark.func.text_get = __genlist_get_label_cb;
+	m_itc_gengrid_bookmark.func.content_get = __genlist_icon_get_cb;
+	m_itc_gengrid_bookmark.func.state_get = NULL;
+	m_itc_gengrid_bookmark.func.del = NULL;
+
+	_set_gengrid_by_folder(m_curr_folder_id, gengrid);
+	return EINA_TRUE;
+}
+
+Eina_Bool bookmark_view::_set_gengrid_by_folder(int folder_id, Evas_Object *gengrid)
+{
+	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN_VAL(gengrid, EINA_FALSE);
+	std::vector<bookmark_item *> bookmark_list;
+	Eina_Bool ret;
+
+	ret = m_bookmark->get_list_by_folder(folder_id, bookmark_list);
+	if (ret == EINA_FALSE) {
+		BROWSER_LOGE("get_list_by_folder is failed(folder id:%d)",folder_id);
+		return EINA_FALSE;
+	}
+
+	for(unsigned int j = 0 ; j < bookmark_list.size() ; j++ ) {
+		BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
+		gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
+		memset(item_data, 0x00, sizeof(gl_cb_data));
+
+		bookmark_item *bookmark_item_data = new bookmark_item;
+		/* deep copying by overloaded operator = */
+		*bookmark_item_data = *bookmark_list[j];
+		/* Folder item is found. get sub list */
+		BROWSER_LOGD("Title[%d] is %s(id: %d)\n", j,
+				bookmark_list[j]->get_title(),
+				bookmark_item_data->get_id());
+		item_data->cp = this;
+		item_data->user_data = (void *)bookmark_item_data;
+
+		if (bookmark_item_data->is_folder()) {
+			/* Folder */
+			if (bookmark_item_data->is_editable()) {
+				BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
+					j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
+				item_data->it = elm_gengrid_item_append(gengrid,
+					&m_itc_gengrid_folder, item_data, __gengrid_item_clicked_cb, this);
+			}
+		} else {
+			if (bookmark_item_data->is_editable()) {
+				BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
+				item_data->it = elm_gengrid_item_append(gengrid,
+					&m_itc_gengrid_bookmark, item_data, __gengrid_item_clicked_cb, this);
+			}
+		}
+	}
+	m_bookmark->destroy_list(bookmark_list);
+	return EINA_TRUE;
+}
+#endif
+
 void bookmark_view::_set_view_mode(view_mode mode)
 {
 	BROWSER_LOGD("mode=%d", mode);
 	switch (mode) {
+	case FOLDER_VIEW_NORMAL:
+	{
+		Evas_Object *unused = elm_object_part_content_unset(m_contents_layout, "elm.swallow.bookmarks");
+		evas_object_hide(unused);
+		if (!m_genlist)
+			m_genlist = _create_genlist(m_box);
+		_set_genlist_folder_view(m_genlist);
+		evas_object_show(m_genlist);
+		elm_object_part_content_set(m_contents_layout, "elm.swallow.bookmarks", m_genlist);
+		break;
+	}
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	case THUMBNAIL_VIEW_NORMAL:
+	{
+		Evas_Object *unused = elm_object_part_content_unset(m_contents_layout, "elm.swallow.bookmarks");
+		evas_object_hide(unused);
+		if (!m_gengrid)
+			m_gengrid = _create_gengrid(m_box);
+		_set_gengrid_thumbnail_view(m_gengrid);
+		evas_object_show(m_gengrid);
+		elm_object_part_content_set(m_contents_layout, "elm.swallow.bookmarks", m_gengrid);
+		break;
+	}
+#endif
 #if defined(BROWSER_TAG)
 	case TAG_VIEW_NORMAL:
 		_set_genlist_tag_view(m_genlist);
@@ -288,9 +454,6 @@ void bookmark_view::_set_view_mode(view_mode mode)
 		_set_genlist_tag_index_view(m_genlist);
 		break;
 #endif
-	case FOLDER_VIEW_NORMAL:
-		_set_genlist_folder_view(m_genlist);
-		break;
 	default:
 		break;
 	}
@@ -302,6 +465,32 @@ Eina_Bool bookmark_view::_clear_genlist_item_data(Evas_Object *genlist, view_mod
 	BROWSER_LOGD("");
 	EINA_SAFETY_ON_NULL_RETURN_VAL(genlist, EINA_FALSE);
 	switch (mode) {
+	case FOLDER_VIEW_NORMAL:
+	{
+		Elm_Object_Item *it = elm_genlist_first_item_get(genlist);
+		while (it) {
+			gl_cb_data *item_data = (gl_cb_data *)elm_object_item_data_get(it);
+			if (item_data && item_data->user_data) {
+				bookmark_item *bookmark_item_data = (bookmark_item *)item_data->user_data;
+				delete bookmark_item_data;
+				free(item_data);
+			}
+			it = elm_genlist_item_next_get(it);
+		}
+		break;
+	}
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	case THUMBNAIL_VIEW_NORMAL:
+	{
+		Elm_Object_Item *it = elm_gengrid_first_item_get(genlist);
+		while (it) {
+			bookmark_item *item_data = (bookmark_item *)elm_object_item_data_get(it);
+			delete item_data;
+			it = elm_gengrid_item_next_get(it);
+		}
+		break;
+	}
+#endif
 #if defined(BROWSER_TAG)
 	case TAG_VIEW_NORMAL:
 	{
@@ -322,20 +511,6 @@ Eina_Bool bookmark_view::_clear_genlist_item_data(Evas_Object *genlist, view_mod
 	case TAG_VIEW_INDEX:
 		break;
 #endif
-	case FOLDER_VIEW_NORMAL:
-	{
-		Elm_Object_Item *it = elm_genlist_first_item_get(genlist);
-		while (it) {
-			gl_cb_data *item_data = (gl_cb_data *)elm_object_item_data_get(it);
-			if (item_data && item_data->user_data) {
-				bookmark_item *bookmark_item_data = (bookmark_item *)item_data->user_data;
-				delete bookmark_item_data;
-				free(item_data);
-			}
-			it = elm_genlist_item_next_get(it);
-		}
-		break;
-	}
 	default:
 		break;
 	}
@@ -439,6 +614,27 @@ Evas_Object *bookmark_view::_create_gesture_layer(Evas_Object *parent)
 	return gesture_layer;
 }
 
+#if defined(BROWSER_THUMBNAIL_VIEW)
+void bookmark_view::__ctxpopup_thumbnail_view_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	bookmark_view *cp = (bookmark_view *)data;
+	cp->m_view_mode = THUMBNAIL_VIEW_NORMAL;
+	cp->_set_view_mode(cp->m_view_mode);
+
+	evas_object_del(obj);
+}
+void bookmark_view::__ctxpopup_folder_view_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	bookmark_view *cp = (bookmark_view *)data;
+	cp->m_view_mode = FOLDER_VIEW_NORMAL;
+	cp->_set_view_mode(cp->m_view_mode);
+
+	evas_object_del(obj);
+}
+#endif
+
 void bookmark_view::__ctxpopup_edit_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
@@ -454,6 +650,9 @@ void bookmark_view::__ctxpopup_edit_cb(void *data, Evas_Object *obj, void *event
 		cp->m_browser->create_bookmark_edit_view(true)->show();
 		break;
 	}
+#endif:
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	case THUMBNAIL_VIEW_NORMAL:
 #endif
 	case FOLDER_VIEW_NORMAL:
 	{
@@ -492,15 +691,37 @@ void bookmark_view::_show_more_context_popup(Evas_Object *parent)
 	evas_object_size_hint_weight_set(more_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_smart_callback_add(more_popup, "dismissed", __ctxpopup_dismissed_cb, NULL);
 
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	if (m_view_mode == THUMBNAIL_VIEW_NORMAL)
+		elm_ctxpopup_item_append(more_popup, BR_STRING_LIST_VIEW, NULL, __ctxpopup_folder_view_cb, this);
+	else if (m_view_mode == FOLDER_VIEW_NORMAL)
+		elm_ctxpopup_item_append(more_popup, BR_STRING_THUMBNAIL_VIEW, NULL, __ctxpopup_thumbnail_view_cb, this);
+#endif
+	elm_ctxpopup_item_append(more_popup, BR_STRING_EDIT, NULL, __ctxpopup_edit_cb, this);
 #if defined(BROWSER_TAG)
 	elm_ctxpopup_item_append(more_popup, BR_STRING_POPUP_VIEW_BY, NULL, __ctxpopup_view_by_cb, this);
 #endif
-	elm_ctxpopup_item_append(more_popup, BR_STRING_EDIT, NULL, __ctxpopup_edit_cb, this);
 
 	int x, y, w, h;
 	evas_object_geometry_get(parent, &x, &y, &w, &h);
 	evas_object_move(more_popup, x + (w / 2), y + (h /2));
 	evas_object_show(more_popup);
+}
+
+Evas_Object *bookmark_view::_create_box(Evas_Object * parent)
+{
+	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
+
+	Evas_Object *box = NULL;
+	box = elm_box_add(parent);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(box, NULL);
+	elm_object_focus_set(box, EINA_FALSE);
+	evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_FILL);
+	evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_box_clear(box);
+	evas_object_show(box);
+	return box;
 }
 
 Evas_Object *bookmark_view::_create_main_layout(Evas_Object *parent)
@@ -515,14 +736,29 @@ Evas_Object *bookmark_view::_create_main_layout(Evas_Object *parent)
 	evas_object_size_hint_weight_set(main_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(main_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-	Evas_Object *genlist = _create_genlist(main_layout);
-	m_genlist = genlist;
+	m_box = _create_box(main_layout);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(m_box, NULL);
 
+	m_contents_layout = elm_layout_add(m_box);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(m_contents_layout, NULL);
+	elm_object_focus_set(m_contents_layout, EINA_FALSE);
+	elm_layout_file_set(m_contents_layout, bookmark_view_edj_path, "contents");
+	evas_object_size_hint_weight_set(m_contents_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(m_contents_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(m_contents_layout);
+
+	elm_box_pack_end(m_box, m_contents_layout);
+
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	m_view_mode = THUMBNAIL_VIEW_NORMAL;
+	//m_view_mode = FOLDER_VIEW_NORMAL;
+#else
 	m_view_mode = FOLDER_VIEW_NORMAL;
+#endif
 
-	_set_view_mode(FOLDER_VIEW_NORMAL);
+	_set_view_mode(m_view_mode);
 
-	elm_object_part_content_set(main_layout, "elm.swallow.genlist", genlist);
+	elm_object_part_content_set(main_layout, "elm.swallow.contents", m_box);
 
 	Evas_Object *event_rect = evas_object_rectangle_add(evas_object_evas_get(main_layout));
 	if (!event_rect) {

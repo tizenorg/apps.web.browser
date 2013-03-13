@@ -36,21 +36,33 @@ public:
 	Evas_Object *get_toolbar_layout(void) { return m_toolbar_layout; }
 private:
 	typedef enum _view_mode {
-#if defined(BROWSER_TAG)
-		TAG_VIEW_NORMAL	= 0,
-		TAG_VIEW_INDEX,
-#endif
 		FOLDER_VIEW_NORMAL
+#if defined(BROWSER_THUMBNAIL_VIEW)
+		,THUMBNAIL_VIEW_NORMAL
+#endif
+#if defined(BROWSER_TAG)
+		,TAG_VIEW_NORMAL
+		,TAG_VIEW_INDEX
+#endif
+		,UNKNOWN_VIEW
 	} view_mode;
 
 	Evas_Object *_create_genlist(Evas_Object *parent);
 	Evas_Object *_create_gesture_layer(Evas_Object *parent);
 	Evas_Object *_create_main_layout(Evas_Object *parent);
 	Evas_Object *_create_toolbar_layout(Evas_Object *parent);
+	Evas_Object *_create_box(Evas_Object * parent);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	Evas_Object *_create_gengrid(Evas_Object *parent);
+#endif
 
 	Eina_Bool _set_genlist_folder_view(Evas_Object *genlist);
 	Eina_Bool _set_genlist_folder_tree_recursive(int folder_id,
 							Evas_Object *genlist,Elm_Object_Item *parent_item);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	Eina_Bool _set_gengrid_thumbnail_view(Evas_Object *gengrid);
+	Eina_Bool _set_gengrid_by_folder(int folder_id, Evas_Object *gengrid);
+#endif
 	void _set_view_mode(view_mode mode);
 	view_mode _get_view_mode(void) { return m_view_mode; }
 	Eina_Bool _clear_genlist_item_data(Evas_Object *genlist, view_mode mode);
@@ -65,24 +77,38 @@ private:
 	static void __genlist_cont_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __genlist_exp_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	static void __gengrid_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+#endif
 	static void __ctxpopup_dismissed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ctxpopup_edit_cb(void *data, Evas_Object *obj, void *event_info);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	static void __ctxpopup_thumbnail_view_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __ctxpopup_folder_view_cb(void *data, Evas_Object *obj, void *event_info);
+#endif
 	static void __view_by_popup_folder_cb(void *data, Evas_Object *obj, void *event_info);
 
 	Evas_Object *m_main_layout;
 	Evas_Object *m_gesture_layer;
 	Evas_Object *m_toolbar_layout;
+	Evas_Object *m_box;
+	Evas_Object *m_contents_layout;
 	Evas_Object *m_genlist;
+	Evas_Object *m_gengrid;
 	Evas_Object *m_popup_view_by;
 
 	Elm_Genlist_Item_Class *m_item_ic;
 	Elm_Genlist_Item_Class m_itc_folder;
 	Elm_Genlist_Item_Class m_itc_bookmark_folder;
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	Elm_Gengrid_Item_Class m_itc_gengrid_folder;
+	Elm_Gengrid_Item_Class m_itc_gengrid_bookmark;
+#endif
 	std::vector<bookmark_item *> m_bookmark_list;
 	bookmark *m_bookmark;
 	view_mode m_view_mode;
 
-	int m_current_folder_id;
+	int m_curr_folder_id;
 #if defined(BROWSER_TAG)
 	Eina_Bool _set_genlist_tag_view(Evas_Object *genlist);
 	Eina_Bool _set_genlist_tag_index_view(Evas_Object *genlist);

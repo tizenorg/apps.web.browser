@@ -105,7 +105,6 @@ private:
 	edit_view_mode m_view_mode;
 	bookmark *m_bookmark;
 	unsigned int m_curr_folder;
-	unsigned int m_prev_folder;
 	unsigned int m_count_checked_item;
 	unsigned int m_count_editable_item;
 	unsigned int m_count_folder_item;

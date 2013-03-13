@@ -25,6 +25,7 @@ extern "C" {
 #include "bookmark-item.h"
 #include "browser-dlog.h"
 #include "bookmark-service.h"
+#include "platform-service.h"
 
 bookmark::bookmark(void)
 {
@@ -34,6 +35,11 @@ bookmark::bookmark(void)
 bookmark::~bookmark(void)
 {
 	BROWSER_LOGD("");
+}
+
+int bookmark::get_root_folder_id(void)
+{
+	return internet_bookmark_get_root_id();
 }
 
 int bookmark::save_bookmark(const char *title, const char *uri,
@@ -289,6 +295,72 @@ Eina_Bool bookmark::_convert_bookmark_entry(bookmark_item &dest, void *src)
 #endif
 
 	return EINA_TRUE;
+}
+
+Eina_Bool bookmark::set_thumbnail(int id, Evas_Object *thumbnail)
+{
+	BROWSER_LOGD("id : %d", id);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(thumbnail, EINA_FALSE);
+
+	int w = 0;
+	int h = 0;
+	int stride = 0;
+	int len = 0;
+
+	platform_service ps;
+	ps.evas_image_size_get(thumbnail, &w, &h, &stride);
+
+	BROWSER_LOGD("thumbnail w=[%d], h=[%d], stride=[%d]", w, h, stride);
+
+	len = stride * h;
+
+	if (len == 0)
+		return EINA_FALSE;
+
+	void *thumbnail_data = evas_object_image_data_get(thumbnail, EINA_TRUE);
+
+	if (bmsvc_set_thumbnail(id, thumbnail_data, w, h, len) != BMSVC_ERROR_NONE)
+		return EINA_FALSE;
+
+	return EINA_TRUE;
+}
+
+Evas_Object *bookmark::get_thumbnail(int id, Evas_Object *parent)
+{
+	BROWSER_LOGD("id : %d", id);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, EINA_FALSE);
+	void *thumbnail_data = NULL;
+	int w = 0;
+	int h = 0;
+	int stride = 0;
+	int len = 0;
+
+	Evas_Object *icon = NULL;
+	Evas *e = NULL;
+	e = evas_object_evas_get(parent);
+	if (!e) {
+		BROWSER_LOGE("canvas is NULL");
+		return NULL;
+	}
+
+	if (bmsvc_get_thumbnail(id, &thumbnail_data, &w, &h, &len) != BMSVC_ERROR_NONE) {
+		BROWSER_LOGE("bmsvc_get_thumbnail failed");
+		return EINA_FALSE;
+	}
+
+	BROWSER_LOGE("len: %d, w:%d, h:%d", len, w, h);
+	if (len > 0){
+		icon = evas_object_image_filled_add(e);
+		evas_object_image_colorspace_set(icon, EVAS_COLORSPACE_ARGB8888);
+		evas_object_image_size_set(icon, w, h);
+		evas_object_image_fill_set(icon, 0, 0, w, h);
+		evas_object_image_filled_set(icon, EINA_TRUE);
+		evas_object_image_alpha_set(icon,EINA_TRUE);
+		evas_object_image_data_set(icon, thumbnail_data);
+	}
+
+	return icon;
+
 }
 
 #if defined(BROWSER_TAG)

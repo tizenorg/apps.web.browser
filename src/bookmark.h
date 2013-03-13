@@ -30,6 +30,7 @@ public:
 	bookmark(void);
 	~bookmark(void);
 
+	int get_root_folder_id(void);
 	int save_bookmark(const char *title, const char *uri, int *saved_bookmark_id,
 						int parent_id = root_folder_id
 #if defined(BROWSER_TAG)
@@ -66,6 +67,8 @@ public:
 	// The return value is malloced list, it should be freed by caller.
 	std::vector<bookmark_item *> get_bookmark_list(int folder_id = 1);
 	Eina_Bool get_folder_depth_count(int *depth_count);
+	Eina_Bool set_thumbnail(int id, Evas_Object *thumbnail);
+	Evas_Object *get_thumbnail(int id, Evas_Object *parent);
 #if defined(BROWSER_TAG)
 	Eina_Bool get_tag_list(std::vector<char *> &list);
 	Eina_Bool get_tag_count(int *count);

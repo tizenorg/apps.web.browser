@@ -195,6 +195,10 @@ void history_view::__bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *ob
 			BROWSER_LOGE("elm_icon_file_set is failed.\n");
 		}
 		m_browser->get_bookmark()->save_bookmark(item->get_title(), item->get_uri(), &bookmark_id);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+		m_browser->get_bookmark()->set_thumbnail(bookmark_id,
+							m_browser->get_history()->get_snapshot(item->get_uri()));
+#endif
 	}
 	Elm_Object_Item *seleted_item = elm_genlist_selected_item_get(m_browser->get_history_view()->m_genlist);
 	elm_genlist_item_selected_set(seleted_item, EINA_FALSE);
