@@ -194,7 +194,9 @@ void history_view::__bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *ob
 		if (!elm_icon_file_set(obj, browser_img_dir"/I01_icon_bookmark_on.png", NULL)) {
 			BROWSER_LOGE("elm_icon_file_set is failed.\n");
 		}
-		m_browser->get_bookmark()->save_bookmark(item->get_title(), item->get_uri(), &bookmark_id);
+		m_browser->get_bookmark()->save_bookmark(item->get_title(),
+					item->get_uri(), &bookmark_id,
+					m_browser->get_bookmark()->get_root_folder_id());
 #if defined(BROWSER_THUMBNAIL_VIEW)
 		m_browser->get_bookmark()->set_thumbnail(bookmark_id,
 							m_browser->get_history()->get_snapshot(item->get_uri()));
@@ -419,7 +421,8 @@ void history_view::__slide_add_to_bookmark_button_clicked_cb(void *data, Evas_Ob
 	if (!data)
 		return;
 	history_item *item = (history_item *)data;
-	m_browser->create_bookmark_add_view(item->get_title(), item->get_uri())->show();
+	m_browser->create_bookmark_add_view(item->get_title(), item->get_uri(),
+			m_browser->get_bookmark()->get_root_folder_id(), EINA_FALSE)->show();
 }
 
 void history_view::__slide_delete_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)

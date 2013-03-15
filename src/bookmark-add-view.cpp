@@ -46,12 +46,12 @@ bookmark_add_view::bookmark_add_view(
 	,m_itc_title(NULL)
 	,m_itc_uri(NULL)
 	,m_itc_folder(NULL)
-	,m_folder_id(root_folder_id)
 	,m_bookmark_id(0)
 #if defined(BROWSER_TAG)
 	,m_itc_tag(NULL)
 #endif
 {
+	m_folder_id = m_browser->get_bookmark()->get_root_folder_id();
 	m_edit_mode = edit_mode;
 	if (!m_edit_mode) {
 		BROWSER_LOGD("[Add bookmark mode]Title[%s], URI[%s]", title, uri);
@@ -354,12 +354,12 @@ char *bookmark_add_view::__genlist_get_text_cb(void *data, Evas_Object *obj, con
 			break;
 		case FOLDER_SELECT_MENU:
 		{
-			bookmark *bm = cp->m_browser->get_bookmark();
+			bookmark *bm = m_browser->get_bookmark();
 			bookmark_item item;
 			bm->get_item_by_id(cp->m_folder_id, &item);
 			BROWSER_LOGD("[%s]", item.get_title());
-			if ((item.get_parent_id()) == 0) {
-				return elm_entry_utf8_to_markup(BR_STRING_MOBILE);
+			if ((item.get_id()) == bm->get_root_folder_id()) {
+				return elm_entry_utf8_to_markup(BR_STRING_BOOKMARKS);
 			} else {
 				return elm_entry_utf8_to_markup(item.get_title());
 			}

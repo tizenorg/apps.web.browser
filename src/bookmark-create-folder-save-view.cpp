@@ -39,7 +39,6 @@ bookmark_create_folder_save_view::bookmark_create_folder_save_view(Evas_Smart_Cb
 	,m_titlebar_btn_back(NULL)
 	,m_naviframe_item(NULL)
 	,m_itc_title(NULL)
-	,m_folder_id(root_folder_id)
 	,m_cb_func(cb_func)
 	,m_cb_data(cb_data)
 {

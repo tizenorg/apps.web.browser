@@ -62,7 +62,6 @@
 #define browser_locale_dir browser_bin_dir"/res/locale"
 #define browser_res_dir browser_bin_dir"/res"
 #define browser_template_dir browser_bin_dir"/res/tempalte"
-#define browser_screenshot_dir browser_data_dir"/screenshots/"
 
 #define efl_scale	elm_config_scale_get()
 
@@ -72,9 +71,6 @@
 #define bing_query_uri_postfix	"&PC=SMSM&FORM=MBDPSB&mid=10006"
 
 #define blank_page	"about:blank"
-
-/* Bookmark definition */
-#define root_folder_id	1
 
 #define BROWSER_MAX_TAG_COUNT	4
 

@@ -296,7 +296,7 @@ Eina_Bool bookmark_view::_set_genlist_folder_view(Evas_Object *genlist)
 	m_itc_bookmark_folder.func.state_get = NULL;
 	m_itc_bookmark_folder.func.del = NULL;
 
-	_set_genlist_folder_tree_recursive(root_folder_id, genlist, NULL);
+	_set_genlist_folder_tree_recursive(m_bookmark->get_root_folder_id(), genlist, NULL);
 	evas_object_smart_callback_add(genlist, "expanded", __genlist_exp_cb, this);
 	evas_object_smart_callback_add(genlist, "contracted", __genlist_cont_cb, this);
 
@@ -532,7 +532,8 @@ void bookmark_view::__plus_cb(void *data, Evas_Object *obj, void *event_info)
 
 	const char *title = m_browser->get_browser_view()->get_current_webview()->get_title();
 	const char *uri = m_browser->get_browser_view()->get_current_webview()->get_uri();
-	m_browser->create_bookmark_add_view(title, uri)->show();
+	m_browser->create_bookmark_add_view(title, uri,
+				m_browser->get_bookmark()->get_root_folder_id(), EINA_FALSE)->show();
 }
 
 Evas_Object *bookmark_view::_create_toolbar_layout(Evas_Object *parent)

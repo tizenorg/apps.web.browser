@@ -32,7 +32,7 @@ public:
 
 	int get_root_folder_id(void);
 	int save_bookmark(const char *title, const char *uri, int *saved_bookmark_id,
-						int parent_id = root_folder_id
+						int parent_id
 #if defined(BROWSER_TAG)
 						, const char *tag1 = NULL,
 						const char *tag2 = NULL,
@@ -40,8 +40,7 @@ public:
 						const char *tag4 = NULL
 #endif
 						);
-	int save_bookmark(bookmark_item item, int parent_id = root_folder_id);
-	int save_folder(const char *title, int *saved_bookmark_id, int parent_id = root_folder_id);
+	int save_folder(const char *title, int *saved_bookmark_id, int parent_id);
 	Eina_Bool delete_by_id(int id);
 	Eina_Bool delete_by_uri(const char *uri);
 	//Eina_Bool delete_bookmark(const char *uri);
@@ -58,14 +57,11 @@ public:
 	Eina_Bool delete_all(void);
 	Eina_Bool get_item_by_id(int id, bookmark_item *item);
 	Eina_Bool get_list_by_folder(const int folder_id, std::vector<bookmark_item *> &list);
-	Eina_Bool get_count_by_folder(const int folder_id, int *count);
 	void destroy_list(std::vector<bookmark_item *> &list);
 	int get_count(void);
 	Eina_Bool get_id(const char *uri, int *bookmark_id);
 	Eina_Bool get_folder_id(const char *title, int parent_id, int *folder_id);
 	Eina_Bool is_in_bookmark(const char *uri);
-	// The return value is malloced list, it should be freed by caller.
-	std::vector<bookmark_item *> get_bookmark_list(int folder_id = 1);
 	Eina_Bool get_folder_depth_count(int *depth_count);
 	Eina_Bool set_thumbnail(int id, Evas_Object *thumbnail);
 	Evas_Object *get_thumbnail(int id, Evas_Object *parent);

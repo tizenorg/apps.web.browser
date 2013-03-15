@@ -57,13 +57,21 @@ char *bookmark_select_folder_view::__genlist_get_text_cb(void *data, Evas_Object
 	bookmark_item *bookmark_item_data = (bookmark_item *)callback_data->user_data;
 
 	if (!strcmp(part, "elm.text")) {
+#if defined(BROWSER_BOOKMARK_SYNC)
+		if (bookmark_item_data->get_id() == m_browser->get_bookmark()->get_root_folder_id()) {
+			return elm_entry_utf8_to_markup(BR_STRING_BOOKMARKS);
+		} else {
+			return elm_entry_utf8_to_markup(bookmark_item_data->get_title());
+		}
+#else
 		if (!strcmp(bookmark_item_data->get_title(), "Bookmarks")) {
-			BROWSER_LOGD("[%s][%s] is added", part, BR_STRING_MOBILE);
-			return elm_entry_utf8_to_markup(BR_STRING_MOBILE);
+			BROWSER_LOGD("[%s][%s] is added", part, BR_STRING_BOOKMARKS);
+			return elm_entry_utf8_to_markup(BR_STRING_BOOKMARKS);
 		} else {
 			BROWSER_LOGD("[%s][%s] is added", part, bookmark_item_data->get_title());
 			return elm_entry_utf8_to_markup(bookmark_item_data->get_title());
 		}
+#endif
 	}
 	return NULL;
 }
@@ -183,6 +191,30 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_item_by_folder(Evas_Object *
 	std::vector<bookmark_item *> bookmark_list;
 	Eina_Bool ret;
 
+#if defined(BROWSER_BOOKMARK_SYNC)
+	if (folder_id < 0) {
+		//for root folder only
+		gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
+		memset(item_data, 0x00, sizeof(gl_cb_data));
+
+		bookmark_item *bookmark_item_data = new bookmark_item;
+		/* deep copying by overloaded operator = */
+		bookmark_item_data->set_id(0);
+		bookmark_item_data->set_folder_flag(EINA_TRUE);
+		bookmark_item_data->set_parent_id(-1);
+		bookmark_item_data->set_title("Bookmarks");
+		/* Folder item is found. get sub list */
+		BROWSER_LOGD("ROOT folder is %s(id: %d)",
+				bookmark_item_data->get_title(),
+				bookmark_item_data->get_id());
+		item_data->cp = this;
+		item_data->user_data = (void *)bookmark_item_data;
+		item_data->it = elm_genlist_item_append(genlist, m_itc_folder, item_data, parent_it,
+				ELM_GENLIST_ITEM_TREE, __genlist_item_clicked_cb, this);
+		return EINA_TRUE;
+	}
+#endif
+
 	ret = m_bookmark->get_list_by_folder(folder_id, bookmark_list);
 	if (ret == EINA_FALSE) {
 		BROWSER_LOGE("get_list_by_folder is failed(folder id:%d)",folder_id);
@@ -230,13 +262,20 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_folder_tree(Evas_Object *gen
 	int depth_count = 0;
 	m_bookmark->get_folder_depth_count(&depth_count);
 	BROWSER_LOGD("Final depth_count: %d", depth_count);
+#if defined(BROWSER_BOOKMARK_SYNC)
+	depth_count = depth_count + 1; //increase count for virtual root folder
+#endif
 
 	for (int i=0 ; i <= depth_count ; i++) {
 		BROWSER_LOGD("current depth: %d", i);
 		if (i == 0 ) {
-			BROWSER_LOGD("ROOT folder items are set", i);
+			BROWSER_LOGD("ROOT folder item is set", i);
 			/* root folder */
+#if defined(BROWSER_BOOKMARK_SYNC)
+			_set_genlist_item_by_folder(genlist, -1, NULL);
+#else
 			_set_genlist_item_by_folder(genlist, 0, NULL);
+#endif
 		} else {
 			BROWSER_LOGD("SUB folder items are set", i);
 			/* sub folder*/

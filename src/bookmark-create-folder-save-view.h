@@ -26,7 +26,7 @@
 
 class bookmark_create_folder_save_view : public browser_object, public common_view {
 public:
-	bookmark_create_folder_save_view(Evas_Smart_Cb cb_func = NULL, void *cb_data = NULL, int folder_id_to_save=root_folder_id);
+	bookmark_create_folder_save_view(Evas_Smart_Cb cb_func, void *cb_data, int folder_id_to_save);
 	~bookmark_create_folder_save_view(void);
 
 	void show();

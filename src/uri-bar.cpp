@@ -338,7 +338,8 @@ void uri_bar::__bookmark_add_cb(void *data, Evas_Object *obj, void *event_info)
 
 	const char *title = m_browser->get_browser_view()->get_current_webview()->get_title();
 	const char *uri = m_browser->get_browser_view()->get_current_webview()->get_uri();
-	m_browser->create_bookmark_add_view(title, uri)->show();
+	m_browser->create_bookmark_add_view(title, uri,
+				m_browser->get_bookmark()->get_root_folder_id(), EINA_FALSE)->show();
 
 	__context_popup_dismissed_cb(data, obj, event_info);
 }

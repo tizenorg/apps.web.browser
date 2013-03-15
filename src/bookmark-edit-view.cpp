@@ -48,16 +48,17 @@ bookmark_edit_view::bookmark_edit_view(bool tag_mode)
 	,m_toolbar_btn_delete(NULL)
 	,m_toolbar_btn_back(NULL)
 	,m_naviframe_item(NULL)
-	,m_curr_folder(root_folder_id)
 	,m_count_checked_item(0)
 	,m_count_editable_item(0)
 	,m_count_folder_item(0)
-	,m_folder_id_to_move(root_folder_id)
 #if defined(BROWSER_TAG)
 	,m_toolbar_btn_remove_tag(NULL)
 #endif
 {
 	BROWSER_LOGD("tag_mode: %d", tag_mode);
+	m_bookmark = m_browser->get_bookmark();
+	m_curr_folder = m_bookmark->get_root_folder_id();
+	m_folder_id_to_move = m_bookmark->get_root_folder_id();
 	m_bookmark_list.clear();
 #if defined(BROWSER_TAG)
 	if (tag_mode)
@@ -65,8 +66,6 @@ bookmark_edit_view::bookmark_edit_view(bool tag_mode)
 	else
 #endif
 		m_view_mode = EDIT_FOLDER_VIEW;
-
-	m_bookmark = m_browser->get_bookmark();
 }
 
 bookmark_edit_view::~bookmark_edit_view(void)
@@ -498,7 +497,7 @@ void bookmark_edit_view::_reorder_bookmark_items(int order_index, Eina_Bool is_m
 void bookmark_edit_view::_go_into_sub_folder(int folder_id, const char *folder_name)
 {
 	BROWSER_LOGD("folder_id: %d", folder_id);
-	if (folder_id <= 0)
+	if (folder_id < 0)
 		return;
 
 	folder_info *item = (folder_info *)malloc(sizeof(folder_info));
@@ -506,7 +505,7 @@ void bookmark_edit_view::_go_into_sub_folder(int folder_id, const char *folder_n
 	BROWSER_LOGD("item");
 
 	item->folder_id = folder_id;
-	if (folder_id == root_folder_id) {
+	if (folder_id == m_bookmark->get_root_folder_id()) {
 		item->folder_name = strdup(BR_STRING_MOBILE);
 	} else
 		item->folder_name = strdup(folder_name);
@@ -542,7 +541,7 @@ Eina_Bool bookmark_edit_view::_go_to_upper_folder()
 		m_path_history.pop_back();
 	} else {
 		/* Current folder is root folder */
-		if (m_curr_folder != root_folder_id) {
+		if (m_curr_folder != m_bookmark->get_root_folder_id()) {
 			BROWSER_LOGE("[ERROR] top folder is not root folder");
 			return EINA_TRUE;
 		}
@@ -938,9 +937,9 @@ void bookmark_edit_view::_set_contents()
 		/* even though unused is not NULL, it may be not a genlist if item count is 0 */
 		if (m_genlist != NULL) {
 			_clear_genlist_item_data(m_genlist, m_view_mode);
-			evas_object_del(unused);
-			unused = NULL;
 		}
+		evas_object_del(unused);
+		unused = NULL;
 	}
 	m_count_checked_item = 0;
 	m_count_folder_item = 0;
@@ -1070,7 +1069,7 @@ void bookmark_edit_view::show()
 		break;
 	}
 
-	_go_into_sub_folder(root_folder_id, NULL);
+	_go_into_sub_folder(m_bookmark->get_root_folder_id(), NULL);
 }
 
 #if defined(BROWSER_TAG)

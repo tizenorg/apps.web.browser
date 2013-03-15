@@ -39,8 +39,8 @@ public:
 	} menu_type;
 
 	bookmark_add_view(const char *title, const char *uri,
-								int folder_id_to_save = root_folder_id,
-								Eina_Bool edit_mode = EINA_FALSE);
+								int folder_id_to_save,
+								Eina_Bool edit_mode);
 	~bookmark_add_view(void);
 
 	void show();

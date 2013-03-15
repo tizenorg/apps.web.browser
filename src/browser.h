@@ -76,11 +76,11 @@ public:
 	bookmark *get_bookmark(void);
 	bookmark_view *get_bookmark_view(void);
 	bookmark_add_view *get_bookmark_add_view(void) { return m_bookmark_add_view;}
-	bookmark_add_view *create_bookmark_add_view(const char  *title = NULL, const char *uri = NULL, int folder_id_to_save = root_folder_id, Eina_Bool edit_mode = EINA_FALSE);
+	bookmark_add_view *create_bookmark_add_view(const char  *title, const char *uri, int folder_id_to_save, Eina_Bool edit_mode);
 	bookmark_select_folder_view *create_bookmark_select_folder_view(Evas_Smart_Cb cb_func, void *cb_data, Eina_Bool enable_create_folder);
 	bookmark_select_folder_view *get_bookmark_select_folder_view() { return m_bookmark_select_folder_view;}
 	bookmark_create_folder_view *get_bookmark_create_folder_view(Evas_Smart_Cb cb_func = NULL, void *cb_data = NULL);
-	bookmark_create_folder_save_view *get_bookmark_create_folder_save_view(Evas_Smart_Cb cb_func = NULL, void *cb_data = NULL, int folder_id = root_folder_id);
+	bookmark_create_folder_save_view *get_bookmark_create_folder_save_view(Evas_Smart_Cb cb_func, void *cb_data, int folder_id);
 	bookmark_edit_view *create_bookmark_edit_view(bool mode);
 	bookmark_edit_view *get_bookmark_edit_view() { return m_bookmark_edit_view; }
 	geolocation_manager *get_geolocation_manager(void);
