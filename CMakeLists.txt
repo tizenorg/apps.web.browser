@@ -281,6 +281,15 @@ ADD_CUSTOM_TARGET(scrap-view.edj
         )
 ADD_DEPENDENCIES(${PROJECT_NAME} scrap-view.edj)
 
+# history-view.edj
+ADD_CUSTOM_TARGET(history-view.edj
+        COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images -sd ${CMAKE_SOURCE_DIR}/images
+        ${CMAKE_SOURCE_DIR}/edc/history-view.edc
+        ${CMAKE_BINARY_DIR}/edc/history-view.edj
+        DEPENDS ${CMAKE_SOURCE_DIR}/edc/history-view.edc
+        )
+ADD_DEPENDENCIES(${PROJECT_NAME} history-view.edj)
+
 # bookmark-edit-view.edj
 ADD_CUSTOM_TARGET(bookmark-edit-view.edj
         COMMAND edje_cc -id ${CMAKE_SOURCE_DIR}/images -sd ${CMAKE_SOURCE_DIR}/images
@@ -314,6 +323,7 @@ INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/bookmark-view.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/find-on-page.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/reader.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/scrap-view.edj DESTINATION ${EDJE_DIR})
+INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/history-view.edj DESTINATION ${EDJE_DIR})
 INSTALL(FILES ${CMAKE_BINARY_DIR}/edc/bookmark-edit-view.edj DESTINATION ${EDJE_DIR})
 
 # install images

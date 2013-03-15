@@ -28,7 +28,7 @@
 #include "webview.h"
 
 #define MAX_DATE_LENTH	1024
-
+#define history_view_edj_path browser_edj_dir"/history-view.edj"
 history_view::history_view(void)
 :
 	m_item_ic(NULL)
@@ -63,9 +63,10 @@ void history_view::show(void)
 {
 	BROWSER_LOGD("");
 
-	Evas_Object *layout = _create_main_layout(m_naviframe);
+	m_main_layout = _create_main_layout(m_naviframe);
+
+	m_naviframe_item = elm_naviframe_item_push(m_naviframe, BR_STRING_HISTORY, NULL, NULL, m_main_layout, NULL);
 	evas_object_smart_callback_add(m_naviframe, "transition,finished", __naviframe_pop_cb, this);
-	m_naviframe_item = elm_naviframe_item_push(m_naviframe, BR_STRING_HISTORY, NULL, NULL, layout, NULL);
 
 	m_clear_button = elm_button_add(m_naviframe);
 	if (!m_clear_button) {
@@ -79,7 +80,7 @@ void history_view::show(void)
 	elm_object_item_part_content_set(m_naviframe_item, "toolbar_button1", m_clear_button);
 	evas_object_show(m_clear_button);
 
-	if (m_history_list.size() == 0)
+	if (elm_genlist_items_count(m_browser->get_history_view()->m_genlist) == 0)
 		elm_object_disabled_set(m_clear_button, EINA_TRUE);
 }
 
@@ -101,9 +102,16 @@ void history_view::__clear_history(void *data, Evas_Object *obj, void *event_inf
 	}
 	m_browser->get_history_view()->m_history_list.clear();
 
-	if (m_browser->get_history_view()->m_history_list.size() == 0) {
+	if (elm_genlist_items_count(m_browser->get_history_view()->m_genlist) == 0) {
 		elm_object_disabled_set(m_browser->get_history_view()->m_clear_button, EINA_TRUE);
-		evas_object_hide(m_browser->get_history_view()->m_genlist);
+
+		Evas_Object *no_contents_layout = elm_layout_add(m_browser->get_history_view()->m_main_layout);
+		if (no_contents_layout) {
+			evas_object_size_hint_weight_set(no_contents_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+			elm_layout_theme_set(no_contents_layout, "layout", "nocontents", "text");
+			elm_object_part_text_set(no_contents_layout, "elm.text", BR_STRING_NO_ITEMS);
+			elm_object_part_content_set(m_browser->get_history_view()->m_main_layout, "elm.swallow.content", no_contents_layout);
+		}
 	}
 }
 void history_view::__clear_history_button_cb(void *data, Evas_Object *obj, void *event_info)
@@ -270,43 +278,6 @@ Evas_Object *history_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, c
 	return NULL;
 }
 
-Evas_Object *history_view::_create_genlist(Evas_Object *parent)
-{
-	BROWSER_LOGD("");
-	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
-	Evas_Object *genlist = elm_genlist_add(parent);
-	if (!genlist) {
-		BROWSER_LOGE("elm_genlist_add failed");
-		return NULL;
-	}
-	Elm_Genlist_Item_Class *item_ic = elm_genlist_item_class_new();
-	memset(item_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
-
-	item_ic->decorate_item_style = "mode/slide2";
-	item_ic->item_style = "dialogue/2text.2icon.3";
-	item_ic->decorate_all_item_style = "dialogue/edit";
-	item_ic->func.text_get = __genlist_label_get_cb;
-	item_ic->func.content_get = __genlist_icon_get_cb;
-	item_ic->func.state_get = NULL;
-	item_ic->func.del = NULL;
-
-	Elm_Genlist_Item_Class *date_ic = elm_genlist_item_class_new();
-	memset(date_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
-
-	date_ic->item_style = "dialogue/title";
-	date_ic->decorate_item_style = NULL;
-	date_ic->decorate_all_item_style = NULL;
-	date_ic->func.text_get = __genlist_date_label_get_cb;
-	date_ic->func.content_get = NULL;
-	date_ic->func.state_get = NULL;
-	date_ic->func.del = NULL;
-
-	m_item_ic = item_ic;
-	m_date_ic = date_ic;
-
-	return genlist;
-}
-
 void history_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	history_item *item = (history_item *)data;
@@ -321,42 +292,101 @@ void history_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void 
 	elm_naviframe_item_pop(m_naviframe);
 }
 
-Evas_Object *history_view::_create_main_layout(Evas_Object *parent)
+Evas_Object *history_view::_create_genlist(Evas_Object *parent)
 {
 	BROWSER_LOGD("");
 	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
-	m_genlist = _create_genlist(parent);
+
+	Evas_Object *genlist = elm_genlist_add(parent);
+	if (!genlist) {
+		BROWSER_LOGE("elm_genlist_add failed");
+		return NULL;
+	}
+	Elm_Genlist_Item_Class *item_ic = elm_genlist_item_class_new();
+	memset(item_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
+
+	item_ic->decorate_item_style = "mode/slide3";
+	item_ic->item_style = "2text.2icon.4";
+	item_ic->decorate_all_item_style = "edit_default";
+	item_ic->func.text_get = __genlist_label_get_cb;
+	item_ic->func.content_get = __genlist_icon_get_cb;
+	item_ic->func.state_get = NULL;
+	item_ic->func.del = NULL;
+
+	Elm_Genlist_Item_Class *date_ic = elm_genlist_item_class_new();
+	memset(date_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
+
+	date_ic->item_style = "groupindex";
+	date_ic->decorate_item_style = NULL;
+	date_ic->decorate_all_item_style = "edit_default";
+	date_ic->func.text_get = __genlist_date_label_get_cb;
+	date_ic->func.content_get = NULL;
+	date_ic->func.state_get = NULL;
+	date_ic->func.del = NULL;
+
+	evas_object_smart_callback_add(genlist, "drag,start,right", __sweep_right_genlist_cb, this);
+	evas_object_smart_callback_add(genlist, "drag,start,left", __sweep_left_genlist_cb, this);
+	evas_object_smart_callback_add(genlist, "drag,start,up", __sweep_cancel_genlist_cb, this);
+	evas_object_smart_callback_add(genlist, "drag,start,down", __sweep_cancel_genlist_cb, this);
 
 	m_history_list = m_browser->get_history()->get_history_list();
 
-	BROWSER_LOGD("history count=%d", m_history_list.size());
+	if (m_history_list.size() == 0) {
+		evas_object_del(genlist);
+		return NULL;
+	}
 
 	int prev_year = 0;
 	int prev_month = 0;
 	int prev_day = 0;
 	for (int i = 0 ; i < m_history_list.size() ; i++) {
 		Elm_Object_Item *it = NULL;
-		BROWSER_LOGD("m_history_list[i]->get_date()=[%s]", m_history_list[i]->get_date());
-
 		if (m_history_list[i]->get_date() && strlen(m_history_list[i]->get_date())) {
 			if (i == 0) {
-				Elm_Object_Item *it = elm_genlist_item_append(m_genlist, m_date_ic,m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+				Elm_Object_Item *it = elm_genlist_item_append(genlist, date_ic,m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 				elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 			} else {
 				if (m_history_list[i]->get_time_stamp_type() != m_history_list[i - 1]->get_time_stamp_type()) {
-					Elm_Object_Item *it = elm_genlist_item_append(m_genlist, m_date_ic, m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+					Elm_Object_Item *it = elm_genlist_item_append(genlist, date_ic, m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 					elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 				}
 			}
 		}
-		evas_object_smart_callback_add(m_genlist, "drag,start,right", __sweep_right_genlist_cb, this);
-		evas_object_smart_callback_add(m_genlist, "drag,start,left", __sweep_left_genlist_cb, this);
-		evas_object_smart_callback_add(m_genlist, "drag,start,up", __sweep_cancel_genlist_cb, this);
-		evas_object_smart_callback_add(m_genlist, "drag,start,down", __sweep_cancel_genlist_cb, this);
-		elm_genlist_item_append(m_genlist, m_item_ic, m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, m_history_list[i]);
+		elm_genlist_item_append(genlist, item_ic, m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, m_history_list[i]);
 	}
+	m_item_ic = item_ic;
+	m_date_ic = date_ic;
 
-	return m_genlist;
+	return genlist;
+}
+
+Evas_Object *history_view::_create_main_layout(Evas_Object *parent)
+{
+	BROWSER_LOGD("");
+	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, NULL);
+
+	Evas_Object *layout = elm_layout_add(parent);
+	if (!layout) {
+		BROWSER_LOGE("elm_layout_add failed");
+		return NULL;
+	}
+	elm_layout_file_set(layout, history_view_edj_path, "main-layout");
+	evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	m_genlist = _create_genlist(layout);
+	if (m_genlist) {
+		elm_object_part_content_set(layout, "elm.swallow.content", m_genlist);
+	} else {
+		Evas_Object *no_contents_layout = elm_layout_add(layout);
+		if (no_contents_layout) {
+			evas_object_size_hint_weight_set(no_contents_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+			elm_layout_theme_set(no_contents_layout, "layout", "nocontents", "text");
+			elm_object_part_text_set(no_contents_layout, "elm.text", BR_STRING_NO_ITEMS);
+		}
+		elm_object_part_content_set(layout, "elm.swallow.content", no_contents_layout);
+	}
+	return layout;
 }
 
 void history_view::__naviframe_pop_cb(void *data, Evas_Object *obj, void *event_info)
@@ -464,8 +494,18 @@ void history_view::_delete_date_only_label_genlist_item(void)
 		}
 		it = elm_genlist_item_next_get(it);
 	}
-	if (m_history_list.size() == 0)
+
+	if (elm_genlist_items_count(m_genlist) == 0) {
 		elm_object_disabled_set(m_clear_button, EINA_TRUE);
+
+		Evas_Object *no_contents_layout = elm_layout_add(m_main_layout);
+		if (no_contents_layout) {
+			evas_object_size_hint_weight_set(no_contents_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+			elm_layout_theme_set(no_contents_layout, "layout", "nocontents", "text");
+			elm_object_part_text_set(no_contents_layout, "elm.text", BR_STRING_NO_ITEMS);
+			elm_object_part_content_set(m_main_layout, "elm.swallow.content", no_contents_layout);
+		}
+	}
 }
 
 void history_view::_delete_history_item_by_slide_button(history_item *item)
