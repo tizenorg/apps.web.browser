@@ -37,33 +37,6 @@ msgstr "Aurkitu orrian"
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
-msgid "IDS_BR_BODY_NOTIFYING_ING"
-msgstr "Jakinarazten..."
-
-msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "Prozesatzen..."
-
-msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "Prozesatzea osatu da"
-
-msgid "IDS_BR_SK_RETRY"
-msgstr "Berriro saiatu"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "Deskargen kudeatzailea"
-
-msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "Deskriptore baliogabea"
-
-msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "Ezin izan da fitxategia ireki"
-
-msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "Deskargatu?"
-
-msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "Aukeratutakoa(k)"
-
 msgid "IDS_BR_OPT_LIST"
 msgstr "Zerrenda"
 
@@ -142,557 +115,14 @@ msgstr "Amaituta"
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "Bertsioa"
 
-msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "Deskarga ezeztatua"
-
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Kopiatu irudia"
-
 msgid "IDS_IME_BODY_CLIPBOARD"
 msgstr "Arbela"
-
-msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "Azken orritik jarraitu"
-
-msgid "IDS_BR_BODY_PAGE"
-msgstr "Orria"
-
-msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "Hiztegia"
-
-msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "Nabigatzaileari buruz"
-
-msgid "IDS_BR_BODY_BROWSER_TYPE"
-msgstr "Mota"
-
-msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "Igorlea"
-
-msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "Irudiak erakutsi"
-
-msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "Deskargatu"
-
-msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "URLa idatzi"
-
-msgid "IDS_BR_BODY_FOLDER"
-msgstr "Karpeta"
-
-msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "Hasiera orria"
-
-msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Horizontala"
-
-msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "Laster-markarik ez"
-
-msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "Ez da emaitzarik aurkitu"
-
-msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "Aukerazkoa"
-
-msgid "IDS_BR_BODY_RSS"
-msgstr "RSS"
-
-msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "Flash abiatu"
-
-msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "JavaScript abiarazi"
-
-msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "Ohiko izena:"
-
-msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "Erakundea:"
-
-msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Erabiltzailearen agentea"
-
-msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "Lehentasunak"
-
-msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "Aktibazio akatsa"
-
-msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "Dagoeneko abian..."
-
-msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "Ezarri gabe"
-
-msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "Autentikazioak huts egin du"
-
-msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "Gainidatzi?"
-
-msgid "IDS_BR_POP_URL"
-msgstr "URLa"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "Deskarga zerrenda"
-
-msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "Dagoeneko instalatuta"
-
-msgid "IDS_BR_POP_NOTIFYING"
-msgstr "Jakinarazten..."
-
-msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "Eduki ez bateragarria"
-
-msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "Errorea: ezin da ostalari izena ebatzi"
-
-msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "Ezin da proxyra iritsi"
-
-msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "SSL ziurtagirik ez"
-
-msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "Fitxategiaren tamainak kargatzeko muga gainditzen du"
-
-msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "Izena idatzi:"
-
-msgid "IDS_BR_SK_NEXT"
-msgstr "Hurrengoa"
-
-msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "Karpeta berria"
-
-msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "Leiho berria"
-
-msgid "IDS_BR_BODY_URL"
-msgstr "URLa"
-
-msgid "IDS_BR_BODY_URL_C"
-msgstr "URLa:"
-
-msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "URLa ez dago eskuragarri"
-
-msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "URLaren %s ez dago eskuragarri. Aldi baterako ez dago erabilgarri edo behin betiko"
-
-msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "Karpetaren izena"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "Karpetaren izena\ndagoeneko erabileran"
-
-msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "Izenbururik ez"
-
-msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Multi window"
-
-msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Historiarik ez"
-
-msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "Laster-marketara gehitu"
-
-msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Laster-marka editatu"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "Karpetaren izena:"
-
-msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Denak aukeratu"
-
-msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "Deskargen kudeatzailea"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "Gehitu RSS jarioa"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "Gehitu RSS jarioak"
-
-msgid "IDS_BR_POP_ENTER_URL"
-msgstr "URLa idatzi"
-
-msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "Pasahitza"
-
-msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "Helbide baliogabea"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "Deskargen zerrendan lehendik dago"
-
-msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "Karpetaren izena idatzi"
-
-msgid "IDS_BR_POP_NO_PAGE"
-msgstr "Orririk ez"
-
-msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "Ezin da gehiago atzeratu"
-
-msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "Ezin da gehiago aurreratu"
-
-msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "Birkargatzeko orririk ez"
-
-msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "Autentikazioa beharrezkoa"
-
-msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "Lastermarka badago"
-
-msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "Karpetaren izena dagoeneko bada"
-
-msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "Ezin da objektua gorde. Ez dago nahikoa espazio katxean"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
 msgstr "Aukeratu elementuak"
 
-msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "Ziurtagiriaren informazioa"
-
-msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "Partekatu email bidez"
-
-msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "Partekatu mezuen bidez"
-
-msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "Partekatu honen bidez"
-
-msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "Ezin da arakatzailea abiarazi"
-
-msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "Ez dago helbiderik"
-
-msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "Ez erakutsi berriz"
-
-msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "Fitxategi izena hutsik"
-
-msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "Sortu karpeta"
-
-msgid "IDS_BR_OPT_SELECTED"
-msgstr "Aukeratutakoa(k)"
-
-msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "Berriki bisitatutako orriak"
-
-msgid "IDS_BR_OPT_DISPLAY"
-msgstr "Pantaila"
-
-msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "Egokitu zabalerara"
-
-msgid "IDS_BR_BODY_READABLE"
-msgstr "Irakurgarria"
-
-msgid "IDS_BR_BODY_PRIVACY"
-msgstr "Pribatutasuna"
-
-msgid "IDS_BR_BODY_COOKIES"
-msgstr "Cookie-ak"
-
-msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "Dena(k) onartu"
-
-msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "Abisua"
-
-msgid "IDS_BR_HEADER_COOKIES"
-msgstr "Cookie-ak"
-
-msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "Onartu cookieak"
-
-msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "Onartu cookieak"
-
-msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "Dena(k) onartu"
-
-msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "Dena(k) baztertu"
-
-msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "Automatikoki gordetzeko ID/pasahitza"
-
-msgid "IDS_BR_BODY_ON"
-msgstr "Aktibatuta"
-
-msgid "IDS_BR_BODY_OFF"
-msgstr "Desaktibatuta"
-
-msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "Biltegiratze lehenetsia"
-
-msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Irudia gorde"
-
-msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "Bateria baxu. Ezin da arakatzailea abiarazi"
-
-msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "Aurkitu hitza"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Gehitu pantaila nagusira"
-
-msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Gehien bisitatutako guneak"
-
-msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "Partekatu Facebook bidez"
-
-msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "Partekatu Twitter bidez"
-
-msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "Ikuspeg. aldatu"
-
-msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "Hautatu URLak"
-
-msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "Gune hau leiho agerkari bat irekitzen saiatzen ari da"
-
-msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "Blokeatu agerkar. leihoak"
-
-msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "Testu irakurgailua"
-
-msgid "IDS_BR_BODY_PLAY"
-msgstr "Erreproduzitu"
-
-msgid "IDS_BR_OPT_SELECT"
-msgstr "Aukeratu"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "Atzera egin"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "Aurrera egin"
-
-msgid "IDS_BR_OPT_STOP"
-msgstr "Gelditu"
-
-msgid "IDS_BR_OPT_RELOAD"
-msgstr "Birkargatu"
-
-msgid "IDS_BR_BUTTON_MORE"
-msgstr "Gehiago"
-
-msgid "IDS_BR_POP_FAIL"
-msgstr "Huts egin du"
-
-msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "Ireki beste leiho batean"
-
-msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "Deskargen zerrenda ikusi"
-
-msgid "IDS_BR_BODY_COPY_URL"
-msgstr "URLa kopiatu"
-
-msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "URLa hona kopiatu"
-
-msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "Ikusi irudia"
-
-msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "Pribatutasun ezarpenak"
-
-msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "Cachea hustu"
-
-msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "Historia ezabatu"
-
-msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "Gaitu plug-inak"
-
-msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "Hautatu bilatzailea"
-
-msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "Ezabatu gordetako ID/pasahitza"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Garbitu cookie datu guztiak"
-
-msgid "IDS_BR_BODY_UP"
-msgstr "Gora"
-
-msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "Letraren tamaina"
-
-msgid "IDS_BR_POP_DELETED"
-msgstr "Ezabatua"
-
-msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "Ikuspegi lehenetsia"
-
-msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Orri edukiaren ezarpenak"
-
-msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "Larria/Xehela bereizi"
-
-msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "Konektatu"
-
-msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "Pluginen zerrenda"
-
-msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "Biltegiratze lokala"
-
-msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "Ezabatu bilaketa datuak"
-
-msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "Kargatzen..."
-
-msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "Kargatzen..."
-
-msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "URLa idatzi"
-
-msgid "IDS_BR_OPT_LOCK"
-msgstr "Blokeatu"
-
-msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Desblokeatu"
-
-msgid "IDS_BR_BODY_MODIFY"
-msgstr "Aldatu"
-
-msgid "IDS_BR_SK_PAGE_UP"
-msgstr "Gora"
-
-msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "Behera"
-
-msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "Garatzaile modua"
-
-msgid "IDS_BR_BODY_EMPTY"
-msgstr "Hutsik"
-
-msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "Ziurtagiriak"
-
-msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "Laster-markak"
-
-msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "Izena idatzi"
-
-msgid "IDS_BR_BODY_NAME"
-msgstr "Izena"
-
-msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "Bidali posta elektroniko bidez"
-
-msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "Mezu bidez bidali"
-
-msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "Erabiltzaile izena"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "Dagoeneko badago"
-
-msgid "IDS_BR_POP_SAVED"
-msgstr "Gordeta"
-
-msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "Ez dago memoria nahikoa"
-
-msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "Sarearen errorea"
-
-msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "Beti galdetu"
-
-msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "Memoria txartela"
-
-msgid "IDS_BR_BODY_PHONE"
-msgstr "Telefonoa"
-
-msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "Konturik ez"
-
-msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "Errore orria"
-
-msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "Web orria ez dago erabilgarri aldi baterako"
-
-msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "Web orria ez dago erabilgarri"
-
-msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "Ezin izan dira markoak kargatu"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "%s web orria berreskuratu bitartean, ondoko errore hau gertatu da."
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "Ezin da Web orria berreskuratu. (Baliteke web orria erorita egotea aldi batez edo beste URL bat izatea)"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "Kausa gertagarriena behean ematen da"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "Sareko konexioa ez dago ohiko bezala ezarrita"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "Egiaztatu web orriaren URLa"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "Birkargatu web orria geroago"
-
-msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "Laster-marka"
-
-msgid "IDS_BR_BODY_TITLE"
-msgstr "Izenburua"
-
-msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "Izenburua idatzi"
-
-msgid "IDS_BR_OPT_FOLDERS"
-msgstr "Karpetak"
-
 msgid "IDS_BR_OPT_ALLOW"
 msgstr "Onartu"
-
-msgid "IDS_BR_POP_REFUSE"
-msgstr "Ukatu"
-
-msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "Segurtasun errorea: Zerbitzari ziurtagiri ez fidagarria"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
 msgstr "%d elementu hautatu dira"
@@ -700,26 +130,53 @@ msgstr "%d elementu hautatu dira"
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "Elementu 1 hautatu da"
 
-msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "Gehitu web klipera"
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Hutsik"
 
-msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "Lastebidea sortuta"
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Bilatu edo idatzi URLa"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "Aurkitu orrian"
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Inprimatu"
 
-msgid "IDS_BR_BODY_INTERNET"
-msgstr "Internet"
+msgid "IDS_BR_OPT_DATA_NETWORK"
+msgstr "Datu sarea"
 
-msgid "IDS_BR_BODY_SPEED"
-msgstr "Abiadura"
+msgid "IDS_BR_OPT_CLOSE_WINDOW"
+msgstr "Itxi leihoa"
 
-msgid "IDS_BR_SK_INSTALL"
-msgstr "Instalatu"
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Kargatzen. Itxaron mesedez..."
 
-msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Uneko orria"
+msgid "IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM"
+msgstr "Datu konektibitatearen arazoa"
+
+msgid "IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER"
+msgstr "Ezin da web orria erakutsi. Zerbitzariak ez du erantzuten"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Altua"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Ertaina"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Sortu karpeta"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Laster-markarik ez"
+
+msgid "IDS_BR_BODY_ADDDETAILSVIEW_TAGS"
+msgstr "Etiketak"
+
+msgid "IDS_BR_BODY_UNTAGGED"
+msgstr "Etiketarik gabe"
+
+msgid "IDS_BR_BODY_MOBILE"
+msgstr "Mugikorra"
+
+msgid "IDS_BR_OPT_VIEW_BY_ABB"
+msgstr "Hala ik."
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "Karpetaren izena idatzi"
@@ -727,167 +184,134 @@ msgstr "Karpetaren izena idatzi"
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
 msgstr "Idatzi laster-markaren izena"
 
-msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "Ez galdetu berriz"
-
-msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URLa ez da aurkitu"
-
-msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s-(e)k zure kokapena eskatu dizu"
-
-msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "Gogoratu hobespenak"
-
-msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "Erakutsi irudiak"
-
-msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "Erakutsi segurtasun oharrak"
-
-msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "Gogoratu pasahitzak"
-
-msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "Garbitu pasahitzak"
-
-msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "Ezabatu gordetako pasahitz guztiak?"
-
-msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "Ezabatu cookie guztiak. Jarraitu?"
-
-msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "Gogoratu formulario datuak"
-
-msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Lehenetsira berrezarri"
-
-msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Ezarpen guztiak modu lehenetsira. Jarraitu?"
-
-msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "Cachea hustu?"
-
-msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "Historia guztia ezabatu?"
-
-msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "Nabigatzailearen historia garbitu egingo da"
-
-msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "Beti aktibatuta"
-
-msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Gaitu kokapena"
-
-msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "Garbitu kokapen sarrera"
-
-msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "Ezin da laster-marka gehitu. Laster-marken gehieneko kopurua lortuta"
-
-msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Ezabatu kokapen sarbidearen informazioa?"
-
-msgid "IDS_BR_BODY_PRINT"
-msgstr "Inprimatu"
-
-msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Bilatu edo idatzi URLa"
-
-msgid "IDS_BR_BODY_AUTO"
-msgstr "Auto"
-
-msgid "IDS_BR_OPT_MANUAL"
-msgstr "Eskuzkoa"
-
-msgid "IDS_BR_BODY_LOW"
-msgstr "Txikia"
-
-msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Ertaina"
-
-msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "Orri zuria"
-
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Akatsa instalatzerakoan"
-
-msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "Webgunearen ezarpenak"
-
-msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "Altua"
-
-msgid "IDS_BR_BODY_SAVE_LINK"
-msgstr "Gorde esteka"
-
-msgid "IDS_BR_BODY_SHARE_LINK"
-msgstr "Partekatu esteka"
-
-msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
-msgstr "Pribatutasuna eta segurtasuna"
-
-msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "Gorde lineaz kanpo irakurtzeko"
-
-msgid "IDS_BR_HEADER_LOCATION"
-msgstr "Kokalekua"
-
-msgid "IDS_BR_HEADER_FORM_DATA"
-msgstr "Formularioko datuak"
-
-msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
-msgstr "Garbitu formularioko datuak"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
-msgstr "Garbitu gordetako pasahitz guztiak"
-
 msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "Lastermarketara gehituta"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Lastermarketatik kenduta"
 
-msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
-msgstr "Blokeatu agerkariak"
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Deskarga hasten..."
 
-msgid "IDS_BR_BODY_PICTURES"
-msgstr "Irudiak"
+msgid "IDS_BR_BODY_SELECT_FOLDER"
+msgstr "Karpeta aukeratu"
 
-msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
-msgstr "Kargatzen. Itxaron mesedez..."
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Karpetaren izena"
 
-msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "Pertsonalizatutako erabiltzailearen agentea"
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Historiarik ez"
 
-msgid "IDS_BR_BODY_USER_HOMEPAGE"
-msgstr "Erabiltzailearen orri nagusia"
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s-(e)k zure kokapena eskatu dizu"
 
-msgid "IDS_BR_BODY_PASSWORD"
-msgstr "Pasahitza"
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Lastebidea sortuta"
 
-msgid "IDS_BR_BODY_SEARCH_ENGINE"
-msgstr "Bilaketa motorra"
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Aurkitu orrian"
 
-msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
-msgstr "%s lastermarka sortuta"
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Laster-markak"
 
-msgid "IDS_BR_POP_NAME"
-msgstr "Izena"
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Laster-marka"
 
-msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
-msgstr "Kendu lastermarketatik"
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Lastermarka gehitu da"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Lastermarka kenduta"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Gorde lineaz kanpo irakurtzeko"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Gaitu modu pribatua"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Ezgaitu modu pribatua"
 
 msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
 msgstr "Gorde orria"
 
-msgid "IDS_BR_BODY_DELETE_ALL"
-msgstr "Dena(k) ezabatu"
+msgid "IDS_BR_BODY_DESKTOP_VIEW"
+msgstr "Mahai-gain ikuspegia"
 
-msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "Lastermarka gehitu da"
+msgid "IDS_BR_BODY_DESKTOP_VIEW_ABB"
+msgstr "Mahai gainaren ikuspegia"
+
+msgid "IDS_BR_OPT_INCOGNITO_MODE_ABB"
+msgstr "Ezkutuko modua"
+
+msgid "IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB"
+msgstr "Gehitu ebakin liburura"
+
+msgid "IDS_BR_OPT_SCRAPBOOK_ABB"
+msgstr "Ebakinen liburura"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Web klipa"
+
+msgid "IDS_BR_OPT_CACHE"
+msgstr "Cachea"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Denak aukeratu"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URLa"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Hasiera orria"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Orri zuria"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Azken ikusitako orria"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Uneko orria"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Erabiltzailearen orri nagusia"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Orri edukiaren ezarpenak"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Ikuspegi lehenetsia"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "Egokitu zabalerara"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "JavaScript abiarazi"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Irakurgarria"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Erakutsi irudiak"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Beti aktibatuta"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Blokeatu agerkariak"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Pribatutasuna eta segurtasuna"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Beti galdetu"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Ezabatu bilaketa datuak"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Cachea hustu"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "Ezabatu lokalki katxean gordetako edukia eta datu baseak?"
@@ -895,39 +319,363 @@ msgstr "Ezabatu lokalki katxean gordetako edukia eta datu baseak?"
 msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
 msgstr "Ezabatu nabigatzailearen historia?"
 
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Historia ezabatu"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Erakutsi segurtasun oharrak"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "Cookie-ak"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Onartu cookieak"
+
 msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
 msgstr "Cookie guztiak ezabatu?"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Garbitu cookie datu guztiak"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Gogoratu formulario datuak"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Gaitu kokapena"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Garbitu kokapen sarrera"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Ezabatu kokapen sarbidearen informazioa?"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Formularioko datuak"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Garbitu formularioko datuak"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Ezabatu formulariotik gordetako datu guztiak?"
 
-msgid "IDS_BR_POP_NOT_ALLOWED"
-msgstr "Ez onartua"
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Gogoratu pasahitzak"
 
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
-msgstr "Azken ikusitako orria"
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Garbitu pasahitzak"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Webgunearen ezarpenak"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Lehenetsira berrezarri"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Ezarpen guztiak modu lehenetsira. Jarraitu?"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "Nabigatzaileari buruz"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "Automatikoki gordetzeko ID/pasahitza"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Bilaketa motorra"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Erabiltzailearen agentea"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Dena(k) ezabatu"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Pertsonalizatutako erabiltzailearen agentea"
+
+msgid "IDS_BR_BODY_SAVED_ID_PASSWORD"
+msgstr "Gordetako erabiltzaile izena eta pasahitza"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Gehien bisitatutako guneak"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Ezabatu gordetako pasahitz guztiak?"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Ezabatua"
+
+msgid "IDS_BR_POP_DELETED_ALL"
+msgstr "Ezabatutako denak"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "URLa idatzi"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Dagoeneko badago"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Huts egin du"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Gordeta"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Izenburua idatzi"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Sarearen errorea"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Ez galdetu berriz"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URLa ez da aurkitu"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Ukatu"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Autentikazioa beharrezkoa"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Erabiltzaile izena"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Pasahitza"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Ez erakutsi berriz"
+
+msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
+msgstr "Datu mugikorrak ezgaituta. Konektatu Wi-Fi sarea erabiliz edo gaitu datu mugikorrak"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Ezin da laster-marka gehitu. Laster-marken gehieneko kopurua lortuta"
+
+msgid "IDS_BR_BODY_COULD_NOT_OPEN_NEW_WINDOW_BECAUSE_YOU_HAVE_ALREADY_OPENED_MAXIMUM_NUMBER"
+msgstr "Ezin da leiho berria ireki. Irekita dagoen gehieneko leiho kopurura heldu zara"
+
+msgid "IDS_BR_POP_SET_AS_HOMEPAGE"
+msgstr "Ezarri abiaorri gisa"
+
+msgid "IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE"
+msgstr "Ezarri orri hau abiaorri gisa"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Ireki beste leiho batean"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Deskargatu"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Ikusi irudia"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Erreproduzitu"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Kopiatu irudia"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Bidali posta elektroniko bidez"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Mezu bidez bidali"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "URLa kopiatu"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "Gehiago"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Partekatu esteka"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Gorde esteka"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Aukeratu"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Aurrera egin"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Atzera egin"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Birkargatu"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Gelditu"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "Arrastatu"
 
-msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
-msgstr "Ezgaitu modu pribatua"
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Garatzaile modua"
 
-msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
-msgstr "Gaitu modu pribatua"
+msgid "IDS_BR_POP_DATA_CONNECTION_FAILED"
+msgstr "Datuen konexioak huts egin du"
 
-msgid "IDS_BR_BODY_WEB_CLIP"
-msgstr "Web klipa"
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Deskargatu?"
 
-msgid "IDS_BR_POP_BOOKMARK_REMOVED"
-msgstr "Lastermarka kenduta"
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Deskargen kudeatzailea"
 
-msgid "IDS_BR_POP_PAGE_SAVED"
-msgstr "Orria gordeta"
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Jakinarazten..."
 
-msgid "IDS_BR_POP_DOWNLOADING_ING"
-msgstr "Deskargatzen..."
+msgid "IDS_BR_OPT_CLOSE_ALL"
+msgstr "Itxi dena"
 
-msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
-msgstr "Deskarga hasten..."
+msgid "IDS_BR_OPT_TEXT_ENCODING"
+msgstr "Testu kodifikazioa"
+
+msgid "IDS_BR_OPT_LATIN_1_HISO_8859_1"
+msgstr "Latin-1 (ISO-8859-1)"
+
+msgid "IDS_BR_OPT_UNICODE_HUTF_8"
+msgstr "Unicode (UTF-8)"
+
+msgid "IDS_BR_OPT_CHINESE_HBIG5"
+msgstr "Txinera (Big5)"
+
+msgid "IDS_BR_OPT_CHINESE_HGBK"
+msgstr "Txinera (GBK)"
+
+msgid "IDS_BR_OPT_JAPANESE_HSHIFT_JIS"
+msgstr "Japoniera (SHIFT JIS)"
+
+msgid "IDS_BR_OPT_JAPANESE_HEUC_JP"
+msgstr "Japoniera (EUC-JP)"
+
+msgid "IDS_BR_OPT_JAPANESE_HISO_2022_JP"
+msgstr "Japoniera (EUC-JP)"
+
+msgid "IDS_BR_OPT_KOREAN_HEUC_KR"
+msgstr "Korearra (EUC-KR)"
+
+msgid "IDS_BR_BODY_AUTOMATIC"
+msgstr "Automatikoa"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Ez onartua"
+
+msgid "IDS_BR_BODY_TODAY"
+msgstr "Gaur"
+
+msgid "IDS_BR_BODY_YESTERDAY"
+msgstr "Atzo"
+
+msgid "IDS_BR_BODY_LAST_WEEK"
+msgstr "Azkeneko astea"
+
+msgid "IDS_BR_POP_PLEASE_INSERT_SIM_CARD"
+msgstr "SIM txartela sartu"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Gogoratu hobespenak"
+
+msgid "IDS_BR_SK_CLEAR"
+msgstr "Ezabatu"
+
+msgid "IDS_BR_OPT_INSTALL_WEB_APP"
+msgstr "Instalatu web aplikazioa"
+
+msgid "IDS_BR_BODY_CREATED"
+msgstr "Sortuta"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Karpeta berria"
+
+msgid "IDS_BR_BODY_CLEAR_STORED_DATA"
+msgstr "Garbitu biltegiratutako datuak"
+
+msgid "IDS_BR_BODY_CREATE_FOLDER"
+msgstr "Karpeta sortu"
+
+msgid "IDS_BR_OPT_ADD"
+msgstr "Gehitu"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Izenbururik ez"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Ez da emaitzarik aurkitu"
+
+msgid "IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER"
+msgstr "Segurtasun politikak Internet nabigatzailearen erabilera mugatzen du"
+
+msgid "IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED"
+msgstr "Gehienezko etiketa kopurura (%d) iritsi zara"
+
+msgid "IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q"
+msgstr "Ezabatu webgune datu eta kokapen baimen guztiak?"
+
+msgid "IDS_BR_OPT_MOVE"
+msgstr "Mugitu"
+
+msgid "IDS_BR_BODY_ADDDETAILS_HNO_TAGS"
+msgstr "(etiketarik ez)"
+
+msgid "IDS_BR_POP_RENAME_TAG"
+msgstr "Etiketa berrizendatu"
+
+msgid "IDS_BR_OPT_SORT_BY_TAG"
+msgstr "Sailkatu etiketen arabera"
+
+msgid "IDS_BR_HEADER_ADD_TAG"
+msgstr "Gehitu etiketa"
+
+msgid "IDS_BR_BODY_LAST_7_DAYS"
+msgstr "Azken 7 egunak"
+
+msgid "IDS_BR_BODY_LAST_MONTH"
+msgstr "Joan den hilean"
+
+msgid "IDS_BR_BODY_OLDER"
+msgstr "Zaharragoa"
+
+msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
+msgstr "Itxi irekitako leiho guztiak eta joan orri nagusira"
+
+msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
+msgstr "Garbitu datu pertsonalizatuak"
+
+msgid "IDS_BR_OPT_ADD_LIVEBOX"
+msgstr "Gehitu Livebox"
+
+msgid "IDS_BR_BODY_NO_ITEMS"
+msgstr "Elementurik ez"
+
+msgid "IDS_BR_OPT_MINIMISE"
+msgstr "Minimizatu"
+
+msgid "IDS_BR_POP_NEVER"
+msgstr "Inoiz ez"
+
+msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
+msgstr "LTE/GSM/WCDMA (automatikoki konektatzea)"
+
+msgid "IDS_BR_OPT_SELECTION_MODE"
+msgstr "Hautaketa modua"
+
+msgid "IDS_BR_OPT_ADD_BOOKMARK"
+msgstr "Laster-marka gehitu"
+
+msgid "IDS_BR_OPT_DELETE_BOOKMARK"
+msgstr "Ezabatu lastermarka"
+
+msgid "IDS_BR_OPT_NEW_WINDOW"
+msgstr "Leiho berria"
+
+msgid "IDS_BR_BODY_MOBILE_VIEW"
+msgstr "Mugikorraren ikuspegia"
+
+msgid "IDS_BR_TAB_MOST_VISITED"
+msgstr "Gehien bisitat. guneak"
+
+msgid "IDS_BR_OPT_LIST_VIEW"
+msgstr "Zerrenda ikuspegia"
 

@@ -1,0 +1,468 @@
+/*
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Flora License, Version 1.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define PANES_STYLE_DEFAULT_MOVABLE_SIZE_INC 60
+#define PANES_STYLE_DEFAULT_PADDING_LEFT_SIZE_INC 25
+#define PANES_STYLE_DEFAULT_PADDING_RIGHT_SIZE_INC 22
+#define PANES_STYLE_DEFAULT_MIDDLE_SIZE_INC 26
+#define PANES_STYLE_DEFAULT_FIXED_SIZE_INC 52
+
+collections {
+	group {
+      name: "elm/panes/horizontal/default";
+      images {
+//         image: "00_splite_handler_bg_h.png" COMP;
+//         image: "00_splite_handler_bg_press.png" COMP;
+//         image: "00_splite_handler_h.png" COMP;
+      }
+      script {
+         public state_pair = 1; //0:both contents are not set, 1:both contents are set
+      }
+      parts
+      {
+         part
+         {
+            name: "whole";
+            type: RECT;
+            description
+            {
+               state: "default" 0.0;
+               visible: 0;
+               rel1.to_y: "pad_left";
+               rel2.to_y: "pad_right";
+            }
+         }
+         part {
+            name: "pad_left";
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel2.relative:1.0 0.0;
+               min: 0 PANES_STYLE_DEFAULT_PADDING_LEFT_SIZE_INC;
+               fixed: 0 1;
+               align: 0.5 1.0;
+               visible: 0;
+            }
+            description {
+               state: "hidden" 0.0;
+               inherit: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part {
+            name: "pad_right";
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0.0 1.0;
+               min: 0 PANES_STYLE_DEFAULT_PADDING_RIGHT_SIZE_INC;
+               fixed: 0 1;
+               align: 0.5 0.0;
+               visible: 0;
+            }
+            description {
+               state: "hidden" 0.0;
+               inherit: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         //2 contents
+         part
+         {
+            name: "whole_left";
+            type: RECT;
+            mouse_events: 0;
+            description
+            {
+               state: "default" 0.0;
+               rel1 {
+                  to_y: "pad_left";
+                  relative: 0.0 1.0;
+               }
+               rel2 {
+                  to_y: "bar_bg";
+                  relative: 1.0 0.0;
+               }
+            }
+         }
+         part
+         {
+            name: "elm.swallow.left";
+            type: SWALLOW;
+            clip_to: "whole_left";
+            description
+            {
+               state: "default" 0.0;
+               rel1.to: "whole_left";
+               rel2.to: "whole_left";
+            }
+         }
+         part
+         {
+            name: "whole_right";
+            type: RECT;
+            mouse_events: 0;
+            description
+            {
+               state: "default" 0.0;
+               rel1 {
+                  to_y: "bar_bg";
+                  relative: 0.0 1.0;
+               }
+               rel2 {
+                  to_y: "pad_right";
+                  relative: 1.0 0.0;
+               }
+            }
+         }
+         part
+         {
+            name: "elm.swallow.right";
+            type: SWALLOW;
+            clip_to: "whole_right";
+            description
+            {
+               state: "default" 0.0;
+               rel1.to: "whole_right";
+               rel2.to: "whole_right";
+            }
+         }
+         //BAR
+         part { name: "elm.bar";
+            type: RECT;
+            dragable {
+               confine: "whole";
+               x: 0 0 0;
+               y: 1 1 1;
+            }
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 999999 PANES_STYLE_DEFAULT_MOVABLE_SIZE_INC;
+               fixed: 1 0;
+               align: 0.5 0.0;
+               rel1.relative: 0.5 0.0;
+               rel2.relative: 0.5 1.0;
+               color: 0 0 0 0;
+            }
+            description { state: "default" 0.1;
+               inherit: "default" 0.0;
+               min: 999999 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit:  "default" 0.0;
+               min: 999999 PANES_STYLE_DEFAULT_FIXED_SIZE_INC;
+               visible: 0;
+            }
+            description { state: "disabled" 0.1;
+               inherit:  "default" 0.1;
+            }
+         }
+         part { name: "pad_bar_left";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               min: 0 PANES_STYLE_DEFAULT_PADDING_LEFT_SIZE_INC;
+               align: 0.5 0.0;
+               rel1.to_y: "elm.bar";
+               rel2 {
+                  relative: 1.0 0.0;
+                  to_y: "elm.bar";
+               }
+               fixed: 0 1;
+               visible: 0;
+            }
+            description {
+               state: "hidden" 0.0;
+               inherit: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "pad_bar_right";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               min: 0 PANES_STYLE_DEFAULT_PADDING_RIGHT_SIZE_INC;
+               align: 0.5 1.0;
+               rel1 {
+                  relative: 0.0 1.0;
+                  to_y: "elm.bar";
+               }
+               rel2.to_y: "elm.bar";
+               fixed: 0 1;
+               visible: 0;
+            }
+            description {
+               state: "visible" 0.0;
+               inherit: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "bar_bg";
+            type: IMAGE;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 0.0 1.0;
+                  to_y: "pad_bar_left";
+               }
+               rel2 {
+                  relative: 1.0 0.0;
+                  to_y: "pad_bar_right";
+               }
+               fixed: 0 1;
+//               image.normal: "00_splite_handler_bg_h.png";
+            }
+            description { state: "clicked" 0.0;
+               inherit: "default" 0.0;
+//               image.normal: "00_splite_handler_bg_press.png";
+            }
+         }
+         part { name:"bar_handler";
+            mouse_events: 0;
+            description { state:"default" 0.0;
+               rel1 {
+                  to_y: "bar_bg";
+                  relative: 0.5 0.0;
+               }
+               rel2 {
+                  to_y: "bar_bg";
+                  relative: 0.5 1.0;
+               }
+               fixed: 1 0;
+               min: PANES_STYLE_DEFAULT_MIDDLE_SIZE_INC 0;
+//               image.normal: "00_splite_handler_h.png";
+            }
+            description { state:"clicked" 0.0;
+               inherit: "default" 0.0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+         part { name: "over2";
+            mouse_events: 1;
+            repeat_events: 1;
+            ignore_flags: ON_HOLD;
+            description { state: "default" 0.0;
+               rel1.to: "elm.bar";
+               rel2.to: "elm.bar";
+            }
+            description { state: "disabled" 0.0;
+               inherit:  "default" 0.0;
+               visible: 0;
+            }
+         }
+         part { name: "over3";
+            mouse_events: 1;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.bar";
+               rel2.to: "elm.bar";
+            }
+            description { state: "clicked" 0.0;
+               inherit:  "default" 0.0;
+            }
+         }
+         part { name:"bar_disabled";
+            type: RECT;
+            description { state:"default" 0.0;
+               rel1.to_y: "elm.bar";
+               rel2.to_y: "elm.bar";
+               color: 0 0 0 0;
+               visible: 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+      }
+      programs {
+         program {
+            name:   "panes_pair";
+            signal: "elm,panes,pair";
+            source: "";
+            script {
+               new st[31];
+               new Float:vl;
+               set_int(state_pair, 1);
+               get_state(PART:"elm.bar", st, 30, vl);
+               set_state(PART:"elm.bar", st, 0.0);
+               set_state(PART:"pad_left", "default", 0.0);
+               set_state(PART:"pad_right", "default", 0.0);
+               set_state(PART:"pad_bar_left", "default", 0.0);
+               set_state(PART:"pad_bar_right", "default", 0.0);
+            }
+         }
+         program {
+            name:   "panes_unpair";
+            signal: "elm,panes,unpair";
+            source: "";
+            script {
+               new st[31];
+               new Float:vl;
+               set_int(state_pair, 0);
+               get_state(PART:"elm.bar", st, 30, vl);
+               set_state(PART:"elm.bar", st, 0.1);
+               set_state(PART:"pad_left", "hidden", 0.0);
+               set_state(PART:"pad_right", "hidden", 0.0);
+               set_state(PART:"pad_bar_left", "hidden", 0.0);
+               set_state(PART:"pad_bar_right", "hidden", 0.0);
+            }
+         }
+         program {
+            name:   "button_click";
+            signal: "mouse,down,1";
+            source: "over2";
+            action: SIGNAL_EMIT "elm,action,press" "";
+            after: "button_click_anim";
+         }
+         program {
+            name:   "button_click_anim";
+            script {
+               set_state(PART:"bar_bg", "clicked", 0.0);
+            }
+         }
+         program {
+            name:   "button_unclick";
+            signal: "mouse,up,1";
+            source: "over2";
+            action: SIGNAL_EMIT "elm,action,unpress" "";
+            after: "button_unclick_anim";
+         }
+         program {
+            name:   "button_unclick_anim";
+            script {
+               set_state(PART:"bar_bg", "default", 0.0);
+            }
+         }
+         program {
+            name:   "button_click2";
+            signal: "mouse,down,1";
+            source: "over3";
+            action: STATE_SET "clicked" 0.0;
+            target: "over3";
+         }
+         program {
+            name:   "button_unclick2";
+            signal: "mouse,up,1";
+            source: "over3";
+            action: STATE_SET "default" 0.0;
+            transition: DECELERATE 0.5;
+            target: "over3";
+         }
+         program {
+            name:   "button_unclick3";
+            signal: "mouse,up,1";
+            source: "over2";
+            action: SIGNAL_EMIT "elm,action,click" "";
+         }
+         program {
+            name:   "button_down_double";
+            signal: "mouse,down,1,double";
+            source: "over3";
+            action: SIGNAL_EMIT "elm,action,click,double" "";
+         }
+         //fix the pane
+         program {
+            name:   "panes_fixed";
+            signal: "elm.panes.fixed";
+            source: "elm";
+            action: STATE_SET "disabled" 0.0;
+            target: "elm.bar";
+            target: "bar_disabled";
+         }
+         //allow the movement by interaction
+         program {
+            name:   "panes_unfixed";
+            signal: "elm.panes.unfixed";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "elm.bar";
+            target: "bar_disabled";
+         }
+      }
+   }
+
+#define PANES_HANDLE_BG	"multiwindow/I01_multiwindow_handler_bg.png"
+#define PANES_HANDLE_BG_PRESS	"multiwindow/I01_multiwindow_handler_bg_press.png"
+#define PANES_HANDLE_ARROW	"multiwindow/I01_multiwindow_handler.png"
+
+	group {
+		name: "elm/panes/horizontal/browser/multiwindow";
+		inherit: "elm/panes/horizontal/default";
+		images {
+			image: PANES_HANDLE_BG COMP;
+			image: PANES_HANDLE_BG_PRESS COMP;
+			image: PANES_HANDLE_ARROW COMP;
+		}
+		parts {
+			part { name: "bar_bg";
+				type: IMAGE;
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 0.0 1.0;
+						to_y: "pad_bar_left";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to_y: "pad_bar_right";
+					}
+					fixed: 0 1;
+					min: 0 28;
+					image.normal: PANES_HANDLE_BG;
+				}
+				description { state: "clicked" 0.0;
+					inherit: "default" 0.0;
+					image.normal: PANES_HANDLE_BG_PRESS;
+				}
+			}
+			part { name:"bar_handler";
+				mouse_events: 0;
+				description { state:"default" 0.0;
+					rel1 {
+						to_y: "bar_bg";
+						relative: 0.5 0.0;
+					}
+					rel2 {
+						to_y: "bar_bg";
+						relative: 0.5 1.0;
+					}
+					align: 0.5 0.6;
+					fixed: 1 1;
+					min: PANES_STYLE_DEFAULT_MIDDLE_SIZE_INC 6;
+					max: PANES_STYLE_DEFAULT_MIDDLE_SIZE_INC 6;
+					image.normal: PANES_HANDLE_ARROW;
+				}
+				description { state:"clicked" 0.0;
+					inherit: "default" 0.0;
+				}
+				description { state: "disabled" 0.0;
+					inherit: "default" 0.0;
+				}
+			}
+		}
+	}
+}

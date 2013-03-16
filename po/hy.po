@@ -37,33 +37,6 @@ msgstr "Գտնել էջում"
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
-msgid "IDS_BR_BODY_NOTIFYING_ING"
-msgstr "Ծանուցում..."
-
-msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "Ընթացքում է"
-
-msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "Մշակումն ավարտվեց"
-
-msgid "IDS_BR_SK_RETRY"
-msgstr "Կրկին փորձել"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "Ներբեռնման կառավարիչ"
-
-msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "Անվավեր նկարագրող հատկանիշ"
-
-msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "Հնարավոր չէ բացել ֆայլը"
-
-msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "Ներբեռնե՞լ"
-
-msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "Ընտրված"
-
 msgid "IDS_BR_OPT_LIST"
 msgstr "Ցանկ"
 
@@ -142,557 +115,14 @@ msgstr "Պատրաստ"
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "Տարբերակ"
 
-msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "Ներբեռնումը չեղարկված է"
-
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Պատճենել պատկեր"
-
 msgid "IDS_IME_BODY_CLIPBOARD"
 msgstr "Գզրոց"
-
-msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "Շարունակել վերջին էջից"
-
-msgid "IDS_BR_BODY_PAGE"
-msgstr "Էջ"
-
-msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "Բառարան"
-
-msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "Իմ դիտարկչի մասին"
-
-msgid "IDS_BR_BODY_BROWSER_TYPE"
-msgstr "Տեսակ"
-
-msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "Թողարկող"
-
-msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "Ցուցադրել պատկերներ"
-
-msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "Ներբեռնել"
-
-msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "Մուտքագրեք URL"
-
-msgid "IDS_BR_BODY_FOLDER"
-msgstr "Թղթապանակ"
-
-msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "Սկզբնական էջ"
-
-msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Բնապատկեր"
-
-msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "Էջանիշներ չկան"
-
-msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "Արդյունքներ չեն գտնվել"
-
-msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "Ընտրովի"
-
-msgid "IDS_BR_BODY_RSS"
-msgstr "RSS"
-
-msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "Գործարկել Ֆլեշը"
-
-msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "Գործարկել JavaScript"
-
-msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "Հասարակ անունը՝"
-
-msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "Կազմակերպությունը՝"
-
-msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Օգտվողի գործակալ"
-
-msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "Պարամետրեր"
-
-msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "Ակտիվացման սխալ"
-
-msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "Արդեն աշխատում է..."
-
-msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "Չի կատարվել"
-
-msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "Վավերականացումը ձախողվեց"
-
-msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "Վերագրանցե՞լ"
-
-msgid "IDS_BR_POP_URL"
-msgstr "URL"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "Ներբեռնել ցուցակ"
-
-msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "Արդեն տեղադրված է"
-
-msgid "IDS_BR_POP_NOTIFYING"
-msgstr "Ծանուցում է..."
-
-msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "Չսատարվող բովանդակություն"
-
-msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "Սխալ. անհնար է լուծել հոստի անունը"
-
-msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "Անհնար է հասնել միջնորդ կուտակչին"
-
-msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "SSL վկայական չկա"
-
-msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "Ֆայլի չափը գերազանցում է վերբեռնման առավելագույն սահմանը"
-
-msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "Մուտքագրեք անունը՝"
-
-msgid "IDS_BR_SK_NEXT"
-msgstr "Հաջորդ"
-
-msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "Նոր թղթապանակ"
-
-msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "Նոր պատուհան"
-
-msgid "IDS_BR_BODY_URL"
-msgstr "URL"
-
-msgid "IDS_BR_BODY_URL_C"
-msgstr "Հղում՝"
-
-msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "URL-ը հասանելի չէ"
-
-msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "%s URL-ը հասանելի չէ: Հնարավոր է, որ այն ժամանակավորապես փակվել է կամ այլևս չի օգտագործվում"
-
-msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "Թղթապանակի անունը"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "Թղթապանակի անունն արդեն օգտագործված է"
-
-msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "Վերնագիր չկա"
-
-msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Բազմապատուհան"
-
-msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Պատմություններ չկան"
-
-msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "Ավելացնել Էջանիշերում"
-
-msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Խմբագրել էջանիշը"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "Թղթապանակի անուն՝"
-
-msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Ընտրել բոլորը"
-
-msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "Ներբեռնման կառավարիչ"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "Ավելացնել RSS աղբյուր"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "Ավելացնել RSS մատուցումներ"
-
-msgid "IDS_BR_POP_ENTER_URL"
-msgstr "Մուտքագրեք հասցեն"
-
-msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "Գաղտնաբառ"
-
-msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "Անվավեր հասցե"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "Ներբեռնումների ցուցակում արդեն գոյություն ունի"
-
-msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "Մուտքագրեք թղթապանակի անունը"
-
-msgid "IDS_BR_POP_NO_PAGE"
-msgstr "Էջը դատարկ է"
-
-msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "Հետ անցնելու էջեր չկան"
-
-msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "Առաջ գնալու էջեր չկան"
-
-msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "Բեռնման էջ չկա"
-
-msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "Պահանջվում է վավերականացում"
-
-msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "Էջանիշն արդեն գոյություն ունի"
-
-msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "Թղթապանակի անունն արդեն գոյություն ունի"
-
-msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "Անհնար է պահպանել օբյեկտը. բավարար տեղ չկա հիշապահեստում"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
 msgstr "Ընտրել տարրեր"
 
-msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "Վկայականի մասին տեղեկություն"
-
-msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "Համօգտագործել էլփոստի միջոցով"
-
-msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "Համօգտագործել Հաղորդագրությունների միջոցով"
-
-msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "Համօգտագործել հետևյալի միջոցով՝"
-
-msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "Անհնար է սկսել Զննարկիչը"
-
-msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "Հասցե չկա"
-
-msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "Այլևս երբեք ցույց չտալ"
-
-msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "Ֆայլի անունը դատարկ է"
-
-msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "Ստեղծել թղթպանակ"
-
-msgid "IDS_BR_OPT_SELECTED"
-msgstr "Ընտրված"
-
-msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "Վերջերս այցելված էջեր"
-
-msgid "IDS_BR_OPT_DISPLAY"
-msgstr "Էկրան"
-
-msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "Տեղավորել լայնքի վրա"
-
-msgid "IDS_BR_BODY_READABLE"
-msgstr "Ընթեռնելի"
-
-msgid "IDS_BR_BODY_PRIVACY"
-msgstr "Գաղտնիություն"
-
-msgid "IDS_BR_BODY_COOKIES"
-msgstr " Cookies"
-
-msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "Ընդունել բոլորը"
-
-msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "Հուշել"
-
-msgid "IDS_BR_HEADER_COOKIES"
-msgstr " Cookies"
-
-msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "Ընդունել թխուկները"
-
-msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "Ընդունել թխուկները"
-
-msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "Ընդունել բոլորը"
-
-msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "Մերժել բոլորը"
-
-msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "ՆՀ/գաղտնաբառի ինքնաբերական պահպանում"
-
-msgid "IDS_BR_BODY_ON"
-msgstr "Միացված է"
-
-msgid "IDS_BR_BODY_OFF"
-msgstr "Անջատված է"
-
-msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "Լռելյայն տարողություն"
-
-msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Պահպանել պատկերը"
-
-msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "Մարտկոցի լիցքը թույլ է: Հնարավոր չէ գործարկել դիտարկիչը"
-
-msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "Գտնել բառ"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Ավելացնել Հիմնական էկրանին"
-
-msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Առավել այցելված կայքեր"
-
-msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "Համօգտագործել Facebook-ի միջոցով"
-
-msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "Համօգտագործել Twitter-ի միջոցով"
-
-msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "Փոխել դիտումը"
-
-msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "Ընտրել URL-ներ"
-
-msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "Այս կայքը փորձում է բացվող պատուհան բացել"
-
-msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "Արգլփկլ բցվղ պատուհանները"
-
-msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "Տեքստի ընթերցիչ"
-
-msgid "IDS_BR_BODY_PLAY"
-msgstr "Նվագել"
-
-msgid "IDS_BR_OPT_SELECT"
-msgstr "Ընտրել"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "Անցնել հետ"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "Անցնել առաջ"
-
-msgid "IDS_BR_OPT_STOP"
-msgstr "Դադարեցնել"
-
-msgid "IDS_BR_OPT_RELOAD"
-msgstr "Վերաբեռնել"
-
-msgid "IDS_BR_BUTTON_MORE"
-msgstr "Ավելին"
-
-msgid "IDS_BR_POP_FAIL"
-msgstr "Ձախողվեց"
-
-msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "Նոր պատուհանում"
-
-msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "Դիտել ներբեռնման ցանկը"
-
-msgid "IDS_BR_BODY_COPY_URL"
-msgstr "Պատճենել հասցեն"
-
-msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "Պատճենել հասցեն այստեղ՝"
-
-msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "Տեսնել պատկերը"
-
-msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "Գաղտնիության կայանքներ"
-
-msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "Դատարկել հիշապահեստը"
-
-msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "Մաքրել պատմությունը"
-
-msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "Ընձեռել օժանդակ ծրագրեր"
-
-msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "Ընտրել որոնիչը"
-
-msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "Վերացնել պահպանված ՆՀ/գաղտնաբառը"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Ջնջել թխուկների ողջ տվյալները"
-
-msgid "IDS_BR_BODY_UP"
-msgstr "Վերև"
-
-msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "Տառաչափ"
-
-msgid "IDS_BR_POP_DELETED"
-msgstr "Ջնջված է"
-
-msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "Կանխադրված դիտում"
-
-msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Էջի բվնդկության դրվածքներ"
-
-msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "X"
-
-msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "Լրացուցիչ ծրագիր"
-
-msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "Խրվակների ցուցակ"
-
-msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "Տեղային պահեստ"
-
-msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "Ջնջել զննարկման տվյալները"
-
-msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "Բեռնում է..."
-
-msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "Բեռնում է..."
-
-msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "Մուտքագրեք URL"
-
-msgid "IDS_BR_OPT_LOCK"
-msgstr "Արգելափակել"
-
-msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Հանել արգելափակումը"
-
-msgid "IDS_BR_BODY_MODIFY"
-msgstr "Փոփոխել"
-
-msgid "IDS_BR_SK_PAGE_UP"
-msgstr "Վերև"
-
-msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "Ներքև"
-
-msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "Մշակողի ռեժիմ"
-
-msgid "IDS_BR_BODY_EMPTY"
-msgstr "Դատարկ է"
-
-msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "Վկայականներ"
-
-msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "Էջանիշեր"
-
-msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "Մուտքագրեք անունը"
-
-msgid "IDS_BR_BODY_NAME"
-msgstr "Անուն"
-
-msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "Ուղարկել էլփոստով"
-
-msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "Ուղարկել հաղորդագրության միջոցով"
-
-msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "Օգտվողի անուն"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "Արդեն գոյություն ունի"
-
-msgid "IDS_BR_POP_SAVED"
-msgstr "Պահպանվեց"
-
-msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "Չկա բավական հիշողություն"
-
-msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "Ցանցի սխալ"
-
-msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "Միշտ հարցնել"
-
-msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "Հիշողության քարտ"
-
-msgid "IDS_BR_BODY_PHONE"
-msgstr "Հեռախոս"
-
-msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "Հաշիվներ չկան"
-
-msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "Սխալի էջ"
-
-msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "Կայքէջը ժամանակավորապես մատչելի չէ"
-
-msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "Կայքէջը մատչելի չէ"
-
-msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "Չհաջողվեց բեռնել շրջանակներ"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "Հետևյալ սխալը տեղի ունեցավ %s կայքէջն առբերելու ընթացքում:"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "Անհնար է առբերել կայքէջը: (Հնարավոր է՝ կայքէջը ժամանակավորապես փակվել է կամ տեղափոխվել է նոր URL)"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "Առավել հավանական պատճառը տրված է ստորև"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "Ցանցային միացումը նորմալ չի հաստատվել"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "Ստուգեք կայքէջի URL-ը"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "Կայքէջը վերաբեռնեք ավելի ուշ"
-
-msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "Էջանիշ"
-
-msgid "IDS_BR_BODY_TITLE"
-msgstr "Վերնագիր"
-
-msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "Մուտքագրեք վերնագիրը"
-
-msgid "IDS_BR_OPT_FOLDERS"
-msgstr "Թղթապանակներ"
-
 msgid "IDS_BR_OPT_ALLOW"
 msgstr "Թույլատրել"
-
-msgid "IDS_BR_POP_REFUSE"
-msgstr "Հրաժարվել"
-
-msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "Անվտանգության սխալ՝ չվստահված սերվերի վկայական"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
 msgstr "%d տարր է ընտրվել"
@@ -700,26 +130,53 @@ msgstr "%d տարր է ընտրվել"
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1 տարր է ընտրվել"
 
-msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "Ավելացնել Ինտերնետ հոլովակում"
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Դատարկ է"
 
-msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "Ստեղծված է կարճատ"
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Որոնել կամ մուտքագրել URL"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "Գտնել էջում"
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Տպել"
 
-msgid "IDS_BR_BODY_INTERNET"
-msgstr "Ինտերնետ"
+msgid "IDS_BR_OPT_DATA_NETWORK"
+msgstr "Տվյալների ցանց"
 
-msgid "IDS_BR_BODY_SPEED"
-msgstr "Արագություն"
+msgid "IDS_BR_OPT_CLOSE_WINDOW"
+msgstr "Փակել պատուհանը"
 
-msgid "IDS_BR_SK_INSTALL"
-msgstr "Տեղադրել"
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Բեռնվում է: Խնդրում ենք սպասել..."
 
-msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Ընթացիկ էջ"
+msgid "IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM"
+msgstr "Տվյալների կապակցման խնդիր"
+
+msgid "IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER"
+msgstr "Անհնար է ցուցադրել կայքէջը: Սերվերից պատասխան չկա"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Բարձր"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Միջին"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Ստեղծել թղթպանակ"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Էջանիշներ չկան"
+
+msgid "IDS_BR_BODY_ADDDETAILSVIEW_TAGS"
+msgstr "Հայտանիշեր"
+
+msgid "IDS_BR_BODY_UNTAGGED"
+msgstr "Չհատկորոշված"
+
+msgid "IDS_BR_BODY_MOBILE"
+msgstr "Բջջային"
+
+msgid "IDS_BR_OPT_VIEW_BY_ABB"
+msgstr "Դիտել մջց"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "Մուտքագրեք թղթապանակի անունը"
@@ -727,167 +184,134 @@ msgstr "Մուտքագրեք թղթապանակի անունը"
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
 msgstr "Մուտքագրեք էջանիշի անվանումը"
 
-msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "Այլևս չհարցնել"
-
-msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URL չի գտնվել"
-
-msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s Ձեր տեղի հարցում է կատարում"
-
-msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "Հիշել նախապատվությունը"
-
-msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "Ցույց տալ պատկերներ"
-
-msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "Ցուցադրել անվտանգության զգուշացումները"
-
-msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "Հիշել գաղտնաբառերը"
-
-msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "Մաքրել գաղտնաբառերը"
-
-msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "Վերացնե՞լ բոլոր պահպանված գաղտնաբառերը:"
-
-msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "Վերացնել բոլոր թխուկները: Շարունակե՞լ:"
-
-msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "Հիշել տվյալներից"
-
-msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Զրոյացնել լռելյայնի"
-
-msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Բոլոր դրվածքները՝ կանխադրված: Շարունակե՞լ:"
-
-msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "Մաքրե՞լ բուֆերը"
-
-msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "Մաքրե՞լ պատմության բոլոր տարրերը"
-
-msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "Զննիչի նավարկման պատմությունը կջնջվի"
-
-msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "Միշտ միացված"
-
-msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Ընձեռել տեղ"
-
-msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "Մաքրել տեղի մուտքը"
-
-msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "Անհնար է ավելացնել էջանիշը: Հասել եք էջանիշերի առավելագույն քանակին"
-
-msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Վերացնե՞լ կայքի տեղի մուտքի մասին տեղեկատվությունը:"
-
-msgid "IDS_BR_BODY_PRINT"
-msgstr "Տպել"
-
-msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Որոնել կամ մուտքագրել URL"
-
-msgid "IDS_BR_BODY_AUTO"
-msgstr "Ավտոմատ"
-
-msgid "IDS_BR_OPT_MANUAL"
-msgstr "Ձեռքով"
-
-msgid "IDS_BR_BODY_LOW"
-msgstr "Ցածր"
-
-msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Միջին"
-
-msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "Դատարկ էջը"
-
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Տեղադրումը ձախողվեց"
-
-msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "Կայքի դրվածքներ"
-
-msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "Բարձր"
-
-msgid "IDS_BR_BODY_SAVE_LINK"
-msgstr "Պահպանել հղումը"
-
-msgid "IDS_BR_BODY_SHARE_LINK"
-msgstr "Համօգտագործել հղումը"
-
-msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
-msgstr "Գաղտնիություն և անվտանգություն"
-
-msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "Պահպանել արտացանցային ընթերցման համար"
-
-msgid "IDS_BR_HEADER_LOCATION"
-msgstr "Գտնվելու վայր"
-
-msgid "IDS_BR_HEADER_FORM_DATA"
-msgstr "Ձևի տվյալներ"
-
-msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
-msgstr "Ջնջել տվյալներից"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
-msgstr "Ջնջել բոլոր պահպանված գաղտնաբառերը"
-
 msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "Հավելված է էջանիշներին"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Հեռացված է էջանիշերից"
 
-msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
-msgstr "Արգելափակել ելնող պատուհանները"
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Ներբեռնման մեկնարկում..."
 
-msgid "IDS_BR_BODY_PICTURES"
-msgstr "Նկարներ"
+msgid "IDS_BR_BODY_SELECT_FOLDER"
+msgstr "Ընտրեք թղթապանակ"
 
-msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
-msgstr "Բեռնվում է: Խնդրում ենք սպասել..."
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Թղթապանակի անունը"
 
-msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "Օգտվողի ընտրովի գործակալ"
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Պատմություններ չկան"
 
-msgid "IDS_BR_BODY_USER_HOMEPAGE"
-msgstr "Օգտվողի հիմնաէջ"
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s Ձեր տեղի հարցում է կատարում"
 
-msgid "IDS_BR_BODY_PASSWORD"
-msgstr "Գաղտնաբառ"
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Ստեղծված է կարճատ"
 
-msgid "IDS_BR_BODY_SEARCH_ENGINE"
-msgstr "Որոնիչ"
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Գտնել էջում"
 
-msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
-msgstr "Ստեղծվել է %s դյուրանցում"
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Էջանիշեր"
 
-msgid "IDS_BR_POP_NAME"
-msgstr "Անուն"
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Էջանիշ"
 
-msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
-msgstr "Հեռացնել Էջանիշերից"
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Էջանիշն ավելացվել է"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Էջանիշը հեռացվեց"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Պահպանել արտացանցային ընթերցման համար"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Ընձեռել գաղտնի կապի ռեժիմը"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Կասեցնել գաղտնի կապի ռեժիմը"
 
 msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
 msgstr "Պահպանել էջը"
 
-msgid "IDS_BR_BODY_DELETE_ALL"
-msgstr "Ջնջել բոլորը"
+msgid "IDS_BR_BODY_DESKTOP_VIEW"
+msgstr "Աշխատասեղանի դիտում"
 
-msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "Էջանիշն ավելացվել է"
+msgid "IDS_BR_BODY_DESKTOP_VIEW_ABB"
+msgstr "Աշխատասեղանի դիտում"
+
+msgid "IDS_BR_OPT_INCOGNITO_MODE_ABB"
+msgstr "Ծպտյալ ռեժիմ"
+
+msgid "IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB"
+msgstr "Ավ. կտրածոների ալբոմին"
+
+msgid "IDS_BR_OPT_SCRAPBOOK_ABB"
+msgstr "Կտրածոների ալբոմ"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Համացանցային հոլովակ"
+
+msgid "IDS_BR_OPT_CACHE"
+msgstr "Կեշ"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Ընտրել բոլորը"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Սկզբնական էջ"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Դատարկ էջը"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Վերջին դիտված էջ"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Ընթացիկ էջ"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Օգտվողի հիմնաէջ"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Էջի բվնդկության դրվածքներ"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Կանխադրված դիտում"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "Տեղավորել լայնքի վրա"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "Գործարկել JavaScript"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Ընթեռնելի"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Ցույց տալ պատկերներ"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Միշտ միացված"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Արգելափակել ելնող պատուհանները"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Գաղտնիություն և անվտանգություն"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Միշտ հարցնել"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Ջնջել զննարկման տվյալները"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Դատարկել հիշապահեստը"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "Վերացնե՞լ հիշապահեստում տեղայնորեն պահված բովանդակությունն ու տվյալների շտեմարանները:"
@@ -895,39 +319,363 @@ msgstr "Վերացնե՞լ հիշապահեստում տեղայնորեն պա�
 msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
 msgstr "Վերացնե՞լ զննարկչի պատմությունը:"
 
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Մաքրել պատմությունը"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Ցուցադրել անվտանգության զգուշացումները"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr " Cookies"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Ընդունել թխուկները"
+
 msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
 msgstr "Ջնջե՞լ բոլոր թխուկները"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Ջնջել թխուկների ողջ տվյալները"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Հիշել տվյալներից"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Ընձեռել տեղ"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Մաքրել տեղի մուտքը"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Վերացնե՞լ կայքի տեղի մուտքի մասին տեղեկատվությունը:"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Ձևի տվյալներ"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Ջնջել տվյալներից"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Վերացնե՞լ բոլոր պահպանված ձևի տվյալները:"
 
-msgid "IDS_BR_POP_NOT_ALLOWED"
-msgstr "Թույլատրված չէ"
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Հիշել գաղտնաբառերը"
 
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
-msgstr "Վերջին դիտված էջ"
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Մաքրել գաղտնաբառերը"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Կայքի դրվածքներ"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Զրոյացնել լռելյայնի"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Բոլոր դրվածքները՝ կանխադրված: Շարունակե՞լ:"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "Իմ դիտարկչի մասին"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "ՆՀ/գաղտնաբառի ինքնաբերական պահպանում"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Որոնիչ"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Օգտվողի գործակալ"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Ջնջել բոլորը"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Օգտվողի ընտրովի գործակալ"
+
+msgid "IDS_BR_BODY_SAVED_ID_PASSWORD"
+msgstr "Պահպանված ՆՀ և գաղտնաբառ"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Առավել այցելված կայքեր"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Վերացնե՞լ բոլոր պահպանված գաղտնաբառերը:"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Ջնջված է"
+
+msgid "IDS_BR_POP_DELETED_ALL"
+msgstr "Բոլորը ջնջված են"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "Մուտքագրեք հասցեն"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Արդեն գոյություն ունի"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Ձախողվեց"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Պահպանվեց"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Մուտքագրեք վերնագիրը"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Ցանցի սխալ"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Այլևս չհարցնել"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL չի գտնվել"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Հրաժարվել"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Պահանջվում է վավերականացում"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Օգտվողի անուն"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Գաղտնաբառ"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Այլևս երբեք ցույց չտալ"
+
+msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
+msgstr "Շարժական տվյալները կասեցված են: Միացեք՝ օգտագործելով Wi-Fi ցանց, կամ ընձեռեք շարժական տվյալներ"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Անհնար է ավելացնել էջանիշը: Հասել եք էջանիշերի առավելագույն քանակին"
+
+msgid "IDS_BR_BODY_COULD_NOT_OPEN_NEW_WINDOW_BECAUSE_YOU_HAVE_ALREADY_OPENED_MAXIMUM_NUMBER"
+msgstr "Անհնար է բացել նոր պատուհան: Առավելագույն թվով պատուհաններ արդեն բաց են"
+
+msgid "IDS_BR_POP_SET_AS_HOMEPAGE"
+msgstr "Դրվել է որպես հիմնաէջ"
+
+msgid "IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE"
+msgstr "Ընթացիկ էջը դնել որպես հիմնաէջ"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Նոր պատուհանում"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Ներբեռնել"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Տեսնել պատկերը"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Նվագել"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Պատճենել պատկեր"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Ուղարկել էլփոստով"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Ուղարկել հաղորդագրության միջոցով"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "Պատճենել հասցեն"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "Ավելին"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Համօգտագործել հղումը"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Պահպանել հղումը"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Ընտրել"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Անցնել առաջ"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Անցնել հետ"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Վերաբեռնել"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Դադարեցնել"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "Քաշել"
 
-msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
-msgstr "Կասեցնել գաղտնի կապի ռեժիմը"
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Մշակողի ռեժիմ"
 
-msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
-msgstr "Ընձեռել գաղտնի կապի ռեժիմը"
+msgid "IDS_BR_POP_DATA_CONNECTION_FAILED"
+msgstr "Տվյալների միացումը ձախողվեց"
 
-msgid "IDS_BR_BODY_WEB_CLIP"
-msgstr "Համացանցային հոլովակ"
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Ներբեռնե՞լ"
 
-msgid "IDS_BR_POP_BOOKMARK_REMOVED"
-msgstr "Էջանիշը հեռացվեց"
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Ներբեռնման կառավարիչ"
 
-msgid "IDS_BR_POP_PAGE_SAVED"
-msgstr "Էջը պահպանվեց"
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Ծանուցում..."
 
-msgid "IDS_BR_POP_DOWNLOADING_ING"
-msgstr "Բեռնում..."
+msgid "IDS_BR_OPT_CLOSE_ALL"
+msgstr "Փակել բոլորը"
 
-msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
-msgstr "Ներբեռնման մեկնարկում..."
+msgid "IDS_BR_OPT_TEXT_ENCODING"
+msgstr "Գրվածքի այլագրում"
+
+msgid "IDS_BR_OPT_LATIN_1_HISO_8859_1"
+msgstr "Լատիներեն-1 (ISO-8859-1)"
+
+msgid "IDS_BR_OPT_UNICODE_HUTF_8"
+msgstr "Յունիկոդ (UTF-8)"
+
+msgid "IDS_BR_OPT_CHINESE_HBIG5"
+msgstr "Չինարեն (Big5)"
+
+msgid "IDS_BR_OPT_CHINESE_HGBK"
+msgstr "Չինարեն (GBK)"
+
+msgid "IDS_BR_OPT_JAPANESE_HSHIFT_JIS"
+msgstr "Ճապոներեն (SHIFT JIS)"
+
+msgid "IDS_BR_OPT_JAPANESE_HEUC_JP"
+msgstr "Ճապոներեն (EUC-JP)"
+
+msgid "IDS_BR_OPT_JAPANESE_HISO_2022_JP"
+msgstr "Ճապոներեն (ISO-2022-JP)"
+
+msgid "IDS_BR_OPT_KOREAN_HEUC_KR"
+msgstr "Կորեերեն (EUC-KR)"
+
+msgid "IDS_BR_BODY_AUTOMATIC"
+msgstr "Ավտոմատ"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Թույլատրված չէ"
+
+msgid "IDS_BR_BODY_TODAY"
+msgstr "Այսօր"
+
+msgid "IDS_BR_BODY_YESTERDAY"
+msgstr "Երեկ"
+
+msgid "IDS_BR_BODY_LAST_WEEK"
+msgstr "Վերջին շաբաթ"
+
+msgid "IDS_BR_POP_PLEASE_INSERT_SIM_CARD"
+msgstr "Տեղադրեք SIM քարտ"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Հիշել նախապատվությունը"
+
+msgid "IDS_BR_SK_CLEAR"
+msgstr "Մաքրել"
+
+msgid "IDS_BR_OPT_INSTALL_WEB_APP"
+msgstr "Տեղադրել համացանցային ծրագիր"
+
+msgid "IDS_BR_BODY_CREATED"
+msgstr "Ստեղծված է"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Նոր թղթապանակ"
+
+msgid "IDS_BR_BODY_CLEAR_STORED_DATA"
+msgstr "Մաքրել պահված տվյալները"
+
+msgid "IDS_BR_BODY_CREATE_FOLDER"
+msgstr "Ստեղծել թղթապանակ"
+
+msgid "IDS_BR_OPT_ADD"
+msgstr "Ավելացնել"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Վերնագիր չկա"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Արդյունքներ չեն գտնվել"
+
+msgid "IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER"
+msgstr "Անվտանգության քաղաքականությունը սահմանափակում է ինտերնետային զննարկչի օգտագործումը"
+
+msgid "IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED"
+msgstr "Հասել է հատկորոշիչների առավելագույն քանակին (%d)"
+
+msgid "IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q"
+msgstr "Վերացնե՞լ կայքի բոլոր տվյալները և տեղի թույլտվությունները:"
+
+msgid "IDS_BR_OPT_MOVE"
+msgstr "Տեղափոխել"
+
+msgid "IDS_BR_BODY_ADDDETAILS_HNO_TAGS"
+msgstr "(առանց պիտակի)"
+
+msgid "IDS_BR_POP_RENAME_TAG"
+msgstr "Վերանվանել հայտանիշը"
+
+msgid "IDS_BR_OPT_SORT_BY_TAG"
+msgstr "Տեսակավորել ըստ հատկորոշիչի"
+
+msgid "IDS_BR_HEADER_ADD_TAG"
+msgstr "Ավելացրեք հատկորոշիչ"
+
+msgid "IDS_BR_BODY_LAST_7_DAYS"
+msgstr "Վերջին 7 օրը"
+
+msgid "IDS_BR_BODY_LAST_MONTH"
+msgstr "Անցյալ ամիս"
+
+msgid "IDS_BR_BODY_OLDER"
+msgstr "Ավելի հին"
+
+msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
+msgstr "Փակեք բոլոր բաց պատուհաններն ու գնացեք հիմնաէջ"
+
+msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
+msgstr "Մաքրել անհատականացված տվյալները"
+
+msgid "IDS_BR_OPT_ADD_LIVEBOX"
+msgstr "Ավելացնել Լիվբոքս"
+
+msgid "IDS_BR_BODY_NO_ITEMS"
+msgstr "Տարրեր չկան"
+
+msgid "IDS_BR_OPT_MINIMISE"
+msgstr "Նվազարկել"
+
+msgid "IDS_BR_POP_NEVER"
+msgstr "Երբեք"
+
+msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
+msgstr "LTE/GSM/WCDMA (ինքնամիացում)"
+
+msgid "IDS_BR_OPT_SELECTION_MODE"
+msgstr "Ընտրության ռեժիմ"
+
+msgid "IDS_BR_OPT_ADD_BOOKMARK"
+msgstr "Էջանիշ ավելացնել"
+
+msgid "IDS_BR_OPT_DELETE_BOOKMARK"
+msgstr "Ջնջել էջանիշը"
+
+msgid "IDS_BR_OPT_NEW_WINDOW"
+msgstr "Նոր պատուհան"
+
+msgid "IDS_BR_BODY_MOBILE_VIEW"
+msgstr "Շարժական դիտում"
+
+msgid "IDS_BR_TAB_MOST_VISITED"
+msgstr "Առավել այցելված"
+
+msgid "IDS_BR_OPT_LIST_VIEW"
+msgstr "Դիտման ռեժիմների ցանկ"
 

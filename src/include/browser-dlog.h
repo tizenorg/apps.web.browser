@@ -1,32 +1,47 @@
 /*
- * Copyright 2012  Samsung Electronics Co., Ltd
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
  *
- * Licensed under the Flora License, Version 1.0 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the License);
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.tizenopensource.org/license
+ *     http://floralicense.org/license/
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an AS IS BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
-
 
 #ifndef BROWSER_DLOG_H
 #define BROWSER_DLOG_H
 
 #include <dlog.h>
 
+#if 0
 #define BROWSER_LOGD(fmt, args...) LOGD("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
 #define BROWSER_LOGI(fmt, args...) LOGI("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
 #define BROWSER_LOGW(fmt, args...) LOGW("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
 #define BROWSER_LOGE(fmt, args...) LOGE("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
 #define BROWSER_LOGE_IF(cond, fmt, args...) LOGE_IF(cond, "[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
+#else
+//LOGD("[%s][%d] "fmt "\n", strrchr(__FILE__, '/')+1, __LINE__, ##arg);
+#define BROWSER_LOGD(fmt, arg...) do {\
+		LOGD(fmt "\n", ##arg);\
+} while (0)
 
+#define BROWSER_LOGI(fmt, arg...) do {\
+		LOGD(fmt "\n", ##arg);\
+} while (0)
+#define BROWSER_LOGW(fmt, arg...) do {\
+		LOGD(fmt "\n", ##arg);\
+} while (0)
+#define BROWSER_LOGE(fmt, arg...) do {\
+		LOGD(fmt "\n", ##arg);\
+} while (0)
+#endif
 #if defined(BROWSER_MEMALLOC_ABORT_ON)
 #define new new(nothrow)
 #define RET_NEWALLOC_FAILED(expr) do {\

@@ -4,6 +4,7 @@
         viewmodes="fullscreen" id="id_need">
         <name>title_need</name>
         <icon src="icon.png"/>
-        <content src="url_need"/>
+        <content src="uri_need"/>
         <access origin="*" />
+        <tizen:setting backbutton-presence="enable"/>
 </widget>

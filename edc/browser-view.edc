@@ -1,0 +1,616 @@
+/*
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Flora License, Version 1.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define TOP_BUTTON_IMAGE "browser-view/I01_jump_to_top.png"
+#define TOP_BUTTON_IMAGE_PRESS "browser-view/I01_jump_to_top_press.png"
+#define TOP_BUTTON_IMAGE_DIM "browser-view/I01_jump_to_top_dim.png"
+
+#define BOTTOM_BUTTON_IMAGE "browser-view/I01_jump_to_bottom.png"
+#define BOTTOM_BUTTON_IMAGE_PRESS "browser-view/I01_jump_to_bottom_press.png"
+#define BOTTOM_BUTTON_IMAGE_DIM "browser-view/I01_jump_to_bottom_dim.png"
+
+#define MINI_BACK_IMAGE "browser-view/mini_back.png"
+#define MINI_BACK_IMAGE_PRESS "browser-view/mini_back_press.png"
+#define MINI_BACK_IMAGE_DIM "browser-view/mini_back_dim.png"
+
+#define MINI_FORWARD_IMAGE "browser-view/mini_forward.png"
+#define MINI_FORWARD_IMAGE_PRESS "browser-view/mini_forward_press.png"
+#define MINI_FORWARD_IMAGE_DIM "browser-view/mini_forward_dim.png"
+
+#define JUMP_IMAGE_SIZE	74
+
+collections {
+
+   sounds {
+      sample {
+         name: "touch_sound" AS_IS;
+         source: "S_Touch_30ms.wav";
+      }
+   }
+BUTTON_IMAGE_STYLE("browser/top_button", TOP_BUTTON_IMAGE, TOP_BUTTON_IMAGE_PRESS, TOP_BUTTON_IMAGE_DIM, JUMP_IMAGE_SIZE, JUMP_IMAGE_SIZE)
+BUTTON_IMAGE_STYLE("browser/bottom_button", BOTTOM_BUTTON_IMAGE, BOTTOM_BUTTON_IMAGE_PRESS, BOTTOM_BUTTON_IMAGE_DIM, JUMP_IMAGE_SIZE, JUMP_IMAGE_SIZE)
+
+BUTTON_IMAGE_STYLE("browser/mini_back", MINI_BACK_IMAGE, MINI_BACK_IMAGE_PRESS, MINI_BACK_IMAGE_DIM, 80, 74)
+BUTTON_IMAGE_STYLE("browser/mini_forward", MINI_FORWARD_IMAGE, MINI_FORWARD_IMAGE_PRESS, MINI_FORWARD_IMAGE_DIM, 80, 74)
+
+	group {
+		name: "webview-layout";
+		images {
+			image: "browser-view/L01_mini_mode_frame.png" COMP;
+		}
+		styles {
+				style { name: "title_style";
+				base: "font=Tizen:style=Bold font_size=40 color=#FFFFFF wrap=mixed ellipsis=1 text_class=tizen align=center";
+				tag:  "br" "\n";
+				tag:  "ps" "ps";
+				tag:  "tab" "\t";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
+				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		parts {
+			part { name: "elm.swallow.content";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; to: "pad_top_uri_bar"; }
+				}
+			}
+			part { name: "elm.swallow.gesture";
+				mouse_events: 1;
+				repeat_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "pad_up_down_right";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 26 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "pad_up_top";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 120;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "pad_down_bottom";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					min: 0 120;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "bg_top_button";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.top_button"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.top_button"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "bg_bottom_button";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.bottom_button"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.bottom_button"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.top_button";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					rel1 { relative: 0.0 1.0; to_x: "pad_up_down_right"; to_y: "pad_up_top"; }
+					rel2 { relative: 0.0 1.0; to_x: "pad_up_down_right"; to_y: "pad_up_top"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.bottom_button";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 1.0;
+					rel1 { relative: 0.0 0.0; to_x: "pad_up_down_right"; to_y: "pad_down_bottom"; }
+					rel2 { relative: 0.0 0.0; to_x: "pad_up_down_right"; to_y: "pad_down_bottom"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "pad_most_visited";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					min: 0 10;
+					fixed: 0 1;
+					color: MOST_VISITED_BG_COLOR;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.uri-input-bar"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.uri-input-bar"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.most-visited";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.uri-input-bar"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.uri-bar"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.uri-input-bar";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "pad_top_uri_bar";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 8;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.uri-bar"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.uri-bar"; }
+				}
+			}
+			part { name: "elm.swallow.uri-bar";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "invisible" 0.0;
+					inherit: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.reader";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 2.0; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.find-on-page";}
+				}
+			}
+			part { name: "elm.swallow.find-on-page";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+				}
+			}
+			part { name: "app_in_app_bg";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					image.normal: "browser-view/L01_mini_mode_frame.png";
+					image.border: 176 176 65 100;
+				}
+				description {
+					state: "app_in_app" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "pad_app_in_app_title_top";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 12;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "app_in_app_bg"; }
+					rel2 { relative: 1.0 0.0; to: "app_in_app_bg"; }
+				}
+			}
+			part { name: "pad_close_button_left";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 19 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "app_in_app_bg"; }
+					rel2 { relative: 0.0 1.0; to: "app_in_app_bg"; }
+				}
+			}
+			part { name: "pad_full_button_right";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 19 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "app_in_app_bg"; }
+					rel2 { relative: 1.0 1.0; to: "app_in_app_bg"; }
+				}
+			}
+			part { name: "app_in_app_title_text";
+				scale : 1;
+				type : TEXTBLOCK;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.5 0.0;
+					min: 0 40;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to_x: "elm.swallow.close_button"; to_y: "pad_app_in_app_title_top"; }
+					rel2 { relative: 0.0 1.0; to_x: "elm.swallow.full_button"; to_y: "pad_app_in_app_title_top"; }
+					text {
+						style: "title_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+				description {
+					state: "app_in_app" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.resize_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 1.0;
+					min: 40 40;
+					max: 40 40;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to: "app_in_app_bg"; }
+					rel2 { relative: 1.0 1.0; to: "app_in_app_bg"; }
+				}
+			}
+			part { name: "elm.swallow.close_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 40 40;
+					max: 40 40;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to_x: "pad_close_button_left"; to_y: "pad_app_in_app_title_top"; }
+					rel2 { relative: 1.0 1.0; to_x: "pad_close_button_left"; to_y: "pad_app_in_app_title_top"; }
+				}
+			}
+			part { name: "elm.swallow.full_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.0;
+					min: 40 40;
+					max: 40 40;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; to_x: "pad_full_button_right"; to_y: "pad_app_in_app_title_top"; }
+					rel2 { relative: 0.0 1.0; to_x: "pad_full_button_right"; to_y: "pad_app_in_app_title_top"; }
+				}
+			}
+			part { name: "pad_back_forward_button";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 1.0;
+					min: 30 32;
+					max: 30 32;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.mini_forward_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 1.0;
+					min: 80 72;
+					max: 80 72;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad_back_forward_button"; }
+					rel2 { relative: 0.0 0.0; to: "pad_back_forward_button"; }
+				}
+			}
+			part { name: "elm.swallow.mini_back_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.0;
+					min: 80 72;
+					max: 80 72;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.mini_forward_button"; }
+					rel2 { relative: 0.0 1.0; to: "elm.swallow.mini_forward_button"; }
+				}
+			}
+		}
+		programs {
+			program { name: "disable,webview_event";
+				signal: "disable,webview_event,signal";
+				action: STATE_SET "app_in_app" 0.0;
+				target: "app_in_app_bg";
+				target: "app_in_app_title_text";
+			}
+			program { name: "enable,webview_event";
+				signal: "enable,webview_event,signal";
+				action: STATE_SET "default" 0.0;
+				target: "app_in_app_bg";
+				target: "app_in_app_title_text";
+			}
+			// show / hide top button
+			program { name: "show,top-button";
+				signal: "show,top-button,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.top_button";
+				target: "bg_top_button";
+			}
+			program { name: "hide,top-button";
+				signal: "hide,top-button,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.top_button";
+				target: "bg_top_button";
+			}
+			// show / hide bottom button
+			program { name: "show,bottom-button";
+				signal: "show,bottom-button,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.bottom_button";
+				target: "bg_bottom_button";
+			}
+			program { name: "hide,bottom-button";
+				signal: "hide,bottom-button,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.bottom_button";
+				target: "bg_bottom_button";
+			}
+			// show / hide uri-bar
+			program { name: "show,uri-bar";
+				signal: "show,uri-bar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.uri-bar";
+			}
+			program { name: "hide,uri-bar";
+				signal: "hide,uri-bar,signal";
+				action: STATE_SET "invisible" 0.0;
+				target: "elm.swallow.uri-bar";
+			}
+			// show / hide uri-input-bar
+			program { name: "show,uri-input-bar";
+				signal: "show,uri-input-bar,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.uri-input-bar";
+				target: "elm.swallow.most-visited";
+				target: "pad_most_visited";
+			}
+			program { name: "hide,uri-input-bar";
+				signal: "hide,uri-input-bar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.uri-input-bar";
+				target: "elm.swallow.most-visited";
+				target: "pad_most_visited";
+			}
+			// show / hide find-on-page
+			program { name: "show,find-on-page";
+				signal: "show,find-on-page,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.find-on-page";
+			}
+			program { name: "hide,find-on-page";
+				signal: "hide,find-on-page,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.find-on-page";
+			}
+			// show / hide reader
+			program { name: "show,reader";
+				signal: "show,reader,signal";
+				action: STATE_SET "visible" 0.0;
+				transition: DECELERATE 0.5;
+				target: "elm.swallow.reader";
+			}
+			program { name: "hide,reader";
+				signal: "hide,reader,signal";
+				action: STATE_SET "default" 0.0;
+				transition: DECELERATE 0.5;
+				target: "elm.swallow.reader";
+				after: "hide,reader,finished";
+			}
+			program { name: "hide,reader,finished";
+				signal: "hide,reader,finished,signal";
+				action: SIGNAL_EMIT "hide,reader,finished" "";
+			}
+		}
+	}
+}
+

@@ -37,33 +37,6 @@ msgstr "Rechercher dans la page"
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
-msgid "IDS_BR_BODY_NOTIFYING_ING"
-msgstr "Notification..."
-
-msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "Traitement…"
-
-msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "Traitement terminé"
-
-msgid "IDS_BR_SK_RETRY"
-msgstr "Réessayer"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "Gestionnaire de téléchargement"
-
-msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "Descripteur non valide"
-
-msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "Impossible d'ouvrir le fichier"
-
-msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "Télécharger ?"
-
-msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "Sélectionné"
-
 msgid "IDS_BR_OPT_LIST"
 msgstr "Liste"
 
@@ -142,557 +115,14 @@ msgstr "OK"
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "Version"
 
-msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "Téléchargement annulé"
-
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Copier l'image"
-
 msgid "IDS_IME_BODY_CLIPBOARD"
 msgstr "Presse-papiers"
-
-msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "Dernière page"
-
-msgid "IDS_BR_BODY_PAGE"
-msgstr "Page"
-
-msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "Dictionnaire"
-
-msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "À propos du navigateur"
-
-msgid "IDS_BR_BODY_BROWSER_TYPE"
-msgstr "Type"
-
-msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "Émetteur"
-
-msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "Afficher les images"
-
-msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "Télécharger"
-
-msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "Saisir une URL"
-
-msgid "IDS_BR_BODY_FOLDER"
-msgstr "Dossier"
-
-msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "Page d'accueil"
-
-msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Paysage"
-
-msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "Aucun favori"
-
-msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "Aucun résultat trouvé"
-
-msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "Facultatif"
-
-msgid "IDS_BR_BODY_RSS"
-msgstr "RSS"
-
-msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "Exécuter Flash"
-
-msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "Exécuter JavaScript"
-
-msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "Nom commun :"
-
-msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "Organisation :"
-
-msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Utilisateur téléphone"
-
-msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "Préférences"
-
-msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "Erreur d'activation"
-
-msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "Déjà en cours d'exécution"
-
-msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "Non implémenté"
-
-msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "Échec d'authentification"
-
-msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "Écraser?"
-
-msgid "IDS_BR_POP_URL"
-msgstr "URL"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "Liste de téléchargement"
-
-msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "Déjà installé"
-
-msgid "IDS_BR_POP_NOTIFYING"
-msgstr "Notification..."
-
-msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "Contenu non pris en charge"
-
-msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "Erreur : impossible de résoudre le nom d'hôte"
-
-msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "Impossible d'atteindre le mandataire"
-
-msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "Aucun certificat SSL"
-
-msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "La taille du fichier dépasse la limite de chargement maximale"
-
-msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "Saisir le nom :"
-
-msgid "IDS_BR_SK_NEXT"
-msgstr "Suivant"
-
-msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "Nouveau dossier"
-
-msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "Nouvelle fenêtre"
-
-msgid "IDS_BR_BODY_URL"
-msgstr "URL"
-
-msgid "IDS_BR_BODY_URL_C"
-msgstr "URL :"
-
-msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "URL indisponible"
-
-msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "URL %s indisponible. Elle est peut-être inaccessible temporairement ou n'est plus utilisée"
-
-msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "Nom de dossier"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "Nom de dossier déjà utilisé"
-
-msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "Sans titre"
-
-msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Fenêtres multi."
-
-msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Aucun historique"
-
-msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "Ajouter aux signets"
-
-msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Modifier le marque-page"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "Nom du dossier :"
-
-msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Sélectionner tout"
-
-msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "Gestionnaire de téléchargement"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "Ajouter flux RSS"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "Ajouter des flux RSS"
-
-msgid "IDS_BR_POP_ENTER_URL"
-msgstr "Saisir une URL"
-
-msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "Mot de passe"
-
-msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "Adresse invalide"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "Existe déjà dans la liste de téléchargement"
-
-msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "Saisir le nom de dossier"
-
-msgid "IDS_BR_POP_NO_PAGE"
-msgstr "Pas de page"
-
-msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "Aucune page précédente"
-
-msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "Aucune page suivante"
-
-msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "Aucune page à recharger"
-
-msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "Authentification requise"
-
-msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "Ce favori existe déjà"
-
-msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "Nom de dossier existe déjà"
-
-msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "Enregistrement de l'objet impossible. Espace insuffisant dans le cache"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
 msgstr "Sélectionner éléments"
 
-msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "Infos sur le certificat"
-
-msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "Partager par courriel"
-
-msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "Partager par messages"
-
-msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "Partager via"
-
-msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "Impossible de démarrer le navigateur"
-
-msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "Aucune adresse"
-
-msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "Ne plus afficher"
-
-msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "Nom de fichier vide"
-
-msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "Créer dossier"
-
-msgid "IDS_BR_OPT_SELECTED"
-msgstr "Sélectionné"
-
-msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "Pages visitées récemment"
-
-msgid "IDS_BR_OPT_DISPLAY"
-msgstr "Affichage"
-
-msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "Ajuster selon largeur"
-
-msgid "IDS_BR_BODY_READABLE"
-msgstr "Lisible"
-
-msgid "IDS_BR_BODY_PRIVACY"
-msgstr "Confidentialité"
-
-msgid "IDS_BR_BODY_COOKIES"
-msgstr "Témoins"
-
-msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "Tout accepter"
-
-msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "Invite"
-
-msgid "IDS_BR_HEADER_COOKIES"
-msgstr "Témoins"
-
-msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "Accepter les témoins"
-
-msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "Accepter les témoins"
-
-msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "Tout accepter"
-
-msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "Tout refuser"
-
-msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "Enregistrer automatiquement ID/mot de passe"
-
-msgid "IDS_BR_BODY_ON"
-msgstr "Activé"
-
-msgid "IDS_BR_BODY_OFF"
-msgstr "Désactivé"
-
-msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "Stockage par défaut"
-
-msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Enregistrer l'image"
-
-msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "Pile faible. Impossible d'exécuter le navigateur"
-
-msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "Rechercher mot"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Ajouter à l'écran d'accueil"
-
-msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Sites les plus visités"
-
-msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "Partager via Facebook"
-
-msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "Partager via Twitter"
-
-msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "Modif. affichage"
-
-msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "Sélectionner des URL"
-
-msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "Ce site tente d'ouvrir une fenêtre contextuelle"
-
-msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "Bloquer fenêtres cont."
-
-msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "Lecteur de texte"
-
-msgid "IDS_BR_BODY_PLAY"
-msgstr "Lire"
-
-msgid "IDS_BR_OPT_SELECT"
-msgstr "Sélectionner"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "Page précédente"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "Page suivante"
-
-msgid "IDS_BR_OPT_STOP"
-msgstr "Arrêter"
-
-msgid "IDS_BR_OPT_RELOAD"
-msgstr "Recharger"
-
-msgid "IDS_BR_BUTTON_MORE"
-msgstr "Autres"
-
-msgid "IDS_BR_POP_FAIL"
-msgstr "Échec"
-
-msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "Ouvrir dans une nouvelle fenêtre"
-
-msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "Afficher la liste de téléchargement"
-
-msgid "IDS_BR_BODY_COPY_URL"
-msgstr "Copier l'URL"
-
-msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "Envoyer l'URL à"
-
-msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "Afficher l'image"
-
-msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "Paramètres de confidentialité"
-
-msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "Vider le cache"
-
-msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "Effacer l'historique"
-
-msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "Activer les plugiciels"
-
-msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "Sélectionner un moteur de recherche"
-
-msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "Supprimer ID/Mot de passe enregistrés"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Effacer toutes les données du témoin"
-
-msgid "IDS_BR_BODY_UP"
-msgstr "Haut"
-
-msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "Taille de police"
-
-msgid "IDS_BR_POP_DELETED"
-msgstr "Supprimé"
-
-msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "Vue par défaut"
-
-msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Param. contenu des pages"
-
-msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "Sensible à la casse"
-
-msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "Plugiciel"
-
-msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "Liste des plugiciels"
-
-msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "Stockage local"
-
-msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "Supprimer les données de navigation"
-
-msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "Chargement..."
-
-msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "Chargement..."
-
-msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "Saisir une URL"
-
-msgid "IDS_BR_OPT_LOCK"
-msgstr "Verrouiller"
-
-msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Déverrouiller"
-
-msgid "IDS_BR_BODY_MODIFY"
-msgstr "Modifier"
-
-msgid "IDS_BR_SK_PAGE_UP"
-msgstr "Précédente"
-
-msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "Suivante"
-
-msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "Mode développeur"
-
-msgid "IDS_BR_BODY_EMPTY"
-msgstr "Vide"
-
-msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "Certificats"
-
-msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "Marque-pages"
-
-msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "Saisir un nom"
-
-msgid "IDS_BR_BODY_NAME"
-msgstr "Nom"
-
-msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "Envoyer par courriel"
-
-msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "Envoyer par message"
-
-msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "Nom d'utilisateur"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "Existe déjà"
-
-msgid "IDS_BR_POP_SAVED"
-msgstr "Enregistré"
-
-msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "Mémoire insuffisante"
-
-msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "Erreur réseau"
-
-msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "Toujours demander"
-
-msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "Carte mémoire"
-
-msgid "IDS_BR_BODY_PHONE"
-msgstr "Téléphone"
-
-msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "Aucun compte"
-
-msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "Page d'erreur"
-
-msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "Page Web temporairement indisponible"
-
-msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "Page Web non disponible"
-
-msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "Impossible de charger les images"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "Lors de la récupération de la page Web %s, l'erreur suivante s'est produite."
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "Impossible de récupérer la page Web. (La page Web est peut-être temporairement en panne ou a été déplacée vers une autre URL)"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "La cause la plus probable est indiquée ci-dessous"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "Connexion réseau non établie normalement"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "Vérifier URL de la page Web"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "Recharger la page Web plus tard"
-
-msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "Favori"
-
-msgid "IDS_BR_BODY_TITLE"
-msgstr "Titre"
-
-msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "Saisir un titre"
-
-msgid "IDS_BR_OPT_FOLDERS"
-msgstr "Dossiers"
-
 msgid "IDS_BR_OPT_ALLOW"
 msgstr "Autoriser"
-
-msgid "IDS_BR_POP_REFUSE"
-msgstr "Refuser"
-
-msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "Erreur de sécurité : certificat du serveur non sécurisé"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
 msgstr "%d éléments sélectionnés"
@@ -700,26 +130,53 @@ msgstr "%d éléments sélectionnés"
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1 élément sélectionné"
 
-msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "Ajouter au clip Web"
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Vide"
 
-msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "Raccourci créé"
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Rechercher ou entrer une URL"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "Rechercher dans la page"
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Imprimer"
 
-msgid "IDS_BR_BODY_INTERNET"
-msgstr "Internet"
+msgid "IDS_BR_OPT_DATA_NETWORK"
+msgstr "Réseau de données"
 
-msgid "IDS_BR_BODY_SPEED"
-msgstr "Vitesse"
+msgid "IDS_BR_OPT_CLOSE_WINDOW"
+msgstr "Fermer la fenêtre"
 
-msgid "IDS_BR_SK_INSTALL"
-msgstr "Installer"
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Chargement. Veuillez patienter..."
 
-msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Page en cours"
+msgid "IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM"
+msgstr "Problème de connectivité des données"
+
+msgid "IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER"
+msgstr "Affichage de la page Web impossible. Aucune réponse du serveur"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Haute"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Moyenne"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Créer dossier"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Aucun favori"
+
+msgid "IDS_BR_BODY_ADDDETAILSVIEW_TAGS"
+msgstr "Libellés"
+
+msgid "IDS_BR_BODY_UNTAGGED"
+msgstr "Non tagué"
+
+msgid "IDS_BR_BODY_MOBILE"
+msgstr "Mobile"
+
+msgid "IDS_BR_OPT_VIEW_BY_ABB"
+msgstr "Afficher par"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "Saisir le nom de dossier"
@@ -727,167 +184,134 @@ msgstr "Saisir le nom de dossier"
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
 msgstr "Entrez le nom d'un favori"
 
-msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "Ne plus demander"
-
-msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URL introuvable"
-
-msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s demande votre position"
-
-msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "Mémoriser la préférence"
-
-msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "Afficher les images"
-
-msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "Afficher les avertissements de sécurité"
-
-msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "Mémoriser les MDP"
-
-msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "Effacer les mots de passe"
-
-msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "Supprimer tous les mots de passe enregistrés ?"
-
-msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "Supprimer tous les témoins. Continuer?"
-
-msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "Mémoriser les données de formulaire"
-
-msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Restaurer valeurs par défaut"
-
-msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Tous les paramètres par défaut. Continuer?"
-
-msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "Vider le cache ?"
-
-msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "Effacer tout l'historique ?"
-
-msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "L'historique de navigation du navigateur sera effacé"
-
-msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "Toujours activé"
-
-msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Activer la localisation"
-
-msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "Effacer l'accès à la position"
-
-msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "Impossible d'ajouter un signet. Nombre maximum de signets atteint"
-
-msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Supprimer les informations d'accès à la position des sites Web ?"
-
-msgid "IDS_BR_BODY_PRINT"
-msgstr "Imprimer"
-
-msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Rechercher ou entrer une URL"
-
-msgid "IDS_BR_BODY_AUTO"
-msgstr "Auto"
-
-msgid "IDS_BR_OPT_MANUAL"
-msgstr "Manuel"
-
-msgid "IDS_BR_BODY_LOW"
-msgstr "Faible"
-
-msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Moyenne"
-
-msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "Page vierge"
-
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Échec d'installation"
-
-msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "Paramètres des sites Web"
-
-msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "Haute"
-
-msgid "IDS_BR_BODY_SAVE_LINK"
-msgstr "Enregistrer le lien"
-
-msgid "IDS_BR_BODY_SHARE_LINK"
-msgstr "Partager le lien"
-
-msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
-msgstr "Confidentialité et sécurité"
-
-msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "Enregistrer pour la lecture hors connexion"
-
-msgid "IDS_BR_HEADER_LOCATION"
-msgstr "Emplacement"
-
-msgid "IDS_BR_HEADER_FORM_DATA"
-msgstr "Données formulaire"
-
-msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
-msgstr "Effacer les données de formulaire"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
-msgstr "Supprimer tous les mots de passe enregistrés"
-
 msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "Ajouté aux favoris"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Retiré des favoris"
 
-msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
-msgstr "Bloquer fen. contextuelles"
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Début du téléchargement..."
 
-msgid "IDS_BR_BODY_PICTURES"
-msgstr "Photos"
+msgid "IDS_BR_BODY_SELECT_FOLDER"
+msgstr "Sélectionnez un dossier"
 
-msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
-msgstr "Chargement. Veuillez patienter..."
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Nom de dossier"
 
-msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "Personnaliser l'utilisateur téléphone"
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Aucun historique"
 
-msgid "IDS_BR_BODY_USER_HOMEPAGE"
-msgstr "Page d'accueil utilisateur"
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s demande votre position"
 
-msgid "IDS_BR_BODY_PASSWORD"
-msgstr "Mot de passe"
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Raccourci créé"
 
-msgid "IDS_BR_BODY_SEARCH_ENGINE"
-msgstr "Moteur de recherche"
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Rechercher dans la page"
 
-msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
-msgstr "Raccourci %s créé"
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Marque-pages"
 
-msgid "IDS_BR_POP_NAME"
-msgstr "Nom"
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Favori"
 
-msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
-msgstr "Supprimer des favoris"
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Marque-page ajouté"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Favori supprimé"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Enregistrer pour la lecture hors connexion"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Activer le mode privé"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Désactiver le mode privé"
 
 msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
 msgstr "Enregistrer page"
 
-msgid "IDS_BR_BODY_DELETE_ALL"
-msgstr "Tout supprimer"
+msgid "IDS_BR_BODY_DESKTOP_VIEW"
+msgstr "Vue Bureau"
 
-msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "Marque-page ajouté"
+msgid "IDS_BR_BODY_DESKTOP_VIEW_ABB"
+msgstr "Affichage bureau"
+
+msgid "IDS_BR_OPT_INCOGNITO_MODE_ABB"
+msgstr "Mode incognito"
+
+msgid "IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB"
+msgstr "Ajouter à l'album"
+
+msgid "IDS_BR_OPT_SCRAPBOOK_ABB"
+msgstr "Album"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Clip Web"
+
+msgid "IDS_BR_OPT_CACHE"
+msgstr "Cache"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Sélectionner tout"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Page d'accueil"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Page vierge"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Dernières page consultée"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Page en cours"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Page d'accueil utilisateur"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Param. contenu des pages"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Vue par défaut"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "Ajuster selon largeur"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "Exécuter JavaScript"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Lisible"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Afficher les images"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Toujours activé"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Bloquer fen. contextuelles"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Confidentialité et sécurité"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Toujours demander"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Supprimer les données de navigation"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Vider le cache"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "Supprimer les bases de données et le contenu en cache ?"
@@ -895,39 +319,363 @@ msgstr "Supprimer les bases de données et le contenu en cache ?"
 msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
 msgstr "Supprimer l'historique du navigateur ?"
 
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Effacer l'historique"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Afficher les avertissements de sécurité"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "Témoins"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Accepter les témoins"
+
 msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
 msgstr "Supprimer tous les témoins?"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Effacer toutes les données du témoin"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Mémoriser les données de formulaire"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Activer la localisation"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Effacer l'accès à la position"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Supprimer les informations d'accès à la position des sites Web ?"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Données formulaire"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Effacer les données de formulaire"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Supprimer toutes les données de formulaire enregistrées ?"
 
-msgid "IDS_BR_POP_NOT_ALLOWED"
-msgstr "Non autorisé"
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Mémoriser les MDP"
 
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
-msgstr "Dernières page consultée"
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Effacer les mots de passe"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Paramètres des sites Web"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Restaurer valeurs par défaut"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Tous les paramètres par défaut. Continuer?"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "À propos du navigateur"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "Enregistrer automatiquement ID/mot de passe"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Moteur de recherche"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Utilisateur téléphone"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Tout supprimer"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Personnaliser l'utilisateur téléphone"
+
+msgid "IDS_BR_BODY_SAVED_ID_PASSWORD"
+msgstr "Identifiant et mot de passe enregistrés"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Sites les plus visités"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Supprimer tous les mots de passe enregistrés ?"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Supprimé"
+
+msgid "IDS_BR_POP_DELETED_ALL"
+msgstr "Tout a été supprimé"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "Saisir une URL"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Existe déjà"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Échec"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Enregistré"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Saisir un titre"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Erreur réseau"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Ne plus demander"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL introuvable"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Refuser"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Authentification requise"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Nom d'utilisateur"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Mot de passe"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Ne plus afficher"
+
+msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
+msgstr "Données mobiles désactivées. Connectez-vous via le réseau Wifi ou activez les données mobiles"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Impossible d'ajouter un signet. Nombre maximum de signets atteint"
+
+msgid "IDS_BR_BODY_COULD_NOT_OPEN_NEW_WINDOW_BECAUSE_YOU_HAVE_ALREADY_OPENED_MAXIMUM_NUMBER"
+msgstr "Impossible d'ouvrir une nouvelle fenêtre. Nombre maximum de fenêtres ouvertes déjà atteint"
+
+msgid "IDS_BR_POP_SET_AS_HOMEPAGE"
+msgstr "Définir comme page d'accueil"
+
+msgid "IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE"
+msgstr "Définir la page actuelle comme page d'accueil"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Ouvrir dans une nouvelle fenêtre"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Télécharger"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Afficher l'image"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Lire"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Copier l'image"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Envoyer par courriel"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Envoyer par message"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "Copier l'URL"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "Autres"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Partager le lien"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Enregistrer le lien"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Sélectionner"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Page suivante"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Page précédente"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Recharger"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Arrêter"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "Glisser"
 
-msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
-msgstr "Désactiver le mode privé"
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Mode développeur"
 
-msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
-msgstr "Activer le mode privé"
+msgid "IDS_BR_POP_DATA_CONNECTION_FAILED"
+msgstr "Échec de la connexion de données"
 
-msgid "IDS_BR_BODY_WEB_CLIP"
-msgstr "Clip Web"
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Télécharger ?"
 
-msgid "IDS_BR_POP_BOOKMARK_REMOVED"
-msgstr "Favori supprimé"
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Gestionnaire de téléchargement"
 
-msgid "IDS_BR_POP_PAGE_SAVED"
-msgstr "Page enregistrée"
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Notification..."
 
-msgid "IDS_BR_POP_DOWNLOADING_ING"
-msgstr "Téléchargement..."
+msgid "IDS_BR_OPT_CLOSE_ALL"
+msgstr "Tout fermer"
 
-msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
-msgstr "Début du téléchargement..."
+msgid "IDS_BR_OPT_TEXT_ENCODING"
+msgstr "Codage du texte"
+
+msgid "IDS_BR_OPT_LATIN_1_HISO_8859_1"
+msgstr "Latin-1 (ISO-8859-1)"
+
+msgid "IDS_BR_OPT_UNICODE_HUTF_8"
+msgstr "Unicode (UTF-8)"
+
+msgid "IDS_BR_OPT_CHINESE_HBIG5"
+msgstr "Chinois (Big5)"
+
+msgid "IDS_BR_OPT_CHINESE_HGBK"
+msgstr "Chinois (GBK)"
+
+msgid "IDS_BR_OPT_JAPANESE_HSHIFT_JIS"
+msgstr "Japonais (SHIFT JIS)"
+
+msgid "IDS_BR_OPT_JAPANESE_HEUC_JP"
+msgstr "Japonais (EUC-JP)"
+
+msgid "IDS_BR_OPT_JAPANESE_HISO_2022_JP"
+msgstr "Japonais (ISO-2022-JP)"
+
+msgid "IDS_BR_OPT_KOREAN_HEUC_KR"
+msgstr "Coréen (EUC-KR)"
+
+msgid "IDS_BR_BODY_AUTOMATIC"
+msgstr "Automatique"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Non autorisé"
+
+msgid "IDS_BR_BODY_TODAY"
+msgstr "Aujourd'hui"
+
+msgid "IDS_BR_BODY_YESTERDAY"
+msgstr "Hier"
+
+msgid "IDS_BR_BODY_LAST_WEEK"
+msgstr "Dernière semaine"
+
+msgid "IDS_BR_POP_PLEASE_INSERT_SIM_CARD"
+msgstr "Insérer carte SIM"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Mémoriser la préférence"
+
+msgid "IDS_BR_SK_CLEAR"
+msgstr "Effacer"
+
+msgid "IDS_BR_OPT_INSTALL_WEB_APP"
+msgstr "Installer l'application Web"
+
+msgid "IDS_BR_BODY_CREATED"
+msgstr "Créé(e)"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Nouveau dossier"
+
+msgid "IDS_BR_BODY_CLEAR_STORED_DATA"
+msgstr "Effacer les données stockées"
+
+msgid "IDS_BR_BODY_CREATE_FOLDER"
+msgstr "Créer un dossier"
+
+msgid "IDS_BR_OPT_ADD"
+msgstr "Ajouter"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Sans titre"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Aucun résultat trouvé"
+
+msgid "IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER"
+msgstr "La politique de sécurité limite l'utilisation du navigateur Internet"
+
+msgid "IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED"
+msgstr "Nombre maximum de balises (%d) atteint"
+
+msgid "IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q"
+msgstr "Supprimer toutes les données du site Web et les autorisations de localisation ?"
+
+msgid "IDS_BR_OPT_MOVE"
+msgstr "Déplacer"
+
+msgid "IDS_BR_BODY_ADDDETAILS_HNO_TAGS"
+msgstr "(aucun libellé)"
+
+msgid "IDS_BR_POP_RENAME_TAG"
+msgstr "Renommer le libellé"
+
+msgid "IDS_BR_OPT_SORT_BY_TAG"
+msgstr "Trier par identification"
+
+msgid "IDS_BR_HEADER_ADD_TAG"
+msgstr "Ajouter un tag"
+
+msgid "IDS_BR_BODY_LAST_7_DAYS"
+msgstr "7 derniers jours"
+
+msgid "IDS_BR_BODY_LAST_MONTH"
+msgstr "Mois précédent"
+
+msgid "IDS_BR_BODY_OLDER"
+msgstr "Ancien"
+
+msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
+msgstr "Fermer toutes les fenêtres ouvertes et accéder à la page d'accueil"
+
+msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
+msgstr "Effacer les données personnalisées"
+
+msgid "IDS_BR_OPT_ADD_LIVEBOX"
+msgstr "Ajouter une Livebox"
+
+msgid "IDS_BR_BODY_NO_ITEMS"
+msgstr "Aucun élément"
+
+msgid "IDS_BR_OPT_MINIMISE"
+msgstr "Réduire"
+
+msgid "IDS_BR_POP_NEVER"
+msgstr "Jamais"
+
+msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
+msgstr "LTE/GSM/WCDMA (connexion auto)"
+
+msgid "IDS_BR_OPT_SELECTION_MODE"
+msgstr "Mode de sélection"
+
+msgid "IDS_BR_OPT_ADD_BOOKMARK"
+msgstr "Ajouter un marque-page"
+
+msgid "IDS_BR_OPT_DELETE_BOOKMARK"
+msgstr "Supprimer le marque-page"
+
+msgid "IDS_BR_OPT_NEW_WINDOW"
+msgstr "Nouvelle fenêtre"
+
+msgid "IDS_BR_BODY_MOBILE_VIEW"
+msgstr "Vue mobile"
+
+msgid "IDS_BR_TAB_MOST_VISITED"
+msgstr "Les plus visités"
+
+msgid "IDS_BR_OPT_LIST_VIEW"
+msgstr "Liste"
 

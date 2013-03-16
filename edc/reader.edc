@@ -1,0 +1,193 @@
+/*
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Flora License, Version 1.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define SMALL_FONT_IMAGE "reader/I01_font_button_left.png"
+#define SMALL_FONT_IMAGE_PRESS "reader/I01_font_button_left_press.png"
+#define SMALL_FONT_IMAGE_DIM "reader/I01_font_button_left_dim.png"
+
+#define LARGE_FONT_IMAGE "reader/I01_font_button_right.png"
+#define LARGE_FONT_IMAGE_PRESS "reader/I01_font_button_right_press.png"
+#define LARGE_FONT_IMAGE_DIM "reader/I01_font_button_right_dim.png"
+
+collections {
+// BUTTON_IMAGE_STYLE is defined in macro.edc
+// Define BUTTON_IMAGE_STYLE(style_name, image_normal, image_press, image_dim, min_width, min_height)
+   sounds {
+      sample {
+         name: "touch_sound" AS_IS;
+         source: "S_Touch_30ms.wav";
+      }
+   }
+BUTTON_IMAGE_STYLE("browser/toolbar_menu", MENU_BUTTON_IMAGE, MENU_BUTTON_IMAGE_PRESS, MENU_BUTTON_IMAGE, TOOLBAR_BUTTON_SIZE, TOOLBAR_BUTTON_SIZE)
+
+BUTTON_IMAGE_STYLE("browser/small_font", SMALL_FONT_IMAGE, SMALL_FONT_IMAGE_PRESS, SMALL_FONT_IMAGE_DIM, 79, 70)
+BUTTON_IMAGE_STYLE("browser/large_font", LARGE_FONT_IMAGE, LARGE_FONT_IMAGE_PRESS, LARGE_FONT_IMAGE_DIM, 79, 70)
+
+	group {
+		name: "reader-layout";
+		parts {
+			part { name: "elm.swallow.webview";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.toolbar"; }
+				}
+			}
+			part { name: "elm.swallow.toolbar";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 0 URI_BAR_HEIGHT;
+					align: 0.0 1.0;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "invisible" 0.0;
+					visible: 1;
+					min: 0 URI_BAR_HEIGHT;
+					align: 0.0 0.0;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+		}
+		programs {
+			// show / hide toolbar
+			program { name: "show,toolbar";
+				signal: "show,toolbar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.toolbar";
+			}
+			program { name: "hide,toolbar";
+				signal: "hide,toolbar,signal";
+				action: STATE_SET "invisible" 0.0;
+				target: "elm.swallow.toolbar";
+			}
+		}
+	}
+	group {
+		name: "toolbar-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					color: MULTIWINDOW_BG_COLOR;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "pad_more";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: VERTICAL_PADDING_SMALL 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.more_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_more"; }
+					rel2 { relative: 1.0 1.0; to: "pad_more"; }
+				}
+			}
+			part { name: "pad_back";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: VERTICAL_PADDING_SMALL 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.back_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad_back"; }
+					rel2 { relative: 0.0 1.0; to: "pad_back"; }
+				}
+			}
+			part { name: "elm.swallow.small_font_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					fixed: 1 1;
+					min: 79 70;
+					max: 79 70;
+					rel1 { relative: 0.5 0.0; to: "bg"; }
+					rel2 { relative: 0.5 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.large_font_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					fixed: 1 1;
+					min: 79 70;
+					max: 79 70;
+					rel1 { relative: 0.5 0.0; to: "bg"; }
+					rel2 { relative: 0.5 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+}
+

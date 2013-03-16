@@ -1,0 +1,857 @@
+/*
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Flora License, Version 1.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define PADDING_TOP	32
+#define PADDING_TITLE	36
+#define PADDING_VERTICAL	45
+#define PADDING_DELETE_ICON_H	4
+#define ITEM_HEIGHT	240
+#define ITEM_WIDTH	720
+#define ITEM_SHRINK_HEIGHT	86
+#define TITLE_BG_HEIGHT	54
+#define DELETE_BUTTON_SIZE	72
+
+#define SHRINK_DURATION	0.2
+#define TILTING_DURATION	0.2
+
+#define MULTIWINDOW_DELETE_IMAGE "multiwindow/I01_delete_btn.png"
+#define MULTIWINDOW_DELETE_IMAGE_PRESS "multiwindow/I01_delete_btn_press.png"
+
+#define MULTIWINDOW_INDEX_IMAGE "multiwindow/I01_page_indicator_window_mgr_02.png"
+#define MULTIWINDOW_INDEX_IMAGE_DIM "multiwindow/I01_page_indicator_window_mgr_01.png"
+#define BOOKMARK_INDEX_IMAGE "multiwindow/I01_page_indicator_bookmarks_02.png"
+#define BOOKMARK_INDEX_IMAGE_DIM "multiwindow/I01_page_indicator_bookmarks_01.png"
+#define INDEX_SIZE	30
+
+#define ELM_INDEX_HEIGHT	62
+
+#define CHANGE_VIEW_DURATION	0.4
+
+collections {
+   sounds {
+      sample {
+         name: "touch_sound" AS_IS;
+         source: "S_Touch_30ms.wav";
+      }
+   }
+
+	group {
+		name: "container-layout";
+		images {
+			image: MULTIWINDOW_INDEX_IMAGE COMP;
+			image: MULTIWINDOW_INDEX_IMAGE_DIM COMP;
+			image: BOOKMARK_INDEX_IMAGE COMP;
+			image: BOOKMARK_INDEX_IMAGE_DIM COMP;
+		}
+
+		parts {
+			part { name: "index_bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 0 1;
+					min: 0 ELM_INDEX_HEIGHT;
+					color: MULTIWINDOW_BG_COLOR;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; }
+				}
+			}
+			part { name: "multiwindow_index";
+				mouse_events: 1;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.45 0.7;
+					fixed: 1 1;
+					min: INDEX_SIZE INDEX_SIZE;
+					max: INDEX_SIZE INDEX_SIZE;
+					rel1 { relative: 0.0 0.0; to: "index_bg"; }
+					rel2 { relative: 1.0 1.0; to: "index_bg"; }
+					image.normal: MULTIWINDOW_INDEX_IMAGE;
+				}
+				description {
+					state: "unfocus" 0.0;
+					inherit: "default" 0.0;
+					image.normal: MULTIWINDOW_INDEX_IMAGE_DIM;
+				}
+			}
+			part { name: "bookmark_index";
+				mouse_events: 1;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.55 0.7;
+					fixed: 1 1;
+					min: INDEX_SIZE INDEX_SIZE;
+					max: INDEX_SIZE INDEX_SIZE;
+					rel1 { relative: 0.0 0.0; to: "index_bg"; }
+					rel2 { relative: 1.0 1.0; to: "index_bg"; }
+					image.normal: BOOKMARK_INDEX_IMAGE_DIM;
+				}
+				description {
+					state: "focus" 0.0;
+					inherit: "default" 0.0;
+					image.normal: BOOKMARK_INDEX_IMAGE;
+				}
+			}
+			part { name: "elm.swallow.multiwindow-layout";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; to: "index_bg"; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "show_bookmark_view" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: -1.0 1.0; to: "index_bg"; }
+					rel2 { relative: 0.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.bookmark-view";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to: "index_bg"; }
+					rel2 { relative: 2.0 1.0; }
+				}
+				description {
+					state: "show_bookmark_view" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 1.0; to: "index_bg"; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+		}
+		programs {
+			program { name: "show,bookmark_view";
+				signal: "show,bookmark_view,signal";
+				transition: DECELERATE CHANGE_VIEW_DURATION;
+				action: STATE_SET "show_bookmark_view" 0.0;
+				target: "elm.swallow.multiwindow-layout";
+				target: "elm.swallow.bookmark-view";
+				after: "show,bookmark_index";
+				after: "hide,multiwindow_index";
+			}
+			program { name: "show,multiwindow_view";
+				signal: "show,multiwindow_view,signal";
+				transition: DECELERATE CHANGE_VIEW_DURATION;
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.multiwindow-layout";
+				target: "elm.swallow.bookmark-view";
+				after: "show,multiwindow_index";
+				after: "hide,bookmark_index";
+			}
+			program { name: "show,multiwindow_index";
+				action: STATE_SET "default" 0.0;
+				target: "multiwindow_index";
+			}
+			program { name: "hide,multiwindow_index";
+				action: STATE_SET "unfocus" 0.0;
+				target: "multiwindow_index";
+			}
+			program { name: "show,bookmark_index";
+				action: STATE_SET "focus" 0.0;
+				target: "bookmark_index";
+			}
+			program { name: "hide,bookmark_index";
+				action: STATE_SET "default" 0.0;
+				target: "bookmark_index";
+			}
+		}
+	}
+	group {
+		name: "main-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					color: 0 0 0 85;
+				}
+			}
+			part { name: "elm.swallow.panes";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.15; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.toolbar"; }
+				}
+			}
+			part { name: "elm.swallow.toolbar";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					rel1 { relative: 0.0 1.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "toolbar-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 URI_BAR_HEIGHT;
+					color: MULTIWINDOW_BG_COLOR;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "pad_more";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: VERTICAL_PADDING_SMALL 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.more_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_more"; }
+					rel2 { relative: 1.0 1.0; to: "pad_more"; }
+				}
+			}
+			part { name: "pad_back";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: VERTICAL_PADDING_SMALL 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.back_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad_back"; }
+					rel2 { relative: 0.0 1.0; to: "pad_back"; }
+				}
+			}
+			part { name: "elm.swallow.plus_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.5 0.5;
+					fixed: 1 1;
+					min: BUTTON_NAVIFRAME_LONG_TITLE_TEXT_BG_NORMAL_MIN_INC;
+					rel1 { relative: 0.5 0.0; to: "bg"; }
+					rel2 { relative: 0.5 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "multiwindow-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: MULTIWINDOW_BG_COLOR;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.scroller";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.gesture";
+				mouse_events: 1;
+				repeat_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.scroller"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.scroller"; }
+				}
+			}
+		}
+	}
+
+// BUTTON_IMAGE_STYLE is defined in macro.edc
+// Define BUTTON_IMAGE_STYLE(style_name, image_normal, image_press, image_dim, min_width, min_height)
+
+BUTTON_IMAGE_STYLE("multiwindow_item/delete", MULTIWINDOW_DELETE_IMAGE, MULTIWINDOW_DELETE_IMAGE_PRESS, MULTIWINDOW_DELETE_IMAGE, DELETE_BUTTON_SIZE, DELETE_BUTTON_SIZE)
+
+	group {
+		name: "multiwindow-item";
+		styles {
+				style { name: "title_style";
+				base: "font=Tizen:style=Bold font_size=30 color=#FFFFFF wrap=mixed ellipsis=1 text_class=tizen";
+				tag:  "br" "\n";
+				tag:  "ps" "ps";
+				tag:  "tab" "\t";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
+				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.5 0.0;
+					min: ITEM_WIDTH ITEM_HEIGHT;
+					max: ITEM_WIDTH ITEM_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					min: ITEM_WIDTH ITEM_SHRINK_HEIGHT;
+					max: ITEM_WIDTH ITEM_SHRINK_HEIGHT;
+				}
+			}
+			part { name: "pad_left";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: PADDING_VERTICAL 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_right";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: PADDING_VERTICAL 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.snapshot";
+				scale : 1;
+				mouse_events: 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to_x: "pad_left"; to_y: "title_bg"; }
+					rel2 { relative: 0.0 0.0; to_x: "pad_right"; to_y: "pad_bottom"; }
+				}
+				description { state: "default_map" 0.0;
+					inherit: "default" 0.0;
+					map {
+						on: 1;
+						smooth: 1;
+						perspective_on: 1;
+						backface_cull: 1;
+						rotation {
+							center: "title_bg";
+							x: 0;
+							y: 0;
+							z: 0;
+						}
+					}
+				}
+				description { state: "tilting" 0.0;
+					inherit: "default_map" 0.0;
+					map.rotation.x: -20;
+				}
+				description { state: "spring" 0.0;
+					inherit: "default_map" 0.0;
+					map.rotation.x: 20;
+				}
+			}
+			part { name: "title_bg";
+				scale : 1;
+				mouse_events: 1;
+				repeat_events: 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0 TITLE_BG_HEIGHT;
+					fixed: 0 1;
+					color: 101 101 101 255;
+					rel1 { relative: 1.0 0.0; to_x: "pad_left"; to_y: "bg"; }
+					rel2 { relative: 0.0 0.0; to_x: "pad_right"; to_y: "bg"; }
+				}
+			}
+			part { name: "pad_title";
+				scale : 1;
+				mouse_events: 1;
+				repeat_events: 0;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: PADDING_TITLE 0;
+					fixed: 1 0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "title_bg"; }
+					rel2 { relative: 0.0 1.0; to: "title_bg"; }
+				}
+			}
+			part { name: "title_text";
+				scale : 1;
+				mouse_events: 1;
+				repeat_events: 1;
+				type : TEXTBLOCK;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0 TITLE_BG_HEIGHT;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_title"; }
+					rel2 { relative: 1.0 1.0; to: "title_bg"; }
+					text {
+						style: "title_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+			}
+			part { name: "pad_top_delete_button";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 PADDING_DELETE_ICON_H;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "bg"; }
+				}
+			}
+			part { name: "delete_button_event_bg";
+				scale : 1;
+				mouse_events: 1;
+				repeat_events: 0;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: -0.5 -0.5; to: "elm.swallow.delete_button"; }
+					rel2 { relative: 1.5 1.5; to: "elm.swallow.delete_button"; }
+				}
+			}
+			part { name: "elm.swallow.delete_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.5 0.4;
+					min: DELETE_BUTTON_SIZE DELETE_BUTTON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to_x: "elm.swallow.snapshot"; to_y: "pad_top_delete_button"; }
+					rel2 { relative: 0.0 0.0; to_x: "elm.swallow.snapshot"; to_y: "pad_top_delete_button"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.5; to_x: "elm.swallow.snapshot"; to_y: "title_bg"; }
+					rel2 { relative: 0.0 0.5; to_x: "elm.swallow.snapshot"; to_y: "title_bg"; }
+				}
+			}
+			part { name: "pad_bottom";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					min: 0 PADDING_TOP;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+		programs {
+			program { name: "show,delete_button";
+				signal: "show,delete_button,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.delete_button";
+			}
+			program { name: "hide,delete_button";
+				signal: "hide,delete_button,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.delete_button";
+			}
+			program { name: "shrink,delete_button";
+				signal: "shrink,delete_button,signal";
+				transition: DECELERATE SHRINK_DURATION;
+				action: STATE_SET "shrink" 0.0;
+				target: "elm.swallow.delete_button";
+			}
+			program { name: "expand,delete_button";
+				signal: "expand,delete_button,signal";
+				transition: DECELERATE SHRINK_DURATION;
+				action: STATE_SET "visible" 0.0;
+				target: "elm.swallow.delete_button";
+			}
+			program { name: "shrink,content";
+				signal: "shrink,content,signal";
+				transition: DECELERATE SHRINK_DURATION;
+				action: STATE_SET "shrink" 0.0;
+				target: "bg";
+			}
+			program { name: "expand,content";
+				signal: "expand,content,signal";
+				transition: DECELERATE SHRINK_DURATION;
+				action: STATE_SET "default" 0.0;
+				target: "bg";
+			}
+			program { name: "shrink,layout";
+				signal: "shrink,layout,signal";
+				script {
+					new st[31];
+					new Float:vl;
+					get_state(PART:"elm.swallow.delete_button", st, 30, vl);
+					if (!strcmp(st, "visible"))
+						emit("shrink,delete_button,signal", "");
+
+					emit("shrink,content,signal", "");
+				}
+			}
+			program { name: "expand,layout";
+				signal: "expand,layout,signal";
+				script {
+					new st[31];
+					new Float:vl;
+					get_state(PART:"elm.swallow.delete_button", st, 30, vl);
+					if (!strcmp(st, "shrink"))
+						emit("expand,delete_button,signal", "");
+
+					emit("expand,content,signal", "");
+				}
+			}
+			program { name: "tilting,snapshot";
+				signal: "tilting,snapshot,signal";
+				action:  STATE_SET "default_map" 0.0;
+				target: "elm.swallow.snapshot";
+				after: "tilting";
+			}
+			program { name: "tilting";
+				action:  STATE_SET "tilting" 0.0;
+				target: "elm.swallow.snapshot";
+				transition: DECELERATE TILTING_DURATION;
+				after: "tilting_back";
+			}
+			program { name: "tilting_back";
+				action:  STATE_SET "default_map" 0.0;
+				target: "elm.swallow.snapshot";
+				transition: ACCELERATE TILTING_DURATION;
+				after: "tilting_back,snapshot";
+			}
+			program { name: "tilting_back,snapshot";
+				action:  STATE_SET "default" 0.0;
+				target: "elm.swallow.snapshot";
+			}
+			program { name: "spring,snapshot";
+				signal: "spring,snapshot,signal";
+				action:  STATE_SET "default_map" 0.0;
+				target: "elm.swallow.snapshot";
+				after: "spring";
+			}
+			program { name: "spring";
+				action:  STATE_SET "spring" 0.0;
+				target: "elm.swallow.snapshot";
+				transition: DECELERATE TILTING_DURATION;
+				after: "spring_back";
+			}
+			program { name: "spring_back";
+				action:  STATE_SET "default_map" 0.0;
+				target: "elm.swallow.snapshot";
+				transition: ACCELERATE TILTING_DURATION;
+				after: "spring_back,snapshot";
+			}
+			program { name: "spring_back,snapshot";
+				action:  STATE_SET "default" 0.0;
+				target: "elm.swallow.snapshot";
+			}
+		}
+	}
+
+	group {
+		name: "item_padding_0";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 ITEM_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					min: 0 23;
+					max: 99999 23;
+				}
+			}
+		}
+		programs {
+			program { name: "padding,shrink";
+				signal: "padding,shrink,signal";
+				in: 0.2 0.0;
+				action: STATE_SET "shrink" 0.0;
+				transition: DECELERATE 0.4;
+				target: "bg";
+				after: "padding,shrink,finished";
+			}
+			program { name: "padding,shrink,finished";
+				signal: "padding,shrink,finished,signal";
+				action: SIGNAL_EMIT "padding,shrink,finished" "";
+			}
+		}
+	}
+	group {
+		name: "item_padding_1";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 ITEM_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					min: 0 0;
+					max: 99999 0;
+				}
+			}
+		}
+		programs {
+			program { name: "padding,shrink";
+				signal: "padding,shrink,signal";
+				in: 0.25 0.0;
+				action: STATE_SET "shrink" 0.0;
+				transition: DECELERATE 0.4;
+				target: "bg";
+				after: "padding,shrink,finished";
+			}
+			program { name: "padding,shrink,finished";
+				signal: "padding,shrink,finished,signal";
+				action: SIGNAL_EMIT "padding,shrink,finished" "";
+			}
+		}
+	}
+	group {
+		name: "item_padding_2";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 ITEM_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					min: 0 0;
+					max: 99999 0;
+				}
+			}
+		}
+		programs {
+			program { name: "padding,shrink";
+				signal: "padding,shrink,signal";
+				in: 0.3 0.0;
+				action: STATE_SET "shrink" 0.0;
+				transition: DECELERATE 0.4;
+				target: "bg";
+				after: "padding,shrink,finished";
+			}
+			program { name: "padding,shrink,finished";
+				signal: "padding,shrink,finished,signal";
+				action: SIGNAL_EMIT "padding,shrink,finished" "";
+			}
+		}
+	}
+	group {
+		name: "item_padding_3";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 ITEM_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "shrink" 0.0;
+					inherit: "default" 0.0;
+					min: 0 0;
+					max: 99999 0;
+				}
+			}
+		}
+		programs {
+			program { name: "padding,shrink";
+				signal: "padding,shrink,signal";
+				in: 0.35 0.0;
+				action: STATE_SET "shrink" 0.0;
+				transition: DECELERATE 0.4;
+				target: "bg";
+				after: "padding,shrink,finished";
+			}
+			program { name: "padding,shrink,finished";
+				signal: "padding,shrink,finished,signal";
+				action: SIGNAL_EMIT "padding,shrink,finished" "";
+			}
+		}
+	}
+}
+

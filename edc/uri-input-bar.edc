@@ -1,0 +1,270 @@
+/*
+ * browser
+ * Copyright (c) 2012 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Flora License, Version 1.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define URI_INPUT_GOOGLE_IMAGE "browser-view/uri-input-bar/google_normal.png"
+#define URI_INPUT_GOOGLE_PRESS "browser-view/uri-input-bar/google_press.png"
+
+#define URI_INPUT_YAHOO_IMAGE "browser-view/uri-input-bar/yahoo_normal.png"
+#define URI_INPUT_YAHOO_PRESS "browser-view/uri-input-bar/yahoo_press.png"
+
+#define CIRCLE_IMAGE_SIZE	74
+#define CANCEL_IMAGE_SIZE	42
+
+collections {
+// BUTTON_IMAGE_STYLE is defined in macro.edc
+// Define BUTTON_IMAGE_STYLE(style_name, image_normal, image_press, image_dim, min_width, min_height)
+   sounds {
+      sample {
+         name: "touch_sound" AS_IS;
+         source: "S_Touch_30ms.wav";
+      }
+   }
+BUTTON_IMAGE_STYLE("browser/uri_input_google", URI_INPUT_GOOGLE_IMAGE, URI_INPUT_GOOGLE_PRESS, URI_INPUT_GOOGLE_IMAGE, CIRCLE_IMAGE_SIZE, CIRCLE_IMAGE_SIZE)
+BUTTON_IMAGE_STYLE("browser/uri_input_yahoo", URI_INPUT_YAHOO_IMAGE, URI_INPUT_YAHOO_PRESS, URI_INPUT_YAHOO_IMAGE, CIRCLE_IMAGE_SIZE, CIRCLE_IMAGE_SIZE)
+
+BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BACK_PRESS, URI_INPUT_BACK_DIM, BACK_IMAGE_SIZE, BACK_IMAGE_SIZE)
+
+	group {
+		name: "uri-input-bar-layout";
+		images {
+			image: URI_INPUT_BAR_BG COMP;
+		}
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 0 1;
+					min: 0 URI_BAR_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					image.normal: URI_INPUT_BAR_BG;
+				}
+			}
+			part { name: "pad_cicle_button";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: URI_INPUT_BAR_VERTICAL_PADDING_3 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.circle_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					min: 0 CIRCLE_IMAGE_SIZE;
+					max: 0 CIRCLE_IMAGE_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_cicle_button"; }
+					rel2 { relative: 1.0 1.0; to: "pad_cicle_button"; }
+				}
+			}
+			part { name: "pad_circle_entry";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: URI_INPUT_BAR_VERTICAL_PADDING_1 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.circle_button"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.circle_button"; }
+				}
+			}
+			part { name: "elm.swallow.entry_layout";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_circle_entry"; }
+					rel2 { relative: 0.0 1.0; to: "pad_entry_back_button"; }
+				}
+			}
+			part { name: "pad_entry_back_button";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: URI_INPUT_BAR_VERTICAL_PADDING_2 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.back_button"; }
+					rel2 { relative: 0.0 1.0; to: "elm.swallow.back_button"; }
+				}
+			}
+			part { name: "elm.swallow.back_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: BACK_IMAGE_SIZE BACK_IMAGE_SIZE;
+					max: BACK_IMAGE_SIZE BACK_IMAGE_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad_back_button"; }
+					rel2 { relative: 0.0 1.0; to: "pad_back_button"; }
+				}
+			}
+			part { name: "pad_back_button";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: URI_INPUT_BAR_VERTICAL_PADDING_4 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "entry-layout";
+		images {
+			image: ENTRY_LAYOUT_BG COMP;
+			image: ENTRY_CANCEL_IMAGE COMP;
+		}
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					image.normal: ENTRY_LAYOUT_BG;
+					image.border: 35 35 35 35;
+				}
+			}
+			part { name: "pad_text";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 16 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.entry";
+				mouse_events: 1;
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_text"; }
+					rel2 { relative: 0.0 1.0; to: "pad_entry_delete"; }
+				}
+			}
+			part { name: "pad_entry_delete";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: VERTICAL_PADDING_ENTRY_LAYOUT 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "delete_icon"; }
+					rel2 { relative: 0.0 1.0; to: "delete_icon"; }
+				}
+			}
+			part { name: "delete_icon";
+				mouse_events: 1;
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: RELOAD_ICON_SIZE RELOAD_ICON_SIZE;
+					max: RELOAD_ICON_SIZE RELOAD_ICON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad_delete_icon"; }
+					rel2 { relative: 0.0 1.0; to: "pad_delete_icon"; }
+					image.normal: ENTRY_CANCEL_IMAGE;
+				}
+			}
+			part { name: "pad_delete_icon";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: VERTICAL_PADDING_ENTRY_LAYOUT 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "delete_icon,touch_area";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0 0; to: "delete_icon"; }
+					rel2 { relative: 1.0 1.5; to: "delete_icon"; }
+				}
+			}
+		}
+	}
+}

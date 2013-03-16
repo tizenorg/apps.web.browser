@@ -4,23 +4,6 @@
                 <provide>
                         <label name="org.tizen.browser::db_external"/>
                 </provide>
-                <request>
-                        <smack request="ail::db" type="rw"/>
-                        <smack request="system::vconf" type="arwxt"/>
-                        <smack request="system::homedir" type="arwxt"/>
-                        <smack request="system::use_internet" type="r"/>
-                        <smack request="xorg" type="w"/>
-                        <smack request="isf" type="rwx"/>
-                        <smack request="pkgmgr" type="r"/>
-                        <smack request="dbus" type="w"/>
-                        <smack request="efreet" type="rx"/>
-                        <smack request="app-svc::db" type="rw"/>
-                        <smack request="webkit2-efl" type="rwx"/>
-                        <smack request="sys-assert::core" type="wx"/>
-                </request>
-                <permit>
-                        <smack permit="webkit2-efl" type="rwx"/>
-                </permit>
         </define>
         <assign>
                 <filesystem path="/usr/share/applications/org.tizen.browser.desktop" label="_" />

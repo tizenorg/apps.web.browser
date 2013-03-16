@@ -14,7 +14,7 @@ msgid "IDS_BR_OPT_SHARE"
 msgstr "Сподели"
 
 msgid "IDS_BR_BODY_SEARCH"
-msgstr "Побарај"
+msgstr "Пребарување"
 
 msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB"
 msgstr "Додај на почетниот екран"
@@ -37,33 +37,6 @@ msgstr "Најди на стр."
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
-msgid "IDS_BR_BODY_NOTIFYING_ING"
-msgstr "Се известува..."
-
-msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "Обработување..."
-
-msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "Обработувањето заврши"
-
-msgid "IDS_BR_SK_RETRY"
-msgstr "Повторно"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "Уредување преземања"
-
-msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "Неправилен JAD"
-
-msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "Не може да се отвори фајлот"
-
-msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "Преземи?"
-
-msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "Избраните"
-
 msgid "IDS_BR_OPT_LIST"
 msgstr "Листа"
 
@@ -74,7 +47,7 @@ msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
 msgstr "Порака"
 
 msgid "IDS_BR_OPT_SENDURLVIA_EMAIL"
-msgstr "E-mail"
+msgstr "Е-пошта"
 
 msgid "IDS_BR_BUTTON_CANCEL_ABB"
 msgstr "Откажи"
@@ -142,557 +115,14 @@ msgstr "Готово"
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "Верзија"
 
-msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "Преземањето е откажано"
-
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "Копирај слика"
-
 msgid "IDS_IME_BODY_CLIPBOARD"
 msgstr "Посредна меморија"
-
-msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "Прод.од посл.стр."
-
-msgid "IDS_BR_BODY_PAGE"
-msgstr "Страна"
-
-msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "Речник"
-
-msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "За пребарувачот"
-
-msgid "IDS_BR_BODY_BROWSER_TYPE"
-msgstr "Вид"
-
-msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "Издавач"
-
-msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "Прикажи слики"
-
-msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "Преземи"
-
-msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "Внеси URL"
-
-msgid "IDS_BR_BODY_FOLDER"
-msgstr "Папка"
-
-msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "Почетна стр."
-
-msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "Пејзажно"
-
-msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "Нема сочувани страници"
-
-msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "Нема резултати"
-
-msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "По желба"
-
-msgid "IDS_BR_BODY_RSS"
-msgstr "RSS"
-
-msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "Користи Flash"
-
-msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "Активирај JavaScript"
-
-msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "Општо име:"
-
-msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "Организација:"
-
-msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "Кориснички агент"
-
-msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "Преференци"
-
-msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "Грешка при активирањето"
-
-msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "Веќе е активен"
-
-msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "Невоведена функција"
-
-msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "Неуспешно потврдување"
-
-msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "Запиши врз постоечкото?"
-
-msgid "IDS_BR_POP_URL"
-msgstr "URL"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "Листа за преземање"
-
-msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "Веќе е инсталирано"
-
-msgid "IDS_BR_POP_NOTIFYING"
-msgstr "Се известува..."
-
-msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "Неподдржана содржина"
-
-msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "Грешка: не може да се открие името на доменот"
-
-msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "Не може да се пристапи до проксито"
-
-msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "Нема сертификат за SSL"
-
-msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "Големината на фајлот ја надминува горната граница за праќање"
-
-msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "Внесете име:"
-
-msgid "IDS_BR_SK_NEXT"
-msgstr "Следно"
-
-msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "Нова папка"
-
-msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "Нов прозорец"
-
-msgid "IDS_BR_BODY_URL"
-msgstr "URL"
-
-msgid "IDS_BR_BODY_URL_C"
-msgstr "URL:"
-
-msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "Недостапно URL"
-
-msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "URL-то %s не е достапно. Може да е привремено недостапно или да не се користи веќе"
-
-msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "Име на папката"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "Името на папката веќе се користи"
-
-msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "Нема наслов"
-
-msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "Повеќе прозорци"
-
-msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Нема истории"
-
-msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "Додај во Омилени"
-
-msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "Измени омилена стр."
-
-msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "Име на папката:"
-
-msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Избери ги сите"
-
-msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "Уредување преземања"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "Додај RSS-канал"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "Додај RSS-канали"
-
-msgid "IDS_BR_POP_ENTER_URL"
-msgstr "Внеси URL"
-
-msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "Лозинка"
-
-msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "Неправилна адреса"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "Веќе постои во листата за преземање"
-
-msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "Внесете име за папката"
-
-msgid "IDS_BR_POP_NO_PAGE"
-msgstr "Нема страница"
-
-msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "Нема страници назад"
-
-msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "Нема страници напред"
-
-msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "Страната не може да се превчита"
-
-msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "Се бара препознавање"
-
-msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "Омилената страница веќе постои"
-
-msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "Името на папката веќе постои"
-
-msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "Не може да се сочува објектот. Нема доволно место во кешот"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
 msgstr "Изберете записи"
 
-msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "Податоци за сертификатот"
-
-msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "Подели преку email"
-
-msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "Сподели преку Пораки"
-
-msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "Подели преку"
-
-msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "Не може да се активира пребарувачот"
-
-msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "Нема адреса"
-
-msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "Не прикажувај веќе"
-
-msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "Нема име на фајл"
-
-msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "Нова папка"
-
-msgid "IDS_BR_OPT_SELECTED"
-msgstr "Избраните"
-
-msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "Скоро посетени страници"
-
-msgid "IDS_BR_OPT_DISPLAY"
-msgstr "Екран"
-
-msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "На цела широчина"
-
-msgid "IDS_BR_BODY_READABLE"
-msgstr "Читливо"
-
-msgid "IDS_BR_BODY_PRIVACY"
-msgstr "Доверливо"
-
-msgid "IDS_BR_BODY_COOKIES"
-msgstr "Колачиња"
-
-msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "Прифаќај ги сите"
-
-msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "Ако се дозволи"
-
-msgid "IDS_BR_HEADER_COOKIES"
-msgstr "Колачиња"
-
-msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "Прифаќај колачиња"
-
-msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "Прифаќај колачиња"
-
-msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "Прифаќај ги сите"
-
-msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "Отфрлај ги сите"
-
-msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "Автоматски сочувај ID/лозинка"
-
-msgid "IDS_BR_BODY_ON"
-msgstr "Вклучено"
-
-msgid "IDS_BR_BODY_OFF"
-msgstr "Исклучено"
-
-msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "Основна меморија"
-
-msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "Меморирај слика"
-
-msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "Батеријата е празна. Пребарувачот не може да се активира"
-
-msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "Најди збор"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "Додај на основниот екран"
-
-msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "Најпосетувани сајтови"
-
-msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "Сподели преку Facebook"
-
-msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "Сподели преку Twitter"
-
-msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "Смени преглед"
-
-msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "Изберете URL-а"
-
-msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "Сајтот се обидува да отвори појавен прозорец"
-
-msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "Блок. појавни прозорци"
-
-msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "Читач на текст"
-
-msgid "IDS_BR_BODY_PLAY"
-msgstr "Емитувај"
-
-msgid "IDS_BR_OPT_SELECT"
-msgstr "Избери"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "Оди назад"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "Оди напред"
-
-msgid "IDS_BR_OPT_STOP"
-msgstr "Прекини"
-
-msgid "IDS_BR_OPT_RELOAD"
-msgstr "Отвори повторно"
-
-msgid "IDS_BR_BUTTON_MORE"
-msgstr "Повеќе"
-
-msgid "IDS_BR_POP_FAIL"
-msgstr "Неуспешно"
-
-msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "Отвори во нов проз."
-
-msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "Види листа на Преземени"
-
-msgid "IDS_BR_BODY_COPY_URL"
-msgstr "Копирај URL"
-
-msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "Копирај URL"
-
-msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "Види слика"
-
-msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "Опции за приватноста"
-
-msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "Избриши кеш-меморија"
-
-msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "Избриши историја"
-
-msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "Овозможи додатоци"
-
-msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "Избери пребарувач"
-
-msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "Избриши сочувана идентификација/лозинка"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "Избриши ги сите податоци за колачињата"
-
-msgid "IDS_BR_BODY_UP"
-msgstr "Отворање"
-
-msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "Големина на букви"
-
-msgid "IDS_BR_POP_DELETED"
-msgstr "Избришано"
-
-msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "Основен преглед"
-
-msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "Опции за содрж. на стр."
-
-msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "Според големина на буквите"
-
-msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "Додаток"
-
-msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "Листа приклучоци"
-
-msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "Локална меморија"
-
-msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "Избриши податоци од разгледувањето на интернет"
-
-msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "Активирање..."
-
-msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "Активирање..."
-
-msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "Внеси URL"
-
-msgid "IDS_BR_OPT_LOCK"
-msgstr "Заклучи"
-
-msgid "IDS_BR_OPT_UNLOCK"
-msgstr "Отклучи"
-
-msgid "IDS_BR_BODY_MODIFY"
-msgstr "Смени"
-
-msgid "IDS_BR_SK_PAGE_UP"
-msgstr "Стр. нагоре"
-
-msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "Стр. надолу"
-
-msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "Режим за програмери"
-
-msgid "IDS_BR_BODY_EMPTY"
-msgstr "Празно"
-
-msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "Сертификати"
-
-msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "Сочувани адреси"
-
-msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "Внеси име"
-
-msgid "IDS_BR_BODY_NAME"
-msgstr "Име"
-
-msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "Прати преку email"
-
-msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "Прати преку порака"
-
-msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "Корисничко име"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "Веќе постои"
-
-msgid "IDS_BR_POP_SAVED"
-msgstr "Меморирано"
-
-msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "Нема доволно меморија"
-
-msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "Грешка во мрежата"
-
-msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "Прашувај секогаш"
-
-msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "Мемориска картичка"
-
-msgid "IDS_BR_BODY_PHONE"
-msgstr "Телефон"
-
-msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "Нема сметки"
-
-msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "Страница за грешка"
-
-msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "Веб-страницата е привремено недостапна"
-
-msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "Веб-страницата е недостапна"
-
-msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "Неуспешно вчитување рамки"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "Додека се отвораше веб-страницата %s, дојде до следнава грешка."
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "Не може да се отвори веб-страницата. (Веб-страницата може да е привремено неактивна или да е преместена на нов URL)"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "Најверојатната причина е дадена подолу"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "Мрежното поврзување не е воспоставено нормално"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "Провери URL на веб-страницата"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "Превчитај ја веб-страницата подоцна"
-
-msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "Омилена страница"
-
-msgid "IDS_BR_BODY_TITLE"
-msgstr "Наслов"
-
-msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "Внеси наслов"
-
-msgid "IDS_BR_OPT_FOLDERS"
-msgstr "Папки"
-
 msgid "IDS_BR_OPT_ALLOW"
 msgstr "Дозволи"
-
-msgid "IDS_BR_POP_REFUSE"
-msgstr "Одбиј"
-
-msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "Сигурносна грешка: Недоверлив сертификат на серверот"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
 msgstr "Избрани се %d записи"
@@ -700,26 +130,53 @@ msgstr "Избрани се %d записи"
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "Избран е 1 запис"
 
-msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "Додај во веб-запис"
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "Празно"
 
-msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "Направена е кратенка"
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "Пребарајте или внесете URL"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "Најди на стр."
+msgid "IDS_BR_BODY_PRINT"
+msgstr "Печати"
 
-msgid "IDS_BR_BODY_INTERNET"
-msgstr "Интернет"
+msgid "IDS_BR_OPT_DATA_NETWORK"
+msgstr "Мрежа на податоци"
 
-msgid "IDS_BR_BODY_SPEED"
-msgstr "Брзина"
+msgid "IDS_BR_OPT_CLOSE_WINDOW"
+msgstr "Затвори прозорец"
 
-msgid "IDS_BR_SK_INSTALL"
-msgstr "Инсталирај"
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "Се вчитува. Почекајте..."
 
-msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "Тековна страница"
+msgid "IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM"
+msgstr "Проблем со податочното поврзување"
+
+msgid "IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER"
+msgstr "Не може да се прикаже веб-страницата. Нема одговор од серверот"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "Висок"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "Средна"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "Нова папка"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "Нема сочувани страници"
+
+msgid "IDS_BR_BODY_ADDDETAILSVIEW_TAGS"
+msgstr "Ознаки"
+
+msgid "IDS_BR_BODY_UNTAGGED"
+msgstr "Неозначено"
+
+msgid "IDS_BR_BODY_MOBILE"
+msgstr "Мобилен"
+
+msgid "IDS_BR_OPT_VIEW_BY_ABB"
+msgstr "Преглед"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "Внесете име за папката"
@@ -727,167 +184,134 @@ msgstr "Внесете име за папката"
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
 msgstr "Внесете име на омилената страница"
 
-msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "Не прашувај веќе"
-
-msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URL не е пронајденo"
-
-msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s барања за вашата локација"
-
-msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "Запомни преференци"
-
-msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "Покажи слики"
-
-msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "Прикажи безбедносни предупредувања"
-
-msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "Памети лозинки"
-
-msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "Избриши ги лозинките"
-
-msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "Да се избришат сите сочувани лозинки?"
-
-msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "Бришење на сите колачиња. Сепак продолжи?"
-
-msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "Запомни податоци за формулар"
-
-msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "Ресетирај на основните вредности"
-
-msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "Сите нагодувања ќе се ресетираат. Сепак продолжи?"
-
-msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "Избриши кеш-меморија?"
-
-msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "Да се избрише целата историја?"
-
-msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "Историјата за навигација во прегледникот ќе се избрише"
-
-msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "Секогаш вклучено"
-
-msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Овозможи локација"
-
-msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "Избриши пристап кон локација"
-
-msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "Не може да се додаде омилена страница. Достигнат е максималниот број омилени страници"
-
-msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "Да се избришат информациите за пристап на локација на сајтот?"
-
-msgid "IDS_BR_BODY_PRINT"
-msgstr "Печати"
-
-msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "Пребарајте или внесете URL"
-
-msgid "IDS_BR_BODY_AUTO"
-msgstr "Автоматски"
-
-msgid "IDS_BR_OPT_MANUAL"
-msgstr "Рачно"
-
-msgid "IDS_BR_BODY_LOW"
-msgstr "Низок"
-
-msgid "IDS_BR_BODY_MEDIUM"
-msgstr "Средна"
-
-msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "Празна страница"
-
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "Неуспешно вчитување"
-
-msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "Опции за сајт"
-
-msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "Висок"
-
-msgid "IDS_BR_BODY_SAVE_LINK"
-msgstr "Сочувај линк"
-
-msgid "IDS_BR_BODY_SHARE_LINK"
-msgstr "Сподели линк"
-
-msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
-msgstr "Приватност и безбеднсот"
-
-msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "Сочувај за читање без мрежа"
-
-msgid "IDS_BR_HEADER_LOCATION"
-msgstr "Локација"
-
-msgid "IDS_BR_HEADER_FORM_DATA"
-msgstr "Податоци за формулари"
-
-msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
-msgstr "Избриши податоци за формулари"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
-msgstr "Избриши ги сите меморирани лозинки"
-
 msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "Додадено во ознаки"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "Отстрането од ознаките"
 
-msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
-msgstr "Блокирај појавни прозорци"
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "Почнува преземање..."
 
-msgid "IDS_BR_BODY_PICTURES"
-msgstr "Слики"
+msgid "IDS_BR_BODY_SELECT_FOLDER"
+msgstr "Изберете папка"
 
-msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
-msgstr "Се вчитува. Почекајте..."
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "Име на папката"
 
-msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "Прилагоден кориснички агент"
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "Нема истории"
 
-msgid "IDS_BR_BODY_USER_HOMEPAGE"
-msgstr "Корисничка почетна страница"
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s барања за вашата локација"
 
-msgid "IDS_BR_BODY_PASSWORD"
-msgstr "Лозинка"
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "Направена е кратенка"
 
-msgid "IDS_BR_BODY_SEARCH_ENGINE"
-msgstr "Пребарувач"
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "Најди на стр."
 
-msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
-msgstr "Направена е кратенка %s"
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "Сочувани адреси"
 
-msgid "IDS_BR_POP_NAME"
-msgstr "Име"
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "Омилена страница"
 
-msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
-msgstr "Отстрани од ознаките"
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "Омилената страница е додадена"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "Омилената страница е отстранета"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "Сочувај за читање без мрежа"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "Вклучи приватен режим"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "Исклучи приватен режим"
 
 msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
 msgstr "Сочувај страница"
 
-msgid "IDS_BR_BODY_DELETE_ALL"
-msgstr "Избриши сè"
+msgid "IDS_BR_BODY_DESKTOP_VIEW"
+msgstr "Desktop приказ"
 
-msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "Омилената страница е додадена"
+msgid "IDS_BR_BODY_DESKTOP_VIEW_ABB"
+msgstr "Компјутерски приказ"
+
+msgid "IDS_BR_OPT_INCOGNITO_MODE_ABB"
+msgstr "Режим инкогнито"
+
+msgid "IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB"
+msgstr "Додај во албум"
+
+msgid "IDS_BR_OPT_SCRAPBOOK_ABB"
+msgstr "Албум со исечоци"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "Веб-запис"
+
+msgid "IDS_BR_OPT_CACHE"
+msgstr "Кеш меморија"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "Избери ги сите"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "Почетна стр."
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "Празна страница"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "Последна гледана страница"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "Тековна страница"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "Корисничка почетна страница"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "Опции за содрж. на стр."
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "Основен преглед"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "На цела широчина"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "Активирај JavaScript"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "Читливо"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "Покажи слики"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "Секогаш вклучено"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "Блокирај појавни прозорци"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "Приватност и безбеднсот"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "Прашувај секогаш"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "Избриши податоци од разгледувањето на интернет"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "Избриши кеш-меморија"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "Да се избрише локално кешираната содржина и бази?"
@@ -895,39 +319,363 @@ msgstr "Да се избрише локално кешираната содрж�
 msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
 msgstr "Да се избрише историјата на прегледникот?"
 
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "Избриши историја"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "Прикажи безбедносни предупредувања"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "Колачиња"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "Прифаќај колачиња"
+
 msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
 msgstr "Избриши сите колачиња?"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "Избриши ги сите податоци за колачињата"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "Запомни податоци за формулар"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "Овозможи локација"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "Избриши пристап кон локација"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "Да се избришат информациите за пристап на локација на сајтот?"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "Податоци за формулари"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "Избриши податоци за формулари"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "Да се избришат сите сочувани податоци за формулари?"
 
-msgid "IDS_BR_POP_NOT_ALLOWED"
-msgstr "Не е дозволено"
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "Памети лозинки"
 
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
-msgstr "Последна гледана страница"
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "Избриши ги лозинките"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "Опции за сајт"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "Ресетирај на основните вредности"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "Сите нагодувања ќе се ресетираат. Сепак продолжи?"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "За пребарувачот"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "Автоматски сочувај ID/лозинка"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "Пребарувач"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "Кориснички агент"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "Избриши сè"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "Прилагоден кориснички агент"
+
+msgid "IDS_BR_BODY_SAVED_ID_PASSWORD"
+msgstr "Сочувани идентификација и лозинка"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "Најпосетувани сајтови"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "Да се избришат сите сочувани лозинки?"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "Избришано"
+
+msgid "IDS_BR_POP_DELETED_ALL"
+msgstr "Избриши сè"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "Внеси URL"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "Веќе постои"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "Неуспешно"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "Меморирано"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "Внеси наслов"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "Грешка во мрежата"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "Не прашувај веќе"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL не е пронајденo"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "Одбиј"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "Се бара препознавање"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "Корисничко име"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "Лозинка"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "Не прикажувај веќе"
+
+msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
+msgstr "Мобилните податоци се исклучени. Поврзете се со мрежа Wi-Fi или овозможете мобилни податоци"
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "Не може да се додаде омилена страница. Достигнат е максималниот број омилени страници"
+
+msgid "IDS_BR_BODY_COULD_NOT_OPEN_NEW_WINDOW_BECAUSE_YOU_HAVE_ALREADY_OPENED_MAXIMUM_NUMBER"
+msgstr "Не може да се отвори нов прозорец. Достигнат е максималниот број отворени прозорци"
+
+msgid "IDS_BR_POP_SET_AS_HOMEPAGE"
+msgstr "Постави како почетна страница"
+
+msgid "IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE"
+msgstr "Постави ја моменталната страница за основна"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "Отвори во нов проз."
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "Преземи"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "Види слика"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "Емитувај"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "Копирај слика"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "Прати преку email"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "Прати преку порака"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "Копирај URL"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "Повеќе"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "Сподели линк"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "Сочувај линк"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "Избери"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "Оди напред"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "Оди назад"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "Отвори повторно"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "Прекини"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "Влечи"
 
-msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
-msgstr "Исклучи приватен режим"
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "Режим за програмери"
 
-msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
-msgstr "Вклучи приватен режим"
+msgid "IDS_BR_POP_DATA_CONNECTION_FAILED"
+msgstr "Неуспешно податочно поврзување"
 
-msgid "IDS_BR_BODY_WEB_CLIP"
-msgstr "Веб-запис"
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "Преземи?"
 
-msgid "IDS_BR_POP_BOOKMARK_REMOVED"
-msgstr "Омилената страница е отстранета"
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "Уредување преземања"
 
-msgid "IDS_BR_POP_PAGE_SAVED"
-msgstr "Страницата е сочувана"
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "Се известува..."
 
-msgid "IDS_BR_POP_DOWNLOADING_ING"
-msgstr "Се презема..."
+msgid "IDS_BR_OPT_CLOSE_ALL"
+msgstr "Затвори ги сите"
 
-msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
-msgstr "Почнува преземање..."
+msgid "IDS_BR_OPT_TEXT_ENCODING"
+msgstr "Кодирање на текстот"
+
+msgid "IDS_BR_OPT_LATIN_1_HISO_8859_1"
+msgstr "Latin-1 (ISO-8859-1)"
+
+msgid "IDS_BR_OPT_UNICODE_HUTF_8"
+msgstr "Уникод (UTF-8)"
+
+msgid "IDS_BR_OPT_CHINESE_HBIG5"
+msgstr "Кинески (Big5)"
+
+msgid "IDS_BR_OPT_CHINESE_HGBK"
+msgstr "Кинески (GBK)"
+
+msgid "IDS_BR_OPT_JAPANESE_HSHIFT_JIS"
+msgstr "Јапонски (SHIFT JIS)"
+
+msgid "IDS_BR_OPT_JAPANESE_HEUC_JP"
+msgstr "Јапонски (EUC-JP)"
+
+msgid "IDS_BR_OPT_JAPANESE_HISO_2022_JP"
+msgstr "Јапонски (ISO-2022-JP)"
+
+msgid "IDS_BR_OPT_KOREAN_HEUC_KR"
+msgstr "Корејски (EUC-KR)"
+
+msgid "IDS_BR_BODY_AUTOMATIC"
+msgstr "Автоматски"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "Не е дозволено"
+
+msgid "IDS_BR_BODY_TODAY"
+msgstr "Денес"
+
+msgid "IDS_BR_BODY_YESTERDAY"
+msgstr "Вчера"
+
+msgid "IDS_BR_BODY_LAST_WEEK"
+msgstr "Последна седмица"
+
+msgid "IDS_BR_POP_PLEASE_INSERT_SIM_CARD"
+msgstr "Ставете SIM картичка"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "Запомни преференци"
+
+msgid "IDS_BR_SK_CLEAR"
+msgstr "Избриши"
+
+msgid "IDS_BR_OPT_INSTALL_WEB_APP"
+msgstr "Инсталираj веб-апликација"
+
+msgid "IDS_BR_BODY_CREATED"
+msgstr "Направено"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "Нова папка"
+
+msgid "IDS_BR_BODY_CLEAR_STORED_DATA"
+msgstr "Избриши ги меморираните податоци"
+
+msgid "IDS_BR_BODY_CREATE_FOLDER"
+msgstr "Направи папка"
+
+msgid "IDS_BR_OPT_ADD"
+msgstr "Додај"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "Нема наслов"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "Нема резултати"
+
+msgid "IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER"
+msgstr "Политиката на безбедност го ограничува користењето прегледник за интернет"
+
+msgid "IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED"
+msgstr "Достигнат е максималниот број ознаки (%d)"
+
+msgid "IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q"
+msgstr "Да се избришат сите податоци за сајтот и дозволи за локацијата?"
+
+msgid "IDS_BR_OPT_MOVE"
+msgstr "Премести"
+
+msgid "IDS_BR_BODY_ADDDETAILS_HNO_TAGS"
+msgstr "(нема ознаки)"
+
+msgid "IDS_BR_POP_RENAME_TAG"
+msgstr "Преименувај ознака"
+
+msgid "IDS_BR_OPT_SORT_BY_TAG"
+msgstr "Подреди по ознака"
+
+msgid "IDS_BR_HEADER_ADD_TAG"
+msgstr "Додај ознака"
+
+msgid "IDS_BR_BODY_LAST_7_DAYS"
+msgstr "Последните 7 дена"
+
+msgid "IDS_BR_BODY_LAST_MONTH"
+msgstr "Последниот месец"
+
+msgid "IDS_BR_BODY_OLDER"
+msgstr "Постаро"
+
+msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
+msgstr "Затворете ги сите прозорци и одете на почетната страница"
+
+msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
+msgstr "Избриши персонални податоци"
+
+msgid "IDS_BR_OPT_ADD_LIVEBOX"
+msgstr "Додај Livebox"
+
+msgid "IDS_BR_BODY_NO_ITEMS"
+msgstr "Нема записи"
+
+msgid "IDS_BR_OPT_MINIMISE"
+msgstr "Намали"
+
+msgid "IDS_BR_POP_NEVER"
+msgstr "Никогаш"
+
+msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
+msgstr "LTE/GSM/WCDMA (автоматско поврзување)"
+
+msgid "IDS_BR_OPT_SELECTION_MODE"
+msgstr "Режим за избор"
+
+msgid "IDS_BR_OPT_ADD_BOOKMARK"
+msgstr "Додај сочувана стр."
+
+msgid "IDS_BR_OPT_DELETE_BOOKMARK"
+msgstr "Избриши омилена стр."
+
+msgid "IDS_BR_OPT_NEW_WINDOW"
+msgstr "Нов прозорец"
+
+msgid "IDS_BR_BODY_MOBILE_VIEW"
+msgstr "Мобилен преглед"
+
+msgid "IDS_BR_TAB_MOST_VISITED"
+msgstr "Најпосетувани"
+
+msgid "IDS_BR_OPT_LIST_VIEW"
+msgstr "Листа"
 

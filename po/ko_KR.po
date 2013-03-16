@@ -37,33 +37,6 @@ msgstr "페이지 내에서 검색"
 msgid "IDS_BR_HEADER_PICASA"
 msgstr "Picasa"
 
-msgid "IDS_BR_BODY_NOTIFYING_ING"
-msgstr "알림 준비 중..."
-
-msgid "IDS_BR_BODY_PROCESSING_ING"
-msgstr "처리 중..."
-
-msgid "IDS_BR_BODY_PROCESSING_COMPLETED"
-msgstr "완료되었습니다"
-
-msgid "IDS_BR_SK_RETRY"
-msgstr "재시도"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
-msgstr "다운로드 관리자"
-
-msgid "IDS_BR_POP_INVALIDDESCRIPTOR"
-msgstr "설명이 바르지 않습니다"
-
-msgid "IDS_BR_POP_UNABLE_TO_OPEN_FILE"
-msgstr "파일을 열 수 없습니다"
-
-msgid "IDS_BR_POP_DOWNLOAD_Q"
-msgstr "다운로드할까요?"
-
-msgid "IDS_BR_OPT_DELETE_SELECTED"
-msgstr "이 항목만"
-
 msgid "IDS_BR_OPT_LIST"
 msgstr "목록"
 
@@ -142,557 +115,14 @@ msgstr "완료"
 msgid "IDS_BR_BODY_SETTINGS_VERSION"
 msgstr "버전"
 
-msgid "IDS_BR_POP_DOWNLOAD_CANCELLED"
-msgstr "다운로드가 취소되었습니다"
-
-msgid "IDS_BR_OPT_COPY_IMAGE"
-msgstr "이미지 복사"
-
 msgid "IDS_IME_BODY_CLIPBOARD"
 msgstr "클립보드"
-
-msgid "IDS_BR_BODY_CONTINUE_FROM_LAST_PAGE"
-msgstr "마지막 페이지 계속 보기"
-
-msgid "IDS_BR_BODY_PAGE"
-msgstr "페이지"
-
-msgid "IDS_BR_OPT_DICTIONARY"
-msgstr "사전"
-
-msgid "IDS_BR_BODY_ABOUT_BROWSER"
-msgstr "상세정보"
-
-msgid "IDS_BR_BODY_BROWSER_TYPE"
-msgstr "종류"
-
-msgid "IDS_BR_BODY_CERTIFICATE_ISSUER"
-msgstr "발행자"
-
-msgid "IDS_BR_BODY_DISPLAY_IMAGES"
-msgstr "이미지 보기"
-
-msgid "IDS_BR_BODY_DOWNLOAD"
-msgstr "다운로드"
-
-msgid "IDS_BR_BODY_ENTER_URL"
-msgstr "URL을 입력하세요"
-
-msgid "IDS_BR_BODY_FOLDER"
-msgstr "폴더"
-
-msgid "IDS_BR_BODY_HOMEPAGE"
-msgstr "홈페이지"
-
-msgid "IDS_BR_BODY_LANDSCAPE_VIEW"
-msgstr "가로 보기"
-
-msgid "IDS_BR_BODY_NO_BOOKMARKS"
-msgstr "북마크가 없습니다"
-
-msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
-msgstr "검색 결과가 없습니다"
-
-msgid "IDS_BR_BODY_OPTIONAL"
-msgstr "선택 사항입니다"
-
-msgid "IDS_BR_BODY_RSS"
-msgstr "RSS"
-
-msgid "IDS_BR_BODY_RUN_FLASH"
-msgstr "플래시 재생"
-
-msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
-msgstr "자바 스크립트 실행"
-
-msgid "IDS_BR_HEADER_COMMON_NAME_C"
-msgstr "일반 이름:"
-
-msgid "IDS_BR_HEADER_ORGANIZATION_C"
-msgstr "기관:"
-
-msgid "IDS_BR_HEADER_USER_AGENT"
-msgstr "사용자 에이전트"
-
-msgid "IDS_BR_OPT_PREFERENCES"
-msgstr "속성"
-
-msgid "IDS_BR_POP_ACTICATION_ERR"
-msgstr "실행 오류가 발생하였습니다"
-
-msgid "IDS_BR_POP_ALREADY_RUNNING"
-msgstr "실행 중..."
-
-msgid "IDS_BR_POP_ERRORIMPLEMENTED"
-msgstr "서버에서 지원하지 않습니다"
-
-msgid "IDS_BR_POP_HTTPERRAUTHFAILED"
-msgstr "인증에 실패하였습니다"
-
-msgid "IDS_BR_POP_OVERWRITE_Q"
-msgstr "덮어쓸까요?"
-
-msgid "IDS_BR_POP_URL"
-msgstr "URL"
-
-msgid "IDS_BR_HEADER_DOWNLOAD_LIST"
-msgstr "다운로드 목록"
-
-msgid "IDS_BR_POP_ALREADYINSTALLED"
-msgstr "설치되어 있습니다"
-
-msgid "IDS_BR_POP_NOTIFYING"
-msgstr "알림 준비 중..."
-
-msgid "IDS_BR_POP_NOTSUPPORT"
-msgstr "사용할 수 없는 컨텐츠입니다"
-
-msgid "IDS_BR_POP_ERROR_C_UNABLE_TO_RESOLVE_HOST_NAME"
-msgstr "오류: 호스트 이름을 변환할 수 없습니다"
-
-msgid "IDS_BR_POP_UNABLE_TO_REACH_PROXY"
-msgstr "프록시에 연결할 수 없습니다"
-
-msgid "IDS_BR_POP_NOSSLCERTI"
-msgstr "SSL 인증서가 없습니다"
-
-msgid "IDS_BR_BODY_FILE_SIZE_EXCEEDS_MAXIMUM_UPLOAD_LIMIT"
-msgstr "파일 크기가 최대 업로드 제한을 초과하였습니다"
-
-msgid "IDS_BR_BODY_ENTER_NAME_C"
-msgstr "이름 입력:"
-
-msgid "IDS_BR_SK_NEXT"
-msgstr "다음"
-
-msgid "IDS_BR_OPT_NEW_FOLDER"
-msgstr "새 폴더"
-
-msgid "IDS_BR_SK1_NEW_WINDOW"
-msgstr "새 창"
-
-msgid "IDS_BR_BODY_URL"
-msgstr "URL"
-
-msgid "IDS_BR_BODY_URL_C"
-msgstr "URL:"
-
-msgid "IDS_BR_BODY_URL_NOT_AVAILABLE"
-msgstr "사용할 수 없는 URL입니다"
-
-msgid "IDS_BR_BODY_URL_PS_NOT_AVAILABLE_IT_MIGHT_BE_DOWN_TEMPORARILY_OR_NO_LONGER_IN_USE"
-msgstr "사용할 수 없는 URL입니다. 일시적으로 다운되었거나 더 이상 사용되지 않습니다"
-
-msgid "IDS_BR_BODY_FOLDER_NAME"
-msgstr "폴더 이름"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_ALREADY_IN_USE"
-msgstr "사용 중인 이름입니다"
-
-msgid "IDS_BR_BODY_NO_TITLE"
-msgstr "제목이 없습니다"
-
-msgid "IDS_BR_HEADER_MULTI_WINDOW"
-msgstr "멀티윈도우"
-
-msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "기록이 없습니다"
-
-msgid "IDS_BR_BODY_ADD_TO_BOOKMARKS"
-msgstr "북마크에 추가"
-
-msgid "IDS_BR_BODY_EDIT_BOOKMARK"
-msgstr "북마크 편집"
-
-msgid "IDS_BR_BODY_FOLDER_NAME_C"
-msgstr "폴더 이름:"
-
-msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "모두 선택"
-
-msgid "IDS_BR_OPT_DOWNLOAD_MANAGER"
-msgstr "다운로드 관리자"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEED"
-msgstr "RSS 피드 추가"
-
-msgid "IDS_BR_OPT_ADD_RSS_FEEDS"
-msgstr "RSS 피드 추가"
-
-msgid "IDS_BR_POP_ENTER_URL"
-msgstr "URL을 입력하세요"
-
-msgid "IDS_BR_BODY_AUTHPASSWORD"
-msgstr "비밀번호"
-
-msgid "IDS_BR_POP_INVALIDADDRESS"
-msgstr "주소가 바르지 않습니다"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS_IN_DOWNLOAD_LIST"
-msgstr "다운로드 목록에 포함되어 있습니다"
-
-msgid "IDS_BR_POP_ENTER_FOLDER_NAME"
-msgstr "폴더 이름을 입력하세요"
-
-msgid "IDS_BR_POP_NO_PAGE"
-msgstr "페이지가 없습니다"
-
-msgid "IDS_BR_POP_NO_PAGES_BACKWARD"
-msgstr "이전 페이지가 없습니다"
-
-msgid "IDS_BR_POP_NO_PAGES_FORWARD"
-msgstr "다음 페이지가 없습니다"
-
-msgid "IDS_BR_POP_NO_PAGE_TO_RELOAD"
-msgstr "표시할 페이지가 없습니다"
-
-msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
-msgstr "인증이 필요합니다"
-
-msgid "IDS_BR_POP_BOOKMARK_ALREADY_EXISTS"
-msgstr "이미 있는 북마크입니다"
-
-msgid "IDS_BR_POP_FOLDER_NAME_ALREADY_EXISTS"
-msgstr "사용 중인 폴더 이름입니다"
-
-msgid "IDS_BR_POP_UNABLE_TO_SAVE_OBJECT_NOT_ENOUGH_SPACE_IN_CACHE"
-msgstr "파일을 저장할 수 없습니다. 캐시에 저장 공간이 부족합니다"
 
 msgid "IDS_BR_HEADER_SELECT_ITEMS"
 msgstr "항목 선택"
 
-msgid "IDS_BR_HEADER_CERTIFICATE_INFO"
-msgstr "인증서 정보"
-
-msgid "IDS_BR_OPT_SHARE_VIA_EMAIL"
-msgstr "이메일을 통해 공유"
-
-msgid "IDS_BR_OPT_SHARE_VIA_MESSAGES"
-msgstr "메시지로 공유합니다"
-
-msgid "IDS_BR_OPT_SHARE_VIA"
-msgstr "공유"
-
-msgid "IDS_BR_POP_UNABLE_TO_START_BROWSER"
-msgstr "인터넷을 시작할 수 없습니다"
-
-msgid "IDS_BR_POP_NO_ADDRESS"
-msgstr "저장된 주소가 없습니다"
-
-msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
-msgstr "다시 표시하지 않기"
-
-msgid "IDS_BR_POP_FILE_NAME_EMPTY"
-msgstr "파일 이름이 없습니다"
-
-msgid "IDS_BR_SK3_CREATE_FOLDER"
-msgstr "폴더 추가"
-
-msgid "IDS_BR_OPT_SELECTED"
-msgstr "이 항목만"
-
-msgid "IDS_BR_HEADER_RECENTLY_VISITED_PAGES"
-msgstr "최근 방문한 웹사이트"
-
-msgid "IDS_BR_OPT_DISPLAY"
-msgstr "화면"
-
-msgid "IDS_BR_BODY_FIT_TO_WIDTH"
-msgstr "너비에 맞추기"
-
-msgid "IDS_BR_BODY_READABLE"
-msgstr "읽을 수 있는 크기"
-
-msgid "IDS_BR_BODY_PRIVACY"
-msgstr "개인정보 보호"
-
-msgid "IDS_BR_BODY_COOKIES"
-msgstr "쿠키"
-
-msgid "IDS_BR_BODY_COOKIESACCEPTALL"
-msgstr "모두 허용"
-
-msgid "IDS_BR_BODY_COOKIESPROMPT"
-msgstr "묻기"
-
-msgid "IDS_BR_HEADER_COOKIES"
-msgstr "쿠키"
-
-msgid "IDS_BR_BODY_ACCEPT_COOKIES"
-msgstr "쿠키 허용"
-
-msgid "IDS_BR_OPT_ACCEPT_COOKIES"
-msgstr "쿠키 허용"
-
-msgid "IDS_BR_BODY_ACCEPT_ALL"
-msgstr "모두 허용"
-
-msgid "IDS_BR_BODY_REJECT_ALL"
-msgstr "모두 거부"
-
-msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
-msgstr "ID/비밀번호 자동 저장"
-
-msgid "IDS_BR_BODY_ON"
-msgstr "켜기"
-
-msgid "IDS_BR_BODY_OFF"
-msgstr "끄기"
-
-msgid "IDS_BR_BODY_DEFAULT_STORAGE"
-msgstr "기본 저장 위치"
-
-msgid "IDS_BR_BODY_SAVE_IMAGE"
-msgstr "이미지 저장"
-
-msgid "IDS_BR_POP_LOW_BATTERY_UNABLE_TO_RUN_BROWSER"
-msgstr "배터리가 부족하여 인터넷을 실행할 수 없습니다"
-
-msgid "IDS_BR_BODY_FIND_WORD"
-msgstr "단어 검색"
-
-msgid "IDS_BR_OPT_ADD_TO_HOME_SCREEN"
-msgstr "홈 화면에 추가"
-
-msgid "IDS_BR_BODY_MOST_VISITED_SITES"
-msgstr "자주 방문한 웹사이트"
-
-msgid "IDS_BR_OPT_SHARE_VIA_FACEBOOK"
-msgstr "Facebook으로 공유"
-
-msgid "IDS_BR_OPT_SHARE_VIA_TWITTER"
-msgstr "Twitter로 공유"
-
-msgid "IDS_BR_SK3_CHANGE_VIEW"
-msgstr "보기 모드 변경"
-
-msgid "IDS_BR_HEADER_SELECT_URLS"
-msgstr "URL 선택"
-
-msgid "IDS_BR_POP_THIS_SITE_IS_ATTEMPTING_TO_OPEN_POP_UP_WINDOW"
-msgstr "이 웹사이트에서 팝업창을 열려고 합니다"
-
-msgid "IDS_BR_MBODY_BLOCK_POP_UP_WINDOWS"
-msgstr "팝업 차단"
-
-msgid "IDS_BR_BODY_TEXT_READER"
-msgstr "텍스트 판독"
-
-msgid "IDS_BR_BODY_PLAY"
-msgstr "재생"
-
-msgid "IDS_BR_OPT_SELECT"
-msgstr "선택"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
-msgstr "뒤로 이동"
-
-msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
-msgstr "앞으로 이동"
-
-msgid "IDS_BR_OPT_STOP"
-msgstr "중지"
-
-msgid "IDS_BR_OPT_RELOAD"
-msgstr "새로고침"
-
-msgid "IDS_BR_BUTTON_MORE"
-msgstr "더보기"
-
-msgid "IDS_BR_POP_FAIL"
-msgstr "실패하였습니다"
-
-msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
-msgstr "새 창에서 열기"
-
-msgid "IDS_BR_OPT_VIEW_DOWNLOAD_LIST"
-msgstr "다운로드 목록 보기"
-
-msgid "IDS_BR_BODY_COPY_URL"
-msgstr "URL 복사"
-
-msgid "IDS_BR_BODY_COPY_URL_TO"
-msgstr "URL 복사"
-
-msgid "IDS_BR_BODY_VIEW_IMAGE"
-msgstr "이미지 보기"
-
-msgid "IDS_BR_BODY_PRIVACY_SETTINGS"
-msgstr "개인 정보 설정"
-
-msgid "IDS_BR_BODY_CLEAR_CACHE"
-msgstr "캐시 삭제"
-
-msgid "IDS_BR_BODY_CLEAR_HISTORY"
-msgstr "기록 삭제"
-
-msgid "IDS_BR_BODY_ENABLE_PLUG_INS"
-msgstr "플러그인 사용"
-
-msgid "IDS_BR_BODY_SELECT_SEARCH_ENGINE"
-msgstr "검색 엔진 선택"
-
-msgid "IDS_BR_BODY_DELETE_SAVED_ID_PASSWORD"
-msgstr "저장된 ID/비밀번호 삭제"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
-msgstr "모든 쿠키 삭제"
-
-msgid "IDS_BR_BODY_UP"
-msgstr "상위"
-
-msgid "IDS_BR_BODY_FONT_SIZE"
-msgstr "글자 크기"
-
-msgid "IDS_BR_POP_DELETED"
-msgstr "삭제되었습니다"
-
-msgid "IDS_BR_BODY_DEFAULT_VIEW"
-msgstr "기본 화면"
-
-msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
-msgstr "페이지 컨텐츠 설정"
-
-msgid "IDS_BR_POP_CASE_SENSITIVE"
-msgstr "대소문자 구분"
-
-msgid "IDS_BR_BODY_PLUG_IN"
-msgstr "플러그인"
-
-msgid "IDS_BR_OPT_PLUGINS_LIST"
-msgstr "플러그인 목록"
-
-msgid "IDS_BR_HEADER_LOCAL_STORAGE"
-msgstr "저장 위치"
-
-msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
-msgstr "인터넷 파일 삭제"
-
-msgid "IDS_BR_BODY_LOADING_ING"
-msgstr "로딩 중..."
-
-msgid "IDS_BR_HEADER_LOADING_ING"
-msgstr "로딩 중..."
-
-msgid "IDS_BR_HEADER_ENTERURL"
-msgstr "URL을 입력하세요"
-
-msgid "IDS_BR_OPT_LOCK"
-msgstr "잠금"
-
-msgid "IDS_BR_OPT_UNLOCK"
-msgstr "잠금 해제"
-
-msgid "IDS_BR_BODY_MODIFY"
-msgstr "변경"
-
-msgid "IDS_BR_SK_PAGE_UP"
-msgstr "이전 페이지"
-
-msgid "IDS_BR_SK_PAGE_DOWN"
-msgstr "다음 페이지"
-
-msgid "IDS_BR_BODY_DEVELOPER_MODE"
-msgstr "개발자 모드"
-
-msgid "IDS_BR_BODY_EMPTY"
-msgstr "비어 있음"
-
-msgid "IDS_BR_BODY_CERTIFICATES"
-msgstr "인증서"
-
-msgid "IDS_BR_BODY_BOOKMARKS"
-msgstr "북마크"
-
-msgid "IDS_BR_BODY_ENTER_NAME"
-msgstr "이름을 입력하세요"
-
-msgid "IDS_BR_BODY_NAME"
-msgstr "이름"
-
-msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
-msgstr "이메일로 전송"
-
-msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
-msgstr "메시지로 전송"
-
-msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "사용자 이름"
-
-msgid "IDS_BR_POP_ALREADY_EXISTS"
-msgstr "이미 저장되어 있습니다"
-
-msgid "IDS_BR_POP_SAVED"
-msgstr "저장되었습니다"
-
-msgid "IDS_BR_POP_NOT_ENOUGH_MEMORY"
-msgstr "저장 공간이 부족합니다"
-
-msgid "IDS_BR_POP_NETWORK_ERROR"
-msgstr "네트워크 오류가 발생하였습니다"
-
-msgid "IDS_BR_BODY_ALWAYS_ASK"
-msgstr "항상 묻기"
-
-msgid "IDS_BR_BODY_MEMORY_CARD"
-msgstr "메모리 카드"
-
-msgid "IDS_BR_BODY_PHONE"
-msgstr "휴대폰"
-
-msgid "IDS_BR_BODY_NO_ACCOUNTS_ABB"
-msgstr "설정된 계정 없음"
-
-msgid "IDS_BR_HEADER_ERROR_PAGE"
-msgstr "오류 페이지"
-
-msgid "IDS_BR_BODY_WEB_PAGE_TEMPORARILY_NOT_AVAILABLE"
-msgstr "웹 페이지를 일시적으로 사용할 수 없습니다"
-
-msgid "IDS_BR_BODY_WEB_PAGE_NOT_AVAILABLE"
-msgstr "웹 페이지에 연결할 수 없습니다"
-
-msgid "IDS_BR_BODY_FAILED_TO_LOAD_FRAMES"
-msgstr "프레임을 불러오지 못하였습니다"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_1"
-msgstr "웹 페이지 %s을(를) 가져오는 중에 다음 오류가 발생하였습니다."
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_2"
-msgstr "웹 페이지를 가져올 수 없습니다(웹 페이지를 일시적으로 사용할 수 없거나 새로운 URL로 이동되었을 수 있습니다)"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_3"
-msgstr "가능성이 높은 원인은 아래와 같습니다"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_4"
-msgstr "네트워크에 연결할 수 없습니다"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_5"
-msgstr "웹 페이지 URL 확인"
-
-msgid "IDS_BR_BODY_LOAD_FAILED_MSG_6"
-msgstr "나중에 웹 페이지 다시 불러오기"
-
-msgid "IDS_BR_OPT_BOOKMARK"
-msgstr "북마크"
-
-msgid "IDS_BR_BODY_TITLE"
-msgstr "제목"
-
-msgid "IDS_BR_BODY_ENTER_TITLE"
-msgstr "제목을 입력하세요"
-
-msgid "IDS_BR_OPT_FOLDERS"
-msgstr "폴더"
-
 msgid "IDS_BR_OPT_ALLOW"
 msgstr "허용"
-
-msgid "IDS_BR_POP_REFUSE"
-msgstr "거부"
-
-msgid "IDS_BR_POP_SECURITY_ERROR_C_UNTRUSTED_SERVER_CERTIFICATE"
-msgstr "서버 인증서를 신뢰할 수 없습니다"
 
 msgid "IDS_BR_POP_PD_ITEMS_SELECTED"
 msgstr "%d개의 항목이 선택되었습니다"
@@ -700,26 +130,53 @@ msgstr "%d개의 항목이 선택되었습니다"
 msgid "IDS_BR_POP_1_ITEM_SELECTED"
 msgstr "1개의 항목이 선택되었습니다"
 
-msgid "IDS_BR_OPT_ADD_TO_WEB_CLIP"
-msgstr "Web clip에 추가"
+msgid "IDS_BR_BODY_EMPTY"
+msgstr "비어 있음"
 
-msgid "IDS_BR_POP_SHORTCUT_CREATED"
-msgstr "단축메뉴가 추가되었습니다"
+msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
+msgstr "URL을 검색하거나 입력하세요"
 
-msgid "IDS_BR_OPT_FIND_ON_PAGE"
-msgstr "페이지 내에서 검색"
+msgid "IDS_BR_BODY_PRINT"
+msgstr "인쇄"
 
-msgid "IDS_BR_BODY_INTERNET"
-msgstr "인터넷"
+msgid "IDS_BR_OPT_DATA_NETWORK"
+msgstr "데이터 네트워크"
 
-msgid "IDS_BR_BODY_SPEED"
-msgstr "속도"
+msgid "IDS_BR_OPT_CLOSE_WINDOW"
+msgstr "창 닫기"
 
-msgid "IDS_BR_SK_INSTALL"
-msgstr "설치"
+msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
+msgstr "불러오는 중... 잠시만 기다리세요."
 
-msgid "IDS_BR_BODY_CURRENT_PAGE"
-msgstr "현재 페이지"
+msgid "IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM"
+msgstr "데이터 연결 문제"
+
+msgid "IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER"
+msgstr "서버에서 응답이 없어 웹페이지를 표시할 수 없습니다"
+
+msgid "IDS_BR_BODY_HIGH_MPRIORITY"
+msgstr "높음"
+
+msgid "IDS_BR_BODY_MEDIUM"
+msgstr "보통"
+
+msgid "IDS_BR_SK3_CREATE_FOLDER"
+msgstr "폴더 추가"
+
+msgid "IDS_BR_BODY_NO_BOOKMARKS"
+msgstr "북마크가 없습니다"
+
+msgid "IDS_BR_BODY_ADDDETAILSVIEW_TAGS"
+msgstr "태그"
+
+msgid "IDS_BR_BODY_UNTAGGED"
+msgstr "태그 없음"
+
+msgid "IDS_BR_BODY_MOBILE"
+msgstr "휴대폰"
+
+msgid "IDS_BR_OPT_VIEW_BY_ABB"
+msgstr "보기"
 
 msgid "IDS_BR_BODY_ENTER_FOLDER_NAME"
 msgstr "폴더 이름을 입력하세요"
@@ -727,167 +184,134 @@ msgstr "폴더 이름을 입력하세요"
 msgid "IDS_BR_POP_ENTER_BOOKMARK_NAME"
 msgstr "북마크 이름을 입력하세요"
 
-msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
-msgstr "다시 묻지 않기"
-
-msgid "IDS_BR_POP_URL_NOT_FOUND"
-msgstr "URL을 찾을 수 없습니다"
-
-msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
-msgstr "%s이(가) 현재 위치 정보를 요청합니다"
-
-msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
-msgstr "설정을 기억합니다"
-
-msgid "IDS_BR_BODY_SHOW_IMAGES"
-msgstr "이미지 표시"
-
-msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
-msgstr "보안 경고 보기"
-
-msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
-msgstr "비밀번호 저장"
-
-msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
-msgstr "비밀번호 삭제"
-
-msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
-msgstr "저장된 모든 비밀번호를 삭제할까요?"
-
-msgid "IDS_BR_POP_DELETE_ALL_COOKIES_CONTINUE_Q"
-msgstr "쿠키를 모두 삭제합니다. 계속할까요?"
-
-msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
-msgstr "양식 데이터 저장"
-
-msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
-msgstr "기본값으로 초기화"
-
-msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "모든 설정이 기본값으로 되돌아갑니다. 계속할까요?"
-
-msgid "IDS_BR_POP_CLEAR_CACHE_Q"
-msgstr "캐시를 삭제할까요?"
-
-msgid "IDS_BR_POP_HISTORYREMOVEALLHISTORY"
-msgstr "모든 기록을 삭제할까요?"
-
-msgid "IDS_BR_BODY_BROWSER_NAVIGATION_HISTORY_WILL_BE_CLEARED"
-msgstr "웹사이트 방문 기록이 삭제됩니다"
-
-msgid "IDS_BR_BODY_ALWAYS_ON"
-msgstr "항상 켜기"
-
-msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "위치 정보 사용"
-
-msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
-msgstr "위치 정보 삭제"
-
-msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
-msgstr "북마크를 추가할 수 없습니다. 최대 북마크 수를 초과하였습니다"
-
-msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
-msgstr "웹사이트 위치 연결 정보를 삭제할까요?"
-
-msgid "IDS_BR_BODY_PRINT"
-msgstr "인쇄"
-
-msgid "IDS_BR_BODY_SEARCH_OR_ENTER_URL"
-msgstr "URL을 검색하거나 입력하세요"
-
-msgid "IDS_BR_BODY_AUTO"
-msgstr "자동"
-
-msgid "IDS_BR_OPT_MANUAL"
-msgstr "수동"
-
-msgid "IDS_BR_BODY_LOW"
-msgstr "낮음"
-
-msgid "IDS_BR_BODY_MEDIUM"
-msgstr "보통"
-
-msgid "IDS_BR_BODY_BLANK_PAGE"
-msgstr "빈 페이지"
-
-msgid "IDS_BR_POP_INSTALLATION_FAILED"
-msgstr "설치하지 못하였습니다"
-
-msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
-msgstr "웹사이트 설정"
-
-msgid "IDS_BR_BODY_HIGH_MPRIORITY"
-msgstr "높음"
-
-msgid "IDS_BR_BODY_SAVE_LINK"
-msgstr "링크 저장"
-
-msgid "IDS_BR_BODY_SHARE_LINK"
-msgstr "링크 공유"
-
-msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
-msgstr "개인정보 보호 및 보안"
-
-msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
-msgstr "오프라인 보기로 저장"
-
-msgid "IDS_BR_HEADER_LOCATION"
-msgstr "위치"
-
-msgid "IDS_BR_HEADER_FORM_DATA"
-msgstr "양식 데이터"
-
-msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
-msgstr "양식 데이터 삭제"
-
-msgid "IDS_BR_BODY_CLEAR_ALL_SAVED_PASSWORDS"
-msgstr "저장된 비밀번호를 모두 삭제합니다"
-
 msgid "IDS_BR_POP_ADDED_TO_BOOKMARKS"
 msgstr "북마크에 추가되었습니다"
 
 msgid "IDS_BR_POP_REMOVED_FROM_BOOKMARKS"
 msgstr "북마크에서 삭제되었습니다"
 
-msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
-msgstr "팝업 차단"
+msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
+msgstr "다운로드를 시작하는 중..."
 
-msgid "IDS_BR_BODY_PICTURES"
-msgstr "사진"
+msgid "IDS_BR_BODY_SELECT_FOLDER"
+msgstr "폴더 선택"
 
-msgid "IDS_BR_POP_LOADING_PLEASE_WAIT_ING"
-msgstr "불러오는 중... 잠시만 기다리세요"
+msgid "IDS_BR_BODY_FOLDER_NAME"
+msgstr "폴더 이름"
 
-msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
-msgstr "사용자 에이전트 설정"
+msgid "IDS_BR_BODY_NO_HISTORIES"
+msgstr "기록이 없습니다"
 
-msgid "IDS_BR_BODY_USER_HOMEPAGE"
-msgstr "사용자 홈페이지"
+msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
+msgstr "%s이(가) 현재 위치 정보를 요청합니다"
 
-msgid "IDS_BR_BODY_PASSWORD"
-msgstr "비밀번호"
+msgid "IDS_BR_POP_SHORTCUT_CREATED"
+msgstr "단축메뉴가 추가되었습니다"
 
-msgid "IDS_BR_BODY_SEARCH_ENGINE"
-msgstr "검색 엔진"
+msgid "IDS_BR_OPT_FIND_ON_PAGE"
+msgstr "페이지 내에서 검색"
 
-msgid "IDS_BR_POP_SHORTCUT_PS_CREATED"
-msgstr "%s 바로가기가 추가되었습니다"
+msgid "IDS_BR_BODY_BOOKMARKS"
+msgstr "북마크"
 
-msgid "IDS_BR_POP_NAME"
-msgstr "이름"
+msgid "IDS_BR_OPT_BOOKMARK"
+msgstr "북마크"
 
-msgid "IDS_BR_HEADER_REMOVE_FROM_BOOKMARKS"
-msgstr "북마크에서 삭제"
+msgid "IDS_BR_POP_BOOKMARK_ADDED"
+msgstr "북마크가 추가되었습니다"
+
+msgid "IDS_BR_POP_BOOKMARK_REMOVED"
+msgstr "북마크가 삭제되었습니다"
+
+msgid "IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB"
+msgstr "오프라인 보기로 저장"
+
+msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
+msgstr "개인정보 보호 모드 실행"
+
+msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
+msgstr "개인정보 보호 모드 해제"
 
 msgid "IDS_BR_OPT_SAVE_PAGE_ABB"
 msgstr "페이지 저장"
 
-msgid "IDS_BR_BODY_DELETE_ALL"
-msgstr "모두 삭제"
+msgid "IDS_BR_BODY_DESKTOP_VIEW"
+msgstr "데스크톱 보기"
 
-msgid "IDS_BR_POP_BOOKMARK_ADDED"
-msgstr "북마크가 추가되었습니다"
+msgid "IDS_BR_BODY_DESKTOP_VIEW_ABB"
+msgstr "데스크톱 보기"
+
+msgid "IDS_BR_OPT_INCOGNITO_MODE_ABB"
+msgstr "시크릿 모드"
+
+msgid "IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB"
+msgstr "스크랩북에 추가"
+
+msgid "IDS_BR_OPT_SCRAPBOOK_ABB"
+msgstr "스크랩북"
+
+msgid "IDS_BR_BODY_WEB_CLIP"
+msgstr "웹 클립"
+
+msgid "IDS_BR_OPT_CACHE"
+msgstr "캐시"
+
+msgid "IDS_BR_OPT_SELECT_ALL"
+msgstr "모두 선택"
+
+msgid "IDS_BR_BODY_URL"
+msgstr "URL"
+
+msgid "IDS_BR_BODY_HOMEPAGE"
+msgstr "홈페이지"
+
+msgid "IDS_BR_BODY_BLANK_PAGE"
+msgstr "빈 페이지"
+
+msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
+msgstr "최근 방문 페이지"
+
+msgid "IDS_BR_BODY_CURRENT_PAGE"
+msgstr "현재 페이지"
+
+msgid "IDS_BR_BODY_USER_HOMEPAGE"
+msgstr "사용자 홈페이지"
+
+msgid "IDS_BR_MBODY_PAGE_CONTENT_SETTINGS"
+msgstr "페이지 컨텐츠 설정"
+
+msgid "IDS_BR_BODY_DEFAULT_VIEW"
+msgstr "기본 화면"
+
+msgid "IDS_BR_BODY_FIT_TO_WIDTH"
+msgstr "너비에 맞추기"
+
+msgid "IDS_BR_BODY_RUN_JAVASCRIPT"
+msgstr "자바 스크립트 실행"
+
+msgid "IDS_BR_BODY_READABLE"
+msgstr "읽을 수 있는 크기"
+
+msgid "IDS_BR_BODY_SHOW_IMAGES"
+msgstr "이미지 표시"
+
+msgid "IDS_BR_BODY_ALWAYS_ON"
+msgstr "항상 켜기"
+
+msgid "IDS_BR_BODY_BLOCK_POP_UPS_ABB"
+msgstr "팝업 차단"
+
+msgid "IDS_BR_BODY_PRIVACY_AND_SECURITY_ABB"
+msgstr "개인 정보 보호 및 보안"
+
+msgid "IDS_BR_BODY_ALWAYS_ASK"
+msgstr "항상 묻기"
+
+msgid "IDS_BR_BODY_DELETE_BROWSING_DATA"
+msgstr "인터넷 파일 삭제"
+
+msgid "IDS_BR_BODY_CLEAR_CACHE"
+msgstr "캐시 삭제"
 
 msgid "IDS_BR_POP_DELETE_LOCALLY_CACHED_CONTENT_AND_DATABASES_Q"
 msgstr "캐시에 저장된 컨텐츠와 데이터베이스를 삭제할까요?"
@@ -895,39 +319,363 @@ msgstr "캐시에 저장된 컨텐츠와 데이터베이스를 삭제할까요?"
 msgid "IDS_BR_BODY_DELETE_BROWSER_HISTORY_Q"
 msgstr "웹사이트 방문 기록을 삭제할까요?"
 
+msgid "IDS_BR_BODY_CLEAR_HISTORY"
+msgstr "기록 삭제"
+
+msgid "IDS_BR_BODY_SHOW_SECURITY_WARNINGS"
+msgstr "보안 경고 보기"
+
+msgid "IDS_BR_BODY_COOKIES"
+msgstr "쿠키"
+
+msgid "IDS_BR_BODY_ACCEPT_COOKIES"
+msgstr "쿠키 허용"
+
 msgid "IDS_BR_POP_EMPTY_COOKIE_POPUP_BNO"
 msgstr "모든 쿠키를 삭제할까요?"
+
+msgid "IDS_BR_BODY_CLEAR_ALL_COOKIE_DATA"
+msgstr "모든 쿠키 삭제"
+
+msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
+msgstr "양식 데이터 저장"
+
+msgid "IDS_BR_BODY_ENABLE_LOCATION"
+msgstr "위치 정보 사용"
+
+msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
+msgstr "위치 정보 삭제"
+
+msgid "IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q"
+msgstr "웹사이트 위치 연결 정보를 삭제할까요?"
+
+msgid "IDS_BR_HEADER_FORM_DATA"
+msgstr "양식 데이터"
+
+msgid "IDS_BR_BODY_CLEAR_FORM_DATA"
+msgstr "양식 데이터 삭제"
 
 msgid "IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q"
 msgstr "저장된 양식 데이터를 모두 삭제할까요?"
 
-msgid "IDS_BR_POP_NOT_ALLOWED"
-msgstr "사용할 수 없습니다"
+msgid "IDS_BR_BODY_REMEMBER_PASSWORDS"
+msgstr "비밀번호 저장"
 
-msgid "IDS_BR_OPT_LAST_VIEWED_PAGE"
-msgstr "최근 방문 페이지"
+msgid "IDS_BR_BODY_CLEAR_PASSWORDS"
+msgstr "비밀번호 삭제"
+
+msgid "IDS_BR_BODY_WEBSITE_SETTINGS"
+msgstr "웹사이트 설정"
+
+msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
+msgstr "기본값으로 초기화"
+
+msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
+msgstr "모든 설정이 기본값으로 되돌아갑니다. 계속할까요?"
+
+msgid "IDS_BR_BODY_ABOUT_BROWSER"
+msgstr "상세정보"
+
+msgid "IDS_BR_BODY_AUTO_SAVE_ID_PASSWORD"
+msgstr "ID/비밀번호 자동 저장"
+
+msgid "IDS_BR_BODY_SEARCH_ENGINE"
+msgstr "검색 엔진"
+
+msgid "IDS_BR_HEADER_USER_AGENT"
+msgstr "사용자 에이전트"
+
+msgid "IDS_BR_BODY_DELETE_ALL"
+msgstr "모두 삭제"
+
+msgid "IDS_BR_BODY_CUSTOM_USER_AGENT"
+msgstr "사용자 에이전트 설정"
+
+msgid "IDS_BR_BODY_SAVED_ID_PASSWORD"
+msgstr "저장된 ID/비밀번호"
+
+msgid "IDS_BR_BODY_MOST_VISITED_SITES"
+msgstr "자주 방문한 웹사이트"
+
+msgid "IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q"
+msgstr "저장된 모든 비밀번호를 삭제할까요?"
+
+msgid "IDS_BR_POP_DELETED"
+msgstr "삭제되었습니다"
+
+msgid "IDS_BR_POP_DELETED_ALL"
+msgstr "모두 삭제되었습니다"
+
+msgid "IDS_BR_POP_ENTER_URL"
+msgstr "URL을 입력하세요"
+
+msgid "IDS_BR_POP_ALREADY_EXISTS"
+msgstr "이미 저장되어 있습니다"
+
+msgid "IDS_BR_POP_FAIL"
+msgstr "실패하였습니다"
+
+msgid "IDS_BR_POP_SAVED"
+msgstr "저장되었습니다"
+
+msgid "IDS_BR_BODY_ENTER_TITLE"
+msgstr "제목을 입력하세요"
+
+msgid "IDS_BR_POP_NETWORK_ERROR"
+msgstr "네트워크 오류가 발생하였습니다"
+
+msgid "IDS_BR_OPT_DO_NOT_ASK_AGAIN"
+msgstr "다시 묻지 않기"
+
+msgid "IDS_BR_POP_URL_NOT_FOUND"
+msgstr "URL을 찾을 수 없습니다"
+
+msgid "IDS_BR_POP_REFUSE"
+msgstr "거부"
+
+msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
+msgstr "인증이 필요합니다"
+
+msgid "IDS_BR_BODY_AUTHUSERNAME"
+msgstr "사용자 이름"
+
+msgid "IDS_BR_BODY_AUTHPASSWORD"
+msgstr "비밀번호"
+
+msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
+msgstr "다시 표시하지 않기"
+
+msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
+msgstr "데이터 네트워크가 해제되었습니다. Wi-Fi 네트워크를 사용하여 연결하거나 데이터 네트워크를 실행하세요."
+
+msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
+msgstr "북마크를 추가할 수 없습니다. 최대 북마크 수를 초과하였습니다."
+
+msgid "IDS_BR_BODY_COULD_NOT_OPEN_NEW_WINDOW_BECAUSE_YOU_HAVE_ALREADY_OPENED_MAXIMUM_NUMBER"
+msgstr "열 수 있는 창의 개수만큼 이미 열려 있어서 새 창을 더 열 수 없습니다"
+
+msgid "IDS_BR_POP_SET_AS_HOMEPAGE"
+msgstr "홈페이지로 설정"
+
+msgid "IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE"
+msgstr "현재 페이지를 홈페이지로 설정"
+
+msgid "IDS_BR_BODY_OPEN_IN_NEW_WINDOW"
+msgstr "새 창에서 열기"
+
+msgid "IDS_BR_BODY_DOWNLOAD"
+msgstr "다운로드"
+
+msgid "IDS_BR_BODY_VIEW_IMAGE"
+msgstr "이미지 보기"
+
+msgid "IDS_BR_BODY_PLAY"
+msgstr "재생"
+
+msgid "IDS_BR_OPT_COPY_IMAGE"
+msgstr "이미지 복사"
+
+msgid "IDS_BR_OPT_SEND_VIA_EMAIL"
+msgstr "이메일로 전송"
+
+msgid "IDS_BR_OPT_SEND_VIA_MESSAGE"
+msgstr "메시지로 전송"
+
+msgid "IDS_BR_BODY_COPY_URL"
+msgstr "URL 복사"
+
+msgid "IDS_BR_BUTTON_MORE"
+msgstr "더보기"
+
+msgid "IDS_BR_BODY_SHARE_LINK"
+msgstr "링크 공유"
+
+msgid "IDS_BR_BODY_SAVE_LINK"
+msgstr "링크 저장"
+
+msgid "IDS_BR_OPT_SELECT"
+msgstr "선택"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_FORWARD"
+msgstr "앞으로 이동"
+
+msgid "IDS_BR_OPT_NAVIGATE_GO_BACKWARD"
+msgstr "뒤로 이동"
+
+msgid "IDS_BR_OPT_RELOAD"
+msgstr "새로고침"
+
+msgid "IDS_BR_OPT_STOP"
+msgstr "중지"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "드래그"
 
-msgid "IDS_BR_BODY_DISABLE_PRIVATE_MODE"
-msgstr "개인정보 보호 모드 해제"
+msgid "IDS_BR_BODY_DEVELOPER_MODE"
+msgstr "개발자 모드"
 
-msgid "IDS_BR_BODY_ENABLE_PRIVATE_MODE"
-msgstr "개인정보 보호 모드 실행"
+msgid "IDS_BR_POP_DATA_CONNECTION_FAILED"
+msgstr "데이터 연결을 실패하였습니다"
 
-msgid "IDS_BR_BODY_WEB_CLIP"
-msgstr "웹 클립"
+msgid "IDS_BR_POP_DOWNLOAD_Q"
+msgstr "다운로드할까요?"
 
-msgid "IDS_BR_POP_BOOKMARK_REMOVED"
-msgstr "북마크가 삭제되었습니다"
+msgid "IDS_BR_HEADER_DOWNLOAD_MANAGER"
+msgstr "다운로드 관리자"
 
-msgid "IDS_BR_POP_PAGE_SAVED"
-msgstr "페이지가 저장되었습니다"
+msgid "IDS_BR_BODY_NOTIFYING_ING"
+msgstr "알림 준비 중..."
 
-msgid "IDS_BR_POP_DOWNLOADING_ING"
-msgstr "다운로드 중..."
+msgid "IDS_BR_OPT_CLOSE_ALL"
+msgstr "모두 닫기"
 
-msgid "IDS_BR_POP_STARTING_DOWNLOAD_ING"
-msgstr "다운로드를 시작하는 중..."
+msgid "IDS_BR_OPT_TEXT_ENCODING"
+msgstr "문자 인코딩"
+
+msgid "IDS_BR_OPT_LATIN_1_HISO_8859_1"
+msgstr "라틴어-1 (ISO-8859-1)"
+
+msgid "IDS_BR_OPT_UNICODE_HUTF_8"
+msgstr "유니코드(UTF-8)"
+
+msgid "IDS_BR_OPT_CHINESE_HBIG5"
+msgstr "중국어(Big5)"
+
+msgid "IDS_BR_OPT_CHINESE_HGBK"
+msgstr "중국어(GBK)"
+
+msgid "IDS_BR_OPT_JAPANESE_HSHIFT_JIS"
+msgstr "일본어(SHIFT JIS)"
+
+msgid "IDS_BR_OPT_JAPANESE_HEUC_JP"
+msgstr "일본어(EUC-JP)"
+
+msgid "IDS_BR_OPT_JAPANESE_HISO_2022_JP"
+msgstr "일본어(ISO-2022-JP)"
+
+msgid "IDS_BR_OPT_KOREAN_HEUC_KR"
+msgstr "한국어(EUC-KR)"
+
+msgid "IDS_BR_BODY_AUTOMATIC"
+msgstr "자동"
+
+msgid "IDS_BR_POP_NOT_ALLOWED"
+msgstr "사용할 수 없습니다"
+
+msgid "IDS_BR_BODY_TODAY"
+msgstr "오늘"
+
+msgid "IDS_BR_BODY_YESTERDAY"
+msgstr "어제"
+
+msgid "IDS_BR_BODY_LAST_WEEK"
+msgstr "마지막 주"
+
+msgid "IDS_BR_POP_PLEASE_INSERT_SIM_CARD"
+msgstr "SIM 카드를 삽입하세요"
+
+msgid "IDS_BR_BODY_REMEMBER_PREFERENCE"
+msgstr "설정을 기억합니다"
+
+msgid "IDS_BR_SK_CLEAR"
+msgstr "삭제"
+
+msgid "IDS_BR_OPT_INSTALL_WEB_APP"
+msgstr "웹 애플리케이션 설치"
+
+msgid "IDS_BR_BODY_CREATED"
+msgstr "생성되었습니다"
+
+msgid "IDS_BR_OPT_NEW_FOLDER"
+msgstr "새 폴더"
+
+msgid "IDS_BR_BODY_CLEAR_STORED_DATA"
+msgstr "저장된 데이터 삭제"
+
+msgid "IDS_BR_BODY_CREATE_FOLDER"
+msgstr "폴더 추가"
+
+msgid "IDS_BR_OPT_ADD"
+msgstr "추가"
+
+msgid "IDS_BR_BODY_NO_TITLE"
+msgstr "제목이 없습니다"
+
+msgid "IDS_BR_BODY_NO_RESULTS_FOUND"
+msgstr "검색 결과가 없습니다"
+
+msgid "IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER"
+msgstr "보안 정책에 따라 인터넷 사용이 제한됩니다"
+
+msgid "IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED"
+msgstr "최대 태그 수(%d개)를 초과하였습니다"
+
+msgid "IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q"
+msgstr "이 웹사이트에 저장된 데이터와 위치 정보 이용 권한을 모두 삭제할까요?"
+
+msgid "IDS_BR_OPT_MOVE"
+msgstr "이동"
+
+msgid "IDS_BR_BODY_ADDDETAILS_HNO_TAGS"
+msgstr "(태그 없음)"
+
+msgid "IDS_BR_POP_RENAME_TAG"
+msgstr "태그 이름 변경"
+
+msgid "IDS_BR_OPT_SORT_BY_TAG"
+msgstr "태그별 정렬"
+
+msgid "IDS_BR_HEADER_ADD_TAG"
+msgstr "태그 추가"
+
+msgid "IDS_BR_BODY_LAST_7_DAYS"
+msgstr "최근 7일"
+
+msgid "IDS_BR_BODY_LAST_MONTH"
+msgstr "지난 달"
+
+msgid "IDS_BR_BODY_OLDER"
+msgstr "이전 버전"
+
+msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
+msgstr "열린 창을 모두 닫고 홈페이지로 이동합니다"
+
+msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
+msgstr "사용자 설정 데이터 삭제"
+
+msgid "IDS_BR_OPT_ADD_LIVEBOX"
+msgstr "라이브박스 추가"
+
+msgid "IDS_BR_BODY_NO_ITEMS"
+msgstr "항목이 없습니다"
+
+msgid "IDS_BR_OPT_MINIMISE"
+msgstr "최소화"
+
+msgid "IDS_BR_POP_NEVER"
+msgstr "안 함"
+
+msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
+msgstr "LTE/GSM/WCDMA(자동 연결)"
+
+msgid "IDS_BR_OPT_SELECTION_MODE"
+msgstr "선택 모드"
+
+msgid "IDS_BR_OPT_ADD_BOOKMARK"
+msgstr "북마크 추가"
+
+msgid "IDS_BR_OPT_DELETE_BOOKMARK"
+msgstr "북마크 삭제"
+
+msgid "IDS_BR_OPT_NEW_WINDOW"
+msgstr "새 창"
+
+msgid "IDS_BR_BODY_MOBILE_VIEW"
+msgstr "휴대폰 보기"
+
+msgid "IDS_BR_TAB_MOST_VISITED"
+msgstr "자주 방문한 웹사이트"
+
+msgid "IDS_BR_OPT_LIST_VIEW"
+msgstr "목록 보기"
 
