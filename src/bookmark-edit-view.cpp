@@ -769,12 +769,31 @@ void bookmark_edit_view::_show_delete_confirm_popup(void)
 {
 	BROWSER_LOGD("");
 	show_msg_popup(NULL,
-					BR_STRING_DELETE_Q,
-					BR_STRING_OK,
-					__ok_response_delete_confirm_popup_cb,
-					BR_STRING_CANCEL,
-					NULL,
-					this);
+						BR_STRING_DELETE_BOOKMARK,
+						BR_STRING_DELETE,
+						__ok_response_delete_confirm_popup_cb,
+						BR_STRING_CANCEL,
+						NULL,
+						this);
+	#if 0 //BR_STRING_DELETE_BOOKMARK_Q & BR_STRING_DELETE_BOOKMARKS_Q is not in STMS for now
+	if(m_count_checked_item == 1) {
+		show_msg_popup(NULL,
+						BR_STRING_DELETE_BOOKMARK_Q,
+						BR_STRING_DELETE,
+						__ok_response_delete_confirm_popup_cb,
+						BR_STRING_CANCEL,
+						NULL,
+						this);
+		} else {
+		show_msg_popup(NULL,
+						BR_STRING_DELETE_BOOKMARKS_Q,
+						BR_STRING_DELETE,
+						__ok_response_delete_confirm_popup_cb,
+						BR_STRING_CANCEL,
+						NULL,
+						this);
+		}
+	#endif
 }
 
 void bookmark_edit_view::_show_move_confirm_popup(void)

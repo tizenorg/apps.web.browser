@@ -123,6 +123,7 @@
 #define BR_STRING_VIEW_BY_TAG           _("IDS_BR_OPT_SORT_BY_TAG")
 #define BR_STRING_DELETE_BOOKMARK       _("IDS_BR_OPT_DELETE_BOOKMARK")
 #define BR_STRING_WARNING_OVER_TAG_LIMIT _("IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED")
+#define BR_STRING_DELETE_BOOKMARK       _("IDS_BR_OPT_DELETE_BOOKMARK")
 /*************************************************************************************************************/
 
 
@@ -286,6 +287,7 @@
 #define BR_STRING_SET_CURRENT_PAGE_AS_HOMEPAGE  _("IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE")
 #define BR_STRING_CREATED                       _("IDS_BR_BODY_CREATED")
 #define BR_STRING_MSG_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q	_("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
+#define BR_STRING_DELETE                        _("IDS_BR_SK_DELETE")
 /*************************************************************************************************************/
 
 
