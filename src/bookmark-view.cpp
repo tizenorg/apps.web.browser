@@ -551,7 +551,8 @@ Evas_Object *bookmark_view::_create_toolbar_layout(Evas_Object *parent)
 		BROWSER_LOGE("elm_button_add failed");
 		return NULL;
 	}
-	elm_object_style_set(plus_button, "browser/bookmark_plus_menu");
+	elm_object_style_set(plus_button, "naviframe/toolbar/default");
+	elm_object_text_set(plus_button, BR_STRING_ADD_BOOKMARK);
 	elm_object_part_content_set(toolbar_layout, "elm.swallow.plus_button", plus_button);
 	evas_object_smart_callback_add(plus_button, "clicked", __plus_cb, this);
 
