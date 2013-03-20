@@ -73,12 +73,15 @@ bookmark_view::~bookmark_view(void)
 	m_bookmark->destroy_list(m_bookmark_list);
 
 	if (m_genlist) {
-		_clear_genlist_item_data(m_genlist, m_view_mode);
+		_clear_genlist_item_data(m_genlist, FOLDER_VIEW_NORMAL);
 		evas_object_del(m_genlist);
 	}
-
-	if (m_item_ic)
-		elm_genlist_item_class_free(m_item_ic);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	if (m_gengrid) {
+		_clear_genlist_item_data(m_gengrid, THUMBNAIL_VIEW_NORMAL);
+		evas_object_del(m_gengrid);
+	}
+#endif
 
 	if (m_toolbar_layout)
 		evas_object_del(m_toolbar_layout);
