@@ -25,7 +25,6 @@ SET(SRCS
 	src/bookmark-add-view.cpp
 	src/bookmark-select-folder-view.cpp
 	src/bookmark-create-folder-view.cpp
-	src/bookmark-create-folder-save-view.cpp
 	src/browser.cpp
 	src/browser-object.cpp
 	src/browser-view.cpp

@@ -128,7 +128,8 @@ void bookmark_select_folder_view::__create_folder_btn_clicked_cb(
 {
 	BROWSER_LOGD("");
 	bookmark_select_folder_view *cp = (bookmark_select_folder_view *)data;
-	cp->m_browser->get_bookmark_create_folder_view(cp->__create_folder_cb, cp)->show();
+	m_browser->get_bookmark_create_folder_view(cp->__create_folder_cb, cp,
+		m_browser->get_bookmark()->get_root_folder_id())->show();
 }
 void bookmark_select_folder_view::__create_folder_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -158,7 +159,6 @@ void bookmark_select_folder_view::__naviframe_pop_finished_cb(
 		return;
 
 	cp->m_browser->delete_bookmark_create_folder_view();
-	cp->m_browser->delete_bookmark_create_folder_save_view();
 }
 
 void bookmark_select_folder_view::_back_to_previous_view(void)

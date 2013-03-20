@@ -27,7 +27,6 @@
 #include "bookmark-add-view.h"
 #include "bookmark-select-folder-view.h"
 #include "bookmark-create-folder-view.h"
-#include "bookmark-create-folder-save-view.h"
 #include "bookmark-edit-view.h"
 #include "browser-dlog.h"
 #include "browser-view.h"
@@ -76,7 +75,6 @@ browser::browser(Evas_Object *main_window)
 	,m_setting_view(NULL)
 	,m_bookmark_select_folder_view(NULL)
 	,m_bookmark_create_folder_view(NULL)
-	,m_bookmark_create_folder_save_view(NULL)
 	,m_bookmark_edit_view(NULL)
 	,m_scrap_view(NULL)
 #if defined(BROWSER_TAG)
@@ -148,9 +146,6 @@ browser::~browser(void)
 	if (m_bookmark_create_folder_view)
 		delete m_bookmark_create_folder_view;
 
-	if (m_bookmark_create_folder_save_view)
-		delete m_bookmark_create_folder_save_view;
-
 	if (m_bookmark_edit_view)
 		delete m_bookmark_edit_view;
 
@@ -197,20 +192,12 @@ bookmark_select_folder_view *browser::create_bookmark_select_folder_view(Evas_Sm
 	return m_bookmark_select_folder_view;
 }
 
-bookmark_create_folder_view *browser::get_bookmark_create_folder_view(Evas_Smart_Cb cb_func, void *cb_data)
+bookmark_create_folder_view *browser::get_bookmark_create_folder_view(Evas_Smart_Cb cb_func, void *cb_data, int parent_id)
 {
 	if (!m_bookmark_create_folder_view)
-		m_bookmark_create_folder_view = new bookmark_create_folder_view(cb_func, cb_data);
+		m_bookmark_create_folder_view = new bookmark_create_folder_view(cb_func, cb_data, parent_id);
 
 	return m_bookmark_create_folder_view;
-}
-
-bookmark_create_folder_save_view *browser::get_bookmark_create_folder_save_view(Evas_Smart_Cb cb_func, void *cb_data, int folder_id)
-{
-	if (!m_bookmark_create_folder_save_view)
-		m_bookmark_create_folder_save_view = new bookmark_create_folder_save_view(cb_func, cb_data, folder_id);
-
-	return m_bookmark_create_folder_save_view;
 }
 
 bookmark_edit_view *browser::create_bookmark_edit_view(bool tag_mode)
@@ -280,13 +267,6 @@ void browser::delete_bookmark_create_folder_view(void)
 	if (m_bookmark_create_folder_view)
 		delete m_bookmark_create_folder_view;
 	m_bookmark_create_folder_view = NULL;
-}
-
-void browser::delete_bookmark_create_folder_save_view(void)
-{
-	if (m_bookmark_create_folder_save_view)
-		delete m_bookmark_create_folder_save_view;
-	m_bookmark_create_folder_save_view = NULL;
 }
 
 void browser::delete_bookmark_edit_view(void)

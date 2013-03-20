@@ -26,41 +26,65 @@
 
 class bookmark_create_folder_view : public browser_object, public common_view {
 public:
+	typedef enum _menu_type
+	{
+		TITLE_INPUT_FIELD = 0,
+		FOLDER_SELECT_MENU,
+		MENU_UNKNOWN
+	} menu_type;
 
-	bookmark_create_folder_view(Evas_Smart_Cb cb_func = NULL, void *cb_data = NULL);
+	bookmark_create_folder_view(Evas_Smart_Cb cb_func, void *cb_data, int parent_id);
 	~bookmark_create_folder_view(void);
 
 	void show();
-	void refresh();
 private:
-	typedef struct _gl_cb_data {
+	typedef struct _genlist_callback_data {
+		menu_type type;
 		void *user_data;
 		void *cp;
 		Elm_Object_Item *it;
-	} gl_cb_data;
+	} genlist_callback_data;
+
 	Evas_Object *_create_genlist(Evas_Object *parent);
-	Eina_Bool _set_genlist_folder_tree(Evas_Object *genlist);
-	Eina_Bool _set_genlist_item_by_folder(Evas_Object *genlist, int folder_id, Elm_Object_Item *parent_it);
+	int _save_folder(void);
 	void _back_to_previous_view(void);
-	void _clear_genlist_item_data(Evas_Object *genlist);
+
+	static void __title_entry_changed_cb(void *data, Evas_Object *obj, void *eventInfo);
+	static void __title_entry_enter_key_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_focused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static char *__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part);
 	static Evas_Object *__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part);
 	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __genlist_realized_cb(void *data, Evas_Object *obj, void *event_info);
 
-	static void __create_folder_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __save_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __naviframe_pop_finished_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __ime_show_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __ime_hide_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __select_folder_cb(void *data, Evas_Object *obj, void *event_info);
 
-	Evas_Object *m_folder_genlist;
-	Evas_Object *m_titlebar_btn_create_folder;
-	bookmark *m_bookmark;
+	Evas_Object *m_genlist;
+	Evas_Object *m_back_button;
+	Evas_Object *m_btn_save;
+	Evas_Object *m_titlebar_btn_save;
+	Evas_Object *m_titlebar_btn_back;
 	
 	Elm_Object_Item *m_naviframe_item;
+	Elm_Genlist_Item_Class *m_itc_title;
 	Elm_Genlist_Item_Class *m_itc_folder;
+	genlist_callback_data m_input_title_callback_data;
+	genlist_callback_data m_select_folder_callback_data;
+
+	std::string m_input_title_string;
+	int m_folder_id;
+	int m_saved_id;
 	Evas_Smart_Cb m_cb_func;
 	void *m_cb_data;
 };
 
-#endif /* BOOKMARK_SELECT_FOLDER_VIEW_H */
+#endif /* BOOKMARK_CREATE_FOLDER_VIEW_H */
 

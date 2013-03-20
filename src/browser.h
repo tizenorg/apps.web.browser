@@ -29,7 +29,6 @@ class bookmark_view;
 class bookmark_add_view;
 class bookmark_select_folder_view;
 class bookmark_create_folder_view;
-class bookmark_create_folder_save_view;
 class bookmark_edit_view;
 class history;
 class geolocation_manager;
@@ -79,8 +78,7 @@ public:
 	bookmark_add_view *create_bookmark_add_view(const char  *title, const char *uri, int folder_id_to_save, Eina_Bool edit_mode);
 	bookmark_select_folder_view *create_bookmark_select_folder_view(Evas_Smart_Cb cb_func, void *cb_data, Eina_Bool enable_create_folder);
 	bookmark_select_folder_view *get_bookmark_select_folder_view() { return m_bookmark_select_folder_view;}
-	bookmark_create_folder_view *get_bookmark_create_folder_view(Evas_Smart_Cb cb_func = NULL, void *cb_data = NULL);
-	bookmark_create_folder_save_view *get_bookmark_create_folder_save_view(Evas_Smart_Cb cb_func, void *cb_data, int folder_id);
+	bookmark_create_folder_view *get_bookmark_create_folder_view(Evas_Smart_Cb cb_func, void *cb_data, int parent_id);
 	bookmark_edit_view *create_bookmark_edit_view(bool mode);
 	bookmark_edit_view *get_bookmark_edit_view() { return m_bookmark_edit_view; }
 	geolocation_manager *get_geolocation_manager(void);
@@ -100,7 +98,6 @@ public:
 	void delete_bookmark_add_view(void);
 	void delete_bookmark_select_folder_view(void);
 	void delete_bookmark_create_folder_view(void);
-	void delete_bookmark_create_folder_save_view(void);
 	void delete_bookmark_edit_view(void);
 	void delete_scrap_view(void);
 #if defined(BROWSER_TAG)
@@ -135,7 +132,6 @@ private:
 	setting_view *m_setting_view;
 	bookmark_select_folder_view *m_bookmark_select_folder_view;
 	bookmark_create_folder_view *m_bookmark_create_folder_view;
-	bookmark_create_folder_save_view *m_bookmark_create_folder_save_view;
 	bookmark_edit_view *m_bookmark_edit_view;
 	scrap_view *m_scrap_view;
 #if defined(BROWSER_TAG)

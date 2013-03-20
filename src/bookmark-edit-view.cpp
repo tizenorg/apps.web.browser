@@ -357,7 +357,8 @@ void bookmark_edit_view::__ctxpopup_add_new_folder_by_cb(void *data, Evas_Object
 {
 	BROWSER_LOGD("");
 	bookmark_edit_view *cp = (bookmark_edit_view *)data;
-	cp->m_browser->get_bookmark_create_folder_view(__create_folder_cb, cp)->show();
+	m_browser->get_bookmark_create_folder_view(__create_folder_cb, cp,
+					m_browser->get_bookmark()->get_root_folder_id())->show();
 	evas_object_del(obj);
 }
 
