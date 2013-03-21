@@ -49,8 +49,9 @@ bookmark_view::bookmark_view(void)
 	,m_box(NULL)
 	,m_contents_layout(NULL)
 	,m_genlist(NULL)
+#if defined(BROWSER_THUMBNAIL_VIEW)
 	,m_gengrid(NULL)
-	,m_item_ic(NULL)
+#endif
 {
 	BROWSER_LOGD("");
 	elm_theme_extension_add(NULL, bookmark_view_edj_path);

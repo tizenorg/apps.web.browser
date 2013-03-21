@@ -309,10 +309,8 @@ Eina_Bool bookmark::set_thumbnail(int id, Evas_Object *thumbnail)
 
 	platform_service ps;
 	ps.evas_image_size_get(thumbnail, &w, &h, &stride);
-
-	BROWSER_LOGD("thumbnail w=[%d], h=[%d], stride=[%d]", w, h, stride);
-
 	len = stride * h;
+	BROWSER_LOGD("thumbnail w=[%d], h=[%d], stride=[%d], len=[%d]", w, h, stride, len);
 
 	if (len == 0)
 		return EINA_FALSE;

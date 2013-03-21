@@ -94,10 +94,11 @@ private:
 	Evas_Object *m_box;
 	Evas_Object *m_contents_layout;
 	Evas_Object *m_genlist;
+#if defined(BROWSER_THUMBNAIL_VIEW)
 	Evas_Object *m_gengrid;
+#endif
 	Evas_Object *m_popup_view_by;
 
-	Elm_Genlist_Item_Class *m_item_ic;
 	Elm_Genlist_Item_Class m_itc_folder;
 	Elm_Genlist_Item_Class m_itc_bookmark_folder;
 #if defined(BROWSER_THUMBNAIL_VIEW)
