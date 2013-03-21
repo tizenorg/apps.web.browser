@@ -832,8 +832,12 @@ void bookmark_add_view::show()
 	BROWSER_LOGD("");
 	m_genlist = _create_genlist(m_naviframe);
 
-	m_naviframe_item = elm_naviframe_item_push(m_naviframe,
-						BR_STRING_EDIT, NULL, NULL, m_genlist, NULL);
+	if (m_edit_mode)
+		m_naviframe_item = elm_naviframe_item_push(m_naviframe,
+							BR_STRING_EDIT, NULL, NULL, m_genlist, NULL);
+	else
+		m_naviframe_item = elm_naviframe_item_push(m_naviframe,
+							BR_STRING_ADD_BOOKMARK, NULL, NULL, m_genlist, NULL);
 
 	evas_object_smart_callback_add(m_conformant, "virtualkeypad,state,on", __ime_show_cb, m_naviframe_item);
 	evas_object_smart_callback_add(m_conformant, "virtualkeypad,state,off", __ime_hide_cb, this);
@@ -885,3 +889,4 @@ void bookmark_add_view::__edit_bookmark_done_cb(void *data, Evas_Object *obj, vo
 	}
 }
 #endif
+
