@@ -99,21 +99,8 @@ char *bookmark_view::__genlist_get_label_cb(void *data, Evas_Object *obj, const 
 	bookmark_item *item = (bookmark_item *)cb_data->user_data;
 
 	if (!strcmp(part, "elm.text"))
-		return elm_entry_utf8_to_markup(item->get_title());
+		return strdup(item->get_title());
 
-	if (item->is_folder()) {
-		/* Folder Item*/
-		if (!strcmp(part, "elm.text"))
-			return elm_entry_utf8_to_markup(item->get_title());
-		if (!strcmp(part, "elm.text.1"))
-			return elm_entry_utf8_to_markup(item->get_title());
-		if (!strcmp(part, "elm.text.2"))
-			return elm_entry_utf8_to_markup(BR_STRING_FOLDER);
-	} else {
-		/* Bookmark Item*/
-		if (!strcmp(part, "elm.text"))
-			return elm_entry_utf8_to_markup(item->get_title());
-	}
 	return NULL;
 }
 
@@ -220,7 +207,11 @@ void bookmark_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void
 		elm_genlist_item_update(it);
 	} else {
 		BROWSER_LOGD("Bookmark Item clicked[URL:%s]", item->get_uri());
-		m_browser->get_browser_view()->get_current_webview()->load_uri(item->get_uri());
+		char *uri = elm_entry_utf8_to_markup(item->get_uri());
+		m_browser->get_browser_view()->get_current_webview()->load_uri(uri);
+
+		if (uri)
+			free(uri);
 
 		m_browser->get_multiwindow_view()->close_multiwindow_view();
 	}

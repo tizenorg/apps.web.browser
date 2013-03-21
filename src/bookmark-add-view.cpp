@@ -387,64 +387,9 @@ Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object
 	genlist_callback_data *callback_data = (genlist_callback_data *)data;
 	bookmark_add_view::menu_type type = callback_data->type;
 	bookmark_add_view *view_this = (bookmark_add_view *)callback_data->cp;
-	platform_service ps;
 
 	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.icon.edit")) {
 		switch (type) {
-		case TITLE_INPUT_FIELD:
-		{
-			BROWSER_LOGD("[%s] TITLE_INPUT_FIELD", part);
-			view_this->m_title_edit_field = ps.editfield_add(obj, EINA_FALSE);
-			if (!view_this->m_title_edit_field)
-				return NULL;
-			ps.editfield_entry_single_line_set(view_this->m_title_edit_field, EINA_TRUE);
-			ps.editfield_guide_text_set(view_this->m_title_edit_field, BR_STRING_ENTER_BOOKMARK_NAME);
-
-			Evas_Object *entry = ps.editfield_entry_get(view_this->m_title_edit_field);
-			evas_object_smart_callback_add(entry,
-							"changed", __title_entry_changed_cb, view_this);
-			evas_object_smart_callback_add(entry,
-							"preedit,changed", __title_entry_changed_cb, view_this);
-			evas_object_smart_callback_add(entry,
-						"activated", __title_entry_enter_key_cb, view_this);
-
-			BROWSER_LOGD("m_input_title_string: %s", view_this->m_input_title_string.c_str());
-			elm_entry_entry_set(entry, view_this->m_input_title_string.c_str());
-
-			if (elm_entry_is_empty(entry))
-				elm_object_signal_emit(view_this->m_title_edit_field, "elm,state,guidetext,show", "elm");
-
-			return view_this->m_title_edit_field;
-			break;
-		}
-		case URI_INPUT_FIELD:
-		{
-			BROWSER_LOGD("[%s] URI_INPUT_FIELD", part);
-			view_this->m_uri_edit_field = ps.editfield_add(obj, EINA_FALSE);
-			if (!view_this->m_uri_edit_field)
-				return NULL;
-			ps.editfield_entry_single_line_set(view_this->m_uri_edit_field, EINA_TRUE);
-			ps.editfield_guide_text_set(view_this->m_uri_edit_field, BR_STRING_URL);
-
-			Evas_Object *entry = ps.editfield_entry_get(view_this->m_uri_edit_field);
-			evas_object_smart_callback_add(entry,
-							"changed", __uri_entry_changed_cb, view_this);
-			evas_object_smart_callback_add(entry,
-							"preedit,changed", __uri_entry_changed_cb, view_this);
-			evas_object_smart_callback_add(entry,
-						"activated", __uri_entry_enter_key_cb, view_this);
-			elm_entry_input_panel_layout_set(entry, ELM_INPUT_PANEL_LAYOUT_URL);
-			elm_entry_prediction_allow_set(entry, EINA_FALSE);
-
-			BROWSER_LOGD("m_input_uri_string: %s", view_this->m_input_uri_string.c_str());
-			elm_entry_entry_set(entry, view_this->m_input_uri_string.c_str());
-
-			if (elm_entry_is_empty(entry))
-				elm_object_signal_emit(view_this->m_uri_edit_field, "elm,state,guidetext,show", "elm");
-
-			return view_this->m_uri_edit_field;
-			break;
-		}
 		case FOLDER_SELECT_MENU:
 		{
 			BROWSER_LOGD("[%s] FOLDER_SELECT_MENU", part);
@@ -496,7 +441,15 @@ Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object
 						"unfocused", __title_entry_unfocused_cb, view_this);
 
 			BROWSER_LOGD("m_input_title_string: %s", view_this->m_input_title_string.c_str());
-			elm_entry_entry_set(entry, view_this->m_input_title_string.c_str());
+			char *mark_up = elm_entry_utf8_to_markup(view_this->m_input_title_string.c_str());
+			if (!mark_up) {
+				BROWSER_LOGE("elm_entry_utf8_to_markup failed");
+				return NULL;
+			}
+			elm_entry_entry_set(entry, mark_up);
+
+			if (mark_up)
+				free(mark_up);
 
 			return entry;
 			break;
@@ -520,7 +473,14 @@ Evas_Object *bookmark_add_view::__genlist_get_content_cb(void *data, Evas_Object
 			elm_entry_prediction_allow_set(entry, EINA_FALSE);
 
 			BROWSER_LOGD("m_input_uri_string: %s", view_this->m_input_uri_string.c_str());
-			elm_entry_entry_set(entry, view_this->m_input_uri_string.c_str());
+			char *mark_up = elm_entry_utf8_to_markup(view_this->m_input_uri_string.c_str());
+			if (!mark_up) {
+				BROWSER_LOGE("elm_entry_utf8_to_markup failed");
+				return NULL;
+			}
+			elm_entry_entry_set(entry, mark_up);
+			if (mark_up)
+				free(mark_up);
 
 			return entry;
 			break;
@@ -608,11 +568,13 @@ void bookmark_add_view::__save_btn_clicked_cb(
 		return;
 	}
 	if (view_this->m_edit_mode ==EINA_FALSE) {
-		const char *uri = view_this->m_input_uri_string.c_str();
+		char *uri = elm_entry_markup_to_utf8(view_this->m_input_uri_string.c_str());
 #if defined(BROWSER_THUMBNAIL_VIEW)
 		Evas_Object *snapshot = m_browser->get_history()->get_snapshot(uri);
 		m_browser->get_bookmark()->set_thumbnail(view_this->m_bookmark_id, snapshot);
 #endif
+		if (uri)
+			free(uri);
 	}
 
 	view_this->_back_to_previous_view();
@@ -664,6 +626,8 @@ int bookmark_add_view::_save_bookmark(void)
 {
 	BROWSER_LOGD("");
 	int saved_bookmark_id;
+	char *title = elm_entry_markup_to_utf8(m_input_title_string.c_str());
+	char *url = elm_entry_markup_to_utf8(m_input_uri_string.c_str());
 
 #if defined(BROWSER_TAG)
 	char *tag = NULL;
@@ -710,8 +674,8 @@ int bookmark_add_view::_save_bookmark(void)
 	int ret = 0;
 	if (m_edit_mode) {
 		ret = m_browser->get_bookmark()->update_bookmark(m_bookmark_id,
-					m_input_title_string.c_str(),
-					m_input_uri_string.c_str(),
+					title,
+					url,
 					m_folder_id,
 					-1
 #if defined(BROWSER_TAG)
@@ -720,8 +684,8 @@ int bookmark_add_view::_save_bookmark(void)
 					);
 	} else {
 		ret = m_browser->get_bookmark()->save_bookmark(
-							m_input_title_string.c_str(),
-							m_input_uri_string.c_str(),
+							title,
+							url,
 							&saved_bookmark_id,
 							m_folder_id
 #if defined(BROWSER_TAG)
@@ -729,6 +693,11 @@ int bookmark_add_view::_save_bookmark(void)
 #endif
 							);
 	}
+
+	if (url)
+		free(url);
+	if (title)
+		free(title);
 
 #if defined(BROWSER_TAG)
 	for(unsigned int j = 0 ; j < tag_list.size() ; j++) {
