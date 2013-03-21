@@ -67,10 +67,6 @@ bookmark_view::bookmark_view(void)
 bookmark_view::~bookmark_view(void)
 {
 	BROWSER_LOGD("");
-/*	for (unsigned int i = 0 ; i < m_bookmark_list.size() ; i++)
-		delete m_bookmark_list[i];
-	m_bookmark_list.clear();
-*/
 	m_bookmark->destroy_list(m_bookmark_list);
 
 	if (m_genlist) {
@@ -157,7 +153,6 @@ Evas_Object *bookmark_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, 
 			evas_object_size_hint_aspect_set(folder_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 			return folder_icon;
 		} else {
-			//Evas_Object *thumbnail = m_webview_context->get_favicon(item->get_uri());
 			Evas_Object *thumbnail = cp->m_bookmark->get_thumbnail(item->get_id(), obj);
 			if (!thumbnail) {
 				thumbnail = elm_icon_add(obj);

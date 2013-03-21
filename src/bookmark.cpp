@@ -534,7 +534,6 @@ Eina_Bool bookmark::set_thumbnail(int id, Evas_Object *thumbnail)
 
 	void *thumbnail_data = evas_object_image_data_get(thumbnail, EINA_TRUE);
 #if defined(BROWSER_BOOKMARK_SYNC)
-#if 0
 	int ret = bp_bookmark_adaptor_set_thumbnail(id,(const unsigned char *)thumbnail_data, len);
 	if (ret == 0) {
 		if (bp_bookmark_adaptor_set_thumbnail_width(id, w) == 0) {
@@ -548,7 +547,6 @@ Eina_Bool bookmark::set_thumbnail(int id, Evas_Object *thumbnail)
 			BROWSER_LOGE("bp_bookmark_adaptor_set_thumbnail_width is failed");
 	} else
 		BROWSER_LOGE("bp_bookmark_adaptor_set_thumbnail is failed");
-#endif
 	BROWSER_LOGE("set thumbnail is failed");
 	return EINA_FALSE;
 #else
