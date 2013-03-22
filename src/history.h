@@ -36,6 +36,8 @@ public:
 	Eina_Bool delete_history(history_item item);
 	Eina_Bool delete_all(void);
 	int get_count(void);
+	Eina_Bool set_history_favicon(const char *uri, Evas_Object *icon);
+	Evas_Object *get_history_favicon(const char *uri);
 
 	// The return value is malloced list, it should be freed by caller.
 	std::vector<history_item *> get_history_list(void);

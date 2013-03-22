@@ -626,3 +626,162 @@ Eina_Bool history::delete_history(const char *uri)
 
 	return EINA_TRUE;
 }
+
+Eina_Bool history::set_history_favicon(const char *uri, Evas_Object *icon)
+{
+	if (uri == NULL) {
+		BROWSER_LOGD("uri is null");
+		return EINA_FALSE;
+	}
+	if (icon == NULL) {
+		BROWSER_LOGD("icon is null");
+		return EINA_FALSE;
+	}
+
+	int w = 0;
+	int h = 0;
+	int stride = 0;
+	int len = 0;
+
+	platform_service ps;
+	ps.evas_image_size_get(icon, &w, &h, &stride);
+
+	BROWSER_LOGD("favicon w=[%d], h=[%d], stride=[%d]", w, h, stride);
+
+	len = stride * h;
+
+	if (len == 0)
+		return EINA_FALSE;
+
+	void *icon_data = evas_object_image_data_get(icon, EINA_TRUE);
+
+	sqlite3 *descriptor = NULL;
+	int error = db_util_open(history_db_path, &descriptor, DB_UTIL_REGISTER_HOOK_METHOD);
+	if (error != SQLITE_OK) {
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+
+	sqlite3_stmt *sqlite3_stmt = NULL;
+	error = sqlite3_prepare_v2(descriptor, "update history set favicon=?, favicon_length=?, favicon_w=?, favicon_h=? where address=?", -1, &sqlite3_stmt, NULL);
+	if (error != SQLITE_OK) {
+		BROWSER_LOGD("SQL error=%d", error);
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_blob(sqlite3_stmt, 1, icon_data, len, NULL) != SQLITE_OK) {
+		BROWSER_LOGE("sqlite3_bind_blob is failed.\n");
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_int(sqlite3_stmt, 2, len) != SQLITE_OK) {
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_int(sqlite3_stmt, 3, w) != SQLITE_OK) {
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_int(sqlite3_stmt, 4, h) != SQLITE_OK) {
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_text(sqlite3_stmt, 5, uri, -1, NULL) != SQLITE_OK) {
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return NULL;
+	}
+	error = sqlite3_step(sqlite3_stmt);
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+
+	db_util_close(descriptor);
+	return EINA_TRUE;
+}
+
+Evas_Object *history::get_history_favicon(const char *uri)
+{
+	BROWSER_LOGD("uri = [%s]", uri);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(uri, NULL);
+	sqlite3 *descriptor = NULL;
+	Evas_Object *icon = NULL;
+	Evas *e = NULL;
+	e = evas_object_evas_get(m_window);
+
+	if (!e) {
+		BROWSER_LOGE("canvas is NULL");
+		return NULL;
+	}
+
+	int error = db_util_open(history_db_path, &descriptor, DB_UTIL_REGISTER_HOOK_METHOD);
+	if (error != SQLITE_OK) {
+		db_util_close(descriptor);
+		return NULL;
+	}
+
+	sqlite3_stmt *sqlite3_stmt = NULL;
+	error = sqlite3_prepare_v2(descriptor, "select favicon, favicon_length, favicon_w, favicon_h from history where address=?", -1, &sqlite3_stmt, NULL);
+	if (error != SQLITE_OK) {
+		BROWSER_LOGD("SQL error=%d", error);
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+	if (sqlite3_bind_text(sqlite3_stmt, 1, uri, -1, NULL) != SQLITE_OK) {
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return NULL;
+	}
+	error = sqlite3_step(sqlite3_stmt);
+	if (error == SQLITE_ROW) {
+		int icon_w = 0;
+		int icon_h = 0;
+		int stride = 0;
+		int icon_length = 0;
+		//void *icon_data = NULL;
+		void *icon_data_temp = NULL;
+		icon_data_temp = (void *)sqlite3_column_blob(sqlite3_stmt,0);
+		icon_length = sqlite3_column_int(sqlite3_stmt,1);
+		icon_w = sqlite3_column_int(sqlite3_stmt,2);
+		icon_h = sqlite3_column_int(sqlite3_stmt,3);
+		BROWSER_LOGD("icon_length(%d), icon_w(%d), icon_h(%d)", icon_length, icon_w, icon_h);
+
+		if (icon_length > 0){
+			//icon_data = new(nothrow) char[icon_length];
+			//memcpy(icon_data, icon_data_temp, icon_length);
+
+			icon = evas_object_image_filled_add(e);
+			evas_object_image_colorspace_set(icon, EVAS_COLORSPACE_ARGB8888);
+			evas_object_image_size_set(icon, icon_w, icon_h);
+			evas_object_image_fill_set(icon, 0, 0, icon_w, icon_h);
+			evas_object_image_filled_set(icon, EINA_TRUE);
+			evas_object_image_alpha_set(icon,EINA_TRUE);
+			//evas_object_image_data_set(icon, icon_data);
+
+			void *pixels = evas_object_image_data_get(icon, EINA_TRUE);
+			memcpy(pixels, icon_data_temp, icon_length);
+			evas_object_image_data_set(icon, pixels);
+		}
+	}
+
+	BROWSER_LOGD("SQL error: %d, %p", error, icon);
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+		BROWSER_LOGE("sqlite3_finalize is failed.\n");
+	db_util_close(descriptor);
+	return icon;
+}

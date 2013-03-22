@@ -120,7 +120,7 @@ Evas_Object *bookmark_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, 
 			evas_object_size_hint_aspect_set(folder_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 			return folder_icon;
 		} else {
-			Evas_Object *favicon = m_webview_context->get_favicon(item->get_uri());
+			Evas_Object *favicon = cp->m_bookmark->get_favicon(item->get_id(), obj);
 			if (!favicon) {
 				favicon = elm_icon_add(obj);
 				elm_icon_standard_set(favicon, browser_img_dir"/I01_icon_default_internet.png");
@@ -203,12 +203,7 @@ void bookmark_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void
 		elm_genlist_item_update(it);
 	} else {
 		BROWSER_LOGD("Bookmark Item clicked[URL:%s]", item->get_uri());
-		char *uri = elm_entry_utf8_to_markup(item->get_uri());
-		m_browser->get_browser_view()->get_current_webview()->load_uri(uri);
-
-		if (uri)
-			free(uri);
-
+		m_browser->get_browser_view()->get_current_webview()->load_uri(item->get_uri());
 		m_browser->get_multiwindow_view()->close_multiwindow_view();
 	}
 }

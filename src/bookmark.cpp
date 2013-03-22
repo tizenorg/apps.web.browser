@@ -649,6 +649,104 @@ Evas_Object *bookmark::get_thumbnail(int id, Evas_Object *parent)
 	return icon;
 }
 
+Eina_Bool bookmark::set_favicon(int id, Evas_Object *favicon)
+{
+	BROWSER_LOGD("id : %d", id);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(favicon, EINA_FALSE);
+
+	int w = 0;
+	int h = 0;
+	int stride = 0;
+	int len = 0;
+
+	platform_service ps;
+	ps.evas_image_size_get(favicon, &w, &h, &stride);
+	len = stride * h;
+	BROWSER_LOGD("favicon w=[%d], h=[%d], stride=[%d], len=[%d]", w, h, stride, len);
+
+	if (len == 0)
+		return EINA_FALSE;
+
+	void *favicon_data = evas_object_image_data_get(favicon, EINA_TRUE);
+#if defined(BROWSER_BOOKMARK_SYNC)
+	int ret = bp_bookmark_adaptor_set_favicon(id,(const unsigned char *)favicon_data, len);
+	if (ret == 0) {
+		if (bp_bookmark_adaptor_set_favicon_width(id, w) == 0) {
+			if (bp_bookmark_adaptor_set_favicon_height(id, h) == 0) {
+				BROWSER_LOGD("favicon is successfully saved.");
+				bp_bookmark_adaptor_publish_notification();
+				return EINA_TRUE;
+			} else
+				BROWSER_LOGE("bp_bookmark_adaptor_set_favicon_height is failed");
+		} else
+			BROWSER_LOGE("bp_bookmark_adaptor_set_favicon_width is failed");
+	} else
+		BROWSER_LOGE("bp_bookmark_adaptor_set_favicon is failed");
+	BROWSER_LOGE("set favicon is failed");
+	return EINA_FALSE;
+#else
+	if (bmsvc_set_favicon(id, favicon_data, w, h, len) != BMSVC_ERROR_NONE)
+		return EINA_FALSE;
+	return EINA_TRUE;
+#endif
+
+}
+
+Evas_Object *bookmark::get_favicon(int id, Evas_Object *parent)
+{
+	BROWSER_LOGD("id : %d", id);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(parent, EINA_FALSE);
+	void *favicon_data = NULL;
+	int w = 0;
+	int h = 0;
+	int stride = 0;
+	int len = 0;
+
+	Evas_Object *icon = NULL;
+	Evas *e = NULL;
+	e = evas_object_evas_get(parent);
+	if (!e) {
+		BROWSER_LOGE("canvas is NULL");
+		return NULL;
+	}
+#if defined(BROWSER_BOOKMARK_SYNC)
+	int ret = bp_bookmark_adaptor_get_favicon(id, (unsigned char **)&favicon_data, &len);
+	if (ret == 0) {
+		if (bp_bookmark_adaptor_get_favicon_width(id, &w) == 0) {
+			if (bp_bookmark_adaptor_get_favicon_height(id, &h) == 0) {
+				BROWSER_LOGD("favicon is successfully loaded.");
+			} else {
+				BROWSER_LOGE("bp_bookmark_adaptor_set_favicon_height is failed");
+				return NULL;
+			}
+		} else {
+			BROWSER_LOGE("bp_bookmark_adaptor_set_favicon_width is failed");
+			return NULL;
+		}
+	} else {
+		BROWSER_LOGE("bp_bookmark_adaptor_set_favicon is failed");
+		return NULL;
+	}
+#else
+	if (bmsvc_get_favicon(id, &favicon_data, &w, &h, &len) != BMSVC_ERROR_NONE) {
+		BROWSER_LOGE("bmsvc_get_favicon failed");
+		return NULL;
+	}
+#endif
+	BROWSER_LOGE("len: %d, w:%d, h:%d", len, w, h);
+	if (len > 0){
+		icon = evas_object_image_filled_add(e);
+		evas_object_image_colorspace_set(icon, EVAS_COLORSPACE_ARGB8888);
+		evas_object_image_size_set(icon, w, h);
+		evas_object_image_fill_set(icon, 0, 0, w, h);
+		evas_object_image_filled_set(icon, EINA_TRUE);
+		evas_object_image_alpha_set(icon,EINA_TRUE);
+		evas_object_image_data_set(icon, favicon_data);
+	}
+
+	return icon;
+}
+
 #if defined(BROWSER_TAG)
 Eina_Bool bookmark::get_tag_list(std::vector<char *> &list)
 {

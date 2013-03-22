@@ -65,6 +65,8 @@ public:
 	Eina_Bool get_folder_depth_count(int *depth_count);
 	Eina_Bool set_thumbnail(int id, Evas_Object *thumbnail);
 	Evas_Object *get_thumbnail(int id, Evas_Object *parent);
+	Eina_Bool set_favicon(int id, Evas_Object *favicon);
+	Evas_Object *get_favicon(int id, Evas_Object *parent);
 #if defined(BROWSER_TAG)
 	Eina_Bool get_tag_list(std::vector<char *> &list);
 	Eina_Bool get_tag_count(int *count);

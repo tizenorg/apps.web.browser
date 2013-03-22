@@ -201,6 +201,9 @@ void history_view::__bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *ob
 		m_browser->get_bookmark()->set_thumbnail(bookmark_id,
 							m_browser->get_history()->get_snapshot(item->get_uri()));
 #endif
+		/* set bookmark favicon from history if there is same URI */
+		m_browser->get_bookmark()->set_favicon(bookmark_id,
+					m_browser->get_history()->get_history_favicon(item->get_uri()));
 	}
 	Elm_Object_Item *seleted_item = elm_genlist_selected_item_get(m_browser->get_history_view()->m_genlist);
 	elm_genlist_item_selected_set(seleted_item, EINA_FALSE);

@@ -625,7 +625,7 @@ void bookmark_add_view::__ime_hide_cb(void *data, Evas_Object *obj, void *event_
 int bookmark_add_view::_save_bookmark(void)
 {
 	BROWSER_LOGD("");
-	int saved_bookmark_id;
+	int saved_bookmark_id = -1;
 	char *title = elm_entry_markup_to_utf8(m_input_title_string.c_str());
 	char *url = elm_entry_markup_to_utf8(m_input_uri_string.c_str());
 
@@ -682,6 +682,10 @@ int bookmark_add_view::_save_bookmark(void)
 					, tag1, tag2, tag3, tag4
 #endif
 					);
+		/* get favicon from history if there is same URI */
+		if (ret > 0)
+			m_browser->get_bookmark()->set_favicon(m_bookmark_id,
+					m_browser->get_history()->get_history_favicon(url));
 	} else {
 		ret = m_browser->get_bookmark()->save_bookmark(
 							title,
@@ -692,6 +696,12 @@ int bookmark_add_view::_save_bookmark(void)
 							, tag1, tag2, tag3, tag4
 #endif
 							);
+		/* get favicon from history if there is same URI */
+		if (ret > 0) {
+			m_browser->get_bookmark()->set_favicon(saved_bookmark_id,
+					m_browser->get_history()->get_history_favicon(url));
+			m_bookmark_id = saved_bookmark_id;
+		}
 	}
 
 	if (url)
@@ -714,7 +724,6 @@ int bookmark_add_view::_save_bookmark(void)
 		BROWSER_LOGD("same bookmark is already exist");
 		return 0;
 	}
-	m_bookmark_id = saved_bookmark_id;
 	return 1;
 }
 

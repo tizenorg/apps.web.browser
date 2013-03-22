@@ -1068,6 +1068,16 @@ void webview::__load_finished_cb(void *data, Evas_Object *obj, void *event_info)
 	m_preference->set_last_visited_uri(wv->get_uri());
 
 	ecore_idler_add(__execute_js_cb, m_browser);
+
+	/* Save favicon to history DB - if the icon was not in icon DB*/
+	if (!wv->private_browsing_enabled_get())
+		m_browser->get_history()->set_history_favicon(wv->get_uri(), wv->get_favicon());
+
+	/* Update favicon to Bookmark DB if there are same URLs */
+	int bookmark_id = -1;
+	m_browser->get_bookmark()->get_id(wv->get_uri(), &bookmark_id);
+	if (bookmark_id >= 0)
+		m_browser->get_bookmark()->set_favicon(bookmark_id, wv->get_favicon());
 }
 
 static void _kill_browser_cb(void *data, Evas_Object *obj, void *event_info)
@@ -1125,6 +1135,17 @@ void webview::__close_window_cb(void *data, Evas_Object *obj, void *event_info)
 void webview::__icon_received_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
+	webview *wv = (webview *)data;
+
+	/* Save favicon to history DB - if the icon was not in icon DB*/
+	if (!wv->private_browsing_enabled_get())
+		m_browser->get_history()->set_history_favicon(wv->get_uri(), wv->get_favicon());
+
+	/* Update favicon to Bookmark DB if there are same URLs */
+	int bookmark_id = -1;
+	m_browser->get_bookmark()->get_id(wv->get_uri(), &bookmark_id);
+	if (bookmark_id >= 0)
+		m_browser->get_bookmark()->set_favicon(bookmark_id, wv->get_favicon());
 }
 
 void webview::__policy_navigation_decide_cb(void *data, Evas_Object *obj, void *event_info)

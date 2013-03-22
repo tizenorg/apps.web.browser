@@ -507,7 +507,7 @@ void bookmark_edit_view::_go_into_sub_folder(int folder_id, const char *folder_n
 
 	item->folder_id = folder_id;
 	if (folder_id == m_bookmark->get_root_folder_id()) {
-		item->folder_name = strdup(BR_STRING_MOBILE);
+		item->folder_name = strdup(BR_STRING_BOOKMARKS);
 	} else
 		item->folder_name = strdup(folder_name);
 	m_path_history.push_back(item);
