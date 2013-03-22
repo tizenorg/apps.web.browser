@@ -520,7 +520,7 @@ void bookmark_add_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, 
 		break;
 	case FOLDER_SELECT_MENU:
 		BROWSER_LOGD("FOLDER_SELECT_MENU");
-		m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_TRUE)->show();
+		m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_FALSE)->show();
 		break;
 #if defined(BROWSER_TAG)
 	case TAG_SELECT_MENU:
