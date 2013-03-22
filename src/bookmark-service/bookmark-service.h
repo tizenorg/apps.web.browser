@@ -27,7 +27,6 @@
 extern "C" {
 #endif
 
-
 /* bookmark item */
 typedef struct
 {	
@@ -252,6 +251,11 @@ int bmsvc_update_bookmark(int id, const char *title, const char *address, int pa
 						const char *tag3,
 						const char *tag4,
 						int check_editable);
+int bmsvc_set_thumbnail(int id, void *image_data, int w, int h, int len);
+int bmsvc_get_thumbnail(int id, void **image_data, int *w, int *h, int *len);
+int bmsvc_set_favicon(int id, void *image_data, int w, int h, int len);
+int bmsvc_get_favicon(int id, void **image_data, int *w, int *h, int *len);
+
 #ifdef __cplusplus
 };
 #endif

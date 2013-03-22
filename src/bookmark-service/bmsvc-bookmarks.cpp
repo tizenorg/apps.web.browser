@@ -984,3 +984,285 @@ int bmsvc_update_bookmark(int id, const char *title, const char *address, int pa
 	TRACE_END;
 	return BMSVC_ERROR_UNKNOWN;
 }
+
+int bmsvc_set_thumbnail(int id, void *image_data, int w, int h, int len)
+{
+	TRACE_BEGIN;
+	bookmark_entry *entry = NULL;
+	int nError;
+	sqlite3_stmt *stmt;
+
+	RETV_MSG_IF(id < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: id is negative");
+	RETV_MSG_IF(image_data == NULL,
+						BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: thumbnail_data is empty");
+	RETV_MSG_IF(w < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: width is negative");
+	RETV_MSG_IF(h < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: height is negative");
+	RETV_MSG_IF(len < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: length is negative");
+	DBG_LOGD("id: %d", id);
+	DBG_LOGD("w:%d, h: %d, len: %d", w, h, len);
+	entry =  bmsvc_get_bookmark_by_id(id);
+	if (!entry)
+		return BMSVC_ERROR_INVALID_PARAMETER;
+	_bmsvc_destroy_bookmark_entry((void *)entry);
+
+	if (_internet_bookmark_db_open() < 0) {
+		DBG_LOGE("db_util_open is failed\n");
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_prepare_v2(m_internet_bookmark_db,
+				       "UPDATE bookmarks SET thumbnail=?, thumbnail_length=?\
+				       ,thumbnail_w=?, thumbnail_h=? \
+				       WHERE id=?",
+				       -1, &stmt, NULL);
+	if (nError != SQLITE_OK) {
+		DBG_LOGE("sqlite3_prepare_v2 is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	/* binding values */
+	if (sqlite3_bind_blob(stmt, 1, image_data , len, NULL) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_blob is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 2, len) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 3, w) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 4, h) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 5, id) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_step(stmt);
+	if (nError == SQLITE_OK || nError == SQLITE_DONE) {
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_NONE;
+	}
+	__bookmark_db_close();
+	TRACE_END;
+	return BMSVC_ERROR_DB_FAILED;
+}
+
+int bmsvc_get_thumbnail(int id, void **image_data, int *w, int *h, int *len)
+{
+	TRACE_BEGIN;
+	DBG_LOGD("id :%d", id);
+
+	int nError;
+	sqlite3_stmt *stmt;
+	void *thumbnail_data_temp = NULL;
+
+	if (_internet_bookmark_db_open() < 0) {
+		DBG_LOGE("db_util_open is failed\n");
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_prepare_v2(m_internet_bookmark_db,
+					"SELECT\
+					thumbnail, thumbnail_length\
+					,thumbnail_w, thumbnail_h\
+					FROM bookmarks\
+					WHERE id=?",
+					-1, &stmt, NULL);
+	if (nError != SQLITE_OK) {
+		DBG_LOGE("SQL error=%d", nError);
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	if (sqlite3_bind_int(stmt, 1, id) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_step(stmt);
+	if (nError == SQLITE_ROW) {
+		thumbnail_data_temp = (void *)sqlite3_column_blob(stmt,0);
+		*len = sqlite3_column_int(stmt,1);
+		*w = sqlite3_column_int(stmt,2);
+		*h = sqlite3_column_int(stmt,3);
+		DBG_LOGD("len:%d, w:%d. h:%d", *len, *w, *h);
+		if (len > 0){
+			*image_data = calloc(1, *len);
+			memcpy(*image_data, thumbnail_data_temp, *len);
+		}
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_NONE;
+	}
+
+	__bookmark_db_close();
+	TRACE_END;
+	return BMSVC_ERROR_DB_FAILED;
+}
+
+int bmsvc_set_favicon(int id, void *image_data, int w, int h, int len)
+{
+	TRACE_BEGIN;
+	bookmark_entry *entry = NULL;
+	int nError;
+	sqlite3_stmt *stmt;
+
+	RETV_MSG_IF(id < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: id is negative");
+	RETV_MSG_IF(image_data == NULL,
+						BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: thumbnail_data is empty");
+	RETV_MSG_IF(w < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: width is negative");
+	RETV_MSG_IF(h < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: height is negative");
+	RETV_MSG_IF(len < 0, BMSVC_ERROR_INVALID_PARAMETER,
+						"Invalid param: length is negative");
+	DBG_LOGD("id: %d", id);
+	DBG_LOGD("w:%d, h: %d, len: %d", w, h, len);
+	entry =  bmsvc_get_bookmark_by_id(id);
+	if (!entry)
+		return BMSVC_ERROR_INVALID_PARAMETER;
+	_bmsvc_destroy_bookmark_entry((void *)entry);
+
+	if (_internet_bookmark_db_open() < 0) {
+		DBG_LOGE("db_util_open is failed\n");
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_prepare_v2(m_internet_bookmark_db,
+				       "UPDATE bookmarks SET favicon=?, favicon_length=?\
+				       ,favicon_w=?, favicon_h=? \
+				       WHERE id=?",
+				       -1, &stmt, NULL);
+	if (nError != SQLITE_OK) {
+		DBG_LOGE("sqlite3_prepare_v2 is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	/* binding values */
+	if (sqlite3_bind_blob(stmt, 1, image_data , len, NULL) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_blob is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 2, len) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 3, w) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 4, h) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+	if (sqlite3_bind_int(stmt, 5, id) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_step(stmt);
+	if (nError == SQLITE_OK || nError == SQLITE_DONE) {
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_NONE;
+	}
+	__bookmark_db_close();
+	TRACE_END;
+	return BMSVC_ERROR_DB_FAILED;
+}
+
+int bmsvc_get_favicon(int id, void **image_data, int *w, int *h, int *len)
+{
+	TRACE_BEGIN;
+	DBG_LOGD("id :%d", id);
+
+	int nError;
+	sqlite3_stmt *stmt;
+	void *thumbnail_data_temp = NULL;
+
+	if (_internet_bookmark_db_open() < 0) {
+		DBG_LOGE("db_util_open is failed\n");
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_prepare_v2(m_internet_bookmark_db,
+					"SELECT\
+					favicon, favicon_length\
+					,favicon_w, favicon_h\
+					FROM bookmarks\
+					WHERE id=?",
+					-1, &stmt, NULL);
+	if (nError != SQLITE_OK) {
+		DBG_LOGE("SQL error=%d", nError);
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	if (sqlite3_bind_int(stmt, 1, id) != SQLITE_OK) {
+		DBG_LOGE("sqlite3_bind_int is failed.\n");
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_DB_FAILED;
+	}
+
+	nError = sqlite3_step(stmt);
+	if (nError == SQLITE_ROW) {
+		thumbnail_data_temp = (void *)sqlite3_column_blob(stmt,0);
+		*len = sqlite3_column_int(stmt,1);
+		*w = sqlite3_column_int(stmt,2);
+		*h = sqlite3_column_int(stmt,3);
+		DBG_LOGD("len:%d, w:%d. h:%d", *len, *w, *h);
+		if (len > 0){
+			*image_data = calloc(1, *len);
+			memcpy(*image_data, thumbnail_data_temp, *len);
+		}
+		_internet_bookmark_db_close(stmt);
+		TRACE_END;
+		return BMSVC_ERROR_NONE;
+	}
+
+	__bookmark_db_close();
+	TRACE_END;
+	return BMSVC_ERROR_DB_FAILED;
+}
