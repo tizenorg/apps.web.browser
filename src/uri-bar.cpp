@@ -656,6 +656,14 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_print.png", NULL);
+	elm_ctxpopup_item_append(more_popup, BR_STRING_PRINT, icon, __print_cb, this);
+
+	icon = elm_icon_add(more_popup);
+	if (!icon) {
+		BROWSER_LOGE("elm_icon_add failed");
+		return;
+	}
 	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_setting.png", NULL);
 	elm_ctxpopup_item_append(more_popup, BR_STRING_SETTINGS, icon, __setting_cb, this);
 
