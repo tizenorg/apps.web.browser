@@ -1368,28 +1368,38 @@ Eina_Bool common_view::_handle_tizen_service_scheme(const char *uri)
 	}
 
 	/* parse parameter */
-	size_t key_string_start_pos = 0;
-	size_t key_string_end_pos = 0;
-	size_t value_string_start_pos = 0;
-	size_t value_string_end_pos = 0;
+	int key_string_start_pos = 0;
+	int key_string_end_pos = 0;
+	int value_string_start_pos = 0;
+	int value_string_end_pos = 0;
 
 	Eina_Bool has_more_data = EINA_TRUE;
 
 	while (has_more_data == EINA_TRUE) {
 		key_string_start_pos = 0;
 		key_string_end_pos = 0;
+		value_string_start_pos = 0;
+		value_string_end_pos = 0;
+		key_string.clear();
+		value_string.clear();
 
 		if (parameter.find("key=") != std::string::npos) {
 			if (parameter.find("value=") != std::string::npos) {
 				key_string_start_pos = parameter.find("key=") + strlen("key=");
 				key_string_end_pos = parameter.find(",", key_string_start_pos);
-				key_string = parameter.substr(key_string_start_pos, key_string_end_pos - key_string_start_pos);
-				parameter.erase(key_string_start_pos - strlen("key="), key_string_end_pos - key_string_start_pos + strlen("key="));
+				if ((key_string_start_pos >= strlen("key=")) && (key_string_end_pos >= 0)) {
+					key_string = parameter.substr(key_string_start_pos, key_string_end_pos - key_string_start_pos);
+					parameter.erase(key_string_start_pos - strlen("key="), key_string_end_pos - key_string_start_pos + strlen("key="));
+				} else
+					has_more_data = EINA_FALSE;
 
 				value_string_start_pos = parameter.find("value=") + strlen("value=");
 				value_string_end_pos = parameter.find(";", value_string_start_pos);
-				value_string = parameter.substr(value_string_start_pos, value_string_end_pos - value_string_start_pos);
-				parameter.erase(value_string_start_pos - strlen("value="), value_string_end_pos - value_string_start_pos + strlen("value="));
+				if ((value_string_start_pos >= strlen("value=")) && (value_string_end_pos >= 0)) {
+					value_string = parameter.substr(value_string_start_pos, value_string_end_pos - value_string_start_pos);
+					parameter.erase(value_string_start_pos - strlen("value="), value_string_end_pos - value_string_start_pos + strlen("value="));
+				} else
+					has_more_data = EINA_FALSE;
 
 				if (key_string.length() && value_string.length()) {
 					if (service_add_extra_data(service_handle, key_string.c_str(), value_string.c_str())) {
