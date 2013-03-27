@@ -378,14 +378,26 @@ Eina_Bool bookmark::get_item_by_id(int id, bookmark_item *item)
 		return EINA_TRUE;
 	}
 	bp_bookmark_info_fmt info;
-	if (bp_bookmark_adaptor_get_easy_all(id, &info) == 0) {
-		(*item).set_title(info.title);
-		(*item).set_uri(info.url);
+	if (bp_bookmark_adaptor_get_info(id, (BP_BOOKMARK_O_TYPE |
+				BP_BOOKMARK_O_PARENT | BP_BOOKMARK_O_SEQUENCE |
+				BP_BOOKMARK_O_IS_EDITABLE | BP_BOOKMARK_O_URL |
+				BP_BOOKMARK_O_TITLE | BP_BOOKMARK_O_DATE_CREATED |
+				BP_BOOKMARK_O_DATE_MODIFIED), &info) == 0) {
 		(*item).set_id(id);
-		(*item).set_folder_flag(info.type);
-		(*item).set_editable_flag(info.editable);
+		if (info.type > 0)
+			(*item).set_folder_flag(EINA_TRUE);
+		else
+			(*item).set_folder_flag(EINA_FALSE);
 		(*item).set_parent_id(info.parent);
 		(*item).set_order(info.sequence);
+		if (info.editable > 0)
+			(*item).set_editable_flag(EINA_TRUE);
+		else
+			(*item).set_editable_flag(EINA_FALSE);
+		if (info.url != NULL && strlen(info.url) > 0)
+			(*item).set_uri(strdup(info.url));
+		if (info.title != NULL && strlen(info.title) > 0)
+			(*item).set_title(strdup(info.title));
 		bp_bookmark_adaptor_easy_free(&info);
 		return EINA_TRUE;
 	}
@@ -412,21 +424,46 @@ Eina_Bool bookmark::get_list_by_folder(const int folder_id, std::vector<bookmark
 {
 	BROWSER_LOGD("folder ID: %d", folder_id);
 #if defined(BROWSER_BOOKMARK_SYNC)
-	bookmark_list *bookmarks = bp_bookmark_adaptor_list(folder_id, 2);
-	if (bookmarks == NULL) {
-		BROWSER_LOGD("bp_bookmark_adaptor_list is failed");
+	int *ids = NULL;
+	int ids_count = -1;
+	bp_bookmark_info_fmt info;
+	if (bp_bookmark_adaptor_get_sequence_child_ids_p(&ids, &ids_count, -1, 0, folder_id, -1, 0) < 0) {
+		BROWSER_LOGD("bp_bookmark_adaptor_get_sequence_child_ids_p is failed");
 		return EINA_FALSE;
 	}
 
-	BROWSER_LOGD("count: %d", bookmarks->count);
-	for (int i = 0 ; i < bookmarks->count ; i++) {
-		BROWSER_LOGD("Bookmark[%d] is %s[ID: %d]", i, (*((bookmarks->item)+i)).title, ((bookmarks->item)+i)->id);
-		bookmark_item *item = new bookmark_item;
-		_convert_bookmark_entry(*item, (void *)((bookmarks->item)+i));
-		list.push_back(item);
+	if (ids_count <= 0) {
+		BROWSER_LOGD("bookmark list is empty");
+		return EINA_FALSE;
 	}
 
-	bp_bookmark_adaptor_free(bookmarks);
+	for(int i = 0; i < ids_count; i++) {
+		bookmark_item *item = new bookmark_item;
+		item->set_id(ids[i]);
+		if (bp_bookmark_adaptor_get_info(ids[i], (BP_BOOKMARK_O_TYPE |
+				BP_BOOKMARK_O_PARENT | BP_BOOKMARK_O_SEQUENCE |
+				BP_BOOKMARK_O_IS_EDITABLE | BP_BOOKMARK_O_URL |
+				BP_BOOKMARK_O_TITLE | BP_BOOKMARK_O_DATE_CREATED |
+				BP_BOOKMARK_O_DATE_MODIFIED), &info) == 0) {
+			if (info.type > 0)
+				item->set_folder_flag(EINA_TRUE);
+			else
+				item->set_folder_flag(EINA_FALSE);
+			item->set_parent_id(info.parent);
+			item->set_order(info.sequence);
+			if (info.editable > 0)
+				item->set_editable_flag(EINA_TRUE);
+			else
+				item->set_editable_flag(EINA_FALSE);
+			if (info.url != NULL && strlen(info.url) > 0)
+				item->set_uri(strdup(info.url));
+			if (info.title != NULL && strlen(info.title) > 0)
+				item->set_title(strdup(info.title));
+			list.push_back(item);
+		}
+		bp_bookmark_adaptor_easy_free(&info);
+	}
+	free(ids);
 	return EINA_TRUE;
 #else
 	bookmark_list *bookmarks = internet_bookmark_list(folder_id, 2);
