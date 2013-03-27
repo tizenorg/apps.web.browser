@@ -321,7 +321,7 @@ void bookmark_edit_view::__move_btn_clicked_cb(void *data, Evas_Object *obj, voi
 {
 	BROWSER_LOGD("");
 	bookmark_edit_view *cp = (bookmark_edit_view *)data;
-	m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_TRUE)->show();
+	m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_FALSE)->show();
 }
 
 void bookmark_edit_view::__delete_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
