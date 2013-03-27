@@ -157,8 +157,6 @@ void bookmark_select_folder_view::__naviframe_pop_finished_cb(
 
 	if (cp->m_naviframe_item != elm_naviframe_top_item_get(m_naviframe))
 		return;
-
-	cp->m_browser->delete_bookmark_create_folder_view();
 }
 
 void bookmark_select_folder_view::_back_to_previous_view(void)

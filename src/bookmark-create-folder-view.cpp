@@ -280,7 +280,7 @@ void bookmark_create_folder_view::__genlist_item_clicked_cb(void *data, Evas_Obj
 	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
 
 	genlist_callback_data *callback_data = (genlist_callback_data *)elm_object_item_data_get(it);
-	//bookmark_create_folder_view *cp = (bookmark_create_folder_view *)callback_data->cp;
+	bookmark_create_folder_view *cp = (bookmark_create_folder_view *)callback_data->cp;
 	bookmark_create_folder_view::menu_type type = callback_data->type;
 
 	elm_genlist_item_selected_set(it, EINA_FALSE);
@@ -291,7 +291,7 @@ void bookmark_create_folder_view::__genlist_item_clicked_cb(void *data, Evas_Obj
 		break;
 	case FOLDER_SELECT_MENU:
 		BROWSER_LOGD("FOLDER_SELECT_MENU");
-		//m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_TRUE)->show();
+		m_browser->create_bookmark_select_folder_view(cp->__select_folder_cb, cp, EINA_FALSE)->show();
 		break;
 	default:
 		break;
