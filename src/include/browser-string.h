@@ -324,7 +324,6 @@
 #define BR_STRING_UNABLE_TO_SHARE_FILE_VIA_MESSAGE _("Unable to share file via message")//registering2
 #define BR_STRING_SYNCED_TABS              _("Synced tabs")//registring
 #define BR_STRING_KEEP_IT              _("Keep it")//registring
-#define BR_STRING_THUMBNAIL_VIEW _("Thumbnail view")//registring
 #define BR_STRING_CERTI_MESSAGE        _("There are problems with the secuirty certificate for this site.")//registring
 #define BR_STRING_SECURITY_WARNING_MESSAGE	_("Security warning") //exist It will be adjust later
 #define BR_STRING_FAILED_TO_GET_WEB_NOTI_ICON _("Failed to get web notification icon")

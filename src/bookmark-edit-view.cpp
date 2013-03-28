@@ -47,6 +47,7 @@ bookmark_edit_view::bookmark_edit_view(bool tag_mode)
 	,m_toolbar_btn_move(NULL)
 	,m_toolbar_btn_delete(NULL)
 	,m_toolbar_btn_back(NULL)
+	,m_popup_selection_info(NULL)
 	,m_naviframe_item(NULL)
 	,m_count_checked_item(0)
 	,m_count_editable_item(0)
@@ -418,6 +419,58 @@ void bookmark_edit_view::__select_folder_cb(void *data, Evas_Object *obj, void *
 	cp->_show_move_confirm_popup();
 }
 
+void bookmark_edit_view::_show_selection_info(Evas_Object *parent, unsigned int count)
+{
+	BROWSER_LOGD("");
+	if (parent == NULL) {
+		BROWSER_LOGE("parent is NULL");
+		return;
+	}
+
+	if (count == 0) {
+		BROWSER_LOGE("no item is selected");
+		if (m_popup_selection_info) {
+			evas_object_del(m_popup_selection_info);
+			m_popup_selection_info = NULL;
+		}
+		return;
+	}
+
+	Evas_Object *selectioninfo_layout = NULL;
+	if (!m_popup_selection_info) {
+		m_popup_selection_info = elm_notify_add(parent);
+		if (!m_popup_selection_info) {
+			BROWSER_LOGE("elm_notify_add is failed");
+			return;
+		}
+		elm_notify_align_set(m_popup_selection_info, ELM_NOTIFY_ALIGN_FILL, 1.0);
+		selectioninfo_layout = elm_layout_add(m_popup_selection_info);
+		elm_object_content_set(m_popup_selection_info, selectioninfo_layout);
+		elm_notify_timeout_set(m_popup_selection_info, 3.0);
+	} else
+		selectioninfo_layout = elm_object_content_get(m_popup_selection_info);
+
+	elm_layout_theme_set(selectioninfo_layout, "standard", "selectioninfo", "center_text");
+	evas_object_show(m_popup_selection_info);
+
+	char lable_count[1024] = {'\0', };
+	snprintf(lable_count, sizeof(lable_count), "%d", (count));
+	//just in case, selection info noti text can be changed same as myfiles
+	//char *text = g_strconcat(BR_STRING_SELECTED, " (", lable_count, ")", NULL);
+	char *text = NULL;
+	if (count == 1)
+		text = g_strconcat(BR_STRING_ONE_ITEM_SELECTED, NULL);
+	else {
+		int len = strlen(lable_count) + strlen(BR_STRING_ITEMS_SELECTED) + 1;
+		text = (char *)malloc(len * sizeof(char));
+		memset(text, 0x00, len);
+		snprintf(text, len, BR_STRING_ITEMS_SELECTED, count);
+	}
+	elm_object_part_text_set(selectioninfo_layout, "elm.text", text);
+	if (text)
+		free(text);
+}
+
 void bookmark_edit_view::_reorder_bookmark_items(int order_index, Eina_Bool is_move_down)
 {
 	BROWSER_LOGD("");
@@ -679,6 +732,7 @@ void bookmark_edit_view::_stat_checked_item(Eina_Bool check_state, void *data)
 			elm_object_disabled_set(m_toolbar_btn_move, EINA_FALSE);
 		elm_object_disabled_set(m_toolbar_btn_delete, EINA_FALSE);
 	}
+	_show_selection_info(m_genlist, m_count_checked_item);
 	BROWSER_LOGD("m_count_checked_item: %d",m_count_checked_item);
 	BROWSER_LOGD("m_count_folder_item: %d",m_count_folder_item);
 }

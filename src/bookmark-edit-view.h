@@ -66,6 +66,7 @@ private:
 	void _go_into_sub_folder(int folder_id, const char *folder_name);
 	Eina_Bool _go_to_upper_folder();
 	void _reorder_bookmark_items(int order_index, Eina_Bool is_move_down);
+	void _show_selection_info(Evas_Object *parent, unsigned int count);
 
 	static char *__genlist_get_text_cb(void *data, Evas_Object *obj, const char *part);
 	static Evas_Object *__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part);
@@ -96,6 +97,7 @@ private:
 	Evas_Object *m_toolbar_btn_move; // folder view
 	Evas_Object *m_toolbar_btn_delete; // folder view
 	Evas_Object *m_toolbar_btn_back; // folder view
+	Evas_Object *m_popup_selection_info;
 	Elm_Object_Item *m_naviframe_item;
 
 	Elm_Genlist_Item_Class m_itc_folder;
