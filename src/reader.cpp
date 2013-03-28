@@ -35,6 +35,7 @@
 
 #define reader_edj_path browser_edj_dir"/reader.edj"
 #define reader_js_path browser_res_dir"/js/reader.js"
+#define recognizearticle_js_path browser_res_dir"/js/recognizearticle.js"
 
 #define PRINT_PDF_W	210
 #define PRINT_PDF_H	297
@@ -55,6 +56,9 @@ reader::reader(void)
 	m_webview(NULL)
 	,m_reader_html(NULL)
 	,m_main_layout(NULL)
+	,m_scrap_tag(NULL)
+	,m_small_font_button(NULL)
+	,m_large_font_button(NULL)
 {
 	BROWSER_LOGD("");
 	elm_theme_extension_add(NULL, reader_edj_path);
@@ -64,6 +68,9 @@ reader::~reader(void)
 {
 	BROWSER_LOGD("");
 	eina_stringshare_del(m_reader_html);
+
+	if (m_scrap_tag)
+		free(m_scrap_tag);
 
 	if (m_webview)
 		delete m_webview;
@@ -113,11 +120,67 @@ Eina_Bool reader::execute_reader_js(void)
 
 		BROWSER_LOGD("size=[%ld]", size);
 
-		m_browser->get_browser_view()->get_current_webview()->execute_script(reader_script, __execute_js_cb, this);
+		m_browser->get_browser_view()->get_current_webview()->execute_script(reader_script, __execute_reader_js_cb, this);
 
 		fclose(file);
 		if (reader_script)
 			free(reader_script);
+
+		return EINA_TRUE;
+	} else {
+		BROWSER_LOGE("fopen failed");
+		return EINA_FALSE;
+	}
+
+	return EINA_TRUE;
+}
+
+Eina_Bool reader::execute_recognizearticle_js(void)
+{
+	BROWSER_LOGD("");
+	const char *uri = m_browser->get_browser_view()->get_current_webview()->get_uri();
+	if (!uri || !strlen(uri))
+		return EINA_FALSE;
+
+	FILE *file = 0;
+	long size = 0;
+	file = fopen(recognizearticle_js_path, "r");
+	if (file) {
+		fseek(file, 0, SEEK_END);
+		size = ftell(file);
+		rewind(file);
+		if (!size) {
+			BROWSER_LOGD("ftell size is 0. unable to create with the size");
+			fclose(file);
+			return EINA_FALSE;
+		}
+
+		size++;
+
+		char *recognizearticle_script = (char *)malloc(sizeof(char) * size);
+		if (!recognizearticle_script) {
+			BROWSER_LOGD("Failed to get memory for recognizearticle texts");
+			fclose(file);
+			return EINA_FALSE;
+		}
+		memset(recognizearticle_script, 0x00, sizeof(char) * size);
+		size_t result = fread(recognizearticle_script, 1, size - 1, file);
+
+		if (result != (size_t)(size - 1)) {
+			BROWSER_LOGE("Reading error, result[%d] and recognizearticle_script[%d]", result, size - 1);
+			free (recognizearticle_script);
+			recognizearticle_script = NULL;
+			fclose(file);
+			return EINA_FALSE;
+		}
+
+		BROWSER_LOGD("size=[%ld]", size);
+
+		m_browser->get_browser_view()->get_current_webview()->execute_script(recognizearticle_script, __execute_recognizearticle_js_cb, this);
+
+		fclose(file);
+		if (recognizearticle_script)
+			free(recognizearticle_script);
 
 		return EINA_TRUE;
 	} else {
@@ -218,11 +281,14 @@ void reader::delete_layout(void)
 	}
 }
 
-void reader::__execute_js_cb(Evas_Object *obj, const char *javascript_result, void *data)
+void reader::__execute_reader_js_cb(Evas_Object *obj, const char *javascript_result, void *data)
 {
 	BROWSER_LOGD("javascript_result=[%s]", javascript_result);
 
 	reader *rd = (reader *)data;
+
+	if (!m_browser->get_browser_view()->get_current_webview() || !javascript_result)
+		return;
 
 	if (javascript_result && strncmp(javascript_result, "undefined", strlen("undefined"))) {
 		if (!rd->m_reader_html)
@@ -231,6 +297,24 @@ void reader::__execute_js_cb(Evas_Object *obj, const char *javascript_result, vo
 			eina_stringshare_replace(&rd->m_reader_html, javascript_result);
 		m_browser->get_browser_view()->get_uri_bar()->show_reader_icon(EINA_TRUE);
 		m_browser->get_browser_view()->get_current_webview()->reader_enabled_set(EINA_TRUE);
+	} else {
+		eina_stringshare_del(rd->m_reader_html);
+		m_browser->get_browser_view()->get_uri_bar()->show_reader_icon(EINA_FALSE);
+		m_browser->get_browser_view()->get_current_webview()->reader_enabled_set(EINA_FALSE);
+	}
+}
+
+void reader::__execute_recognizearticle_js_cb(Evas_Object *obj, const char *javascript_result, void *data)
+{
+	BROWSER_LOGD("javascript_result=[%s]", javascript_result);
+
+	reader *rd = (reader *)data;
+
+	if (!m_browser->get_browser_view()->get_current_webview() || !javascript_result)
+		return;
+
+	if (javascript_result && strncmp(javascript_result, "false", strlen("false"))) {
+		rd->execute_reader_js();
 	} else {
 		eina_stringshare_del(rd->m_reader_html);
 		m_browser->get_browser_view()->get_uri_bar()->show_reader_icon(EINA_FALSE);
@@ -277,23 +361,23 @@ Evas_Object *reader::_create_toolbar_layout(Evas_Object *parent)
 	elm_object_part_content_set(layout, "elm.swallow.more_button", more_button);
 	evas_object_smart_callback_add(more_button, "clicked", __more_cb, this);
 
-	Evas_Object *small_font_button = elm_button_add(layout);
-	if (!small_font_button) {
+	m_small_font_button = elm_button_add(layout);
+	if (!m_small_font_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return NULL;
 	}
-	elm_object_style_set(small_font_button, "browser/small_font");
-	elm_object_part_content_set(layout, "elm.swallow.small_font_button", small_font_button);
-	evas_object_smart_callback_add(small_font_button, "clicked", __small_font_cb, this);
+	elm_object_style_set(m_small_font_button, "browser/small_font");
+	elm_object_part_content_set(layout, "elm.swallow.small_font_button", m_small_font_button);
+	evas_object_smart_callback_add(m_small_font_button, "clicked", __small_font_cb, this);
 
-	Evas_Object *large_font_button = elm_button_add(layout);
-	if (!large_font_button) {
+	m_large_font_button = elm_button_add(layout);
+	if (!m_large_font_button) {
 		BROWSER_LOGE("elm_button_add failed");
 		return NULL;
 	}
-	elm_object_style_set(large_font_button, "browser/large_font");
-	elm_object_part_content_set(layout, "elm.swallow.large_font_button", large_font_button);
-	evas_object_smart_callback_add(large_font_button, "clicked", __large_font_cb, this);
+	elm_object_style_set(m_large_font_button, "browser/large_font");
+	elm_object_part_content_set(layout, "elm.swallow.large_font_button", m_large_font_button);
+	evas_object_smart_callback_add(m_large_font_button, "clicked", __large_font_cb, this);
 
 	Evas_Object *back_button = elm_button_add(layout);
 	if (!back_button) {
@@ -314,7 +398,9 @@ void reader::__small_font_cb(void *data, Evas_Object *obj, void *event_info)
 	if (font_size > 9) {
 		m_preference->set_reader_font_size(font_size - 1);
 		rd->m_webview->font_default_size_set(font_size - 1);
-	}
+		elm_object_disabled_set(rd->m_large_font_button, EINA_FALSE);
+	} else
+		elm_object_disabled_set(rd->m_small_font_button, EINA_TRUE);
 }
 
 void reader::__large_font_cb(void *data, Evas_Object *obj, void *event_info)
@@ -324,7 +410,9 @@ void reader::__large_font_cb(void *data, Evas_Object *obj, void *event_info)
 	if (font_size < 30) {
 		m_preference->set_reader_font_size(font_size + 1);
 		rd->m_webview->font_default_size_set(font_size + 1);
-	}
+		elm_object_disabled_set(rd->m_small_font_button, EINA_FALSE);
+	} else
+		elm_object_disabled_set(rd->m_large_font_button, EINA_TRUE);
 }
 
 void reader::__print_cb(void *data, Evas_Object *obj, void *event_info)
@@ -347,27 +435,30 @@ void reader::__print_cb(void *data, Evas_Object *obj, void *event_info)
 	evas_object_del(obj);
 }
 
-static webview *g_scrap_webview;
-static char *g_scrap_tag;
-
-void reader::__mht_contents_get_cb(Ewk_Page_Contents_Type type, const char *data)
+void reader::__mht_contents_get_cb(Evas_Object *ewk_view, const char *data, void *user_data)
 {
 	EINA_SAFETY_ON_NULL_RETURN(data);
+	reader *rd = (reader *)user_data;
 
 	scrap scrap_instance;
 
-	BROWSER_LOGD("g_scrap_webview->get_title()=[%s]", g_scrap_webview->get_title());
-	BROWSER_LOGD("g_scrap_webview->get_uri()=[%s]", g_scrap_webview->get_uri());
+	BROWSER_LOGD("rd->m_webview->get_title()=[%s]", rd->m_webview->get_title());
+	BROWSER_LOGD("rd->m_webview->get_uri()=[%s]", rd->m_webview->get_uri());
 
-	const char *title = g_scrap_webview->get_title();
+	const char *title = rd->m_webview->get_title();
+	char *file_path = NULL;
 	if (title && strlen(title))
-		scrap_instance.save(g_scrap_webview->get_title(), g_scrap_webview->get_uri(), data, g_scrap_tag);
+		file_path = scrap_instance.save(rd->m_webview->get_title(), rd->m_webview->get_uri(), data, rd->m_scrap_tag);
 	else
-		scrap_instance.save(g_scrap_webview->get_uri(), g_scrap_webview->get_uri(), data, g_scrap_tag);
+		file_path = scrap_instance.save(rd->m_webview->get_uri(), rd->m_webview->get_uri(), data, rd->m_scrap_tag);
 
-	if (g_scrap_tag)
-		free(g_scrap_tag);
-	g_scrap_tag = NULL;
+	if (file_path)
+		free(file_path);
+
+	if (rd->m_scrap_tag) {
+		free(rd->m_scrap_tag);
+		rd->m_scrap_tag = NULL;
+	}
 
 	m_browser->get_browser_view()->show_noti_popup(BR_STRING_SAVED);
 }
@@ -386,14 +477,15 @@ void reader::__add_scrap_done_cb(void *data, Evas_Object *obj, void *event_info)
 		BROWSER_LOGD("[%d]=[%s]", i, tag_list[i]);
 	}
 
+	if (rd->m_scrap_tag) {
+		free(rd->m_scrap_tag);
+		rd->m_scrap_tag = NULL;
+	}
+
 	if (tag_list.size() > 0)
-		g_scrap_tag = strdup(tag_str.c_str());
+		rd->m_scrap_tag = strdup(tag_str.c_str());
 
-	rd->m_contents_get_context.type = EWK_PAGE_CONTENTS_TYPE_MHTML;
-	rd->m_contents_get_context.callback = __mht_contents_get_cb;
-
-	g_scrap_webview = rd->m_webview;
-	g_scrap_webview->mht_contents_get(&(rd->m_contents_get_context));
+	rd->m_webview->mht_contents_get(__mht_contents_get_cb, rd);
 
 	for (int i = 1 ; i < tag_list.size() ; i++)
 		delete tag_list[i];
@@ -407,11 +499,7 @@ void reader::__add_to_scrap_cb(void *data, Evas_Object *obj, void *event_info)
 #if defined(BROWSER_TAG)
 	m_browser->get_add_tag_view(__add_scrap_done_cb, rd, NULL)->show();
 #else
-	rd->m_contents_get_context.type = EWK_PAGE_CONTENTS_TYPE_MHTML;
-	rd->m_contents_get_context.callback = __mht_contents_get_cb;
-
-	g_scrap_webview = rd->m_webview;
-	g_scrap_webview->mht_contents_get(&(rd->m_contents_get_context));
+	rd->m_webview->mht_contents_get(__mht_contents_get_cb, rd);
 #endif
 
 	evas_object_del(obj);

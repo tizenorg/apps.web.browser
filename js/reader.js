@@ -15,17 +15,13 @@
  * limitations under the License.
  */
 try {
-    var test;
-    var sample = null;
+var tizenAtticleReader = {
+    readability : {},
+    page : null,
+    parsedPages : {},
+    pageETags : {},
 
-    totalPageNum = 1;
-
-    var readability = {}
-    var page = null;
-    parsedPages = {};
-    pageETags = {};
-
-    function findBaseUrl() {
+    findBaseUrl : function() {
         var noUrlParams = window.location.pathname.split("?")[0],
             urlSlashes = noUrlParams.split("/").reverse(),
             cleanedSegments = [],
@@ -59,12 +55,12 @@ try {
             }
         }
         return window.location.protocol + "//" + window.location.host + cleanedSegments.reverse().join("/");
-    }
+    },
 
-    function findNextPageLink(elem) {
+    findNextPageLink : function(elem) {
         var possiblePages = {},
             allLinks = elem.getElementsByTagName('a'),
-            articleBaseUrl = findBaseUrl();
+            articleBaseUrl = tizenAtticleReader.findBaseUrl();
         for (var i = 0, il = allLinks.length; i < il; i += 1) {
             var link = allLinks[i],
                 linkHref = allLinks[i].href.replace(/#.*$/, '').replace(/\/$/, '');
@@ -74,8 +70,8 @@ try {
             if (window.location.host !== linkHref.split(/\/+/g)[1]) {
                 continue;
             }
-            var linkText = getInnerText(link);
-            if (linkText.match(regexps.extraneous)) {
+            var linkText = tizenAtticleReader.getInnerText(link);
+            if (linkText.match(tizenAtticleReader.regexps.extraneous)) {
                 continue;
             }
             var linkHrefLeftover = linkHref.replace(articleBaseUrl, '');
@@ -96,21 +92,21 @@ try {
                 linkObj.score -= 25;
             }
             var linkData = linkText + ' ' + link.className + ' ' + link.id + link.innerHTML;
-            if (linkData.match(regexps.nextLink)) {
+            if (linkData.match(tizenAtticleReader.regexps.nextLink)) {
                 linkObj.score += 50;
             }
             if (linkData.match(/pag(e|ing|inat)/i)) {
                 linkObj.score += 25;
             }
             if (linkData.match(/(first|last)/i)) {
-                if (!linkObj.linkText.match(regexps.nextLink)) {
+                if (!linkObj.linkText.match(tizenAtticleReader.regexps.nextLink)) {
                     linkObj.score -= 65;
                 }
             }
-            if (linkData.match(regexps.negative) || linkData.match(regexps.extraneous)) {
+            if (linkData.match(tizenAtticleReader.regexps.negative) || linkData.match(tizenAtticleReader.regexps.extraneous)) {
                 linkObj.score -= 50;
             }
-            if (linkData.match(regexps.prevLink)) {
+            if (linkData.match(tizenAtticleReader.regexps.prevLink)) {
                 linkObj.score -= 200;
             }
             var parentNode = link.parentNode,
@@ -122,8 +118,8 @@ try {
                     positiveNodeMatch = true;
                     linkObj.score += 15;
                 }
-                if (!negativeNodeMatch && parentNodeClassAndId && parentNodeClassAndId.match(regexps.negative)) {
-                    if (!parentNodeClassAndId.match(regexps.positive)) {
+                if (!negativeNodeMatch && parentNodeClassAndId && parentNodeClassAndId.match(tizenAtticleReader.regexps.negative)) {
+                    if (!parentNodeClassAndId.match(tizenAtticleReader.regexps.positive)) {
                         linkObj.score -= 25;
                         negativeNodeMatch = true;
                     }
@@ -133,7 +129,7 @@ try {
             if (linkHref.match(/p(a|g|ag)?(e|ing|ination)?(=|\/)[0-9]{1,2}/i) || linkHref.match(/(page|paging)/i)) {
                 linkObj.score += 25;
             }
-            if (linkHref.match(regexps.extraneous)) {
+            if (linkHref.match(tizenAtticleReader.regexps.extraneous)) {
                 linkObj.score -= 15;
             }
             var linkTextAsNumber = parseInt(linkText, 10);
@@ -166,9 +162,9 @@ try {
             //SAMSUNG CHANGE - MPSG5927<<
             return null;
         }
-    }
+    },
 
-    function xhr() {
+    xhr : function() {
         if (typeof XMLHttpRequest !== 'undefined' && (window.location.protocol !== 'file:' || !window.ActiveXObject)) {
             return new XMLHttpRequest();
         } else {
@@ -183,17 +179,17 @@ try {
             } catch(err) {}
         }
         return false;
-    }
+    },
 
-    function successfulRequest(request) {
+    successfulRequest : function(request) {
         return (request.status >= 200 && request.status < 300) || request.status === 304 || (request.status === 0 && request.responseText);
-    }
+    },
 
-    function ajax(url, options) {
-        var request = xhr();
+    ajax : function(url, options) {
+        var request = tizenAtticleReader.xhr();
         function respondToReadyState(readyState) {
             if (request.readyState === 4) {
-                if (successfulRequest(request)) {
+                if (tizenAtticleReader.successfulRequest(request)) {
                     if (options.success) {
                         options.success(request);
                     }
@@ -218,11 +214,11 @@ try {
             }
         }
         return request;
-    }
-    curPageNum = 1;
-    maxPages = 30;
+    },
+    curPageNum : 1,
+    maxPages : 30,
 
-    function appendNextPage(nextPageLink) {
+    appendNextPage : function(nextPageLink) {
         curPageNum += 1;
         var articlePage = document.createElement("DIV");
         articlePage.id = 'readability-page-' + curPageNum;
@@ -234,7 +230,7 @@ try {
             return;
         }
         (function (pageUrl, thisPage) {
-            ajax(pageUrl, {
+            tizenAtticleReader.ajax(pageUrl, {
                 success: function (r) {
                     var eTag = r.getResponseHeader('ETag');
                     if (eTag) {
@@ -250,26 +246,26 @@ try {
                     var responseHtml = r.responseText.replace(/\n/g, '\uffff').replace(/<script.*?>.*?<\/script>/gi, '');
                     responseHtml = responseHtml.replace(/\n/g, '\uffff').replace(/<script.*?>.*?<\/script>/gi, '');
                     responseHtml = responseHtml.replace(/\uffff/g, '\n').replace(/<(\/?)noscript/gi, '<$1div');
-                    responseHtml = responseHtml.replace(regexps.replaceBrs, '</p><p>');
-                    responseHtml = responseHtml.replace(regexps.replaceFonts, '<$1span>');
+                    responseHtml = responseHtml.replace(tizenAtticleReader.regexps.replaceBrs, '</p><p>');
+                    responseHtml = responseHtml.replace(tizenAtticleReader.regexps.replaceFonts, '<$1span>');
                     page.innerHTML = responseHtml;
                     flags = 0x1 | 0x2 | 0x4;
-                    var nextPageLink = findNextPageLink(page),
-                        content = grabArticle(page);
+                    var nextPageLink = tizenAtticleReader.findNextPageLink(page),
+                        content = tizenAtticleReader.grabArticle(page);
                     if (!content) {
                         return;
                     }
                     thisPage.innerHTML += content;
                     document.getElementById("reader_content_div").appendChild(thisPage);
                     if (nextPageLink) {
-                        appendNextPage(nextPageLink);
+                        tizenAtticleReader.appendNextPage(nextPageLink);
                     }
                 }
             });
         }(nextPageLink, articlePage));
-    }
+    },
 
-    regexps = {
+    regexps : {
         unlikelyCandidates: /combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter/i,
         okMaybeItsACandidate: /and|article|body|column|main|shadow/i,
         positive: /article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|date/i,
@@ -286,20 +282,20 @@ try {
         nextLink: /(next|right|weiter|continue|>([^\|]|$)|\u00BB([^\|]|$))/i,
         prevLink: /(prev|earl|old|<|\u226a)/i,
         retainDiv: /whois_record/i
-    }
+    },
 
-    function cleanHeaders(e) {
+    cleanHeaders : function(e) {
         for (var headerIndex = 1; headerIndex < 3; headerIndex += 1) {
             var headers = e.getElementsByTagName('h' + headerIndex);
             for (var i = headers.length - 1; i >= 0; i -= 1) {
-                if (getClassWeight(headers[i]) < 0 || getLinkDensity(headers[i]) > 0.33) {
+                if (tizenAtticleReader.getClassWeight(headers[i]) < 0 || tizenAtticleReader.getLinkDensity(headers[i]) > 0.33) {
                     headers[i].parentNode.removeChild(headers[i]);
                 }
             }
         }
-    }
+    },
 
-    function clean(e, tag) {
+    clean : function(e, tag) {
         var targetList = e.getElementsByTagName(tag);
         var isEmbed = (tag === 'object' || tag === 'embed');
         for (var y = targetList.length - 1; y >= 0; y -= 1) {
@@ -308,58 +304,58 @@ try {
                 for (var i = 0, il = targetList[y].attributes.length; i < il; i += 1) {
                     attributeValues += targetList[y].attributes[i].value + '|';
                 }
-                if (attributeValues.search(regexps.videos) !== -1) {
+                if (attributeValues.search(tizenAtticleReader.regexps.videos) !== -1) {
                     continue;
                 }
-                if (targetList[y].innerHTML.search(regexps.videos) !== -1) {
+                if (targetList[y].innerHTML.search(tizenAtticleReader.regexps.videos) !== -1) {
                     continue;
                 }
             }
             targetList[y].parentNode.removeChild(targetList[y]);
         }
-    }
+    },
 
-    function cleanHTML5(e, tag) {
+    cleanHTML5 : function(e, tag) {
         var targetList = e.getElementsByTagName(tag);
         for (var y = targetList.length - 1; y >= 0; y -= 1) {
             targetList[y].parentNode.removeChild(targetList[y]);
         }
-    }
+    },
 
-    function cleanSelect(e, tag) {
+    cleanSelect : function(e, tag) {
         var targetList = e.getElementsByTagName(tag);
         for (var y = targetList.length - 1; y >= 0; y -= 1) {
             targetList[y].style.display = 'none';
         }
-    }
+    },
 
-    function getCharCount(e, s) {
+    getCharCount : function(e, s) {
         s = s || ",";
-        return getInnerText(e).split(s).length - 1;
-    }
+        return tizenAtticleReader.getInnerText(e).split(s).length - 1;
+    },
 
-    function getClassWeight(e) {
+    getClassWeight : function(e) {
         var weight = 0;
         if (typeof(e.className) === 'string' && e.className !== '') {
-            if (e.className.search(regexps.negative) !== -1) {
+            if (e.className.search(tizenAtticleReader.regexps.negative) !== -1) {
                 weight -= 25;
             }
-            if (e.className.search(regexps.positive) !== -1) {
+            if (e.className.search(tizenAtticleReader.regexps.positive) !== -1) {
                 weight += 25;
             }
         }
         if (typeof(e.id) === 'string' && e.id !== '') {
-            if (e.id.search(regexps.negative) !== -1) {
+            if (e.id.search(tizenAtticleReader.regexps.negative) !== -1) {
                 weight -= 25;
             }
-            if (e.id.search(regexps.positive) !== -1) {
+            if (e.id.search(tizenAtticleReader.regexps.positive) !== -1) {
                 weight += 25;
             }
         }
         return weight;
-    }
+    },
 
-    function ChineseJapneseKorean(innerCharacter) {
+    ChineseJapneseKorean : function(innerCharacter) {
         if (!innerCharacter || innerCharacter.length == 0) return false;
         var innerCharacterCode = innerCharacter.charCodeAt(0);
         if (innerCharacterCode > 11904 && innerCharacterCode < 12031) return true; //CJK Radicals Supplement
@@ -372,21 +368,21 @@ try {
         if (innerCharacterCode > 131072 && innerCharacterCode < 173791) return true;
         if (innerCharacterCode > 194560 && innerCharacterCode < 195103) return true;
         return false;
-    }
+    },
 
-    function cleanConditionally(e, tag) {
+    cleanConditionally : function(e, tag) {
         var tagsList = e.getElementsByTagName(tag);
         var curTagsLength = tagsList.length;
         for (var i = curTagsLength - 1; i >= 0; i -= 1) {
             var toRemove = false;
-            var weight = getClassWeight(tagsList[i]);
+            var weight = tizenAtticleReader.getClassWeight(tagsList[i]);
             var contentScore = (typeof tagsList[i].readability !== 'undefined') ? tagsList[i].readability.contentScore : 0;
             if (weight + contentScore < 0) {
                 if (tag === "div" || tag === "article") {
                     var readerDivClass5 = document.getElementsByClassName("view_cnt");
                     var readerDivClass6 = document.getElementById("description");
                     var readerDivComment = tagsList[i].className + tagsList[i].id;
-                    if (readerDivComment.search(regexps.unlikelyCandidates) !== -1) {
+                    if (readerDivComment.search(tizenAtticleReader.regexps.unlikelyCandidates) !== -1) {
                         tagsList[i].parentNode.removeChild(tagsList[i]);
                     }
                     if (readerDivClass5.length > 0) {
@@ -408,7 +404,7 @@ try {
                 }
             }
             //SAMSUNG CHANGE - MPSG5897 PART 1<<
-            else if (getCharCount(tagsList[i], ',') < 10) {
+            else if (tizenAtticleReader.getCharCount(tagsList[i], ',') < 10) {
                 var p = tagsList[i].getElementsByTagName("p").length;
                 var img = tagsList[i].getElementsByTagName("img").length;
                 var li = tagsList[i].getElementsByTagName("li").length - 100;
@@ -416,19 +412,19 @@ try {
                 var embedCount = 0;
                 var embeds = tagsList[i].getElementsByTagName("embed");
                 for (var ei = 0, il = embeds.length; ei < il; ei += 1) {
-                    if (embeds[ei].src.search(regexps.videos) === -1) {
+                    if (embeds[ei].src.search(tizenAtticleReader.regexps.videos) === -1) {
                         embedCount += 1;
                     }
                 }
-                var linkDensity = getLinkDensity(tagsList[i]);
-                var contentLength = getInnerText(tagsList[i]).length;
+                var linkDensity = tizenAtticleReader.getLinkDensity(tagsList[i]);
+                var contentLength = tizenAtticleReader.getInnerText(tagsList[i]).length;
                 var finalWord = null;
                 var checkCJK = null;
                 var checkCJKText = null;
                 var checkWordOfTag = function () {
-                        checkCJKText = getInnerText(tagsList[i]);
+                        checkCJKText = tizenAtticleReader.getInnerText(tagsList[i]);
                         for (var h = 0; h < contentLength; h += 1) {
-                            if (ChineseJapneseKorean(checkCJKText[h]) === true) {
+                            if (tizenAtticleReader.ChineseJapneseKorean(checkCJKText[h]) === true) {
                                 finalWord = checkCJKText[h];
                                 checkCJK = true;
                                 break;
@@ -507,15 +503,15 @@ try {
                 }
             }
         }
-    }
+    },
 
-    function killBreaks(e) {
+    killBreaks : function(e) {
         try {
-            e.innerHTML = e.innerHTML.replace(regexps.killBreaks, '<br />');
+            e.innerHTML = e.innerHTML.replace(tizenAtticleReader.regexps.killBreaks, '<br />');
         } catch (eBreaks) {}
-    }
+    },
 
-    function cleanStyles(e) {
+    cleanStyles : function(e) {
         e = e || document;
         var cur = e.firstChild;
         if (!e) {
@@ -529,80 +525,80 @@ try {
                 if (cur.className !== "readability-styled") {
                     cur.removeAttribute("style");
                 }
-                cleanStyles(cur);
+                tizenAtticleReader.cleanStyles(cur);
             }
             cur = cur.nextSibling;
         }
-    }
+    },
 
-    function cleanLinkHrefs(e) {
+    cleanLinkHrefs : function(e) {
         var links = e.getElementsByTagName("a");
         for (var i = 0, il = links.length; i < il; i += 1) {
             //SAMSUNG CHANGE - MPSG5897 PART 1 >>
             if (links[i].getElementsByTagName("img").length > 0) {
-                cleanConditionally(links[i], "span");
+                tizenAtticleReader.cleanConditionally(links[i], "span");
             }
             //SAMSUNG CHANGE - MPSG5897 PART1 <<
         }
-    }
+    },
 
-    function cleanImageLinks(e) {
+    cleanImageLinks : function(e) {
         var links = e.getElementsByTagName("img");
         for (var i = 0, il = links.length; i < il; i += 1) {
             if (links[i].parentNode.tagName === "A") {
                 links[i].parentNode.removeAttribute("href");
             }
         }
-    }
+    },
 
-    function prepArticle(articleContent) {
-        cleanStyles(articleContent);
-        cleanConditionally(articleContent, "form");
-        clean(articleContent, "object");
-        cleanHTML5(articleContent, "video");
-        cleanHTML5(articleContent, "audio");
-        cleanSelect(articleContent, "select");
+    prepArticle : function(articleContent) {
+        tizenAtticleReader.cleanStyles(articleContent);
+        tizenAtticleReader.cleanConditionally(articleContent, "form");
+        tizenAtticleReader.clean(articleContent, "object");
+        tizenAtticleReader.cleanHTML5(articleContent, "video");
+        tizenAtticleReader.cleanHTML5(articleContent, "audio");
+        tizenAtticleReader.cleanSelect(articleContent, "select");
         if (articleContent.getElementsByTagName('h2').length === 1) {
-            clean(articleContent, "h2");
+            tizenAtticleReader.clean(articleContent, "h2");
         }
-        clean(articleContent, "iframe");
-        clean(articleContent, "script");
-        clean(articleContent, "style");
-        clean(articleContent, "textarea");
-        clean(articleContent, "input");
-        clean(articleContent, "\n");
-        clean(articleContent, "noscript");
-        cleanLinkHrefs(articleContent); //SAMSUNG CHANGE - MPSG5897 PART1 
-        cleanImageLinks(articleContent);
-        cleanHeaders(articleContent);
-        cleanConditionally(articleContent, "table");
-        cleanConditionally(articleContent, "ul");
-        cleanConditionally(articleContent, "div");
+        tizenAtticleReader.clean(articleContent, "iframe");
+        tizenAtticleReader.clean(articleContent, "script");
+        tizenAtticleReader.clean(articleContent, "style");
+        tizenAtticleReader.clean(articleContent, "textarea");
+        tizenAtticleReader.clean(articleContent, "input");
+        tizenAtticleReader.clean(articleContent, "\n");
+        tizenAtticleReader.clean(articleContent, "noscript");
+        tizenAtticleReader.cleanLinkHrefs(articleContent); //SAMSUNG CHANGE - MPSG5897 PART1 
+        tizenAtticleReader.cleanImageLinks(articleContent);
+        tizenAtticleReader.cleanHeaders(articleContent);
+        tizenAtticleReader.cleanConditionally(articleContent, "table");
+        tizenAtticleReader.cleanConditionally(articleContent, "ul");
+        tizenAtticleReader.cleanConditionally(articleContent, "div");
         var articleParagraphs = articleContent.getElementsByTagName('p');
         for (var i = articleParagraphs.length - 1; i >= 0; i -= 1) {
             var imgCount = articleParagraphs[i].getElementsByTagName('img').length;
             var embedCount = articleParagraphs[i].getElementsByTagName('embed').length;
             var objectCount = articleParagraphs[i].getElementsByTagName('object').length;
-            if (imgCount === 0 && embedCount === 0 && objectCount === 0 && getInnerText(articleParagraphs[i], false) === '') {
+            if (imgCount === 0 && embedCount === 0 && objectCount === 0 && tizenAtticleReader.getInnerText(articleParagraphs[i], false) === '') {
                 articleParagraphs[i].parentNode.removeChild(articleParagraphs[i]);
             }
         }
         try {
             articleContent.innerHTML = articleContent.innerHTML.replace(/<br[^>]*>\s*<p/gi, '<p');
         } catch (e) {}
-    }
+    },
 
-    function getLinkDensity(e) {
+    getLinkDensity : function(e) {
         var links = e.getElementsByTagName("a");
-        var textLength = getInnerText(e).length;
+        var textLength = tizenAtticleReader.getInnerText(e).length;
         var linkLength = 0;
         for (var i = 0, il = links.length; i < il; i += 1) {
-            linkLength += getInnerText(links[i]).length;
+            linkLength += tizenAtticleReader.getInnerText(links[i]).length;
         }
         return linkLength / textLength;
-    }
+    },
 
-    function initializeNode(node) {
+    initializeNode : function(node) {
         node.readability = {
             "contentScore": 0
         };
@@ -638,10 +634,10 @@ try {
             node.readability.contentScore -= 5;
             break;
         }
-        node.readability.contentScore += getClassWeight(node);
-    }
+        node.readability.contentScore += tizenAtticleReader.getClassWeight(node);
+    },
 
-    function getInnerText(e, normalizeSpaces) {
+    getInnerText : function(e, normalizeSpaces) {
         var textContent = "";
         if (typeof(e.textContent) === "undefined" && typeof(e.innerText) === "undefined") {
             return "";
@@ -652,39 +648,39 @@ try {
         //e = e.cloneNode(true);
         //SAMSUNG CHANGE - MPSG6326 <<
         if (e.nodeType != 3) {
-            clean(e, "script");
+            tizenAtticleReader.clean(e, "script");
         }
         if (navigator.appName === "Microsoft Internet Explorer") {
-            textContent = e.innerText.replace(regexps.trim, "");
+            textContent = e.innerText.replace(tizenAtticleReader.regexps.trim, "");
         } else {
-            textContent = e.textContent.replace(regexps.trim, "");
+            textContent = e.textContent.replace(tizenAtticleReader.regexps.trim, "");
         }
         if (normalizeSpaces) {
-            return textContent.replace(regexps.normalize, " ");
+            return textContent.replace(tizenAtticleReader.regexps.normalize, " ");
         } else {
             return textContent;
         }
-    }
+    },
 
-    tagRegexps = {
+    tagRegexps : {
         replaceAudio :            /<audio([\s\S]*?)<(\/?)audio>/gi,
         replaceVideo :            /<video([\s\S]*?)<(\/?)video>/gi,
         replaceNline :            /\n/gi
-    }
+    },
 
-    function grabArticle(argumentPage) {
+    grabArticle : function(argumentPage) {
         if (!document.body)
         return null;
 
         var bodyHtml = argumentPage ? argumentPage.innerHTML : document.body.innerHTML;
 
         if (bodyHtml.search("audio") != -1)
-            bodyHtml = bodyHtml.replace(tagRegexps.replaceAudio,"");
+            bodyHtml = bodyHtml.replace(tizenAtticleReader.tagRegexps.replaceAudio,"");
 
         if (bodyHtml.search("video") != -1)
-            bodyHtml = bodyHtml.replace(tagRegexps.replaceVideo,"");
+            bodyHtml = bodyHtml.replace(tizenAtticleReader.tagRegexps.replaceVideo,"");
 
-        bodyHtml = bodyHtml.replace(tagRegexps.replaceNline,"");
+        bodyHtml = bodyHtml.replace(tizenAtticleReader.tagRegexps.replaceNline,"");
 
         page = document.createElement("body");
         page.innerHTML = bodyHtml;
@@ -695,7 +691,7 @@ try {
         for (var nodeIndex = 0; (node = allElements[nodeIndex]); nodeIndex += 1) {
             var unlikelyMatchString = node.className + node.id;
             if (unlikelyMatchString !== "undefined") {
-                if (unlikelyMatchString.search(regexps.unlikelyCandidates) !== -1 && node.tagName !== "BODY") {
+                if (unlikelyMatchString.search(tizenAtticleReader.regexps.unlikelyCandidates) !== -1 && node.tagName !== "BODY") {
                     continue;
                 }
             }
@@ -704,7 +700,7 @@ try {
                 nodesToScore[nodesToScore.length] = node;
             }
             if (node.tagName === "DIV") {
-                if (node.innerHTML.search(regexps.divToPElements) === -1) {
+                if (node.innerHTML.search(tizenAtticleReader.regexps.divToPElements) === -1) {
                     try {
                         nodesToScore[nodesToScore.length] = node;
                     } catch(e) {}
@@ -722,7 +718,7 @@ try {
         for (var pt = 0; pt < nodesToScore.length; pt += 1) {
             var parentNode = nodesToScore[pt].parentNode;
             var grandParentNode = parentNode ? parentNode.parentNode : null;
-            var innerText = getInnerText(nodesToScore[pt]);
+            var innerText = tizenAtticleReader.getInnerText(nodesToScore[pt]);
             if (!parentNode || typeof(parentNode.tagName) === 'undefined') {
                 continue;
             }
@@ -730,11 +726,11 @@ try {
                 continue;
             }
             if (typeof parentNode.readability === 'undefined') {
-                initializeNode(parentNode);
+                tizenAtticleReader.initializeNode(parentNode);
                 candidates.push(parentNode);
             }
             if (grandParentNode && typeof(grandParentNode.readability) === 'undefined' && typeof(grandParentNode.tagName) !== 'undefined') {
-                initializeNode(grandParentNode);
+                tizenAtticleReader.initializeNode(grandParentNode);
                 candidates.push(grandParentNode);
             }
             var contentScore = 0;
@@ -748,7 +744,7 @@ try {
         }
         var topCandidate = null;
         for (var c = 0, cl = candidates.length; c < cl; c += 1) {
-            candidates[c].readability.contentScore = candidates[c].readability.contentScore * (1 - getLinkDensity(candidates[c]));
+            candidates[c].readability.contentScore = candidates[c].readability.contentScore * (1 - tizenAtticleReader.getLinkDensity(candidates[c]));
             if (!topCandidate || candidates[c].readability.contentScore > topCandidate.readability.contentScore) {
                 topCandidate = candidates[c];
             }
@@ -758,7 +754,7 @@ try {
             topCandidate.innerHTML = page.innerHTML;
             page.innerHTML = "";
             page.appendChild(topCandidate);
-            initializeNode(topCandidate);
+            tizenAtticleReader.initializeNode(topCandidate);
         }
         //SAMSUNG CHANGE >> MPSG5897 PART2 - Now we call the SearchLevelHigher implementation so that we search for
         //potential image additions within the siblingNodes to the topCandidate's parent and grandParentNodes. The variable 'Levels'
@@ -766,9 +762,9 @@ try {
         //topCandidate.parentNode and 1 means the topCandidate.parentNode.ChildNodes and topCandidate.grandParentNode.ChildNodes
         //in the future, if on any sites, we still find that images above the readable Article are not getting displayed, then we need 
         //to pass the desired value of 'n' to decide how high up the DOM Tree our reverse-BFS should search upto to add images.
-        var articleContent = SearchLevelHigher(1, topCandidate, page);
+        var articleContent = tizenAtticleReader.SearchLevelHigher(1, topCandidate, page);
         //SAMSUNG CHANGE << MPSG5897 PART2
-        prepArticle(articleContent);
+        tizenAtticleReader.prepArticle(articleContent);
         for (var pt = 0; pt < nodesToScore.length; pt += 1) {
             var parentNode = nodesToScore[pt].parentNode;
             var grandParentNode = parentNode ? parentNode.parentNode : null;
@@ -783,10 +779,10 @@ try {
             return null;
         }
         return articleContent.innerHTML;
-    }
+    },
     //SAMSUNG CHANGE - MPSG5897 PART 2>>
 
-    function SearchLevelHigher(Levels, topCandidate, page) {
+    SearchLevelHigher : function(Levels, topCandidate, page) {
         var articleContent = document.createElement("DIV");
         articleContent.id = "readability-content";
         var topCandidateCheckNode = topCandidate;
@@ -819,8 +815,8 @@ try {
                 //SAMSUNG CHANGE MPSG5897 - PART2>>
                 if (siblingNode.nodeName === "P" && topCandidate.className !== "" && siblingNode.className === topCandidate.className) {
                     //SAMSUNG CHANGE MPSG5897 - PART 2<<
-                    var linkDensity = getLinkDensity(siblingNode);
-                    var nodeContent = getInnerText(siblingNode);
+                    var linkDensity = tizenAtticleReader.getLinkDensity(siblingNode);
+                    var nodeContent = tizenAtticleReader.getInnerText(siblingNode);
                     var nodeLength = nodeContent.length;
                     if (nodeLength > 80 && linkDensity < 0.25) {
                         append = true;
@@ -829,7 +825,7 @@ try {
                     }
                 }
                 if (!append && otherElementImageSearchToProceed) {
-                    var anyImagesToAdd = isImageWorthySiblingNode(siblingNode, page);
+                    var anyImagesToAdd = tizenAtticleReader.isImageWorthySiblingNode(siblingNode, page);
                     if (anyImagesToAdd !== false) {
                         if (articleContent.childElementCount === 0)
                         articleContent.appendChild(anyImagesToAdd.cloneNode(false));
@@ -858,11 +854,11 @@ try {
             topCandidateCheckNode = topCandidateCheckNode.parentNode;
         }
         return articleContent;
-    }
+    },
     //SAMSUNG CHANGE - MPSG5897 PART 2<<
     //SAMSUNG CHANGE - MPSG5897 PART 2 >>
 
-    function isImageWorthySiblingNode(node, page) {
+    isImageWorthySiblingNode : function(node, page) {
         if (!node || node.nodeType === 3 || node.nodeType === 8)
             return false;
         var ImageContents = node.getElementsByTagName("IMG");
@@ -880,8 +876,8 @@ try {
         }
         var pageOwnerDocumentElements = page.ownerDocument.body.getElementsByTagName('*');
         //Key Block End
-        var inlineIndentationFloat = GetStyle(pageOwnerDocumentElements[Index], "float");
-        var inlineIndentationDisplay = GetStyle(pageOwnerDocumentElements[Index], "display");
+        var inlineIndentationFloat = tizenAtticleReader.GetStyle(pageOwnerDocumentElements[Index], "float");
+        var inlineIndentationDisplay = tizenAtticleReader.GetStyle(pageOwnerDocumentElements[Index], "display");
         for (var i = 0, icl = ImageContents.length; i < icl; i++) {
             //The logic is that inline images to the left or right of the text will have area atleast 40000 else won't be displayed.
             //this eliminates spurious ads, extraneous text, image links etc.
@@ -895,35 +891,35 @@ try {
             }
         }
         return returnValue;
-    }
+    },
     //SAMSUNG CHANGE - MPSG5897 - PART 2 <<
     //SAMSUNG CHANGE - MPSG5897 - PART2>>
 
-    function GetStyle(Element, CssProperty) {
+    GetStyle : function(Element, CssProperty) {
         var strValue = "";
         if (page.ownerDocument.defaultView && page.ownerDocument.defaultView.getComputedStyle)
             strValue = page.ownerDocument.defaultView.getComputedStyle(Element, "").getPropertyValue(CssProperty);
         return strValue;
-    }
+    },
     //SAMSUNG CHANGE - MPSG5897 - PART 2<<
 
-    function getArticleTitle() {
+    getArticleTitle : function() {
         var curTitle = "",
             origTitle = "";
         try {
             curTitle = origTitle = document.title;
             if (typeof curTitle !== "string") {
-                curTitle = origTitle = getInnerText(document.getElementsByTagName('title')[0]);
+                curTitle = origTitle = tizenAtticleReader.getInnerText(document.getElementsByTagName('title')[0]);
             }
         } catch(e) {}
-        curTitle = cleanUpTitleCandidate(curTitle);
+        curTitle = tizenAtticleReader.cleanUpTitleCandidate(curTitle);
         if (curTitle.length > 150 || curTitle.length < 15) {
             var hOnes = document.getElementsByTagName('h1');
             if (hOnes.length === 1) {
-                curTitle = getInnerText(hOnes[0]);
+                curTitle = tizenAtticleReader.getInnerText(hOnes[0]);
             }
         }
-        curTitle = curTitle.replace(regexps.trim, "");
+        curTitle = curTitle.replace(tizenAtticleReader.regexps.trim, "");
         if (curTitle.split(' ').length <= 4) {
             curTitle = origTitle;
         }
@@ -948,16 +944,16 @@ try {
             if (!metaTitle)
             return curTitle;
             else {
-                metaTitle = cleanUpTitleCandidate(metaTitle);
-                metaTitle = metaTitle.replace(regexps.trim, "");
+                metaTitle = tizenAtticleReader.cleanUpTitleCandidate(metaTitle);
+                metaTitle = metaTitle.replace(tizenAtticleReader.regexps.trim, "");
                 return metaTitle.length > curTitle.length ? metaTitle : curTitle;
             }
         } catch (e) {
             return curTitle;
         }
-    }
+    },
 
-    function cleanUpTitleCandidate(Title) {
+    cleanUpTitleCandidate : function(Title) {
         var curTitle = "",
             origTitle = "";
         curTitle = origTitle = Title;
@@ -974,19 +970,20 @@ try {
             }
         }
         return curTitle;
-    }
+    },
 
-    function initReader() {
-        var article_block = grabArticle();
+    initReader : function() {
+        var article_block = tizenAtticleReader.grabArticle();
         if (article_block) {
-            var reader_header = getArticleTitle();
+            var reader_header = tizenAtticleReader.getArticleTitle();
             var reader_string = "<style type='text/css'>body {background-color:rgba(232,232,232,1);}.SISO_page {border: 4px solid #c4d1d0; border-color: black transparent transparent transparent; margin:10px 0px 10px 2px;padding:2px;word-wrap:break-word; text-align:justify;}.SISO_page-separator {font-size:10px;text-align:right;width:95%;color:#94acaa;padding-top:10px}.SISO_page-num {font-size:10px;color:#94acaa}.SISO_page-total {font-size:10px;color:#94acaa}.SISO_header {font-size: 1.5em; margin:10px 0px 10px 2px;padding:2px;word-wrap:break-word; text-align:justify;font-weight: bold;} h1 { font-size: 1.17em; margin: .83em 0 } h2 { font-size: 1.17em; margin: .83em 0 } h3 { font-size: 1.0em; margin: 1.5em 0 } h4 { font-size: .83em; margin: 1.67em 0 } h5 { font-size: .75em; margin: 1.67em 0 } h6 { font-size: .75em; margin: 1.67em 0 } img { max-width: 300; }</style><meta name=\"viewport\" content=\"width=0, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi\"><div id='article_header' class='SISO_header'>" + reader_header + "</div><div id='readability-page-1' class='SISO_page'><p class='SISO_page-separator' title='No Page'></p>" + article_block + "</div>";
             return reader_string;
         } else {
             return "undefined";
         }
     }
-    initReader();
+};
+    tizenAtticleReader.initReader();
 } catch(e) {
     //SAMSUNG CHANGE - MPSG5927>> - Removing logging as per HQ request for security reasons
     //console.log("Reader Error - Reader.js");

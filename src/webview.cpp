@@ -1036,10 +1036,11 @@ void webview::__load_progress_cb(void *data, Evas_Object *obj, void *event_info)
 static Eina_Bool __execute_js_cb(void *data)
 {
 	browser *br = (browser *)data;
+
 	if (!br->get_browser_view()->get_reader())
 		br->get_browser_view()->create_reader();
 
-	br->get_browser_view()->get_reader()->execute_reader_js();
+	br->get_browser_view()->get_reader()->execute_recognizearticle_js();
 
 	return ECORE_CALLBACK_CANCEL;
 }

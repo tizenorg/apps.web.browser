@@ -32,6 +32,7 @@ public:
 
 	Evas_Object *get_layout(void);
 	Eina_Bool execute_reader_js(void);
+	Eina_Bool execute_recognizearticle_js(void);
 	void delete_layout(void);
 	void show_toolbar(Eina_Bool show);
 private:
@@ -44,7 +45,8 @@ private:
 	static void __small_font_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __large_font_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __print_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __execute_js_cb(Evas_Object *obj, const char *javascript_result, void *data);
+	static void __execute_reader_js_cb(Evas_Object *obj, const char *javascript_result, void *data);
+	static void __execute_recognizearticle_js_cb(Evas_Object *obj, const char *javascript_result, void *data);
 
 	static void __load_commited_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __load_finished_cb(void *data, Evas_Object *obj, void *event_info);
@@ -53,12 +55,14 @@ private:
 	static void __ime_hide_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __add_to_scrap_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __add_scrap_done_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __mht_contents_get_cb(Ewk_Page_Contents_Type type, const char *data);
+	static void __mht_contents_get_cb(Evas_Object *ewk_view, const char *data, void *user_data);
 
 	webview *m_webview;
 	Evas_Object *m_main_layout;
 	const char *m_reader_html;
-	Ewk_Page_Contents_Context m_contents_get_context;
+	char *m_scrap_tag;
+	Evas_Object *m_small_font_button;
+	Evas_Object *m_large_font_button;
 };
 
 #endif /* READER_H */
