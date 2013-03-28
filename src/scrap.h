@@ -66,7 +66,7 @@ public:
 	scrap(void);
 	~scrap(void);
 
-	void save(const char *title, const char *uri, const char *mht_content, const char *tag = NULL);
+	char *save(const char *title, const char *uri, const char *mht_content, const char *tag = NULL, Eina_Bool keep_it = EINA_FALSE);
 	std::vector<scrap_item *> get_scrap_list(void);
 	std::vector<char *> get_tag_list(scrap_item *item = NULL);
 	void delete_tag(const char *tag);

@@ -132,11 +132,11 @@ scrap::~scrap(void)
 	BROWSER_LOGD("");
 }
 
-void scrap::save(const char *title, const char *uri, const char *mht_content, const char *tag)
+char *scrap::save(const char *title, const char *uri, const char *mht_content, const char *tag, Eina_Bool keep_it)
 {
-	EINA_SAFETY_ON_NULL_RETURN(title);
-	EINA_SAFETY_ON_NULL_RETURN(uri);
-	EINA_SAFETY_ON_NULL_RETURN(mht_content);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(title, NULL);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(uri, NULL);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(mht_content, NULL);
 
 	time_t raw_time;
 	struct tm *time_info;
@@ -152,14 +152,16 @@ void scrap::save(const char *title, const char *uri, const char *mht_content, co
 	FILE *fd = fopen(mht_path.c_str(), "w");
 	if (!fd) {
 		BROWSER_LOGE("fopen failed");
-		return;
+		return NULL;
 	}
 	fwrite(mht_content, 1, strlen(mht_content), fd);
 	fclose(fd);
 
+	std::string return_file_path = mht_path;
 	mht_path = std::string(file_scheme) + mht_path;
 
 	_save_scrap(title, uri, mht_path.c_str(), tag);
+	return strdup(return_file_path.c_str());
 }
 
 void scrap::delete_scrap(const char *file_path)

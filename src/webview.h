@@ -131,7 +131,7 @@ public:
 	Eina_Bool has_focus(void) { return m_has_focus; }
 	void give_focus(Eina_Bool focus = EINA_TRUE) { evas_object_focus_set(m_ewk_view, focus); }
 	void enable_customize_contextmenu(Eina_Bool enable);
-	void mht_contents_get(Ewk_Page_Contents_Context *context);
+	void mht_contents_get(Ewk_View_MHTML_Data_Get_Callback callback, void *data);
 #if defined(TEST_CODE)
 	void inspector_server_enabled_set(Eina_Bool enable);
 	void recording_surface_enabled_set(Eina_Bool enable);

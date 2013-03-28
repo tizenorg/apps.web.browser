@@ -64,6 +64,7 @@ uri_bar::uri_bar(Evas_Object *parent)
 	,m_uri_entry_layout(NULL)
 	,m_is_private_mode(EINA_FALSE)
 	,m_back_longpressed_timer(NULL)
+	,m_scrap_tag(NULL)
 {
 	BROWSER_LOGD("");
 	m_main_layout = _create_main_layout(parent);
@@ -74,6 +75,9 @@ uri_bar::uri_bar(Evas_Object *parent)
 uri_bar::~uri_bar(void)
 {
 	BROWSER_LOGD("");
+	if (m_scrap_tag)
+		free(m_scrap_tag);
+
 	if (m_progress_bar)
 		evas_object_del(m_progress_bar);
 	if (m_progress_bar_bg)
@@ -469,25 +473,24 @@ void uri_bar::__add_to_home_cb(void *data, Evas_Object *obj, void *event_info)
 }
 #endif
 
-// FIXME : If contest_get callback has user_data, this will be removed.
-webview *g_scrap_webview;
-char *g_scrap_tag;
-
-void uri_bar::__mht_contents_get_cb(Ewk_Page_Contents_Type type, const char *data)
+void uri_bar::__mht_contents_get_cb(Evas_Object *ewk_view, const char *data, void *user_data)
 {
-	BROWSER_LOGD("type=[%d], data=[%s]", type, data);
 	EINA_SAFETY_ON_NULL_RETURN(data);
-
+	uri_bar *ub = (uri_bar *)user_data;
 	scrap scrap_instance;
 
-	scrap_instance.save(g_scrap_webview->get_title(), g_scrap_webview->get_uri(), data, g_scrap_tag);
+	char *file_path = scrap_instance.save(m_browser->get_browser_view()->get_current_webview()->get_title(), m_browser->get_browser_view()->get_current_webview()->get_uri(), data, ub->m_scrap_tag);
+	if (file_path)
+		free(file_path);
 
-	if (g_scrap_tag)
-		free(g_scrap_tag);
-	g_scrap_tag = NULL;
+	if (ub->m_scrap_tag) {
+		free(ub->m_scrap_tag);
+		ub->m_scrap_tag = NULL;
+	}
 
 	m_browser->get_browser_view()->show_noti_popup(BR_STRING_SAVED);
 }
+
 
 void uri_bar::__add_scrap_done_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -507,14 +510,15 @@ void uri_bar::__add_scrap_done_cb(void *data, Evas_Object *obj, void *event_info
 		BROWSER_LOGD("[%d]=[%s]", i, tag_list[i]);
 	}
 
+	if (ub->m_scrap_tag) {
+		free(ub->m_scrap_tag);
+		ub->m_scrap_tag = NULL;
+	}
+
 	if (tag_list.size() > 0)
-		g_scrap_tag = strdup(tag_str.c_str());
+		ub->m_scrap_tag = strdup(tag_str.c_str());
 
-	ub->m_contents_get_context.type = EWK_PAGE_CONTENTS_TYPE_MHTML;
-	ub->m_contents_get_context.callback = __mht_contents_get_cb;
-
-	g_scrap_webview = m_browser->get_browser_view()->get_current_webview();
-	m_browser->get_browser_view()->get_current_webview()->mht_contents_get(&(ub->m_contents_get_context));
+	m_browser->get_browser_view()->get_current_webview()->mht_contents_get(__mht_contents_get_cb, ub);
 
 	for (int i = 1 ; i < tag_list.size() ; i++)
 		delete tag_list[i];
@@ -529,11 +533,7 @@ void uri_bar::__scrap_cb(void *data, Evas_Object *obj, void *event_info)
 #if defined(BROWSER_TAG)
 	m_browser->get_add_tag_view(__add_scrap_done_cb, ub, NULL)->show();
 #else
-	ub->m_contents_get_context.type = EWK_PAGE_CONTENTS_TYPE_MHTML;
-	ub->m_contents_get_context.callback = __mht_contents_get_cb;
-
-	g_scrap_webview = m_browser->get_browser_view()->get_current_webview();
-	m_browser->get_browser_view()->get_current_webview()->mht_contents_get(&(ub->m_contents_get_context));
+	m_browser->get_browser_view()->get_current_webview()->mht_contents_get(__mht_contents_get_cb, ub);
 #endif
 
 	__context_popup_dismissed_cb(data, obj, event_info);

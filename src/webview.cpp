@@ -973,12 +973,11 @@ void webview::html_contents_set(const char *html, const char *base_uri)
 	ewk_view_html_contents_set(m_ewk_view, html, base_uri);
 }
 
-void webview::mht_contents_get(Ewk_Page_Contents_Context *context)
+void webview::mht_contents_get(Ewk_View_MHTML_Data_Get_Callback callback, void *data)
 {
 	EINA_SAFETY_ON_NULL_RETURN(m_ewk_view);
-	EINA_SAFETY_ON_NULL_RETURN(context);
 
-	ewk_view_page_contents_get(m_ewk_view, context);
+	ewk_view_mhtml_data_get(m_ewk_view, callback, data);
 }
 
 void webview::__load_started_cb(void *data, Evas_Object *obj, void *event_info)

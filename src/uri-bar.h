@@ -81,7 +81,7 @@ private:
 	static Eina_Bool __back_longpressed_timer_cb(void *data);
 	static void __minimize_cb(void *data, Evas_Object *obj, void *event_info);
 
-	static void __mht_contents_get_cb(Ewk_Page_Contents_Type type, const char *data);
+	static void __mht_contents_get_cb(Evas_Object *ewk_view, const char *data, void *user_data);
 
 	Evas_Object *m_backward_button;
 	Evas_Object *m_forward_button;
@@ -93,7 +93,7 @@ private:
 	Evas_Object *m_uri_entry_layout;
 	Eina_Bool m_is_private_mode;
 	Ecore_Timer *m_back_longpressed_timer;
-	Ewk_Page_Contents_Context m_contents_get_context;
+	char *m_scrap_tag;
 };
 
 #endif /* URI_BAR_H */
