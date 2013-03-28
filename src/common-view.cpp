@@ -1558,8 +1558,12 @@ Eina_Bool common_view::handle_scheme(const char *uri)
 			uri_str = uri_str.substr(0, uri_str.length() - msg_body.length());
 		}
 
-		if (!msg_body.empty())
+		if (!msg_body.empty()) {
 			msg_body = std::string(msg_body.c_str() + strlen(delimeter));
+			char *temp = g_uri_unescape_string(msg_body.c_str(), NULL);
+			msg_body = temp;
+			free(temp);
+		}
 
 		int offset = 0;
 		if (!strncmp(uri, sms_scheme, strlen(sms_scheme)))
@@ -1588,8 +1592,12 @@ Eina_Bool common_view::handle_scheme(const char *uri)
 		}
 		if (uri_str.find(subject_delimeter) != std::string::npos)
 			uri_str = uri_str.substr(0, uri_str.length() - uri_str.substr(uri_str.find(subject_delimeter)).length());
-		if (!msg_body.empty())
+		if (!msg_body.empty()) {
 			msg_body = std::string(msg_body.c_str() + strlen(delimeter1));
+			char *temp = g_uri_unescape_string(msg_body.c_str(), NULL);
+			msg_body = temp;
+			free(temp);
+		}
 
 		int offset = 0;
 		if (!strncmp(uri, mms_scheme, strlen(mms_scheme)))
