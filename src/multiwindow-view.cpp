@@ -184,7 +184,7 @@ Eina_Bool multiwindow_view::__close_effect_animator_cb(void *data)
 	Evas_Object *panes = mv->m_panes;
 
 	double size = elm_panes_content_right_size_get(panes);
-	if (size <= 0.05) {
+	if (size <= 0.1) {
 //		elm_panes_content_right_size_set(panes, 0.0);
 		mv->m_close_effect_animator = NULL;
 
@@ -556,7 +556,12 @@ void multiwindow_view::_show_renew_homepage_confirm_popup(void)
 
 	elm_object_content_set(scroller, label);
 	elm_object_part_content_set(popup_layout, "elm.swallow.scroller", scroller);
-	edje_object_part_text_set(elm_layout_edje_get(popup_layout), "elm.text.never_show", BR_STRING_NEVER_SHOW_AGAIN);
+
+	label = elm_label_add(scroller);
+	elm_label_line_wrap_set(label, ELM_WRAP_WORD);
+	std::string msg = std::string("<font color=#0080C0FF>") + BR_STRING_NEVER_SHOW_AGAIN + std::string("</font>");
+	elm_object_text_set(label, msg.c_str());
+	elm_object_part_content_set(popup_layout, "elm.swallow.never_show", label);
 
 	show_content_popup(NULL, popup_layout, BR_STRING_OK, __renew_homepage_ok_cb, BR_STRING_CANCEL, NULL, this);
 }
@@ -606,6 +611,10 @@ void multiwindow_view::__back_cb(void *data, Evas_Object *obj, void *event_info)
 	if (mv->_is_effect_running())
 		return;
 
+	Evas_Object *back_button = elm_object_part_content_get(mv->m_toolbar_layout, "elm.swallow.back_button");
+	if (back_button)
+		elm_object_disabled_set(back_button, EINA_TRUE);
+
 	mv->_show_close_effect();
 }
 
@@ -627,6 +636,12 @@ void multiwindow_view::__plus_cb(void *data, Evas_Object *obj, void *event_info)
 
 	if (mv->_is_effect_running())
 		return;
+
+	elm_object_disabled_set(mv->m_plus_button, EINA_TRUE);
+
+	Evas_Object *back_button = elm_object_part_content_get(mv->m_toolbar_layout, "elm.swallow.back_button");
+	if (back_button)
+		elm_object_disabled_set(back_button, EINA_TRUE);
 
 	webview *new_wv = m_browser->get_webview_list()->create_webview(EINA_TRUE);
 	m_browser->get_browser_view()->set_current_webview(new_wv);

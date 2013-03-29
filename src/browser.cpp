@@ -245,6 +245,14 @@ void browser::delete_history_view_view(void)
 
 }
 
+Eina_Bool browser::is_multiwindow_view_running(void)
+{
+	if (m_multiwindow_view)
+		return EINA_TRUE;
+
+	return EINA_FALSE;
+}
+
 multiwindow_view *browser::get_multiwindow_view(Eina_Bool init_bookmark)
 {
 	if (!m_multiwindow_view)

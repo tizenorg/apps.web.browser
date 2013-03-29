@@ -18,14 +18,15 @@
 #include "config.edc"
 #include "macro.edc"
 
-#define URI_INPUT_GOOGLE_IMAGE "browser-view/uri-input-bar/google_normal.png"
-#define URI_INPUT_GOOGLE_PRESS "browser-view/uri-input-bar/google_press.png"
+#define CIRCLE_IMAGE_WIDTH	96
+#define CIRCLE_IMAGE_HEIGHT	70
 
-#define URI_INPUT_YAHOO_IMAGE "browser-view/uri-input-bar/yahoo_normal.png"
-#define URI_INPUT_YAHOO_PRESS "browser-view/uri-input-bar/yahoo_press.png"
-
-#define CIRCLE_IMAGE_SIZE	74
 #define CANCEL_IMAGE_SIZE	42
+
+#define URI_INPUT_ENTRY_CANCEL_IMAGE "browser-view/uri-input-bar/I01_toolbar_input_icon_cancel_02.png"
+
+#define URI_INPUT_SEARCH_IMAGE "browser-view/uri-input-bar/I01_URL_toolbar_button.png"
+#define URI_INPUT_SEARCH_IMAGE_PRESS "browser-view/uri-input-bar/I01_URL_toolbar_button_press.png"
 
 collections {
 // BUTTON_IMAGE_STYLE is defined in macro.edc
@@ -36,8 +37,7 @@ collections {
          source: "S_Touch_30ms.wav";
       }
    }
-BUTTON_IMAGE_STYLE("browser/uri_input_google", URI_INPUT_GOOGLE_IMAGE, URI_INPUT_GOOGLE_PRESS, URI_INPUT_GOOGLE_IMAGE, CIRCLE_IMAGE_SIZE, CIRCLE_IMAGE_SIZE)
-BUTTON_IMAGE_STYLE("browser/uri_input_yahoo", URI_INPUT_YAHOO_IMAGE, URI_INPUT_YAHOO_PRESS, URI_INPUT_YAHOO_IMAGE, CIRCLE_IMAGE_SIZE, CIRCLE_IMAGE_SIZE)
+BUTTON_IMAGE_STYLE("browser/uri_input_search", URI_INPUT_SEARCH_IMAGE, URI_INPUT_SEARCH_IMAGE_PRESS, URI_INPUT_SEARCH_IMAGE, CIRCLE_IMAGE_WIDTH, CIRCLE_IMAGE_HEIGHT)
 
 BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BACK_PRESS, URI_INPUT_BACK_DIM, BACK_IMAGE_SIZE, BACK_IMAGE_SIZE)
 
@@ -75,33 +75,6 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 					rel2 { relative: 0.0 1.0; to: "bg"; }
 				}
 			}
-			part { name: "elm.swallow.circle_button";
-				scale : 1;
-				type : SWALLOW;
-				description {
-					state: "default" 0.0;
-					visible: 1;
-					align: 0.0 0.5;
-					min: 0 CIRCLE_IMAGE_SIZE;
-					max: 0 CIRCLE_IMAGE_SIZE;
-					fixed: 1 1;
-					rel1 { relative: 1.0 0.0; to: "pad_cicle_button"; }
-					rel2 { relative: 1.0 1.0; to: "pad_cicle_button"; }
-				}
-			}
-			part { name: "pad_circle_entry";
-				scale : 1;
-				type : RECT;
-				description {
-					state: "default" 0.0;
-					visible: 0;
-					align: 0.0 0.0;
-					min: URI_INPUT_BAR_VERTICAL_PADDING_1 0;
-					fixed: 1 0;
-					rel1 { relative: 1.0 0.0; to: "elm.swallow.circle_button"; }
-					rel2 { relative: 1.0 1.0; to: "elm.swallow.circle_button"; }
-				}
-			}
 			part { name: "elm.swallow.entry_layout";
 				scale : 1;
 				type : SWALLOW;
@@ -111,8 +84,22 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 					align: 0.0 0.5;
 					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
 					fixed: 1 1;
-					rel1 { relative: 1.0 0.0; to: "pad_circle_entry"; }
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.circle_button"; }
 					rel2 { relative: 0.0 1.0; to: "pad_entry_back_button"; }
+				}
+			}
+			part { name: "elm.swallow.circle_button";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					min: 0 0;
+					max: 0 0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad_cicle_button"; }
+					rel2 { relative: 1.0 1.0; to: "pad_cicle_button"; }
 				}
 			}
 			part { name: "pad_entry_back_button";
@@ -162,7 +149,7 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 		name: "entry-layout";
 		images {
 			image: ENTRY_LAYOUT_BG COMP;
-			image: ENTRY_CANCEL_IMAGE COMP;
+			image: URI_INPUT_ENTRY_CANCEL_IMAGE COMP;
 		}
 		parts {
 			part { name: "bg";
@@ -181,6 +168,19 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 					image.border: 35 35 35 35;
 				}
 			}
+			part { name: "pad_entry";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: CIRCLE_IMAGE_WIDTH 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
 			part { name: "pad_text";
 				scale : 1;
 				type : RECT;
@@ -190,8 +190,8 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 					align: 0.0 0.0;
 					min: 16 0;
 					fixed: 1 0;
-					rel1 { relative: 0.0 0.0; to: "bg"; }
-					rel2 { relative: 0.0 1.0; to: "bg"; }
+					rel1 { relative: 1.0 0.0; to: "pad_entry"; }
+					rel2 { relative: 1.0 1.0; to: "pad_entry"; }
 				}
 			}
 			part { name: "elm.swallow.entry";
@@ -201,11 +201,11 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 				description {
 					state: "default" 0.0;
 					visible: 1;
-					align: 0.0 0.0;
+					align: 0.0 0.5;
 					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
 					fixed: 1 1;
-					rel1 { relative: 1.0 0.0; to: "pad_text"; }
-					rel2 { relative: 0.0 1.0; to: "pad_entry_delete"; }
+					rel1 { relative: 1.0 0.55; to_x: "pad_text"; to_y: "bg"; }
+					rel2 { relative: 0.0 0.55; to_x: "pad_entry_delete"; to_y: "bg"; }
 				}
 			}
 			part { name: "pad_entry_delete";
@@ -232,9 +232,22 @@ BUTTON_IMAGE_STYLE("browser/uri_input_back", URI_INPUT_BACK_IMAGE, URI_INPUT_BAC
 					min: RELOAD_ICON_SIZE RELOAD_ICON_SIZE;
 					max: RELOAD_ICON_SIZE RELOAD_ICON_SIZE;
 					fixed: 1 1;
-					rel1 { relative: 0.0 0.0; to: "pad_delete_icon"; }
+					rel1 { relative: 0.0 0.0; to_x: "pad_delete_icon"; to_y: "pad_top_delete_icon"; }
 					rel2 { relative: 0.0 1.0; to: "pad_delete_icon"; }
-					image.normal: ENTRY_CANCEL_IMAGE;
+					image.normal: URI_INPUT_ENTRY_CANCEL_IMAGE;
+				}
+			}
+			part { name: "pad_top_delete_icon";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 2;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "bg"; }
 				}
 			}
 			part { name: "pad_delete_icon";

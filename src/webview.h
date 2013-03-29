@@ -158,6 +158,7 @@ private:
 	static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __contextmenu_selected_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edge_bottom_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __back_forward_list_changed_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static Eina_Bool __close_window_idler_cb(void *data);
 

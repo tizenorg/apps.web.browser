@@ -41,6 +41,8 @@
 #define PROGRESSBAR_HEIGHT	14
 #define TOP_GREY_HEIGHT	10
 
+#define URI_BAR_IMAGE_BG "browser-view/uri-bar/I01_toolbar_loading_entry_bg.png"
+
 collections {
 // BUTTON_IMAGE_STYLE is defined in macro.edc
 // Define BUTTON_IMAGE_STYLE(style_name, image_normal, image_press, image_dim, min_width, min_height)
@@ -61,6 +63,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 		name: "uri-bar-layout";
 		images {
 			image: URI_BAR_BG COMP;
+			image: URI_BAR_IMAGE_BG COMP;
 		}
 		parts {
 			part { name: "bg";
@@ -89,6 +92,92 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					fixed: 0 1;
 					rel1 { relative: 0.0 0.0; to: "bg"; }
 					rel2 { relative: 1.0 0.0; to: "bg"; }
+				}
+			}
+			part { name: "entry_circle_bg";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 255 255 255 255;
+					rel1 { relative: 1.0 0.0; to: "pad_entry_bg_left"; }
+					rel2 { relative: 0.0 1.0; to: "pad_entry_bg_right"; }
+				}
+			}
+			part { name: "dummy_progressbar";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 91 166 255 255;
+					rel1 { relative: 0.0 0.0; to: "entry_circle_bg"; }
+					rel2 { relative: 0.05 1.0; to: "entry_circle_bg"; }
+				}
+				description {
+					state: "loading" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.progressbar";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0 98;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "entry_circle_bg"; }
+					rel2 { relative: 0.0 1.0; to: "entry_circle_bg"; }
+				}
+			}
+			part { name: "entry_bg";
+				mouse_events: 1;
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+					fixed: 0 1;
+					min: 0 98;
+					rel1 { relative: 0.0 1.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+					image.normal: URI_BAR_IMAGE_BG;
+					image.border: 250 250 0 0;
+				}
+			}
+			part { name: "pad_entry_bg_left";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 210 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "entry_bg"; }
+					rel2 { relative: 0.0 1.0; to: "entry_bg"; }
+				}
+			}
+			part { name: "pad_entry_bg_right";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 210 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "entry_bg"; }
+					rel2 { relative: 1.0 1.0; to: "entry_bg"; }
 				}
 			}
 			part { name: "pad_more";
@@ -254,6 +343,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					rel2 { relative: 0.0 1.0; to: "elm.swallow.backward_button"; }
 				}
 			}
+#if 0
 			part { name: "elm.swallow.progressbar_bg";
 				scale : 1;
 				type : SWALLOW;
@@ -285,8 +375,20 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					rel2 { relative: 0.0 1.0; to: "elm.swallow.progressbar_bg"; }
 				}
 			}
+#endif
 		}
 		programs {
+			program { name: "show,dummy_progressbar";
+				signal: "show,dummy_progressbar,signal";
+				action: STATE_SET "loading" 0.0;
+				target: "dummy_progressbar";
+			}
+			program { name: "hide,dummy_progressbar";
+				signal: "hide,dummy_progressbar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "dummy_progressbar";
+			}
+#if 0
 			program { name: "app_in_app";
 				signal: "app_in_app,signal";
 				action: STATE_SET "app_in_app" 0.0;
@@ -311,6 +413,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 				target: "elm.swallow.menu_button";
 				target: "elm.swallow.multi_window_button";
 			}
+#endif
 		}
 	}
 
@@ -318,7 +421,8 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 		name: "entry-layout";
 		styles {
 				style { name: "uri_text_style";
-				base: "font=Tizen:style=Roman font_size=34 color=#808080 wrap=mixed ellipsis=1 text_class=tizen";
+//				base: "font=Tizen:style=Roman font_size=34 color=#808080 wrap=mixed ellipsis=1 text_class=tizen";
+				base: "font=Tizen:style=Roman font_size=34 color=#808080 text_class=tizen";
 				tag:  "br" "\n";
 				tag:  "ps" "ps";
 				tag:  "tab" "\t";
@@ -334,7 +438,8 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 			image: ENTRY_RELOAD_IMAGE COMP;
 			image: SECURE_ICON_IMAGE COMP;
 			image: PRIVATE_ICON_IMAGE COMP;
-			image: PRIVATE_SECURE_ICON_IMAGE COMP;			
+			image: PRIVATE_SECURE_ICON_IMAGE COMP;
+			image: "browser-view/uri-bar/01_icon_url_padding_bg.png" COMP;
 		}
 		parts {
 			part { name: "bg";
@@ -343,7 +448,8 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 				type: IMAGE;
 				description {
 					state: "default" 0.0;
-					visible: 1;
+//					visible: 1;
+					visible: 0;
 					align: 0.0 0.0;
 					fixed: 1 1;
 					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
@@ -468,7 +574,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					min: 0 URI_ENTRY_LAYOUT_HEIGHT;
 					fixed: 1 1;
 					rel1 { relative: 1.0 0.0; to: "pad_text"; }
-					rel2 { relative: 0.0 1.0; to: "pad_entry_reload"; }
+					rel2 { relative: 0.0 1.0; to: "reload_icon"; }
 					text {
 						style: "uri_text_style";
 						min: 0 0;
@@ -479,7 +585,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					state: "secure_on" 0.0;
 					inherit: "default" 0.0;
 					rel1 { relative: 1.0 0.0; to_x: "pad_secure_text"; to_y: "pad_text"; }
-					rel2 { relative: 0.0 1.0; to: "pad_entry_reload"; }
+					rel2 { relative: 0.0 1.0; to: "reload_icon"; }
 				}
 				description {
 					state: "private_on" 0.0;
@@ -522,6 +628,27 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					rel2 { relative: 1.0 1.0; to: "bg"; }
 				}
 			}
+			part { name: "text_gradation";
+				mouse_events: 1;
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: 80 60;
+					max: 80 60;
+					fixed: 1 1;
+					rel1 { relative: 0.7 0.0; to: "reload_icon"; }
+					rel2 { relative: 0.7 1.0; to: "reload_icon"; }
+					image.normal: "browser-view/uri-bar/01_icon_url_padding_bg.png";
+				}
+				description {
+					state: "stop" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
+			}
 			part { name: "reload_icon";
 				mouse_events: 1;
 				scale : 1;
@@ -543,6 +670,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					image.normal: ENTRY_CANCEL_IMAGE;
 				}
 			}
+#if 0
 			part { name: "pad_entry_reload";
 				scale : 1;
 				type : RECT;
@@ -556,6 +684,7 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 					rel2 { relative: 0.0 1.0; to: "reload_icon"; }
 				}
 			}
+#endif
 			part { name: "reload_icon,touch_area";
 				mouse_events: 1;
 				repeat_events: 1;
@@ -596,11 +725,13 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 				signal: "show,reload_icon,signal";
 				action: STATE_SET "default" 0.0;
 				target: "reload_icon";
+				target: "text_gradation";
 			}
 			program { name: "show,stop_icon";
 				signal: "show,stop_icon,signal";
 				action: STATE_SET "stop" 0.0;
 				target: "reload_icon";
+				target: "text_gradation";
 			}
 			program { name: "show,secure_icon";
 				signal: "show,secure_icon,signal";

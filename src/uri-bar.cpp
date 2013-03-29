@@ -44,7 +44,7 @@
 
 #define uri_bar_edj_path browser_edj_dir"/uri-bar.edj"
 
-#define PROGRESSBAR_H	(14 * efl_scale)
+#define PROGRESSBAR_H	(98 * efl_scale)
 
 #define PRINT_PDF_W	210
 #define PRINT_PDF_H	297
@@ -156,9 +156,13 @@ void uri_bar::_show_loading_status(Eina_Bool loading)
 	if (loading) {
 		edje_object_signal_emit(elm_layout_edje_get(m_uri_entry_layout), "show,stop_icon,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "loading,signal", "");
+		// Workaround, the load,start progress bar is not visible, so display it using edc.
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "show,dummy_progressbar,signal", "");
 	} else {
 		edje_object_signal_emit(elm_layout_edje_get(m_uri_entry_layout), "show,reload_icon,signal", "");
 		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "loading_finished,signal", "");
+		// Workaround, the load,start progress bar is not visible, so display it using edc.
+		edje_object_signal_emit(elm_layout_edje_get(m_main_layout), "hide,dummy_progressbar,signal", "");
 	}
 }
 
@@ -170,17 +174,11 @@ void uri_bar::update_progress_bar(double rate)
 				evas_object_del(m_progress_bar);
 				m_progress_bar = NULL;
 			}
-
-			if (m_progress_bar_bg) {
-				evas_object_del(m_progress_bar_bg);
-				m_progress_bar_bg = NULL;
-			}
-
 			// When loading is finished, show title instead of uri according to the UI guide.
 			const char *title = m_browser->get_browser_view()->get_current_webview()->get_title();
 			webview *wv = m_browser->get_browser_view()->get_current_webview();
 
-			if (title)
+			if (title && strlen(title))
 				set_uri(title);
 			else
 				set_uri(wv->get_uri());
@@ -205,20 +203,11 @@ void uri_bar::update_progress_bar(double rate)
 
 		int progress_bar_height = (int)PROGRESSBAR_H;
 		int x, y, w, h;
-		evas_object_geometry_get(m_main_layout, &x, &y, &w, &h);
+		edje_object_part_geometry_get(elm_layout_edje_get(m_main_layout), "entry_circle_bg", &x, &y, &w, &h);
 
 		if (!m_progress_bar) {
-			m_progress_bar_bg = evas_object_rectangle_add(evas_object_evas_get(m_window));
-			// According to the GUI guide.
-//			evas_object_color_set(m_progress_bar_bg, 101, 101, 101, 255);
-			evas_object_color_set(m_progress_bar_bg, 220, 220, 220, 255);
-
-			evas_object_resize(m_progress_bar_bg, w, progress_bar_height);
-
-			elm_object_part_content_set(m_main_layout, "elm.swallow.progressbar_bg", m_progress_bar_bg);
-
 			m_progress_bar = evas_object_rectangle_add(evas_object_evas_get(m_window));
-			evas_object_color_set(m_progress_bar, 23, 120, 226, 255);
+			evas_object_color_set(m_progress_bar, 91, 166, 255, 255);
 
 			elm_object_part_content_set(m_main_layout, "elm.swallow.progressbar", m_progress_bar);
 		}
@@ -226,7 +215,7 @@ void uri_bar::update_progress_bar(double rate)
 		evas_object_resize(m_progress_bar, (int)(w * rate), progress_bar_height);
 
 		if (rate == 0.05f)
-			_show_loading_status(EINA_TRUE);		
+			_show_loading_status(EINA_TRUE);
 	}
 }
 
@@ -566,7 +555,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_bookmark.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_bookmark.png", NULL);
 //	evas_object_size_hint_aspect_set(icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 
 	elm_ctxpopup_item_append(more_popup, BR_STRING_BOOKMARKS, icon, __bookmark_cb, this);
@@ -576,7 +565,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_add_bookmark.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_add_bookmark.png", NULL);
 	elm_ctxpopup_item_append(more_popup, BR_STRING_ADD_BOOKMARK, icon, __bookmark_add_cb, this);
 
 	Elm_Object_Item *it = NULL;
@@ -587,7 +576,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_add.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_add.png", NULL);
 
 	it = elm_ctxpopup_item_append(more_popup, BR_STRING_ADD_LIVEBOX, icon, __add_to_home_cb, this);
 	if (!current_uri || strlen(current_uri) == 0)
@@ -599,7 +588,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_add.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_add.png", NULL);
 
 	elm_ctxpopup_item_append(more_popup, BR_STRING_INSTALL_WEB_APP, icon, __install_web_app_cb, this);
 #endif
@@ -609,7 +598,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_find_on_page.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_find_on_page.png", NULL);
 	Elm_Object_Item *find_on_page_item = elm_ctxpopup_item_append(more_popup, BR_STRING_FIND_ON_PAGE, icon, __find_on_page_cb, this);
 
 	if (!current_uri || strlen(current_uri) == 0)
@@ -622,10 +611,10 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 	}
 
 	if (!m_preference->get_desktop_view_enabled()) {
-		elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_desktop_view.png", NULL);
+		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_desktop_view.png", NULL);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_DESKTOP_VIEW, icon, __desktop_view_cb, this);
 	} else {
-		elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_mobile_view.png", NULL);
+		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_mobile_view.png", NULL);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_MOBILE_VIEW, icon, __desktop_view_cb, this);
 	}
 
@@ -636,10 +625,10 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 	}
 
 	if (m_is_private_mode) {
-		elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_private.png", NULL);
+		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_private.png", NULL);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_PRIVATE_OFF, icon, __private_on_off_cb, this);
 	} else {
-		elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_private.png", NULL);
+		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_private.png", NULL);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_PRIVATE_ON, icon, __private_on_off_cb, this);
 	}
 
@@ -648,7 +637,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_history.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_history.png", NULL);
 	elm_ctxpopup_item_append(more_popup, BR_STRING_HISTORY, icon, __history_cb, this);
 
 	icon = elm_icon_add(more_popup);
@@ -664,7 +653,7 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(icon, browser_img_dir"/I01_more_popup_icon_setting.png", NULL);
+	elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_setting.png", NULL);
 	elm_ctxpopup_item_append(more_popup, BR_STRING_SETTINGS, icon, __setting_cb, this);
 
 	int x, y, w, h;
@@ -694,6 +683,9 @@ void uri_bar::__menu_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 void uri_bar::__multi_window_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
+	if (m_browser->is_multiwindow_view_running())
+		return;
+
 	m_browser->get_multiwindow_view()->show();
 }
 
@@ -734,7 +726,7 @@ void uri_bar::_show_longpress_back_popup(Evas_Object *parent)
 		BROWSER_LOGE("elm_icon_add failed");
 		return;
 	}
-	elm_icon_file_set(back_icon, browser_img_dir"/00_icon_Back.png", NULL);
+	elm_image_file_set(back_icon, browser_img_dir"/00_icon_Back.png", NULL);
 	evas_object_size_hint_aspect_set(back_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 
 	elm_ctxpopup_item_append(back_popup, BR_STRING_CLOSE_WINDOW, back_icon, __close_window_cb, this);

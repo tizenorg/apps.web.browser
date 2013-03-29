@@ -529,6 +529,7 @@ void webview::activate(void)
 	evas_object_smart_callback_add(m_ewk_view, "form,submit", __form_submit_cb, this);
 
 	evas_object_smart_callback_add(m_ewk_view, "edge,bottom", __edge_bottom_cb, this);
+	evas_object_smart_callback_add(m_ewk_view, "back,forward,list,changed", __back_forward_list_changed_cb, this);
 
 	enable_customize_contextmenu(EINA_TRUE);
 
@@ -580,6 +581,7 @@ void webview::deactivate(void)
 	evas_object_smart_callback_del(m_ewk_view, "form,submit", __form_submit_cb);
 
 	evas_object_smart_callback_del(m_ewk_view, "edge,bottom", __edge_bottom_cb);
+	evas_object_smart_callback_del(m_ewk_view, "back,forward,list,changed", __back_forward_list_changed_cb);
 
 	enable_customize_contextmenu(EINA_FALSE);
 
@@ -705,15 +707,6 @@ const char *webview::user_agent_get(void)
 	return ewk_view_user_agent_get(m_ewk_view);
 }
 
-void webview::ime_autofocus_set(Eina_Bool enable)
-{
-	BROWSER_LOGD("enable = [%d]", enable);
-
-	EINA_SAFETY_ON_NULL_RETURN(m_ewk_view);
-	Ewk_Settings *settings = ewk_view_settings_get(m_ewk_view);
-	ewk_settings_show_ime_on_autofocus_set(settings, enable);
-}
-
 void webview::custom_http_header_set(const char *name, const char *value)
 {
 	BROWSER_LOGD("name = [%s], value = [%s]", name, value);
@@ -832,8 +825,6 @@ void webview::_init_setting(void)
 {
 	BROWSER_LOGD("");
 	EINA_SAFETY_ON_NULL_RETURN(m_ewk_view);
-
-	ime_autofocus_set(EINA_FALSE);
 
 	if (m_preference->get_view_level_type() == VIEW_LEVEL_TYPE_FIT_TO_WIDTH)
 		auto_fitting_enabled_set(EINA_TRUE);
@@ -962,7 +953,8 @@ void webview::execute_script(const char *js_script, Ewk_View_Script_Execute_Call
 	EINA_SAFETY_ON_NULL_RETURN(m_ewk_view);
 	EINA_SAFETY_ON_NULL_RETURN(js_script);
 
-	ewk_view_script_execute(m_ewk_view, js_script, cb, data);
+	if (!ewk_view_script_execute(m_ewk_view, js_script, cb, data))
+		BROWSER_LOGD("ewk_view_script_execute fail.");
 }
 
 void webview::html_contents_set(const char *html, const char *base_uri)
@@ -1051,12 +1043,14 @@ void webview::__load_finished_cb(void *data, Evas_Object *obj, void *event_info)
 
 	m_browser->get_browser_view()->get_uri_bar()->update_progress_bar(1.0f);
 
-	if (wv->m_snapshot)
-		evas_object_del(wv->m_snapshot);
+	if (!m_browser->is_multiwindow_view_running() && !m_browser->get_app_in_app_enable()) {
+		if (wv->m_snapshot)
+			evas_object_del(wv->m_snapshot);
 
-	int w, h;
-	wv->get_geometry(NULL, NULL, &w, &h);
-	wv->m_snapshot = wv->capture_snapshot(0, 0, w, w * 0.3, 1.0);
+		int w, h;
+		wv->get_geometry(NULL, NULL, &w, &h);
+		wv->m_snapshot = wv->capture_snapshot(0, 0, w, w * 0.7, 1.0);
+	}
 
 	/* For initial access.
 	    Initial Access : If user tries to access a specific webpage after just after launching time,
@@ -1065,7 +1059,7 @@ void webview::__load_finished_cb(void *data, Evas_Object *obj, void *event_info)
 
 	// If private mode, do not save the history.
 	int visit_count = 0;
-	if (!wv->private_browsing_enabled_get())
+	if (!wv->private_browsing_enabled_get() && !m_browser->get_app_in_app_enable())
 		m_browser->get_history()->save_history(wv->get_title(), wv->get_uri(), wv->m_snapshot, &visit_count);
 
 	if (visit_count >= 2 && m_browsing_count == 2)
@@ -1092,6 +1086,11 @@ void webview::__create_window_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
 	webview *wv = (webview *)data;
+
+	if (m_browser->get_app_in_app_enable()) {
+		*((Evas_Object **)event_info) = wv->get_ewk_view();
+		return;
+	}
 
 	if (m_browser->get_webview_list()->get_count() >= BROWSER_WINDOW_MAX_SIZE) {
 		*((Evas_Object **)event_info) = NULL;
@@ -1228,6 +1227,25 @@ void webview::__edge_bottom_cb(void *data, Evas_Object *obj, void *event_info)
 	m_browser->get_browser_view()->show_jump_to_top_button(EINA_TRUE);
 }
 
+void webview::__back_forward_list_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	webview *wv = (webview *)data;
+
+	if (wv->forward_possible()) {
+		m_browser->get_browser_view()->get_uri_bar()->disable_forward_button(EINA_FALSE);
+		m_browser->get_browser_view()->disable_mini_forward_button(EINA_FALSE);
+	} else {
+		m_browser->get_browser_view()->get_uri_bar()->disable_forward_button(EINA_TRUE);
+		m_browser->get_browser_view()->disable_mini_forward_button(EINA_TRUE);
+	}
+
+	if (wv->backward_possible())
+		m_browser->get_browser_view()->disable_mini_backward_button(EINA_FALSE);
+	else
+		m_browser->get_browser_view()->disable_mini_backward_button(EINA_TRUE);
+}
+
 typedef enum {
 	TEXT_ONLY = 0,
 	INPUT_FIELD,
@@ -1324,6 +1342,20 @@ void webview::__contextmenu_customize_cb(void *data, Evas_Object *obj, void *eve
 {
 	BROWSER_LOGD("");
 	Ewk_Context_Menu *menu = static_cast<Ewk_Context_Menu*>(event_info);
+
+	if (m_browser->get_app_in_app_enable()) {
+		int count = ewk_context_menu_item_count(menu);
+		context_menu_type menu_type = _get_menu_type(menu);
+
+		for (int i = 0 ; i < count ; i++) {
+			Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, 0);
+			Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+			ewk_context_menu_item_remove(menu, item);
+		}
+
+		return;
+	}
+
 	_customize_context_menu(menu);
 }
 

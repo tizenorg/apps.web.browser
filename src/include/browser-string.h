@@ -56,6 +56,10 @@
 #define BR_STRING_LOCATION      dgettext("sys_string", "IDS_COM_BODY_LOCATION")
 #define BR_STRING_HOUR          dgettext("sys_string", "IDS_COM_BODY_1_HOUR")
 #define BR_STRING_HOURS         dgettext("sys_string", "IDS_COM_POP_PD_HOURS")
+#define BR_STRING_NO_NAME       dgettext("sys_string", "IDS_COM_BODY_NO_NAME")
+#define BR_STRING_THUMBNAIL_VIEW dgettext("sys_string", "IDS_COM_OPT_THUMBNAIL_VIEW_ABB")
+#define BR_STRING_STREAMING_PLAYER dgettext("sys_string", "IDS_COM_BODY_STREAMING_PLAYER")
+#define BR_STRING_TITLE_SELECT_AN_ACTION dgettext("sys_string", "IDS_COM_BODY_SELECT_AN_ACTION")
 /*************************************************************************************************************/
 
 
@@ -70,9 +74,17 @@
 #define BR_STRING_PRINT                 _("IDS_BR_BODY_PRINT")
 #define BR_STRING_DATA_NETWORK          _("IDS_BR_OPT_DATA_NETWORK")
 #define BR_STRING_CLOSE_WINDOW          _("IDS_BR_OPT_CLOSE_WINDOW")
+#define BR_STRING_NO_TITLE              _("IDS_BR_BODY_NO_TITLE")
 #define BR_STRING_LOADING_PLZ_WAIT      _("IDS_BR_POP_LOADING_PLEASE_WAIT_ING")
 #define BR_STRING_LOAD_ERROR_TITLE      _("IDS_BR_HEADER_DATA_CONNECTIVITY_PROBLEM")
 #define BR_STRING_LOAD_ERROR_MSG        _("IDS_BR_BODY_UNABLE_TO_DISPLAY_THE_WEBPAGE_NO_RESPONSE_FROM_THE_SERVER")
+#define BR_STRING_NO_SEARCH_RESULT      _("IDS_BR_BODY_NO_RESULTS_FOUND")
+#define BR_STRING_ADD                   _("IDS_BR_OPT_ADD")
+#define BR_STRING_MOVE                  _("IDS_BR_OPT_MOVE")
+#define BR_STRING_CLOSE_ALL             _("IDS_BR_OPT_CLOSE_ALL")
+#define BR_STRING_NO_ITEMS              _("IDS_BR_BODY_NO_ITEMS")
+#define BR_STRING_NEW_WINDOW            _("IDS_BR_OPT_NEW_WINDOW")
+#define BR_STRING_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE                _("IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE") //request
 /*************************************************************************************************************/
 
 
@@ -87,6 +99,7 @@
 /* Bookmark */
 /*************************************************************************************************************/
 #define BR_STRING_CREATE_FOLDER         _("IDS_BR_SK3_CREATE_FOLDER")
+#define BR_STRING_CREATE_FOLDER_IN      _("IDS_BR_BODY_CREATE_FOLDER")
 #define BR_STRING_FOLDER                _("IDS_BR_HEADER_FOLDER")
 #define BR_STRING_ADD_TO_BOOKMARKS      _("IDS_BR_SK3_ADD_TO_BOOKMARKS")
 #define BR_STRING_NO_BOOKMARKS          _("IDS_BR_BODY_NO_BOOKMARKS")
@@ -101,18 +114,27 @@
 #define BR_STRING_DOWNLOADING_ING       _("IDS_BR_POP_STARTING_DOWNLOAD_ING")
 #define BR_STRING_SELECT_FOLDER         _("IDS_BR_BODY_SELECT_FOLDER")
 #define BR_STRING_FOLDER_NAME           _("IDS_BR_BODY_FOLDER_NAME")
+#define BR_STRING_ADD_BOOKMARK          _("IDS_BR_OPT_ADD_BOOKMARK")
+#define BR_STRING_ADD_TAG               _("IDS_BR_HEADER_ADD_TAG")
+#define BR_STRING_EDIT_TAGS             _("IDS_BR_POP_RENAME_TAG")
+#define BR_STRING_ADD_NEW_FOLDER        _("IDS_BR_OPT_NEW_FOLDER")
+#define BR_STRING_LIST_VIEW             _("IDS_BR_OPT_LIST_VIEW")
+#define BR_STRING_NO_TAG                _("IDS_BR_BODY_ADDDETAILS_HNO_TAGS")
+#define BR_STRING_VIEW_BY_TAG           _("IDS_BR_OPT_SORT_BY_TAG")
+#define BR_STRING_DELETE_BOOKMARK       _("IDS_BR_OPT_DELETE_BOOKMARK")
+#define BR_STRING_WARNING_OVER_TAG_LIMIT _("IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED")
 /*************************************************************************************************************/
 
 
 /* Hstory */
 /*************************************************************************************************************/
 #define BR_STRING_NO_HISTORY            _("IDS_BR_BODY_NO_HISTORIES")
-#define BR_STRING_HISTORY_TODAY      _("IDS_BR_BODY_TODAY")
-#define BR_STRING_HISTORY_YESTERDAY      _("IDS_BR_BODY_YESTERDAY")
-#define BR_STRING_HISTORY_LAST_WEEK      _("IDS_BR_BODY_LAST_WEEK")
-#define BR_STRING_HISTORY_LAST_MONTH      _("Last Month")
-#define BR_STRING_HISTORY_OLDER      _("Older")
-#define BR_STRING_CLEAR            _("IDS_BR_SK_CLEAR")
+#define BR_STRING_HISTORY_TODAY         _("IDS_BR_BODY_TODAY")
+#define BR_STRING_HISTORY_YESTERDAY     _("IDS_BR_BODY_YESTERDAY")
+#define BR_STRING_HISTORY_LAST_7_DAYS   _("IDS_BR_BODY_LAST_7_DAYS")
+#define BR_STRING_HISTORY_LAST_MONTH    _("IDS_BR_BODY_LAST_MONTH")
+#define BR_STRING_HISTORY_OLDER         _("IDS_BR_BODY_OLDER")
+#define BR_STRING_CLEAR                 _("IDS_BR_SK_CLEAR")
 /*************************************************************************************************************/
 
 
@@ -133,7 +155,7 @@
 #define BR_STRING_FIND_ON_PAGE              _("IDS_BR_OPT_FIND_ON_PAGE")
 #define BR_STRING_BOOKMARKS                 _("IDS_BR_BODY_BOOKMARKS")
 #define BR_STRING_BOOKMARK                  _("IDS_BR_OPT_BOOKMARK")
-#define BR_STRING_ADD_BOOKMARK              _("IDS_BR_OPT_ADDTOBOOKMARKS")
+#define BR_STRING_ADD_BOOKMARKS             _("IDS_BR_OPT_ADDTOBOOKMARKS")
 #define BR_STRING_BOOKMARK_ADDED            _("IDS_BR_POP_BOOKMARK_ADDED")
 #define BR_STRING_BOOKMARK_REMOVED          _("IDS_BR_POP_BOOKMARK_REMOVED")
 #define BR_STRING_SAVE_FOR_OFFLINE_READING  _("IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB")
@@ -145,6 +167,11 @@
 #define BR_STRING_ADD_TO_SCRAPBOOK          _("IDS_BR_OPT_ADD_TO_SCRAPBOOK_ABB")
 #define BR_STRING_SCRAPBOOK                 _("IDS_BR_OPT_SCRAPBOOK_ABB")
 #define BR_STRING_INSTALL_WEB_APP           _("IDS_BR_OPT_INSTALL_WEB_APP")
+#define BR_STRING_MINIMIZE                  _("IDS_BR_OPT_MINIMISE")
+#define BR_STRING_MOST_VISITED              _("IDS_BR_TAB_MOST_VISITED")
+#define BR_STRING_MOBILE_VIEW               _("IDS_BR_BODY_MOBILE_VIEW")
+#define BR_STRING_ADD_LIVEBOX               _("IDS_BR_OPT_ADD_LIVEBOX")
+
 #if defined(ADD_TO_HOME)
 #if 0
 #define BR_STRING_ADD_TO_HOME               _("IDS_BR_OPT_ADD_TO_HOME_SCREEN_ABB")
@@ -155,6 +182,12 @@
 #define BR_STRING_WEB_CLIPPING              _("IDS_BR_BODY_WEB_CLIP")
 #endif
 #endif
+/*************************************************************************************************************/
+
+
+/* web clip */
+/*************************************************************************************************************/
+#define BR_STRING_NEVER                     _("IDS_BR_POP_NEVER")
 /*************************************************************************************************************/
 
 
@@ -193,6 +226,7 @@
 #define BR_STRING_CLEAR_LOCATION_ACCESS     _("IDS_BR_BODY_CLEAR_LOCATION_ACCESS")
 #define BR_STRING_CLEAR_ALL_LOCATION_DATA_Q _("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
 #define BR_STRING_FORMDATA                  _("IDS_BR_HEADER_FORM_DATA")
+#define BR_STRING_CLEAR_STORED_DATA         _("IDS_BR_BODY_CLEAR_STORED_DATA")
 #define BR_STRING_REMEMBER_FORMDATA         _("IDS_BR_BODY_REMEMBER_FORM_DATA")
 #define BR_STRING_CLEAR_FORMDATA            _("IDS_BR_BODY_CLEAR_FORM_DATA")
 #define BR_STRING_CLEAR_ALL_FORMDATA_Q      _("IDS_BR_POP_DELETE_ALL_SAVED_FORM_DATA_Q")
@@ -209,10 +243,10 @@
 #define BR_STRING_CUSTOM_USER_AGENT         _("IDS_BR_BODY_CUSTOM_USER_AGENT")
 #define BR_STRING_DELETE_ALL                _("IDS_BR_BODY_DELETE_ALL")
 #define BR_STRING_SAVED_ID_AND_PASSWORDS    _("IDS_BR_BODY_SAVED_ID_PASSWORD")
-#if defined(FEATURE_MOST_VISITED_SITES) && !defined(TIZEN_PUBLIC)
 #define BR_STRING_MOST_VISITED_SITES        _("IDS_BR_BODY_MOST_VISITED_SITES")
-#endif
-#define BR_STRING_CLEAR_ALL_SAVED_PASSWORDS_Q _("IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q")
+#define BR_STRING_MSG_MDM_POLICY            _("IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER")
+#define BR_STRING_CLEAR_PERSONALISED_DATA   _("IDS_BR_HEADER_CLEAR_PERSONALISED_DATA")
+#define BR_STRING_CLEAR_ALL_SAVED_PASSWORDS_Q           _("IDS_BR_POP_DELETE_ALL_SAVED_PASSWORDS_Q")
 #define BR_STRING_ENCODING_TYPE                         _("IDS_BR_OPT_TEXT_ENCODING")
 #define BR_STRING_ENCODING_TYPE_LATIN_1_ISO_8859_1      _("IDS_BR_OPT_LATIN_1_HISO_8859_1")
 #define BR_STRING_ENCODING_TYPE_UNICODE_UTF_8           _("IDS_BR_OPT_UNICODE_HUTF_8")
@@ -223,6 +257,7 @@
 #define BR_STRING_ENCODING_TYPE_JAPANESE_ISO_2022_JP    _("IDS_BR_OPT_JAPANESE_HISO_2022_JP")
 #define BR_STRING_ENCODING_TYPE_KOREAN_EUC_KR           _("IDS_BR_OPT_KOREAN_HEUC_KR")
 #define BR_STRING_ENCODING_TYPE_AUTOMATIC               _("IDS_BR_BODY_AUTOMATIC")
+#define BR_STRING_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS _("IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q")
 /*************************************************************************************************************/
 
 
@@ -254,57 +289,45 @@
 /*************************************************************************************************************/
 
 
+/* web notification */
+/*************************************************************************************************************/
+#define BR_STRING_WEB_NOTI_ALLOW_Q              _("IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS")
+#define BR_STRING_WEB_NOTI_PERMISSION_SETTING   _("IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS")
+#define BR_STRING_WEB_NOTI_PERMISSION_Q         _("IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q")
+/*************************************************************************************************************/
+
+
 /* Hard coded text */
 /*************************************************************************************************************/
-#define BR_STRING_CLEAR_STORED_DATA     _("IDS_BR_BODY_CLEAR_STORED_DATA")
-#define BR_STRING_CREATE_FOLDER_IN      _("IDS_BR_BODY_CREATE_FOLDER")
-#define BR_STRING_SHORTCUT              _("Shortcut")
-#define BR_STRING_ADD_TAG               _("IDS_BR_HEADER_ADD_TAG")
-#define BR_STRING_TAP_TO_ADD_TAG        _("Tap to add tag")
-#define BR_STRING_TAP_TO_INPUT_TAG      _("Tap to input tag")
-#define BR_STRING_ADD                   _("IDS_BR_OPT_ADD")
-#define BR_STRING_NEVER		     _("IDS_BR_POP_NEVER")
-#define BR_STRING_NO_TITLE              _("IDS_BR_BODY_NO_TITLE")
-#define BR_STRING_FLIGHT_MODE_WARNING   _("Flight mode activated. Using packet data will deactivate Flight mode")
-#define BR_STRING_NFC_CONNECT_FAILED    _("Failed to get NFC connection")
-#define BR_STRING_FAILED_TO_USE_SBEAM   _("Failed to use S beam. try later")
-#define BR_STRING_NO_SEARCH_RESULT      _("IDS_BR_BODY_NO_RESULTS_FOUND")
-#define BR_STRING_MSG_MDM_POLICY        _("IDS_BR_POP_SECURITY_POLICY_RESTRICTS_USE_OF_INTERNET_BROWSER")
-#define BR_STRING_MSG_FAILED_TO_ADD_A_WEBCLLIP  _("Failed to add a webclip")
-#define BR_STRING_MSG_ASK_INCREASING_QUOTA_Q    _("Do you want to allow %s to use up to %dMB of storage?")
-#define BR_STRING_USERMEDIA                     _("This application wants to use your media.")
-#define BR_STRING_FAILED_TO_SEND_VIA_BT         _("Failed to share via Bluetooth")
-#define BR_STRING_MSG_ASK_FILE_PERMISSION_CHANGE_Q _("Do you want to change file system permission?")
-#define BR_STRING_TITLE_SELECT_AN_ACTION _("Select an action")
-#define BR_STRING_WARNING_OVER_TAG_LIMIT _("IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED")
-#define BR_STRING_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS _("IDS_BR_POP_DELETE_ALL_WEBSITE_DATA_AND_LOCATION_PERMISSIONS_Q")
-#define BR_STRING_STREAMING_PLAYER      _("Streaming player")
-#define BR_STRING_WARNING_VIDEO_PLAYER _("Can not launch video-player while video-call is running.")
-#define BR_STRING_WEBCLIP_UPDATE_INTERVAL   _("Web clip update interval")
-#define BR_STRING_CLEAR_PERSONALISED_DATA        _("IDS_BR_HEADER_CLEAR_PERSONALISED_DATA")
-#define BR_STRING_REMOVE_TAG        _("Remove tag")
-#define BR_STRING_MOVE        _("IDS_BR_OPT_MOVE")
-#define BR_STRING_ADD_NEW_FOLDER        _("IDS_BR_OPT_NEW_FOLDER")
-#define BR_STRING_NO_TAG        	_("IDS_BR_BODY_ADDDETAILS_HNO_TAGS")
-#define BR_STRING_SPECIAL_CHARACTOR_WARNING        	_("Special charactor can't be included")
 
+#define BR_STRING_SHORTCUT              _("Shortcut") //not in use.
+////////tag////////
+#define BR_STRING_TAP_TO_ADD_TAG        _("Tap to add tag") //not in use.
+#define BR_STRING_TAP_TO_INPUT_TAG      _("Tap to input tag") //not in use.
+#define BR_STRING_REMOVE_TAG        _("Remove tag") //not in use.
+#define BR_STRING_SPECIAL_CHARACTOR_WARNING        	_("Special charactor can't be included")//not in ux guide
 
-#define BR_STRING_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE                _("IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE") //request
-#define BR_STRING_CLOSE_ALL	_("IDS_BR_OPT_CLOSE_ALL")
-#define BR_STRING_EDIT_TAGS		_("IDS_BR_POP_RENAME_TAG")
-#define BR_STRING_NO_ITEMS		_("IDS_BR_BODY_NO_ITEMS")
-#define BR_STRING_VIEW_BY_TAG		_("IDS_BR_OPT_SORT_BY_TAG")
-#define BR_STRING_VIEW_BY_DATE		_("View by date")
-#define BR_STRING_ADD_LIVEBOX              _("IDS_BR_OPT_ADD_LIVEBOX")
-#define BR_STRING_MINIMIZE		_("IDS_BR_OPT_MINIMISE")
-#define BR_STRING_MOVE_Q              _("Move?")
-#define BR_STRING_FAILED_TO_CREATE_AS_WEBAPP _("Failed to create as webapp")
-#define BR_STRING_STILL_WEBAPP_MAKING               _("Still installing previous webapp")
-#define BR_STRING_CTXMENU_COPY_TO_CLIPBOARD  _("Copy to clipboard")
-#define BR_STRING_CTXMENU_SELECTION_MODE                _("IDS_BR_OPT_SELECTION_MODE")
-#define BR_STRING_NEW_WINDOW              _("IDS_BR_OPT_NEW_WINDOW")
-#define BR_STRING_UNABLE_TO_SHARE_FILE_VIA_MESSAGE _("Unable to share file via message")
-#define BR_STRING_MOBILE_VIEW              _("IDS_BR_BODY_MOBILE_VIEW")
+///////html5////////
+#define BR_STRING_USERMEDIA                     _("This application wants to use your media.")//registering2
+#define BR_STRING_FAILED_TO_SEND_VIA_BT         _("Failed to share via Bluetooth")//registering2
+
+#define BR_STRING_FLIGHT_MODE_WARNING   _("Flight mode activated. Using packet data will deactivate Flight mode")//registering2
+#define BR_STRING_NFC_CONNECT_FAILED    _("Failed to get NFC connection")//registering2
+#define BR_STRING_FAILED_TO_USE_SBEAM   _("Failed to use S beam. try later")//registering2
+#define BR_STRING_MSG_FAILED_TO_ADD_A_WEBCLLIP  _("Failed to add a webclip")//registering2
+#define BR_STRING_WARNING_VIDEO_PLAYER _("Can not launch video-player while video-call is running.")//registering2
+#define BR_STRING_WEBCLIP_UPDATE_INTERVAL   _("update interval")//registring
+#define BR_STRING_MOVE_Q              _("Move?")//registering2
+#define BR_STRING_FAILED_TO_CREATE_AS_WEBAPP _("Failed to create as webapp")//registering2
+#define BR_STRING_STILL_WEBAPP_MAKING               _("Still installing previous webapp")//registering2
+#define BR_STRING_CTXMENU_COPY_TO_CLIPBOARD  _("Copy to clipboard")//registring
+#define BR_STRING_UNABLE_TO_SHARE_FILE_VIA_MESSAGE _("Unable to share file via message")//registering2
+#define BR_STRING_SYNCED_TABS              _("Synced tabs")//registring
+#define BR_STRING_KEEP_IT              _("Keep it")//registring
+#define BR_STRING_THUMBNAIL_VIEW _("Thumbnail view")//registring
+#define BR_STRING_CERTI_MESSAGE        _("There are problems with the secuirty certificate for this site.")//registring
+#define BR_STRING_SECURITY_WARNING_MESSAGE	_("Security warning") //exist It will be adjust later
+#define BR_STRING_FAILED_TO_GET_WEB_NOTI_ICON _("Failed to get web notification icon")
 /*************************************************************************************************************/
 
 
@@ -352,6 +375,7 @@
 #define BR_STRING_CTXMENU_DRAG                          _("IDS_BR_OPT_DRAG")
 #define BR_STRING_CTXMENU_FONT                          _("Font")
 #define BR_STRING_CTXMENU_CLOSE_ALL                     _("IDS_BR_OPT_CLOSE_ALL")
+#define BR_STRING_CTXMENU_SELECTION_MODE                _("IDS_BR_OPT_SELECTION_MODE")
 /*************************************************************************************************************/
 
 /* developer mode */

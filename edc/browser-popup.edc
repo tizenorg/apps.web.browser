@@ -215,21 +215,15 @@ collections {
 					}
 				}
 			}
-			part{ name:"elm.text.never_show";
-				type: TEXT;
+			part{ name:"elm.swallow.never_show";
+				type: SWALLOW;
 				scale : 1;
 				description { state: "default" 0.0;
 					visible: 1;
-					color: 0 128 192 255;
-					text {
-						font: "Tizen:style=Medium";
-						size: 35;
-						align: 0.0 0.5;
-					}
 					align: 0.0 0.5;
 					fixed: 1 1;
 					rel1 {
-						relative: 1.0 0.0; to: "elm.swallow.checkbox";
+						relative: 1.0 0.2; to: "elm.swallow.checkbox";
 					}
 					rel2 { relative: 1.0 1.0; to_y: "elm.swallow.checkbox";
 					}
@@ -317,6 +311,39 @@ collections {
 					min: 0 500;
 					rel1 { relative: 0.0 0.0; }
 					rel2 { relative: 1.0 1.0; }
+				}
+			}
+		}
+	}
+
+	group { name: "text_scroll_popup";
+		parts{
+			part { name: "bg";
+				type: RECT;
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min:  0 300;
+					visible: 0;
+					rel1 {
+						relative: 0.0 0.0;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+					}
+				}
+			}
+			part{ name:"elm.swallow.scroller";
+				type: SWALLOW;
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+//					fixed: 1 1;
+					rel1 {
+						relative: 0.05 0.0; to: "bg";
+					}
+					rel2 { relative: 0.95 1.0; to: "bg";
+					}
 				}
 			}
 		}

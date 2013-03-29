@@ -20,28 +20,12 @@
 
 #include <dlog.h>
 
-#if 0
-#define BROWSER_LOGD(fmt, args...) LOGD("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
-#define BROWSER_LOGI(fmt, args...) LOGI("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
-#define BROWSER_LOGW(fmt, args...) LOGW("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
-#define BROWSER_LOGE(fmt, args...) LOGE("[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
-#define BROWSER_LOGE_IF(cond, fmt, args...) LOGE_IF(cond, "[%s: %s: %d] "fmt, (rindex(__FILE__, '/') ? rindex(__FILE__, '/') + 1 : __FILE__), __FUNCTION__, __LINE__, ##args)
-#else
-//LOGD("[%s][%d] "fmt "\n", strrchr(__FILE__, '/')+1, __LINE__, ##arg);
-#define BROWSER_LOGD(fmt, arg...) do {\
-		LOGD(fmt "\n", ##arg);\
-} while (0)
+#define BROWSER_LOGD(fmt, args...) LOGD(fmt, ##args)
+#define BROWSER_LOGI(fmt, args...) LOGI(fmt, ##args)
+#define BROWSER_LOGW(fmt, args...) LOGW(fmt, ##args)
+#define BROWSER_LOGE(fmt, args...) LOGE(fmt, ##args)
+#define BROWSER_LOGE_IF(cond, fmt, args...) LOGE_IF(cond, fmt, ##args)
 
-#define BROWSER_LOGI(fmt, arg...) do {\
-		LOGD(fmt "\n", ##arg);\
-} while (0)
-#define BROWSER_LOGW(fmt, arg...) do {\
-		LOGD(fmt "\n", ##arg);\
-} while (0)
-#define BROWSER_LOGE(fmt, arg...) do {\
-		LOGD(fmt "\n", ##arg);\
-} while (0)
-#endif
 #if defined(BROWSER_MEMALLOC_ABORT_ON)
 #define new new(nothrow)
 #define RET_NEWALLOC_FAILED(expr) do {\

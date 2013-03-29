@@ -38,6 +38,7 @@ history_view::history_view(void)
 	,m_naviframe_item(NULL)
 	,m_is_bookmark_on_off_icon_clicked(EINA_FALSE)
 	,m_clear_button(NULL)
+	,m_main_layout(NULL)
 {
 	BROWSER_LOGD("");
 }
@@ -149,7 +150,7 @@ char *history_view::__genlist_date_label_get_cb(void *data, Evas_Object *obj, co
 			else if (day_gap == 1)
 				return strdup(BR_STRING_HISTORY_YESTERDAY);
 			else if (day_gap <= 7)
-				return strdup(BR_STRING_HISTORY_LAST_WEEK);
+				return strdup(BR_STRING_HISTORY_LAST_7_DAYS);
 			else if (day_gap <= 30)
 				return strdup(BR_STRING_HISTORY_LAST_MONTH);
 			else

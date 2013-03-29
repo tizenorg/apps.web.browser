@@ -118,24 +118,21 @@ static void _dismissed_cb(void *data, Evas_Object *obj, void *event_info)
 
 void uri_input_bar::__google_engine_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	uri_input_bar *uib = (uri_input_bar *)data;
-	Evas_Object *search_engine_button = elm_object_part_content_get(uib->m_main_layout, "elm.swallow.circle_button");
-	if (search_engine_button) {
-		elm_object_style_set(search_engine_button, "browser/uri_input_google");
-		m_preference->set_search_engine_type(0);
-	}
+	m_preference->set_search_engine_type(0);
 
 	evas_object_del(obj);
 }
 
 void uri_input_bar::__yahoo_engine_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	uri_input_bar *uib = (uri_input_bar *)data;
-	Evas_Object *search_engine_button = elm_object_part_content_get(uib->m_main_layout, "elm.swallow.circle_button");
-	if (search_engine_button) {
-		elm_object_style_set(search_engine_button, "browser/uri_input_yahoo");
-		m_preference->set_search_engine_type(1);
-	}
+	m_preference->set_search_engine_type(1);
+
+	evas_object_del(obj);
+}
+
+void uri_input_bar::__bing_engine_selected_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	m_preference->set_search_engine_type(2);
 
 	evas_object_del(obj);
 }
@@ -167,6 +164,14 @@ void uri_input_bar::_show_search_context_popup(Evas_Object *parent)
 	}
 	elm_image_file_set(icon, browser_img_dir"/I01_CP_icon_yahoo.png", NULL);
 	elm_ctxpopup_item_append(context_popup, NULL, icon, __yahoo_engine_selected_cb, this);
+
+	icon = elm_image_add(context_popup);
+	if (!icon) {
+		BROWSER_LOGE("elm_image_add");
+		return;
+	}
+	elm_image_file_set(icon, browser_img_dir"/I01_CP_icon_bing.png", NULL);
+	elm_ctxpopup_item_append(context_popup, NULL, icon, __bing_engine_selected_cb, this);
 
 	Evas_Coord x, y, w, h;
 	evas_object_geometry_get(parent, &x, &y, &w, &h);
@@ -206,10 +211,7 @@ Evas_Object *uri_input_bar::_create_main_layout(Evas_Object *parent)
 		return NULL;
 	}
 
-	if (m_preference->get_search_engine_type() == 0)
-		elm_object_style_set(circle_button, "browser/uri_input_google");
-	else if (m_preference->get_search_engine_type() == 1)
-		elm_object_style_set(circle_button, "browser/uri_input_yahoo");
+	elm_object_style_set(circle_button, "browser/uri_input_search");
 
 	evas_object_smart_callback_add(circle_button, "clicked", __search_engine_clicked_cb, this);
 	elm_object_part_content_set(layout, "elm.swallow.circle_button", circle_button);
@@ -264,6 +266,9 @@ void uri_input_bar::__enter_key_cb(void *data, Evas_Object *obj, void *event_inf
 		} else if (search_engine_type == 1) {
 			std::string query_uri = std::string(yahoo_query_uri) + std::string(uri);
 			wv->load_uri(query_uri.c_str());
+		} else if (search_engine_type == 2) {
+			std::string query_uri = std::string(bing_query_uri_prefix) + std::string(uri) + std::string(bing_query_uri_postfix);
+			wv->load_uri(query_uri.c_str());
 		}
 	}
 
@@ -288,7 +293,10 @@ void uri_input_bar::__entry_changed_cb(void *data, Evas_Object *obj, void *event
 	uri_input_bar *uib = (uri_input_bar *)data;
 	const char *input_uri = elm_entry_entry_get(obj);
 	BROWSER_LOGD("input_uri=[%s]", input_uri);
-	elm_entry_input_panel_return_key_type_set(uib->m_uri_entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_GO);
+	if (_is_regular_express(input_uri))
+		elm_entry_input_panel_return_key_type_set(uib->m_uri_entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_GO);
+	else
+		elm_entry_input_panel_return_key_type_set(uib->m_uri_entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_SEARCH);
 }
 
 Evas_Object *uri_input_bar::_create_entry_layout(Evas_Object *parent)

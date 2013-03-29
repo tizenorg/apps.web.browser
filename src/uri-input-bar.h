@@ -48,6 +48,7 @@ private:
 	static void __search_engine_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __google_engine_selected_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __yahoo_engine_selected_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __bing_engine_selected_cb(void *data, Evas_Object *obj, void *event_info);
 
 	Evas_Object *m_main_layout;
 	Evas_Object *m_uri_entry;

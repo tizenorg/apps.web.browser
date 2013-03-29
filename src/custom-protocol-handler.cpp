@@ -87,6 +87,8 @@ static Eina_Bool _is_registered_protocol_handler(const char *base_uri, const cha
 		return EINA_FALSE;
 	}
 
+	db_util_close(db_descriptor);
+
 	if (error == SQLITE_ROW)
 		return EINA_TRUE;
 	else
@@ -219,6 +221,8 @@ static Eina_Bool _unregister_protocol_handler(const char *base_uri, const char *
 		return EINA_FALSE;
 	}
 
+	db_util_close(db_descriptor);
+
 	return EINA_TRUE;
 
 }
@@ -271,6 +275,8 @@ static char *_get_target_uri(const char *base_uri, const char *protocol)
 
 		return NULL;
 	}
+
+	db_util_close(db_descriptor);
 
 	return return_uri;
 }
@@ -335,6 +341,7 @@ const char *custom_protocol_handler::get_protocol_from_uri(const char *origin_ur
 		BROWSER_LOGD("SQL error=%d", error);
 		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 			db_util_close(db_descriptor);
+			free(base_uri);
 			return NULL;
 		}
 	}
@@ -382,6 +389,8 @@ const char *custom_protocol_handler::get_protocol_from_uri(const char *origin_ur
 		return NULL;
 	}
 
+	db_util_close(db_descriptor);
+
 	free(base_uri);
 
 	return NULL;
@@ -424,7 +433,6 @@ void custom_protocol_handler::__registration_requested_cb(void *data, Evas_Objec
 	const char *target = ewk_custom_handlers_data_target_get(custom_handler_data);
 	const char *uri = ewk_custom_handlers_data_url_get(custom_handler_data);
 	const char *base_uri = ewk_custom_handlers_data_base_url_get(custom_handler_data);
-	const char *title = ewk_custom_handlers_data_title_get(custom_handler_data);
 
 	// FIXME: hard coded string.
 	std::string msg;
@@ -448,9 +456,7 @@ void custom_protocol_handler::__is_registered_cb(void *data, Evas_Object *obj, v
 	BROWSER_LOGD("");
 	Ewk_Custom_Handlers_Data *custom_handler_data = (Ewk_Custom_Handlers_Data *)event_info;
 	const char *target = ewk_custom_handlers_data_target_get(custom_handler_data);
-	const char *uri = ewk_custom_handlers_data_url_get(custom_handler_data);
 	const char *base_uri = ewk_custom_handlers_data_base_url_get(custom_handler_data);
-	const char *title = ewk_custom_handlers_data_title_get(custom_handler_data);
 
 	int is_allowed = 0;
 	if (_is_registered_protocol_handler(base_uri, target, &is_allowed)) {
@@ -470,7 +476,6 @@ void custom_protocol_handler::__unregistration_requested_cb(void *data, Evas_Obj
 	const char *target = ewk_custom_handlers_data_target_get(custom_handler_data);
 	const char *uri = ewk_custom_handlers_data_url_get(custom_handler_data);
 	const char *base_uri = ewk_custom_handlers_data_base_url_get(custom_handler_data);
-	const char *title = ewk_custom_handlers_data_title_get(custom_handler_data);
 
 	_unregister_protocol_handler(base_uri, target, uri);
 }
