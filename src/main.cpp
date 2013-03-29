@@ -124,43 +124,25 @@ static Evas_Object *_create_main_window(void *app_data)
 		ecore_x_window_size_get(ecore_x_window_root_first_get(), &width, &height);
 		evas_object_resize(window, width, height);
 		elm_win_indicator_mode_set(window, ELM_WIN_INDICATOR_SHOW);
-//		evas_object_show(window);
 	}
 
 	return window;
 }
 
-static void __br_rotate_cb(app_device_orientation_e mode, void *data)
+static void __br_rotate_cb(void *data, Evas_Object *obj, void *event)
 {
-	BROWSER_LOGD("");
-	struct browser_data *ad = (struct browser_data *)data;
-	int degree;
-	switch (mode) {
-	case APP_DEVICE_ORIENTATION_0:
-		degree = 0;
-		ug_send_event(UG_EVENT_ROTATE_PORTRAIT);
-		break;
-	case APP_DEVICE_ORIENTATION_90:
-		degree = 90;
-		ug_send_event(UG_EVENT_ROTATE_LANDSCAPE_UPSIDEDOWN);
-		break;
-	case APP_DEVICE_ORIENTATION_180:
-		degree = 180;
-		ug_send_event(UG_EVENT_ROTATE_PORTRAIT_UPSIDEDOWN);
-		break;
-	case APP_DEVICE_ORIENTATION_270:
-		degree = 270;
-		ug_send_event(UG_EVENT_ROTATE_LANDSCAPE);
-		break;
-	default:
-		degree = -1;
-		break;
+	if (!data) {
+		BROWSER_LOGE("data is NULL");
+		return;
 	}
+	struct browser_data *ad = (struct browser_data *)data;
+	int changed_ang = elm_win_rotation_get(ad->main_window);
+	BROWSER_LOGD("changed_ang[%d]", changed_ang);
 
-	if (ad->browser_instance->get_app_in_app_enable())
-		elm_win_rotation_set(ad->main_window, degree);
+	if (changed_ang == -1)
+		return;
 	else
-		elm_win_rotation_with_resize_set(ad->main_window, degree);
+		ad->browser_instance->rotate(changed_ang);
 }
 
 static void _exit_browser(void)
@@ -197,17 +179,13 @@ static bool __br_app_create(void *app_data)
 
 	ad->browser_instance = new browser(ad->main_window);
 
-	int auto_rotate = 0;
-	if (vconf_get_bool(VCONFKEY_SETAPPL_AUTO_ROTATE_SCREEN_BOOL, &auto_rotate) < 0) {
-		BROWSER_LOGE("Failed to get VCONFKEY_SETAPPL_AUTO_ROTATE_SCREEN_BOOL key");
-		return false;
-	} else {
-		if (auto_rotate) {
-			app_device_orientation_e rotation_value = app_get_device_orientation();
-			if (rotation_value != APP_DEVICE_ORIENTATION_0)
-				__br_rotate_cb(rotation_value, ad);
-		}
+	if (elm_win_wm_rotation_supported_get(ad->main_window))
+	{
+		const int rots[4] = { 0, 90, 180, 270 };
+		elm_win_wm_rotation_available_rotations_set(ad->main_window, rots, 4);
 	}
+	evas_object_smart_callback_add(ad->main_window, "wm,rotation,changed", __br_rotate_cb, ad);
+
 	return true;
 }
 
@@ -409,7 +387,7 @@ EXPORT_API int main(int argc, char *argv[])
 	ops.service = __br_app_reset;
 	ops.low_memory = __br_low_memory_cb;
 	ops.low_battery = __br_low_battery_cb;
-	ops.device_orientation = __br_rotate_cb;
+	ops.device_orientation = NULL;
 	ops.language_changed = __br_lang_changed_cb;
 	ops.region_format_changed = __br_region_changed_cb;
 
