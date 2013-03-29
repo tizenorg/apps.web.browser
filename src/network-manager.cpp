@@ -53,6 +53,7 @@ network_manager::network_manager(void)
 	m_already_configured(EINA_FALSE)
 	,m_network_need_wakeup(EINA_FALSE)
 	,m_handle(NULL)
+	,m_wifi_popup(NULL)
 {
 	BROWSER_LOGD("");
 }
@@ -209,7 +210,7 @@ void network_manager::show_confirm_network_unlock_popup(void)
 
 	if ((_get_wifi_state() == CONNECTION_WIFI_STATE_DEACTIVATED)
 		&& _get_cellular_state() == CONNECTION_CELLULAR_STATE_OUT_OF_SERVICE)
-	m_browser->get_browser_view()->show_msg_popup(NULL,
+	m_wifi_popup = m_browser->get_browser_view()->show_msg_popup(NULL,
 												BR_STRING_ENABLE_NETWORK_Q,
 												BR_STRING_WIFI,
 												__network_enable_wifi_cb,
@@ -357,6 +358,9 @@ void network_manager::__leave_flghtmode_confirm_cb(void *data, Evas_Object *obj,
 void network_manager::__msg_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
+	network_manager *nm = m_browser->get_network_manager();
+
+	nm->m_wifi_popup = NULL;
 }
 
 void network_manager::__network_enable_wifi_cb(void *data, Evas_Object *obj, void *event_info)
@@ -366,6 +370,7 @@ void network_manager::__network_enable_wifi_cb(void *data, Evas_Object *obj, voi
 
 	network_manager *nm = m_browser->get_network_manager();
 	nm->_turn_wifi_on_off(EINA_TRUE);
+	nm->m_wifi_popup = NULL;
 }
 
 void network_manager::__network_enable_cellular_cb(void *data, Evas_Object *obj, void *event_info)
@@ -375,5 +380,16 @@ void network_manager::__network_enable_cellular_cb(void *data, Evas_Object *obj,
 
 	network_manager *nm = m_browser->get_network_manager();
 	nm->_turn_data_network_on_off(EINA_TRUE);
+
+	nm->m_wifi_popup = NULL;
+}
+
+void network_manager::destroy_wifi_popup(void)
+{
+	BROWSER_LOGD("");
+	if (m_wifi_popup) {
+		evas_object_del(m_wifi_popup);
+		m_wifi_popup = NULL;
+	}
 }
 

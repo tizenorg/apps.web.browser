@@ -34,7 +34,7 @@ public:
 	Eina_Bool handle_scheme(const char *uri);
 
 	void show_content_popup(const char *title, Evas_Object *content_obj, const char *button1_text = NULL, Evas_Smart_Cb button1_func = NULL, const char *button2_text = NULL, Evas_Smart_Cb button2_func = NULL, void *data = NULL, Eina_Bool share = EINA_FALSE);
-	void show_msg_popup(const char *title, const char *msg, const char *button1_text = NULL, Evas_Smart_Cb button1_func = NULL, const char *button2_text = NULL, Evas_Smart_Cb button2_func = NULL, void *data = NULL, const char *button3_text = NULL, Evas_Smart_Cb button3_func = NULL);
+	Evas_Object *show_msg_popup(const char *title, const char *msg, const char *button1_text = NULL, Evas_Smart_Cb button1_func = NULL, const char *button2_text = NULL, Evas_Smart_Cb button2_func = NULL, void *data = NULL, const char *button3_text = NULL, Evas_Smart_Cb button3_func = NULL);
 	void show_delete_popup(const char *title, const char *msg, const char *button1_text = NULL, Evas_Smart_Cb button1_func = NULL, const char *button2_text = NULL, Evas_Smart_Cb button2_func = NULL, void *data = NULL);
 	void show_msg_popup(const char *msg, int timeout = 3);
 	void show_noti_popup(const char *msg, int timeout = 3);

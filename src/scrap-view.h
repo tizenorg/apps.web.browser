@@ -38,6 +38,7 @@ private:
 		Eina_Bool is_checked;
 		Eina_Bool is_tag_index;
 		Elm_Object_Item *it;
+		void *data;
 	} scrap_view_genlist_item;
 
 	Evas_Object *_create_genlist(Evas_Object *parent);
@@ -68,8 +69,8 @@ private:
 	static void __naviframe_pop_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __more_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __search_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __view_by_tag_cb(void *data, Evas_Object *obj, void *event_info);
-	static void __view_by_date_cb(void *data, Evas_Object *obj, void *event_info);
+//	static void __view_by_tag_cb(void *data, Evas_Object *obj, void *event_info);
+//	static void __view_by_date_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __more_delete_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __edit_checkbox_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __back_button_cb(void *data, Evas_Object *obj, void *event_info);
@@ -84,6 +85,7 @@ private:
 
 	Elm_Genlist_Item_Class *m_item_ic;
 	Elm_Genlist_Item_Class *m_group_title_ic;
+	Elm_Genlist_Item_Class *m_group_title_icon_ic;
 	Elm_Object_Item *m_naviframe_item;
 
 	std::vector<scrap_item *> m_scrap_list;

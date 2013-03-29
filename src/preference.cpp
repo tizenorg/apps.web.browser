@@ -102,7 +102,7 @@ preference_type preference_types[] = {
 	{PREF_KEY_DISPLAY_IMAGES, BOOL_VALUE, (bool *)true},
 	{PREF_KEY_BLOCK_POPUP, BOOL_VALUE, (bool *)true},
 	{PREF_KEY_TEXT_ENCODING, INT_VALUE, (int *)TEXT_ENCODING_TYPE_UTF_8},
-	{PREF_KEY_SHOW_SECURITY_WARNINGS, BOOL_VALUE, (bool *)true},
+	{PREF_KEY_SHOW_SECURITY_WARNINGS, BOOL_VALUE, (bool *)false},
 	{PREF_KEY_ACCEPT_COOKIES, BOOL_VALUE, (bool *)true},
 	{PREF_KEY_AUTO_SAVE_ID_PASSWORD, BOOL_VALUE, (bool *)false},
 	{PREF_KEY_AUTO_SAVE_FORM_DATA, BOOL_VALUE, (bool *)false},
@@ -344,6 +344,9 @@ void preference::__preference_changed_cb(const char *key, void *data)
 			m_browser->get_webview_list()->get_webview(i)->plugin_enabled_set(pref->get_plugins_enabled());
 	} else if (!strcmp(key, PREF_KEY_ACCEPT_COOKIES)) {
 		m_webview_context->accept_cookie_enabled_set(pref->get_accept_cookies_enabled());
+	} else if (!strcmp(key, PREF_KEY_AUTO_SAVE_FORM_DATA)) {
+		for (int i = 0 ; i < count ; i++)
+			m_browser->get_webview_list()->get_webview(i)->remember_form_data_enabled_set(pref->get_auto_save_form_data_enabled());
 	}
 #if defined(TEST_CODE)
 	else if (!strcmp(key, PREF_KEY_RECORDING_SURFACE)) {

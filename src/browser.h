@@ -68,6 +68,7 @@ public:
 
 	browser_view *get_browser_view(void) { return m_browser_view; }
 	multiwindow_view *get_multiwindow_view(Eina_Bool init_bookmark = EINA_FALSE);
+	Eina_Bool is_multiwindow_view_running(void);
 	network_manager *get_network_manager(void);
 	user_agent_manager *get_user_agent_manager(void);
 	download_manager *get_download_manager(void);

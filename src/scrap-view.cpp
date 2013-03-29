@@ -36,6 +36,7 @@ scrap_view::scrap_view(void)
 :
 	m_item_ic(NULL)
 	,m_group_title_ic(NULL)
+	,m_group_title_icon_ic(NULL)
 	,m_genlist(NULL)
 	,m_naviframe_item(NULL)
 	,m_main_layout(NULL)
@@ -75,6 +76,8 @@ scrap_view::~scrap_view(void)
 		evas_object_del(m_title_select_all_button);
 	if (m_search_genlist_layout)
 		evas_object_del(m_search_genlist_layout);
+	if (m_searchbar_layout)
+		evas_object_del(m_searchbar_layout);
 
 	for (int i = 0 ; i < m_scrap_list.size() ; i++)
 		delete m_scrap_list[i];
@@ -89,6 +92,8 @@ scrap_view::~scrap_view(void)
 		elm_genlist_item_class_free(m_item_ic);
 	if (m_group_title_ic)
 		elm_genlist_item_class_free(m_group_title_ic);
+	if (m_group_title_icon_ic)
+		elm_genlist_item_class_free(m_group_title_icon_ic);
 	if (m_tag_group_index_ic)
 		elm_genlist_item_class_free(m_tag_group_index_ic);
 	if (m_tag_item_ic)
@@ -115,7 +120,7 @@ void scrap_view::show(void)
 		elm_object_style_set(back_button, "naviframe/end_btn/default");
 		evas_object_smart_callback_add(back_button, "clicked", __back_button_cb, this);
 	}
-	m_naviframe_item = elm_naviframe_item_push(m_naviframe, BR_STRING_SCRAPBOOK, back_button, NULL, m_main_layout, "browser-scrap-view");
+	m_naviframe_item = elm_naviframe_item_push(m_naviframe, BR_STRING_SCRAPBOOK, back_button, NULL, m_main_layout, NULL);
 
 	m_more_button = elm_button_add(m_naviframe);
 	if (m_more_button) {
@@ -137,17 +142,9 @@ void scrap_view::show(void)
 		elm_object_disabled_set(m_search_button, EINA_TRUE);
 	}
 
-	Evas_Object *title_back_button = elm_button_add(m_naviframe);
-	if (!title_back_button) {
-		BROWSER_LOGE("elm_button_add failed");
-		return;
-	}
-	elm_object_style_set(title_back_button, "naviframe/back_btn/default");
-	elm_object_item_part_content_set(m_naviframe_item, "title_prev_btn", title_back_button);
-	evas_object_smart_callback_add(title_back_button, "clicked", __search_back_button_cb, this);
 
 	m_searchbar_layout = _create_search_bar(m_naviframe);
-	elm_object_item_part_content_set(m_naviframe_item, "title_toolbar_button1", m_searchbar_layout);
+	evas_object_hide(m_searchbar_layout);
 
 	evas_object_smart_callback_add(m_naviframe, "transition,finished", __naviframe_pop_cb, this);
 
@@ -186,6 +183,13 @@ void scrap_view::__ime_hide_cb(void *data, Evas_Object *obj, void *event_info)
 		sv->m_search_genlist_layout = NULL;
 	}
 
+	elm_object_item_part_content_unset(sv->m_naviframe_item, "toolbar_button2");
+	evas_object_hide(sv->m_searchbar_layout);
+	elm_object_item_part_content_set(sv->m_naviframe_item, "toolbar_button2", sv->m_search_button);
+	evas_object_show(sv->m_search_button);
+
+	elm_object_disabled_set(sv->m_more_button, EINA_FALSE);
+
 	elm_object_item_signal_emit(sv->m_naviframe_item, "elm,state,sip,hidden", "");
 }
 
@@ -203,8 +207,9 @@ void scrap_view::__back_button_cb(void *data, Evas_Object *obj, void *event_info
 	* Search scrap -> Press back button of search bar -> Press back button in scrap view -> browser view, but the ime is invoked shortly.
 	*/
 	if (sv->m_searchbar_layout) {
-		Evas_Object *search_entry = elm_object_part_content_get(sv->m_searchbar_layout, "elm.swallow.content");
-		elm_object_focus_allow_set(search_entry, EINA_FALSE);
+		if (sv->m_searchbar_layout == elm_object_item_part_content_get(sv->m_naviframe_item, "toolbar_button2")) {
+			return;
+		}
 	}
 
 	elm_naviframe_item_pop(m_naviframe);
@@ -218,7 +223,7 @@ Eina_Bool scrap_view::_is_tag_view(void)
 
 	return EINA_TRUE;
 }
-
+/*
 void scrap_view::__view_by_tag_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	scrap_view *sv = (scrap_view *)data;
@@ -234,6 +239,7 @@ void scrap_view::__view_by_date_cb(void *data, Evas_Object *obj, void *event_inf
 
 	evas_object_del(obj);
 }
+*/
 
 void scrap_view::__more_delete_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -247,6 +253,9 @@ void scrap_view::__search_keyword_changed_cb(void *data, Evas_Object *obj, void 
 {
 	scrap_view *sv = (scrap_view *)data;
 	Evas_Object *searchbar_layout = sv->m_searchbar_layout;
+
+	if (elm_object_item_part_content_get(sv->m_naviframe_item, "toolbar_button2") != sv->m_searchbar_layout)
+		return;
 
 	if (elm_object_focus_get(searchbar_layout)) {
 		if (elm_entry_is_empty(obj))
@@ -311,6 +320,15 @@ char *scrap_view::__search_genlist_label_get_cb(void *data, Evas_Object *obj, co
 
 		return strdup(source_string.c_str());
 	} else if (!strcmp(part, "elm.text.2")) {
+		std::string source_string = std::string(item->get_uri());
+
+		std::string::size_type pos = std::string::npos;
+		if((keyword && strlen(keyword)) && (pos = source_string.find(keyword)) != std::string::npos)
+			source_string = source_string.substr(0, pos) + std::string("<color=#0000ffff>") + std::string(keyword) + std::string("</color>") + source_string.substr(pos + strlen(keyword), source_string.length());
+
+		return strdup(source_string.c_str());
+
+#if 0
 		scrap scrap_instance;
 		std::vector<char *> tag_list = scrap_instance.get_tag_list(item);
 		if (tag_list.size() == 0) {
@@ -338,6 +356,7 @@ char *scrap_view::__search_genlist_label_get_cb(void *data, Evas_Object *obj, co
 
 			return strdup(source_string.c_str());
 		}
+#endif
 	}
 
 	return NULL;
@@ -395,7 +414,7 @@ void scrap_view::_search_scrap(const char *keyword)
 		if (elm_genlist_item_select_mode_get(it) != ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
 			scrap_view_genlist_item *genlist_item = (scrap_view_genlist_item *)elm_object_item_data_get(it);
 			scrap_item *item = genlist_item->item;
-			if ((item->get_title() && strstr(item->get_title(), keyword)) || (item->get_tag() && strstr(item->get_tag(), keyword))) {
+			if ((item->get_title() && strstr(item->get_title(), keyword)) || (item->get_uri() && strstr(item->get_uri(), keyword))) {
 				if (!m_search_genlist) {
 					m_search_genlist = _create_search_genlist(m_search_genlist_layout);
 				}
@@ -506,6 +525,15 @@ void scrap_view::_set_edit_mode(Eina_Bool edit_mode)
 		elm_object_style_set(m_bg, "edit_mode");
 		elm_genlist_decorate_mode_set(m_genlist, EINA_TRUE);
 
+		Elm_Object_Item *genlist_it = elm_genlist_first_item_get(m_genlist);
+		while (genlist_it) {
+			if (elm_genlist_item_select_mode_get(genlist_it) == ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+				elm_genlist_item_item_class_update(genlist_it, m_group_title_icon_ic);
+				elm_genlist_item_update(genlist_it);
+			}
+			genlist_it = elm_genlist_item_next_get(genlist_it);
+		}
+
 		if (!m_toolbar_delete_button) {
 			m_toolbar_delete_button = elm_button_add(m_naviframe);
 			if (m_toolbar_delete_button) {
@@ -517,6 +545,8 @@ void scrap_view::_set_edit_mode(Eina_Bool edit_mode)
 		Evas_Object *button = elm_object_item_part_content_unset(m_naviframe_item, "toolbar_button2");
 		evas_object_hide(button);
 		elm_object_item_part_content_set(m_naviframe_item, "toolbar_button2", m_toolbar_delete_button);
+
+		elm_object_disabled_set(m_toolbar_delete_button, EINA_TRUE);
 
 		Evas_Object *more_button = elm_object_item_part_content_unset(m_naviframe_item, "toolbar_more_btn");
 		evas_object_hide(more_button);
@@ -542,6 +572,16 @@ void scrap_view::_set_edit_mode(Eina_Bool edit_mode)
 	} else {
 		elm_object_style_set(m_bg, "default");
 		elm_genlist_decorate_mode_set(m_genlist, EINA_FALSE);
+
+		Elm_Object_Item *genlist_it = elm_genlist_first_item_get(m_genlist);
+		while (genlist_it) {
+			if (elm_genlist_item_select_mode_get(genlist_it) == ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+				elm_genlist_item_item_class_update(genlist_it, m_group_title_ic);
+				elm_genlist_item_update(genlist_it);
+			}
+			genlist_it = elm_genlist_item_next_get(genlist_it);
+		}
+
 		for (int i = 0 ; i < m_genlist_item_list.size() ; i++)
 			m_genlist_item_list[i]->is_checked = EINA_FALSE;
 
@@ -553,6 +593,8 @@ void scrap_view::_set_edit_mode(Eina_Bool edit_mode)
 
 		button = elm_object_item_part_content_unset(m_naviframe_item, "title_right_btn");
 		evas_object_hide(button);
+
+		m_select_all_flag = EINA_FALSE;
 	}
 }
 
@@ -567,6 +609,11 @@ void scrap_view::__select_all_cb(void *data, Evas_Object *obj, void *event_info)
 		elm_genlist_item_update(it);
 		it = elm_genlist_item_next_get(it);
 	}
+
+	if (sv->m_select_all_flag)
+		elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_FALSE);
+	else
+		elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_TRUE);
 }
 
 void scrap_view::__toolbar_delete_confirm_cb(void *data, Evas_Object *obj, void *event_info)
@@ -657,10 +704,11 @@ void scrap_view::__more_cb(void *data, Evas_Object *obj, void *event_info)
 
 #if defined(BROWSER_TAG)
 	if (!sv->_is_tag_view()) {
-		elm_ctxpopup_item_append(more_popup, BR_STRING_VIEW_BY_TAG, NULL, __view_by_tag_cb, data);
+//		elm_ctxpopup_item_append(more_popup, BR_STRING_VIEW_BY_TAG, NULL, __view_by_tag_cb, data);
+//		elm_ctxpopup_item_append(more_popup, BR_STRING_SHARE, NULL, __more_share_cb, data);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_DELETE, NULL, __more_delete_cb, data);
 	} else
-		elm_ctxpopup_item_append(more_popup, BR_STRING_VIEW_BY_DATE, NULL, __view_by_date_cb, data);
+//		elm_ctxpopup_item_append(more_popup, BR_STRING_VIEW_BY_DATE, NULL, __view_by_date_cb, data);
 #else
 	elm_ctxpopup_item_append(more_popup, BR_STRING_DELETE, NULL, __more_delete_cb, data);
 #endif
@@ -692,7 +740,16 @@ void scrap_view::__search_cb(void *data, Evas_Object *obj, void *event_info)
 	}
 
 	elm_object_item_signal_emit(sv->m_naviframe_item, "elm,state,sip,shown", "");
+
+	Evas_Object *search_button = elm_object_item_part_content_unset(sv->m_naviframe_item, "toolbar_button2");
+	evas_object_hide(search_button);
+
+	elm_object_item_part_content_set(sv->m_naviframe_item, "toolbar_button2", sv->m_searchbar_layout);
+
+	elm_object_disabled_set(sv->m_more_button, EINA_TRUE);
+
 	Evas_Object *search_entry = elm_object_part_content_get(sv->m_searchbar_layout, "elm.swallow.content");
+	elm_entry_entry_set(search_entry, "");
 	elm_object_focus_set(search_entry, EINA_TRUE);
 }
 
@@ -803,7 +860,7 @@ Evas_Object *scrap_view::_create_genlist(Evas_Object *parent)
 	memset(item_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
 //	item_ic->item_style = "dialogue/2text.1icon.2";
 	item_ic->item_style = "2text.1icon.4";
-	item_ic->decorate_item_style = "mode/slide2";
+	item_ic->decorate_item_style = "mode/slide3";
 	item_ic->decorate_all_item_style = "edit_default";
 	item_ic->func.text_get = __genlist_label_get_cb;
 	item_ic->func.content_get = __genlist_content_get_cb;
@@ -815,11 +872,25 @@ Evas_Object *scrap_view::_create_genlist(Evas_Object *parent)
 //	group_title_ic->item_style = "dialogue/grouptitle";
 	group_title_ic->item_style = "groupindex";
 	group_title_ic->decorate_item_style = NULL;
-	group_title_ic->decorate_all_item_style = "edit_default";
+	group_title_ic->decorate_all_item_style = NULL;//"edit_default";
 	group_title_ic->func.text_get = __genlist_label_get_cb;
-	group_title_ic->func.content_get = __genlist_content_get_cb;
+	group_title_ic->func.content_get = NULL;
 	group_title_ic->func.state_get = NULL;
 	group_title_ic->func.del = NULL;
+
+	Elm_Genlist_Item_Class *group_title_icon_ic = elm_genlist_item_class_new();
+	memset(group_title_icon_ic, 0x00, sizeof(Elm_Genlist_Item_Class));
+	group_title_icon_ic->item_style = "groupindex.icon";
+	group_title_icon_ic->decorate_item_style = NULL;
+	group_title_icon_ic->decorate_all_item_style = NULL;//"edit_default";
+	group_title_icon_ic->func.text_get = __genlist_label_get_cb;
+	group_title_icon_ic->func.content_get = __genlist_content_get_cb;
+	group_title_icon_ic->func.state_get = NULL;
+	group_title_icon_ic->func.del = NULL;
+
+	m_item_ic = item_ic;
+	m_group_title_ic = group_title_ic;
+	m_group_title_icon_ic = group_title_icon_ic;
 
 	evas_object_smart_callback_add(genlist, "drag,start,right", __sweep_right_cb, this);
 	evas_object_smart_callback_add(genlist, "drag,start,left", __sweep_left_cb, this);
@@ -834,40 +905,39 @@ Evas_Object *scrap_view::_create_genlist(Evas_Object *parent)
 	for (int i = 0 ; i < m_scrap_list.size() ; i++) {
 		if (i == 0) {
 			scrap_view_genlist_item *genlist_item = (scrap_view_genlist_item *)malloc(sizeof(scrap_view_genlist_item));
+			memset(genlist_item, 0x00, sizeof(scrap_view_genlist_item));
 			genlist_item->item = m_scrap_list[i];
 			genlist_item->is_checked = EINA_FALSE;
 			genlist_item->is_tag_index = EINA_TRUE;
+			genlist_item->data = this;
 			m_genlist_item_list.push_back(genlist_item);
 
-			Elm_Object_Item *it = elm_genlist_item_append(genlist, group_title_ic, genlist_item, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-			elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
-
-			genlist_item->it = it;
+			genlist_item->it = elm_genlist_item_append(genlist, group_title_ic, genlist_item, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+			elm_genlist_item_select_mode_set(genlist_item->it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 		} else {
 			if (m_scrap_list[i]->get_time_stamp_type() != m_scrap_list[i - 1]->get_time_stamp_type()) {
 				scrap_view_genlist_item *genlist_item = (scrap_view_genlist_item *)malloc(sizeof(scrap_view_genlist_item));
+				memset(genlist_item, 0x00, sizeof(scrap_view_genlist_item));
 				genlist_item->item = m_scrap_list[i];
 				genlist_item->is_checked = EINA_FALSE;
 				genlist_item->is_tag_index = EINA_TRUE;
+				genlist_item->data = this;
 				m_genlist_item_list.push_back(genlist_item);
 
-				Elm_Object_Item *it = elm_genlist_item_append(genlist, group_title_ic, genlist_item, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-				elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
-
-				genlist_item->it = it;
+				genlist_item->it = elm_genlist_item_append(genlist, group_title_ic, genlist_item, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+				elm_genlist_item_select_mode_set(genlist_item->it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 			}
 		}
 		scrap_view_genlist_item *genlist_item = (scrap_view_genlist_item *)malloc(sizeof(scrap_view_genlist_item));
+		memset(genlist_item, 0x00, sizeof(scrap_view_genlist_item));
 		genlist_item->item = m_scrap_list[i];
 		genlist_item->is_checked = EINA_FALSE;
 		genlist_item->is_tag_index = EINA_FALSE;
+		genlist_item->data = this;
 		m_genlist_item_list.push_back(genlist_item);
 
 		genlist_item->it = elm_genlist_item_append(genlist, item_ic, genlist_item, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, genlist_item);
 	}
-
-	m_item_ic = item_ic;
-	m_group_title_ic = group_title_ic;
 
 	return genlist;
 }
@@ -1087,6 +1157,55 @@ void scrap_view::__genlist_item_clicked_cb(void *data, Evas_Object *obj, void *e
 		genlist_item->is_checked = !(genlist_item->is_checked);
 		elm_genlist_item_update((Elm_Object_Item *)event_info);
 		elm_genlist_item_selected_set((Elm_Object_Item *)event_info, EINA_FALSE);
+
+		scrap_view *sv = (scrap_view *)genlist_item->data;
+
+		Elm_Object_Item *genlist_it = elm_genlist_first_item_get(sv->m_genlist);
+		Eina_Bool checked_item = EINA_FALSE;
+		while (genlist_it) {
+			scrap_view_genlist_item *item_data = (scrap_view_genlist_item *)elm_object_item_data_get(genlist_it);
+			if (item_data->is_checked) {
+				checked_item = EINA_TRUE;
+				break;
+			}
+
+			genlist_it = elm_genlist_item_next_get(genlist_it);
+		}
+
+		if (checked_item)
+			elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_FALSE);
+		else
+			elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_TRUE);
+
+		genlist_it = elm_genlist_first_item_get(sv->m_genlist);
+		while (genlist_it) {
+			if (elm_genlist_item_select_mode_get(genlist_it) == ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+				Elm_Object_Item *sub_it = elm_genlist_item_next_get(genlist_it);
+				Eina_Bool group_check = EINA_TRUE;
+				while (sub_it && elm_genlist_item_select_mode_get(sub_it) != ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+					scrap_view_genlist_item *sub_item_data = (scrap_view_genlist_item *)elm_object_item_data_get(sub_it);
+					if (!sub_item_data->is_checked) {
+						group_check = EINA_FALSE;
+						break;
+					}
+
+					sub_it = elm_genlist_item_next_get(sub_it);
+				}
+
+				scrap_view_genlist_item *group_item_data = (scrap_view_genlist_item *)elm_object_item_data_get(genlist_it);
+				if (group_item_data->is_tag_index) {
+					if (group_check)
+						group_item_data->is_checked = EINA_TRUE;
+					else
+						group_item_data->is_checked = EINA_FALSE;
+
+					elm_genlist_item_update(group_item_data->it);
+				}
+			}
+
+			genlist_it = elm_genlist_item_next_get(genlist_it);
+		}
+
 		return;
 	}
 
@@ -1169,7 +1288,7 @@ char *scrap_view::__genlist_label_get_cb(void *data, Evas_Object *obj, const cha
 			else if (day_gap == 1)
 				return strdup(BR_STRING_HISTORY_YESTERDAY);
 			else if (day_gap <= 7)
-				return strdup(BR_STRING_HISTORY_LAST_WEEK);
+				return strdup(BR_STRING_HISTORY_LAST_7_DAYS);
 			else if (day_gap <= 30)
 				return strdup(BR_STRING_HISTORY_LAST_MONTH);
 			else
@@ -1296,6 +1415,54 @@ void scrap_view::__edit_checkbox_changed_cb(void *data, Evas_Object *obj, void *
 			it = elm_genlist_item_next_get(it);
 		}
 	}
+
+	scrap_view *sv = (scrap_view *)genlist_item->data;
+
+	Elm_Object_Item *genlist_it = elm_genlist_first_item_get(sv->m_genlist);
+	Eina_Bool checked_item = EINA_FALSE;
+	while (genlist_it) {
+		scrap_view_genlist_item *item_data = (scrap_view_genlist_item *)elm_object_item_data_get(genlist_it);
+		if (item_data->is_checked) {
+			checked_item = EINA_TRUE;
+			break;
+		}
+
+		genlist_it = elm_genlist_item_next_get(genlist_it);
+	}
+
+	if (checked_item)
+		elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_FALSE);
+	else
+		elm_object_disabled_set(sv->m_toolbar_delete_button, EINA_TRUE);
+
+	genlist_it = elm_genlist_first_item_get(sv->m_genlist);
+	while (genlist_it) {
+		if (elm_genlist_item_select_mode_get(genlist_it) == ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+			Elm_Object_Item *sub_it = elm_genlist_item_next_get(genlist_it);
+			Eina_Bool group_check = EINA_TRUE;
+			while (sub_it && elm_genlist_item_select_mode_get(sub_it) != ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+				scrap_view_genlist_item *sub_item_data = (scrap_view_genlist_item *)elm_object_item_data_get(sub_it);
+				if (!sub_item_data->is_checked) {
+					group_check = EINA_FALSE;
+					break;
+				}
+
+				sub_it = elm_genlist_item_next_get(sub_it);
+			}
+
+			scrap_view_genlist_item *group_item_data = (scrap_view_genlist_item *)elm_object_item_data_get(genlist_it);
+			if (group_item_data->is_tag_index) {
+				if (group_check)
+					group_item_data->is_checked = EINA_TRUE;
+				else
+					group_item_data->is_checked = EINA_FALSE;
+
+				elm_genlist_item_update(group_item_data->it);
+			}
+		}
+
+		genlist_it = elm_genlist_item_next_get(genlist_it);
+	}
 }
 
 Evas_Object *scrap_view::__tag_genlist_content_get_cb(void *data, Evas_Object *obj, const char *part)
@@ -1334,6 +1501,18 @@ Evas_Object *scrap_view::__genlist_content_get_cb(void *data, Evas_Object *obj, 
 			}
 			return checkbox;
 		}
+
+		if (!strcmp(part, "elm.icon")) {
+			if (elm_genlist_item_select_mode_get(genlist_item->it) == ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+				Evas_Object *checkbox = elm_check_add(obj);
+				if (checkbox) {
+					elm_check_state_pointer_set(checkbox, &(genlist_item->is_checked));
+					evas_object_propagate_events_set(checkbox, EINA_FALSE);
+					evas_object_smart_callback_add(checkbox, "changed", __edit_checkbox_changed_cb, genlist_item);
+				}
+				return checkbox;
+			}
+		}
 	}
 
 	if (!strcmp(part, "elm.icon")) {
@@ -1341,11 +1520,21 @@ Evas_Object *scrap_view::__genlist_content_get_cb(void *data, Evas_Object *obj, 
 		favicon = m_webview_context->get_favicon(item->get_uri());
 		if (!favicon) {
 			favicon = elm_icon_add(obj);
-			elm_icon_standard_set(favicon, browser_img_dir"/faviconDefault.png");
+			elm_icon_standard_set(favicon, browser_img_dir"/I01_icon_default_internet.png");
 			evas_object_size_hint_aspect_set(favicon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+			return favicon;
+		} else {
+			Evas_Object *favicon_layout = elm_layout_add(obj);
+			if (!favicon_layout) {
+				BROWSER_LOGE("elm_layout_add failed");
+				return NULL;
+			}
+			elm_layout_file_set(favicon_layout, browser_edj_dir"/bookmark-view.edj", "favicon-layout");
+			elm_object_part_content_set(favicon_layout, "elm.swallow.favicon", favicon);
+			return favicon_layout;
 		}
 
-		return favicon;
+		return NULL;
 	}  else if (!strcmp(part, "elm.slide.swallow.1")) {
 		Evas_Object *button = elm_button_add(obj);
 		if (!button) {
@@ -1357,7 +1546,7 @@ Evas_Object *scrap_view::__genlist_content_get_cb(void *data, Evas_Object *obj, 
 		evas_object_smart_callback_add(button, "clicked", __edit_tag_cb, item);
 
 		return button;
-	}  else if (!strcmp(part, "elm.slide.swallow.2")) {
+	} else if (!strcmp(part, "elm.slide.swallow.3")) {
 		Evas_Object *button = elm_button_add(obj);
 		if (!button) {
 			BROWSER_LOGD("elm_button_add() is failed.");

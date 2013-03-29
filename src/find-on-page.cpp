@@ -221,6 +221,7 @@ void find_on_page::__entry_clicked_cb(void *data, Evas_Object *obj, void *event_
 	BROWSER_LOGD("");
 
 	if (!m_browser->get_browser_view()->is_ime_on()) {
+		elm_entry_cursor_end_set(obj);
 		elm_object_focus_set(obj, EINA_FALSE);
 		elm_object_focus_set(obj, EINA_TRUE);
 	}

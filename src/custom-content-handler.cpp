@@ -87,6 +87,8 @@ static Eina_Bool _is_registered_content_handler(const char *base_uri, const char
 		return EINA_FALSE;
 	}
 
+	db_util_close(db_descriptor);
+
 	if (error == SQLITE_ROW)
 		return EINA_TRUE;
 	else
@@ -219,6 +221,8 @@ static Eina_Bool _unregister_content_handler(const char *base_uri, const char *m
 		return EINA_FALSE;
 	}
 
+	db_util_close(db_descriptor);
+
 	return EINA_TRUE;
 
 }
@@ -272,6 +276,8 @@ static char *_get_target_uri(const char *base_uri, const char *mime)
 		return NULL;
 	}
 
+	db_util_close(db_descriptor);
+
 	return return_uri;
 }
 
@@ -322,6 +328,9 @@ const char *custom_content_handler::get_redirect_uri(const char *origin_uri, con
 				return m_redirect_uri;
 			}
 		}
+
+		if (content_uri)
+			free(content_uri);
 	}
 
 	return NULL;

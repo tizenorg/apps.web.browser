@@ -53,6 +53,7 @@ private:
 	static void __clear_history_button_cb(void *data, Evas_Object *obj, void *event_info);
 
 	Elm_Object_Item *m_naviframe_item;
+	Evas_Object *m_main_layout;
 	Evas_Object *m_genlist;
 	Elm_Genlist_Item_Class *m_item_ic;
 	Elm_Genlist_Item_Class *m_date_ic;

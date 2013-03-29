@@ -35,6 +35,7 @@ public:
 	Eina_Bool check_network_unlock(void) { return m_network_need_wakeup; };
 	void set_network_unlock(Eina_Bool network_need_wakeup) { m_network_need_wakeup = network_need_wakeup; };
 
+	void destroy_wifi_popup(void);
 private:
 	void _set_proxy(void);
 	void _configure_proxy_address(void);
@@ -55,6 +56,7 @@ private:
 	Eina_Bool m_already_configured;
 	Eina_Bool m_network_need_wakeup;
 	connection_h m_handle;
+	Evas_Object *m_wifi_popup;
 };
 
 #endif /* NETWORK_MANAGER_H */

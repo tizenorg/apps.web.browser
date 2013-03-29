@@ -27,6 +27,7 @@
 #include <vconf.h>
 #include <vconf-internal-nfc-keys.h>
 
+#include "browser.h"
 #include "browser-dlog.h"
 #include "browser-string.h"
 
@@ -452,29 +453,65 @@ void common_view::show_content_popup(const char *title, Evas_Object *content_obj
 	}
 }
 
-void common_view::show_msg_popup(const char *title, const char *msg, const char *button1_text, Evas_Smart_Cb button1_func, const char *button2_text, Evas_Smart_Cb button2_func, void *data, const char *button3_text, Evas_Smart_Cb button3_func)
+Evas_Object *common_view::show_msg_popup(const char *title, const char *msg, const char *button1_text, Evas_Smart_Cb button1_func, const char *button2_text, Evas_Smart_Cb button2_func, void *data, const char *button3_text, Evas_Smart_Cb button3_func)
 {
 	BROWSER_LOGD("title = [%s], msg = [%s]", title, msg);
-	EINA_SAFETY_ON_NULL_RETURN(msg);
+	EINA_SAFETY_ON_NULL_RETURN_VAL(msg, NULL);
+
+	if (m_browser->get_app_in_app_enable())
+		return NULL;
 
 	Evas_Object *popup = elm_popup_add(m_window);
 	if (!popup) {
 		BROWSER_LOGE("elm_popup_add failed");
-		return;
+		return NULL;
 	}
 	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
 	if (title)
 		elm_object_part_text_set(popup, "title,text", title);
 
-	if (msg)
-		elm_object_text_set(popup, msg);
+	if (msg) {
+		if (strlen(msg) > 200) {
+			elm_object_style_set(popup, "min_menustyle");
+
+			Evas_Object *content_layout = elm_layout_add(popup);
+			if (!content_layout) {
+				BROWSER_LOGE("elm_layout_add failed");
+				return NULL;
+			}
+			elm_layout_file_set(content_layout, browser_edj_dir"/browser-popup.edj", "text_scroll_popup");
+			evas_object_size_hint_weight_set(content_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+			evas_object_size_hint_align_set(content_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+			elm_object_part_content_set(content_layout, "elm.swallow.content", content_layout);
+
+			Evas_Object *scroller = elm_scroller_add(content_layout);
+			elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_AUTO);
+
+			Evas_Object *label = elm_label_add(scroller);
+			elm_label_line_wrap_set(label, ELM_WRAP_CHAR);
+
+			char *markup_msg = elm_entry_utf8_to_markup(msg);
+			if (!markup_msg)
+				return NULL;
+
+			elm_object_text_set(label, markup_msg);
+
+			free(markup_msg);
+
+			elm_object_content_set(scroller, label);
+			elm_object_part_content_set(content_layout, "elm.swallow.scroller", scroller);
+
+			elm_object_content_set(popup, content_layout);
+		} else
+			elm_object_text_set(popup, msg);
+	}
 	evas_object_show(popup);
 
 	Evas_Object *button1 = elm_button_add(popup);
 	if (!button1) {
 		BROWSER_LOGE("elm_button_add failed");
-		return;
+		return NULL;
 	}
 
 	if (button1_text)
@@ -487,7 +524,7 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 
 	popup_callback *cb1 = (popup_callback *)malloc(sizeof(popup_callback));
 	if (!cb1)
-		return;
+		return NULL;
 
 	memset(cb1, 0x00, sizeof(popup_callback));
 	cb1->func = button1_func;
@@ -506,7 +543,7 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 			BROWSER_LOGE("elm_button_add failed");
 			free(cb1);
 			cb1 = NULL;
-			return;
+			return NULL;
 		}
 		elm_object_text_set(button2, button2_text);
 		elm_object_style_set(button2, "popup_button/default");
@@ -514,7 +551,7 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 
 		cb2 = (popup_callback *)malloc(sizeof(popup_callback));
 		if (!cb2)
-			return;
+			return NULL;
 
 		memset(cb2, 0x00, sizeof(popup_callback));
 		cb2->func = button2_func;
@@ -536,7 +573,7 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 			free(cb2);
 			cb2 = NULL;
 
-			return;
+			return NULL;
 		}
 		elm_object_text_set(button3, button3_text);
 		elm_object_style_set(button3, "popup_button/default");
@@ -544,7 +581,7 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 
 		popup_callback *cb3 = (popup_callback *)malloc(sizeof(popup_callback));
 		if (!cb3)
-			return;
+			return NULL;
 
 		memset(cb3, 0x00, sizeof(popup_callback));
 		cb3->func = button3_func;
@@ -556,6 +593,8 @@ void common_view::show_msg_popup(const char *title, const char *msg, const char 
 
 		evas_object_data_set(popup, CALLBACK_DATA_3, cb3);
 	}
+
+	return popup;
 }
 
 void common_view::show_msg_popup(const char *msg, int timeout)

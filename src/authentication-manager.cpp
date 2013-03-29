@@ -133,7 +133,6 @@ void authentication_manager::__ok_button_cb(void *data, Evas_Object *obj, void *
 	const char *input_id = elm_entry_entry_get(entry);
 	entry = ps.editfield_entry_get(am->m_password_field);
 	const char *input_pw = elm_entry_entry_get(entry);
-	BROWSER_LOGD("input_id = [%s], input_pw = [%s]", input_id, input_pw);
 	ewk_auth_challenge_credential_use(am->m_auth_challenge, (char *)input_id,  (char *)input_pw);
 
 	m_browser->get_browser_view()->destroy_popup(obj);
