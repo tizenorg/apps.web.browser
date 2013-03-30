@@ -3,7 +3,7 @@
 
 Name:       org.tizen.browser
 Summary:    webkit browser with EFL
-Version: 0.1.15
+Version: 0.1.16
 Release:    0
 Group:      misc
 License:    Flora License, Version 1
