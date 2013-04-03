@@ -193,15 +193,9 @@ void history_view::__bookmark_on_off_icon_clicked_cb(void *data, Evas_Object *ob
 	m_browser->get_history_view()->m_is_bookmark_on_off_icon_clicked = EINA_TRUE;
 
 	int bookmark_id = -1;
-	if (m_browser->get_bookmark()->is_in_bookmark(item->get_uri())) {
-		if (!elm_icon_file_set(obj, browser_img_dir"/I01_icon_bookmark_off.png", NULL)) {
-			BROWSER_LOGE("elm_icon_file_set is failed.\n");
-		}
+	if (m_browser->get_bookmark()->is_in_bookmark(item->get_uri()))
 		m_browser->get_bookmark()->delete_by_uri(item->get_uri());
-	} else {
-		if (!elm_icon_file_set(obj, browser_img_dir"/I01_icon_bookmark_on.png", NULL)) {
-			BROWSER_LOGE("elm_icon_file_set is failed.\n");
-		}
+	else {
 		m_browser->get_bookmark()->save_bookmark(item->get_title(),
 					item->get_uri(), &bookmark_id,
 					m_browser->get_bookmark()->get_root_folder_id());
@@ -232,25 +226,21 @@ Evas_Object *history_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, c
 
 		return favicon;
 	} else if (!strcmp(part, "elm.icon.2")) {
-		Evas_Object *bookmark_icon = elm_icon_add(obj);
+		Evas_Object *bookmark_icon = elm_check_add(obj);
 		if (!bookmark_icon)
 			return NULL;
+		elm_object_style_set(bookmark_icon, "favorite");
 
-		if(m_browser->get_bookmark()->is_in_bookmark(item->get_uri())){
-			if (!elm_icon_file_set(bookmark_icon, browser_img_dir"/I01_icon_bookmark_on.png", NULL)) {
-				return NULL;
-			}
-		}else {
-			if (!elm_icon_file_set(bookmark_icon, browser_img_dir"/I01_icon_bookmark_off.png", NULL)) {
-				BROWSER_LOGE("elm_icon_file_set is failed.\n");
-				return NULL;
-			}
-		}
+		if(m_browser->get_bookmark()->is_in_bookmark(item->get_uri()))
+			elm_check_state_set(bookmark_icon, EINA_TRUE);
+		else
+			elm_check_state_set(bookmark_icon, EINA_FALSE);
+
 		evas_object_size_hint_aspect_set(bookmark_icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 		evas_object_propagate_events_set(bookmark_icon, EINA_FALSE);
 		evas_object_repeat_events_set(bookmark_icon, EINA_FALSE);
 
-		evas_object_smart_callback_add(bookmark_icon, "clicked", __bookmark_on_off_icon_clicked_cb, item);
+		evas_object_smart_callback_add(bookmark_icon, "changed", __bookmark_on_off_icon_clicked_cb, item);
 
 		return bookmark_icon;
 	} else if (!strcmp(part, "elm.slide.swallow.1")) {
