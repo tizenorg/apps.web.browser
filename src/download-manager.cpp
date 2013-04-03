@@ -131,12 +131,15 @@ static char *_get_app_name(const char *pkg_name)
 		return NULL;
 	}
 
+	app_name = strdup(app_name);
 	ret = ail_package_destroy_appinfo(handle);
-	if (ret != AIL_ERROR_OK)
+	if (ret != AIL_ERROR_OK) {
+		free(app_name);
 		return NULL;
+	}
 
 	BROWSER_LOGD("app_name = [%s]", app_name);
-	return strdup(app_name);
+	return app_name;
 }
 
 void download_manager::__player_cb(void *data, Evas_Object *obj, void *event_info)
