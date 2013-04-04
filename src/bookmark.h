@@ -22,8 +22,6 @@
 #include <vector>
 #include "browser-object.h"
 
-#define bookmark_max_count	1000
-
 class bookmark_item;
 class bookmark : public browser_object {
 public:
