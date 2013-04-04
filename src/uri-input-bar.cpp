@@ -243,8 +243,11 @@ void uri_input_bar::__enter_key_cb(void *data, Evas_Object *obj, void *event_inf
 		return;
 
 	char *utf8 = elm_entry_markup_to_utf8(input_uri);
-	if (!utf8 || strlen(utf8) == 0)
+	if (!utf8 || strlen(utf8) == 0) {
+		if (utf8)
+			free(utf8);
 		return;
+	}
 
 	char *uri = strdup(utf8);
 	if (!uri) {

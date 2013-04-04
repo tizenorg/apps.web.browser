@@ -319,6 +319,7 @@ const char *custom_content_handler::get_redirect_uri(const char *origin_uri, con
 			std::string query_uri_str = std::string(content_uri);
 
 			free(content_uri);
+			content_uri = NULL;
 
 			if (query_uri_str.find("%s") != std::string::npos) {
 				int pos = query_uri_str.find("%s");

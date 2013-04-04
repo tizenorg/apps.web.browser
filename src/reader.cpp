@@ -115,6 +115,7 @@ Eina_Bool reader::execute_reader_js(void)
 			BROWSER_LOGE("Reading error, result[%d] and reader_script[%d]", result, size - 1);
 			free (reader_script);
 			reader_script = NULL;
+			fclose(file);
 			return EINA_FALSE;
 		}
 
