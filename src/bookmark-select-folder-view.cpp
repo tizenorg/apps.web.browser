@@ -189,7 +189,7 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_item_by_folder(Evas_Object *
 	std::vector<bookmark_item *> bookmark_list;
 	Eina_Bool ret;
 
-#if defined(BROWSER_BOOKMARK_SYNC)
+#if defined(ROOT_IS_ZERO)
 	if (folder_id < 0) {
 		//for root folder only
 		gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
@@ -260,7 +260,7 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_folder_tree(Evas_Object *gen
 	int depth_count = 0;
 	m_bookmark->get_folder_depth_count(&depth_count);
 	BROWSER_LOGD("Final depth_count: %d", depth_count);
-#if defined(BROWSER_BOOKMARK_SYNC)
+#if defined(ROOT_IS_ZERO)
 	depth_count = depth_count + 1; //increase count for virtual root folder
 #endif
 
@@ -269,7 +269,7 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_folder_tree(Evas_Object *gen
 		if (i == 0 ) {
 			BROWSER_LOGD("ROOT folder item is set", i);
 			/* root folder */
-#if defined(BROWSER_BOOKMARK_SYNC)
+#if defined(ROOT_IS_ZERO)
 			_set_genlist_item_by_folder(genlist, -1, NULL);
 #else
 			_set_genlist_item_by_folder(genlist, 0, NULL);

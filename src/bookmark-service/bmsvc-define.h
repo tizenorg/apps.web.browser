@@ -21,7 +21,7 @@
 #define INTERNET_BOOKMARK_DB_NAME	"/opt/usr/apps/org.tizen.browser/data/db/.browser-bookmark.db"
 #define INTERNET_BOOKMARK_BACKUP_FILE_NAME \
 		"/opt/usr/apps/org.tizen.browser/data/db/browser_bookmark_backup"
-#define ROOT_FOLDER_ID	1
+#define ROOT_FOLDER_ID	0
 
 #define MAX_TAG_COUNT_FOR_1_BOOKMARK_ENTRY		4
 #endif
