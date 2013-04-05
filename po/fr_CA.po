@@ -679,3 +679,30 @@ msgstr "Les plus visités"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Liste"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Erreur inattendue"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Autoriser %s à afficher les notifications"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Effacer les paramètres d'autorisation de notification Web"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Effacer les autorisations de notification Web ?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Renommer le dossier"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Actualiser"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Affichage miniature"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Copier dans le presse-papier"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Actualisation automatique"
+

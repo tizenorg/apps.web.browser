@@ -679,3 +679,30 @@ msgstr "Gehien bisitat. guneak"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Zerrenda ikuspegia"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Ustekabeko akatsa"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Baimendu %s jakinarazpenak erakusteko"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Garbitu web jakinarazpen baimenen ezarpenak"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Garbitu web jakinarazpen baimenak?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Karpeta berrizendatu"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Eguneratu"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Miniatura ikuspegia"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopiatu arbelera"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Freskatu automatikoki"
+

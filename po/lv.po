@@ -679,3 +679,30 @@ msgstr "Biežāk apmeklētās"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Saraksta skats"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Neparedzēta kļūme"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Atļaut %s rādīt paziņojumus"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Notīrīt tīmekļa paziņojumu atļauju iestatījumus"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Vai notīrīt tīmekļa paziņojumu atļaujas?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Pārdēvēt mapi"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Atsvaidzināt"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Sīktēlu skats"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopēt starpliktuvē"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Automātiskā atsvaidzināšana"
+

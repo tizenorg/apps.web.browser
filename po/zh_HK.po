@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "資料夾名稱"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "無歷史記錄"
+msgstr "無歷程記錄"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s請求你的位置"
@@ -678,4 +678,31 @@ msgstr "最常瀏覽"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "清單檢視"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "意外故障"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "允許 %s 以顯示通知"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "清除網頁通知權限設定"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "清除網頁通知權限嗎？"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "重新命名資料夾"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "重新整理"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "縮圖檢視"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "複製到剪貼板"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "自動重新整理"
 

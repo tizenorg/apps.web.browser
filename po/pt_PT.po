@@ -41,7 +41,7 @@ msgid "IDS_BR_OPT_LIST"
 msgstr "Lista"
 
 msgid "IDS_BR_BODY_SELECT_ALL"
-msgstr "Selec. tudo"
+msgstr "Seleccionar tudo"
 
 msgid "IDS_BR_OPT_SENDURLVIA_MESSAGE"
 msgstr "Mensagem"
@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Nome da pasta"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Nenhuns históricos"
+msgstr "Nenhum histórico"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s pede a sua localização"
@@ -257,7 +257,7 @@ msgid "IDS_BR_OPT_CACHE"
 msgstr "Cache"
 
 msgid "IDS_BR_OPT_SELECT_ALL"
-msgstr "Selec. tudo"
+msgstr "Seleccionar tudo"
 
 msgid "IDS_BR_BODY_URL"
 msgstr "URL"
@@ -678,4 +678,31 @@ msgstr "Mais visitado"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Vista de lista"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Erro inesperado"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Autorizar %s a mostrar notificações"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Limpar definições de permissão de notificação da Web"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Limpar permissões de notificação da Web?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Renomear pasta"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Actualizar"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Vista de miniatura"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Copiar para bloco de notas"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Actualização auto"
 

@@ -679,3 +679,30 @@ msgstr "Meest bezocht"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Lijstweergave"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Onverwachte fout"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "%s toestemming geven om meldingen weer te geven"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Machtigingsinstellingen voor websitemeldingen wissen"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Machtigingen voor websitemeldingen wissen?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Naam map wijzigen"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Vernieuwen"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Miniatuurweergave"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopiëren naar klembord"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Autom. vernieuwen"
+

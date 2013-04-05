@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Heiti möppu"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Engin saga"
+msgstr "Ferill er enginn"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s biður um staðsetningu þína"
@@ -678,4 +678,31 @@ msgstr "Oftast heimsótt"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Listaskjár"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Óvænt bilun"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Leyfa %s að sýna tilkynningar"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Hreinsa heimildastillingar veftilkynninga"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Viltu hreinsa heimildir veftilkynninga?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Endurnefna möppu"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Uppfæra"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Smámyndir"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Afrita á klemmuspjald"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Sjálfvirk uppfærsla"
 

@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Mappnamn"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Inga berättelser"
+msgstr "Ingen historik"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s begär uppgifter om din plats"
@@ -678,4 +678,31 @@ msgstr "Mest besökt"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Listvy"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Oväntat fel"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Tillåt att %s visar meddelanden"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Rensa behörighetsinställningarna för webbmeddelanden"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Rensa behörigheter för webbmeddelanden?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Byt mappnamn"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Uppdatera"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Miniatyrer"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopiera till Urklipp"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Uppdatera automatiskt"
 

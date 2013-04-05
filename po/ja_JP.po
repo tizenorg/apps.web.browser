@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "フォルダ名"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "履歴がありません。"
+msgstr "履歴はありません。"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s​は​あなた​の​位置​を​リクエスト​しました"
@@ -638,7 +638,7 @@ msgid "IDS_BR_BODY_OLDER"
 msgstr "古い順"
 
 msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
-msgstr "開いているウィンドウを全て閉じてホームページに移動してください。"
+msgstr "開いているウィンドウを全て閉じ、ホームページに移動してください。"
 
 msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
 msgstr "個人設定データを削除"
@@ -659,10 +659,10 @@ msgid "IDS_BR_OPT_LTE_GSM_WCDMA_HAUTO_CONNECT"
 msgstr "LTE/GSM/WCDMA (自動接続)"
 
 msgid "IDS_BR_OPT_SELECTION_MODE"
-msgstr " 選択モード"
+msgstr "選択モード"
 
 msgid "IDS_BR_OPT_ADD_BOOKMARK"
-msgstr "ブックマーク登録"
+msgstr "ブックマークを追加"
 
 msgid "IDS_BR_OPT_DELETE_BOOKMARK"
 msgstr "ブックマークを削除"
@@ -678,4 +678,31 @@ msgstr "よく見るサイト"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "リスト表示"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "予期しないエラーです"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "通知を表示するには、%sを許可してください。"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Web通知の許可設定を解除"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Web通知許可を解除しますか？"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "フォルダ名を変更"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "更新"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "サムネイル表示"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "クリップボードにコピー"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "自動更新"
 

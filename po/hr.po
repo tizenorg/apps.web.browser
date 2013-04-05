@@ -679,3 +679,30 @@ msgstr "Najposjećenije"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Prikaz liste"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Neočekivana greška"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Dopusti %s da prikazuje obavijesti"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Brisanje svih postavki dopuštenja za web-obavijesti"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Obrisati sva dopuštenja za web obavijesti?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Preimenuj mapu"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Aktualiziraj"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Sličice"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopiraj u međuspremnik"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Automatsko aktualiziranje"
+

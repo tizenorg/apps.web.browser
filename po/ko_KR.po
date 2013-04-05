@@ -679,3 +679,30 @@ msgstr "자주 방문한 웹사이트"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "목록 보기"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "예상치 못한 오류가 발생하였습니다"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "알림을 표시하도록 %s 허용"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "웹 알림 권한 설정을 삭제합니다"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "웹 알림 권한을 삭제할까요?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "폴더 이름 변경"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "새로고침"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "썸네일 보기"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "클립보드에 복사"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "자동 새로고침"
+

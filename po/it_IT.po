@@ -638,10 +638,10 @@ msgid "IDS_BR_BODY_OLDER"
 msgstr "Precedenti"
 
 msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
-msgstr "Chiudere tutte le finestre aperte e passare alla homepage"
+msgstr "Chiudete tutte le finestre aperte e passate alla homepage"
 
 msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
-msgstr "Cancellare i dati personalizzati"
+msgstr "Cancellate i dati personalizzati"
 
 msgid "IDS_BR_OPT_ADD_LIVEBOX"
 msgstr "Aggiornare una casella live"
@@ -678,4 +678,31 @@ msgstr "Più visitati"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Elenco"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Errore imprevisto"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Consenti a %s di mostrare le notifiche"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Annulla le impostazioni autorizzazioni di notifica Web"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Annullare le autorizzazioni di notifica Web?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Rinomina cartella"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Aggiorna"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Vista miniature"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Copia negli appunti"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Aggiornamento automatico"
 

@@ -679,3 +679,30 @@ msgstr "Nejnavštěvovanější"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Seznam"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Neočekávaná chyba"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Povolit %s zobrazit oznamování"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Smazat nastavení oprávnění k webovému oznamování"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Chcete smazat oprávnění k webovému oznamování?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Přejmenovat složku"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Obnovit"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Zobrazení miniatur"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopírovat do schránky"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Automatická aktualizace"
+

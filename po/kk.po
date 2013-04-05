@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Папка аты"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Журналдар жоқ"
+msgstr "Жазбалар жоқ"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s орныңызды сұрайды"
@@ -678,4 +678,31 @@ msgstr "Көп кіретін"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Тізімдік көрініс"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Ойламаған жерден үзілді"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "%s хабарландыруларды көрсетуге рұқсат ету"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Веб-хабарландыру туралы рұқсат параметрлерін тазалау"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Веб-хабарландырудың рұқсаттарын өшіру керек пе?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Папканың атын өзгерту"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Жаңарту"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Нобай көрінісі"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Буферге көшіру"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Авто жаңарту"
 

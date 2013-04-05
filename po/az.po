@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Qovluğun adı"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Tarixçə yoxdur"
+msgstr "Tarix yoxdur"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s məkanınızı sorğulayır"
@@ -678,4 +678,31 @@ msgstr "Ən çox baxılanlar"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Siyahı görünüşü"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Gözlənilməyən səhv oldu"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Bağlantıları göstərməyə %s -a icazə ver"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Veb-bildirişə icazə parametrlərini sil"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Veb bildirişləri icazələri təmizlənsin?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Qovluğun adını dəyişdir"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Təzələ"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Miniatür görüntüsü"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Mübadilə buferinə köçür"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Avtomatik yeniləmə"
 

@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "საქაღალდის სახელი"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "ისტორიები არ არის"
+msgstr "ისტორია ცარიელია"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s ითხოვს თქვენს ლოკაციას"
@@ -678,4 +678,31 @@ msgstr "ყველაზე ხშირად ნანახი"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "სიის ნახვა"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "მოულოდნელი შეცდომა"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "დართეთ ნება მომხმარებელს ”%s” აჩვენოს შეტყობინებები"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "ვებ-შეტყობინებების ნებართვების პარამეტრების გასუფთავება"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "წაშლით ქსელის შეტყობინებების უფლებებს?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "საქაღალდის სახელის შეცვლა"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "განახლება"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "მიკროასლების ნახვა"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "ასლის შენახვა ბუფერულ მეხსიერებაში"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "ავტომატური განახლება"
 

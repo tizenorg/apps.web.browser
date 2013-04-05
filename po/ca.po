@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "Nom carpeta"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "Sense historials"
+msgstr "No hi ha historial"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s sol·licita la seva ubicació"
@@ -678,4 +678,31 @@ msgstr "Més visitades"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Vista de llista"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Error imprevist"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Permetre que %s mostri notificacions"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Esborrar ajustaments de permisos de notificacions web"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Esborrar permisos de notificacions web?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Canviar nom de carpeta"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Actualitzar"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Vista de miniatura"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Copiar al porta-retalls"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Actualitzar automàticament"
 

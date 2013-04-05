@@ -679,3 +679,30 @@ msgstr "Popularne"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Widok listy"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Niespodziewany błąd"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Zezwól %s na pokazywanie powiadomień"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Wyczyść ustawienia uprawnień dotyczące powiadomień internetowych"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Wyczyścić uprawnienia dotyczące powiadomień internetowych?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Zmień nazwę katalogu"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Odśwież"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Miniatury"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Kopiuj do schowka"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Automatyczne odświeżanie"
+

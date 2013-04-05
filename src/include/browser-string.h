@@ -57,7 +57,6 @@
 #define BR_STRING_HOUR          dgettext("sys_string", "IDS_COM_BODY_1_HOUR")
 #define BR_STRING_HOURS         dgettext("sys_string", "IDS_COM_POP_PD_HOURS")
 #define BR_STRING_NO_NAME       dgettext("sys_string", "IDS_COM_BODY_NO_NAME")
-#define BR_STRING_THUMBNAIL_VIEW dgettext("sys_string", "IDS_COM_OPT_THUMBNAIL_VIEW_ABB")
 #define BR_STRING_STREAMING_PLAYER dgettext("sys_string", "IDS_COM_BODY_STREAMING_PLAYER")
 #define BR_STRING_TITLE_SELECT_AN_ACTION dgettext("sys_string", "IDS_COM_BODY_SELECT_AN_ACTION")
 /*************************************************************************************************************/
@@ -119,11 +118,12 @@
 #define BR_STRING_EDIT_TAGS             _("IDS_BR_POP_RENAME_TAG")
 #define BR_STRING_ADD_NEW_FOLDER        _("IDS_BR_OPT_NEW_FOLDER")
 #define BR_STRING_LIST_VIEW             _("IDS_BR_OPT_LIST_VIEW")
+#define BR_STRING_THUMBNAIL_VIEW _("IDS_BR_OPT_THUMBNAIL_VIEW")
 #define BR_STRING_NO_TAG                _("IDS_BR_BODY_ADDDETAILS_HNO_TAGS")
 #define BR_STRING_VIEW_BY_TAG           _("IDS_BR_OPT_SORT_BY_TAG")
 #define BR_STRING_DELETE_BOOKMARK       _("IDS_BR_OPT_DELETE_BOOKMARK")
 #define BR_STRING_WARNING_OVER_TAG_LIMIT _("IDS_BR_BODY_MAXIMUM_NUMBER_OF_TAGS_HPD_REACHED")
-#define BR_STRING_DELETE_BOOKMARK       _("IDS_BR_OPT_DELETE_BOOKMARK")
+#define BR_STRING_RENAME_FOLDER _("IDS_BR_OPT_RENAME_FOLDER")
 /*************************************************************************************************************/
 
 
@@ -156,7 +156,7 @@
 #define BR_STRING_FIND_ON_PAGE              _("IDS_BR_OPT_FIND_ON_PAGE")
 #define BR_STRING_BOOKMARKS                 _("IDS_BR_BODY_BOOKMARKS")
 #define BR_STRING_BOOKMARK                  _("IDS_BR_OPT_BOOKMARK")
-#define BR_STRING_ADD_BOOKMARKS              _("IDS_BR_OPT_ADDTOBOOKMARKS")
+#define BR_STRING_ADD_BOOKMARKS             _("IDS_BR_OPT_ADDTOBOOKMARKS")
 #define BR_STRING_BOOKMARK_ADDED            _("IDS_BR_POP_BOOKMARK_ADDED")
 #define BR_STRING_BOOKMARK_REMOVED          _("IDS_BR_POP_BOOKMARK_REMOVED")
 #define BR_STRING_SAVE_FOR_OFFLINE_READING  _("IDS_BR_BODY_SAVE_FOR_OFFLINE_READING_ABB")
@@ -287,7 +287,6 @@
 #define BR_STRING_SET_CURRENT_PAGE_AS_HOMEPAGE  _("IDS_BR_BODY_SET_CURRENT_PAGE_AS_HOMEPAGE")
 #define BR_STRING_CREATED                       _("IDS_BR_BODY_CREATED")
 #define BR_STRING_MSG_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q	_("IDS_BR_POP_DELETE_WEBSITE_LOCATION_ACCESS_INFORMATION_Q")
-#define BR_STRING_DELETE                        _("IDS_BR_SK_DELETE")
 /*************************************************************************************************************/
 
 
@@ -312,24 +311,20 @@
 ///////html5////////
 #define BR_STRING_USERMEDIA                     _("This application wants to use your media.")//registering2
 #define BR_STRING_FAILED_TO_SEND_VIA_BT         _("Failed to share via Bluetooth")//registering2
-
 #define BR_STRING_FLIGHT_MODE_WARNING   _("Flight mode activated. Using packet data will deactivate Flight mode")//registering2
 #define BR_STRING_NFC_CONNECT_FAILED    _("Failed to get NFC connection")//registering2
 #define BR_STRING_FAILED_TO_USE_SBEAM   _("Failed to use S beam. try later")//registering2
 #define BR_STRING_MSG_FAILED_TO_ADD_A_WEBCLLIP  _("Failed to add a webclip")//registering2
 #define BR_STRING_WARNING_VIDEO_PLAYER _("Can not launch video-player while video-call is running.")//registering2
-#define BR_STRING_WEBCLIP_UPDATE_INTERVAL   _("update interval")//registring
 #define BR_STRING_MOVE_Q              _("Move?")//registering2
 #define BR_STRING_FAILED_TO_CREATE_AS_WEBAPP _("Failed to create as webapp")//registering2
 #define BR_STRING_STILL_WEBAPP_MAKING               _("Still installing previous webapp")//registering2
-#define BR_STRING_CTXMENU_COPY_TO_CLIPBOARD  _("Copy to clipboard")//registring
 #define BR_STRING_UNABLE_TO_SHARE_FILE_VIA_MESSAGE _("Unable to share file via message")//registering2
 #define BR_STRING_SYNCED_TABS              _("Synced tabs")//registring
 #define BR_STRING_KEEP_IT              _("Keep it")//registring
 #define BR_STRING_CERTI_MESSAGE        _("There are problems with the secuirty certificate for this site.")//registring
 #define BR_STRING_SECURITY_WARNING_MESSAGE	_("Security warning") //exist It will be adjust later
 #define BR_STRING_FAILED_TO_GET_WEB_NOTI_ICON _("Failed to get web notification icon")
-#define BR_STRING_THUMBNAIL_VIEW _("Thumbnail view")//not in stms
 /*************************************************************************************************************/
 
 
@@ -350,6 +345,7 @@
 #define BR_STRING_CTXMENU_SEND_IMAGE_VIA_MESSAGE        _("IDS_BR_OPT_SEND_VIA_MESSAGE")
 #define BR_STRING_CTXMENU_COPY_VIDEO_LINK_LOCATION      _("IDS_BR_BODY_COPY_URL")
 #define BR_STRING_CTXMENU_COPY_AUDIO_LINK_LOCATION      _("IDS_BR_BODY_COPY_URL")
+#define BR_STRING_CTXMENU_COPY_TO_CLIPBOARD  _("IDS_BR_OPT_COPY_TO_CLIPBOARD")
 #define BR_STRING_CTXMENU_SAVE                          BR_STRING_SAVE
 #define BR_STRING_CTXMENU_PLAY                          _("IDS_BR_BODY_PLAY")
 #define BR_STRING_CTXMENU_PAUSE                         dgettext("sys_string", "IDS_COM_BODY_PAUSE")
@@ -387,3 +383,4 @@
 /*************************************************************************************************************/
 
 #endif /* BROWSER_STRING_H */
+

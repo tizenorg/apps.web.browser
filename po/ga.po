@@ -679,3 +679,30 @@ msgstr "Is mó cuairt"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Amharc liosta"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Teip gan choinne"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "Ceadaigh do %s fógraí a thaispeáint"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Glan socruithe ceada d'fhógraí Gréasáin"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Glan ceadanna d'fhógraí gréasáin?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Athainmnigh fillteán"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Athnuaigh"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Radharc mionsamhla"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Cóipeáil chuig an ngearrthaisce"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Uath-athnuaigh"
+

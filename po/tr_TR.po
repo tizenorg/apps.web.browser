@@ -679,3 +679,30 @@ msgstr "En çok ziyaret edilen"
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "Liste görünümü"
 
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "Beklenmeyen hata"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "%s öğesinin bildirimleri göstermesine izin ver"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "Web bildirimi izin ayarlarını sil"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "Web bildirimleri izinleri silinsin mi?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "Klasörü yeniden adlandır"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "Yenile"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "Küçük resim görünümü"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "Panoya kopyala"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "Otomatik yenileme"
+

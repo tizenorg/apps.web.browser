@@ -200,7 +200,7 @@ msgid "IDS_BR_BODY_FOLDER_NAME"
 msgstr "फोल्डर का नाम"
 
 msgid "IDS_BR_BODY_NO_HISTORIES"
-msgstr "इतिहास नहीं"
+msgstr "कोई इतिहास नहीं"
 
 msgid "IDS_BR_BODY_PS_REQUESTS_YOUR_LOCATION"
 msgstr "%s आपके स्थान का अनुरोध करता है"
@@ -678,4 +678,31 @@ msgstr "अधिकतम दौरा किये गए"
 
 msgid "IDS_BR_OPT_LIST_VIEW"
 msgstr "सूची दृश्य"
+
+msgid "IDS_BR_POP_DEVICEABORT"
+msgstr "अनपेक्षित विफलता"
+
+msgid "IDS_BR_BODY_ALLOW_PS_TO_SHOW_NOTIFICATIONS"
+msgstr "%s को सूचनाएँ दिखाने दें"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSION_SETTINGS"
+msgstr "वेब अधिसूचना अनुमति सेटिंग्स साफ़ करें"
+
+msgid "IDS_BR_BODY_CLEAR_WEB_NOTIFICATION_PERMISSIONS_Q"
+msgstr "वेब अधिसूचना अनुमतियाँ साफ करें?"
+
+msgid "IDS_BR_OPT_RENAME_FOLDER"
+msgstr "फोल्डर का पुन: नाम दें"
+
+msgid "IDS_BR_OPT_REFRESH"
+msgstr "रीफ्रेश करें"
+
+msgid "IDS_BR_OPT_THUMBNAIL_VIEW"
+msgstr "थम्बनेल दृश्य"
+
+msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
+msgstr "क्लिपबोर्ड में कॉपी करें"
+
+msgid "IDS_BR_HEADER_AUTO_REFRESH"
+msgstr "स्वतः रीफ्रेश करना"
 
