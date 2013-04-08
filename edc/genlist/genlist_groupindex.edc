@@ -29,9 +29,18 @@
 
 
 #define GENLIST_PART_INDEX_BG \
-      GENLIST_PART_BG(GENLIST_GROUPINDEX_LIST_BG_COLOR, \
-         GENLIST_GROUPINDEX_LIST_PRESS_COLOR, \
-         GENLIST_GROUPINDEX_LIST_BG_COLOR \
+      GENLIST_PART_RECT("bg",  \
+         description { state: "default" 0.0; \
+            color: GENLIST_GROUPINDEX_LIST_BG_COLOR; \
+         } \
+         description { state: "selected" 0.0; \
+            inherit: "default" 0.0; \
+            color: GENLIST_GROUPINDEX_LIST_PRESS_COLOR; \
+         } \
+         description { state: "disabled" 0.0; \
+            inherit: "default" 0.0; \
+            color: GENLIST_GROUPINDEX_LIST_BG_COLOR; \
+         } \
       )
 
  // group index

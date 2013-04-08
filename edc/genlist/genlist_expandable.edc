@@ -55,7 +55,7 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -95,7 +95,7 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2";  target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -134,7 +134,7 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -182,7 +182,7 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -234,7 +234,8 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3";
+          target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -273,7 +274,7 @@
          GENLIST_PART_EXPANDABLE_ARROW
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text";  target: "arrow_clip"; )
       programs {
          GENLIST_PROGRAM_SELECT_ARROW
          GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
@@ -311,7 +312,6 @@
       programs {
          GENLIST_PROGRAM_DISABLED
          GENLIST_PROGRAM_SELECT_BOTTOMLINE( target: "elm.text"; )
-         GENLIST_PROGRAM_EXPAND_FADE( target: "elm.text"; target: "elm.icon"; )
       }
    }
 
@@ -346,7 +346,6 @@
       programs {
          GENLIST_PROGRAM_DISABLED
          GENLIST_PROGRAM_SELECT_BOTTOMLINE( target: "elm.text"; )
-         GENLIST_PROGRAM_EXPAND_FADE( target: "elm.text"; target: "elm.icon"; target: "bottom_line"; target: "bottom_line2";)
       }
    }
 
@@ -458,8 +457,8 @@
             mouse_events: 0;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                align: 0.0 0.5;
                aspect: 1.0 1.0;
@@ -675,8 +674,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                align: 0.0 0.5;
                rel1 {
@@ -1034,8 +1033,8 @@
             mouse_events: 0;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                align: 1.0 0.5;
                aspect: 1.0 1.0;
@@ -1088,8 +1087,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                align: 0.0 0.5;
                rel1 {
@@ -1302,8 +1301,8 @@
             mouse_events: 0; \
             scale: 1; \
             description { state: "default" 0.0; \
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE; \
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE; \
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE; \
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE; \
                fixed: 1 1; \
                align: 1.0 0.5; \
                aspect: 1.0 1.0; \

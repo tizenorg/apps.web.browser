@@ -39,7 +39,7 @@
 styles {
    // ********************** dialgoue group help text
    style { name: "genlist_style_dialogue_group_help_text";
-      base: "font=Tizen:style=Medium font_size="GENLIST_DIALOGUE_GROUP_HELP_TEXT_SIZE" color="GENLIST_DIALOGUE_GROUP_HELP_TEXT_COLOR_STYLE" text_class=list_item wrap=mixed";
+      base: "font=Tizen:style=Regular font_size="GENLIST_DIALOGUE_GROUP_HELP_TEXT_SIZE" color="GENLIST_DIALOGUE_GROUP_HELP_TEXT_COLOR_STYLE" text_class=list_item wrap=mixed";
       STYLE_TAG
       STYLE_TAG_MATCH
    }

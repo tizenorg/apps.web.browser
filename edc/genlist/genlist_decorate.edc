@@ -54,16 +54,9 @@
          )
       }
       programs {
-         program { name: "play_sound";
-            signal: "mouse,down,1";
-            source: "elm.*";
-            action: PLAY_SAMPLE "button-pressed" 1.0;
-         }
-         program { name: "play_sound_bg";
-            signal: "mouse,down,1";
-            source: "bg_color";
-            action: PLAY_SAMPLE "button-pressed" 1.0;
-         }
+         GENLIST_PROGRAM_SOUND("elm.text")
+         GENLIST_PROGRAM_SOUND("bg_color")
+         GENLIST_PROGRAM_DISABLED( target: "elm.icon"; target: "elm.text"; )
       }
    }
 
@@ -101,9 +94,26 @@
                rel2.to: "base";
                rel1.relative: 1 0;
             }
+            description { state: "reorder" 0.0;
+               inherit: "default" 0.0;
+               min: 32 0;
+               max: 32 -1;
+            }
          )
-         GENLIST_PART_BOTTOM_LINE
-
+         GENLIST_PART_RECT("sound_left",
+            description { state: "default" 0.0;
+              color: 0 0 0 0;
+              rel2.to_x: "elm.swallow.decorate.content";
+              rel2.relative: 0 1;
+            }
+         )
+         GENLIST_PART_RECT("sound_right",
+            description { state: "default" 0.0;
+              color: 0 0 0 0;
+              rel1.to_x: "elm.swallow.decorate.content";
+              rel1.relative: 1 0;
+            }
+         )
          GENLIST_PART_ICON("elm.edit.icon.1",
             GENLIST_DESCRIPTION_L("elm.padding.left",
                align: 1 0.5;
@@ -113,7 +123,7 @@
                inherit: "default" 0.0;
                align: 0 0.5;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                rel1.relative: 0 0;
                rel2.relative: 0 1;
@@ -126,6 +136,7 @@
                min: 0 GENLIST_HEIGHT_1LINE;
             )
          )
+         GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_ICON("elm.edit.icon.2",
             GENLIST_DESCRIPTION_R("elm.padding.right",
               align: 0 0.5;
@@ -135,7 +146,7 @@
                inherit: "default" 0.0;
                align: 1 0.5;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                rel1.relative: 1 0;
                rel2.relative: 1 1;
@@ -150,16 +161,24 @@
             target: "bottom_line";
             target: "bottom_line2";
          )
-         GENLIST_PROGRAM_SELECT_NOSOUND(
+         GENLIST_PROGRAM_SELECT(
             target: "bg";
             target: "bg_reorder";
             target: "bottom_line";
             target: "bottom_line2";
          )
+         // FIXME: GENLIST_PROGRAM_SOUND("base") makes duplicated clicked sounds because
+         // swallowed edje also makes sound.
+         // I don't know why "base" part can receive "mouse,clicked,1" events
+         // even though it is below the "elm.swallow.decorate.content" and events should
+         // not be repeated!!!!!!!!
+         GENLIST_PROGRAM_SOUND("sound_left")
+         GENLIST_PROGRAM_SOUND("sound_right")
+         GENLIST_PROGRAM_CHECK("elm.edit.icon.1")
          GENLIST_PROGRAM_REORDER(
            target: "bg_clip";
-           target: "bottom_line_clip";
            target: "bg_reorder_clip";
+           target: "bottom_line_clip";
            target: "elm.padding.left";
            target: "elm.padding.right";
          )
@@ -167,11 +186,34 @@
             target: "elm.edit.icon.1";
             target: "elm.edit.icon.2";
          )
-         GENLIST_PROGRAM_FLIP_TARGET(
+         GENLIST_PROGRAM_FLIP_EFFECT_TARGET(
             target: "elm.edit.icon.1";
-            target: "elm.edit.icon.2";,
-            target: "bg_reorder_clip";
+            target: "elm.edit.icon.2";
          )
+         program { name: "flip_enabled";
+            signal:  "elm,state,flip,enabled";
+            source:  "elm";
+            script {
+               new st[31];
+               new Float:vl;
+               get_state(PART:"bg_reorder_clip", st, 30, vl);
+               if (!strcmp(st, "reorder") || !strcmp(st, "reorder_flip")) {
+                  set_state(PART:"bg_reorder_clip", "reorder_flip", 0.0);
+                }
+            }
+         }
+         program { name: "flip_disabled";
+            signal:  "elm,state,flip,disabled";
+            source:  "elm";
+            script {
+               new st[31];
+               new Float:vl;
+               get_state(PART:"bg_reorder_clip", st, 30, vl);
+               if (!strcmp(st, "reorder") || !strcmp(st, "reorder_flip")) {
+                  set_state(PART:"bg_reorder_clip", "reorder", 0.0);
+               }
+            }
+         }
       }
    }
 
@@ -311,7 +353,7 @@
                inherit: "default" 0.0;
                visible: 0;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                rel1 {
                   relative: 0.0 1.0;

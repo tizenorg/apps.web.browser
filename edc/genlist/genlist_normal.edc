@@ -22,13 +22,6 @@
  * vim:ts=3
 */
 
-/* genlist multisense sample/tone listing */
-   sounds {
-      sample {
-         name: "button-pressed" RAW;
-         source: "button-pressed.wav";
-      }
-   }
    group { GENLIST_NAME("default/default")
       alias: "elm/list/item/default";
       alias: "elm/list/item_odd/default";
@@ -97,20 +90,7 @@
                min: 0 48; // This is tuned value for exact entry size.
             )
          )
-         GENLIST_PART_ICON("elm.icon.eraser",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right",
-               "elm.padding.top", "elm.padding.bottom",
-               fixed: 1 0;
-               visible: 0;
-               min: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
-               max: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
-            )
-            description { state: "show" 0.0;
-               inherit: "default" 0.0;
-               visible: 1;
-            }
-         )
-         GENLIST_PART_IMAGE("elm.icon.rename",
+         GENLIST_PART_IMAGE("elm.image.rename",
             GENLIST_DESCRIPTION_ENVELOP("elm.icon.eraser",
                fixed: 1 0;
                visible: 1;
@@ -124,11 +104,38 @@
                visible: 0;
             }
          )
+         GENLIST_PART_ICON("elm.icon.eraser",
+            GENLIST_DESCRIPTION_RTB("elm.padding.right",
+               "elm.padding.top", "elm.padding.bottom",
+               fixed: 1 0;
+               visible: 0;
+               min: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
+               max: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
+            )
+            description { state: "show" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         )
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_NORMAL( target: "elm.icon.entry"; target: "elm.icon.rename"; )
+      GENLIST_PROGRAMS_NORMAL( target: "elm.icon.entry"; target: "elm.image.rename"; )
       GENLIST_PROGRAMS_ENTRY
    }
+
+// 2.2.6.1 (without genlist background)
+   group {  GENLIST_NAME("editfield/no_bg/default")
+      alias: "elm/layout/editfield/no_bg/default";
+      inherit: "elm/genlist/item/editfield/default";
+
+      parts {
+         GENLIST_PART_BG_NORMAL_OFF
+         GENLIST_PART_BOTTOM_LINE_OFF
+         GENLIST_PART_PADDING_LEFT_SIZE(0)
+         GENLIST_PART_PADDING_RIGHT_SIZE(0)
+      }
+   }
+
 // 2.2.6.2
    group { GENLIST_NAME("editfield/title/default")
       alias: "elm/layout/editfield/title/default";
@@ -158,20 +165,7 @@
                min: 0 48; // This is tuned value for exact entry size.
             )
          )
-         GENLIST_PART_ICON("elm.icon.eraser",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right",
-               "elm.text", "elm.padding.bottom",
-               fixed: 1 0;
-               visible: 0;
-               min: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
-               max: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
-            )
-            description { state: "show" 0.0;
-               inherit: "default" 0.0;
-               visible: 1;
-            }
-         )
-         GENLIST_PART_IMAGE("elm.icon.rename",
+         GENLIST_PART_IMAGE("elm.image.rename",
             GENLIST_DESCRIPTION_ENVELOP("elm.icon.eraser",
                visible: 1;
                fixed: 1 0;
@@ -185,10 +179,36 @@
                visible: 0;
             }
          )
+         GENLIST_PART_ICON("elm.icon.eraser",
+            GENLIST_DESCRIPTION_RTB("elm.padding.right",
+               "elm.text", "elm.padding.bottom",
+               fixed: 1 0;
+               visible: 0;
+               min: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
+               max: GENLIST_ICON_ENTRY_SIZE GENLIST_ICON_ENTRY_SIZE;
+            )
+            description { state: "show" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         )
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.entry"; target: "elm.icon.rename"; )
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.entry"; target: "elm.image.rename"; )
       GENLIST_PROGRAMS_ENTRY
+   }
+
+// 2.2.6.2 (without genlist background)
+   group {  GENLIST_NAME("editfield/title/no_bg/default")
+      alias: "elm/layout/editfield/title/no_bg/default";
+      inherit: "elm/genlist/item/editfield/title/default";
+
+      parts {
+         GENLIST_PART_BG_NORMAL_OFF
+         GENLIST_PART_BOTTOM_LINE_OFF
+         GENLIST_PART_PADDING_LEFT_SIZE(0)
+         GENLIST_PART_PADDING_RIGHT_SIZE(0)
+      }
    }
 
    group {  GENLIST_NAME("1icon/default")
@@ -240,6 +260,8 @@
       parts {
          GENLIST_PART_PADDING_LEFT_SIZE(0)
          GENLIST_PART_PADDING_RIGHT_SIZE(0)
+         GENLIST_PART_PADDING_TOP_SIZE(0)
+         GENLIST_PART_PADDING_BOTTOM_SIZE(0)
       }
    }
 
@@ -253,8 +275,8 @@
       data.item: "texts" "elm.text";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -296,8 +318,8 @@
       GENLIST_PROLOG_NORMAL
       data.item: "texts" "elm.text.1 elm.text.2";
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -340,8 +362,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -378,7 +400,6 @@
       }
    }
 
-
 // 2.2.1.7
       group { GENLIST_NAME("1text.1icon.7/default")
       inherit: "elm/genlist/item/1text.1icon/default";
@@ -397,6 +418,24 @@
       }
    }
 
+// 2.2.1.8.1 (Circle)
+   group { GENLIST_NAME("1text.1icon.5.thumb.circle/default")
+      inherit: "elm/genlist/item/1text.1icon.5/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.1.8.1 (Square)
+   group { GENLIST_NAME("1text.1icon.5.thumb.square/default")
+      inherit: "elm/genlist/item/1text.1icon.5/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
 // 2.2.1.9
    group { GENLIST_NAME("1text.2icon.3/default")
       GENLIST_PROLOG_NORMAL
@@ -404,8 +443,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -438,8 +477,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -489,8 +528,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -506,6 +545,24 @@
       GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon"; )
    }
 
+// 2.2.1.10.1 (circle)
+   group { GENLIST_NAME("1text.1icon.2.thumb.circle/default")
+      inherit: "elm/genlist/item/1text.1icon.2/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_MEDIUM("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.1.10.1 (square)
+   group { GENLIST_NAME("1text.1icon.2.thumb.square/default")
+      inherit: "elm/genlist/item/1text.1icon.2/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_MEDIUM("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
 // 2.2.1.10 (textblock)
    group { GENLIST_NAME("1text.1icon.2.tb/default")
       GENLIST_PROLOG_NORMAL
@@ -513,8 +570,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -536,8 +593,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -574,8 +631,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -599,8 +656,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -653,6 +710,7 @@
       parts {
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon", "elm.padding.left")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon")
    }
 
 // 2.2.1.16 (textblock)
@@ -663,6 +721,7 @@
       parts {
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon", "elm.padding.left")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon")
    }
 
 // 2.2.1.17
@@ -673,6 +732,7 @@
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
          GENLIST_PART_ICON_BTN_02_RTB("elm.icon.2", "elm.padding.right", "elm.padding.top", "elm.padding.bottom")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.17 (textblock)
@@ -683,6 +743,7 @@
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
          GENLIST_PART_ICON_BTN_02_RTB("elm.icon.2", "elm.padding.right", "elm.padding.top", "elm.padding.bottom")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon")
    }
 
 // 2.2.1.18
@@ -693,8 +754,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -709,6 +770,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.1"; target: "elm.icon.2"; )
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.19
@@ -719,8 +781,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -738,6 +800,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3"; )
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.21
@@ -748,6 +811,7 @@
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
          GENLIST_PART_ICON_BIG_R("elm.icon.2", "elm.padding.right")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.22
@@ -758,6 +822,7 @@
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
          GENLIST_PART_ICON_BTN_02_RTB("elm.icon.2", "elm.padding.right", "elm.padding.top", "elm.padding.bottom")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.24
@@ -767,8 +832,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -786,6 +851,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3"; )
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.1.26
@@ -794,8 +860,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -823,8 +889,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -850,8 +916,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -907,8 +973,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -932,8 +998,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -958,8 +1024,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -984,8 +1050,8 @@
       data.item: "texts" "elm.text.1 elm.text.2 elm.text.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1012,8 +1078,8 @@
       data.item: "texts" "elm.text.1 elm.text.2 elm.text.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1042,8 +1108,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1070,8 +1136,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1108,8 +1174,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1137,8 +1203,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.5";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1178,8 +1244,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1215,8 +1281,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1253,8 +1319,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1319,8 +1385,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1362,8 +1428,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1405,8 +1471,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1434,8 +1500,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1455,6 +1521,26 @@
          target: "elm.icon"; )
    }
 
+// 2.2.2.14.1 (circle)
+   group { GENLIST_NAME("2text.1icon.4.thumb.circle/default")
+      inherit: "elm/genlist/item/2text.1icon.4/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_MEDIUM("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.2.14.1 (square)
+   group { GENLIST_NAME("2text.1icon.4.thumb.square/default")
+      inherit: "elm/genlist/item/2text.1icon.4/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_MEDIUM("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
 // 2.2.2.14 (textblock)
    group { GENLIST_NAME("2text.1icon.4.tb/default")
       GENLIST_PROLOG_NORMAL
@@ -1462,8 +1548,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1490,8 +1576,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1534,8 +1620,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.5 elm.icon.6";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1577,8 +1663,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.5 elm.icon.6";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1620,8 +1706,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1652,8 +1738,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1683,8 +1769,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1715,8 +1801,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1748,8 +1834,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1779,8 +1865,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1816,8 +1902,8 @@
       data.item: "contents" "elm.icon.1 elm.swallow.progress ";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1859,8 +1945,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.swallow.progress";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1916,8 +2002,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1947,8 +2033,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -1975,7 +2061,7 @@
          // Virtual part for Maxmimum right X axis of TEXT
          GENLIST_PART_SPACER("elm.text.limit",
             GENLIST_DESCRIPTION_R("elm.padding.icon1.left",
-               min: (GENLIST_ICON_THUMBNAIL1_SIZE+GENLIST_PADDING_SIZE_DEFAULT) 0;
+               min: (GENLIST_ICON_LARGE_SIZE+GENLIST_PADDING_SIZE_DEFAULT) 0;
             )
          )
          GENLIST_PART_PADDING_R("elm.padding.icon1.left", "elm.icon.1")
@@ -1994,13 +2080,54 @@
       }
    }
 
-// 2.2.2.32
+// 2.2.2.31.1 (circle)
+   group { GENLIST_NAME("2text.1icon.12.thumb.circle/default")
+      inherit: "elm/genlist/item/2text.1icon.12/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.2.31.1 (square)
+   group { GENLIST_NAME("2text.1icon.12.thumb.square/default")
+      inherit: "elm/genlist/item/2text.1icon.12/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.2.31 (textblock)
    group { GENLIST_NAME("2text.1icon.12.tb/default")
       inherit: "elm/genlist/item/2text.1icon.2.tb/default";
       parts {
          GENLIST_PART_ICON_THUMBNAIL1_R("elm.icon", "elm.padding.right")
       }
    }
+
+// 2.2.2.31.1 (circle) textblock
+   group { GENLIST_NAME("2text.1icon.12.tb.thumb.circle/default")
+      inherit: "elm/genlist/item/2text.1icon.12.tb/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.2.2.31.1 (square) textblock
+   group { GENLIST_NAME("2text.1icon.12.tb.thumb.square/default")
+      inherit: "elm/genlist/item/2text.1icon.12.tb/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_LARGE("elm.icon")
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
+         target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
 
 // 2.2.2.32
 // 2.2.2.36
@@ -2009,6 +2136,7 @@
       parts {
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon", "elm.padding.left")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon")
    }
 
 // 2.2.2.33
@@ -2018,6 +2146,7 @@
       parts {
          GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
       }
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.2.34
@@ -2028,8 +2157,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2049,6 +2178,7 @@
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2";
          target: "elm.icon.1"; target: "elm.icon.2";)
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 // 2.2.2.35
@@ -2058,8 +2188,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2081,6 +2211,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; )
+      GENLIST_PROGRAM_CHECK("elm.icon.1")
    }
 
 
@@ -2094,8 +2225,8 @@
          image: "00_list_bubble_bg.png" COMP;
       }
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2122,7 +2253,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4";
-         target: "elm.icon.1";)
+         target: "elm.icon.1"; target: "elm.bubble"; )
    }
 
 // 2.2.2.38 textblock
@@ -2136,8 +2267,8 @@
       }
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2167,7 +2298,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4";
-         target: "elm.icon.1";)
+         target: "elm.icon.1"; target: "elm.bubble"; )
    }
 
 // 2.2.2.39
@@ -2177,8 +2308,8 @@
       data.item: "contents" "elm.icon.1 ";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2213,8 +2344,8 @@
       data.item: "contents" "elm.icon.1";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2252,8 +2383,8 @@
          image: "00_list_bubble_bg.png" COMP;
       }
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2275,7 +2406,8 @@
             "elm.padding.right", "elm.text.1", "elm.padding.bottom")
          GENLIST_PART_FLIP
       }
-      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4"; )
+      GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4";
+         target: "elm.bubble"; )
 
    }
 
@@ -2300,8 +2432,8 @@
       data.item: "contents" "elm.icon.1";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2331,8 +2463,8 @@
       data.item: "contents" "elm.icon.1";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2366,8 +2498,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2408,8 +2540,8 @@
          image: "00_list_bubble_bg.png" COMP;
       }
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_TOP_2LINE
          GENLIST_PART_PADDING_BOTTOM_2LINE
@@ -2439,7 +2571,7 @@
          GENLIST_PART_FLIP
       }
       GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4";
-         target: "elm.swallow.colorbar"; target: "elm.icon.1";)
+         target: "elm.swallow.colorbar"; target: "elm.icon.1"; target: "elm.bubble"; )
    }
 
 // 2.2.2.45
@@ -2449,8 +2581,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2479,8 +2611,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -2512,458 +2644,14 @@
       }
    }
 
-// -------------------------------------------------------------------
-// Email Style -------------------------------------------------------
-// -------------------------------------------------------------------
-
-#define GENLIST_EMAIL_MAIN_TEXT_SIZE                        38
-#define GENLIST_EMAIL_MAIN_TEXT_UNREAD_COLOR_STYLE          "#000000FF"
-#define GENLIST_EMAIL_MAIN_TEXT_UNREAD_DIM_COLOR_STYLE      "#00000066"
-#define GENLIST_EMAIL_MAIN_TEXT_READ_COLOR_STYLE            "#808080FF"
-#define GENLIST_EMAIL_TEXT_FOCUS_COLOR                      255 255 255 255
-#define GENLIST_EMAIL_TEXT_FOCUS_COLOR_STYLE                "#FFFFFFFF"
-
-#define GENLIST_EMAIL_SUB_TEXT_SIZE                         30
-#define GENLIST_EMAIL_SUB_TEXT_COLOR_STYLE                  "#808080FF"
-
-#define GENLIST_EMAIL_COUNT_TEXT_SIZE                       28
-#define GENLIST_EMAIL_COUNT_TEXT_UNREAD_COLOR               59 115 182 255
-#define GENLIST_EMAIL_COUNT_TEXT_UNREAD_COLOR_STYLE         "#3B73B6FF"
-#define GENLIST_EMAIL_COUNT_TEXT_READ_COLOR                 128 128 128 255
-#define GENLIST_EMAIL_COUNT_TEXT_READ_COLOR_STYLE           "#808080FF"
-
-#define GENLIST_EMAIL_CONTENTS_TEXT_SIZE                    26
-#define GENLIST_EMAIL_CONTENTS_TIME_TEXT_SIZE               24
-#define GENLIST_EMAIL_CONTENTS_TEXT_COLOR_STYLE             "#808080FF"
-
-#define GENLIST_EMAIL_MATCH_TAG_COLOR                       "+ color=#1382FF"
-
-#define STYLE_TAG \
-      tag:  "br" "\n";\
-      tag:  "ps" "ps";\
-      tag:  "tab" "\t";\
-      tag:  "b" "+ font=Tizen:style=Bold";
-
-#define STYLE_TAG_MATCH_EMAIL \
-      tag:  "match" GENLIST_EMAIL_MATCH_TAG_COLOR;
-
-#define STYLE_TAG_MATCH_EMAIL_FOCUS \
-      tag:  "match" GENLIST_EMAIL_TEXT_FOCUS_COLOR_STYLE;
-
-
-   styles {
-      style { name: "email_style_main";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_MAIN_TEXT_SIZE" color="GENLIST_EMAIL_MAIN_TEXT_UNREAD_COLOR_STYLE" text_class=list_item ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_main_dim";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_MAIN_TEXT_SIZE" color="GENLIST_EMAIL_MAIN_TEXT_UNREAD_DIM_COLOR_STYLE" text_class=list_item ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_main_read";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_MAIN_TEXT_SIZE" color="GENLIST_EMAIL_MAIN_TEXT_READ_COLOR_STYLE" text_class=list_item ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_main_read_dim";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_MAIN_TEXT_SIZE" color="GENLIST_EMAIL_MAIN_TEXT_UNREAD_DIM_COLOR_STYLE" text_class=list_item ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_main_focus";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_MAIN_TEXT_SIZE" color="GENLIST_EMAIL_TEXT_FOCUS_COLOR_STYLE" text_class=list_item ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL_FOCUS
-      }
-      style { name: "email_style_sub";
-         base: "font=Tizen:style=Bold font_size="GENLIST_EMAIL_SUB_TEXT_SIZE" color="GENLIST_EMAIL_SUB_TEXT_COLOR_STYLE" text_class=tizen ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_sub_focus";
-         base: "font=Tizen:style=Regular font_size="GENLIST_EMAIL_SUB_TEXT_SIZE" color="GENLIST_EMAIL_TEXT_FOCUS_COLOR_STYLE" text_class=tizen ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL_FOCUS
-      }
-      style { name: "email_style_contents";
-         base: "font=Tizen:style=Medium font_size="GENLIST_EMAIL_CONTENTS_TEXT_SIZE" color="GENLIST_EMAIL_CONTENTS_TEXT_COLOR_STYLE" text_class=tizen ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_contents_time";
-         base: "font=Tizen:style=Medium font_size="GENLIST_EMAIL_CONTENTS_TIME_TEXT_SIZE" color="GENLIST_EMAIL_CONTENTS_TEXT_COLOR_STYLE" text_class=tizen ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL
-      }
-      style { name: "email_style_contents_focus";
-         base: "font=Tizen:style=Medium font_size="GENLIST_EMAIL_CONTENTS_TEXT_SIZE" color="GENLIST_EMAIL_TEXT_FOCUS_COLOR_STYLE" text_class=tizen ellipsis=1.0";
-         STYLE_TAG
-         STYLE_TAG_MATCH_EMAIL_FOCUS
-      }
-   }
-
-// email main text
-#define PARAM_EMAIL_MAIN \
-   text { \
-      align: 0 0.5; \
-      min: 0 1; \
-      style: "email_style_main"; \
-   }
-
-#define DESCRIPTION_EMAIL_MAIN_OTHERS \
-   description { state: "disabled" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_main_dim"; \
-   } \
-   description { state: "read" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_main_read"; \
-   } \
-   description { state: "read,disabled" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_main_read_dim"; \
-   } \
-   description { state: "selected" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_main_focus"; \
-   }
-
-// email sub text
-#define PARAM_EMAIL_SUB \
-   text { \
-      align: 0 0.5; \
-      min: 0 1; \
-      style: "email_style_sub"; \
-   }
-
-#define DESCRIPTION_EMAIL_SUB_OTHERS \
-   description { state: "selected" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_sub_focus"; \
-   }
-
-// email contents text
-#define PARAM_EMAIL_COUNT \
-   color: GENLIST_EMAIL_COUNT_TEXT_UNREAD_COLOR; \
-   text { \
-      align: 0 0.5; \
-      min: 0 1; \
-      font: "Tizen:style=Medium"; \
-      size: GENLIST_EMAIL_COUNT_TEXT_SIZE; \
-      text_class: "tizen"; \
-   }
-
-#define DESCRIPTION_EMAIL_COUNT_OTHERS \
-   description { state: "read" 0.0; \
-      inherit: "default" 0.0; \
-      color: GENLIST_EMAIL_COUNT_TEXT_READ_COLOR; \
-   } \
-   description { state: "selected" 0.0; \
-      inherit: "default" 0.0; \
-      color: GENLIST_EMAIL_TEXT_FOCUS_COLOR; \
-   }
-
-// email contents text
-#define PARAM_EMAIL_CONTENTS \
-   text { \
-      align: 0 0.5; \
-      min: 0 1; \
-      font: "Tizen:style=Medium"; \
-      style: "email_style_contents"; \
-   }
-
-#define PARAM_EMAIL_CONTENTS_TIME \
-   text { \
-      align: 0 0.5; \
-      min: 0 1; \
-      font: "Tizen:style=Medium"; \
-      style: "email_style_contents_time"; \
-   }
-
-#define DESCRIPTION_EMAIL_CONTENTS_OTHERS \
-   description { state: "selected" 0.0; \
-      inherit: "default" 0.0; \
-      text.style: "email_style_contents_focus"; \
-   }
-
-#define HEIGHT_EMAIL_MAIN         54
-#define HEIGHT_EMAIL_SUB          42
-#define HEIGHT_EMAIL_CONTENTS      38
-
-// 2.2.3.5 (Email Style)
-   group { GENLIST_NAME("email.list/default")
-      GENLIST_PROLOG_NORMAL
-      data.item: "texts" "elm.text.1 elm.text.2 elm.text.3 elm.text.4";
-      data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.4.touch";
-
-      script {
-         public readed = 0;
-      }
-      parts {
-         GENLIST_PART_BG_NORMAL
-         GENLIST_PART_BASE
-         GENLIST_PART_BOTTOM_LINE
-         GENLIST_PART_PADDING_LEFT
-         GENLIST_PART_PADDING_RIGHT
-         GENLIST_PART_PADDING_TOP_SIZE( GENLIST_PADDING_SIZE_TOP_3LINE )
-         GENLIST_PART_PADDING_BOTTOM_SIZE( GENLIST_PADDING_SIZE_BOTTOM_3LINE )
-         GENLIST_PART_COLORBAR
-
-         GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
-         GENLIST_PART_PADDING_L("elm.padding.icon1.right", "elm.icon.1")
-
-         GENLIST_PART_TEXTBLOCK("elm.text.1",
-            GENLIST_DESCRIPTION_LRT("elm.padding.icon1.right", "elm.text.limit", "elm.padding.top",
-               PARAM_EMAIL_MAIN
-               min: 0 HEIGHT_EMAIL_MAIN;
-               fixed: 1 1; align: 0 0; text.max: 1 0;  // This limits text growing.
-            )
-            DESCRIPTION_EMAIL_MAIN_OTHERS
-         )
-
-         // FIXME: because script cannot be inherited, text.5 is defined here and can be inherited
-         GENLIST_PART_TEXT("elm.text.5",
-            GENLIST_DESCRIPTION_LTB("elm.text.1", "elm.padding.top", "elm.text.3",
-               PARAM_EMAIL_COUNT
-               min: 45 HEIGHT_EMAIL_MAIN;
-               max: 45 HEIGHT_EMAIL_MAIN;
-               text.min: 1 0;
-               text.align: 0.5 0.65;
-               fixed: 1 1;
-               visible: 0;
-            )
-         )
-         // Virtual part for Maxmimum right X axis of TEXT
-         GENLIST_PART_SPACER("elm.text.limit",
-            GENLIST_DESCRIPTION_R("elm.icon.3",
-               min: 0 0;
-               max: 0 0;
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_ICON("elm.icon.3",
-            GENLIST_DESCRIPTION_RTB("elm.padding.icon4.left", "elm.padding.top", "elm.text.3",
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_PADDING_R("elm.padding.icon4.left", "elm.icon.4")
-         GENLIST_PART_ICON("elm.icon.4",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right", "elm.padding.top", "elm.text.3",
-               min: 38 38;
-               max: HEIGHT_EMAIL_MAIN HEIGHT_EMAIL_MAIN;
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_ICON("elm.icon.4.touch",
-            GENLIST_DESCRIPTION_ENVELOP("elm.icon.4",
-               rel1.offset: -10 -17;
-               rel2.offset: 26 10;
-            )
-         )
-         GENLIST_PART_ICON("elm.icon.2",
-            GENLIST_DESCRIPTION_LTB("elm.padding.icon1.right", "elm.text.1", "elm.text.2",
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_TEXTBLOCK("elm.text.3",
-            GENLIST_DESCRIPTION_LRT("elm.icon.2", "elm.text.4", "elm.text.1",
-               PARAM_EMAIL_SUB
-               min: 0 HEIGHT_EMAIL_SUB;
-               fixed: 0 1;
-            )
-            DESCRIPTION_EMAIL_SUB_OTHERS
-         )
-         GENLIST_PART_TEXTBLOCK("elm.text.4",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right", "elm.text.1", "elm.text.2",
-               PARAM_EMAIL_CONTENTS_TIME
-               GENLIST_PARAM_TEXT_LIMIT_RT
-               min: 0 HEIGHT_EMAIL_CONTENTS;
-               fixed: 1 0;
-            )
-            DESCRIPTION_EMAIL_CONTENTS_OTHERS
-         )
-         GENLIST_PART_TEXTBLOCK("elm.text.2",
-            GENLIST_DESCRIPTION("elm.padding.icon1.right", "elm.padding.right", "elm.text.3", "elm.padding.bottom",
-               PARAM_EMAIL_CONTENTS
-               min: 0 HEIGHT_EMAIL_CONTENTS;
-            )
-            DESCRIPTION_EMAIL_CONTENTS_OTHERS
-         )
-         GENLIST_PART_FLIP
-      }
-      GENLIST_PROGRAMS_READ_TEXT( target: "elm.text.1";
-         target: "elm.text.2"; target: "elm.text.3";
-         target: "elm.text.4"; target: "elm.text.5";
-         target: "elm.swallow.colorbar"; target: "elm.icon.1";
-         target: "elm.icon.2"; target: "elm.icon.3";
-         target: "elm.icon.4";
-      )
-   }
-
-// email list with conversation text
-   group { GENLIST_NAME("email.list.conversation/default")
-      inherit: "elm/genlist/item/email.list/default";
-
-      data.item: "texts" "elm.text.1 elm.text.2 elm.text.3 elm.text.4 elm.text.5";
-      parts {
-         GENLIST_PART_TEXT("elm.text.5",
-            GENLIST_DESCRIPTION_LTB("elm.text.1", "elm.padding.top", "elm.text.3",
-               visible: 1;
-            )
-            DESCRIPTION_EMAIL_COUNT_OTHERS
-         )
-         // Virtual part for Maxmimum right X axis of TEXT
-         GENLIST_PART_SPACER("elm.text.limit",
-            GENLIST_DESCRIPTION_R("elm.icon.3",
-               min: 45 HEIGHT_EMAIL_MAIN;
-               max: 45 HEIGHT_EMAIL_MAIN;
-            )
-         )
-      }
-   }
-
-   // 2.2.3.13
-   // email outbox style
-   group { GENLIST_NAME("email.outbox/default")
-      GENLIST_PROLOG_NORMAL
-      data.item: "texts" "elm.text.1 elm.text.2 elm.text.3";
-      data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.4.touch elm.icon.5";
-
-      script {
-         public readed = 0;
-      }
-      parts {
-         GENLIST_PART_BG_NORMAL
-         GENLIST_PART_BASE
-         GENLIST_PART_BOTTOM_LINE
-         GENLIST_PART_PADDING_LEFT
-         GENLIST_PART_PADDING_RIGHT_EDIT
-         GENLIST_PART_PADDING_TOP_SIZE( GENLIST_PADDING_SIZE_TOP_3LINE )
-         GENLIST_PART_PADDING_BOTTOM_SIZE( GENLIST_PADDING_SIZE_BOTTOM_3LINE )
-         GENLIST_PART_COLORBAR
-
-         GENLIST_PART_ICON_CHECK_RADIO_L("elm.icon.1", "elm.padding.left")
-         GENLIST_PART_PADDING_L("elm.padding.icon1.right", "elm.icon.1")
-
-         GENLIST_PART_TEXTBLOCK("elm.text.1",
-            GENLIST_DESCRIPTION_LRT("elm.padding.icon1.right", "elm.text.limit", "elm.padding.top",
-               PARAM_EMAIL_MAIN
-               min: 0 HEIGHT_EMAIL_MAIN;
-               fixed: 1 1; align: 0 0; text.max: 1 0;  // This limits text growing.
-            )
-            DESCRIPTION_EMAIL_MAIN_OTHERS
-         )
-         // FIXME: because script cannot be inherited, text.5 is defined here and can be inherited
-         GENLIST_PART_TEXT("elm.text.4",
-            GENLIST_DESCRIPTION_LTB("elm.text.1", "elm.padding.top", "elm.text.3",
-               PARAM_EMAIL_COUNT
-               min: 0 HEIGHT_EMAIL_MAIN;
-               max: 0 HEIGHT_EMAIL_MAIN;
-               text.min: 1 0;
-               text.align: 0.5 0.65;
-               fixed: 1 0;
-               visible: 0;
-            )
-         )
-         // Virtual part for Maxmimum right X axis of TEXT
-         GENLIST_PART_SPACER("elm.text.limit",
-            GENLIST_DESCRIPTION_R("elm.icon.3",
-               min: 0 0;
-               max: 0 0;
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_ICON("elm.icon.3",
-            GENLIST_DESCRIPTION_RTB("elm.padding.icon4.left", "elm.padding.top", "elm.text.3",
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_PADDING_R("elm.padding.icon4.left", "elm.icon.4")
-         GENLIST_PART_ICON("elm.icon.4",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right", "elm.padding.top", "elm.text.3",
-               min: 38 38;
-               max: HEIGHT_EMAIL_MAIN HEIGHT_EMAIL_MAIN;
-               fixed: 1 0;
-            )
-         )
-         GENLIST_PART_ICON("elm.icon.4.touch",
-            GENLIST_DESCRIPTION_ENVELOP("elm.icon.4",
-               rel1.offset: -10 -17;
-               rel2.offset: 26 10;
-            )
-         )
-
-         GENLIST_PART_ICON("elm.icon.2",
-            GENLIST_DESCRIPTION_LTB("elm.padding.icon1.right", "elm.text.1", "elm.text.2",
-               fixed: 1 1;
-            )
-         )
-         GENLIST_PART_TEXTBLOCK("elm.text.3",
-            GENLIST_DESCRIPTION_LRT("elm.icon.2", "elm.padding.icon5.left", "elm.text.1",
-               PARAM_EMAIL_SUB
-               min: 0 HEIGHT_EMAIL_SUB;
-               fixed: 0 1;
-            )
-            DESCRIPTION_EMAIL_SUB_OTHERS
-         )
-         GENLIST_PART_TEXTBLOCK("elm.text.2",
-            GENLIST_DESCRIPTION("elm.padding.icon1.right", "elm.padding.icon5.left", "elm.text.3", "elm.padding.bottom",
-               PARAM_EMAIL_CONTENTS
-               min: 0 HEIGHT_EMAIL_CONTENTS;
-            )
-            DESCRIPTION_EMAIL_CONTENTS_OTHERS
-         )
-         GENLIST_PART_PADDING_R("elm.padding.icon5.left", "elm.icon.5")
-         GENLIST_PART_ICON("elm.icon.5",
-            GENLIST_DESCRIPTION_RTB("elm.padding.right", "elm.text.1", "elm.padding.bottom",
-               min: 180 74;
-               max: 180 74;
-               fixed: 1 1;
-            )
-         )
-         GENLIST_PART_FLIP
-      }
-      GENLIST_PROGRAMS_READ_TEXT( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3";
-         target: "elm.text.4";
-         target: "elm.swallow.colorbar"; target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3";
-         target: "elm.icon.4"; target: "elm.icon.5";
-      )
-   }
-
-// email outbox style with conversation
-   group { GENLIST_NAME("email.outbox.conversation/default")
-      inherit: "elm/genlist/item/email.outbox/default";
-
-      data.item: "texts" "elm.text.1 elm.text.2 elm.text.3 elm.text.4";
-
-      parts {
-         GENLIST_PART_TEXT("elm.text.4",
-            GENLIST_DESCRIPTION_LTB("elm.text.1", "elm.padding.top", "elm.icon.5",
-               min: 45 HEIGHT_EMAIL_MAIN;
-               max: 45 HEIGHT_EMAIL_MAIN;
-               visible: 1;
-            )
-            DESCRIPTION_EMAIL_COUNT_OTHERS
-         )
-         GENLIST_PART_SPACER("elm.text.limit",
-            GENLIST_DESCRIPTION_R("elm.icon.3",
-               min: 45 HEIGHT_EMAIL_MAIN;
-               max: 45 HEIGHT_EMAIL_MAIN;
-            )
-         )
-      }
-   }
-
 // 2.2.4.1
    group { GENLIST_NAME("multiline/1title.2text/default")
       GENLIST_PROLOG_NORMAL
       data.item: "texts" "elm.title elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -3012,8 +2700,8 @@
       data.item: "texts" "elm.title elm.text";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -3054,8 +2742,8 @@
       data.item: "texts" "elm.text.1 elm.text.2";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -3096,8 +2784,8 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.5";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -3142,8 +2830,8 @@
       data.item: "contents" "elm.icon";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -3178,20 +2866,21 @@
       alias: "elm/layout/dialogue/editfield/default";
       inherit: "elm/genlist/item/editfield/default";
 
-      data.item: "contents" "elm.icon.entry elm.icon.rename elm.icon.edit";
+      data.item: "contents" "elm.icon.entry elm.image.rename elm.icon.eraser elm.icon.edit";
 
       GENLIST_DIALOGUE_INHERIT_BODY( ; )
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon.entry"; target: "elm.icon.rename"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon.entry"; target: "elm.image.rename"; target: "elm.icon.edit";)
    }
+
 // 2.2.6.2 (Dialogue)
    group { GENLIST_NAME("dialogue/editfield/title/default")
       alias: "elm/layout/dialogue/editfield/title/default";
       inherit: "elm/genlist/item/editfield/title/default";
 
-      data.item: "contents" "elm.icon.entry elm.icon.rename elm.icon.edit";
+      data.item: "contents" "elm.icon.entry elm.image.rename elm.icon.eraser elm.icon.edit";
 
       GENLIST_DIALOGUE_INHERIT_BODY( ; )
-      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon.entry"; target: "elm.icon.rename"; )
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.icon.entry"; target: "elm.image.rename"; target: "elm.icon.edit";)
    }
 
 // Dialogue Group Separators
@@ -3203,7 +2892,6 @@
       data.item: "selectraise" "on";
 
       parts {
-         GENLIST_PART_BG(0 0 0 0, 0 0 0 0, 0 0 0 0)
          GENLIST_PART_BASE
          GENLIST_PART_SPACER("separator",
             description { state: "default" 0.0;
@@ -3223,7 +2911,6 @@
       data.item: "selectraise" "on";
 
       parts {
-         GENLIST_PART_BG(0 0 0 0, 0 0 0 0, 0 0 0 0)
          GENLIST_PART_BASE
          GENLIST_PART_SPACER("separator",
             description { state: "default" 0.0;
@@ -3292,6 +2979,24 @@
 
       GENLIST_DIALOGUE_INHERIT_BODY( ; )
       GENLIST_PROGRAMS_DIALOGUE( target: "elm.text"; target: "elm.icon"; )
+   }
+
+// 2.4.1.3.1 (circle)
+   group { GENLIST_NAME("dialogue/1text.1icon.2.thumb.circle/default")
+      inherit: "elm/genlist/item/dialogue/1text.1icon.2/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_MEDIUM_DIALOGUE("elm.icon")
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.4.1.3.1 (square)
+   group { GENLIST_NAME("dialogue/1text.1icon.2.thumb.square/default")
+      inherit: "elm/genlist/item/dialogue/1text.1icon.2/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_MEDIUM_DIALOGUE("elm.icon")
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text"; target: "elm.icon"; )
+      GENLIST_PROGRAMS_THUMB
    }
 
 // 2.4.1.3 (TEXTBLOCK)
@@ -3683,7 +3388,7 @@
       data.item: "contents" "elm.icon.1 elm.icon.2 elm.swallow.colorbar elm.icon.edit";
 
       GENLIST_DIALOGUE_INHERIT_BODY(
-         GENLIST_PART_COLORBAR
+         GENLIST_PART_COLORBAR_DIALOGUE
          GENLIST_PART_ICON_BIG_R("elm.icon.2", "elm.padding.right")
       )
       GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2";
@@ -4073,15 +3778,14 @@
       data.item: "texts" "elm.text";
       data.item: "contents" "elm.icon";
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_PADDING_LEFT_SIZE( DIALOGUE_PADDING_SIZE_LEFT )
          GENLIST_PART_PADDING_TOP_SIZE( 0 )
          GENLIST_PART_PADDING_BOTTOM_SIZE( 0 )
          GENLIST_PART_PADDING_RIGHT_SIZE( 26 )
 
          GENLIST_PART_TEXT("elm.text",
-            repeat_events: 0;
             GENLIST_DESCRIPTION("elm.padding.left", "elm.icon",
                "elm.padding.top", "elm.padding.bottom",
                GENLIST_PARAM_DIALOGUE_GROUP_TITLE
@@ -4112,8 +3816,8 @@
       data.item: "texts" "elm.text";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_PADDING_LEFT_SIZE(38)
          GENLIST_PART_PADDING_RIGHT_SIZE(38)
          GENLIST_PART_PADDING_TOP_SIZE(0)
@@ -4215,7 +3919,7 @@
          target: "elm.icon.1"; target: "elm.icon.2"; )
    }
 
-// 2.4.4.4 (Apps)
+// 2.4.4.5
    group { GENLIST_NAME("dialogue/bg/5text.6icon/default")
       alias: "elm/layout/dialogue/bg/5text.6icon/default";
 
@@ -4228,12 +3932,12 @@
          GENLIST_PART_BASE
          GENLIST_PART_PADDING_LEFT_SIZE( DIALOGUE_PADDING_SIZE_LEFT )
          GENLIST_PART_PADDING_RIGHT_EDIT
-         GENLIST_PART_PADDING_TOP_SIZE(9)
-         GENLIST_PART_PADDING_BOTTOM_SIZE(9)
+         GENLIST_PART_PADDING_TOP_SIZE(13)
+         GENLIST_PART_PADDING_BOTTOM_SIZE(13)
 
          GENLIST_PART_ICON("elm.icon.1",
             GENLIST_DESCRIPTION_L("elm.padding.left",
-               min: 134 134; fixed: 1 1;)
+               min: 108 108; max: 108 108;  fixed: 1 1;)
          )
          GENLIST_PART_PADDING_L("elm.padding.icon1.right", "elm.icon.1")
          GENLIST_PART_TEXT("elm.text.1", GENLIST_DESCRIPTION_LRT(
@@ -4294,6 +3998,28 @@
       }
       GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4"; target: "elm.text.5";
          target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3"; target: "elm.icon.4"; target: "elm.icon.5"; target: "elm.icon.6"; )
+   }
+
+// 2.4.4.5.1 (Circle)
+   group { GENLIST_NAME("dialogue/bg/5text.6icon.thumb.circle/default")
+      inherit: "elm/genlist/item/dialogue/bg/5text.6icon/default";
+
+      GENLIST_INHERIT_THUMB_CIRCLE_LARGE_DIALOGUE("elm.icon.1")
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4"; target: "elm.text.5";
+         target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3"; target: "elm.icon.4"; target: "elm.icon.5"; target: "elm.icon.6";
+      )
+      GENLIST_PROGRAMS_THUMB
+   }
+
+// 2.4.4.5.1 (Square)
+   group { GENLIST_NAME("dialogue/bg/5text.6icon.thumb.square/default")
+      inherit: "elm/genlist/item/dialogue/bg/5text.6icon/default";
+
+      GENLIST_INHERIT_THUMB_SQUARE_LARGE_DIALOGUE("elm.icon.1")
+      GENLIST_PROGRAMS_DIALOGUE( target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.text.4"; target: "elm.text.5";
+         target: "elm.icon.1"; target: "elm.icon.2"; target: "elm.icon.3"; target: "elm.icon.4"; target: "elm.icon.5"; target: "elm.icon.6";
+      )
+      GENLIST_PROGRAMS_THUMB
    }
 
 #if 0
@@ -4726,8 +4452,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 0.0;
@@ -4906,8 +4632,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1.to_x: "elm.padding.right";
                rel2 {
@@ -5301,7 +5027,7 @@
                rel1.to: "elm.title";
                rel2.to: "elm.title";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -5380,7 +5106,7 @@
                }
                visible: 0;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -5421,7 +5147,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.title";
             target: "elm.text";
             target: "elm.flip.content.title";
@@ -5590,7 +5316,7 @@
                }
                visible: 0;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -5684,7 +5410,7 @@
                rel1.to: "elm.title";
                rel2.to: "elm.title";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -5812,7 +5538,7 @@
                }
                visible: 0;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -5853,7 +5579,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.title";
             target: "elm.text";
             target: "elm.flip.content.title";
@@ -6039,8 +5765,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 0.0;
@@ -6200,8 +5926,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 0.0;
@@ -6379,8 +6105,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 0.0;
@@ -6414,8 +6140,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1.to_x: "elm.padding.right";
                rel2 {
@@ -6574,8 +6300,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
@@ -7670,8 +7396,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 0.0 0.5;
@@ -8961,7 +8687,7 @@
                rel1.to: "elm.title";
                rel2.to: "elm.title";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9017,7 +8743,7 @@
                rel1.to: "elm.text.1";
                rel2.to: "elm.text.1";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9057,7 +8783,7 @@
                rel1.to: "elm.text.2";
                rel2.to: "elm.text.2";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9097,7 +8823,7 @@
                rel1.to: "elm.text.3";
                rel2.to: "elm.text.3";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9137,7 +8863,7 @@
                rel1.to: "elm.text.4";
                rel2.to: "elm.text.4";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9177,7 +8903,7 @@
                rel1.to: "elm.text.5";
                rel2.to: "elm.text.5";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9218,7 +8944,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.title";
             target: "elm.text.1";
             target: "elm.text.2";
@@ -9395,7 +9121,7 @@
                }
                visible: 0;
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9433,10 +9159,10 @@
             action: STATE_SET "default" 0.0;
             target: "disclip";
          }
-         program { name: "flip_enabled";
+         program { name: "flipped";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text";
             target: "elm.flip.content";
          }
@@ -9700,7 +9426,7 @@
                rel1.to: "elm.text.1";
                rel2.to: "elm.text.1";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9760,7 +9486,7 @@
                rel1.to: "elm.text.2";
                rel2.to: "elm.text.2";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -9822,7 +9548,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text.1";
             target: "elm.text.2";
             target: "elm.flip.content.1";
@@ -10082,7 +9808,7 @@
                rel1.to: "elm.text.1";
                rel2.to: "elm.text.1";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -10140,7 +9866,7 @@
                rel1.to: "elm.text.2";
                rel2.to: "elm.text.2";
             }
-            description { state: "flip_enabled" 0.0;
+            description { state: "flipped" 0.0;
                inherit: "default" 0.0;
                visible: 1;
             }
@@ -10202,7 +9928,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text.1";
             target: "elm.text.2";
             target: "elm.flip.content.1";
@@ -10487,8 +10213,8 @@
       data.item: "flips" "elm.flip.icon elm.flip.content";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT_EDIT
@@ -11154,8 +10880,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
@@ -11192,8 +10918,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 0.0 1.0;
@@ -11356,8 +11082,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
@@ -11519,7 +11245,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text.1";
             target: "elm.icon.1";
             target: "elm.icon.2";
@@ -11768,8 +11494,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
@@ -11895,7 +11621,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text.1";
             target: "elm.icon.1";
             target: "elm.swallow.progress";
@@ -11936,8 +11662,8 @@
             type: SWALLOW;
             scale: 1;
             description { state: "default" 0.0;
-               min: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
-               max: GENLIST_ICON_BIG_SIZE GENLIST_ICON_BIG_SIZE;
+               min: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
+               max: GENLIST_ICON_MEDIUM_SIZE GENLIST_ICON_MEDIUM_SIZE;
                fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
@@ -12171,7 +11897,7 @@
          program { name: "flip_enabled";
             signal: "elm,state,flip,enabled";
             source: "elm";
-            action: STATE_SET "flip_enabled" 0.0;
+            action: STATE_SET "flipped" 0.0;
             target: "elm.text.1";
             target: "elm.text.2";
             target: "elm.text.3";
@@ -13015,8 +12741,8 @@
       data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4 elm.icon.5";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -13078,8 +12804,8 @@
       data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -13137,8 +12863,8 @@
       data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3 elm.icon.4";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
@@ -13195,8 +12921,8 @@
       data.item: "contents" "elm.swallow.colorbar elm.icon.1 elm.icon.2 elm.icon.3";
 
       parts {
-         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BASE
+         GENLIST_PART_BG_NORMAL
          GENLIST_PART_BOTTOM_LINE
          GENLIST_PART_PADDING_LEFT
          GENLIST_PART_PADDING_RIGHT
