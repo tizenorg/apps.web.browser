@@ -55,6 +55,7 @@ private:
 	void _set_contents(void);
 	Eina_Bool _set_genlist_folder_view(Evas_Object *genlist);
 	Eina_Bool _set_genlist_by_folder(int folder_id, Evas_Object *genlist);
+	Eina_Bool _set_folder_genlist(int folder_id, Evas_Object *genlist);
 	void _back_to_previous_view(void);
 	void _show_more_context_popup(Evas_Object *parent);
 	void _show_delete_confirm_popup(void);
@@ -80,6 +81,11 @@ private:
 	static void __select_all_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __more_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __naviframe_pop_finished_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __title_entry_changed_cb(void * data, Evas_Object * obj, void * event_info);
+	static void __ok_btn_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+	static void __rename_folder_cb(void * data, Evas_Object * obj, void * event_info);
+	static void __cancel_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __ctxpopup_rename_folder_by_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ctxpopup_add_new_folder_by_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __create_folder_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __ctxpopup_dismissed_cb(void *data, Evas_Object *obj, void *event_info);
@@ -98,6 +104,8 @@ private:
 	Evas_Object *m_toolbar_btn_delete; // folder view
 	Evas_Object *m_toolbar_btn_back; // folder view
 	Evas_Object *m_popup_selection_info;
+	Evas_Object *m_rename_folder_select_popup;
+	Evas_Object *m_rename_folder_popup;
 	Elm_Object_Item *m_naviframe_item;
 
 	Elm_Genlist_Item_Class m_itc_folder;
@@ -110,7 +118,8 @@ private:
 	unsigned int m_count_checked_item;
 	unsigned int m_count_editable_item;
 	unsigned int m_count_folder_item;
-	int m_folder_id_to_move;
+	unsigned int m_folder_id_to_move;
+	std::string m_rename_folder_string;
 	std::vector<folder_info *> m_path_history;
 	std::string m_path_string;
 
