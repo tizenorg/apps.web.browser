@@ -321,6 +321,9 @@ Evas_Object *history_view::_create_genlist(Evas_Object *parent)
 
 	m_history_list = m_browser->get_history()->get_history_list();
 
+	m_item_ic = item_ic;
+	m_date_ic = date_ic;
+
 	if (m_history_list.size() == 0) {
 		evas_object_del(genlist);
 		return NULL;
@@ -344,8 +347,6 @@ Evas_Object *history_view::_create_genlist(Evas_Object *parent)
 		}
 		elm_genlist_item_append(genlist, item_ic, m_history_list[i], NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, m_history_list[i]);
 	}
-	m_item_ic = item_ic;
-	m_date_ic = date_ic;
 
 	return genlist;
 }

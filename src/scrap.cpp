@@ -183,8 +183,11 @@ void scrap::delete_scrap(const char *file_path)
 	if (sqlite3_bind_text(sqlite3_stmt, 1, file_path, -1, NULL) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_bind_text is failed.");
 
-	sqlite3_step(sqlite3_stmt);
+	if (sqlite3_step(sqlite3_stmt) != SQLITE_ROW)
+		BROWSER_LOGE("sqlite3_step failed");
+
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
+		db_util_close(descriptor);
 		BROWSER_LOGE("sqlite3_finalize failed");
 		return;
 	}

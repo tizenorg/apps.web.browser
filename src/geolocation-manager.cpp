@@ -354,9 +354,12 @@ Eina_Bool geolocation_manager::delete_all(void)
 	}
 	sqlite3_stmt *sqlite3_stmt = NULL;
 	error = sqlite3_prepare_v2(descriptor, "delete from geolocation", -1, &sqlite3_stmt, NULL);
-	sqlite3_step(sqlite3_stmt);
+	if (sqlite3_step(sqlite3_stmt) != SQLITE_ROW)
+		BROWSER_LOGE("sqlite3_step failed");
+
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 		BROWSER_LOGE("sqlite3_finalize failed");
+		db_util_close(descriptor);
 		return EINA_FALSE;
 	}
 
@@ -459,6 +462,12 @@ std::vector<geolocation_item *> geolocation_manager::get_geolocation_list(void)
 
 		geolocation_item *item = new geolocation_item(uri, accept, title);
 		geolocation_list.push_back(item);
+	}
+
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
+		BROWSER_LOGE("sqlite3_finalize failed");
+		db_util_close(descriptor);
+		return geolocation_list;
 	}
 
 	db_util_close(descriptor);

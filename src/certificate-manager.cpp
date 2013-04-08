@@ -129,9 +129,12 @@ static Eina_Bool _delete_all(void)
 	}
 	sqlite3_stmt *sqlite3_stmt = NULL;
 	error = sqlite3_prepare_v2(descriptor, "delete from certificate", -1, &sqlite3_stmt, NULL);
-	sqlite3_step(sqlite3_stmt);
+	if (sqlite3_step(sqlite3_stmt) != SQLITE_ROW)
+		BROWSER_LOGE("sqlite3_step failed");
+
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 		BROWSER_LOGE("sqlite3_finalize failed");
+		db_util_close(descriptor);
 		return EINA_FALSE;
 	}
 

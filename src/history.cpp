@@ -347,8 +347,24 @@ static Eina_Bool _remove_oldest_history_item(void)
 		return EINA_FALSE;
 	}
 	sqlite3_stmt *sqlite3_stmt = NULL;
-	sqlite3_prepare_v2(descriptor, "select count(*) from history", -1, &sqlite3_stmt, NULL);
-	sqlite3_step(sqlite3_stmt);
+	error = sqlite3_prepare_v2(descriptor, "select count(*) from history", -1, &sqlite3_stmt, NULL);
+	if (error != SQLITE_OK) {
+		BROWSER_LOGE("SQL error=%d", error);
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return EINA_FALSE;
+	}
+
+	error = sqlite3_step(sqlite3_stmt);
+	if (error != SQLITE_DONE) {
+		BROWSER_LOGE("sqlite3_step failed");
+		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+			BROWSER_LOGE("sqlite3_finalize is failed.\n");
+		db_util_close(descriptor);
+		return NULL;
+	}
+
 	int count = sqlite3_column_int(sqlite3_stmt, 0);
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 		db_util_close(descriptor);
@@ -356,8 +372,23 @@ static Eina_Bool _remove_oldest_history_item(void)
 	}
 
 	if (count > HISTORY_COUNT_LIMIT) {
-		sqlite3_prepare_v2(descriptor, "delete from history where id = (select min(id) from history)", -1, &sqlite3_stmt, NULL);
-		sqlite3_step(sqlite3_stmt);
+		error = sqlite3_prepare_v2(descriptor, "delete from history where id = (select min(id) from history)", -1, &sqlite3_stmt, NULL);
+		if (error != SQLITE_OK) {
+			BROWSER_LOGE("SQL error=%d", error);
+			if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+				BROWSER_LOGE("sqlite3_finalize is failed.\n");
+			db_util_close(descriptor);
+			return EINA_FALSE;
+		}
+
+		error = sqlite3_step(sqlite3_stmt);
+		if (error != SQLITE_DONE) {
+			BROWSER_LOGE("sqlite3_step failed");
+			if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK)
+				BROWSER_LOGE("sqlite3_finalize is failed.\n");
+			db_util_close(descriptor);
+			return NULL;
+		}
 		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 			db_util_close(descriptor);
 			return EINA_FALSE;
@@ -394,6 +425,12 @@ std::vector<history_item *> history::get_history_list(void)
 		history_item *item = new history_item(title, uri, NULL, 0, date);
 		history_list.push_back(item);
 	}
+
+	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
+		db_util_close(descriptor);
+		return history_list;
+	}
+	db_util_close(descriptor);
 
 	return history_list;
 }
@@ -438,8 +475,10 @@ std::vector<history_item *> history::get_histories_order_by_visit_count(int coun
 			evas_object_image_alpha_set(image,EINA_TRUE);
 
 			void *pixels = evas_object_image_data_get(image, EINA_TRUE);
-			memcpy(pixels, snapshot_data, raw_data_length);
-			evas_object_image_data_set(image, pixels);
+			if (pixels) {
+				memcpy(pixels, snapshot_data, raw_data_length);
+				evas_object_image_data_set(image, pixels);
+			}
 		}
 
 		history_item *item = new history_item(title, uri, image, visit_count);
@@ -519,8 +558,10 @@ history_item *history::get_next_history_order_by_visit_count(history_item *item)
 			evas_object_image_alpha_set(image,EINA_TRUE);
 
 			void *pixels = evas_object_image_data_get(image, EINA_TRUE);
-			memcpy(pixels, snapshot_data, raw_data_length);
-			evas_object_image_data_set(image, pixels);
+			if (pixels) {
+				memcpy(pixels, snapshot_data, raw_data_length);
+				evas_object_image_data_set(image, pixels);
+			}
 		}
 
 		history_item *item = new history_item(title, uri, image, visit_count);
@@ -528,6 +569,7 @@ history_item *history::get_next_history_order_by_visit_count(history_item *item)
 		if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 			BROWSER_LOGD("sqlite3_finalize error");
 			db_util_close(descriptor);
+			free(item);
 			return NULL;
 		}
 		db_util_close(descriptor);
@@ -556,9 +598,12 @@ Eina_Bool history::delete_all(void)
 	}
 	sqlite3_stmt *sqlite3_stmt = NULL;
 	error = sqlite3_prepare_v2(descriptor, "delete from history", -1, &sqlite3_stmt, NULL);
-	sqlite3_step(sqlite3_stmt);
+	if (sqlite3_step(sqlite3_stmt) != SQLITE_ROW)
+		BROWSER_LOGE("sqlite3_step failed");
+
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 		BROWSER_LOGE("sqlite3_finalize failed");
+		db_util_close(descriptor);
 		return EINA_FALSE;
 	}
 
@@ -616,9 +661,12 @@ Eina_Bool history::delete_history(const char *uri)
 	if (sqlite3_bind_text(sqlite3_stmt, 1, uri, -1, NULL) != SQLITE_OK)
 		BROWSER_LOGE("sqlite3_bind_text is failed.");
 
-	sqlite3_step(sqlite3_stmt);
+	if (sqlite3_step(sqlite3_stmt) != SQLITE_ROW)
+		BROWSER_LOGE("sqlite3_step failed");
+
 	if (sqlite3_finalize(sqlite3_stmt) != SQLITE_OK) {
 		BROWSER_LOGE("sqlite3_finalize failed");
+		db_util_close(descriptor);
 		return EINA_FALSE;
 	}
 
