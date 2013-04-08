@@ -154,7 +154,8 @@ static void _exit_browser(void)
 
 	bundle_add(b, "_SYSPOPUP_TITLE_", "Warning");
 	bundle_add(b, "_SYSPOPUP_CONTENT_", "Low memory, Can't launch browser. Kill other applications");
-	syspopup_launch("syspopup-app", b);
+	if (syspopup_launch("syspopup-app", b) < 0)
+		BROWSER_LOGE("syspopup_launch failed");
 	bundle_free(b);
 
 	elm_exit();
