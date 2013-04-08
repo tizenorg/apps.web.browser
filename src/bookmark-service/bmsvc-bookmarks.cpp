@@ -883,9 +883,6 @@ int bmsvc_delete_bookmark(int id, int check_editable)
 		TRACE_END;
 		return BMSVC_ERROR_NONE;
 	}
-	_bmsvc_destroy_bookmark_entry((void *)entry);
-	TRACE_END;
-	return BMSVC_ERROR_UNKNOWN;
 }
 
 int bmsvc_update_bookmark(int id, const char *title, const char *address, int parent_id, int order,
@@ -975,14 +972,9 @@ int bmsvc_update_bookmark(int id, const char *title, const char *address, int pa
 			_bmsvc_add_tag_to_taglist(tag4);
 		DBG_LOGE("Processing Tags finisied");
 		_bmsvc_destroy_bookmark_entry((void *)entry);
-		DBG_LOGE("all task is done");
 		TRACE_END;
 		return BMSVC_ERROR_NONE;
 	}
-
-	_bmsvc_destroy_bookmark_entry((void *)entry);
-	TRACE_END;
-	return BMSVC_ERROR_UNKNOWN;
 }
 
 int bmsvc_set_thumbnail(int id, void *image_data, int w, int h, int len)
