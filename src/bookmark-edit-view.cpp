@@ -660,26 +660,26 @@ void bookmark_edit_view::_reorder_bookmark_items(int order_index, Eina_Bool is_m
 			cb_data = (gl_cb_data *)elm_object_item_data_get(it);
 			bookmark_item *item_data = (bookmark_item *)cb_data->user_data;
 			if (item_data->get_order() > index) {
-				m_bookmark->update_bookmark(item_data->get_id()
+				ret = m_bookmark->update_bookmark(item_data->get_id()
 							, item_data->get_title()
 							, item_data->get_uri()
 							, m_curr_folder
 							, index);
-				if (!ret)
+				if (ret < 0)
 					BROWSER_LOGD("modify_bookmark_order_index failed");
 				int temp = item_data->get_order();
 				item_data->set_order(index);
 				index = temp;
 				elm_object_item_data_set(it, cb_data);
 			} else if (item_data->get_order() == order_index) {
-				m_bookmark->update_bookmark(item_data->get_id()
+				ret = m_bookmark->update_bookmark(item_data->get_id()
 							, item_data->get_title()
 							, item_data->get_uri()
 							, m_curr_folder
 							, index);
 				item_data->set_order(index);
 				elm_object_item_data_set(it, cb_data);
-				if (!ret)
+				if (ret < 0)
 					BROWSER_LOGD("modify_bookmark_order_index failed");
 				break;
 			}
@@ -693,26 +693,26 @@ void bookmark_edit_view::_reorder_bookmark_items(int order_index, Eina_Bool is_m
 			cb_data = (gl_cb_data *)elm_object_item_data_get(it);
 			bookmark_item *item_data = (bookmark_item *)cb_data->user_data;
 			if (item_data->get_order() < index) {
-				m_bookmark->update_bookmark(item_data->get_id()
+				ret = m_bookmark->update_bookmark(item_data->get_id()
 							, item_data->get_title()
 							, item_data->get_uri()
 							, m_curr_folder
 							, index);
-				if (!ret)
+				if (ret < 0)
 					BROWSER_LOGD("modify_bookmark_order_index failed");
 				int temp = item_data->get_order();
 				item_data->set_order(index);
 				index = temp;
 				elm_object_item_data_set(it, cb_data);
 			} else if (item_data->get_order() == order_index) {
-				m_bookmark->update_bookmark(item_data->get_id()
+				ret = m_bookmark->update_bookmark(item_data->get_id()
 							, item_data->get_title()
 							, item_data->get_uri()
 							, m_curr_folder
 							, index);
 				item_data->set_order(index);
 				elm_object_item_data_set(it, cb_data);
-				if (!ret)
+				if (ret < 0)
 					BROWSER_LOGD("modify_bookmark_order_index failed");
 				break;
 			}

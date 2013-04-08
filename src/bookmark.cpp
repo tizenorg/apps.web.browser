@@ -395,9 +395,9 @@ Eina_Bool bookmark::get_item_by_id(int id, bookmark_item *item)
 		else
 			(*item).set_editable_flag(EINA_FALSE);
 		if (info.url != NULL && strlen(info.url) > 0)
-			(*item).set_uri(strdup(info.url));
+			(*item).set_uri(info.url);
 		if (info.title != NULL && strlen(info.title) > 0)
-			(*item).set_title(strdup(info.title));
+			(*item).set_title(info.title);
 		bp_bookmark_adaptor_easy_free(&info);
 		return EINA_TRUE;
 	}
@@ -434,6 +434,8 @@ Eina_Bool bookmark::get_list_by_folder(const int folder_id, std::vector<bookmark
 
 	if (ids_count <= 0) {
 		BROWSER_LOGD("bookmark list is empty");
+		if (ids)
+			free(ids);
 		return EINA_FALSE;
 	}
 
@@ -456,14 +458,17 @@ Eina_Bool bookmark::get_list_by_folder(const int folder_id, std::vector<bookmark
 			else
 				item->set_editable_flag(EINA_FALSE);
 			if (info.url != NULL && strlen(info.url) > 0)
-				item->set_uri(strdup(info.url));
+				item->set_uri(info.url);
 			if (info.title != NULL && strlen(info.title) > 0)
-				item->set_title(strdup(info.title));
+				item->set_title(info.title);
 			list.push_back(item);
+		} else {
+			delete item;
 		}
 		bp_bookmark_adaptor_easy_free(&info);
 	}
-	free(ids);
+	if (ids)
+		free(ids);
 	return EINA_TRUE;
 #else
 	bookmark_list *bookmarks = internet_bookmark_list(folder_id, 2);
@@ -643,8 +648,14 @@ Evas_Object *bookmark::get_thumbnail(int id, Evas_Object *parent)
 		evas_object_image_fill_set(icon, 0, 0, w, h);
 		evas_object_image_filled_set(icon, EINA_TRUE);
 		evas_object_image_alpha_set(icon,EINA_TRUE);
-		evas_object_image_data_set(icon, thumbnail_data);
+
+		void *target_image_data = evas_object_image_data_get(icon, EINA_TRUE);
+		memcpy(target_image_data, thumbnail_data, len);
+		evas_object_image_data_set(icon, target_image_data);
 	}
+
+	if (thumbnail_data)
+		free(thumbnail_data);
 
 	return icon;
 }
@@ -741,8 +752,14 @@ Evas_Object *bookmark::get_favicon(int id, Evas_Object *parent)
 		evas_object_image_fill_set(icon, 0, 0, w, h);
 		evas_object_image_filled_set(icon, EINA_TRUE);
 		evas_object_image_alpha_set(icon,EINA_TRUE);
-		evas_object_image_data_set(icon, favicon_data);
+
+		void *target_image_data = evas_object_image_data_get(icon, EINA_TRUE);
+		memcpy(target_image_data, favicon_data, len);
+		evas_object_image_data_set(icon, target_image_data);
 	}
+
+	if (favicon_data)
+		free(favicon_data);
 
 	return icon;
 }
