@@ -46,12 +46,19 @@ private:
 #endif
 		,UNKNOWN_VIEW
 	} view_mode;
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	typedef struct _folder_info {
+		int folder_id;
+		char *folder_name;
+	} folder_info;
+#endif
 
 	Evas_Object *_create_genlist(Evas_Object *parent);
 	Evas_Object *_create_gesture_layer(Evas_Object *parent);
 	Evas_Object *_create_main_layout(Evas_Object *parent);
 	Evas_Object *_create_toolbar_layout(Evas_Object *parent);
 	Evas_Object *_create_box(Evas_Object * parent);
+	Evas_Object *_create_no_content(Evas_Object *parent, const char *text);
 #if defined(BROWSER_THUMBNAIL_VIEW)
 	Evas_Object *_create_gengrid(Evas_Object *parent);
 #endif
@@ -67,6 +74,10 @@ private:
 	view_mode _get_view_mode(void) { return m_view_mode; }
 	Eina_Bool _clear_genlist_item_data(Evas_Object *genlist, view_mode mode);
 	void _show_more_context_popup(Evas_Object *parent);
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	void _go_into_sub_folder(int folder_id, const char *folder_name);
+	Eina_Bool _go_to_upper_folder();
+#endif
 
 	static void __back_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __more_cb(void *data, Evas_Object *obj, void *event_info);
@@ -104,12 +115,17 @@ private:
 #if defined(BROWSER_THUMBNAIL_VIEW)
 	Elm_Gengrid_Item_Class m_itc_gengrid_folder;
 	Elm_Gengrid_Item_Class m_itc_gengrid_bookmark;
+	Elm_Gengrid_Item_Class m_itc_gengrid_upper_folder;
 #endif
 	std::vector<bookmark_item *> m_bookmark_list;
 	bookmark *m_bookmark;
 	view_mode m_view_mode;
-
+#if defined(BROWSER_THUMBNAIL_VIEW)
+	std::vector<folder_info *> m_path_history;
+	std::string m_path_string;
 	int m_curr_folder_id;
+#endif
+
 #if defined(BROWSER_TAG)
 	Eina_Bool _set_genlist_tag_view(Evas_Object *genlist);
 	Eina_Bool _set_genlist_tag_index_view(Evas_Object *genlist);
