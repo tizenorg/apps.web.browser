@@ -26,7 +26,7 @@ extern "C" {
 #include "browser-dlog.h"
 #include "platform-service.h"
 
-#define history_db_path browser_data_dir"/db/.browser-history.db"
+#define history_db_path "/opt/usr/dbspace/.browser-history.db"
 
 #define HISTORY_COUNT_LIMIT	1000
 

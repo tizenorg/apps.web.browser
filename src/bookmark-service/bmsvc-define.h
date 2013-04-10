@@ -18,7 +18,7 @@
 #ifndef __BMSVC_DEFINE_H_
 #define __BMSVC_DEFINE_H_
 
-#define INTERNET_BOOKMARK_DB_NAME	"/opt/usr/apps/org.tizen.browser/data/db/.browser-bookmark.db"
+#define INTERNET_BOOKMARK_DB_NAME	"/opt/usr/dbspace/.internet_bookmark.db"
 #define INTERNET_BOOKMARK_BACKUP_FILE_NAME \
 		"/opt/usr/apps/org.tizen.browser/data/db/browser_bookmark_backup"
 #define ROOT_FOLDER_ID	0
