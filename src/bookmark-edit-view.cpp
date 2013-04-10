@@ -41,6 +41,7 @@ bookmark_edit_view::bookmark_edit_view(bool tag_mode)
 :
 	m_box(NULL)
 	,m_main_layout(NULL)
+	,m_path_info_layout(NULL)
 	,m_genlist(NULL)
 	,m_titlebar_btn_select_all(NULL)
 	,m_toolbar_btn_more(NULL)
@@ -1219,6 +1220,34 @@ Evas_Object *bookmark_edit_view::_create_box(Evas_Object * parent)
 	return box;
 }
 
+void bookmark_edit_view::_set_path_info_layout(void)
+{
+	BROWSER_LOGD("");
+	if (m_path_info_layout) {
+		elm_box_unpack(m_box, m_path_info_layout);
+		evas_object_del(m_path_info_layout);
+		m_path_info_layout = NULL;
+	}
+
+	if (m_curr_folder == m_bookmark->get_root_folder_id())
+		return;
+
+	m_path_info_layout = elm_layout_add(m_box);
+	if (!m_path_info_layout) {
+		BROWSER_LOGD("elm_layout_add is failed");
+		return;
+	}
+	elm_object_focus_set(m_path_info_layout, EINA_FALSE);
+	elm_layout_theme_set(m_path_info_layout, "genlist/item", "groupindex", "default");
+	evas_object_size_hint_align_set(m_path_info_layout, EVAS_HINT_FILL, 0);
+	evas_object_size_hint_weight_set(m_path_info_layout, EVAS_HINT_EXPAND, 0);
+	//evas_object_size_hint_min_set(m_path_info_layout, 480, 76);
+	evas_object_show(m_path_info_layout);
+	elm_object_part_text_set(m_path_info_layout, "elm.text", m_path_string.c_str());
+
+	elm_box_pack_start(m_box, m_path_info_layout);
+}
+
 void bookmark_edit_view::_set_contents()
 {
 	BROWSER_LOGD("");
@@ -1255,6 +1284,7 @@ void bookmark_edit_view::_set_contents()
 		elm_genlist_reorder_mode_set(m_genlist, EINA_TRUE);
 		elm_genlist_decorate_mode_set(m_genlist, EINA_TRUE);
 		evas_object_smart_callback_add(m_genlist, "moved", __genlist_moved_cb, this);
+		_set_path_info_layout();
 		break;
 	default:
 		break;

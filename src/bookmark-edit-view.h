@@ -53,6 +53,7 @@ private:
 	Evas_Object *_create_no_content(Evas_Object *parent, const char *text);
 	Evas_Object *_create_box(Evas_Object * parent);
 	void _set_contents(void);
+	void _set_path_info_layout(void);
 	Eina_Bool _set_genlist_folder_view(Evas_Object *genlist);
 	Eina_Bool _set_genlist_by_folder(int folder_id, Evas_Object *genlist);
 	Eina_Bool _set_folder_genlist(int folder_id, Evas_Object *genlist);
@@ -97,6 +98,7 @@ private:
 
 	Evas_Object *m_box;
 	Evas_Object *m_main_layout;
+	Evas_Object *m_path_info_layout;
 	Evas_Object *m_genlist;
 	Evas_Object *m_titlebar_btn_select_all;
 	Evas_Object *m_toolbar_btn_more; // folder view

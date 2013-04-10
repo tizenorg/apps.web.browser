@@ -62,6 +62,7 @@ bookmark_view::bookmark_view(void)
 	,m_genlist(NULL)
 #if defined(BROWSER_THUMBNAIL_VIEW)
 	,m_gengrid(NULL)
+	,m_path_info_layout(NULL)
 #endif
 {
 	BROWSER_LOGD("");
@@ -485,6 +486,7 @@ void bookmark_view::_set_view_mode(view_mode mode)
 		contents = m_gengrid = _create_gengrid(m_box);
 		_set_gengrid_thumbnail_view(m_gengrid);
 		count_contents = elm_gengrid_items_count(contents);
+		_set_path_info_layout();
 		break;
 	}
 #endif
@@ -816,6 +818,33 @@ Eina_Bool bookmark_view::_go_to_upper_folder()
 	_set_view_mode(m_view_mode);
 
 	return EINA_TRUE;
+}
+
+void bookmark_view::_set_path_info_layout(void)
+{
+	BROWSER_LOGD("");
+	if (m_path_info_layout) {
+		elm_box_unpack(m_box, m_path_info_layout);
+		evas_object_del(m_path_info_layout);
+		m_path_info_layout = NULL;
+	}
+
+	if (m_curr_folder_id == m_bookmark->get_root_folder_id())
+		return;
+
+	m_path_info_layout = elm_layout_add(m_box);
+	if (!m_path_info_layout) {
+		BROWSER_LOGD("elm_layout_add is failed");
+		return;
+	}
+	elm_object_focus_set(m_path_info_layout, EINA_FALSE);
+	elm_layout_theme_set(m_path_info_layout, "genlist/item", "browser/groupindex", "default");
+	evas_object_size_hint_align_set(m_path_info_layout, EVAS_HINT_FILL, 0);
+	evas_object_size_hint_weight_set(m_path_info_layout, EVAS_HINT_EXPAND, 0);
+	evas_object_show(m_path_info_layout);
+	elm_object_part_text_set(m_path_info_layout, "elm.text", m_path_string.c_str());
+
+	elm_box_pack_start(m_box, m_path_info_layout);
 }
 #endif
 

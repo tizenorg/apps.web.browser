@@ -61,6 +61,7 @@ private:
 	Evas_Object *_create_no_content(Evas_Object *parent, const char *text);
 #if defined(BROWSER_THUMBNAIL_VIEW)
 	Evas_Object *_create_gengrid(Evas_Object *parent);
+	void _set_path_info_layout(void);
 #endif
 
 	Eina_Bool _set_genlist_folder_view(Evas_Object *genlist);
@@ -107,8 +108,8 @@ private:
 	Evas_Object *m_genlist;
 #if defined(BROWSER_THUMBNAIL_VIEW)
 	Evas_Object *m_gengrid;
+	Evas_Object *m_path_info_layout;
 #endif
-	Evas_Object *m_popup_view_by;
 
 	Elm_Genlist_Item_Class m_itc_folder;
 	Elm_Genlist_Item_Class m_itc_bookmark_folder;
