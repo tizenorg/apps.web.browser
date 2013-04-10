@@ -31,5 +31,142 @@ collections {
 			}
 		}
 	}
+
+	group { name: "browser/entrypasswordview_2button";
+	#define DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_BG_MIN 0 56
+	#define DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_TITLE_HEIGHT_MIN_MAX 62
+	#define DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_FIELD_MIN_MAX 0 66
+	   images {
+	      image: "bookmark-view/00_search_edit_field_bg.png" COMP;
+	   }
+	   parts {
+	      part { name: "base";
+		 type: SPACER;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    min: DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_BG_MIN;
+		    fixed: 1 0;
+		 }
+	      }
+	      part { name: "t_pad";
+		 type: SPACER;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    rel1.to: "base";
+		    rel2.to: "base";
+		    align: 0.0 0.0;
+		    min: 0 0;
+		    max: 0 0;
+		    fixed: 1 1;
+		 }
+	      }
+	      part { name: "top_password_padding";
+		 type: SPACER;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    min: 0 20;
+		    max: 0 20;
+		    rel1 {
+		       to_x: "base";
+		       to_y: "t_pad";
+		       relative: 0.0 1.0;
+		    }
+		    rel2 {
+		       to_x: "base";
+		       to_y: "t_pad";
+		       relative: 1.0 1.0;
+		    }
+		    align: 0.0 0.0;
+		    fixed: 1 1;
+		 }
+	      }
+	      part { name: "password_field_image";
+		 type: IMAGE;
+		 mouse_events: 0;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    min: DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_FIELD_MIN_MAX;
+		    image {
+		       normal: "bookmark-view/00_search_edit_field_bg.png";
+		       border: 9 9 9 9;
+		    }
+		    rel1 {
+		       to_x: "base";
+		       to_y: "t_pad";
+		       relative: 0.0 1.0;
+		    }
+		    rel2 {
+		       to_x: "base";
+		       to_y: "t_pad";
+		       relative: 1.0 1.0;
+		    }
+		    fixed: 1 1;
+		    align: 0.0 0.0;
+		 }
+	      }
+	      part { name: "left_swallow_padding";
+		 type: SPACER;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    min: 16 0;
+		    max: 16 0;
+		    rel1.to: "password_field_image";
+		    rel2.to: "password_field_image";
+		    align: 0.0 0.0;
+		    fixed: 1 1;
+		 }
+	      }
+	      part { name: "right_swallow_padding";
+		 type: SPACER;
+		 scale: 1;
+		 description {
+		    min: 16 0;
+		    max: 16 0;
+		    rel1.to: "password_field_image";
+		    rel2.to: "password_field_image";
+		    align: 1.0 0.0;
+		    fixed: 1 1;
+		 }
+	      }
+	      part {
+		 name: "elm.swallow.content";
+		 type: SWALLOW;
+		 scale: 1;
+		 ignore_flags: ON_HOLD;
+		 description { state: "default" 0.0;
+		    min: 0 66;
+		    rel1 {
+		       to_x: "left_swallow_padding";
+		       to_y: "password_field_image";
+		       relative : 1.0 0.0;
+		    }
+		    rel2 {
+		       to_x: "right_swallow_padding";
+		       to_y: "password_field_image";
+		       relative: 0.0 1.0;
+		    }
+		    align: 0.0 0.0;
+		    fixed: 1 1;
+		 }
+	      }
+	      part { name: "bottom_password_padding";
+		 type: SPACER;
+		 scale: 1;
+		 description { state: "default" 0.0;
+		    min: 0 0;
+		    max: 0 0;
+		    rel1 {
+		       to_y: "password_field_image";
+		       relative: 0.0 1.0;
+		    }
+		    fixed: 1 1;
+		    align: 0.0 0.0;
+		 }
+	      }
+	   }
+	#undef DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_BG_MIN
+	#undef DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_TITLE_HEIGHT_MIN_MAX
+	#undef DEMO_POPUP_ENTRYPASSWORDVIEW_2BUTTON_FIELD_MIN_MAX
+	}
 }
 

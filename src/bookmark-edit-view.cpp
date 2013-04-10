@@ -51,6 +51,9 @@ bookmark_edit_view::bookmark_edit_view(bool tag_mode)
 	,m_naviframe_item(NULL)
 	,m_count_checked_item(0)
 	,m_count_editable_item(0)
+	,m_rename_folder_popup(NULL)
+	,m_rename_folder_select_popup(NULL)
+	,m_folder_id_to_move(0)
 	,m_count_folder_item(0)
 #if defined(BROWSER_TAG)
 	,m_toolbar_btn_remove_tag(NULL)
@@ -352,6 +355,176 @@ void bookmark_edit_view::__naviframe_pop_finished_cb(
 	cp->m_browser->delete_bookmark_create_folder_view();
 	cp->m_browser->delete_bookmark_select_folder_view();
 	cp->m_browser->delete_bookmark_add_view();
+}
+
+void bookmark_edit_view::__title_entry_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	bookmark_edit_view *cp = (bookmark_edit_view *)data;
+
+	if (!cp->m_rename_folder_string.c_str()) {
+		BROWSER_LOGE("m_rename_folder_string is NULL");
+		return;
+	}
+
+	cp->m_rename_folder_string = elm_entry_entry_get(obj);
+}
+
+void bookmark_edit_view::__ok_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!data) {
+		BROWSER_LOGE("data is NULL");
+		return;
+	}
+
+	gl_cb_data *cb_data = (gl_cb_data *)data;
+	bookmark_item *item_data = (bookmark_item *)cb_data->user_data;
+	bookmark_edit_view *cp = (bookmark_edit_view *)cb_data->cp;
+	int ret = 0;
+
+	ret = m_browser->get_bookmark()->update_bookmark(item_data->get_id(),
+					cp->m_rename_folder_string.c_str(),
+					NULL,
+					item_data->get_parent_id(),
+					item_data->get_order()
+					);
+	if (ret < 0) {
+		BROWSER_LOGD("rename folder is failed");
+		return;
+	}
+
+	if (cp->m_rename_folder_popup) {
+		evas_object_del(cp->m_rename_folder_popup);
+		cp->m_rename_folder_popup = NULL;
+	}
+
+	if(cp->m_rename_folder_select_popup) {
+		evas_object_del(cp->m_rename_folder_select_popup);
+		cp->m_rename_folder_select_popup = NULL;
+	}
+
+	cp->_set_contents();
+}
+
+void bookmark_edit_view::__rename_folder_cb(void * data, Evas_Object * obj, void * event_info)
+{
+	BROWSER_LOGD("");
+	Evas_Object *popup = NULL;
+	Evas_Object *layout = NULL;
+	Evas_Object *entry;
+	Evas_Object *ok_btn;
+	Evas_Object *cancel_btn;
+
+	bookmark_edit_view *cp = (bookmark_edit_view *)data;
+	if (!data) {
+		BROWSER_LOGE("data is NULL");
+		return;
+	}
+	Elm_Object_Item *it = (Elm_Object_Item *)event_info;
+	gl_cb_data *cb_data = (gl_cb_data *)elm_object_item_data_get(it);
+	if (!cb_data) {
+		BROWSER_LOGE("cb_data is NULL");
+		return;
+	}
+
+	popup = elm_popup_add(m_window);
+	if (!popup) {
+		BROWSER_LOGE("add popup is failed");
+		return;
+	}
+	cp->m_rename_folder_popup = popup;
+	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+	layout = elm_layout_add(popup);
+	if (!layout) {
+		BROWSER_LOGE("add layout is failed");
+		return;
+	}
+	elm_layout_file_set(layout, bookmark_edit_view_edj_path, "browser/entrypasswordview_2button");
+	evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+	elm_object_part_text_set(popup, "title,text", BR_STRING_RENAME_FOLDER);
+
+	entry = elm_entry_add(layout);
+	elm_object_part_content_set(layout, "elm.swallow.content", entry);
+	elm_entry_single_line_set(entry, EINA_TRUE);
+	elm_entry_scrollable_set(entry, EINA_TRUE);
+	evas_object_smart_callback_add(entry, "changed", __title_entry_changed_cb, cp);
+	elm_object_content_set(popup, layout);
+
+	ok_btn = elm_button_add(popup);
+	if (!ok_btn) {
+		BROWSER_LOGE("add ok_btn is failed");
+		return;
+	}
+	elm_object_text_set(ok_btn, BR_STRING_OK);
+	elm_object_part_content_set(popup, "button1", ok_btn);
+	evas_object_smart_callback_add(ok_btn, "clicked", __ok_btn_clicked_cb, cb_data);
+
+	cancel_btn = elm_button_add(popup);
+	if (!cancel_btn) {
+		BROWSER_LOGE("add cancel_btn is failed");
+		return;
+	}
+	elm_object_text_set(cancel_btn, BR_STRING_CANCEL);
+	elm_object_part_content_set(popup, "button2", cancel_btn);
+	evas_object_smart_callback_add(cancel_btn, "clicked", __cancel_btn_clicked_cb, popup);
+
+	evas_object_show(popup);
+}
+
+void bookmark_edit_view::__cancel_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	Evas_Object *popup = (Evas_Object*)data;
+	evas_object_del(popup);
+}
+
+void bookmark_edit_view::__ctxpopup_rename_folder_by_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	Evas_Object *popup = NULL;
+	Evas_Object *btn = NULL;
+	Evas_Object *box = NULL;
+
+	evas_object_del(obj);
+
+	bookmark_edit_view *cp = (bookmark_edit_view *)data;
+	if (!cp) {
+		BROWSER_LOGE("data is NULL");
+		return;
+	}
+
+	popup = elm_popup_add(m_window);
+	if (!popup) {
+		BROWSER_LOGE("add popup is failed");
+		return;
+	}
+	cp->m_rename_folder_select_popup = popup;
+	elm_object_style_set(popup,"liststyle");
+	elm_object_part_text_set(popup, "title,text", BR_STRING_RENAME_FOLDER);
+	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+	btn = elm_button_add(popup);
+	if (!btn) {
+		BROWSER_LOGE("add btn is failed");
+		return;
+	}
+	elm_object_text_set(btn, BR_STRING_CANCEL);
+	elm_object_part_content_set(popup, "button1", btn);
+	evas_object_smart_callback_add(btn, "clicked", __cancel_btn_clicked_cb, popup);
+
+	Evas_Object *genlist = elm_genlist_add(popup);
+	if (!genlist) {
+		BROWSER_LOGE("add genlist is failed");
+		return;
+	}
+	cp->_clear_genlist_item_data(genlist, cp->m_view_mode);
+	elm_genlist_clear(genlist);
+	cp->_set_folder_genlist(cp->m_curr_folder, genlist);
+	elm_object_content_set(popup, genlist);
+	evas_object_show(popup);
 }
 
 void bookmark_edit_view::__ctxpopup_add_new_folder_by_cb(void *data, Evas_Object *obj, void *event_info)
@@ -757,7 +930,8 @@ void bookmark_edit_view::_show_more_context_popup(Evas_Object *parent)
 	evas_object_size_hint_weight_set(more_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_smart_callback_add(more_popup, "dismissed", __ctxpopup_dismissed_cb, NULL);
 
-	elm_ctxpopup_item_append(more_popup, BR_STRING_ADD_NEW_FOLDER, NULL, __ctxpopup_add_new_folder_by_cb, this);
+	elm_ctxpopup_item_append(more_popup, BR_STRING_RENAME_FOLDER, NULL, __ctxpopup_rename_folder_by_cb, this);
+	elm_ctxpopup_item_append(more_popup, BR_STRING_CREATE_FOLDER, NULL, __ctxpopup_add_new_folder_by_cb, this);
 
 	int x, y, w, h;
 	evas_object_geometry_get(parent, &x, &y, &w, &h);
@@ -938,6 +1112,50 @@ Eina_Bool bookmark_edit_view::_set_genlist_by_folder(int folder_id,
 		else
 			elm_object_item_disabled_set(item_data->it, EINA_TRUE);
 #endif
+	}
+	m_bookmark->destroy_list(bookmark_list);
+	return EINA_TRUE;
+}
+
+Eina_Bool bookmark_edit_view::_set_folder_genlist(int folder_id,
+							Evas_Object *genlist)
+{
+	BROWSER_LOGD("");
+	std::vector<bookmark_item *> bookmark_list;
+	Eina_Bool ret;
+
+	ret = m_bookmark->get_list_by_folder(folder_id, bookmark_list);
+	if (ret == EINA_FALSE) {
+		BROWSER_LOGE("get_list_by_folder is failed(folder id:%d)",folder_id);
+		return EINA_FALSE;
+	}
+
+	for(unsigned int j = 0 ; j < bookmark_list.size() ; j++) {
+		BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
+		gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
+		if (!item_data) {
+			BROWSER_LOGE("item_data is NULL");
+			return EINA_FALSE;
+		}
+		memset(item_data, 0x00, sizeof(gl_cb_data));
+
+		bookmark_item *bookmark_item_data = new bookmark_item;
+		*bookmark_item_data = *bookmark_list[j];
+		BROWSER_LOGD("Title[%d] is %s(id: %d)\n", j,
+				bookmark_list[j]->get_title(),
+				bookmark_item_data->get_id());
+		item_data->cp = this;
+		item_data->user_data = (void *)bookmark_item_data;
+
+		if (bookmark_item_data->is_folder()) {
+			if (bookmark_item_data->is_editable()) {
+				BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
+					j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
+				item_data->it = elm_genlist_item_append(genlist,
+					&m_itc_folder, item_data, NULL,
+					ELM_GENLIST_ITEM_TREE, __rename_folder_cb, this);
+			}
+		}
 	}
 	m_bookmark->destroy_list(bookmark_list);
 	return EINA_TRUE;
