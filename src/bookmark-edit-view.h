@@ -74,6 +74,7 @@ private:
 	static Evas_Object *__genlist_get_content_cb(void *data, Evas_Object *obj, const char *part);
 	static void __genlist_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __genlist_moved_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __genlist_realized_cb(void *data, Evas_Object *obj, void *event_info);
 
 	static void __chk_changed_cb(void *data, Evas_Object *obj, void *event_info);
 	static void __move_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info);

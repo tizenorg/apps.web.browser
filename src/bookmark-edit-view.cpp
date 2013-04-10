@@ -245,6 +245,32 @@ void bookmark_edit_view::__genlist_moved_cb(void *data, Evas_Object *obj, void *
 		cp->_reorder_bookmark_items(item_data->get_order(), EINA_FALSE);
 }
 
+void bookmark_edit_view::__genlist_realized_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	BROWSER_LOGD("");
+	if (!event_info)
+	{
+		BROWSER_LOGE("event_info is NULL");
+		return;
+	}
+	Elm_Object_Item *item = (Elm_Object_Item*)event_info;
+
+	Evas_Object *btn1 = NULL;
+	Evas_Object *btn2 = NULL;
+	Eina_List *items = NULL;
+
+	btn1 = elm_object_item_part_content_get(item, "elm.edit.icon.1");
+	if (btn1)
+		items = eina_list_append(items, btn1);
+
+	btn2 = elm_object_item_part_content_get(item, "elm.edit.icon.2");
+	if (btn2)
+		items = eina_list_append(items, btn2);
+
+	if (items)
+		elm_object_item_access_order_set(item, items);
+}
+
 void bookmark_edit_view::__chk_changed_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	BROWSER_LOGD("");
@@ -1174,6 +1200,8 @@ Evas_Object *bookmark_edit_view::_create_genlist(Evas_Object *parent)
 	}
 	evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	evas_object_smart_callback_add(genlist, "realized", __genlist_realized_cb, NULL);
 
 	return genlist;
 }
