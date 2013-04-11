@@ -411,7 +411,7 @@ void uri_bar::__print_cb(void *data, Evas_Object *obj, void *event_info)
 	service_set_package(service, print_pkg_name);
 
 	service_set_uri(service, pdf_file_path);
-	service_add_extra_data(service, print_files_type, "WEB");
+	service_add_extra_data(service, print_files_type, "DOC");
 	service_send_launch_request(service, NULL, NULL);
 	service_destroy(service);
 
