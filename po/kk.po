@@ -706,3 +706,33 @@ msgstr "Буферге көшіру"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Авто жаңарту"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Кілтсөз"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Шрифт өлшемі"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Ірі"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Үлкен"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Ұсақ"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Қалыпты"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Шолу кезінде беттер ашу"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Жаңадан ашылған беттерді шолып көрсету"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Қауіпсіздік ескертуі"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Осы сайтқа арналған қауіпсіздік куәлігінде қателер пайда болады"
+

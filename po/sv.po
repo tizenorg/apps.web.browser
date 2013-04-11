@@ -706,3 +706,33 @@ msgstr "Kopiera till Urklipp"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Uppdatera automatiskt"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Lösenord"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Teckenstorlek"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Mycket stor"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Liten"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Övers. över öppna sidor"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Visa översikt över sidor som nyss öppnats"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Säkerhetsvarning"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Det är problem med säkerhetscertifikatet för denna plats"
+

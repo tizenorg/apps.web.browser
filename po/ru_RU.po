@@ -706,3 +706,33 @@ msgstr "Копировать в буфер обмена"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Автообновление"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Пароль"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Размер шрифта"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Огромный"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Большой"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Маленький"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Обычный"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Отк. стр. в реж. обзора"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Открывать страницы в мелком масштабе для ознакомления"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Предупреждение системы безопасности"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Проблемы с сертификатом безопасности этого сайта"
+

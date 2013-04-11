@@ -706,3 +706,33 @@ msgstr "Panoya kopyala"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Otomatik yenileme"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Şifre"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Yazı tipi boyutu"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Çok büyük"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Büyük"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Küçük"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Sayflrı genel bakşta aç"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Yeni açılan sayfaları görünümde göster"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Güvenlik uyarısı"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Bu siteyle ilgili güvenlik sertifikasında sorunlar var"
+

@@ -706,3 +706,33 @@ msgstr "ასლის შენახვა ბუფერულ მეხს
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "ავტომატური განახლება"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "პაროლი"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "შრიფტის ზომა"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "ძალიან დიდი"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "დიდი"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "პატარა"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "ნორმალური"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "გვერდების გადახედვა"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "ახლად გახსნილი გვერდების მიმოხილვითი ჩვენება"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "უსაფრთხოების გაფრთხილება"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "ამ საიტს აქვს უსაფრთხოების სერთიფიკატთან დაკავშირებული პრობლემა"
+

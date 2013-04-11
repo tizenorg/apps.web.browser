@@ -706,3 +706,33 @@ msgstr "نسخ إلى الحافظة"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "تحديث تلقائي"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "كلمة المرور"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "حجم الخط"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "ضخم"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "كبير"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "صغير"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "عادي"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "فتح الصفحات للمعاينة"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "عرض نظرة عامة للصفحات التي تم فتحها حديثا"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "تحذير الأمان"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "توجد مشاكل في شهادة الأمان الخاصة بهذا الموقع"
+

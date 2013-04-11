@@ -706,3 +706,33 @@ msgstr "Kopiraj u međuspremnik"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatsko aktualiziranje"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Šifra"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Veličina slova"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Jako veliko"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Velika"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Mala"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normalna"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Otvori stranice"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Prikaz posljednjih stranica"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Sigurnosno upozorenje"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Greška sigurnosne potvrde za ovu stranicu"
+

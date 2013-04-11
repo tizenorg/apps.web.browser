@@ -706,3 +706,33 @@ msgstr "Копирай в клипборда"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Автоматично опресняване"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Парола"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Размер на шрифта"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Много голям"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Едър"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Малък"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Нормален"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Отв.стр.в предв.преглед"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Показвай обзор на новоотворените страници"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Предупреждение за защита"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Има проблеми със сертификата за защита за този сайт"
+

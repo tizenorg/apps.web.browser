@@ -706,3 +706,33 @@ msgstr "클립보드에 복사"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "자동 새로고침"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "비밀번호"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "글자 크기"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "아주 크게"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "크게"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "작게"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "보통"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "페이지 전체보기"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "전체 보기로 페이지를 엽니다"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "보안 경고"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "이 웹사이트의 보안 인증서에 문제가 있습니다"
+

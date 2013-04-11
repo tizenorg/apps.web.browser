@@ -706,3 +706,33 @@ msgstr "Αντιγραφή στο πρόχειρο"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Αυτόματη ανανέωση"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Κωδικός πρόσβασης"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Μέγεθος γραμματοσειράς"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Τεράστιο"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Μεγάλο"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Μικρό"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Κανονική"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Άνοιγμα σελ.σε επισκόπ."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Εμφάνιση προεπισκόπησης των σελίδων που άνοιξαν πρόσφατα"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Προειδοποίηση ασφαλείας"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Υπάρχουν προβλήματα με το πιστοποιητικό ασφαλείας αυτής της τοποθεσίας"
+

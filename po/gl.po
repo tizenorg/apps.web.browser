@@ -638,7 +638,7 @@ msgid "IDS_BR_BODY_OLDER"
 msgstr "Máis antigo"
 
 msgid "IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE"
-msgstr "Pecha todas as ventás abertas e diríxete á páxina de inicio"
+msgstr "Pecha todas as ventás abertas e vai á páxina de inicio"
 
 msgid "IDS_BR_HEADER_CLEAR_PERSONALISED_DATA"
 msgstr "Borrar datos personalizados"
@@ -705,4 +705,34 @@ msgstr "Copiar no portapapeis"
 
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Actualización automática"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Contrasinal"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Tamaño da fonte"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Enorme"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Pequeno"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Abrir páx. en vis. xer."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Mostrar unha visión xeral das páxinas que se acaban de abrir"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Advertencia de seguridade"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Existen problemas co certificado de seguridade deste sitio"
 

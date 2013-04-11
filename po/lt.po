@@ -706,3 +706,33 @@ msgstr "Kopijuoti į iškarpinę"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatinis atnaujinimas"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Slaptažodis"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Šrifto dydis"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Milžiniškas"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Didelis"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Mažas"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Įprastas"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Atidaryti psl. apžvalg."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Rodyti naujai atidarytų puslapių apžvalgą"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Saugos įspėjimas"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Iškilo problemų dėl šios svetainės apsaugos sertifikato"
+

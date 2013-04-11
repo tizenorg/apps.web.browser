@@ -706,3 +706,33 @@ msgstr "Kopēt starpliktuvē"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automātiskā atsvaidzināšana"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parole"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Fonta lielums"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Ļoti liels"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Liels"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Mazs"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Parasta"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Atvērt lapas pārskatā"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Rādīt pārskatu par tikko atvērtajām lapām"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Drošības brīdinājums"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Šai vietnei ir radušās problēmas ar drošības sertifikātu"
+

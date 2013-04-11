@@ -706,3 +706,33 @@ msgstr "Mübadilə buferinə köçür"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Avtomatik yeniləmə"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Şifrə"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Şriftin ölçüsü"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Böyük"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Geniş"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Kiçik"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Səhifələri icmalda aç"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Yeni açılmış pəncərələrin icmalını göstər"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Təhlükəsizliyə dair xəbərdarlıq"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Bu saytın təhlükəsizlik sertifikatı ilə bağlı problemlər var"
+

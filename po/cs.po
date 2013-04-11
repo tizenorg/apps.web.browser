@@ -706,3 +706,33 @@ msgstr "Kopírovat do schránky"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatická aktualizace"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Heslo"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Velikost písma"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Velmi velké"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Velké"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Malé"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normální"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Ot. stránky v přehledu"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Zobrazit přehled nově otevřených stránek"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Upozornění zabezpečení"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Došlo k potížím s certifikátem zabezpečení pro tento server"
+

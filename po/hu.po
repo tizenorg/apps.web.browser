@@ -706,3 +706,33 @@ msgstr "Másolás a vágólapra"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatikus frissítés"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Jelszó"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Betűméret"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Nagyon nagy"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Nagy"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Kicsi"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normál"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Új oldalak áttekintése"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Újonnan megnyitott oldalak áttekintésének megjelenítése"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Biztonsági figyelmeztetés"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Probléma merült fel a webhely biztonsági tanúsítványával kapcsolatban"
+
