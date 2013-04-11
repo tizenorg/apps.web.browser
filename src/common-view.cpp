@@ -22,7 +22,7 @@
 #include <app_manager.h>
 #include <eina_list.h>
 #include <fcntl.h>
-#include <string>
+
 #include <ui-gadget.h>
 #include <vconf.h>
 #include <vconf-internal-nfc-keys.h>
@@ -721,6 +721,39 @@ void common_view::show_delete_popup(const char *title, const char *msg, const ch
 		evas_object_show(button2);
 
 		evas_object_data_set(popup, CALLBACK_DATA_2, cb2);
+	}
+}
+
+void common_view::parse_uri(const std::string &uri, const std::string &delimiter1, const std::string &delimiter2, std::map<std::string, std::string> &map, bool includeEmpties)
+{
+	std::string parameter = uri;
+	std::string sub_para;
+	std::string item;
+	int pos = parameter.find(delimiter1);
+
+	while (pos != std::string::npos || parameter.length() > 0) {
+		if (pos == std::string::npos) {
+			pos = parameter.length();
+			parameter = parameter + delimiter1;
+		}
+
+		sub_para = parameter.substr(pos);
+		item = parameter.substr(0, parameter.length() - sub_para.length());
+		if (includeEmpties || (!item.empty())) {
+			if (item.find(delimiter2) != std::string::npos) {
+				std::string value_string = item.substr(item.find(delimiter2) + delimiter2.length());
+				std::string key_string = item.substr(0, item.length() - value_string.length() - delimiter2.length());
+
+				if (key_string.length() && value_string.length()) {
+					std::transform(key_string.begin(), key_string.end(), key_string.begin(), (int(*)(int))std::tolower);
+					std::pair<std::string,std::string> p1= std::pair<std::string,std::string>(key_string, value_string);
+					map.insert(p1);
+				}
+			}
+		}
+
+		parameter = std::string(sub_para.c_str() + delimiter1.length());
+		pos = parameter.find(delimiter1);
 	}
 }
 
@@ -1480,8 +1513,86 @@ Eina_Bool common_view::_handle_mailto_scheme(const char *uri)
 		return EINA_FALSE;
 	}
 
-	if (service_set_uri(service_handle, uri) < 0) {
-		BROWSER_LOGE("Fail to service_set_uri");
+	std::string parameter = std::string(uri);
+	std::string hfields;
+	std::map<std::string, std::string> results;
+
+	if (parameter.find("?") != std::string::npos) {
+		hfields = parameter.substr(parameter.find("?"));
+		parameter = parameter.substr(0, parameter.length() - hfields.length());
+	}
+
+	if (!hfields.empty()) {
+		hfields = std::string(hfields.c_str() + strlen("?"));
+		parse_uri(hfields, "&", "=", results, false);
+		std::map<std::string, std::string>::iterator it;
+
+		it = results.find("cc");
+		if (it != results.end()) {
+			if (service_add_extra_data(service_handle, SERVICE_DATA_CC, it->second.c_str()) < 0) {
+				BROWSER_LOGE("Fail to add extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+
+		it = results.find("bcc");
+		if (it != results.end()) {
+			if (service_add_extra_data(service_handle, SERVICE_DATA_BCC, it->second.c_str()) < 0) {
+				BROWSER_LOGE("Fail to add extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+
+		it = results.find("subject");
+		if (it != results.end()) {
+			std::string subject = it->second;
+			char *temp = g_uri_unescape_string(subject.c_str(), NULL);
+			subject = temp;
+			free(temp);
+
+			if (service_add_extra_data(service_handle, SERVICE_DATA_SUBJECT, subject.c_str()) < 0) {
+				BROWSER_LOGE("Fail to add extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+
+		it = results.find("body");
+		if (it != results.end()) {
+			std::string text = it->second;
+			char *temp = g_uri_unescape_string(text.c_str(), NULL);
+			text = temp;
+			free(temp);
+			if (service_add_extra_data(service_handle, SERVICE_DATA_TEXT, text.c_str()) < 0) {
+				BROWSER_LOGE("Fail to add extra data");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+
+		it = results.find("attachment");
+		if (it != results.end()) {
+			if (service_set_uri(service_handle, it->second.c_str()) < 0) {
+				BROWSER_LOGE("Fail to service_set_uri");
+				service_destroy(service_handle);
+				return EINA_FALSE;
+			}
+		}
+	}
+
+	std::string to = std::string(parameter.c_str() + strlen(mailto_scheme));
+	if (!to.empty()) {
+		if (service_add_extra_data(service_handle, SERVICE_DATA_TO, to.c_str()) < 0) {
+			BROWSER_LOGE("Fail to set extra data");
+			service_destroy(service_handle);
+			return EINA_FALSE;
+		}
+	}
+
+	if (service_set_app_id(service_handle, sec_email_app) < 0) {
+		BROWSER_LOGE("Fail to service_set_app_id");
 		service_destroy(service_handle);
 		return EINA_FALSE;
 	}
