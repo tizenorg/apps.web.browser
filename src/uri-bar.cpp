@@ -815,7 +815,7 @@ Evas_Object *uri_bar::_create_main_layout(Evas_Object *parent)
 		return NULL;
 	}
 	elm_object_style_set(m_multi_window_button, "browser/toolbar_multi_window");
-	evas_object_smart_callback_add(m_multi_window_button, "clicked", __multi_window_clicked_cb, NULL);
+	evas_object_smart_callback_add(m_multi_window_button, "clicked", __multi_window_clicked_cb, this);
 	elm_object_part_content_set(layout, "elm.swallow.multi_window_button", m_multi_window_button);
 
 	m_forward_button = elm_button_add(layout);
