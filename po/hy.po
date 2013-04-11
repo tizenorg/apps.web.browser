@@ -706,3 +706,33 @@ msgstr "Պատճենել փոխանակման բունկերի մեջ"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Ինքնանորացում"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Գաղտնաբառ"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Տառաչափ"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Խոշոր"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Մեծ"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Փոքր"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Նորմալ"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Էջ. բացել արագ դիտ. մեջ"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Ցույց տալ նոր բացված էջերի արագ դիտումը"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Անվտանգության զգուշացում"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Այս կայքն ունի անվտանգության վկայագրերի խնդիր"
+

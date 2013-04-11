@@ -706,3 +706,33 @@ msgstr "Copiere în clipboard"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Reîmprospătare automată"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parolă"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Dimensiune font"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Foarte mare"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Mare"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Mic"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Desc. pg. în prez. gen."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Afişaţi prezentarea generală a paginilor recent deschise"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Avertizare de securitate"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Au apărut probleme privind certificatul de securitate pentru acest site"
+

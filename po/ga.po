@@ -706,3 +706,33 @@ msgstr "Cóipeáil chuig an ngearrthaisce"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Uath-athnuaigh"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Pasfhocal"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Méid an chló"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Ollmhór"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Mór"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Beag"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normálta"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Oscail i bhforbhreathnú"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Taispeáin forbhreathnú ar leathanaigh nua-oscailte"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Rabhadh slándála"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Tá fadhbanna leis an deimhniú slándála don láithreán seo"
+

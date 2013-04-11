@@ -706,3 +706,33 @@ msgstr "Kopiraj u privremenu memoriju"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatsko osvežavanje"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Šifra"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Veličina fonta"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Ogroman"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Velika"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Mala"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normalan"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Otvori str. u pregledu"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Prikaži pregled novootvorenih strana"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Bezbednosno upozorenje"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Postoje problemi sa bezbednosnim sertifikatom za ovaj sajt"
+

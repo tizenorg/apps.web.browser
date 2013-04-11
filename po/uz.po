@@ -706,3 +706,33 @@ msgstr "Buferga nusxa olish"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Avtomatik yangilash"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Parol"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Shrift o‘lchami"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Ulkan"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Katta"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Kichik"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Sah. ko‘r/ch. orq. och."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Yangi ochilgan sahifalarning umumiy ko‘rinishini ko‘rsatish"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Xavfsizlik ogohlantirishi"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Ushbu sayt sertifikati bilan bog‘liq muammolar mavjud"
+

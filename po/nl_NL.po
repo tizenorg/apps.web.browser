@@ -706,3 +706,33 @@ msgstr "Kopiëren naar klembord"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Autom. vernieuwen"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Wachtwoord"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Tekstgrootte"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Extra groot"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Groot"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Klein"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normaal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Open pag. in overzicht"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Overzicht weergeven van onlangs geopende pagina's"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Beveiligingswaarschuwing"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Er zijn problemen met het beveiligingscertificaat voor deze site"
+

@@ -706,3 +706,33 @@ msgstr "In Zwischenablage kopieren"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Autom. Aktualisierung"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Passwort"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Schriftgröße"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Sehr groß"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Groß"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Klein"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Seitenübersicht öffnen"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Übersicht der neu geöffneten Seiten anzeigen"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Sicherheitswarnung"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Probleme mit dem Sicherheitszertifikat für diese Site"
+

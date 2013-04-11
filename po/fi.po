@@ -706,3 +706,33 @@ msgstr "Kopioi leikepöydälle"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automaattinen päivitys"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Salasana"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Kirjasinkoko"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Erittäin suuri"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Iso"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Pieni"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normaali"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Avaa sivut yhteenvetona"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Näytä juuri avattujen sivujen yleiskatsaus"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Suojausvaroitus"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Sivuston suojausvarmenteen kanssa on ongelmia"
+

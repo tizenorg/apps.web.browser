@@ -706,3 +706,33 @@ msgstr "Copiar para área de transferência"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Atualizar automaticamente"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Senha"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Tamanho de fonte"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Enorme"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Pequeno"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Abrir págs visão geral"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Mostrar visão geral das páginas abertas recentemente"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Aviso de segurança"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Existem problemas com o certificado de segurança para este site"
+

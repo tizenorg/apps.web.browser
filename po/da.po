@@ -706,3 +706,33 @@ msgstr "Kopiér til udklipsholder"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatisk opdatering"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Adgangskode"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Skriftstørrelse"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Meget stor"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Lille"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Åbn sider i oversigt"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Vis oversigt over netop åbnede sider"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Sikkerhedsadvarsel"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Der er problemer med sikkerhedscertifikatet for dette websted"
+

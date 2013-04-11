@@ -706,3 +706,33 @@ msgstr "Kopiatu arbelera"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Freskatu automatikoki"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Pasahitza"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Letraren tamaina"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Erraldoia"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Handia"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Txikia"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Arrunta"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Ireki orriak ik. orok."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Erakutsi orri ireki berrien ikuspegi orokorra"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Segurtasun abisua"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Arazoak daude gune honen segurtasun ziurtagiriarekin"
+

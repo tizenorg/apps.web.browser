@@ -706,3 +706,33 @@ msgstr "複製到剪貼板"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "自動重新整理"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "密碼"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "字體大小"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "巨大"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "大"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "小"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "正常"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "在概覽中開啟頁面"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "顯示新開啟頁面的概覽"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "安全警告"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "此網站的安全性證書存在問題"
+

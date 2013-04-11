@@ -706,3 +706,33 @@ msgstr "Copier dans le presse-papier"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Actualisation automatique"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Mot de passe"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Taille de police"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Immense"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Petite"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normale"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Ouv. pages ds vue ens."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Afficher une vue d'ensemble des pages récemment ouvertes"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Avertissement de sécurité"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Problèmes avec le certificat de sécurité de ce site"
+

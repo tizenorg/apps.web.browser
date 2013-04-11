@@ -706,3 +706,33 @@ msgstr "复制至剪贴板"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "自动刷新"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "密码"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "字体大小"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "超大"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "大"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "小"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "正常"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "在综述中打开页面"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "显示新打开页面的概况"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "安全警告"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "此站点的安全证书存在问题"
+

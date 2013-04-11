@@ -506,7 +506,7 @@ msgid "IDS_BR_OPT_RELOAD"
 msgstr "Recargar"
 
 msgid "IDS_BR_OPT_STOP"
-msgstr "Detener"
+msgstr "Parar"
 
 msgid "IDS_BR_OPT_DRAG"
 msgstr "Arrastrar"
@@ -705,4 +705,34 @@ msgstr "Copiar en portapapeles"
 
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Actualiz autom"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Contraseña"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Tamaño de fuente"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Enorme"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Pequeño"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Abrir páginas en vista general"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Mostrar vista general de últimas páginas abiertas"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Advertencia de seguridad"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Hay problemas con el certificado de seguridad de este sitio"
 

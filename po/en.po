@@ -706,3 +706,33 @@ msgstr "Copy to clipboard"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Auto refresh"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Password"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Font size"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Huge"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Large"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Small"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Open pages in overview"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Show overview of newly opened pages"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Security warning"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "There are problems with the security certificate for this site"
+

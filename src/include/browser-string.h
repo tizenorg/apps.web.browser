@@ -83,7 +83,8 @@
 #define BR_STRING_CLOSE_ALL             _("IDS_BR_OPT_CLOSE_ALL")
 #define BR_STRING_NO_ITEMS              _("IDS_BR_BODY_NO_ITEMS")
 #define BR_STRING_NEW_WINDOW            _("IDS_BR_OPT_NEW_WINDOW")
-#define BR_STRING_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE                _("IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE") //request
+#define BR_STRING_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE                _("IDS_BR_POP_CLOSE_ALL_OPENED_WINDOWS_AND_GO_TO_THE_HOMEPAGE")
+#define BR_STRING_SECURITY_WARNING_MESSAGE	_("IDS_BR_HEADER_SECURITY_WARNING")
 /*************************************************************************************************************/
 
 
@@ -323,7 +324,6 @@
 #define BR_STRING_SYNCED_TABS              _("Synced tabs")//registring
 #define BR_STRING_KEEP_IT              _("Keep it")//registring
 #define BR_STRING_CERTI_MESSAGE        _("There are problems with the secuirty certificate for this site.")//registring
-#define BR_STRING_SECURITY_WARNING_MESSAGE	_("Security warning") //exist It will be adjust later
 #define BR_STRING_FAILED_TO_GET_WEB_NOTI_ICON _("Failed to get web notification icon")
 /*************************************************************************************************************/
 

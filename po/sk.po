@@ -706,3 +706,33 @@ msgstr "Kopírovať do schránky"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatické obnovenie"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Heslo"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Veľkosť písma"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Veľmi veľké"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Veľké"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Malé"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normál."
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Otvoriť str. v prehľade"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Zobraziť prehľad novo otvorených stránok"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Bezpečnostné upozornenie"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Vyskytli sa problémy s bezpečnostným certifikátom pre túto lokalitu"
+

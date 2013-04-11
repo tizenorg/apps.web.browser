@@ -706,3 +706,33 @@ msgstr "Copia negli appunti"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Aggiornamento automatico"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Password"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Dimensioni carattere"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Molto grande"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Grande"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Piccolo"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normale"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Apri pag. in panoramica"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Mostra panoramica delle pagine appena aperte"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Avviso di sicurezza"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Problemi con il certificato di sicurezza di questo sito"
+

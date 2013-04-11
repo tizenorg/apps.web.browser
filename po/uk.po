@@ -706,3 +706,33 @@ msgstr "Копіювати в буфер обміну"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Автоматичне оновлення"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Пароль"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Розмір шрифту"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Величезний"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Великий"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Малий"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Звичайний"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Відкр. огляд сторінки"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Показати огляд нових відкритих сторінок"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Попередження системи безпеки"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Проблеми із сертифікатом безпеки для цього сайту"
+

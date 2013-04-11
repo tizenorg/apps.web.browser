@@ -341,7 +341,7 @@ msgid "IDS_BR_BODY_REMEMBER_FORM_DATA"
 msgstr "Remember form data"
 
 msgid "IDS_BR_BODY_ENABLE_LOCATION"
-msgstr "Enable location"
+msgstr "Turn on location"
 
 msgid "IDS_BR_BODY_CLEAR_LOCATION_ACCESS"
 msgstr "Clear location access"
@@ -416,7 +416,7 @@ msgid "IDS_BR_POP_FAIL"
 msgstr "Failed"
 
 msgid "IDS_BR_POP_SAVED"
-msgstr "Saved"
+msgstr "Saved."
 
 msgid "IDS_BR_BODY_ENTER_TITLE"
 msgstr "Enter title"
@@ -437,7 +437,7 @@ msgid "IDS_BR_BODY_DESTINATIONS_AUTHENTICATION_REQUIRED"
 msgstr "Authentication required"
 
 msgid "IDS_BR_BODY_AUTHUSERNAME"
-msgstr "User name"
+msgstr "Username"
 
 msgid "IDS_BR_BODY_AUTHPASSWORD"
 msgstr "Password"
@@ -446,7 +446,7 @@ msgid "IDS_BR_POP_NEVER_SHOW_AGAIN"
 msgstr "Never show again"
 
 msgid "IDS_BR_POP_MOBILE_DATA_DISABLED_CONNECT_USING_WI_FI_NETWORK_OR_ENABLE_MOBILE_DATA"
-msgstr "Mobile data disabled. Connect using a Wi-Fi network, or enable mobile data."
+msgstr "Mobile data turned off. Connect using a Wi-Fi network, or turn on mobile data."
 
 msgid "IDS_BR_POP_UNABLE_TO_ADD_BOOKMARK_MAXIMUM_NUMBER_OF_BOOKMARKS_REACHED"
 msgstr "Unable to add bookmark. Maximum number of bookmarks reached."
@@ -705,4 +705,34 @@ msgstr "Copy to clipboard"
 
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Auto refresh"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Password"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Font size"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Huge"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Large"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Small"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Open pages in overview"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Show overview of newly opened pages"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Security warning"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "There are problems with the security certificate for this site"
 

@@ -704,5 +704,35 @@ msgid "IDS_BR_OPT_COPY_TO_CLIPBOARD"
 msgstr "Kopier til utklippstavle"
 
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
-msgstr "Autooppdatering"
+msgstr "Automatisk oppdatering"
+
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Passord"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Skriftstørrelse"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Veldig stor"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Stor"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Liten"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normal"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Åpne sider i oversikt"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Vis oversikt over nylig åpnede sider"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Sikkerhetsadvarsel"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Det er problemer med sikkerhetssertifikatet for dette området"
 

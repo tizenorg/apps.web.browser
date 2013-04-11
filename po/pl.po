@@ -706,3 +706,33 @@ msgstr "Kopiuj do schowka"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Automatyczne odświeżanie"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Hasło"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Rozmiar czcionki"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Bardzo duży"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Duża"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Pomniejsz"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Normalny"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Otw. str. w tr. przegl."
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Pokaż przegląd nowo otwartych stron"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Ostrzeżenie zabezpieczeń"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Wystąpiły problemy z certyfikatem zabezpieczeń dla tej witryny"
+

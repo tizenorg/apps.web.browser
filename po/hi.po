@@ -706,3 +706,33 @@ msgstr "क्लिपबोर्ड में कॉपी करें"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "स्वतः रीफ्रेश करना"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "पासवर्ड"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "फॉन्ट आकार"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "बहुत बड़ा"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "बड़ा"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "छोटा"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "सामान्य"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "ओवरव्‍यू में पृष्ठ खोले"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "नए खुले हुए पेजों का ओवरव्‍यू दिखाएँ"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "सुरक्षा चेतावनी"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "इस साईट के सुरक्षा प्रमाणपत्र के साथ समस्‍याएँ है"
+

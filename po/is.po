@@ -706,3 +706,33 @@ msgstr "Afrita á klemmuspjald"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Sjálfvirk uppfærsla"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Aðgangsorð"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Leturstærð"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Mjög stórt"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Stórt"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Lítið"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Venjulegt"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Opna síður í yfirliti"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Sýna yfirlit yfir nýlega opnaðar síður"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Öryggisviðvörun"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Það komu upp vandamál með öryggisvottorðið fyrir þetta svæði"
+

@@ -706,3 +706,33 @@ msgstr "Копирај во посредната меморија"
 msgid "IDS_BR_HEADER_AUTO_REFRESH"
 msgstr "Автоматско освежување"
 
+msgid "IDS_BR_BODY_PASSWORD"
+msgstr "Лозинка"
+
+msgid "IDS_BR_BODY_FONT_SIZE"
+msgstr "Големина на букви"
+
+msgid "IDS_BR_OPT_HUGE"
+msgstr "Огромен"
+
+msgid "IDS_BR_BODY_LARGE"
+msgstr "Голема"
+
+msgid "IDS_BR_BODY_SMALL"
+msgstr "Мала"
+
+msgid "IDS_BR_BODY_NORMAL"
+msgstr "Нормално"
+
+msgid "IDS_BR_BODY_OPEN_PAGES_IN_OVERVIEW_ABB"
+msgstr "Отв. стр. во преглед"
+
+msgid "IDS_BR_BODY_SHOW_OVERVIEW_OF_NEWLY_OPENED_PAGES"
+msgstr "Прикажи преглед на новоотворените страници"
+
+msgid "IDS_BR_HEADER_SECURITY_WARNING"
+msgstr "Безбедносно предупредување"
+
+msgid "IDS_BR_BODY_SECURITY_CERTIFICATE_PROBLEM_MSG"
+msgstr "Има проблеми со безбедносниот сертификат на сајтот"
+
