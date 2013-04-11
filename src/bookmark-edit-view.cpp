@@ -499,6 +499,8 @@ void bookmark_edit_view::__rename_folder_cb(void * data, Evas_Object * obj, void
 	evas_object_smart_callback_add(cancel_btn, "clicked", __cancel_btn_clicked_cb, popup);
 
 	evas_object_show(popup);
+
+	elm_genlist_item_selected_set(it, EINA_FALSE);
 }
 
 void bookmark_edit_view::__cancel_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
