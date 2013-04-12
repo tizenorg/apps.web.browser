@@ -31,6 +31,7 @@
 #include "custom-content-handler.h"
 #include "custom-protocol-handler.h"
 #include "download-manager.h"
+#include "find-on-page.h"
 #include "history.h"
 #include "html5-feature-manager.h"
 #include "multiwindow-view.h"
@@ -242,6 +243,9 @@ webview::~webview(void)
 			eina_stringshare_del(cb->event);
 		free(cb);
 	}
+
+	if (m_browser->get_browser_view()->get_find_on_page())
+		m_browser->get_browser_view()->get_find_on_page()->set_webview(NULL);
 
 	eina_stringshare_del(m_uri);
 	eina_stringshare_del(m_title);
