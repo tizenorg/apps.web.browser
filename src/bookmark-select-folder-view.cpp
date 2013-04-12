@@ -248,7 +248,6 @@ Eina_Bool bookmark_select_folder_view::_set_genlist_folder_tree(Evas_Object *gen
 
 	_clear_genlist_item_data(genlist);
 	elm_genlist_clear(genlist);
-	elm_object_style_set(genlist, "handler");
 
 	m_itc_folder = elm_genlist_item_class_new();
 	m_itc_folder->item_style = "1text.1icon.2";
