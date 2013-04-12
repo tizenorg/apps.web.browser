@@ -204,6 +204,8 @@ void browser_view::set_current_webview(webview *wv)
 
 	m_uri_bar->show_reader_icon(m_webview->reader_enabled_get());
 
+	m_uri_bar->update_progress_bar(m_webview->get_progress());
+
 	if (!m_webview->forward_possible())
 		m_uri_bar->disable_forward_button(EINA_TRUE);
 	else
