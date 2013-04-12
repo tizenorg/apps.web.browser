@@ -371,7 +371,7 @@ msgid "IDS_BR_BODY_RESET_TO_DEFAULT"
 msgstr "初期値にリセット"
 
 msgid "IDS_BR_POP_ALL_SETTINGS_TO_DEFAULT_CONTINUE_Q"
-msgstr "全て​の​設定​は​標準​に​戻り​ました。​続行​しますか？"
+msgstr "全ての設定が標準に戻ります。続行しますか？"
 
 msgid "IDS_BR_BODY_ABOUT_BROWSER"
 msgstr "ブラウザについて"
