@@ -744,7 +744,16 @@ void browser_view::show_prefered_homepage_confirm_popup(void)
 
 	elm_object_content_set(scroller, label);
 	elm_object_part_content_set(popup_layout, "elm.swallow.scroller", scroller);
-	edje_object_part_text_set(elm_layout_edje_get(popup_layout), "elm.text.never_show", BR_STRING_NEVER_SHOW_AGAIN);
+
+	label = elm_label_add(popup_layout);
+	if (!label)
+		return;
+
+	elm_label_line_wrap_set(label, ELM_WRAP_WORD);
+	std::string msg = std::string("<font color=#0080C0FF>") + BR_STRING_NEVER_SHOW_AGAIN + std::string("</font>");
+	elm_object_text_set(label, msg.c_str());
+
+	elm_object_part_content_set(popup_layout, "elm.swallow.never_show", label);
 
 	show_content_popup(NULL, popup_layout, BR_STRING_OK, __prefered_homepage_ok_cb, BR_STRING_CANCEL, __prefered_homepage_cancel_cb, this);
 }
