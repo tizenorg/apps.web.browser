@@ -260,7 +260,7 @@ Evas_Object *history_view::__genlist_icon_get_cb(void *data, Evas_Object *obj, c
 			BROWSER_LOGD("elm_button_add() is failed.");
 			return NULL;
 		}
-		elm_object_style_set(button, "sweep/multiline");
+		elm_object_style_set(button, "sweep/delete");
 		elm_object_text_set(button, BR_STRING_DELETE);
 		evas_object_smart_callback_add(button, "clicked", __slide_delete_button_clicked_cb, item);
 		return button;
@@ -455,7 +455,7 @@ void history_view::__slide_delete_button_clicked_cb(void *data, Evas_Object *obj
 	if (!data)
 		return;
 	history_item *item = (history_item *)data;
-	m_browser->get_history_view()->show_msg_popup("", BR_STRING_CLEAR_ALL_HISTORY_DATA_Q, BR_STRING_YES, __delete_confirm_response_by_slide_button_cb, BR_STRING_NO, NULL, item);
+	m_browser->get_history_view()->show_delete_popup(NULL, BR_STRING_DELETE_Q, BR_STRING_DELETE, __delete_confirm_response_by_slide_button_cb, BR_STRING_CANCEL, NULL, item);
 }
 
 void history_view::__delete_confirm_response_by_slide_button_cb(void *data, Evas_Object *obj, void *event_info)
