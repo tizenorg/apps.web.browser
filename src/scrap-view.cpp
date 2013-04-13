@@ -1535,17 +1535,6 @@ Evas_Object *scrap_view::__genlist_content_get_cb(void *data, Evas_Object *obj, 
 		}
 
 		return NULL;
-	}  else if (!strcmp(part, "elm.slide.swallow.1")) {
-		Evas_Object *button = elm_button_add(obj);
-		if (!button) {
-			BROWSER_LOGD("elm_button_add() is failed.");
-			return NULL;
-		}
-		elm_object_style_set(button, "sweep/multiline");
-		elm_object_text_set(button, BR_STRING_EDIT_TAGS);
-		evas_object_smart_callback_add(button, "clicked", __edit_tag_cb, item);
-
-		return button;
 	} else if (!strcmp(part, "elm.slide.swallow.3")) {
 		Evas_Object *button = elm_button_add(obj);
 		if (!button) {
