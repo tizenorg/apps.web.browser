@@ -1121,19 +1121,15 @@ Eina_Bool bookmark_edit_view::_set_genlist_by_folder(int folder_id,
 
 		if (bookmark_item_data->is_folder()) {
 			/* Folder */
-			if (bookmark_item_data->is_editable()) {
-				BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
-					j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
-				item_data->it = elm_genlist_item_append(genlist,
-					&m_itc_folder, item_data, NULL,
-					ELM_GENLIST_ITEM_TREE, __genlist_item_clicked_cb, this);
-			}
+			BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
+				j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
+			item_data->it = elm_genlist_item_append(genlist,
+				&m_itc_folder, item_data, NULL,
+				ELM_GENLIST_ITEM_TREE, __genlist_item_clicked_cb, this);
 		} else {
-			if (bookmark_item_data->is_editable()) {
-				BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
-				item_data->it = elm_genlist_item_append(genlist, &m_itc_bookmark_folder, item_data, NULL,
-					ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, this);
-			}
+			BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
+			item_data->it = elm_genlist_item_append(genlist, &m_itc_bookmark_folder, item_data, NULL,
+				ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, this);
 		}
 		if (bookmark_item_data->is_editable())
 			m_count_editable_item++;
@@ -1160,30 +1156,28 @@ Eina_Bool bookmark_edit_view::_set_folder_genlist(int folder_id,
 	}
 
 	for(unsigned int j = 0 ; j < bookmark_list.size() ; j++) {
-		BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
-		gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
-		if (!item_data) {
-			BROWSER_LOGE("item_data is NULL");
-			return EINA_FALSE;
-		}
-		memset(item_data, 0x00, sizeof(gl_cb_data));
-
-		bookmark_item *bookmark_item_data = new bookmark_item;
-		*bookmark_item_data = *bookmark_list[j];
-		BROWSER_LOGD("Title[%d] is %s(id: %d)\n", j,
-				bookmark_list[j]->get_title(),
-				bookmark_item_data->get_id());
-		item_data->cp = this;
-		item_data->user_data = (void *)bookmark_item_data;
-
-		if (bookmark_item_data->is_folder()) {
-			if (bookmark_item_data->is_editable()) {
-				BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
-					j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
-				item_data->it = elm_genlist_item_append(genlist,
-					&m_itc_folder, item_data, NULL,
-					ELM_GENLIST_ITEM_TREE, __rename_folder_cb, this);
+		if (bookmark_list[j]->is_folder()) {
+			BROWSER_LOGD("folder[%d] is %s\n", j, bookmark_list[j]->get_title());
+			gl_cb_data *item_data = (gl_cb_data *)malloc(sizeof(gl_cb_data));
+			if (!item_data) {
+				BROWSER_LOGE("item_data is NULL");
+				return EINA_FALSE;
 			}
+			memset(item_data, 0x00, sizeof(gl_cb_data));
+
+			bookmark_item *bookmark_item_data = new bookmark_item;
+			*bookmark_item_data = *bookmark_list[j];
+			BROWSER_LOGD("Title[%d] is %s(id: %d)\n", j,
+					bookmark_list[j]->get_title(),
+					bookmark_item_data->get_id());
+			item_data->cp = this;
+			item_data->user_data = (void *)bookmark_item_data;
+
+			BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
+				j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
+			item_data->it = elm_genlist_item_append(genlist,
+				&m_itc_folder, item_data, NULL,
+				ELM_GENLIST_ITEM_TREE, __rename_folder_cb, this);
 		}
 	}
 	m_bookmark->destroy_list(bookmark_list);

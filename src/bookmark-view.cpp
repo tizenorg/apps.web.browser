@@ -434,19 +434,15 @@ Eina_Bool bookmark_view::_set_gengrid_by_folder(int folder_id, Evas_Object *geng
 		if (bookmark_item_data->is_folder()) {
 			/* Folder */
 			item_data->type = ITEM_FOLDER;
-			if (bookmark_item_data->is_editable()) {
-				BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
-					j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
-				item_data->it = elm_gengrid_item_append(gengrid,
-					&m_itc_gengrid_folder, item_data, __gengrid_item_clicked_cb, this);
-			}
+			BROWSER_LOGD("Folder[%d] is %s(id: %d)\n",
+				j, bookmark_list[j]->get_title(), bookmark_item_data->get_id());
+			item_data->it = elm_gengrid_item_append(gengrid,
+				&m_itc_gengrid_folder, item_data, __gengrid_item_clicked_cb, this);
 		} else {
 			item_data->type = ITEM_BOOKMARK;
-			if (bookmark_item_data->is_editable()) {
-				BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
-				item_data->it = elm_gengrid_item_append(gengrid,
-					&m_itc_gengrid_bookmark, item_data, __gengrid_item_clicked_cb, this);
-			}
+			BROWSER_LOGD("bookmark[%d] is %s\n", j, bookmark_list[j]->get_title());
+			item_data->it = elm_gengrid_item_append(gengrid,
+				&m_itc_gengrid_bookmark, item_data, __gengrid_item_clicked_cb, this);
 		}
 	}
 	m_bookmark->destroy_list(bookmark_list);
