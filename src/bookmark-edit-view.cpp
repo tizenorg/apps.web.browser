@@ -679,7 +679,7 @@ void bookmark_edit_view::_reorder_bookmark_items(int order_index, Eina_Bool is_m
 
 	Elm_Object_Item *it = NULL;
 	gl_cb_data *cb_data = NULL;
-	Eina_Bool ret = EINA_TRUE;
+	int ret = -1;
 	int index = order_index;
 
 	if (is_move_down) {
