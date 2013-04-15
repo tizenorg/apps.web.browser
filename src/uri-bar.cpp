@@ -611,20 +611,6 @@ void uri_bar::_show_more_context_popup(Evas_Object *parent)
 		return;
 	}
 
-	if (!m_preference->get_desktop_view_enabled()) {
-		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_desktop_view.png", NULL);
-		elm_ctxpopup_item_append(more_popup, BR_STRING_DESKTOP_VIEW, icon, __desktop_view_cb, this);
-	} else {
-		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_mobile_view.png", NULL);
-		elm_ctxpopup_item_append(more_popup, BR_STRING_MOBILE_VIEW, icon, __desktop_view_cb, this);
-	}
-
-	icon = elm_icon_add(more_popup);
-	if (!icon) {
-		BROWSER_LOGE("elm_icon_add failed");
-		return;
-	}
-
 	if (m_is_private_mode) {
 		elm_image_file_set(icon, browser_img_dir"/I01_more_popup_icon_private.png", NULL);
 		elm_ctxpopup_item_append(more_popup, BR_STRING_PRIVATE_OFF, icon, __private_on_off_cb, this);
