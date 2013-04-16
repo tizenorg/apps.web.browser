@@ -269,6 +269,8 @@ void find_on_page::__down_clicked_cb(void *data, Evas_Object *obj, void *event_i
 
 	fop->m_current_index++;
 	fop->m_webview->find_word(fop->m_input_word, EINA_TRUE, __text_found_cb, data);
+
+	fop->unfocus_entry();
 }
 
 void find_on_page::__up_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -282,5 +284,7 @@ void find_on_page::__up_clicked_cb(void *data, Evas_Object *obj, void *event_inf
 
 	fop->m_current_index--;
 	fop->m_webview->find_word(fop->m_input_word, EINA_FALSE, __text_found_cb, data);
+
+	fop->unfocus_entry();
 }
 
