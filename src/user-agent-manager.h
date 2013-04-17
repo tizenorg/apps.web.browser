@@ -24,7 +24,7 @@
 #define system_user_agent_title "System user agent"
 #define tizen_user_agent_title "Tizen"
 #define chrome_user_agent_title "Chrome 20"
-#define tizen_user_agent "Mozilla/5.0 (Linux; U; Tizen 1.0; en-us) AppleWebKit/534.46 (KHTML,like Gecko) Mobile Tizen Browser/1.0"
+#define tizen_user_agent "Mozilla/5.0 (Linux; Tizen 2.1; sdk) AppleWebKit/537.3 (KHTML, like Gecko) Version/2.1 Mobile Safari/537.3"
 #define chrome_user_agent "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11"
 
 /* user_agent_manager instance should be one.
