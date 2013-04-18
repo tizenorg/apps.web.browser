@@ -20,7 +20,9 @@
 
 #include <Evas.h>
 #include <account.h>
-
+#include <algorithm>
+#include <map>
+#include <string>
 #include "browser-object.h"
 
 typedef struct _popup_callback popup_callback;
@@ -39,6 +41,7 @@ public:
 	void show_msg_popup(const char *msg, int timeout = 3);
 	void show_noti_popup(const char *msg, int timeout = 3);
 	void destroy_popup(Evas_Object *sub_obj);
+	void parse_uri(const std::string &uri, const std::string &delimiter1, const std::string &delimiter2, std::map<std::string, std::string> &map, bool includeEmpties);
 	Eina_Bool launch_tizenstore(const char *uri);
 	Eina_Bool launch_streaming_player(const char *uri, const char *cookie = NULL);
 	Eina_Bool launch_email(const char *uri, Eina_Bool file_attach = EINA_FALSE);
