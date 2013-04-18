@@ -141,15 +141,28 @@ BUTTON_IMAGE_STYLE("browser/reader", READER_BUTTON_IMAGE, READER_BUTTON_IMAGE, R
 			part { name: "entry_bg";
 				mouse_events: 1;
 				scale: 1;
-				type: IMAGE;
+				type: RECT;
 				description {
 					state: "default" 0.0;
-					visible: 1;
+					visible: 0;
 					align: 0.0 1.0;
 					fixed: 0 1;
 					min: 0 98;
 					rel1 { relative: 0.0 1.0; to: "bg"; }
 					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "entry_circle";
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 255 255 255 255;
+					rel1 { relative: 1.0 0.0; to: "pad_entry_bg_left"; }
+					rel2 { relative: 0.0 1.0; to: "pad_entry_bg_right"; }
 					image.normal: URI_BAR_IMAGE_BG;
 					image.border: 250 250 0 0;
 				}
