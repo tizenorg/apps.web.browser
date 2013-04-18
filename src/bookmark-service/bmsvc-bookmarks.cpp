@@ -852,6 +852,7 @@ int bmsvc_delete_bookmark(int id, int check_editable)
 		/* try to delete all subitems fisrt */
 		ret = _bmsvc_delete_folder_subitems(entry->id, check_editable);
 		if (ret != BMSVC_ERROR_NONE) {
+			_bmsvc_destroy_bookmark_entry((void *)entry);
 			TRACE_END;
 			return ret;
 		}
