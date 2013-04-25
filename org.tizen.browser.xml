@@ -59,17 +59,19 @@
 		<label xml:lang="uk-ua">Браузер</label>
 		<label xml:lang="uz-uz">Интернет</label>
 		<application-service>
-			<operation name="http://tizen.org/appcontrol/operation/view"/>
-			<uri name="http"/>
-			<uri name="https"/>
-			<uri name="file"/>
+			<operation name="http://tizen.org/appcontrol/operation/view" />
+			<uri name="http" />
+			<uri name="https" />
+			<uri name="file" />
 		</application-service>
 		<application-service>
-			<operation name="http://tizen.org/appcontrol/operation/view"/>
-			<mime name="application/x-shockwave-flash"/>
-			<mime name="image/svg+xml"/>
-			<mime name="text/html"/>
-			<mime name="application/xml"/>
+			<operation name="http://tizen.org/appcontrol/operation/view" />
+			<mime name="application/x-shockwave-flash" />
+			<mime name="image/svg+xml" />
+			<mime name="text/html" />
+			<mime name="http.uri" />
+			<mime name="file.uri" />
+			<mime name="application/xml" />
 		</application-service>
 	</ui-application>
 </manifest>
