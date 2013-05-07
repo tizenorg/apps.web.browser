@@ -348,6 +348,9 @@ INSTALL(DIRECTORY DESTINATION ${WEBKIT_SOUP_CACHE_DIR})
 # install manifest file & icon
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/org.tizen.${PROJECT_NAME}.xml DESTINATION /usr/share/packages)
 
+#install SMACK rule file
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/org.tizen.${PROJECT_NAME}.rule DESTINATION /etc/smack/accesses.d)
+
 # install desktop file & icon
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/org.tizen.${PROJECT_NAME}.png DESTINATION ${ICON_DIR})
 INSTALL(FILES ${CMAKE_SOURCE_DIR}/resource/default_application_icon.png DESTINATION "${TEMPLATE_DIR}/")

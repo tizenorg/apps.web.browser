@@ -151,3 +151,4 @@ fi
 %{appdir}/res/locale/*/*/browser.mo
 %{appdatadir}/data/xml/
 /usr/share/packages/*
+/etc/smack/accesses.d/org.tizen.browser.rule
