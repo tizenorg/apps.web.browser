@@ -64,6 +64,7 @@ BuildRequires:  pkgconfig(capi-media-image-util)
 BuildRequires:  cmake
 BuildRequires:  gettext
 BuildRequires:  edje-tools
+BuildRequires:  hash-signer
 
 #This is for SMACK
 Requires: sys-assert
@@ -85,6 +86,13 @@ make %{?jobs:-j%jobs}
 
 %install
 %make_install
+
+PKG_ID=%{name}
+%define tizen_sign 1
+%define tizen_sign_base /usr/apps/${PKG_ID}
+%define tizen_sign_level public
+%define tizen_author_sign 1
+%define tizen_dist_sign 1
 
 %post
 mkdir -p %{appdatadir}/data/db/
@@ -149,6 +157,7 @@ fi
 /usr/share/icons/default/small/org.tizen.browser.png
 %{appdir}/res/images/*
 %{appdir}/res/locale/*/*/browser.mo
+%{appdir}/*.xml
 %{appdatadir}/data/xml/
 /usr/share/packages/*
 /etc/smack/accesses.d/org.tizen.browser.rule
