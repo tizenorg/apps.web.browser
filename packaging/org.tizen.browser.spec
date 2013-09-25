@@ -85,6 +85,9 @@ cmake . -DCMAKE_INSTALL_PREFIX=%{appdir}
 make %{?jobs:-j%jobs}
 
 %install
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE.Flora %{buildroot}/usr/share/license/%{name}
+
 %make_install
 
 PKG_ID=%{name}
@@ -161,3 +164,4 @@ fi
 %{appdatadir}/data/xml/
 /usr/share/packages/*
 /etc/smack/accesses.d/org.tizen.browser.rule
+/usr/share/license/%{name}
