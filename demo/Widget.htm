@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+	
+		<script>
+		function myFunction() {
+		    alert("I am an alert box!");
+		}
+		</script>
+	
+		<div data-role="page" id="pageone">
+		  <div data-role="main" class="ui-content">
+		    <h2>Native Control & Widget</h2>
+		    <ul data-role="listview" data-inset="false">	
+		    	<li>
+		      		<b>IME</b> 
+		      		<INPUT name="normal_text" type="text"> </input>
+		      </li>
+		      <li>
+		      		<b>Color	Picker</b> 
+		      		<INPUT name="favcolor" type="color"> </input>
+		      </li>
+		      <li>
+		      		<b>Date	Picker</b> 
+		      		<INPUT name="favcolor" type="date"> </input>
+		      </li>
+		      <li>
+		      		<b>Select	Picker</b> 
+		      		 <SELECT>
+		      		 		<OPTION value="volvo">Volvo</OPTION>   
+		      		 		<OPTION value="saab">Saab</OPTION> 
+      						<OPTION value="opel">Opel</OPTION>   
+      						<OPTION value="audi">Audi</OPTION>   
+    							<OPTION value="audi">BMW</OPTION>   
+    							<OPTION value="audi">Ford</OPTION> 
+  							</SELECT>
+		      </li>
+		      <li>
+		      		<b>JS Popup</b> 
+		      		<button onclick="myFunction()">Open JS Popup</button>
+		      </li>		      
+		      
+		    </ul>   
+		  </div>
+		</div> 
+</body>
+</html>

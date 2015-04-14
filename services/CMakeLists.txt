@@ -1,0 +1,12 @@
+project(services)
+
+add_subdirectory(WebKitEngineService)
+add_subdirectory(FavoriteService)
+add_subdirectory(BookmarksUI)
+add_subdirectory(SimpleUI)
+add_subdirectory(SimpleURI)
+add_subdirectory(StorageService)
+add_subdirectory(HistoryService)
+add_subdirectory(PlatformInputManager)
+add_subdirectory(SessionStorage)
+add_subdirectory(BookmarkService)

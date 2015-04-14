@@ -1,0 +1,56 @@
+*{
+    cursor: default;
+}
+body{
+    background: rgb(42, 50, 64);
+}
+div.main{
+    margin-top: 110px;
+    text-align: center;
+}
+div.bookmark, div.empty{
+    width: 373px;
+    height: 327px;
+    background:#1E2632 /*rgb(30,38,50)*/;
+    /*float: left;*/
+    display: inline-block;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    border: 4px solid rgb(42, 50, 64); /* use the same color as body.background*/
+}
+div.empty{
+    background: rgb(42, 50, 64)
+}
+div.bookmark:hover, div.bookmark.selected{
+    background:#458FFF /*rgb(69,143,255)*/;
+    border: 4px solid rgba(69, 143, 255, 255);/* #458FFF*/
+}
+br.clearBoath{
+    clear: both;
+}
+img.thumb{
+    width: 373px;
+    height: 240px;
+}
+div.description{
+    width: 348px;
+    height:87px;
+    padding-left:25px;
+}
+img.ico{
+    width: 37px;
+    height: 37px;
+    display: inline-block;
+    vertical-align: middle;
+}
+div.description h1{
+    width: 273px;
+    height: 41px;
+    font-size: 26pt;
+    color:#D3D3D3;
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 13px;
+    overflow: hidden;
+}

@@ -1,0 +1,278 @@
+#include "Spacer.edc"
+#include "SearchBox.edc"
+#define DEBUG_RECT_OVER(over_part, r, g, b)                         \
+    part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
+                                                                    \
+scale:1;                                                            \
+        type : RECT;                                                \
+        repeat_events: 1;                                           \
+        description {                                               \
+            state: "default" 0.0;                                   \
+            visible: 1;                                             \
+            color: r g b 128;                                       \
+            rel1 { to: over_part; relative: 0 0; }                  \
+            rel2 { to: over_part; relative: 1 1; }                  \
+        }                                                           \
+    }
+collections {
+    group {
+        name: "main_layout";
+        images {
+            image: "web_shadow.png" COMP;
+        }
+        parts {
+            part { name: "uri_bar_bg";
+                type : RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    min: 0 130;
+                    max: 99999 130;
+                    color: 18 22 34 230;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 0.0; }
+                }
+            }
+            ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 74, 130)
+            part { name: "uri_bar_buttons_left";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0.5;
+                    min: 310 70;
+                    max: 310 70;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 1.0; to: "left_spacer"; }
+                    rel2 { relative: 0.0 0.0; to: "left_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            ADD_SPACER("left_buttons_spacer", "uri_bar_buttons_left", 39, 70)
+            part { name: "uri_entry";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.5;
+                    min: 994 70;
+                    max: 994 70;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            ADD_SPACER("right_buttons_spacer", "uri_entry", 39, 70)
+            part { name: "uri_bar_buttons_right";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.5;
+                    min: 390 70;
+                    max: 390 70;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            ADD_SPACER("right_spacer", "uri_bar_buttons_right", 74, 70)
+            part { name: "web_view";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+             }
+             part { name: "shadow";
+                type: IMAGE;
+                scale: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: 1920 14;
+                    max: 1920 14;
+                    image.normal: "web_shadow.png";
+                    rel1 { relative: 0.0 0.0; to: "web_view"; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+             }
+             part { name: "progress_bar";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: 1936 8;
+                    max: 1936 8;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: -12 -10;
+                        to: "web_view";
+                       }
+                    rel2 { relative: 1.0 1.0; }
+                }
+             }
+             part { name: "progress_bar_light_bg";
+                 type: RECT;
+                 repeat_events: 1;
+                 description { state: "default" 0.0;
+                     fixed: 1 1;
+                     min: 0 8;
+                     max: 1920 8;
+                     align: 0 0;
+                     visible: 0;
+                     rel1.to: "web_view";
+                     rel1.relative: 0.0 0.0;
+                     rel2.relative: 1.0 0.0;
+                     color: 69 143 255 55;
+                }
+                description {state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+             }
+             part{ name: "web_title_bar";
+                type: SWALLOW;
+                scale: 1;
+                description { state: "default" 0.0;
+                    min: 1920 87;
+                    max: 1920 87;
+                    fixed: 1 1;
+                    align: 0 1;
+                    rel1 { to: "web_view"; relative: 0.0 1.0; }
+                    rel2 { to: "web_view"; relative: 1.0 1.0; }
+                }
+            }
+            part { name: "search_box";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: SEARCH_WIDTH SEARCH_HEIGHT;
+                    max: SEARCH_WIDTH SEARCH_HEIGHT;
+                    align: 1.0 0.0;
+                    rel1 {relative: 0.0 0.0; to: "web_view";}
+                    rel2 {relative: 1.0 1.0; to: "web_view";}
+                }
+            }
+
+
+    part {name: "popup_bg";
+        type: RECT;
+        scale: 1;
+        description {state: "default" 0.0;
+        visible: 0;
+        min: 1920 1080;
+        fixed: 1 1;
+        color: 100 100 100 0;
+        rel1 {relative: 0.0 0.0; }
+                rel2 {relative: 1.0 1.0; }
+        }
+        description {state: "visible" 0.0;
+        inherit: "default" 0.0;
+        visible: 1;
+    }
+         part { name: "popup";
+             type: SWALLOW;
+             scale: 1;
+             description { state: "default" 0.0;
+                 visible: 0;
+                 min: 0 0;
+                 max: 1920 1080;
+                 align: 0.5 0.5;
+                 rel1 { relative: 0.0 0.0; to: "web_view";}
+                 rel2 { relative: 1.0 1.0; to: "web_view";}
+                 fixed: 1 1;
+             }
+             description { state: "visible" 0.0;
+                 inherit: "default" 0.0;
+                 visible: 1;
+                 max: 1920 1080;
+             }
+         }
+    }
+    programs {
+    program { name: "hide_progress";
+        signal: "hide_progressbar_bg";
+        source: "ui";
+        action: STATE_SET "default" 0.0;
+        target: "progress_bar_light_bg";
+    }
+    program { name: "show_progress";
+        signal: "show_progressbar_bg";
+        source: "ui";
+        action: STATE_SET "visible" 0.0;
+        target: "progress_bar_light_bg";
+    }
+    program {name: "show_popup";
+    signal: "elm,state,show"; source: "elm";
+    action: STATE_SET "visible" 0.0;
+    transition: LINEAR 0.0;
+    target: "popup";
+    target: "popup_bg";
+        }
+    program {name: "hide_popup";
+    signal: "elm,state,hide"; source: "elm";
+    action: STATE_SET "default" 0.0;
+    transition: LINEAR 0.0;
+    target: "popup";
+    target: "popup_bg";
+        }
+    }
+}

@@ -1,0 +1,369 @@
+#define URI_WIDTH 994
+collections {
+group { name: "elm/entry/selection/browser_entry";
+    parts {
+        part { name: "bg";
+            scale:1;
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                color: 0 0 128 64;
+            }
+        }
+    }
+}
+group { name: "elm/entry/cursor/browser_entry";
+ parts {
+        part { name: "bg";
+            scale:1;
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                color: 69 149 255 255;
+                min: 2 36;
+                max: 2 36;
+                visible: 0;
+            }
+            description {
+                state: "focused" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+    }
+    programs {
+        program { name: "focused";
+            signal: "elm,action,focus";
+            source: "elm";
+            action: STATE_SET "focused" 0.0;
+            target: "bg";
+        }
+        program { name: "unfocused";
+            signal: "elm,action,unfocus";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+        }
+    }
+}
+group {
+    name: "elm/entry/base-single/uri_entry";
+    styles {
+        style {
+            name: "browser-entry-uri-style-unselected";
+            base: "font=Tizen:style=SVD_Medium font_size="32" wrap=none color=#CCCCCC";
+        }
+        style {
+            name: "browser-entry-uri-style-selected";
+            base: "font=Tizen:style=SVD_Medium font_size="32" wrap=none color=#3D3D3D";
+        }
+    }
+    data {
+        item: focus_highlight "off";
+    }
+    parts {
+    part {
+            name: "elm.guide";
+            scale:1;
+            type: TEXTBLOCK;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                rel1.relative: 0.0 0.0;
+                rel2.relative: 1.0 1.0;
+                align: 0.0 0.0;
+                text {
+                    style: "browser-entry-uri-style-unselected";
+                    min: 0 1;
+                }
+            }
+            description { state: "hidden" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+            part { name: "label.text.clip";
+            scale:1;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+            }
+        }
+        part {
+            name: "elm.text";
+            scale:1;
+            multiline: 0;
+            entry_mode: EDITABLE;
+            select_mode: DEFAULT;
+            cursor_mode: BEFORE;
+            type: TEXTBLOCK;
+            clip_to: "label.text.clip";
+            source: "elm/entry/selection/browser_entry";
+            source4: "elm/entry/cursor/browser_entry";
+            description { state: "default" 0.0;
+                rel1.relative: 0.0 0.0;
+                rel2.relative: 1.0 1.0;
+                align: 0.0 0.0;
+                text {
+                    style: "browser-entry-uri-style-selected";
+                    min: 0 1;
+                }
+            }
+        }
+    }
+    programs {
+        program { name: "focus";
+            signal: "load";
+            source: "";
+            action: FOCUS_SET;
+            target: "elm.text";
+        }
+        program { name: "gdisabled";
+            signal: "elm,guide,disabled";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "elm.guide";
+        }
+        program { name: "genabled";
+            signal: "elm,guide,enabled";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "elm.guide";
+        }
+    }
+}//group
+
+group {
+       name: "elm/button/base/entry_btn";
+       parts {
+           part {
+               name: "bg";
+               type: RECT;
+               description { state: "default" 0.0;
+                    color: 0 0 0 0;
+                   visible: 1;
+               }
+           }
+       }
+       programs {
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "bg";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+       }
+   }
+
+
+    group {
+        name: "uri_entry_layout";
+        images {
+            image: "search_searchbar_bg_foc.png" COMP;
+            image: "search_searchbar_bg_nor.png" COMP;
+            image: "ico_search.png" COMP;
+            image: "ico_url.png" COMP;
+        }
+        parts {
+            part { name: "bg";
+                mouse_events: 1;
+                scale:1;
+                type: IMAGE;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: 11 11;
+                    max: URI_WIDTH 70;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
+                    image.normal: "search_searchbar_bg_nor.png";
+                    image.border: 5 5 5 5;
+                    //image.border_scale: 0;
+                    //image.middle: NONE;
+                    fill {
+                        type: SCALE;
+                        smooth: 0;
+                        origin {
+                            relative: 0 0;
+                            offset: 0 0;
+                        }
+                        size {
+                            relative: 1 1;
+                            offset: 0 0;
+                        }
+                    }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default" 0.0;
+                    image.normal: "search_searchbar_bg_foc.png";
+                    //image.border: 5 5 5 5;
+                    //image.border_scale: 0;
+                    //image.middle: NONE;
+                }
+            }
+            part {
+                name: "spacer_1";
+                type: SPACER;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 0.0 0.0; offset: 15 0; }
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    min: 15 70;
+                    max: 15 70;
+                }
+            }
+            part { name: "uri_icon";
+                type: IMAGE;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    rel1 { relative: 1 0; to: "spacer_1"; }
+                    rel2 { relative: 1 1; to: "spacer_1"; }
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    min: 60 70;
+                    max: 60 70;
+                    image.normal: "ico_search.png";
+                    visible: 1;
+                }
+                description {
+                    state: "document" 0.0;
+                    inherit: "default" 0.0;
+                    image.normal: "ico_url.png";
+                }
+                description{
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part { name: "fav_icon";
+                type: SWALLOW;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    rel1 { relative: 0 0; to: "uri_icon";}
+                    rel2 { relative: 1 1; to: "uri_icon";}
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    min: 36 36;
+                    max: 36 36;
+                    visible: 0;
+                }
+                description{
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part { name: "uri_entry_swallow";
+                    type : SWALLOW;
+                    scale: 1;
+                    description {
+                        state: "default" 0.0;
+                        visible: 1;
+                        align: 0.0 0.0;
+                        min: 889 70;
+                        max: 889 70;
+                        fixed: 1 1;
+                        rel1 { relative: 1 0; to: "uri_icon"; }
+                        rel2 { relative: 1 1; to: "uri_icon"; }
+                    }
+                    description {
+                        state: "hidden" 0.0;
+                        inherit: "default" 0.0;
+                        visible: 0;
+                    }
+                    description {
+                        state: "visible" 0.0;
+                        inherit: "default" 0.0;
+                        visible: 1;
+                    }
+            }
+            part { name: "over";
+                type: RECT;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                    rel1 { relative: 0 0; to: "bg"; }
+                    rel2 { relative: 1 1; to: "bg"; }
+                }
+            }
+            part { name: "uri_entry_btn";
+               type: SWALLOW;
+               mouse_events: 1;
+               repeat_events: 1;
+               description {
+                   state: "default" 0.0;
+                    visible: 1;
+                    rel1.to: "bg";
+                    rel2.to: "bg";
+               }
+            }
+        }
+        programs {
+            program {
+                name: "mouse_in_entry";
+                source: "over";
+                signal: "mouse,in";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "mouse_out_entry";
+                source: "over";
+                signal: "mouse,out";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+            program{
+                name: "set_search_icon";
+                source: "model";
+                signal: "set_search_icon";
+                script{
+                    set_state(PART:"uri_icon", "default", 0.0);
+                    set_state(PART:"fav_icon", "default", 0.0);
+                }
+            }
+            program {
+                name: "fav_icon_clicked";
+                source: "fav_icon";
+                signal: "mouse,clicked,*";
+                action: SIGNAL_EMIT "slide_websearch" "elm";
+            }
+            program {
+                name: "uri_icon_clicked";
+                source: "uri_icon";
+                signal: "mouse,clicked,*";
+                action: SIGNAL_EMIT "slide_websearch" "elm";
+            }
+            program{
+                name: "set_doc_icon";
+                source: "model";
+                signal: "set_doc_icon";
+                script{
+                    set_state(PART:"uri_icon", "document", 0.0);
+                    set_state(PART:"fav_icon", "default", 0.0);
+                }
+            }
+            program{
+                name: "show_favicon";
+                source: "model";
+                signal: "show_favicon";
+                script{
+                    set_state(PART:"uri_icon", "hidden", 0.0);
+                    set_state(PART:"fav_icon", "visible", 0.0);
+                }
+            }
+        }
+    }
+}
