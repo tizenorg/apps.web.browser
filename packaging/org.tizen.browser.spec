@@ -118,8 +118,8 @@ chmod -R 660 /opt/usr/data/webkit
 %{_appdir}/services/*
 %{_appdir}/lib/*
 %defattr(-,app,app,-)
-%{_appdir}/res/*.png
-%{_appdir}/res/*.ico
+#%{_appdir}/res/*.png
+#%{_appdir}/res/*.ico
 %{_appdir}/res/certs/*
 
 #-----------------------------------

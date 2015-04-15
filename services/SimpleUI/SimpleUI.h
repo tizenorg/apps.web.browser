@@ -39,7 +39,6 @@
 #include "AbstractWebEngine.h"
 #include "BookmarksUI.h"
 #include "ButtonBar.h"
-#include "FavoriteService.h"
 #include "HistoryService.h"
 #include "SimpleURI.h"
 #include "SimpleScroller.h"

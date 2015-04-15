@@ -1,7 +1,6 @@
 project(services)
 
 add_subdirectory(WebKitEngineService)
-add_subdirectory(FavoriteService)
 add_subdirectory(BookmarksUI)
 add_subdirectory(SimpleUI)
 add_subdirectory(SimpleURI)
