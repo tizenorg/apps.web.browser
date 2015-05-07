@@ -43,7 +43,7 @@
 #include "SimpleURI.h"
 #include "SimpleScroller.h"
 #include "WebTitleBar.h"
-#include "PlatformInputManager.h"
+//#include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "SqlStorage.h"
 
@@ -257,7 +257,7 @@ private:
     std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
     std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
     std::shared_ptr<tizen_browser::base_ui::SearchBox> m_searchBox;
-    std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
+    //std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
     tizen_browser::Session::Session m_currentSession;
     std::shared_ptr<Settings> m_settings;

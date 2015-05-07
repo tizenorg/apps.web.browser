@@ -27,7 +27,6 @@
 #include <algorithm>
 #include <Elementary.h>
 #include <Ecore.h>
-#include <Ecore_X.h>
 #include <Edje.h>
 #include <Evas.h>
 #include "Config.h"
@@ -71,6 +70,8 @@ SimpleUI::SimpleUI(/*Evas_Object *window*/)
 {
     elm_init(static_cast<int>(NULL), static_cast<char**>(NULL));
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
+    if (main_window == NULL)
+        BROWSER_LOGE("Failed to create main window");
 //    m_zoomList = NULL;
     setMainWindow(main_window);
 }
@@ -110,11 +111,11 @@ int SimpleUI::exec(const std::string& _url)
             elm_win_alpha_set(m_window.get(), EINA_FALSE);
 
             // creatin main window
-            int width = 0;
-            int height = 0;
-            ecore_x_window_size_get(ecore_x_window_root_first_get(), &width, &height);
-            evas_object_move(m_window.get(), 0, 0);
-            evas_object_resize(m_window.get(), width, height);
+            //int width = 1920;
+            //int height = 1080;
+            //ecore_x_window_size_get(ecore_x_window_root_first_get(), &width, &height);
+            //evas_object_move(m_window.get(), 0, 0);
+            //evas_object_resize(m_window.get(), width, height);
 
             // create main layout
             m_mainLayout = elm_layout_add(m_window.get());
@@ -191,7 +192,7 @@ int SimpleUI::exec(const std::string& _url)
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
             M_ASSERT(m_historyService);
 
-
+/*
             // Platforminputmanager
             BROWSER_LOGD("[%s:%d] service: platforminputmanager ", __PRETTY_FUNCTION__, __LINE__);
             m_platformInputManager =
@@ -201,7 +202,7 @@ int SimpleUI::exec(const std::string& _url)
             M_ASSERT(m_platformInputManager);
             m_platformInputManager->init(m_window.get());
             m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
-
+*/
             createActions();
             // left buttons
             leftButtonBar = std::make_shared<ButtonBar>(m_mainLayout, "SimpleUI/LeftButtonBar.edj", "left_button_bar");
@@ -378,13 +379,13 @@ void SimpleUI::createActions()
     m_showSettingsPopup = sharedAction(new Action("Settings"));
     m_showSettingsPopup->setToolTip("Settings");
     m_showSettingsPopup->setIcon("browser/toolbar_setting");
-
+/*
     m_settingPointerMode = sharedAction(new Action("Pointer mode"));
     m_settingPointerMode->setToolTip("Switch to Pointer Mode");
     m_settingPointerMode->setCheckable(true);
     m_settingPointerMode->setChecked(m_platformInputManager->getPointerModeEnabled());
     m_settingPointerMode->setEnabled(true);
-
+*/
     m_settingPrivateBrowsing = sharedAction(new Action("Private browsing"));
     m_settingPrivateBrowsing->setToolTip("On exit from private mode all cookies, history, and stored data will be deleted");
     m_settingPrivateBrowsing->setCheckable(true);
@@ -420,7 +421,7 @@ void SimpleUI::connectActions()
     m_history->triggered.connect(boost::bind(&SimpleUI::showHistory, this));
     m_showSettingsPopup->triggered.connect(boost::bind(&SimpleUI::showSettingsMenu, this));
 
-    m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::services::PlatformInputManager::setPointerModeEnabled, m_platformInputManager.get(), _1));
+//    m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::services::PlatformInputManager::setPointerModeEnabled, m_platformInputManager.get(), _1));
     m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
     m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
     m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
@@ -598,7 +599,7 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
     webTitleBar->removeFavIcon();
     webTitleBar->show("Removed from favorites");
 }
-
+/*
 void SimpleUI::onReturnPressed(MenuButton *m)
 {
     BROWSER_LOGD("[%s]", __func__);
@@ -607,7 +608,7 @@ void SimpleUI::onReturnPressed(MenuButton *m)
     hidePopup.disconnect_all_slots();
     m->hidePopup();
 }
-
+*/
 void SimpleUI::backEnable(bool enable)
 {
     m_back->setEnabled(enable);
@@ -698,9 +699,10 @@ void SimpleUI::loadFinished()
                                                                                                 m_webEngine->getFavicon()));
         m_history->setEnabled(true);
     }
-
+/*
     if(!m_platformInputManager->getPointerModeEnabled())
         elm_object_focus_set(leftButtonBar->getButton("refresh_stop_button"), EINA_TRUE);
+*/
 }
 
 void SimpleUI::loadError()
@@ -813,9 +815,9 @@ void SimpleUI::showZoomMenu()
     m_zoomList->setZoom(currentZoomType);
     BROWSER_LOGD("Current zoom factor from webkit %d%%", m_webEngine->getZoomFactor());
 
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
+//    m_platformInputManager->returnPressed.disconnect_all_slots();
+//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
+//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
     m_zoomList->showPopup();
 }
 
@@ -834,13 +836,13 @@ void SimpleUI::showTabMenu()
         m_tabList->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this, _1));
         m_tabList->tabDelete.connect(boost::bind(&SimpleUI::closeTab, this, _1));
 
-        m_platformInputManager->rightPressed.connect(boost::bind(&TabList::rightPressed, m_tabList.get()));
-        m_platformInputManager->leftPressed.connect(boost::bind(&TabList::leftPressed, m_tabList.get()));
-        m_platformInputManager->enterPressed.connect(boost::bind(&TabList::enterPressed, m_tabList.get()));
+//        m_platformInputManager->rightPressed.connect(boost::bind(&TabList::rightPressed, m_tabList.get()));
+//        m_platformInputManager->leftPressed.connect(boost::bind(&TabList::leftPressed, m_tabList.get()));
+//        m_platformInputManager->enterPressed.connect(boost::bind(&TabList::enterPressed, m_tabList.get()));
     }
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
+//    m_platformInputManager->returnPressed.disconnect_all_slots();
+//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
+//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
     m_tabList->addItems(m_webEngine->getTabContents());
     m_tabList->setCurrentTabId(m_webEngine->currentTabId());
     m_tabList->disableNewTabBtn(m_tabList->getItemcCount() >= m_tabLimit);
@@ -948,9 +950,9 @@ void SimpleUI::showSettingsMenu()
         m_settings->addAction( m_settingDeleteFavorite);
         m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::base_ui::Settings::setPointerModeEnabled, m_settings.get(), _1));
     }
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
+//    m_platformInputManager->returnPressed.disconnect_all_slots();
+//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
+//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
     m_settingDeleteHistory->setEnabled(m_historyService->getHistoryItemsCount());
     m_settingDeleteFavorite->setEnabled(m_favoriteService->countBookmarksAndSubFolders());
     m_settings->showPopup();
@@ -965,13 +967,13 @@ void SimpleUI::showHistory()
         m_historyList->deleteHistoryItem.connect(boost::bind(&tizen_browser::services::HistoryService::clearURLHistory, m_historyService.get(),_1));
         m_historyList->deleteHistoryItem.connect(boost::bind(&SimpleUI::hideHistory, this));
 
-        m_platformInputManager->rightPressed.connect(boost::bind(&HistoryList::rightPressed, m_historyList.get()));
-        m_platformInputManager->leftPressed.connect(boost::bind(&HistoryList::leftPressed, m_historyList.get()));
-        m_platformInputManager->enterPressed.connect(boost::bind(&HistoryList::enterPressed, m_historyList.get()));
+//        m_platformInputManager->rightPressed.connect(boost::bind(&HistoryList::rightPressed, m_historyList.get()));
+//        m_platformInputManager->leftPressed.connect(boost::bind(&HistoryList::leftPressed, m_historyList.get()));
+//        m_platformInputManager->enterPressed.connect(boost::bind(&HistoryList::enterPressed, m_historyList.get()));
     }
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
+//    m_platformInputManager->returnPressed.disconnect_all_slots();
+//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
+//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
     m_historyList->addItems(m_historyService->getHistoryItems());
     m_historyList->showPopup();
 }

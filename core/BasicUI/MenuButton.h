@@ -22,7 +22,6 @@
 #include <memory>
 #include <Elementary.h>
 #include <Ecore.h>
-#include <Ecore_X.h>
 #include <Edje.h>
 #include <Evas.h>
 #include <string>

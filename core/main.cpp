@@ -17,7 +17,6 @@
 
 #include "BrowserLogger.h"
 #include <Ecore.h>
-#include <Ecore_X.h>
 #include <Edje.h>
 #include <Elementary.h>
 #include <stdexcept>

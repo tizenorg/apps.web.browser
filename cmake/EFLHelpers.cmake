@@ -1,5 +1,11 @@
 #FIXME: Do not use CMAKE_CXX_FLAGS
 
+IF(WAYLAND_SUPPORT)
+        SET(WIN_PKG "ecore-wayland")
+ELSE(WAYLAND_SUPPORT)
+	SET(WIN_PKG "ecore-x")
+ENDIF(WAYLAND_SUPPORT)
+
 include(FindPkgConfig)
 
 SET(_efl_pkgs_list
@@ -12,7 +18,7 @@ SET(_efl_pkgs_list
     ecore-input
     ecore-imf
     edje
-    ecore-x
+    ${WIN_PKG}
     )
 
 pkg_check_modules(_efl_pkgs REQUIRED "${_efl_pkgs_list}")

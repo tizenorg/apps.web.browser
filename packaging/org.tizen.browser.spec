@@ -8,29 +8,33 @@ Source0:    %{name}-%{version}.tar.gz
 
 # Excluded tizen v3.0 wayland on tv profile build
 # TODO: Please remove following code block once wayland build is supported.
+#%if "%{?_with_wayland}" == "1"
+#ExcludeArch: armv7l i586 i686 x86_64 aarch64
+#%endif
+
 %if "%{?_with_wayland}" == "1"
-ExcludeArch: armv7l i586 i686 x86_64 aarch64
+BuildRequires: pkgconfig(ecore-wayland)
+%else
+BuildRequires:  pkgconfig(ecore-x)
+BuildRequires:  pkgconfig(utilX)
 %endif
 
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(ecore-evas)
 BuildRequires:  pkgconfig(ecore-imf)
 BuildRequires:  pkgconfig(ecore-input)
-BuildRequires:  pkgconfig(ecore-x)
 BuildRequires:  pkgconfig(edje)
 BuildRequires:  pkgconfig(eeze)
 BuildRequires:  pkgconfig(eina)
 BuildRequires:  pkgconfig(elementary)
 BuildRequires:  pkgconfig(embryo)
 BuildRequires:  pkgconfig(evas)
-#BuildRequires:  pkgconfig(ewebkit2)
 BuildRequires:  pkgconfig(chromium-efl)
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(capi-network-connection)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  pkgconfig(utilX)
 BuildRequires: browser-provider-devel
 
 BuildRequires:  cmake
@@ -46,7 +50,6 @@ BuildRequires:  boost-system
 BuildRequires:  boost-test
 %endif
 %ifarch armv7l
-#BuildRequires:  pkgconfig(ewebkit2)
 BuildRequires:  pkgconfig(chromium-efl)
 BuildRequires:	pkgconfig(dlog)
 %endif
@@ -80,7 +83,12 @@ cmake .. \
     -DMANIFESTDIR=%{_manifestdir} \
     -DICONDIR=%{_icondir} \
     -DBUILD_UT=%{BUILD_UT} \
-    -DCOVERAGE_STATS=%{COVERAGE_STATS}
+    -DCOVERAGE_STATS=%{COVERAGE_STATS} \
+%if "%{?_with_wayland}" == "1"
+    -DWAYLAND_SUPPORT=On
+%else
+    -DWAYLAND_SUPPORT=Off
+%endif
 
 make %{!?verbose_make}%{?verbose_make:VERBOSE=1} -j%{?jobs}%{!?jobs:1}
 
