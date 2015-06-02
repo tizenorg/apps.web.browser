@@ -24,7 +24,14 @@ if(TIZEN_BUILD)
     target_link_libraries(${PROJECT_NAME} ${pkgs_LDFLAGS})
 endif(TIZEN_BUILD)
 
-pkg_check_modules(browser-provider REQUIRED "capi-web-bookmark")
+SET(bp_pkgs_list
+        capi-web-bookmark
+        capi-web-history
+    )
+
+pkg_check_modules(browser-provider REQUIRED "${bp_pkgs_list}")
+
+#pkg_check_modules(browser-provider REQUIRED "capi-web-bookmark")
 include_directories(${browser-provider_INCLUDE_DIRS})
 
 add_dependencies(${PROJECT_NAME} StorageService)

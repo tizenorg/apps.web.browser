@@ -28,7 +28,7 @@
 #include "HistoryItem.h"
 #include "HistoryStorage.h"
 #include "StorageService.h"
-
+#include <web/web_history.h>
 #define DOMAIN_HISTORY_SERVICE "org.tizen.browser.historyservice"
 
 namespace tizen_browser
@@ -90,7 +90,7 @@ public:
     boost::signals2::signal<void (bool)>historyEmpty;
 private:
     bool m_testDbMod;;
-
+    std::vector<std::shared_ptr<HistoryItem>> history_list;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
 
     /**
