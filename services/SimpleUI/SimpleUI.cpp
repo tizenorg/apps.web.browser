@@ -18,7 +18,7 @@
 
 #if defined(USE_EWEBKIT)
 //#include <EWebKit2.h>
-//#include <ewk_chromium.h>
+#include <ewk_chromium.h>
 #endif
 
 #include <boost/format.hpp>
@@ -69,6 +69,7 @@ SimpleUI::SimpleUI(/*Evas_Object *window*/)
     , m_networkErrorPopup(0)
 {
     elm_init(static_cast<int>(NULL), static_cast<char**>(NULL));
+    ewk_context_default_get();
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == NULL)
         BROWSER_LOGE("Failed to create main window");

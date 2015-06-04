@@ -34,6 +34,7 @@ set(SimpleUI_HEADERS
 
 include(Coreheaders)
 include(EFLHelpers)
+include(EWebKitHelpers)
 
 include_directories(${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR})
