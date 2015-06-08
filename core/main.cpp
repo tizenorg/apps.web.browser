@@ -34,7 +34,7 @@
 
 ///\note Odroid platform modification
 #if PLATFORM(TIZEN)
-const std::string DEFAULT_URL = "file:///usr/apps/org.tizen.browser/res/demo/b.htm";
+const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
