@@ -943,12 +943,12 @@ void SimpleUI::showSettingsMenu()
     if(!m_settings){
         m_settings = std::make_shared<Settings>(m_window,
                                                 rightButtonBar->getButton("setting_button"));
-        m_settings->addAction( m_settingPointerMode);
+        //m_settings->addAction( m_settingPointerMode);
         m_settings->addAction( m_settingPrivateBrowsing);
         m_settings->addAction( m_settingDeleteHistory);
         m_settings->addAction( m_settingDeleteData);
         m_settings->addAction( m_settingDeleteFavorite);
-        m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::base_ui::Settings::setPointerModeEnabled, m_settings.get(), _1));
+        //m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::base_ui::Settings::setPointerModeEnabled, m_settings.get(), _1));
     }
 //    m_platformInputManager->returnPressed.disconnect_all_slots();
 //    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
