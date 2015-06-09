@@ -20,7 +20,7 @@
 #include <boost/signals2/signal.hpp>
 #include <boost/thread/thread.hpp>
 #include <Ecore.h>
-#include <Ecore_X.h>
+//#include <Ecore_X.h>
 #include <Eina.h>
 #include <Elementary.h>
 
@@ -54,6 +54,7 @@ public:
     boost::signals2::signal<void ()> enterPressed;
     boost::signals2::signal<void ()> leftPressed;
     boost::signals2::signal<void ()> rightPressed;
+    boost::signals2::signal<void ()> backPressed;
 
     /**
      * @brief Returns current service's name.

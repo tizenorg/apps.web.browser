@@ -252,6 +252,11 @@ public:
     virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon() = 0;
 
     /**
+     * @brief back or exit when back key is pressed
+     */
+    virtual void backButtonClicked() const = 0;
+
+    /**
      * FavIcon of current page changed
      */
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
