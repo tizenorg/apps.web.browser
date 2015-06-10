@@ -28,6 +28,7 @@
 #include <Evas.h>
 #include <memory>
 #include <BrowserImage.h>
+#include <app.h>
 
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
@@ -84,6 +85,7 @@ void WebKitEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->backwardEnableChanged.connect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
     webView->cofirmationRequest.connect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.connect(boost::bind(&WebKitEngineService::webViewClicked, this));
+    webView->IMEStateChanged.connect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
 }
 
 void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
@@ -101,6 +103,7 @@ void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->backwardEnableChanged.disconnect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
     webView->cofirmationRequest.disconnect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.disconnect(boost::bind(&WebKitEngineService::webViewClicked, this));
+    webView->IMEStateChanged.disconnect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
 }
 
 void WebKitEngineService::disconnectCurrentWebViewSignals()
@@ -475,6 +478,21 @@ void WebKitEngineService::clearPrivateData()
 void WebKitEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
     m_currentWebView->searchOnWebsite(searchString, flags);
+}
+
+void WebKitEngineService::_IMEStateChanged(bool enable)
+{
+    IMEStateChanged(enable);
+}
+
+void WebKitEngineService::backButtonClicked() const
+{
+    M_ASSERT(m_currentWebView);
+    if (isBackEnabled()) {     
+        m_currentWebView->back();
+    } else {
+        app_efl_exit();
+    }
 }
 
 } /* end of webkitengine_service */

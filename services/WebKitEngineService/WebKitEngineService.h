@@ -154,6 +154,11 @@ public:
      */
     std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon();
 
+    /**
+     * @brief back or exit when back key is pressed
+     */
+    void backButtonClicked() const;
+
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
@@ -168,6 +173,7 @@ private:
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
     void _confirmationRequest(WebConfirmationPtr) ;
+    void _IMEStateChanged(bool);
     void webViewClicked();
 
     /**

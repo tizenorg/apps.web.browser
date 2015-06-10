@@ -67,6 +67,7 @@ SimpleUI::SimpleUI(/*Evas_Object *window*/)
     , m_currentZoom(ZOOM_TYPE_100)
     , items_vector()
     , m_networkErrorPopup(0)
+    , m_wvIMEStatus(false)
 {
     elm_init(static_cast<int>(NULL), static_cast<char**>(NULL));
     ewk_context_default_get();
@@ -78,6 +79,7 @@ SimpleUI::SimpleUI(/*Evas_Object *window*/)
 }
 
 SimpleUI::~SimpleUI() {
+    BROWSER_LOGD("%s", __func__);
     m_sessionService->getStorage()->deleteSession(m_currentSession);
     /// \todo Auto-generated destructor stub
     evas_object_del(m_window.get());
@@ -85,6 +87,7 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::destroyUI()
 {
+    BROWSER_LOGD("%s", __func__);
     evas_object_del(m_window.get());
 }
 
@@ -193,7 +196,7 @@ int SimpleUI::exec(const std::string& _url)
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
             M_ASSERT(m_historyService);
 
-/*
+
             // Platforminputmanager
             BROWSER_LOGD("[%s:%d] service: platforminputmanager ", __PRETTY_FUNCTION__, __LINE__);
             m_platformInputManager =
@@ -203,7 +206,8 @@ int SimpleUI::exec(const std::string& _url)
             M_ASSERT(m_platformInputManager);
             m_platformInputManager->init(m_window.get());
             m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
-*/
+            m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
+
             createActions();
             // left buttons
             leftButtonBar = std::make_shared<ButtonBar>(m_mainLayout, "SimpleUI/LeftButtonBar.edj", "left_button_bar");
@@ -251,6 +255,7 @@ int SimpleUI::exec(const std::string& _url)
             m_webEngine->favIconChanged.connect(boost::bind(&SimpleURI::setFavIcon, m_simpleURI.get(), _1));
             m_webEngine->favIconChanged.connect(boost::bind(&WebTitleBar::setFavIcon, webTitleBar.get(), _1));
             m_webEngine->titleChanged.connect(boost::bind(&WebTitleBar::show, webTitleBar.get(), _1));
+            m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
 
             m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
             m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -600,7 +605,7 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
     webTitleBar->removeFavIcon();
     webTitleBar->show("Removed from favorites");
 }
-/*
+
 void SimpleUI::onReturnPressed(MenuButton *m)
 {
     BROWSER_LOGD("[%s]", __func__);
@@ -609,7 +614,20 @@ void SimpleUI::onReturnPressed(MenuButton *m)
     hidePopup.disconnect_all_slots();
     m->hidePopup();
 }
-*/
+
+void SimpleUI::setwvIMEStatus(bool status) 
+{
+    BROWSER_LOGD("[%s]", __func__);
+    m_wvIMEStatus = status;
+}
+
+void SimpleUI::onBackPressed()
+{
+    BROWSER_LOGD("[%s]", __func__);
+    if (!m_simpleURI->hasFocus() && !m_wvIMEStatus)
+        m_webEngine->backButtonClicked();
+}
+
 void SimpleUI::backEnable(bool enable)
 {
     m_back->setEnabled(enable);
@@ -816,9 +834,9 @@ void SimpleUI::showZoomMenu()
     m_zoomList->setZoom(currentZoomType);
     BROWSER_LOGD("Current zoom factor from webkit %d%%", m_webEngine->getZoomFactor());
 
-//    m_platformInputManager->returnPressed.disconnect_all_slots();
-//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
-//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
+    m_platformInputManager->returnPressed.disconnect_all_slots();
+    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
+    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
     m_zoomList->showPopup();
 }
 
@@ -837,13 +855,13 @@ void SimpleUI::showTabMenu()
         m_tabList->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this, _1));
         m_tabList->tabDelete.connect(boost::bind(&SimpleUI::closeTab, this, _1));
 
-//        m_platformInputManager->rightPressed.connect(boost::bind(&TabList::rightPressed, m_tabList.get()));
-//        m_platformInputManager->leftPressed.connect(boost::bind(&TabList::leftPressed, m_tabList.get()));
-//        m_platformInputManager->enterPressed.connect(boost::bind(&TabList::enterPressed, m_tabList.get()));
+        m_platformInputManager->rightPressed.connect(boost::bind(&TabList::rightPressed, m_tabList.get()));
+        m_platformInputManager->leftPressed.connect(boost::bind(&TabList::leftPressed, m_tabList.get()));
+        m_platformInputManager->enterPressed.connect(boost::bind(&TabList::enterPressed, m_tabList.get()));
     }
-//    m_platformInputManager->returnPressed.disconnect_all_slots();
-//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
-//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
+    m_platformInputManager->returnPressed.disconnect_all_slots();
+    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
+    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_tabList.get()));
     m_tabList->addItems(m_webEngine->getTabContents());
     m_tabList->setCurrentTabId(m_webEngine->currentTabId());
     m_tabList->disableNewTabBtn(m_tabList->getItemcCount() >= m_tabLimit);
@@ -951,9 +969,9 @@ void SimpleUI::showSettingsMenu()
         m_settings->addAction( m_settingDeleteFavorite);
         //m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::base_ui::Settings::setPointerModeEnabled, m_settings.get(), _1));
     }
-//    m_platformInputManager->returnPressed.disconnect_all_slots();
-//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
-//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
+    m_platformInputManager->returnPressed.disconnect_all_slots();
+    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
+    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_settings.get()));
     m_settingDeleteHistory->setEnabled(m_historyService->getHistoryItemsCount());
     m_settingDeleteFavorite->setEnabled(m_favoriteService->countBookmarksAndSubFolders());
     m_settings->showPopup();
@@ -968,13 +986,13 @@ void SimpleUI::showHistory()
         m_historyList->deleteHistoryItem.connect(boost::bind(&tizen_browser::services::HistoryService::clearURLHistory, m_historyService.get(),_1));
         m_historyList->deleteHistoryItem.connect(boost::bind(&SimpleUI::hideHistory, this));
 
-//        m_platformInputManager->rightPressed.connect(boost::bind(&HistoryList::rightPressed, m_historyList.get()));
-//        m_platformInputManager->leftPressed.connect(boost::bind(&HistoryList::leftPressed, m_historyList.get()));
-//        m_platformInputManager->enterPressed.connect(boost::bind(&HistoryList::enterPressed, m_historyList.get()));
+        m_platformInputManager->rightPressed.connect(boost::bind(&HistoryList::rightPressed, m_historyList.get()));
+        m_platformInputManager->leftPressed.connect(boost::bind(&HistoryList::leftPressed, m_historyList.get()));
+        m_platformInputManager->enterPressed.connect(boost::bind(&HistoryList::enterPressed, m_historyList.get()));
     }
-//    m_platformInputManager->returnPressed.disconnect_all_slots();
-//    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
-//    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
+    m_platformInputManager->returnPressed.disconnect_all_slots();
+    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
+    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_historyList.get()));
     m_historyList->addItems(m_historyService->getHistoryItems());
     m_historyList->showPopup();
 }

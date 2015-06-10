@@ -134,6 +134,8 @@ public:
 
     boost::signals2::signal<void ()> ewkViewClicked;
 
+    boost::signals2::signal<void (bool)> IMEStateChanged;
+
 private:
     void registerCallbacks();
     void unregisterCallbacks();
@@ -175,6 +177,9 @@ private:
 
     //from webkit ewk_view
     static void onFaviconChaged(void * data, Evas_Object *obj, void *event_info);
+
+    static void __IMEClosed(void * data, Evas_Object *obj, void *event_info);
+    static void __IMEOpened(void * data, Evas_Object *obj, void *event_info);
 
     // confirmation requests
     static void __geolocationPermissionRequest(void * data, Evas_Object * obj, void * event_info);

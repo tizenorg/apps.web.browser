@@ -43,7 +43,7 @@
 #include "SimpleURI.h"
 #include "SimpleScroller.h"
 #include "WebTitleBar.h"
-//#include "PlatformInputManager.h"
+#include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "SqlStorage.h"
 
@@ -131,6 +131,8 @@ private:
     void onActionTriggered(const Action& action);
 
     void loadThemes();
+
+    void setwvIMEStatus(bool status);
 
 
 
@@ -235,6 +237,7 @@ private:
     void onNetErrorButtonPressed(PopupButtons, std::shared_ptr<PopupData>);
 
     void onReturnPressed(MenuButton *m);
+    void onBackPressed();
 
     boost::signals2::signal<void ()> hidePopup;
 
@@ -257,7 +260,7 @@ private:
     std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
     std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
     std::shared_ptr<tizen_browser::base_ui::SearchBox> m_searchBox;
-    //std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
+    std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
     tizen_browser::Session::Session m_currentSession;
     std::shared_ptr<Settings> m_settings;
@@ -267,6 +270,7 @@ private:
     zoom_type m_currentZoom;
     int m_tabLimit;
     int m_favoritesLimit;
+    bool m_wvIMEStatus;
 
     std::vector<std::shared_ptr<tizen_browser::services::HistoryItem>> items_vector;
     std::unique_ptr<tizen_browser::basic_ui::NetworkErrorHandler> m_netErrorHandler;

@@ -60,7 +60,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId)
     , m_isLoading(false)
     , m_loadError(false)
 {
-  config.load("whatever");
+    config.load("whatever");
 }
 
 WebView::~WebView()
@@ -157,6 +157,9 @@ void WebView::registerCallbacks()
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
     evas_object_smart_callback_add(m_ewkView, "favicon,changed", onFaviconChaged, this);
+
+    evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
+    evas_object_smart_callback_add(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
 #endif
 }
 
@@ -182,6 +185,9 @@ void WebView::unregisterCallbacks()
 
     evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
     evas_object_smart_callback_del_full(m_ewkView, "favicon,changed", onFaviconChaged, this);
+
+    evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
+    evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
 #endif
 }
 
@@ -744,6 +750,20 @@ void WebView::onFaviconChaged(void* data, Evas_Object*, void*)
         self->favIconChanged(tizen_browser::tools::EflTools::getBrowserImage(favicon));
         evas_object_unref(favicon);
     }
+}
+
+void WebView::__IMEClosed(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("%s", __func__);
+    WebView * self = reinterpret_cast<WebView *>(data);
+    self->IMEStateChanged(false);
+}
+
+void WebView::__IMEOpened(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("%s", __func__);
+    WebView * self = reinterpret_cast<WebView *>(data);
+    self->IMEStateChanged(true);
 }
 
 std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)

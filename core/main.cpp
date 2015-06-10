@@ -59,6 +59,7 @@ static bool app_create(void * /*app_data*/)
 
 static void app_terminate(void */*app_data*/)
 {
+    BROWSER_LOGD("%s\n", __func__);
     std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
     std::dynamic_pointer_cast
     <
