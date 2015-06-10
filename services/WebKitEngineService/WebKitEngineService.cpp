@@ -28,6 +28,7 @@
 #include <Evas.h>
 #include <memory>
 #include <BrowserImage.h>
+#include <app.h>
 
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
@@ -475,6 +476,16 @@ void WebKitEngineService::clearPrivateData()
 void WebKitEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
     m_currentWebView->searchOnWebsite(searchString, flags);
+}
+
+void WebKitEngineService::backButtonClicked() const
+{
+    if(isBackEnabled()) {
+        M_ASSERT(m_currentWebView);
+        m_currentWebView->back();
+    } else {
+        app_efl_exit();
+    }
 }
 
 } /* end of webkitengine_service */

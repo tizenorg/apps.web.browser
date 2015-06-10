@@ -17,8 +17,8 @@
 
 #include "PlatformInputManager.h"
 
-#include <X11/Xlib.h>
-#include <utilX.h>
+//#include <X11/Xlib.h>
+//#include <utilX.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>
 #include <Ecore_Input.h>
@@ -56,11 +56,11 @@ void PlatformInputManager::init(Evas_Object* mainWindow)
     m_xWindow = elm_win_xwindow_get(mainWindow);
 
     // This snippet is needed to show mouse pointer all the time, because by default it is hidden after few seconds
-    m_atomDevicemgrInputWindow = ecore_x_atom_get(E_PROP_DEVICEMGR_INPUTWIN);
-    m_atomAlwaysCursorOn = ecore_x_atom_get(E_PROP_NOT_CURSOR_HIDE);
-    if(!ecore_x_window_prop_window_get(ecore_x_window_root_first_get(), m_atomDevicemgrInputWindow, &m_devicemgr_win, 1))
-        BROWSER_LOGD("Failed to get device manager input window!");
-    ecore_event_handler_add(ECORE_X_EVENT_WINDOW_FOCUS_IN, __handler_FOCUS_IN, this);
+    //m_atomDevicemgrInputWindow = ecore_x_atom_get(E_PROP_DEVICEMGR_INPUTWIN);
+    //m_atomAlwaysCursorOn = ecore_x_atom_get(E_PROP_NOT_CURSOR_HIDE);
+    //if(!ecore_x_window_prop_window_get(ecore_x_window_root_first_get(), m_atomDevicemgrInputWindow, &m_devicemgr_win, 1))
+    //    BROWSER_LOGD("Failed to get device manager input window!");
+    //ecore_event_handler_add(ECORE_X_EVENT_WINDOW_FOCUS_IN, __handler_FOCUS_IN, this);
 }
 
 Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int type, void *event)
@@ -83,6 +83,7 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
          * For that each arrow key is handled by us.
          * Pointer movement is realized in timer to achieve smooth animation of pointer's move.
          */
+/*
         if(self->m_pointerModeEnabled) {
             wasArrow = true;
             if (!keyName.compare("KEY_LEFT")) {
@@ -103,12 +104,13 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             }
             else
                 wasArrow = false;
-
+*/
             /**
             * If last pressed key was arrow we would like to convert Return key to mouse click
             * assuming that user was moving cursor and now want to "click" chosen element.
             * In other cases Return key is handled normally allowing for example to accecpt typed url.
             */
+/*
             if(!keyName.compare("KEY_ENTER")) {
                 if(self->m_lastPressedKey == ARROW) {
                     self->m_lastPressedKey = RETURN;
@@ -128,6 +130,7 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
                 return EINA_FALSE;
             }
         }
+*/
 
         self->m_lastPressedKey= OTHER_KEY;
 
@@ -140,24 +143,24 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             return EINA_FALSE;
         }
 
-        if(!keyName.compare("KEY_CHANNELUP")){
+//        if(!keyName.compare("KEY_CHANNELUP")){
             /**
              * Converting ChannelUp Button on remote control and Page Up key on keyboard to mouse's wheel up move.
              * This is used to achieve same effect of scrolling web page using mouse, remote control and keyboard.
              */
-            self->mouseButtonManipulate(Button4, ButtonPress); // Simulate mouse wheel up movement
-            self->mouseButtonManipulate(Button4, ButtonRelease);
-            return EINA_FALSE;
-        }
+//            self->mouseButtonManipulate(Button4, ButtonPress); // Simulate mouse wheel up movement
+//            self->mouseButtonManipulate(Button4, ButtonRelease);
+//            return EINA_FALSE;
+//        }
 
-        if(!keyName.compare("KEY_CHANNELDOWN")){
+//        if(!keyName.compare("KEY_CHANNELDOWN")){
             /**
              * Same as above ChannelDown and Page Down are replaced by mouse's wheel down movement.
              */
-            self->mouseButtonManipulate(Button5, ButtonPress); // Simulate mouse wheel down movement
-            self->mouseButtonManipulate(Button5, ButtonRelease);
-            return EINA_FALSE;
-        }
+//            self->mouseButtonManipulate(Button5, ButtonPress); // Simulate mouse wheel down movement
+//            self->mouseButtonManipulate(Button5, ButtonRelease);
+//            return EINA_FALSE;
+//        }
 
         if(!keyName.compare("KEY_RETURN"))
             self->returnPressed();
@@ -167,6 +170,8 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->rightPressed();
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
+        else if(!keyName.compare("BackSpace"))
+            self->backPressed();
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);
         Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event);
@@ -180,27 +185,27 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
         /**
          * When arrow key is released thread realizing pointer movement is stopped.
          */
-        if(self->m_pointerModeEnabled && (!keyName.compare("KEY_LEFT")||!keyName.compare("KEY_UP")
-        || !keyName.compare("KEY_RIGHT")||!keyName.compare("KEY_DOWN"))) {
-            if(self->m_mouseMoveTimer) {
-                self->m_currentMouseMovementParams.moveMousePointer = false;
-                ecore_timer_del(self->m_mouseMoveTimer);
-                self->m_mouseMoveTimer = NULL;
-            }
-            return EINA_FALSE;
-        }
+//        if(self->m_pointerModeEnabled && (!keyName.compare("KEY_LEFT")||!keyName.compare("KEY_UP")
+//        || !keyName.compare("KEY_RIGHT")||!keyName.compare("KEY_DOWN"))) {
+//            if(self->m_mouseMoveTimer) {
+//                self->m_currentMouseMovementParams.moveMousePointer = false;
+//                ecore_timer_del(self->m_mouseMoveTimer);
+//                self->m_mouseMoveTimer = NULL;
+//            }
+//            return EINA_FALSE;
+//        }
         /**
          * If Return key is being released we send event that mouse button was released (in pointer mode).
          */
-        if(self->m_lastPressedKey == RETURN && self->m_pointerModeEnabled && !keyName.compare("KEY_ENTER")) {
-            self->m_lastPressedKey = OTHER_KEY;
-            self->mouseButtonManipulate(Button1, ButtonRelease);
-            return EINA_FALSE;
-        }
+//        if(self->m_lastPressedKey == RETURN && self->m_pointerModeEnabled && !keyName.compare("KEY_ENTER")) {
+//            self->m_lastPressedKey = OTHER_KEY;
+//            self->mouseButtonManipulate(Button1, ButtonRelease);
+//            return EINA_FALSE;
+//        }
     }
     return EINA_TRUE;
 }
-
+/*
 Eina_Bool PlatformInputManager::mouseMove(void *data)
 {
     int x, y;
@@ -222,14 +227,14 @@ Eina_Bool PlatformInputManager::mouseMove(void *data)
     }
     return EINA_FALSE;
 }
-
-Eina_Bool PlatformInputManager::__handler_FOCUS_IN(void *data, int /*type*/, void */*event*/)
-{
-    PlatformInputManager * self = reinterpret_cast<PlatformInputManager *>(data);
-    ecore_x_window_prop_window_set(self->m_devicemgr_win, self->m_atomAlwaysCursorOn, &(self->m_xWindow), 1);
-    return EINA_TRUE;
-}
-
+*/
+//Eina_Bool PlatformInputManager::__handler_FOCUS_IN(void *data, int /*type*/, void */*event*/)
+//{
+//    PlatformInputManager * self = reinterpret_cast<PlatformInputManager *>(data);
+//    ecore_x_window_prop_window_set(self->m_devicemgr_win, self->m_atomAlwaysCursorOn, &(self->m_xWindow), 1);
+//    return EINA_TRUE;
+//}
+/*
 void PlatformInputManager::mouseButtonManipulate(int button, int event_type)
 {
     XEvent event;
@@ -260,7 +265,7 @@ void PlatformInputManager::mouseButtonManipulate(int button, int event_type)
 
     XFlush(display);
 }
-
+*/
 void PlatformInputManager::setPointerModeEnabled(bool enabled)
 {
     m_pointerModeEnabled = enabled;
