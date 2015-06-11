@@ -1,5 +1,4 @@
 #include "Spacer.edc"
-#include "SearchBox.edc"
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
     part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
                                                                     \
@@ -198,20 +197,6 @@ collections {
                     rel2 { to: "web_view"; relative: 1.0 1.0; }
                 }
             }
-            part { name: "search_box";
-                type: SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    min: SEARCH_WIDTH SEARCH_HEIGHT;
-                    max: SEARCH_WIDTH SEARCH_HEIGHT;
-                    align: 1.0 0.0;
-                    rel1 {relative: 0.0 0.0; to: "web_view";}
-                    rel2 {relative: 1.0 1.0; to: "web_view";}
-                }
-            }
-
 
     part {name: "popup_bg";
         type: RECT;

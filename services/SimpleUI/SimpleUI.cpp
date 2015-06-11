@@ -281,12 +281,6 @@ int SimpleUI::exec(const std::string& _url)
             m_netErrorHandler->networkError.connect(boost::bind(&SimpleUI::onNetworkError, this));
             m_netErrorHandler->networkConnected.connect(boost::bind(&SimpleUI::onNetworkConnected, this));
 
-
-
-            //m_searchBox = std::make_shared<tizen_browser::base_ui::SearchBox>(m_window.get());
-            //m_searchBox->textChanged.connect(boost::bind(&SimpleUI::searchWebPage, this, _1, _2));
-            //elm_object_part_content_set(m_mainLayout, "search_box", m_searchBox->getContent());
-
             m_sessionService = std::dynamic_pointer_cast
             <
                 tizen_browser::services::SessionStorage,
@@ -332,7 +326,6 @@ void SimpleUI::loadThemes()
     elm_theme_extension_add(NULL, edjePath("SimpleUI/ZoomItem.edj").c_str());
     elm_theme_extension_add(NULL, edjePath("SimpleUI/TabItem.edj").c_str());
     elm_theme_extension_add(NULL, edjePath("SimpleUI/ErrorMessage.edj").c_str());
-    elm_theme_extension_add(NULL, edjePath("SimpleUI/SearchBox.edj").c_str());
 
     elm_theme_overlay_add(0, edjePath("SimpleUI/ScrollerDefault.edj").c_str());
     elm_theme_overlay_add(0, edjePath("SimpleUI/Tooltip.edj").c_str());
@@ -508,10 +501,7 @@ void SimpleUI::switchViewToHomePage()
     forwardEnable(false);
     backEnable(false);
 
-    m_simpleURI->setSearchIcon();
     webTitleBar->hide();
-    hideSearchBox();
-
 
     hideProgressBar();
 }
@@ -753,19 +743,6 @@ void SimpleUI::setErrorButtons()
     reloadEnable(true);
     forwardEnable(false);
     evas_object_hide(m_progressBar);
-}
-
-
-void SimpleUI::showSearchBox()
-{
-    if (m_searchBox.get())
-        m_searchBox->show();
-}
-
-void SimpleUI::hideSearchBox()
-{
-    if (m_searchBox.get())
-        m_searchBox->hide();
 }
 
 void SimpleUI::filterURL(const std::string& url)
@@ -1195,12 +1172,9 @@ void SimpleUI::favicon_clicked(void *data, Evas_Object */*obj*/, const char */*e
 {
     BROWSER_LOGD("[%s],", __func__);
     SimpleUI *self = reinterpret_cast<SimpleUI*>(data);
-    if (self->m_searchBox->is_visible())
-        self->m_searchBox->hide();
-    else if (!self->isHomePageActive() && !self->isErrorPageActive())
+    if (!self->isHomePageActive() && !self->isErrorPageActive())
     {
         self->m_simpleURI->clearFocus();
-        self->m_searchBox->show();
     }
 }
 

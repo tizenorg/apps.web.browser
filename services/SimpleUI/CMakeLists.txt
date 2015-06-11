@@ -12,7 +12,6 @@ set(SimpleUI_SRCS
     SimpleScroller.cpp
     WebTitleBar.cpp
     RelatedWebPages.cpp
-    SearchBox.cpp
     CustomPopup.cpp
     )
 
@@ -28,7 +27,6 @@ set(SimpleUI_HEADERS
     HistoryList.h
     WebTitleBar.h
     RelatedWebPages.h
-    SearchBox.h
     CustomPopup.h
     )
 
@@ -95,7 +93,6 @@ set(edcFiles
     ErrorMessage.edc
     RelatedPages.edc
     Tooltip.edc
-    SearchBox.edc
     CustomPopup.edc
     )
 

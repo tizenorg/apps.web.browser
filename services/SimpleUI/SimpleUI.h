@@ -55,7 +55,6 @@
 #include "TabList.h"
 #include "Settings.h"
 #include "HistoryList.h"
-#include "SearchBox.h"
 #include "NetworkErrorHandler.h"
 #include "CustomPopup.h"
 #include "Config.h"
@@ -207,9 +206,6 @@ private:
     void showSettingsMenu();
     void hideSettingsMenu();
 
-    void showSearchBox();
-    void hideSearchBox();
-
     void showProgressBar();
     void hideProgressBar();
 
@@ -259,7 +255,6 @@ private:
     std::shared_ptr<tizen_browser::base_ui::BookmarksUI> m_bookmarksUI;
     std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
     std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
-    std::shared_ptr<tizen_browser::base_ui::SearchBox> m_searchBox;
     std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
     tizen_browser::Session::Session m_currentSession;
