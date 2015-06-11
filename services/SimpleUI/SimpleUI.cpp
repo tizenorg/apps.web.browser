@@ -283,9 +283,9 @@ int SimpleUI::exec(const std::string& _url)
 
 
 
-            m_searchBox = std::make_shared<tizen_browser::base_ui::SearchBox>(m_window.get());
-            m_searchBox->textChanged.connect(boost::bind(&SimpleUI::searchWebPage, this, _1, _2));
-            elm_object_part_content_set(m_mainLayout, "search_box", m_searchBox->getContent());
+            //m_searchBox = std::make_shared<tizen_browser::base_ui::SearchBox>(m_window.get());
+            //m_searchBox->textChanged.connect(boost::bind(&SimpleUI::searchWebPage, this, _1, _2));
+            //elm_object_part_content_set(m_mainLayout, "search_box", m_searchBox->getContent());
 
             m_sessionService = std::dynamic_pointer_cast
             <
