@@ -35,7 +35,8 @@ BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(capi-network-connection)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires: browser-provider-devel
+BuildRequires:  pkgconfig(libtzplatform-config)
+BuildRequires:  browser-provider-devel
 
 BuildRequires:  cmake
 BuildRequires:  edje-tools
@@ -56,7 +57,6 @@ BuildRequires:	pkgconfig(dlog)
 
 %define _appdir /usr/apps/%{name}
 %define _bindir %{_appdir}/bin
-%define _appdatadir /opt/usr/apps/%{name}
 %define COVERAGE_STATS %{?coverage_stats:ON}%{!?coverage_stats:OFF}
 
 %define _manifestdir /usr/share/packages
@@ -98,23 +98,11 @@ cd %{_build_dir}
 
 %post
 
-#Prepare files
-if [ ! -f %{_appdatadir}/res/db/bookmark.db ];
-then
-    mkdir -p %{_appdatadir}/res/db
-    chsmack -a "dtv-org.tizen.browser" %{_appdatadir}/res/db
-    sqlite3 %{_appdatadir}/res/db/bookmark.db ''
-    chsmack -a "dtv-org.tizen.browser" %{_appdatadir}/res/db/bookmark.db
-fi
-
 mkdir -p /opt/usr/data/webkit/storage
 mkdir -p /opt/usr/data/webkit/favicon
 
 #Change ownership and privileges
-chown -R 5000:5000 %{_appdatadir}/res/db
 chown -R 5000:5000 /opt/usr/data/webkit
-chmod -R 777 %{_appdatadir}/res/db
-chmod 777 %{_appdatadir}/res/db/bookmark.db
 chmod -R 660 /opt/usr/data/webkit
 
 %files

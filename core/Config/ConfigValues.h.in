@@ -1,5 +1,4 @@
 //This is template file for configuration variables.
 m_data["services/dir"] = std::string("@CMAKE_INSTALL_PREFIX@/services");
 m_data["resource/dir"] = std::string("@RESDIR@");
-m_data["resourcedb/dir"] = std::string("@RESDBDIR@/db/");
 m_data["webkit/dir"] = std::string("@WEBKITDIR@");

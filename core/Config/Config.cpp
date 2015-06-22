@@ -16,6 +16,7 @@
 
 #include "browser_config.h"
 #include "Config.h"
+#include <tzplatform_config.h>
 
 namespace tizen_browser
 {
@@ -24,13 +25,16 @@ namespace config
 
 void DefaultConfig::load(const std::string &)
 {
+    const char *db_path = NULL;
+    db_path = tzplatform_getenv(TZ_USER_DB);
+
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
     m_data["favorite_service_name"] = std::string("org.tizen.browser.favoriteservice");
-    m_data["DB_BOOKMARK"] = std::string("bookmark.db");
-    m_data["DB_SETTINGS"] = std::string("settings.db");
-    m_data["DB_HISTORY"] = std::string("history.db");
-    m_data["DB_SESSION"] = std::string("session.db");
+    m_data["DB_BOOKMARK"] = std::string(".browser.bookmark.db");
+    m_data["DB_SETTINGS"] = std::string(".browser.settings.db");
+    m_data["DB_HISTORY"] = std::string(".browser.history.db");
+    m_data["DB_SESSION"] = std::string(".browser.session.db");
 
     m_data["TOOLTIP_DELAY"] = 0.05; // time from mouse in to tooltip show
     m_data["TOOLTIP_HIDE_TIMEOUT"] = 2.0; // time from tooltip show to tooltip hide
@@ -39,7 +43,7 @@ void DefaultConfig::load(const std::string &)
 
 #   include "ConfigValues.h"
 
-
+    m_data["resourcedb/dir"] = std::string(db_path)+"/";
 }
 
 void DefaultConfig::store(const std::string & )
