@@ -17,12 +17,16 @@
 #include <string>
 #include <BrowserAssert.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/date.hpp>
+#include <boost/date_time/date_defs.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 
 #include "ServiceManager.h"
 #include "HistoryService.h"
 #include "HistoryItem.h"
 #include "AbstractWebEngine.h"
 #include "EflTools.h"
+
 namespace tizen_browser
 {
 namespace services
@@ -60,8 +64,7 @@ void HistoryService::setStorageServiceTestMode(bool testmode) {
 }
 
 int HistoryService::getHistoryItemsCount(){
-    return 1;
-    //return getStorageManager()->getHistoryItemsCount();
+    return history_list.size();
 }
 
 static int __get_duplicated_ids_p(int **ids, int *count, const int limit, const int offset,
@@ -122,11 +125,12 @@ void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his){
 
     bp_history_adaptor_set_url(id, (his->getUrl()).c_str());
     bp_history_adaptor_set_title(id, (his->getTitle()).c_str());
-
+    bp_history_adaptor_set_date_visited(id,-1);
 
     std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
     unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
     bp_history_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength());
+    history_list.push_back(his);
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
@@ -141,7 +145,28 @@ void HistoryService::insertOrRefresh(std::shared_ptr<HistoryItem> hi) {
  */
 void HistoryService::clearAllHistory()
 {
-    getStorageManager()->deleteHistory();
+    bp_history_adaptor_reset();
+    history_list.clear();
+}
+
+int HistoryService::getHistoryId(const std::string & url)
+{
+    bp_history_rows_cond_fmt conds;
+    conds.limit = -1;
+    conds.offset = 0;
+    conds.order_offset = BP_HISTORY_O_DATE_CREATED;
+    conds.ordering = 0;
+    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
+    conds.period_type = BP_HISTORY_DATE_ALL;
+    int *ids = 0;
+    int ids_count = 0;
+    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&ids_count, &conds, BP_HISTORY_O_URL, url.c_str(), 0);
+    if (ids_count!=0){
+        int i = *ids;
+        free(ids);
+        return i;
+    }
+    return 0;
 }
 
 /**
@@ -149,9 +174,12 @@ void HistoryService::clearAllHistory()
  */
 void HistoryService::clearURLHistory(const std::string & url)
 {
-    getStorageManager()->deleteHistory(url);
-    if(0 == getHistoryItemsCount()){
-	historyEmpty(true);
+    int id = getHistoryId(url);
+    if (id != 0)
+        bp_history_adaptor_delete(id);
+    if (0 == (getHistoryItemsCount() - 1)) {
+        historyEmpty(true);
+        history_list.clear();
     }
 }
 
@@ -182,13 +210,35 @@ HistoryItemVector& HistoryService::getHistoryItems(int historyDepthInDays, int m
         BROWSER_LOGD("Error! Could not get ids!");
     }
 
-    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON);
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED);
 
     for(int i = 0; i< (*count1); i++){
         bp_history_info_fmt history_info;
         bp_history_adaptor_get_info(ids[i],offset,&history_info);
 
+        int date;
+        bp_history_adaptor_get_date_created(ids[i], &date);
+
+        struct tm *item_time_info;
+        time_t item_time = (time_t)date;
+        item_time_info = localtime(&item_time);
+
+        int m_year = item_time_info->tm_year;
+        int m_month = item_time_info->tm_mon + 1;
+        int m_day = item_time_info->tm_yday;
+        int m_month_day = item_time_info->tm_mday;
+        int m_date = date;
+        int min = item_time_info->tm_min;
+        int hour= item_time_info->tm_hour;
+        int sec = item_time_info->tm_sec;
+        m_year = 2000 + m_year % 100;
+
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(std::string(history_info.url));
+        boost::gregorian::date d(m_year,m_month,m_month_day);
+        boost::posix_time::ptime t(d,boost::posix_time::time_duration(hour,min,sec));
+        history->setLastVisit(t);
+        history->setUrl(std::string(history_info.url ? history_info.url : ""));
+        history->setTitle(std::string(history_info.title ? history_info.title : ""));
         history_list.push_back(history);
     }
     ids = NULL;

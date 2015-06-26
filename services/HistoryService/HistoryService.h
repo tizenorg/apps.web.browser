@@ -43,6 +43,7 @@ public:
     virtual ~HistoryService();
     virtual std::string getName();
 
+    int getHistoryId(const std::string & url);
     /**
      * @throws HistoryException on error
      */

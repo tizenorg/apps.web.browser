@@ -978,6 +978,7 @@ void SimpleUI::disableHistoryButton(bool flag)
 {
     BROWSER_LOGD("[%s:%d] flag:%d ", __PRETTY_FUNCTION__, __LINE__, flag);
     m_history->setEnabled(!flag);
+    m_settingDeleteHistory->setEnabled(m_historyService->getHistoryItemsCount());
     hidePopup();
 }
 
