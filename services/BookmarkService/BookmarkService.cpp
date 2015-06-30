@@ -97,14 +97,16 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     bp_bookmark_adaptor_set_url(bookmark_id, address.c_str());
 
     bp_bookmark_adaptor_set_title(bookmark_id, tittle.c_str());
-
-    std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
-    unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-    bp_bookmark_adaptor_set_snapshot(bookmark_id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
-
-    std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
-    unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
-    bp_bookmark_adaptor_set_icon(bookmark_id, favicon->width, favicon->height, fav, favicon_blob->getLength());
+	if (thumbnail) {
+	    std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
+	    unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
+	    bp_bookmark_adaptor_set_snapshot(bookmark_id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
+	}
+	if (favicon) {
+	    std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
+	    unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
+	    bp_bookmark_adaptor_set_icon(bookmark_id, favicon->width, favicon->height, fav, favicon_blob->getLength());
+	}
 
     m_bookmarks.push_back(bookmark);
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
