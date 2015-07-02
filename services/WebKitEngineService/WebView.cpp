@@ -46,6 +46,7 @@
 #include "ServiceManager.h"
 
 #define certificate_crt_path CERTS_DIR
+#define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
 
 using namespace tizen_browser::tools;
 
@@ -75,6 +76,8 @@ WebView::~WebView()
 void WebView::init(Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
+
+#if 0 //not using smart class
     static Ewk_View_Smart_Class *clasz = NULL;
     Ewk_Context *context = ewk_context_default_get();
     if (!clasz) {
@@ -84,13 +87,11 @@ void WebView::init(Evas_Object * opener)
 //        clasz->run_javascript_alert = onJavascriptAlert;
 //        clasz->run_javascript_confirm = onJavascriptConfirm;
 //        clasz->run_javascript_prompt = onJavascriptPrompt;
-//        clasz->window_create = onWindowCreate;
-//        clasz->window_close = onWindowClose;
-
+        clasz->window_create = onWindowCreate;
+        clasz->window_close = onWindowClose;
 
         ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
         ewk_context_certificate_file_set(context, certificate_crt_path);
-
     }
 
     Evas_Smart *smart = evas_smart_class_new(&clasz->sc);
@@ -98,8 +99,12 @@ void WebView::init(Evas_Object * opener)
     /// \todo: Consider process model. Now, One UIProcess / One WebProcess.
 //    if (opener)
 //        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_view_page_group_get(opener));
-//    else
+    else
         m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_page_group_create(NULL));
+#else
+	m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
+//	Ewk_Context *context = ewk_view_context_get(m_ewkView);
+#endif
 
     evas_object_data_set(m_ewkView, "_container", this);
     BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, this);
@@ -107,14 +112,14 @@ void WebView::init(Evas_Object * opener)
     evas_object_color_set(m_ewkView, 255, 255, 255, 255);
     evas_object_size_hint_weight_set(m_ewkView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_ewkView, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    ewk_view_user_agent_set(m_ewkView, "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1");
+    ewk_view_application_name_for_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
     //\todo: when value is other than 1.0, scroller is located improperly
 //    ewk_view_device_pixel_ratio_set(m_ewkView, 1.0f);
 
 #if PLATFORM(TIZEN)
     ewk_view_resume(m_ewkView);
 #endif
-
+#if 0
     // set local storage, favion, cookies
     std::string webkit_path =  boost::any_cast <std::string> (config.get("webkit/dir"));
 //    ewk_context_web_storage_path_set(context, (webkit_path + std::string("/storage")).c_str());
@@ -127,7 +132,7 @@ void WebView::init(Evas_Object * opener)
 //     ewk_cookie_manager_widget_cookie_directory_set(ewk_context_cookie_manager_get(context), webkit_path.c_str());
 
     ewk_favicon_database_icon_change_callback_add(ewk_context_favicon_database_get(context), __faviconChanged, this);
-
+#endif
     setupEwkSettings();
     registerCallbacks();
 #else
@@ -148,6 +153,8 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "url,changed", __urlChanged, this);
 
     evas_object_smart_callback_add(m_ewkView, "back,forward,list,changed", __backForwardListChanged, this);
+
+    evas_object_smart_callback_add(m_ewkView, "create,window", __OnNewWindowRequest, this);
 
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -176,6 +183,8 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "url,changed", __urlChanged, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "back,forward,list,changed", __backForwardListChanged, this);
+
+    evas_object_smart_callback_del_full(m_ewkView, "create,window", __OnNewWindowRequest, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -712,6 +721,30 @@ void WebView::__backForwardListChanged(void * data, Evas_Object * /* obj */, voi
     self->forwardEnableChanged(self->isForwardEnabled());
 }
 
+void WebView::__OnNewWindowRequest(void *data, Evas_Object*, void* out)
+{
+  BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+
+  WebView * self = reinterpret_cast<WebView *>(data);
+  BROWSER_LOGD("Window creating in tab: %s", self->getTabId().toString().c_str());
+
+  std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>	m_webEngine;
+  m_webEngine = std::dynamic_pointer_cast
+  <
+	  basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService
+  >
+  (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+  M_ASSERT(m_webEngine);
+
+  /// \todo: Choose newly created tab.
+  TabId id = m_webEngine->addTab(std::string(), &self->getTabId());
+  BROWSER_LOGD("Created tab: %s", id.toString().c_str());
+
+  Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
+  *static_cast<Evas_Object**>(out) = tab_ewk_view;
+}
+
+
 #if PLATFORM(TIZEN)
 void WebView::__faviconChanged(const char * uri, void * data)
 #else
@@ -965,12 +998,15 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::getFavicon() {
 
 #if defined(USE_EWEBKIT)
     if (faviconImage.get() == NULL) {
-//#if PLATFORM(TIZEN)
+
+#if PLATFORM(TIZEN)
 //    Evas_Object * favicon = ewk_view_favicon_get(m_ewkView);
-//#else
+	 Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
+#else
     Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(m_ewkView));
     Evas_Object * favicon = ewk_favicon_database_icon_get(database, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));
-//#endif
+#endif
+
 #ifndef NDEBUG
         int w = 0, h = 0;
         evas_object_image_size_get(favicon, &w, &h);

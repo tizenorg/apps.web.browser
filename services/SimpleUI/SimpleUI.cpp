@@ -422,7 +422,7 @@ void SimpleUI::connectActions()
     m_showSettingsPopup->triggered.connect(boost::bind(&SimpleUI::showSettingsMenu, this));
 
 //    m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::services::PlatformInputManager::setPointerModeEnabled, m_platformInputManager.get(), _1));
-    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
+//    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
     m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
     m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
     m_settingDeleteFavorite->triggered.connect(boost::bind(&SimpleUI::settingsDeleteFavorite, this));;
@@ -1061,7 +1061,7 @@ void SimpleUI::onDeleteDataButton(PopupButtons button, std::shared_ptr< PopupDat
         BROWSER_LOGD("[%s]: OK", __func__);
         m_webEngine->clearPrivateData();
         webTitleBar->removeFavIcon();
-        webTitleBar->show("Data deleted");
+        webTitleBar->show("All cookies and cache are deleted");
         hidePopup();
     }
 }

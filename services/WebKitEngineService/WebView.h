@@ -165,6 +165,7 @@ private:
     static void __urlChanged(void * data, Evas_Object * obj, void * event_info);
 
     static void __backForwardListChanged(void * data, Evas_Object * obj, void * event_info);
+	static void __OnNewWindowRequest(void *data, Evas_Object*, void* out);
 
     // Favicon - from database
 #if defined(USE_EWEBKIT)
