@@ -38,7 +38,8 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
-    elm_config_accel_preference_set("opengl");
+//    elm_config_accel_preference_set("opengl");
+	elm_config_accel_preference_set("3d");
 
     elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
     // Enabling focus
