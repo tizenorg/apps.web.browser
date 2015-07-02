@@ -294,25 +294,26 @@ int SimpleUI::exec(const std::string& _url)
         }
         m_initialised = true;
 
-        // only when first run
-        if (url.empty()) {
-            BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
-            switchViewToHomePage();
-            filterURL(HomePageURL);
-            if(lastSession.items().size() >= 1){
-                for(auto iter=lastSession.items().begin(),
-                          end=lastSession.items().end();
-                    iter != end;
-                    iter++
-                ){
-                    openNewTab(iter->second);
-                }
-                m_sessionService->getStorage()->deleteSession(lastSession);
-            }
-        }
-        else
-            openNewTab(url);
     }
+
+	// only when first run
+	if (url.empty()) {
+		BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
+		switchViewToHomePage();
+		filterURL(HomePageURL);
+		if(lastSession.items().size() >= 1){
+			for(auto iter=lastSession.items().begin(),
+					  end=lastSession.items().end();
+				iter != end;
+				iter++
+			){
+				openNewTab(iter->second);
+			}
+			m_sessionService->getStorage()->deleteSession(lastSession);
+		}
+	}
+	else
+		openNewTab(url);
 
     BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
 
