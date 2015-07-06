@@ -170,8 +170,8 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->rightPressed();
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
-        else if(!keyName.compare("BackSpace"))
-            self->backPressed();
+//        else if(!keyName.compare("BackSpace"))
+//            self->backPressed();
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);
         Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event);
