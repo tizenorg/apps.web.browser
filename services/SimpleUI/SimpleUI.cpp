@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <Elementary.h>
 #include <Ecore.h>
+#include <Ecore_Wayland.h>
 #include <Edje.h>
 #include <Evas.h>
 #include "Config.h"
@@ -115,11 +116,12 @@ int SimpleUI::exec(const std::string& _url)
             elm_win_alpha_set(m_window.get(), EINA_FALSE);
 
             // creatin main window
-            //int width = 1920;
-            //int height = 1080;
+            int width = 0;
+            int height = 0;
             //ecore_x_window_size_get(ecore_x_window_root_first_get(), &width, &height);
-            //evas_object_move(m_window.get(), 0, 0);
-            //evas_object_resize(m_window.get(), width, height);
+            ecore_wl_screen_size_get(&width, &height);
+            evas_object_move(m_window.get(), 0, 0);
+            evas_object_resize(m_window.get(), width, height);
 
             // create main layout
             m_mainLayout = elm_layout_add(m_window.get());
