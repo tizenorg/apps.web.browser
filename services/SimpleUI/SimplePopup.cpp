@@ -48,7 +48,7 @@ namespace base_ui
         else
             elm_object_text_set(popup, message.c_str());
 
-        elm_popup_content_text_wrap_type_set(popup, ELM_WRAP_CHAR);
+        elm_popup_content_text_wrap_type_set(popup, ELM_WRAP_WORD);
         elm_object_part_text_set(popup, "title,text", title.c_str());
 
         int buttonsCounter = 1;

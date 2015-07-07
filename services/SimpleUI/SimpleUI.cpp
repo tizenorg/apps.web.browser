@@ -1054,7 +1054,7 @@ void SimpleUI::onDeleteHistoryButton(PopupButtons button, std::shared_ptr< Popup
         m_historyService->clearAllHistory();
         m_history->setEnabled(false);
         webTitleBar->removeFavIcon();
-        webTitleBar->show("History deleted");
+        webTitleBar->show("All histories are deleted");
         hidePopup();
     }
 }
