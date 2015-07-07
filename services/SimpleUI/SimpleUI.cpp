@@ -388,11 +388,13 @@ void SimpleUI::createActions()
     m_settingPointerMode->setChecked(m_platformInputManager->getPointerModeEnabled());
     m_settingPointerMode->setEnabled(true);
 */
+/*
     m_settingPrivateBrowsing = sharedAction(new Action("Private browsing"));
     m_settingPrivateBrowsing->setToolTip("On exit from private mode all cookies, history, and stored data will be deleted");
     m_settingPrivateBrowsing->setCheckable(true);
     m_settingPrivateBrowsing->setChecked(m_webEngine->isPrivateMode());
     m_settingPrivateBrowsing->setEnabled(true);
+*/
 
     m_settingDeleteHistory = sharedAction(new Action("Delete history"));
     m_settingDeleteHistory->setToolTip("Delete History");
@@ -943,7 +945,7 @@ void SimpleUI::showSettingsMenu()
         m_settings = std::make_shared<Settings>(m_window,
                                                 rightButtonBar->getButton("setting_button"));
         //m_settings->addAction( m_settingPointerMode);
-        m_settings->addAction( m_settingPrivateBrowsing);
+        //m_settings->addAction( m_settingPrivateBrowsing);
         m_settings->addAction( m_settingDeleteHistory);
         m_settings->addAction( m_settingDeleteData);
         m_settings->addAction( m_settingDeleteFavorite);

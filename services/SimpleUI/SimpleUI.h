@@ -146,7 +146,7 @@ private:
     sharedAction m_zoom_in;
     sharedAction m_showSettingsPopup;
     sharedAction m_settingPointerMode;
-    sharedAction m_settingPrivateBrowsing;
+//    sharedAction m_settingPrivateBrowsing;
     sharedAction m_settingDeleteHistory;
     sharedAction m_settingDeleteData;
     sharedAction m_settingDeleteFavorite;
