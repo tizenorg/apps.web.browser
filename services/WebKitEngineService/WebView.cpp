@@ -24,7 +24,6 @@
 #include "WebView.h"
 
 #if defined(USE_EWEBKIT)
-//#include <EWebKit2.h>
 #include <ewk_chromium.h>
 #endif
 
@@ -76,35 +75,14 @@ WebView::~WebView()
 void WebView::init(Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
-
-#if 0 //not using smart class
-    static Ewk_View_Smart_Class *clasz = NULL;
     Ewk_Context *context = ewk_context_default_get();
-    if (!clasz) {
-        clasz = smartClass();
-        ewk_view_smart_class_set(clasz);
-
-//        clasz->run_javascript_alert = onJavascriptAlert;
-//        clasz->run_javascript_confirm = onJavascriptConfirm;
-//        clasz->run_javascript_prompt = onJavascriptPrompt;
-        clasz->window_create = onWindowCreate;
-        clasz->window_close = onWindowClose;
-
+    if (context)
+    {
         ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
         ewk_context_certificate_file_set(context, certificate_crt_path);
     }
 
-    Evas_Smart *smart = evas_smart_class_new(&clasz->sc);
-
-    /// \todo: Consider process model. Now, One UIProcess / One WebProcess.
-//    if (opener)
-//        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_view_page_group_get(opener));
-    else
-        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_page_group_create(NULL));
-#else
-	m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
-//	Ewk_Context *context = ewk_view_context_get(m_ewkView);
-#endif
+    m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
 
     evas_object_data_set(m_ewkView, "_container", this);
     BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, this);
@@ -152,7 +130,8 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "back,forward,list,changed", __backForwardListChanged, this);
 
-    evas_object_smart_callback_add(m_ewkView, "create,window", __OnNewWindowRequest, this);
+    evas_object_smart_callback_add(m_ewkView, "create,window", __newWindowRequest, this);
+    evas_object_smart_callback_add(m_ewkView, "close,window", __closeWindowRequest, this);
 
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -182,7 +161,8 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "back,forward,list,changed", __backForwardListChanged, this);
 
-    evas_object_smart_callback_del_full(m_ewkView, "create,window", __OnNewWindowRequest, this);
+    evas_object_smart_callback_del_full(m_ewkView, "create,window", __newWindowRequest, this);
+    evas_object_smart_callback_del_full(m_ewkView, "close,window", __closeWindowRequest, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -529,62 +509,11 @@ void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* 
         self->ewkViewClicked();
 }
 
-Ewk_View_Smart_Class * WebView::smartClass()
-{
-    static Ewk_View_Smart_Class clasz = EWK_VIEW_SMART_CLASS_INIT_NAME_VERSION("BrowserView");
-
-    return &clasz;
-}
-
-void WebView::onJavascriptAlert(Ewk_View_Smart_Data */*smartData*/, const char * /*message*/)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    /*\todo FIX, because is not working propetly
-    WebView * self = reinterpret_cast<WebView *>(evas_object_data_get(smartData->self, "_container"));
-    BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, self);
-    std::string msg = tizen_browser::tools::fromChar(message);
-
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ScriptAlert, self->m_tabId, std::string(), msg);
-    self->cofirmationRequest(c);
-    */
-}
-
-Eina_Bool WebView::onJavascriptConfirm(Ewk_View_Smart_Data */*smartData*/, const char * /*message*/)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    /*\todo FIX, because is not working propetly
-    WebView * self = reinterpret_cast<WebView *>(evas_object_data_get(smartData->self, "_container"));
-    BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, self);
-    std::string msg = tizen_browser::tools::fromChar(message);
-
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ScriptConfirmation, self->m_tabId, std::string(), msg);
-    self->cofirmationRequest(c);
-*/
-    return EINA_TRUE;
-}
-
-const char * WebView::onJavascriptPrompt(Ewk_View_Smart_Data */*smartData*/, const char * /* message */, const char */*defaultValue*/)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    /*/*\todo FIX, because is not working propetly
-    WebView * self = reinterpret_cast<WebView *>(evas_object_data_get(smartData->self, "_container"));
-    BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, self);
-
-    std::string msg = tizen_browser::tools::fromChar(message);
-    std::string userdata = tizen_browser::tools::fromChar(defaultValue);
-    ScriptPromptPtr c = std::make_shared<ScriptPrompt>(self->m_tabId, std::string(), msg);
-    c->setUserData(userdata);
-
-    self->cofirmationRequest(c);
-*/
-    return "none";
-}
-
-Evas_Object * WebView::onWindowCreate(Ewk_View_Smart_Data *smartData, const Ewk_Window_Features *)
+void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    WebView * self = reinterpret_cast<WebView *>(evas_object_data_get(smartData->self, "_container"));
+    WebView * self = reinterpret_cast<WebView *>(data);
     BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, self);
     BROWSER_LOGD("Window creating in tab: %s", self->getTabId().toString().c_str());
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
@@ -600,13 +529,13 @@ Evas_Object * WebView::onWindowCreate(Ewk_View_Smart_Data *smartData, const Ewk_
     BROWSER_LOGD("Created tab: %s", id.toString().c_str());
 
     Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
-    return tab_ewk_view;
+    *static_cast<Evas_Object**>(out) = tab_ewk_view;
 }
 
-void WebView::onWindowClose(Ewk_View_Smart_Data *smartData)
+void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    WebView * self = reinterpret_cast<WebView *>(evas_object_data_get(smartData->self, "_container"));
+    WebView * self = reinterpret_cast<WebView *>(data);
     std::shared_ptr<AbstractWebEngine<Evas_Object>> m_webEngine =
                 std::dynamic_pointer_cast
                 <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
@@ -717,29 +646,6 @@ void WebView::__backForwardListChanged(void * data, Evas_Object * /* obj */, voi
     WebView * self = reinterpret_cast<WebView *>(data);
     self->backwardEnableChanged(self->isBackEnabled());
     self->forwardEnableChanged(self->isForwardEnabled());
-}
-
-void WebView::__OnNewWindowRequest(void *data, Evas_Object*, void* out)
-{
-  BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
-  WebView * self = reinterpret_cast<WebView *>(data);
-  BROWSER_LOGD("Window creating in tab: %s", self->getTabId().toString().c_str());
-
-  std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>	m_webEngine;
-  m_webEngine = std::dynamic_pointer_cast
-  <
-	  basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService
-  >
-  (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
-  M_ASSERT(m_webEngine);
-
-  /// \todo: Choose newly created tab.
-  TabId id = m_webEngine->addTab(std::string(), &self->getTabId());
-  BROWSER_LOGD("Created tab: %s", id.toString().c_str());
-
-  Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
-  *static_cast<Evas_Object**>(out) = tab_ewk_view;
 }
 
 void WebView::__faviconChanged(void* data, Evas_Object*, void*)
@@ -973,7 +879,7 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::getFavicon() {
 
 #if PLATFORM(TIZEN)
 //    Evas_Object * favicon = ewk_view_favicon_get(m_ewkView);
-	 Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
+    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
 #else
     Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(m_ewkView));
     Evas_Object * favicon = ewk_favicon_database_icon_get(database, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));

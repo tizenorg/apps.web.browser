@@ -144,14 +144,8 @@ private:
 #if defined(USE_EWEBKIT)
     static std::string securityOriginToUri(const Ewk_Security_Origin *);
     static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
-
-    static Ewk_View_Smart_Class * smartClass();
-
-    static void onJavascriptAlert(Ewk_View_Smart_Data * smartData, const char * message);
-    static Eina_Bool onJavascriptConfirm(Ewk_View_Smart_Data * smartData, const char * message);
-    static const char * onJavascriptPrompt(Ewk_View_Smart_Data * smartData, const char * message, const char * defaultValue);
-    static Evas_Object * onWindowCreate(Ewk_View_Smart_Data * smartData, const Ewk_Window_Features * windowFeatures);
-    static void onWindowClose(Ewk_View_Smart_Data * smartData);
+    static void __newWindowRequest(void * data, Evas_Object *, void *out);
+    static void __closeWindowRequest(void * data, Evas_Object *, void *);
 #endif
 
     // Load
@@ -165,7 +159,6 @@ private:
     static void __urlChanged(void * data, Evas_Object * obj, void * event_info);
 
     static void __backForwardListChanged(void * data, Evas_Object * obj, void * event_info);
-	static void __OnNewWindowRequest(void *data, Evas_Object*, void* out);
 
     // Favicon - from database
     static void __faviconChanged(void* data, Evas_Object*, void*);
