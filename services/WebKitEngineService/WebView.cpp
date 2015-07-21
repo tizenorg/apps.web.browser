@@ -410,41 +410,6 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         m_confirmationAuthenticationMap.erase(auth);
         break;
     }
-    case WebConfirmation::ConfirmationType::ScriptAlert:
-        // set alert reply
-        ewk_view_javascript_alert_reply(m_ewkView);
-        break;
-    case WebConfirmation::ConfirmationType::ScriptConfirmation: {
-        Eina_Bool result;
-        if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
-        else if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
-        else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        };
-
-        // set confirm reply
-        ewk_view_javascript_confirm_reply(m_ewkView, result);
-        break;
-    }
-    case WebConfirmation::ConfirmationType::ScriptPrompt: {
-        ScriptPromptPtr prompt = std::dynamic_pointer_cast<ScriptPrompt, WebConfirmation>(confirmation);
-        Eina_Bool result;
-        if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
-        else if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
-        else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        };
-
-        // set prompt reply
-        ewk_view_javascript_prompt_reply(m_ewkView, prompt->getUserData().c_str());
-        break;
-    }
     default:
         break;
     }
