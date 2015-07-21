@@ -100,9 +100,6 @@ void WebView::init(Evas_Object * opener)
         {
             ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
             ewk_context_favicon_database_directory_set(context, (webkit_path + std::string("/favicon")).c_str());
-            ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(context)
-                                                     , (webkit_path + std::string("/cookies.db")).c_str()
-                                                     , EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
         }
     }
 
