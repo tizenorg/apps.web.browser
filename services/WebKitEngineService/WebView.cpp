@@ -421,7 +421,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("%s:%d %s NOT IMPLEMENTED, returning empty BrowserImage object", __FILE__, __LINE__, __func__);
     M_ASSERT(m_ewkView);
     M_ASSERT(targetWidth);
     M_ASSERT(targetHeight);
@@ -453,17 +453,16 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int
     double scaleW = (double)targetWidth / (double)(area.w);
     double scaleH = (double)targetHeight / (double)(area.h);
 
-    BROWSER_LOGD("[%s:%d] Before snapshot (screenshot) - look at the time of taking snapshot below",__func__, __LINE__);
 #if defined(USE_EWEBKIT)
 #if PLATFORM(TIZEN)
-    Evas_Object *snapshot = ewk_view_screenshot_contents_get( m_ewkView, area, scaleW > scaleH ? scaleW : scaleH, evas_object_evas_get(m_ewkView));
-    BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
+    Evas_Object *snapshot = nullptr;
+    // TODO use ewk_view_screenshot_contents_get_async API here
     if (snapshot)
         return tizen_browser::tools::EflTools::getBrowserImage(snapshot);
 #endif
 #endif
 
-    return std::shared_ptr<tizen_browser::tools::BrowserImage> ();
+    return noImage;
 }
 
 #if defined(USE_EWEBKIT)
@@ -649,12 +648,7 @@ std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
 {
     std::string protocol = tizen_browser::tools::fromChar(ewk_security_origin_protocol_get(origin));
     std::string uri = tizen_browser::tools::fromChar(ewk_security_origin_host_get(origin));
-    int port = ewk_security_origin_port_get(origin);
-    std::string url;
-    if (port)
-        url = (boost::format("%1%:%2%//%3%") % protocol % port % uri).str();
-    else
-        url = (boost::format("%1%://%2%") % protocol % uri).str();
+    std::string url = (boost::format("%1%://%2%") % protocol % uri).str();
     return url;
 }
 
@@ -813,7 +807,7 @@ double WebView::getZoomFactor() const
     }
 
 #if defined(USE_EWEBKIT)
-    return ewk_view_text_zoom_get(m_ewkView);
+    return ewk_view_page_zoom_get(m_ewkView);
 #else
     return 1.0;
 #endif
@@ -825,7 +819,7 @@ void WebView::setZoomFactor(double zoomFactor)
     if(m_ewkView){
         //using zoomFactor = 0 sets zoom "fit to screen"
 
-        ewk_view_text_zoom_set(m_ewkView, zoomFactor);
+        ewk_view_page_zoom_set(m_ewkView, zoomFactor);
     }
 #endif
 }
