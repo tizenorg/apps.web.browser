@@ -75,13 +75,6 @@ WebView::~WebView()
 void WebView::init(Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
-    Ewk_Context *context = ewk_context_default_get();
-    if (context)
-    {
-        ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
-        ewk_context_certificate_file_set(context, certificate_crt_path);
-    }
-
     m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
 
     evas_object_data_set(m_ewkView, "_container", this);
@@ -97,18 +90,24 @@ void WebView::init(Evas_Object * opener)
 #if PLATFORM(TIZEN)
     ewk_view_resume(m_ewkView);
 #endif
-#if 0
     // set local storage, favion, cookies
     std::string webkit_path =  boost::any_cast <std::string> (config.get("webkit/dir"));
-//    ewk_context_web_storage_path_set(context, (webkit_path + std::string("/storage")).c_str());
-    ewk_context_favicon_database_directory_set(context, (webkit_path + std::string("/favicon")).c_str());
-    ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(context)
-                                             , (webkit_path + std::string("/cookies.db")).c_str()
-                                             , EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
+
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
+            ewk_context_favicon_database_directory_set(context, (webkit_path + std::string("/favicon")).c_str());
+            ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(context)
+                                                     , (webkit_path + std::string("/cookies.db")).c_str()
+                                                     , EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
+        }
+    }
 
 ///\note Odroid modification - not exists in WebKit API
 //     ewk_cookie_manager_widget_cookie_directory_set(ewk_context_cookie_manager_get(context), webkit_path.c_str());
-#endif
     setupEwkSettings();
     registerCallbacks();
 #else
@@ -295,11 +294,20 @@ void WebView::setPrivateMode(bool state)
     Ewk_Settings * settings = ewk_page_group_settings_get(ewk_view_page_group_get(m_ewkView));
 #endif
     ewk_settings_private_browsing_enabled_set(settings, state);
-    if(state){
-         ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_NEVER);
-    }
-    else{
-         ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(ewk_context_default_get()), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            if(state)
+            {
+                 ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_NEVER);
+            }
+            else
+            {
+                 ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
+            }
+        }
     }
 #endif
 }
@@ -827,29 +835,30 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::getFavicon() {
 #if defined(USE_EWEBKIT)
     if (faviconImage.get() == NULL) {
 
-#if PLATFORM(TIZEN)
-//    Evas_Object * favicon = ewk_view_favicon_get(m_ewkView);
-    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
-#else
-    Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(m_ewkView));
-    Evas_Object * favicon = ewk_favicon_database_icon_get(database, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));
-#endif
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            Evas_Object * favicon = ewk_context_icon_database_icon_object_add(context, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));
 
 #ifndef NDEBUG
-        int w = 0, h = 0;
-        evas_object_image_size_get(favicon, &w, &h);
-        BROWSER_LOGD("[%s]: Info about favicon: w:%d h:%d, type: %s", __func__, w, h, evas_object_type_get(favicon));
+                int w = 0, h = 0;
+                evas_object_image_size_get(favicon, &w, &h);
+                BROWSER_LOGD("[%s]: Info about favicon: w:%d h:%d, type: %s", __func__, w, h, evas_object_type_get(favicon));
 #endif
-        if (favicon) {
-            std::shared_ptr<tizen_browser::tools::BrowserImage>
-                image = tizen_browser::tools::EflTools::getBrowserImage(favicon);
+                if (favicon) {
+                    std::shared_ptr<tizen_browser::tools::BrowserImage>
+                        image = tizen_browser::tools::EflTools::getBrowserImage(favicon);
 
-            evas_object_unref(favicon);
+                    evas_object_unref(favicon);
 
-            return image;
+                    return image;
+                }
+            } else {
+                return faviconImage;
+            }
         }
-    } else {
-        return faviconImage;
     }
 #endif
 
@@ -861,9 +870,15 @@ void WebView::clearPrivateData()
 {
     BROWSER_LOGD("Clearing private data");
 #if defined(USE_EWEBKIT)
-    Ewk_Context * context = ewk_context_default_get();
-    ewk_context_web_storage_delete_all(context);
-    ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_web_storage_delete_all(context);
+            ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
+        }
+    }
 #endif
 }
 
