@@ -324,7 +324,8 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
             break;
         }
         // set geolocation permission
-        ewk_geolocation_permission_request_set(request, result );
+        ewk_geolocation_permission_reply(request, result);
+        ewk_view_resume(m_ewkView);
 
         // remove from map
         m_confirmationGeolocationMap.erase(confirmation);
@@ -343,7 +344,8 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         };
 
         // set usermedia permission
-        ewk_user_media_permission_request_set(request, result);
+        ewk_user_media_permission_reply(request, result);
+        ewk_view_resume(m_ewkView);
 
         // remove from map
         m_confirmationUserMediaMap.erase(confirmation);
@@ -362,7 +364,8 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         }
 
         // set notification permission
-        ewk_notification_permission_request_set(request, result);
+        ewk_notification_permission_reply(request, result);
+        ewk_view_resume(m_ewkView);
 
         // remove from map
         m_confirmationNotificationMap.erase(confirmation);
@@ -701,7 +704,7 @@ void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj *
         return;
 
     // suspend webview
-    ewk_geolocation_permission_request_suspend(request);
+    ewk_view_suspend(self->m_ewkView);
 
     std::string url = WebView::securityOriginToUri(ewk_geolocation_permission_request_origin_get(request));
 
@@ -728,7 +731,7 @@ void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */,
         return;
 
     // suspend webview
-    ewk_user_media_permission_request_suspend(request);
+    ewk_view_suspend(self->m_ewkView);
 
     ///\todo add translations
     std::string message = "User media permission request";
@@ -753,14 +756,12 @@ void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj 
         return;
 
     // suspend webview
-    ewk_notification_permission_request_suspend(request);
-
-    std::string url = WebView::securityOriginToUri(ewk_notification_permission_request_origin_get(request));
+    ewk_view_suspend(self->m_ewkView);
 
     ///\todo add translations
-    std::string message = (boost::format("%1% wants to display notifications") % url).str();
+    std::string message = (boost::format("%1% wants to display notifications") % self->getURI()).str();
 
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ConfirmationType::Notification, self->m_tabId, url, message);
+    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ConfirmationType::Notification, self->m_tabId, self->getURI(), message);
 
     // store
     self->m_confirmationNotificationMap[c] = request;

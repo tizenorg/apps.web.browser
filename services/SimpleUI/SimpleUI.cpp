@@ -611,7 +611,7 @@ void SimpleUI::onReturnPressed(MenuButton *m)
     m->hidePopup();
 }
 
-void SimpleUI::setwvIMEStatus(bool status) 
+void SimpleUI::setwvIMEStatus(bool status)
 {
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
@@ -864,8 +864,9 @@ void SimpleUI::tabClicked(const tizen_browser::basic_webengine::TabId& tabId)
 
 void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation)
 {
-    std::cerr<<"Web confirmation signal received"<<std::endl;
-    switch(webConfirmation->getConfirmationType()) {
+    BROWSER_LOGD("%s", __func__);
+    switch(webConfirmation->getConfirmationType())
+    {
         case basic_webengine::WebConfirmation::ConfirmationType::Authentication:
         {
         basic_webengine::AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<basic_webengine::AuthenticationConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
@@ -903,14 +904,21 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         popup->setData(popupData);
         popup->buttonClicked.connect(boost::bind(&SimpleUI::authPopupButtonClicked, this, _1, _2));
         popup->show();
-        }
         break;
+        }
+
         case basic_webengine::WebConfirmation::ConfirmationType::CertificateConfirmation:
+        case basic_webengine::WebConfirmation::ConfirmationType::Geolocation:
+        case basic_webengine::WebConfirmation::ConfirmationType::UserMedia:
+        case basic_webengine::WebConfirmation::ConfirmationType::Notification:
         {
+        // Implicitly accepted
+        BROWSER_LOGE("NOT IMPLEMENTED: popups to confirm Ceritificate, Geolocation, UserMedia, Notification");
         webConfirmation->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
         m_webEngine->confirmationResult(webConfirmation);
         break;
         }
+
     default:
         break;
     }
