@@ -44,10 +44,12 @@ public:
     virtual std::string getName();
 
     int getHistoryId(const std::string & url);
+
     /**
      * @throws HistoryException on error
      */
-    void addHistoryItem(std::shared_ptr<HistoryItem> hi);
+    void addHistoryItem(std::shared_ptr<HistoryItem> hi,
+                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>());
 
     /**
      * If hi->getUrl() exists on a table HISTORY update visit_counter and visit_date, unless insert hi to database.
@@ -75,6 +77,7 @@ public:
      * @throws HistoryException on error
      */
     HistoryItemVector & getHistoryItems(int historyDepthInDays = 7, int maxItems = 50);
+    HistoryItemVector & getMostVisitedHistoryItems();
 
     /**
      * @throws HistoryException on error
@@ -89,6 +92,10 @@ public:
     void setStorageServiceTestMode(bool testmode = true);
 
     boost::signals2::signal<void (bool)>historyEmpty;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyAdded;
+    boost::signals2::signal<void (const std::string& uri)> historyDeleted;
+    boost::signals2::signal<void ()> historyAllDeleted;
+
 private:
     bool m_testDbMod;;
     std::vector<std::shared_ptr<HistoryItem>> history_list;

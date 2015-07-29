@@ -1,0 +1,91 @@
+#include "ImageButton.edc"
+#include "Spacer.edc"
+collections {
+
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_history", 70, 70, "web_ico_history.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_bookmark", 70, 70, "web_ico_favorite_on.png")
+
+  group {
+        name: "web_view_bar";
+        parts {
+            part { name: "most_visited_button";
+                type :RECT;
+                scale: 1;
+                description {
+                    
+		 state: "default" 0.0;
+                    visible: 1;
+                    fixed :1 1;
+                    align: 0.5 0.5;
+                    min: 70 70;
+                    max: 70 70;
+
+
+
+		rel1 {
+
+                  relative: 1.0 1.0;
+
+                  offset: 150 150;
+
+               }
+
+               rel2 {
+
+                  relative: 0.9 0.8;
+
+                  offset: 150 150;
+
+               }
+}
+
+}
+       
+ 
+                   
+part { name: "visited_bookmarks";
+                type :RECT;
+                scale: 1;
+                description {
+
+                 state: "default" 0.0;
+                    visible: 1;
+
+                    align: 0.5 0.5;
+                    min: 70 70;
+                    max: 70 70;
+
+	fixed :1 1;
+
+
+                rel1 {
+
+                  relative: 1.0 1.0;
+
+                  offset: 150 150;
+
+               }
+
+               rel2 {
+
+                  relative: 0.9 0.8;
+
+                  offset: 150 150;
+
+               }
+}
+
+}
+          
+        
+
+
+
+
+
+
+  
+                
+            }
+        }
+ }

@@ -1,0 +1,574 @@
+#define WIDTH 473
+#define HEIGHT 490
+#define DEBUG_RECT_OVER(over_part, r, g, b)                         \
+    part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
+                                                                    \
+scale:1;                                                            \
+        type : RECT;                                                \
+        repeat_events: 1;                                           \
+        description {                                               \
+            state: "default" 0.0;                                   \
+            visible: 1;                                             \
+            color: r g b 128;                                       \
+            rel1 { to: over_part; relative: 0 0; }                  \
+            rel2 { to: over_part; relative: 1 1; }                  \
+        }                                                           \
+    }
+data { item: "width" WIDTH; item: "height" HEIGHT; }
+color_classes{
+    color_class{
+        name: "defaultFontColor";
+        color: 211 211 211 255;
+    }
+    color_class{
+        name: "disabledFontColor";
+        color: 60 60 60 160;
+    }
+    color_class{
+        name: "selectedItemFontColor";
+        color: 255 255 255 255;
+    }
+    color_class{
+        name: "transparent";
+        color: 0 0 0 0;
+    }
+    color_class{
+        name: "selectedBackground";
+        color: 69 143 255 255;
+    }
+    color_class{
+        name: "dimmColor";
+        color: 0 0 0 128;
+    }
+    color_class{
+        name: "on_offBackgroundColor";
+        color: 255 255 255 255;
+    }
+}
+collections {
+    group{ name: "elm/genlist/base/bookmarks_manager";
+        min: 473 426;
+        max: 473 426;
+        parts{
+            part { name: "clipper";
+                type: RECT;
+                mouse_events: 0;
+                description { state: "default" 0.0;
+                    rel1 {
+                        relative: 0 0;
+                    }
+                    rel2{
+                        relative: 1 1;
+                    }
+                }
+            }
+            part{
+                name: "background";
+                type: RECT;
+                description{
+                    state: "default" 0.0;
+                    color: 18 22 34 255;
+                    rel1{
+                        relative: 0 0;
+                    }
+                    rel2{
+                        relative: 1 1;
+                    }
+                }
+            }
+            part{
+                name: "elm.swallow.content";
+                type: SWALLOW;
+                clip_to: "clipper";
+                mouse_events: 1;
+                description{
+                    state: "default" 0.0;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    rel1{
+                        relative: 0 0;
+                    }
+                    rel2{
+                        relative: 1 1;
+                    }
+                }
+            }
+            part{
+                name: "elm.swallow.empty";
+                type: SWALLOW;
+                description{
+                    state: "default" 0.0;
+                    fixed: 1 1;
+                    rel1{
+                        relative: 0.5 0.5;
+                    }
+                    rel2{
+                        relative: 0.5 0.5;
+                    }
+                }
+            }
+            part{ name: "dimmer";
+                type: RECT;
+                description{
+                    state: "default" 0.0;
+                    color: 0 0 0 128;
+                    visible: 0;
+                }
+                description{
+                    state: "popup_show" 0.0;
+                    inherit: "default";
+                    visible:1;
+                }
+            }
+        }//parts
+        programs{
+            program{
+                name: "show_popup";
+                signal: "show_popup";
+                source: "SettingsModel";
+                action: STATE_SET "popup_show" 0.0;
+                target: "dimmer";
+            }
+            program{
+                name: "hide_popup";
+                signal: "hide_popup";
+                source: "SettingsModel";
+                action: STATE_SET "default" 0.0;
+                target: "dimmer";
+            }
+        }
+    }//group
+    group{ name: "elm/genlist/item/bookmarks_manager_item/default";
+        alias: "elm/genlist/item_odd/bookmarks_manager_item/default";
+        alias: "elm/genlist/item_compress/bookmarks_manager_item/default";
+        alias: "elm/genlist/item_compress_odd/bookmarks_manager_item/default";
+        min: 473 80;
+        max: 473 80;
+        data.item: "texts" "optionName";
+        data.item: "contents" "optionValue";
+        parts{
+            part{
+                name: "value_helper";
+                mouse_events:0;
+                description{
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                }
+                description{
+                    state: "on" 0.0;
+                    color: 0 0 0 0;
+                }
+                description{
+                    state: "off" 0.0;
+                    color: 0 0 0 0;
+                }
+            }
+            part{
+                name: "optionBackground";
+                type: RECT;
+                mouse_events: 1;
+                description{
+                    state: "default" 0.0;
+                    color_class: "transparent";
+                    rel1{
+                        relative: 0.0 0.0;
+                    }
+                    rel2{
+                        relative: 1.0 1.0;
+                    }
+                }
+                description{
+                    state: "mouseOver" 0.0;
+                    inherit: "default";
+                    color_class: "selectedBackground";
+                }
+                description{
+                    state: "mouseOut" 0.0;
+                    inherit: "default";
+                }
+                description{
+                    state: "selected" 0.0;
+                    inherit: "mouseOver";
+                }
+            }
+            part{ name:"optionName";
+                type: TEXT;
+                description{
+                    state: "default" 0.0;
+                    align: 0 0.5;
+                    min: 298 80;
+                    max: 298 80;
+                    color_class: "defaultFontColor";
+                    rel1{
+                        relative: 0.0 0.0;
+                        offset: 25 0;
+                    }
+                    rel2.relative: 1.0 1.0;
+                    text{
+                        size: 30;
+                        align: 0 0.5;
+                    }
+                }
+                description{
+                    state: "mouseOut" 0.0;
+                    inherit: "default";
+                }
+                description{
+                    state: "mouseOver" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: "selectedItemFontColor";
+                }
+                description{
+                    state: "disabled" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: "disabledFontColor";
+                }
+            }
+            part{ name: "optionValue";
+                type: SWALLOW;
+                description{
+                    state: "default" 0.0;
+                    align: 0 0.5;
+                    fixed: 1 1;
+                    min: 100 40;
+                    max: 100 40;
+                    visible: 1;
+                    rel1{
+                        relative: 1.0 0.0;
+                        to: "optionName";
+                        offset: 25 0;
+                    }
+                    rel2{
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            programs{
+                program{ name: "mouse_in";
+                    signal: "mouse,in";
+                    source: "option*";
+                    script{
+                        new cur_state_helper[31];
+                        new Float:index;
+                        get_state(PART:"optionName", cur_state_helper, 30, index);
+                        if(!strcmp(cur_state_helper,"default")){
+                            set_state(PART:"optionBackground", "mouseOver", 0.0);
+                        }
+                    }
+                }
+                program{ name: "mouse_out";
+                    signal: "mouse,out";
+                    source: "option*";
+                    script{
+                        new st[31];
+                        new Float:vl
+                        get_state(PART:"optionBackground", st, 30, vl);
+                        if(strcmp(st,"selected")){
+                            set_state(PART:"optionBackground", "mouseOut", 0.0);
+                        }
+                    }
+                }
+                program{ signal: "selected";
+                    source: "SettingsModel";
+                    action: STATE_SET "selected" 0.0;
+                    target: "optionBackground";
+                }
+                program{ signal: "unselected";
+                    source: "SettingsModel";
+                    action: STATE_SET "mouseOut" 0.0;
+                    target: "optionBackground";
+                }
+                program{ name: "go_disabled";
+                    signal: "elm,state,disabled"; source: "elm";
+                    action: STATE_SET "disabled" 0.0;
+                    target: "optionName";
+                }
+                program{ name: "go_enabled";
+                    signal: "elm,state,enabled"; source: "elm";
+                    action: STATE_SET "default" 0.0;
+                    target: "optionName";
+                }
+                program{ name: "go_Off";
+                    signal: "switch,off";
+                    source: "SettingsModel";
+                    action: STATE_SET "off" 0.0;
+                    target: "value_helper";
+                }
+                program{ name: "go_On";
+                    signal: "switch,on";
+                    source: "SettingsModel";
+                    action: STATE_SET "on" 0.0;
+                    target: "value_helper";
+                }
+                program{ name: "go_switch_hide";
+                    signal: "switch,hide";
+                    source: "SettingsModel";
+                    action: STATE_SET "default" 0.0;
+                    target: "value_helper";
+                }
+            }//programs
+        }//parts
+    }//group
+    group{ name: "elm/ctxpopup/bg/bookmarks_manager_button";
+        parts {
+            part{
+                name: "base_bg";
+                type: RECT;
+                mouse_events: 1;
+                description{
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs{
+            program {
+                signal: "mouse,clicked,*";
+                source: "base_bg";
+                action: SIGNAL_EMIT "elm,action,click" "";
+            }
+        }
+    }//group: "elm/ctxpopup/bg/bookmarks_manager_button";
+    group{ name: "elm/ctxpopup/base/bookmarks_manager_button";
+        max: 0 0;
+        parts{
+            part{
+                name: "base";
+                scale: 1;
+                type: RECT;
+                description{
+                    state: "default" 0.0;
+                    min: 185 164;
+                    max: 185 164;
+                    //color: 0 0 0 0;
+                    color_class: "transparent";
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: "on_offBackgroundColor";
+                    visible: 1;
+                }
+            }
+            part{
+                name: "elm.swallow.content";
+                scale: 1;
+                type: SWALLOW;
+                description{
+                    state: "default" 0.0;
+                    rel1{
+                        to:"base";
+                        relative: 0 0;
+                    }
+                    rel2{
+                        to:"base";
+                        relative:1 1;
+                    }
+                }
+            }
+        }
+        programs {
+            program {
+                signal: "elm,state,show"; source: "elm";
+                action: STATE_SET "visible" 0.0;
+                transition: LINEAR 0.2;
+                target: "base";
+            }
+            program {
+                signal: "elm,state,hide"; source: "elm";
+                action: STATE_SET "default" 0.0;
+                transition: LINEAR 0.3;
+                target: "base";
+                after: "hide2";
+            }
+            program { name: "hide2";
+                action: SIGNAL_EMIT "elm,action,hide,finished" "";
+            }
+        }
+    }//group "elm/ctxpopup/base/bookmarks_manager_button";
+    group{ name: "elm/radio/base/bookmarks_manager_radio";
+        images.image: "check_foc.png" COMP;
+        images.image: "check_nor.png" COMP;
+        parts{
+            part{name: "item_bg"; type: RECT; mouse_events:0;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    color_class: "transparent";
+                    min: 185 82;
+                    max: 185 82;
+                }
+                description{
+                    state: "mouse_over" 0.0;
+                    inherit: "default";
+                    color_class: "selectedBackground";
+                }
+            }
+            part{name: "left_spacer"; type: SPACER;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    min: 20 82;
+                    max: 20 82;
+                    align: 0 0;
+                    rel1{
+                        relative:0 0;
+                        to: item_bg;
+                    }
+                }
+            }
+            part{name: "elm.text"; type: TEXT; mouse_events: 0;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    color_class: "defaultFontColor";
+                    align: 0 0.5;
+                    rel1{
+                        relative: 1 0;
+                        to: "left_spacer";
+                    }
+                    rel2{
+                        relative: 0 1;
+                        to_x: "indicator";
+                        to_y: "right_spacer";
+                    }
+                    text{
+                        size: 30;
+                        align: 0 0.5;
+                    }
+                }
+                description{
+                    state: "mouse_over" 0.0;
+                    inherit: "default";
+                    color_class: "selectedItemFontColor";
+                }
+            }
+            part { name: "indicator"; mouse_events: 0;
+                scale: 1;
+                type: IMAGE;
+                description { state: "default" 0.0;
+                    align: 1 0.5;
+                    rel2{
+                        relative: 0 1;
+                        to: "right_spacer";
+                    }
+                    min: 38 38;
+                    max: 38 38;
+                    visible: 0;
+                }
+                description {
+                    state: "selected" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    image.normal: "check_foc.png";
+                }
+                description{
+                    state: "selected_mouse_over" 0.0;
+                    inherit: "selected";
+                    image.normal: "check_nor.png";
+                }
+            }
+            part{ name: "right_spacer"; type: SPACER;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    min: 20 82;
+                    max: 20 82;
+                    align: 1 1;
+                    rel2{
+                        relative:1 1;
+                        to: item_bg;
+                    }
+                }
+            }
+            part{ name: "event"; type: RECT;
+                description{
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                }
+            }
+        }//parts
+        script {
+            public mouse_in() {
+                new st[31];
+                new Float:vl
+                get_state(PART:"indicator", st, 30, vl)
+                if(!strcmp(st,"selected"))
+                    set_state(PART:"indicator", "selected_mouse_over", 0.0);
+                set_state(PART:"item_bg", "mouse_over", 0.0);
+                set_state(PART:"elm.text", "mouse_over", 0.0);
+            }
+            public mouse_out() {
+                new st[31];
+                new Float:vl
+                get_state(PART:"indicator", st, 30, vl)
+                if(!strcmp(st,"selected_mouse_over"))
+                    set_state(PART:"indicator", "selected", 0.0);
+                set_state(PART:"item_bg", "default", 0.0);
+                set_state(PART:"elm.text", "default", 0.0);
+            }
+        }
+        programs{
+            program{
+                signal: "mouse,clicked,1"; source: "event";
+                action: SIGNAL_EMIT "elm,action,radio,toggle" "";
+            }
+            program{
+                signal: "mouse,in"; source: "event";
+                script{
+                    mouse_in();
+                }
+            }
+            program{
+                signal: "mouse,out"; source: "event";
+                script{
+                    mouse_out();
+                }
+            }
+            program{
+                signal: "elm,action,focus"; source: "elm";
+                script{
+                    mouse_in();
+                }
+            }
+            program{
+                signal: "elm,action,unfocus"; source: "elm";
+                script{
+                    mouse_out();
+                }
+            }
+            program{
+                signal: "elm,state,radio,on"; source: "elm";
+                action: STATE_SET "selected" 0.0;
+                target: "indicator";
+            }
+            program{
+                signal: "elm,state,radio,off"; source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "indicator";
+            }
+        }
+    }//group "elm/radio/base/bookmarks_manager_radio";
+
+    group { name: "elm/label/base/bookmarks_manager_label";
+       styles {
+          style { name: "label_style";
+             base: "font="FNBD" font_size=30 text_class=tb_plain align=center color=#d3d3d3ff";
+             tag: "br" "\n";
+             tag: "hilight" "+ font="FNBD" color=#d3d3d3ff text_class=tb_plain";
+             tag: "b" "+ font="FNBD" color=#d3d3d3ff text_class=tb_light";
+          }
+       }
+       parts {
+          part { name: "elm.text"; type: TEXTBLOCK;
+             scale: 1;
+             description { state: "default" 0.0;
+                text { style: "label_style";
+                   min: 1 1;
+                }
+             }
+          }
+       }
+    }
+}//collections

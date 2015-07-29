@@ -23,10 +23,8 @@
 #ifndef BOOKMARKITEM_H
 #define BOOKMARKITEM_H
 
-#include <memory>
-#include <list>
-#include <vector>
-
+#include "BrowserLogger.h"
+#include "Config.h"
 #include "BrowserImage.h"
 
 namespace tizen_browser{
@@ -69,6 +67,12 @@ public:
     void setTags(const std::vector<unsigned int>& tags) { m_tags = tags; };
     std::vector<unsigned int> getTags() const { return m_tags; };
 
+    bool is_folder(void) const { return m_is_folder; }
+    bool is_editable(void) const { return m_is_editable; }
+
+    void set_folder_flag(bool flag) { m_is_folder = flag; }
+    void set_editable_flag(bool flag) { m_is_editable = flag; }
+
 private:
     unsigned int m_saved_id;
     std::string m_url;
@@ -78,6 +82,8 @@ private:
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_favicon;
     unsigned int m_directory;
     std::vector<unsigned int> m_tags;
+    bool m_is_folder;
+    bool m_is_editable;
 };
 
 typedef std::shared_ptr<BookmarkItem> SharedBookmarkItem;

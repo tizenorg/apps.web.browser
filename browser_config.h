@@ -21,4 +21,7 @@
 
 #define PLATFORM(_pl) (defined PLATFORM_##_pl && PLATFORM_##_pl)
 
+// Remove this define when merging from new ui implementation is finished
+#define MERGE_ME 0
+
 #endif

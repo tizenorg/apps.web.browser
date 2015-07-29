@@ -26,9 +26,6 @@
 
 #include <Evas.h>
 
-//#include <EWebKit2.h>
-//#include <ewk_chromium.h>
-
 #include "AbstractMainWindow.h"
 #include "AbstractService.h"
 #include "AbstractFavoriteService.h"
@@ -37,9 +34,21 @@
 
 // components
 #include "AbstractWebEngine.h"
-#include "BookmarksUI.h"
+#if MERGE_ME
+#include "BookmarkManagerUI.h"
+#include "MoreMenuUI.h"
+#include "HistoryUI.h"
+#include "SettingsUI.h"
+#endif
+#include "MainUI.h"
+#if MERGE_ME
+#include "TabUI.h"
+#endif
 #include "ButtonBar.h"
 #include "HistoryService.h"
+#if MERGE_ME
+#include "BookmarkManagerUI.h"
+#endif
 #include "SimpleURI.h"
 #include "SimpleScroller.h"
 #include "WebTitleBar.h"
@@ -53,6 +62,7 @@
 #include "WebConfirmation.h"
 #include "ZoomList.h"
 #include "TabList.h"
+#include "BookmarksManager.h"
 #include "Settings.h"
 #include "HistoryList.h"
 #include "NetworkErrorHandler.h"
@@ -67,8 +77,6 @@ void AbstractMainWindow<Evas_Object>::setMainWindow(Evas_Object * rawPtr)
 {
     m_window = std::shared_ptr<Evas_Object>(rawPtr, evas_object_del);
 }
-
-
 
 class BROWSER_EXPORT SimpleUI : public AbstractMainWindow<Evas_Object>
 {
@@ -106,23 +114,34 @@ private:
 
     bool isHomePageActive();
     void switchViewToHomePage();
-    void switchViewToBrowser();
     void updateBrowserView();
+    void updateWebView();
+    void updateURIBarView();
     void updateView();
 
     void openNewTab(const std::string &uri);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
-    void newTabClicked();
+    void newTabClicked(const std::string &);
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void tabCreated();
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     void bookmarkCheck();
-    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks();
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = 0);
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders();
+    std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > getHistory();
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
+
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onBookmarkDeleteClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onBookmarkRemoved(const std::string& uri);
+
+    void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onHistoryRemoved(const std::string& uri);
+    void onHistoryClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onMostVisitedClicked(const std::string&);
+    void onBookmarkButtonClicked(const std::string&);
+    void onBookmarkManagerButtonClicked(const std::string&);
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
@@ -133,8 +152,6 @@ private:
 
     void setwvIMEStatus(bool status);
 
-
-
     sharedAction m_back;
     sharedAction m_forward;
     sharedAction m_stopLoading;
@@ -142,14 +159,22 @@ private:
     sharedAction m_bookmark;
     sharedAction m_unbookmark;
     sharedAction m_tab;
-    sharedAction m_history;
+    sharedAction m_share;
     sharedAction m_zoom_in;
-    sharedAction m_showSettingsPopup;
+    sharedAction m_showMoreMenu;
+    sharedAction m_showBookmarkManagerUI;
     sharedAction m_settingPointerMode;
-//    sharedAction m_settingPrivateBrowsing;
+    sharedAction m_settingPrivateBrowsing;
     sharedAction m_settingDeleteHistory;
     sharedAction m_settingDeleteData;
     sharedAction m_settingDeleteFavorite;
+    sharedAction m_mostvisited;
+    sharedAction m_bookmarksvisited;
+    sharedAction m_bookmarks_manager_Add_NewFolder;
+    sharedAction m_bookmarks_manager_BookmarkBar;
+    sharedAction m_bookmarks_manager_Folder1;
+    sharedAction m_bookmarks_manager_Folder2;
+    sharedAction m_bookmarks_manager_Folder3;
 
     /**
      * \brief filters URL before it is passed to WebEngine.
@@ -173,13 +198,13 @@ private:
      * and this is a back function that checks if address emited from browser should be changed.
      */
     void webEngineURLChanged(const std::string& url);
-
-    /**
+    void onmostHistoryvisitedClicked();
+    void onBookmarkvisitedClicked();
+     /**
      * @brief Adds current page to bookmarks.
      *
      */
-    void addToBookmarks(void);
-
+    void addToBookmarks(int);
     /**
      * @brief Remove current page from bookmarks
      *
@@ -197,31 +222,48 @@ private:
 
     void showHistory();
     void hideHistory();
+    void AddBookmarkPopup(std::string& str);
+    void AddNewFolderPopup(std::string& str);
 
-    /**
-    * \brief shows Tab showTabMenu
-    */
-    void showTabMenu();
-
-    void showSettingsMenu();
+    void saveFolder(const char* title, int folder_id, int by_user);
+    void NewFolder(const char* title, int folder_id, int by_user);
+    void showTabUI();
+    void closeTabUI(const std::string& str);
+    void showMoreMenu();
+    void closeMoreMenu(const std::string& str);
+    void showHistoryUI(const std::string& str);
+    void closeHistoryUI(const std::string& str);
+    void showMainUI();
+    void hideMainUI();
+    void showURIBar();
+    void hideURIBar();
+    void hideWebView();
     void hideSettingsMenu();
+    void showSettingsUI(const std::string&);
+    void closeSettingsUI(const std::string&);
 
     void showProgressBar();
     void hideProgressBar();
 
+    void closeBookmarkManagerMenu(std::string& str);
+    void updateBookmakMangaerGenGrid(int folder_id);
+    void showBookmarkManagerMenu();
 
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
-
 
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
     void settingsPointerModeSwitch(bool newState);
     void settingsPrivateModeSwitch(bool newState);
-    void settingsDeleteHistory();
     void settingsDeleteData();
     void settingsDeleteFavorite();
-    void onDeleteHistoryButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void settingsDeleteSelectedData(const std::string& str);
+    void settingsResetMostVisited(const std::string& str);
+    void settingsResetBrowser(const std::string& str);
+    void onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onDeleteDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onDeleteFavoriteButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
@@ -242,6 +284,7 @@ private:
     Evas_Object *m_mainLayout;
     Evas_Object *m_progressBar;
     Evas_Object *m_popup;
+    Evas_Object *m_entry;
     Evas_Object *m_errorLayout;
     CustomPopup *m_ownPopup;
     SimpleScroller *m_scroller;
@@ -249,19 +292,32 @@ private:
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
     std::shared_ptr<tizen_browser::base_ui::SimpleURI> m_simpleURI;
     std::shared_ptr<ButtonBar> leftButtonBar;
+    std::shared_ptr<ButtonBar> webviewbar;
+
     std::shared_ptr<ButtonBar> rightButtonBar;
     std::shared_ptr<tizen_browser::interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
-    std::shared_ptr<tizen_browser::base_ui::BookmarksUI> m_bookmarksUI;
+#if MERGE_ME
+    std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> m_moreMenuUI;
+    std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> m_bookmarkManagerUI;
+#endif
+    std::shared_ptr<tizen_browser::base_ui::MainUI> m_mainUI;
+#if MERGE_ME
+    std::shared_ptr<tizen_browser::base_ui::HistoryUI> m_historyUI;
+    std::shared_ptr<tizen_browser::base_ui::SettingsUI> m_settingsUI;
+    std::shared_ptr<tizen_browser::base_ui::TabUI> m_tabUI;
+#endif
     std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
     std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
     std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
     tizen_browser::Session::Session m_currentSession;
+    std::shared_ptr<BookmarksManager> m_bookmarks_manager;
     std::shared_ptr<Settings> m_settings;
     std::shared_ptr<HistoryList> m_historyList;
     std::shared_ptr<WebTitleBar> webTitleBar;
     bool m_initialised;
+    bool m_isHomePageActive;
     zoom_type m_currentZoom;
     int m_tabLimit;
     int m_favoritesLimit;

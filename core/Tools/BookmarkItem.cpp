@@ -54,7 +54,6 @@ BookmarkItem::BookmarkItem(
 
 }
 
-
 BookmarkItem::~BookmarkItem()
 {
 }

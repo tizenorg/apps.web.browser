@@ -32,6 +32,7 @@ HistoryItem::HistoryItem(const std::string & url,
     : m_url(url)
     , m_title(title)
     , m_favIcon(image)
+    , m_lastVisit()
 {
 }
 
@@ -140,6 +141,17 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> HistoryItem::getFavIcon()
 {
     return m_favIcon;
 }
+
+void HistoryItem::setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
+{
+    m_thumbnail = thumbnail;
+};
+
+std::shared_ptr<tizen_browser::tools::BrowserImage> HistoryItem::getThumbnail() const
+{
+
+    return m_thumbnail;
+};
 
 void HistoryItem::setUriFavicon(const std::string & uri) {
     m_urifavicon = uri;

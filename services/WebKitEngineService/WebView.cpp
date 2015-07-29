@@ -24,7 +24,6 @@
 #include "WebView.h"
 
 #if defined(USE_EWEBKIT)
-//#include <EWebKit2.h>
 #include <ewk_chromium.h>
 #endif
 
@@ -46,7 +45,11 @@
 #include "ServiceManager.h"
 
 #define certificate_crt_path CERTS_DIR
+#if MERGE_ME
 #define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
+#else
+#define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1"
+#endif
 
 using namespace tizen_browser::tools;
 
@@ -57,7 +60,8 @@ namespace webkitengine_service {
 WebView::WebView(Evas_Object * obj, TabId tabId)
     : m_parent(obj)
     , m_tabId(tabId)
-    , m_ewkView(NULL)
+    , m_title(std::string())
+    , m_ewkView(nullptr)
     , m_isLoading(false)
     , m_loadError(false)
 {
@@ -78,7 +82,7 @@ void WebView::init(Evas_Object * opener)
 #if defined(USE_EWEBKIT)
 
 #if 0 //not using smart class
-    static Ewk_View_Smart_Class *clasz = NULL;
+    static Ewk_View_Smart_Class *clasz = nullptr;
     Ewk_Context *context = ewk_context_default_get();
     if (!clasz) {
         clasz = smartClass();
@@ -87,11 +91,13 @@ void WebView::init(Evas_Object * opener)
 //        clasz->run_javascript_alert = onJavascriptAlert;
 //        clasz->run_javascript_confirm = onJavascriptConfirm;
 //        clasz->run_javascript_prompt = onJavascriptPrompt;
-        clasz->window_create = onWindowCreate;
-        clasz->window_close = onWindowClose;
+//        clasz->window_create = onWindowCreate;
+//        clasz->window_close = onWindowClose;
+
 
         ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
         ewk_context_certificate_file_set(context, certificate_crt_path);
+
     }
 
     Evas_Smart *smart = evas_smart_class_new(&clasz->sc);
@@ -99,8 +105,8 @@ void WebView::init(Evas_Object * opener)
     /// \todo: Consider process model. Now, One UIProcess / One WebProcess.
 //    if (opener)
 //        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_view_page_group_get(opener));
-    else
-        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_page_group_create(NULL));
+//    else
+        m_ewkView = ewk_view_smart_add(evas_object_evas_get(m_parent), smart, context, ewk_page_group_create(nullptr));
 #else
 	m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
 //	Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -481,7 +487,7 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int
     M_ASSERT(targetHeight);
     Evas_Coord vw, vh;
     std::shared_ptr<tizen_browser::tools::BrowserImage> noImage = std::make_shared<tizen_browser::tools::BrowserImage>();
-    evas_object_geometry_get(m_ewkView, NULL, NULL, &vw, &vh);
+    evas_object_geometry_get(m_ewkView, nullptr, nullptr, &vw, &vh);
     if (vw == 0 || vh == 0)
         return noImage;
 
@@ -679,7 +685,7 @@ void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)
     {
         BROWSER_LOGD("Stop signal emitted");
         BROWSER_LOGD("Error description: %s", ewk_error_description_get(error));
-        evas_object_smart_callback_call(obj, "load,stop", NULL);
+        evas_object_smart_callback_call(obj, "load,stop", nullptr);
     }
     else
     {
@@ -964,7 +970,7 @@ bool WebView::hasFocus() const
 
 double WebView::getZoomFactor() const
 {
-    if(EINA_UNLIKELY(m_ewkView == NULL)){
+    if(EINA_UNLIKELY(m_ewkView == nullptr)){
         return 1.0;
     }
 
@@ -997,16 +1003,15 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::getFavicon() {
     M_ASSERT(m_ewkView);
 
 #if defined(USE_EWEBKIT)
-    if (faviconImage.get() == NULL) {
-
-#if PLATFORM(TIZEN)
-//    Evas_Object * favicon = ewk_view_favicon_get(m_ewkView);
-	 Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
+    if (faviconImage.get() == nullptr) {
+#if MERGE_ME
+//#if PLATFORM(TIZEN)
+    Evas_Object * favicon = ewk_view_favicon_get(m_ewkView);
+    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
 #else
     Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(m_ewkView));
     Evas_Object * favicon = ewk_favicon_database_icon_get(database, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));
 #endif
-
 #ifndef NDEBUG
         int w = 0, h = 0;
         evas_object_image_size_get(favicon, &w, &h);

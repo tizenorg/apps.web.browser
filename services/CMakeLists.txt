@@ -1,9 +1,18 @@
 project(services)
 
 add_subdirectory(WebKitEngineService)
-add_subdirectory(BookmarksUI)
+# MERGE_ME
+#add_subdirectory(MoreMenuUI)
+add_subdirectory(MainUI)
+# MERGE_ME
+#add_subdirectory(HistoryUI)
+#add_subdirectory(TabUI)
 add_subdirectory(SimpleUI)
+#MERGE_ME
+#add_subdirectory(SettingsUI)
 add_subdirectory(SimpleURI)
+#MERGE_ME
+#add_subdirectory(BookmarkManagerUI)
 add_subdirectory(StorageService)
 add_subdirectory(HistoryService)
 add_subdirectory(PlatformInputManager)
