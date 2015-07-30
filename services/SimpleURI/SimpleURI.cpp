@@ -254,25 +254,21 @@ void SimpleURI::editingCompleted()
 
 std::string SimpleURI::rewriteURI(const std::string& url)
 {
-
     BROWSER_LOGD("%s: %s", __PRETTY_FUNCTION__, url.c_str());
-
-    //regx form site http://code.tutsplus.com/tutorials/8-regular-expressions-you-should-know--net-6149
-    //it matches urls with https? sufix or without it
-    boost::regex urlRegex(R"(^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$)");
-    boost::regex protocolRegex(R"(^https?:\/\/)");
-
+    boost::regex urlRegex(R"(^(https?|ftp)://[^\s/$.?#].[^\s]*$)");
 
     if(!url.empty()) {
-        if(url != "about:blank" && url != "about:home" && !boost::regex_search(url, protocolRegex)) {
-            if(!boost::regex_match(url, urlRegex)) {
-                std::string searchString("https://www.google.pl/search?q="); /* this seems to work better than https://www.google.pl/#q= on current WebKit engine */
+        if(url != "about:blank" && url != "about:home") {
+            if(boost::regex_match(url, urlRegex)) {
+                return url;
+            } else if(boost::regex_match( std::string("http://") + url, urlRegex) &&  url.find(".") != std::string::npos) {
+                return std::string("http://") + url;
+            } else {
+                std::string searchString("http://www.google.com/#q=");
                 searchString += url;
                 std::replace( searchString.begin(), searchString.end(), ' ', '+');
-        BROWSER_LOGD("[%s:%d] Rewrited search string: %s", __PRETTY_FUNCTION__, __LINE__, searchString.c_str());
-                return  searchString;
-            } else {
-                return std::string("http://") + url;
+                BROWSER_LOGD("[%s:%d] Search string: %s", __PRETTY_FUNCTION__, __LINE__, searchString.c_str());
+                return searchString;
             }
         }
     }
