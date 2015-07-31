@@ -906,7 +906,6 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         popup->show();
         break;
         }
-
         case basic_webengine::WebConfirmation::ConfirmationType::CertificateConfirmation:
         case basic_webengine::WebConfirmation::ConfirmationType::Geolocation:
         case basic_webengine::WebConfirmation::ConfirmationType::UserMedia:

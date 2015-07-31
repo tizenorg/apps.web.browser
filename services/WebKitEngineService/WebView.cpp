@@ -283,7 +283,6 @@ bool WebView::isLoadError() const
     return m_loadError;
 }
 
-
 void WebView::setPrivateMode(bool state)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
@@ -385,22 +384,19 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         }
 
         // set certificate confirmation
-        ewk_certificate_policy_decision_allowed_set(request, result);
+        BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
 
         // remove from map
         m_confirmationCertificatenMap.erase(cert);
         break;
     }
-        case WebConfirmation::ConfirmationType::Authentication: {
+    case WebConfirmation::ConfirmationType::Authentication: {
         AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<AuthenticationConfirmation, WebConfirmation>(confirmation);
         Ewk_Auth_Request *request = m_confirmationAuthenticationMap[auth];
         if (auth->getResult() == WebConfirmation::ConfirmationResult::Confirmed) {
-            // set auth challange credential
-            ewk_auth_request_authenticate(request, const_cast<char*>(auth->getLogin().c_str()), const_cast<char*>(auth->getPassword().c_str()));
-//            ewk_object_unref(request);
+            BROWSER_LOGE("NOT IMPLEMENTED: Autenthication Request Confirmation handling!");
         } else if (auth->getResult() == WebConfirmation::ConfirmationResult::Rejected) {
-            ewk_auth_request_cancel(request);
-//            ewk_object_unref(request);
+            BROWSER_LOGE("NOT IMPLEMENTED: Autenthication Request Rejection handling!");
         } else {
             BROWSER_LOGE("Wrong ConfirmationResult");
             break;
@@ -738,20 +734,14 @@ void WebView::__authenticationRequest(void * data, Evas_Object * /* obj */, void
     Ewk_Auth_Request *request = reinterpret_cast<Ewk_Auth_Request *>(event_info);
     EINA_SAFETY_ON_NULL_RETURN(request);
 
-    std::string realm = tizen_browser::tools::fromChar(ewk_auth_request_realm_get(request));
-//    std::string url = tizen_browser::tools::fromChar(ewk_auth_request_host_get(request));
+    std::string url = self->getURI();
+    std::string message = (boost::format("A username and password are being requested by %1%.") % url).str();
 
-//    ewk_object_ref(request);
+    AuthenticationConfirmationPtr c = std::make_shared<AuthenticationConfirmation>(self->m_tabId, url, message);
 
-    ///\todo add translations
-//    std::string message = (boost::format("A username and password are being requested by %1%. The site says: \"%2%\"") % url % realm).str();
+    self->m_confirmationAuthenticationMap[c] = request;
 
-//    AuthenticationConfirmationPtr c = std::make_shared<AuthenticationConfirmation>(self->m_tabId, url, message);
-
-    // store
-//    self->m_confirmationAuthenticationMap[c] = request;
-
-//    self->cofirmationRequest(c);
+    self->cofirmationRequest(c);
 #endif
 }
 
@@ -766,9 +756,9 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
         return;
 
     // suspend webview
-    ewk_certificate_policy_decision_suspend(request);
+    ewk_view_suspend(self->m_ewkView);
 
-    std::string url = tizen_browser::tools::fromChar(ewk_certificate_policy_decision_url_get(request));
+    std::string url = self->getURI();
 
     ///\todo add translations
     std::string message = (boost::format("There are problems with the security certificate for this site.<br>%1%") % url).str();
@@ -887,3 +877,4 @@ void WebView::searchOnWebsite(const std::string & searchString, int flags)
 } /* namespace webkitengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */
+
