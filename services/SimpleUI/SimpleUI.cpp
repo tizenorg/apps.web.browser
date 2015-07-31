@@ -369,6 +369,7 @@ void SimpleUI::createActions()
     m_history = sharedAction(new Action("History"));
     m_history->setToolTip("History");
     m_history->setIcon("browser/toolbar_history");
+    m_historyService->getHistoryItems();
     if(m_historyService->getHistoryItemsCount() == 0){
         m_history->setEnabled(false);
     }
