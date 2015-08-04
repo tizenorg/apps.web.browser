@@ -83,7 +83,7 @@ public:
      *
      * @return list of bookmark items, bookmark items in a folder & bookmark folders
      */
-    std::vector<std::shared_ptr<BookmarkItem> > getBookmarks(int folder_id = 0);
+    std::vector<std::shared_ptr<BookmarkItem> > getBookmarks(int folder_id = -1);
     std::vector<std::shared_ptr<BookmarkItem> > getBookmarkFolders();
 
    /**

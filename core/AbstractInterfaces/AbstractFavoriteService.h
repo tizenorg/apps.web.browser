@@ -89,7 +89,7 @@ public:
      *
      * @return list of bookmark items in folder with id, folder_id
      */
-    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = 0)= 0;
+    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1)= 0;
 
     /**
      * @brief Get bookmark folders from platform service and store it in private m_bookmarkFoldersList

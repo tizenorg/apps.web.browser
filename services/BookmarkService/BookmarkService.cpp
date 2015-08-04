@@ -190,7 +190,7 @@ int BookmarkService::getBookmarkId(const std::string & url)
 
 std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int folder_id)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);
     int *ids = nullptr;
     int ids_count = 0;
     int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id, 0, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
@@ -200,15 +200,15 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
     }
 
     m_bookmarks.clear();
-
     BROWSER_LOGD("Bookmark items: %d", ids_count);
 
     for(int i = 0; i<ids_count; i++)
     {
         bp_bookmark_info_fmt bookmark_info;
         bp_bookmark_adaptor_get_easy_all(ids[i], &bookmark_info);
-        std::string url = (bookmark_info.url != nullptr) ? bookmark_info.url : "";
-        std::string title = (bookmark_info.title != nullptr) ? bookmark_info.title : "";
+        std::string url = (bookmark_info.url ? bookmark_info.url : "");
+        std::string title = (bookmark_info.title ? bookmark_info.title : "");
+
         std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(url, title, std::string(""),(int) bookmark_info.parent, ids[i]);
 
         std::shared_ptr<tizen_browser::tools::BrowserImage> bi = std::make_shared<tizen_browser::tools::BrowserImage>();
@@ -228,7 +228,6 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
         fav->imageData = (void*)malloc(bookmark_info.favicon_length);
         memcpy(fav->imageData, (void*)image_bytes, bookmark_info.favicon_length);
         bookmark->setFavicon(fav);
-
         m_bookmarks.push_back(bookmark);
     }
     free(ids);

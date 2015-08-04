@@ -35,7 +35,6 @@
 // components
 #include "AbstractWebEngine.h"
 #if MERGE_ME
-#include "BookmarkManagerUI.h"
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #include "SettingsUI.h"
@@ -44,9 +43,7 @@
 #include "TabUI.h"
 #include "ButtonBar.h"
 #include "HistoryService.h"
-#if MERGE_ME
 #include "BookmarkManagerUI.h"
-#endif
 #include "SimpleURI.h"
 #include "SimpleScroller.h"
 #include "WebTitleBar.h"
@@ -125,7 +122,7 @@ private:
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     void bookmarkCheck();
-    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = 0);
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders();
     std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > getHistory();
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
@@ -297,8 +294,8 @@ private:
     std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
 #if MERGE_ME
     std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> m_moreMenuUI;
-    std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> m_bookmarkManagerUI;
 #endif
+    std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<tizen_browser::base_ui::MainUI> m_mainUI;
 #if MERGE_ME
     std::shared_ptr<tizen_browser::base_ui::HistoryUI> m_historyUI;

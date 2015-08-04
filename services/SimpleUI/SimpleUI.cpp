@@ -67,9 +67,7 @@ SimpleUI::SimpleUI()
     , m_moreMenuUI()
 #endif
     , m_tabUI()
-#if MERGE_ME
     , m_bookmarkManagerUI()
-#endif
     , m_mainUI()
     , m_initialised(false)
     , m_isHomePageActive(false)
@@ -1155,7 +1153,6 @@ void SimpleUI::closeMoreMenu(const std::string& str)
 
 void SimpleUI::showBookmarkManagerMenu()
 {
-#if MERGE_ME
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(!m_bookmarkManagerUI){
         m_bookmarkManagerUI =
@@ -1173,24 +1170,19 @@ void SimpleUI::showBookmarkManagerMenu()
         m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders());
         m_bookmarkManagerUI->showTopContent();
     }
-#endif
 }
 
 void SimpleUI::updateBookmakMangaerGenGrid(int folder_id)
 {
-#if MERGE_ME
     m_bookmarkManagerUI->updateGengrid();
     m_bookmarkManagerUI->addBookmarkItems(getBookmarks(folder_id));
     m_bookmarkManagerUI->showTopContent();
-#endif
 }
 
 void SimpleUI::closeBookmarkManagerMenu(std::string& str)
 {
-#if MERGE_ME
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_bookmarkManagerUI.reset();
-#endif
 }
 
 void SimpleUI::openLinkFromPopup(const std::string &uri)
@@ -1412,12 +1404,10 @@ void SimpleUI::saveFolder(const char* title,int folder_id, int by_operator)
     if (id >= 0 )
      {     BROWSER_LOGD("[%s], Added New Folder", __func__);
      }
-#if MERGE_ME
     if(m_bookmarkManagerUI)
     {   m_bookmarkManagerUI->updateGengrid();
         m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders());
     }
-#endif
 }
 
 

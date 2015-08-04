@@ -11,8 +11,7 @@ add_subdirectory(SimpleUI)
 #MERGE_ME
 #add_subdirectory(SettingsUI)
 add_subdirectory(SimpleURI)
-#MERGE_ME
-#add_subdirectory(BookmarkManagerUI)
+add_subdirectory(BookmarkManagerUI)
 add_subdirectory(StorageService)
 add_subdirectory(HistoryService)
 add_subdirectory(PlatformInputManager)

@@ -36,7 +36,7 @@ public:
     BookmarkItem();
     BookmarkItem(
         const std::string& url,
-        const std::string& tittle,
+        const std::string& title,
         const std::string& note,
         unsigned int dir = 0,
         unsigned int id = 0
@@ -46,8 +46,8 @@ public:
     void setAddress(const std::string & url) { m_url = url; };
     std::string getAddress() const { return m_url; };
 
-    void setTittle(const std::string & tittle) { m_tittle = tittle; };
-    std::string getTittle() const { return m_tittle; };
+    void setTittle(const std::string & tittle) { m_title = tittle; };
+    std::string getTittle() const { return m_title; };
 
     void setNote(const std::string& note){m_note = note;};
     std::string getNote() const { return m_note;};
@@ -76,7 +76,7 @@ public:
 private:
     unsigned int m_saved_id;
     std::string m_url;
-    std::string m_tittle;
+    std::string m_title;
     std::string m_note;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_favicon;

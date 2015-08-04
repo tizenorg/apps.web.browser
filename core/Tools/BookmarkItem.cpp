@@ -31,23 +31,24 @@ namespace services{
 
 BookmarkItem::BookmarkItem()
 : m_saved_id(0)
-, m_url(std::string())
-, m_tittle(std::string())
-, m_thumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage>())
-, m_favicon(std::shared_ptr<tizen_browser::tools::BrowserImage>())
+, m_url()
+, m_title()
+, m_note()
+, m_thumbnail(std::make_shared<tizen_browser::tools::BrowserImage>())
+, m_favicon(std::make_shared<tizen_browser::tools::BrowserImage>())
 {
 }
 
 BookmarkItem::BookmarkItem(
                 const std::string& url,
-                const std::string& tittle,
+                const std::string& title,
                 const std::string& note,
                 unsigned int dir,
                 unsigned int id
                         )
 : m_saved_id(id)
 , m_url(url)
-, m_tittle(tittle)
+, m_title(title)
 , m_note(note)
 , m_directory(dir)
 {
