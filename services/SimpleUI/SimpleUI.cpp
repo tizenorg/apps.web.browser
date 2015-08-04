@@ -62,9 +62,7 @@ SimpleUI::SimpleUI()
     , m_mainLayout(nullptr)
     , m_progressBar(nullptr)
     , m_popup(nullptr)
-#if MERGE_ME
     , m_settings()
-#endif
     , m_moreMenuUI()
     , m_tabUI()
     , m_bookmarkManagerUI()
@@ -422,18 +420,10 @@ void SimpleUI::connectActions()
     m_showMoreMenu->triggered.connect(boost::bind(&SimpleUI::showMoreMenu, this));
 
 //  m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::services::PlatformInputManager::setPointerModeEnabled, m_platformInputManager.get(), _1));
-#if MERGE_ME
     m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
-#endif
-    //m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
-    //m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
-    //m_settingDeleteFavorite->triggered.connect(boost::bind(&SimpleUI::settingsDeleteFavorite, this));;
-#if MERGE_ME
-//    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
-    m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
-    m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
-    m_settingDeleteFavorite->triggered.connect(boost::bind(&SimpleUI::settingsDeleteFavorite, this));;
-#endif
+//  m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
+//  m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
+//  m_settingDeleteFavorite->triggered.connect(boost::bind(&SimpleUI::settingsDeleteFavorite, this));;
 }
 
 void SimpleUI::updateURIBarView()
@@ -1081,7 +1071,6 @@ void SimpleUI::closeHistoryUI(const std::string& str)
 
 void SimpleUI::showSettingsUI(const std::string& str)
 {
-#if MERGE_ME
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(!m_settingsUI){
         m_settingsUI =
@@ -1100,15 +1089,12 @@ void SimpleUI::showSettingsUI(const std::string& str)
         m_settingsUI->show(m_window.get());
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
-#endif
 }
 
 void SimpleUI::closeSettingsUI(const std::string& str)
 {
-#if MERGE_ME
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        m_settingsUI.reset();
-#endif
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_settingsUI.reset();
 }
 
 void SimpleUI::showMoreMenu()
