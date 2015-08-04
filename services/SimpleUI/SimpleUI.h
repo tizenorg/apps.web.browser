@@ -34,8 +34,8 @@
 
 // components
 #include "AbstractWebEngine.h"
-#if MERGE_ME
 #include "MoreMenuUI.h"
+#if MERGE_ME
 #include "HistoryUI.h"
 #include "SettingsUI.h"
 #endif
@@ -292,9 +292,7 @@ private:
     std::shared_ptr<ButtonBar> rightButtonBar;
     std::shared_ptr<tizen_browser::interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
-#if MERGE_ME
     std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> m_moreMenuUI;
-#endif
     std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<tizen_browser::base_ui::MainUI> m_mainUI;
 #if MERGE_ME

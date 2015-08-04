@@ -79,8 +79,7 @@ add_dependencies(${PROJECT_NAME} SessionStorage)
 target_link_libraries(${PROJECT_NAME} SimpleURI)
 target_link_libraries(${PROJECT_NAME} StorageService)
 target_link_libraries(${PROJECT_NAME} HistoryService)
-#MERGE_ME
-#target_link_libraries(${PROJECT_NAME} MoreMenuUI)
+target_link_libraries(${PROJECT_NAME} MoreMenuUI)
 target_link_libraries(${PROJECT_NAME} MainUI)
 #MERGE_ME
 #target_link_libraries(${PROJECT_NAME} HistoryUI)

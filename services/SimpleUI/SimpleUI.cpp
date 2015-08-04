@@ -64,8 +64,8 @@ SimpleUI::SimpleUI()
     , m_popup(nullptr)
 #if MERGE_ME
     , m_settings()
-    , m_moreMenuUI()
 #endif
+    , m_moreMenuUI()
     , m_tabUI()
     , m_bookmarkManagerUI()
     , m_mainUI()
@@ -1118,7 +1118,6 @@ void SimpleUI::closeSettingsUI(const std::string& str)
 
 void SimpleUI::showMoreMenu()
 {
-#if MERGE_ME
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     bool current_tab_as_new_tab = isHomePageActive() || (m_historyService->getHistoryItemsCount() == 0);
     if(!m_moreMenuUI){
@@ -1140,15 +1139,12 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->showCurrentTab(current_tab_as_new_tab ? nullptr : m_historyService->getHistoryItems().front());
 	BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
-#endif
 }
 
 void SimpleUI::closeMoreMenu(const std::string& str)
 {
-#if MERGE_ME
 	BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 	m_moreMenuUI.reset() ;
-#endif
 }
 
 void SimpleUI::showBookmarkManagerMenu()
