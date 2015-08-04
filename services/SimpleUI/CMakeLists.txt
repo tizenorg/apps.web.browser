@@ -54,7 +54,7 @@ include_directories(${CMAKE_SOURCE_DIR}/services/MoreMenuUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/MainUI)
 #MERGE_ME
 #include_directories(${CMAKE_SOURCE_DIR}/services/SettingsUI)
-#include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/PlatformInputManager)
 include_directories(${CMAKE_SOURCE_DIR}/services/SessionStorage)
 
@@ -74,7 +74,7 @@ add_dependencies(${PROJECT_NAME} MainUI)
 #MERGE_ME
 #add_dependencies(${PROJECT_NAME} HistoryUI)
 #add_dependencies(${PROJECT_NAME} SettingsUI)
-#add_dependencies(${PROJECT_NAME} TabUI)
+add_dependencies(${PROJECT_NAME} TabUI)
 add_dependencies(${PROJECT_NAME} PlatformInputManager)
 add_dependencies(${PROJECT_NAME} SessionStorage)
 target_link_libraries(${PROJECT_NAME} SimpleURI)
@@ -86,7 +86,8 @@ target_link_libraries(${PROJECT_NAME} MainUI)
 #MERGE_ME
 #target_link_libraries(${PROJECT_NAME} HistoryUI)
 #target_link_libraries(${PROJECT_NAME} SettingsUI)
-#target_link_libraries(${PROJECT_NAME} TabUI)
+target_link_libraries(${PROJECT_NAME} TabUI)
+#MERGE_ME
 #target_link_libraries(${PROJECT_NAME} BookmarkManagerUI)
 target_link_libraries(${PROJECT_NAME} PlatformInputManager)
 target_link_libraries(${PROJECT_NAME} SessionStorage)

@@ -65,7 +65,9 @@ SimpleUI::SimpleUI()
 #if MERGE_ME
     , m_settings()
     , m_moreMenuUI()
+#endif
     , m_tabUI()
+#if MERGE_ME
     , m_bookmarkManagerUI()
 #endif
     , m_mainUI()
@@ -891,28 +893,22 @@ void SimpleUI::AddNewFolderPopup(std::string& str)
 
 void SimpleUI::showTabUI()
 {
-#if MERGE_ME
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        m_tabUI =
-                std::dynamic_pointer_cast
-                <tizen_browser::base_ui::TabUI,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.tabui"));
-        M_ASSERT(m_tabUI);
-     	m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this,_1));
-     	m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this,_1));
-     	m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
-     	m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this,_1));
-        m_tabUI->show(m_window.get());
-        m_tabUI->addTabItems(m_webEngine->getTabContents());
-#endif
+    m_tabUI = std::dynamic_pointer_cast<tizen_browser::base_ui::TabUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.tabui"));
+    M_ASSERT(m_tabUI);
+    m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this,_1));
+    m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this,_1));
+    m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this,_1));
+    m_tabUI->show(m_window.get());
+    m_tabUI->addTabItems(m_webEngine->getTabContents());
 }
 
 void SimpleUI::closeTabUI(const std::string& str)
 {
-#if MERGE_ME
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        m_tabUI = nullptr;
-#endif
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_tabUI = nullptr;
 }
 
 void SimpleUI::newTabClicked(const std::string& str)

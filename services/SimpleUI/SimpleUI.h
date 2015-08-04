@@ -41,9 +41,7 @@
 #include "SettingsUI.h"
 #endif
 #include "MainUI.h"
-#if MERGE_ME
 #include "TabUI.h"
-#endif
 #include "ButtonBar.h"
 #include "HistoryService.h"
 #if MERGE_ME
@@ -305,8 +303,8 @@ private:
 #if MERGE_ME
     std::shared_ptr<tizen_browser::base_ui::HistoryUI> m_historyUI;
     std::shared_ptr<tizen_browser::base_ui::SettingsUI> m_settingsUI;
-    std::shared_ptr<tizen_browser::base_ui::TabUI> m_tabUI;
 #endif
+    std::shared_ptr<tizen_browser::base_ui::TabUI> m_tabUI;
     std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
     std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
     std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;

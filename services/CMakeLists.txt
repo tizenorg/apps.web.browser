@@ -6,7 +6,7 @@ add_subdirectory(WebKitEngineService)
 add_subdirectory(MainUI)
 # MERGE_ME
 #add_subdirectory(HistoryUI)
-#add_subdirectory(TabUI)
+add_subdirectory(TabUI)
 add_subdirectory(SimpleUI)
 #MERGE_ME
 #add_subdirectory(SettingsUI)
