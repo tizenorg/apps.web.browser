@@ -168,16 +168,7 @@ private:
 	static void __OnNewWindowRequest(void *data, Evas_Object*, void* out);
 
     // Favicon - from database
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
-    static void __faviconChanged(/* Ewk_Favicon_Database * database, */ const char * uri, void * data);
-#else
-    static void __faviconChanged(Ewk_Favicon_Database * database, const char * uri, void * data);
-#endif
-#endif
-
-    //from webkit ewk_view
-    static void onFaviconChaged(void * data, Evas_Object *obj, void *event_info);
+    static void __faviconChanged(void* data, Evas_Object*, void*);
 
     static void __IMEClosed(void * data, Evas_Object *obj, void *event_info);
     static void __IMEOpened(void * data, Evas_Object *obj, void *event_info);

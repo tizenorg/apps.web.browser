@@ -130,8 +130,6 @@ void WebView::init(Evas_Object * opener)
 
 ///\note Odroid modification - not exists in WebKit API
 //     ewk_cookie_manager_widget_cookie_directory_set(ewk_context_cookie_manager_get(context), webkit_path.c_str());
-
-    ewk_favicon_database_icon_change_callback_add(ewk_context_favicon_database_get(context), __faviconChanged, this);
 #endif
     setupEwkSettings();
     registerCallbacks();
@@ -163,7 +161,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
-    evas_object_smart_callback_add(m_ewkView, "favicon,changed", onFaviconChaged, this);
+    evas_object_smart_callback_add(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
@@ -193,7 +191,7 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
-    evas_object_smart_callback_del_full(m_ewkView, "favicon,changed", onFaviconChaged, this);
+    evas_object_smart_callback_del_full(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
@@ -744,44 +742,18 @@ void WebView::__OnNewWindowRequest(void *data, Evas_Object*, void* out)
   *static_cast<Evas_Object**>(out) = tab_ewk_view;
 }
 
-
-#if PLATFORM(TIZEN)
-void WebView::__faviconChanged(const char * uri, void * data)
-#else
-void WebView::__faviconChanged(Ewk_Favicon_Database * database, const char * uri, void * data)
-#endif
+void WebView::__faviconChanged(void* data, Evas_Object*, void*)
 {
-    WebView * self = reinterpret_cast<WebView *>(data);
-    BROWSER_LOGD("[%s:%d] \n\turi:%s", __PRETTY_FUNCTION__, __LINE__, uri);
-
-#if PLATFORM(TIZEN)
-    Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(self->m_ewkView));
-#endif
-
-    Evas_Object *favicon = ewk_favicon_database_icon_get(database, uri, evas_object_evas_get(self->m_parent));
-    BROWSER_LOGD("Favicon: %p",favicon);
-    if (favicon) {
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        self->faviconImage = tizen_browser::tools::EflTools::getBrowserImage(favicon);
-        evas_object_unref(favicon);
-        BROWSER_LOGD("[%s:%d] Favicon loaded, emiting favIconChanged(...)", __PRETTY_FUNCTION__, __LINE__);
-        self->favIconChanged(self->faviconImage);
-    }
-}
-
-void WebView::onFaviconChaged(void* data, Evas_Object*, void*)
-{
-    WebView* self = reinterpret_cast<WebView*>(data);
-//#if PLATFORM(TIZEN)
-//    Evas_Object * favicon = ewk_view_favicon_get(self->m_ewkView);
-//#else
-    Ewk_Favicon_Database * database = ewk_context_favicon_database_get(ewk_view_context_get(self->m_ewkView));
-    Evas_Object * favicon = ewk_favicon_database_icon_get(database, ewk_view_url_get(self->m_ewkView), evas_object_evas_get(self->m_parent));
-//#endif
-    BROWSER_LOGD("[%s:%d] &favicon: %x ", __PRETTY_FUNCTION__, __LINE__, favicon);
-    if (favicon) {
-        self->favIconChanged(tizen_browser::tools::EflTools::getBrowserImage(favicon));
-        evas_object_unref(favicon);
+    if(data)
+    {
+        WebView * self = static_cast<WebView *>(data);
+        Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(self->m_ewkView), ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
+        if (favicon) {
+            BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
+            self->faviconImage = tizen_browser::tools::EflTools::getBrowserImage(favicon);
+            evas_object_unref(favicon);
+            self->favIconChanged(self->faviconImage);
+        }
     }
 }
 

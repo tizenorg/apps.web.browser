@@ -16,7 +16,6 @@
 
 #include <Elementary.h>
 #include <Evas.h>
-
 #include "SimpleURI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -28,7 +27,6 @@ namespace tizen_browser{
 namespace base_ui{
 
 EXPORT_SERVICE(SimpleURI, "org.tizen.browser.simpleuri")
-
 
 const std::string keynameSelect = "Select";
 const std::string keynameClear = "Clear";
@@ -47,11 +45,11 @@ SimpleURI::SimpleURI()
     elm_theme_extension_add(NULL, edjFilePath.c_str());
 }
 
-SimpleURI::~SimpleURI() {
+SimpleURI::~SimpleURI() 
+{}
 
-}
-
-Evas_Object * SimpleURI::getContent(Evas_Object *main_layout) {
+Evas_Object * SimpleURI::getContent(Evas_Object *main_layout) 
+{
     if(!m_entry_layout) {
         m_entry_layout = elm_layout_add(main_layout);
         std::string edjFilePath = EDJE_DIR;
@@ -87,7 +85,6 @@ Evas_Object * SimpleURI::getContent(Evas_Object *main_layout) {
         m_entryBtn = elm_button_add(m_entry_layout);
 
         evas_object_event_callback_add(m_entryBtn, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, this);
-        //evas_object_event_callback_add(m_entryBtn, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out, this);
         evas_object_smart_callback_add(m_entryBtn, "focused", SimpleURI::focusedBtn, this);
         evas_object_smart_callback_add(m_entryBtn, "unfocused", SimpleURI::unfocusedBtn, this);
 
@@ -118,6 +115,7 @@ void SimpleURI::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage >
         setDocIcon();
     }
 }
+
 void SimpleURI::setCurrentFavIcon()
 {
     m_currentIconType = IconTypeFav;
@@ -129,6 +127,7 @@ void SimpleURI::setSearchIcon()
     m_currentIconType = IconTypeSearch;
     elm_object_signal_emit(m_entry_layout, "set_search_icon", "model");
 }
+
 void SimpleURI::setDocIcon()
 {
     m_currentIconType = IconTypeDoc;
@@ -177,10 +176,12 @@ void SimpleURI::aborted(void *data, Evas_Object * /* obj */, void */*event_info*
     SimpleURI *self = reinterpret_cast<SimpleURI*>(data);
     self->editingCanceled();
 }
+
 void SimpleURI::preeditChange(void * /* data */, Evas_Object * /* obj */, void */*event_info*/)
 {
     BROWSER_LOGD("%s", __func__);
 }
+
 void SimpleURI::changedUser(void *data, Evas_Object * /* obj */, void */*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -215,8 +216,6 @@ void SimpleURI::fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Objec
 {
     BROWSER_LOGD("%s", __func__);
     Evas_Event_Key_Down *ev = static_cast<Evas_Event_Key_Down *>(event_info);
-    //BROWSER_LOGD("[%s:%d]: keyname: \"%s\"", __PRETTY_FUNCTION__, __LINE__, ev->keyname);
-
     if (!data || !ev || !ev->keyname)
         return;
     SimpleURI * self = static_cast<SimpleURI*>(data);
@@ -225,14 +224,12 @@ void SimpleURI::fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Objec
         elm_entry_entry_set(self->m_entry, "");
         return;
     }
-
     if (   keynameSelect == ev->keyname
         || keynameReturn == ev->keyname
         || keynameKP_Enter == ev->keyname) {
         self->editingCompleted();
         return;
     }
-
     if( keynameEsc == ev->keyname){
         self->editingCanceled();
         elm_object_focus_set(self->m_entryBtn, EINA_TRUE);
@@ -257,22 +254,20 @@ std::string SimpleURI::rewriteURI(const std::string& url)
     BROWSER_LOGD("%s: %s", __PRETTY_FUNCTION__, url.c_str());
     boost::regex urlRegex(R"(^(https?|ftp)://[^\s/$.?#].[^\s]*$)");
 
-    if(!url.empty()) {
-        if(url != "about:blank" && url != "about:home") {
-            if(boost::regex_match(url, urlRegex)) {
-                return url;
-            } else if(boost::regex_match( std::string("http://") + url, urlRegex) &&  url.find(".") != std::string::npos) {
-                return std::string("http://") + url;
-            } else {
-                std::string searchString("http://www.google.com/#q=");
-                searchString += url;
-                std::replace( searchString.begin(), searchString.end(), ' ', '+');
-                BROWSER_LOGD("[%s:%d] Search string: %s", __PRETTY_FUNCTION__, __LINE__, searchString.c_str());
-                return searchString;
-            }
+    if(!url.empty() && url != "about:blank" && url != "about:home")
+        if(boost::regex_match(url, urlRegex)) 
+            return url;
+        else if(boost::regex_match( std::string("http://") + url, urlRegex) &&  url.find(".") != std::string::npos) 
+            return std::string("http://") + url;
+        else 
+        {
+            std::string searchString("http://www.google.com/search?q=");
+            searchString += url;
+            std::replace( searchString.begin(), searchString.end(), ' ', '+');
+            BROWSER_LOGD("[%s:%d] Search string: %s", __PRETTY_FUNCTION__, __LINE__, searchString.c_str());
+            return searchString;
         }
-    }
-    BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
+
     return url;
 }
 
@@ -287,9 +282,6 @@ void SimpleURI::editingCanceled()
     elm_entry_input_panel_hide(m_entry);
     setCurrentFavIcon();
 }
-
-
-
 
 void SimpleURI::AddAction(sharedAction action)
 {
