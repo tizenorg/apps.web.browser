@@ -178,6 +178,8 @@ private:
     Evas_Object * m_parent;
     TabId m_tabId;
     Evas_Object * m_ewkView;
+    // ewk context of this web view
+    Ewk_Context * m_ewkContext;
     std::string m_title;
     std::shared_ptr<tizen_browser::tools::BrowserImage> faviconImage;
     bool m_isLoading;

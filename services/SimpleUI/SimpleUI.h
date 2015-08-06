@@ -266,6 +266,10 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    // This context object is used to implicitly init internal ewk data used by opengl to create the first and
+    // consecutive webviews in the application, otherwise we would encounter a crash after creating
+    // the first web view
+    Ewk_Context *m_ewkContext;
 
     std::vector<std::shared_ptr<tizen_browser::services::HistoryItem>> items_vector;
     std::unique_ptr<tizen_browser::basic_ui::NetworkErrorHandler> m_netErrorHandler;

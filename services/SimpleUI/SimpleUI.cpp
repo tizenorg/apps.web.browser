@@ -69,6 +69,7 @@ SimpleUI::SimpleUI(/*Evas_Object *window*/)
     , items_vector()
     , m_networkErrorPopup(0)
     , m_wvIMEStatus(false)
+    , m_ewkContext(ewk_context_new())
 {
     elm_init(static_cast<int>(NULL), static_cast<char**>(NULL));
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
@@ -83,6 +84,7 @@ SimpleUI::~SimpleUI() {
     m_sessionService->getStorage()->deleteSession(m_currentSession);
     /// \todo Auto-generated destructor stub
     evas_object_del(m_window.get());
+    ewk_context_delete(m_ewkContext);
 }
 
 void SimpleUI::destroyUI()

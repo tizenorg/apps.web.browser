@@ -57,6 +57,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId)
     : m_parent(obj)
     , m_tabId(tabId)
     , m_ewkView(NULL)
+    , m_ewkContext(ewk_context_new())
     , m_isLoading(false)
     , m_loadError(false)
 {
@@ -70,12 +71,14 @@ WebView::~WebView()
     if (m_ewkView) {
         unregisterCallbacks();
     }
+
+    ewk_context_delete(m_ewkContext);
 }
 
 void WebView::init(Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
-    m_ewkView = ewk_view_add(evas_object_evas_get(m_parent));
+    m_ewkView = ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
 
     evas_object_data_set(m_ewkView, "_container", this);
     BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, this);
@@ -99,7 +102,6 @@ void WebView::init(Evas_Object * opener)
         if (context)
         {
             ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
-            ewk_context_favicon_database_directory_set(context, (webkit_path + std::string("/favicon")).c_str());
         }
     }
 

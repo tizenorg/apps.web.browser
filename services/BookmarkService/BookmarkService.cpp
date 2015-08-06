@@ -177,8 +177,10 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks()
     {
         bp_bookmark_info_fmt bookmark_info;
         bp_bookmark_adaptor_get_easy_all(ids[i], &bookmark_info);
+        std::string url = bookmark_info.url ? bookmark_info.url : "";
+        std::string title = bookmark_info.title ? bookmark_info.title : "";
 
-        std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(std::string(bookmark_info.url),std::string(bookmark_info.title), std::string(""), 0);
+        std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(url,title, std::string(""), 0);
 
         std::shared_ptr<tizen_browser::tools::BrowserImage> bi = std::make_shared<tizen_browser::tools::BrowserImage>();
         bi->imageType = tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
