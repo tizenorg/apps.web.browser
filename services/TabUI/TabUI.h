@@ -45,8 +45,6 @@ public:
 
     void addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabContent>);
     void addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent> > items);
-//    void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-//    void addbookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void (const std::string & )> newTabClicked;
@@ -58,7 +56,6 @@ public:
 private:
     static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* listTopButtonItemsContentGet(void *data, Evas_Object *obj, const char *part);
-    //static char*        listItemTextGet(void *data, Evas_Object *obj, const char *part);
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
@@ -86,7 +83,7 @@ private:
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_tab_views;
     bool m_gengridSetup;
-    std::string edjFilePath;
+    std::string m_edjFilePath;
     Evas_Object *createNoHistoryLabel();
 
     static void focusItem(void* data, Evas_Object* obj, void* event_info);
