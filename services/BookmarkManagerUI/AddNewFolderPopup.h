@@ -19,8 +19,12 @@ class AddNewFolderPopup{
 
 public:
     AddNewFolderPopup(Evas_Object *main_layout);
-    AddNewFolderPopup(Evas_Object *main_layout, Evas_Object *content, const std::string& message,
-                      const std::string& title, const std::string& okButtonText, const std::string& cancelButtonText);
+    AddNewFolderPopup(Evas_Object *main_layout
+                    , Evas_Object *content
+                    , const std::string& message
+                    , const std::string& title
+                    , const std::string& okButtonText
+                    , const std::string& cancelButtonText);
 
     /*
      * These setters should be called before showing popup.

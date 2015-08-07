@@ -25,9 +25,12 @@ AddNewFolderPopup::AddNewFolderPopup(Evas_Object* main_layout) :
 {
 }
 
-AddNewFolderPopup::AddNewFolderPopup(Evas_Object *main_layout, Evas_Object *content, const std::string& message,
-                                     const std::string& title, const std::string& okButtonText,
-                                     const std::string& cancelButtonText) :
+AddNewFolderPopup::AddNewFolderPopup(Evas_Object *main_layout
+                                   , Evas_Object *content
+                                   , const std::string& message
+                                   , const std::string& title
+                                   , const std::string& okButtonText
+                                   , const std::string& cancelButtonText) :
     m_popup(nullptr),
     m_cancel_button(nullptr),
     m_editfield_entry(nullptr),

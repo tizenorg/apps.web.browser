@@ -127,9 +127,6 @@ void BookmarkManagerUI::showTopContent()
     elm_genlist_decorate_mode_set(m_genList, EINA_TRUE);
     evas_object_size_hint_weight_set(m_genList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    /*evas_object_smart_callback_add(m_genList, "item,focused", focusItem, this);
-    evas_object_smart_callback_add(m_genList, "item,unfocused", unFocusItem, nullptr);*/
-
     m_itemClass = elm_genlist_item_class_new();
     m_itemClass->item_style = "topContent";
     m_itemClass->func.text_get = &listItemTextGet;
@@ -140,12 +137,12 @@ void BookmarkManagerUI::showTopContent()
     ItemData * id = new ItemData;
     id->m_bookmarkManager = this;
     Elm_Object_Item* elmItem = elm_genlist_item_append(m_genList,            //genlist
-                                                      m_itemClass,          //item Class
+                                                      m_itemClass,           //item Class
                                                       id,
-                                                      nullptr,                    //parent item
-                                                      ELM_GENLIST_ITEM_NONE,  //item type
+                                                      nullptr,               //parent item
+                                                      ELM_GENLIST_ITEM_NONE, //item type
                                                       nullptr,
-                                                      nullptr                  //data passed to above function
+                                                      nullptr                //data passed to above function
                                                      );
     id->e_item = elmItem;
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -352,7 +349,7 @@ char* BookmarkManagerUI::_grid_text_get(void *data, Evas_Object *, const char *p
         const char *part_name2 = "page_url";
         static const int part_name1_len = strlen(part_name1);
         static const int part_name2_len = strlen(part_name2);
-        ItemData * id = static_cast<ItemData *>(data);
+
         if (!strncmp(part_name1, part, part_name1_len) && !itemData->item->getTittle().empty())
         {
             return strdup(itemData->item->getTittle().c_str());
@@ -479,7 +476,7 @@ void BookmarkManagerUI::_thumbSelected(void * data, Evas_Object *, void *)
 {
     if (data != nullptr)
     {
-        BookmarkFolderItemData * itemData = reinterpret_cast<BookmarkFolderItemData *>(data);
+        BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData *>(data);
         BROWSER_LOGD("Folder ID: %d" , itemData->item->getId());
         itemData->bookmarkManagerUI->set_folder(itemData->item->getTittle().c_str());
         itemData->bookmarkManagerUI->bookmarkFolderClicked(itemData->item->getId());
@@ -493,7 +490,7 @@ void BookmarkManagerUI::_bookmark_thumbSelected(void * data, Evas_Object *, void
 #if 0
     if (data != nullptr)
     {
-        HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
+        HistoryItemData * itemData = static_cast<HistoryItemData *>(data);
         itemData->bookmarkManagerUI->bookmarkClicked(itemData->item);
     }
 #endif
@@ -524,7 +521,7 @@ void BookmarkManagerUI::focusItem(void*, Evas_Object*, void* event_info)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (event_info != nullptr)
     {
-        Elm_Object_Item *item = reinterpret_cast<Elm_Object_Item*>(event_info);
+        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
         elm_object_item_signal_emit( item, "mouse,in", "over2");
 
         // selected manually
@@ -537,7 +534,7 @@ void BookmarkManagerUI::unFocusItem(void*, Evas_Object*, void* event_info)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (event_info != nullptr)
     {
-        Elm_Object_Item *item = reinterpret_cast<Elm_Object_Item*>(event_info);
+        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
         elm_object_item_signal_emit( item, "mouse,out", "over2");
 
         // unselected manually
