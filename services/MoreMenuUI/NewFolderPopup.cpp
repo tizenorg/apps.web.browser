@@ -28,21 +28,26 @@ namespace tizen_browser{
 namespace base_ui{
 
 NewFolderPopup::NewFolderPopup(Evas_Object* main_layout) :
-    m_popup(NULL),
-    m_content(NULL),
+    m_popup(nullptr),
+    m_content(nullptr),
     m_mainLayout(main_layout)
 {
 
 }
 
-NewFolderPopup::NewFolderPopup(Evas_Object *main_layout, Evas_Object *content, const char *message, char* title, char* okButtonText, char* cancelButtonText) :
-    m_popup(NULL),
-    m_mainLayout(main_layout),
+NewFolderPopup::NewFolderPopup(Evas_Object *main_layout
+                             , Evas_Object *content
+                             , const char *message
+                             , const char *title
+                             , const char *okButtonText
+                             , const char *cancelButtonText) :
+    m_popup(nullptr),
     m_content(content),
     m_message(message),
     m_title(title),
     m_okButtonText(okButtonText),
-    m_cancelButtonText(cancelButtonText)
+    m_cancelButtonText(cancelButtonText),
+    m_mainLayout(main_layout)
 {
 
 }
@@ -153,17 +158,21 @@ void NewFolderPopup::hide()
    elm_object_signal_emit(m_mainLayout, "elm,state,hide", "elm");
 }
 
-void NewFolderPopup::popup_ok_cb(void *data, Evas_Object *btn, void*)
+void NewFolderPopup::popup_ok_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s],", __func__);
-    NewFolderPopup *ownPopup = static_cast<NewFolderPopup*>(data);
-    ownPopup->on_ok(ownPopup->m_editfield_entry);
+    if (data) {
+        NewFolderPopup *ownPopup = static_cast<NewFolderPopup*>(data);
+        ownPopup->on_ok(ownPopup->m_editfield_entry);
+    }
 }
-void NewFolderPopup::popup_cancel_cb(void *data, Evas_Object *btn, void*)
+void NewFolderPopup::popup_cancel_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s],", __func__);
-    NewFolderPopup *ownPopup = static_cast<NewFolderPopup*>(data);
-    ownPopup->on_cancel(ownPopup->m_editfield_entry);
+    if (data) {
+        NewFolderPopup *ownPopup = static_cast<NewFolderPopup*>(data);
+        ownPopup->on_cancel(ownPopup->m_editfield_entry);
+    }
 }
 
 }

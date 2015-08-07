@@ -17,7 +17,12 @@ class NewFolderPopup{
 
 public:
     NewFolderPopup(Evas_Object *main_layout);
-    NewFolderPopup(Evas_Object *main_layout, Evas_Object *content, const char *message, char *title, char* okButtonText, char* cancelButtonText);
+    NewFolderPopup(Evas_Object *main_layout
+                 , Evas_Object *content
+                 , const char *message
+                 , const char *title
+                 , const char *okButtonText
+                 , const char *cancelButtonText);
 
     /**
      * Theese setters should be called before showing popup.

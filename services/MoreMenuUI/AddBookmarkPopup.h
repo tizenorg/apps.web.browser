@@ -39,7 +39,7 @@ public:
 private:
     static char* _grid_text_get(void *data, Evas_Object *, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
-    static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
+    //static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _newFolderButton(void *data, Evas_Object *obj, void *event_info);
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
@@ -56,7 +56,7 @@ private:
 
     Elm_Gengrid_Item_Class * m_itemClass;
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_folder_views;
-    std::string bm_edjFilePath;
+    std::string m_edjFilePath;
     bool m_gengridSetup;
 
     static void __cb_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info);

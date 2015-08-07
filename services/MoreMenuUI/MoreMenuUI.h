@@ -18,6 +18,7 @@
 #define MOREMENUUI_H
 
 #include <Evas.h>
+#include <memory>
 #include <boost/signals2/signal.hpp>
 
 #include "AbstractUIComponent.h"
@@ -73,7 +74,6 @@ public:
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
-    static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
@@ -85,7 +85,7 @@ private:
 
     void AddBookmarkPopupCalled();
     void addToBookmarks(int folder_id);
-    static void item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+
     static void star_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
@@ -94,21 +94,22 @@ private:
 
 private:
     Evas_Object *m_genList;
-    std::shared_ptr<tizen_browser::base_ui::NewFolderPopup > m_popup;
+    std::shared_ptr<tizen_browser::base_ui::NewFolderPopup> m_new_folder_popup;
     Evas_Object *m_mm_layout;
-    std::shared_ptr<tizen_browser::base_ui::AddBookmarkPopup > popup;
+    std::shared_ptr<tizen_browser::base_ui::AddBookmarkPopup> m_add_bookmark_popup;
     Elm_Genlist_Item_Class *m_itemClass;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<ItemType,Elm_Object_Item*> m_map_menu_views;
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > m_map_bookmark_folder_list;
-    std::string edjFilePath;
+    std::string m_edjFilePath;
     std::string m_folderName;
     bool m_gengridSetup;
 
-    static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
+    //static void focusItem(void* data, Evas_Object* obj, void* event_info);
+    //static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
+    //static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
 };
 
 }

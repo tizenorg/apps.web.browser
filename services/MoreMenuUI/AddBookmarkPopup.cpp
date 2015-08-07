@@ -34,9 +34,9 @@ typedef struct _BookmarkFolderItemData
 
 
 AddBookmarkPopup::AddBookmarkPopup(Evas_Object* main_layout):
+    m_mainLayout(main_layout),
     m_popup(nullptr),
     m_gengrid(nullptr),
-    m_mainLayout(main_layout),
     m_itemClass(nullptr)
 {
 }
@@ -47,15 +47,15 @@ AddBookmarkPopup::~AddBookmarkPopup ()
 void AddBookmarkPopup::show()
 {
     BROWSER_LOGD("[%s],", __func__);
-    bm_edjFilePath = EDJE_DIR;
-    bm_edjFilePath.append("MoreMenuUI/AddBookmarkPopup.edj");
-    elm_theme_extension_add(0, bm_edjFilePath.c_str());
+    m_edjFilePath = EDJE_DIR;
+    m_edjFilePath.append("MoreMenuUI/AddBookmarkPopup.edj");
+    elm_theme_extension_add(0, m_edjFilePath.c_str());
     m_popup = elm_layout_add(m_mainLayout);
     if (m_popup != nullptr)
     {
         elm_object_signal_emit(m_mainLayout, "elm,state,show", "elm");
-        elm_layout_file_set(m_popup, bm_edjFilePath.c_str(), "bookmark_popup");
-        BROWSER_LOGI("PATH: %s", bm_edjFilePath.c_str());
+        elm_layout_file_set(m_popup, m_edjFilePath.c_str(), "bookmark_popup");
+        BROWSER_LOGI("PATH: %s", m_edjFilePath.c_str());
 
         m_gengrid = elm_gengrid_add(m_popup);
 
@@ -175,7 +175,7 @@ char* AddBookmarkPopup::_grid_text_get(void *data, Evas_Object *, const char *pa
         static const char* part_name = "page_title";
         static const int part_len = strlen(part_name);
 
-        BookmarkFolderItemData *itemData = reinterpret_cast<BookmarkFolderItemData*>(data);
+        BookmarkFolderItemData *itemData = static_cast<BookmarkFolderItemData*>(data);
         if (!strncmp(part, part_name, part_len)) {
               if(itemData->item)
                 return strdup(itemData->item->getTittle().c_str());
@@ -186,17 +186,9 @@ char* AddBookmarkPopup::_grid_text_get(void *data, Evas_Object *, const char *pa
 
 const char* AddBookmarkPopup::getImageFileNameForType(int index, bool focused)
 {
-    static char* file_name = "";
-    if (index == 1)
-    {
-        if (focused)
-        {
-            file_name = "btn_bar_new_foc.png";
-        }
-        else
-        {
-            file_name = "btn_bar_new_nor.png";
-        }
+    static const char *file_name = "";
+    if (index == 1) {
+        file_name = focused ? "btn_bar_new_foc.png" : "btn_bar_new_nor.png";
     }
     return file_name;
 }
@@ -206,7 +198,7 @@ Evas_Object * AddBookmarkPopup::_grid_content_get(void *data, Evas_Object *obj, 
     BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
     if ((data != nullptr) && (obj != nullptr) && (part != nullptr))
     {
-        BookmarkFolderItemData *itemData = reinterpret_cast<BookmarkFolderItemData*>(data);
+        BookmarkFolderItemData *itemData = static_cast<BookmarkFolderItemData*>(data);
 
         static const char* part1_name = "elm.thumbnail";
         static const char* part2_name = "elm.thumbButton";
@@ -220,7 +212,7 @@ Evas_Object * AddBookmarkPopup::_grid_content_get(void *data, Evas_Object *obj, 
             BROWSER_LOGD("%s:%d %s file=%s", __FILE__, __LINE__, __func__, file_name);
             if (thumb_nail != nullptr)
             {
-                elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->bm_edjFilePath.c_str(), file_name);
+                elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->m_edjFilePath.c_str(), file_name);
             }
             return thumb_nail;
         }
@@ -251,7 +243,7 @@ void AddBookmarkPopup::__cb_mouse_in(void * data, Evas *, Evas_Object *obj, void
     if ((data != nullptr) && (obj != nullptr))
     {
         elm_object_focus_set(obj, EINA_TRUE);
-        BookmarkFolderItemData *itemData = reinterpret_cast<BookmarkFolderItemData*>(data);
+        BookmarkFolderItemData *itemData = static_cast<BookmarkFolderItemData*>(data);
 
         const char* file_name = getImageFileNameForType(itemData->index, true);
         Elm_Object_Item * selected = itemData->addBookmarkPopup->m_map_bookmark_folder_views["new_folder_button"];
@@ -260,46 +252,54 @@ void AddBookmarkPopup::__cb_mouse_in(void * data, Evas *, Evas_Object *obj, void
             Evas_Object *thumb_nail = elm_object_item_part_content_get(selected, "elm.thumbnail");
             if (thumb_nail != nullptr)
             {
-                elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->bm_edjFilePath.c_str(), file_name);
+                elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->m_edjFilePath.c_str(), file_name);
             }
         }
     }
 }
 
-void AddBookmarkPopup::__cb_mouse_out(void * data, Evas *e, Evas_Object *obj, void *event_info)
+void AddBookmarkPopup::__cb_mouse_out(void * data, Evas *, Evas_Object *obj, void* )
 {
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
-    BookmarkFolderItemData *itemData = reinterpret_cast<BookmarkFolderItemData*>(data);
-    elm_object_focus_set(obj, EINA_FALSE);
-    const char* file_name = getImageFileNameForType(itemData->index, false);
-    Elm_Object_Item * selected = itemData->addBookmarkPopup->m_map_bookmark_folder_views["new_folder_button"];
-    Evas_Object *thumb_nail = elm_object_item_part_content_get(selected, "elm.thumbnail");
-    elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->bm_edjFilePath.c_str(), file_name);
+    if (data && obj){
+        BookmarkFolderItemData *itemData = static_cast<BookmarkFolderItemData*>(data);
+        elm_object_focus_set(obj, EINA_FALSE);
+        const char* file_name = getImageFileNameForType(itemData->index, false);
+        Elm_Object_Item * selected = itemData->addBookmarkPopup->m_map_bookmark_folder_views["new_folder_button"];
+        Evas_Object *thumb_nail = elm_object_item_part_content_get(selected, "elm.thumbnail");
+        elm_image_file_set(thumb_nail, itemData->addBookmarkPopup->m_edjFilePath.c_str(), file_name);
+    }
 }
 
-void AddBookmarkPopup::_itemSelected(void * data, Evas_Object * /* obj */, void * event_info)
+//void AddBookmarkPopup::_itemSelected(void* , Evas_Object* , void*)
+//{
+//    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+//    if (data && event_info) {
+//        Elm_Object_Item * selected = static_cast<Elm_Object_Item *>(event_info);
+//        HistoryItemData * itemData = static_cast<HistoryItemData *>(elm_object_item_data_get(selected));
+//        AddBookmarkPopup * self = static_cast<AddBookmarkPopup *>(data);
+//
+//        self->bookmarkClicked(itemData->item);
+//    }
+//}
+
+
+void AddBookmarkPopup::_newFolderButton(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    /*Elm_Object_Item * selected = reinterpret_cast<Elm_Object_Item *>(event_info);
-    HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(elm_object_item_data_get(selected));
-    AddBookmarkPopup * self = reinterpret_cast<AddBookmarkPopup *>(data);
-
-    self->bookmarkClicked(itemData->item);*/
+    if (data) {
+        BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData *>(data);
+        itemData->addBookmarkPopup->addNewFolderClicked(std::string());
+    }
 }
 
-
-void AddBookmarkPopup::_newFolderButton(void * data, Evas_Object * /* obj */, void * /* event_info */)
+void AddBookmarkPopup::_thumbSelected(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    BookmarkFolderItemData * itemData = reinterpret_cast<BookmarkFolderItemData *>(data);
-    itemData->addBookmarkPopup->addNewFolderClicked(std::string());
-}
-
-void AddBookmarkPopup::_thumbSelected(void * data, Evas_Object * /* obj */, void * /* event_info */)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    BookmarkFolderItemData * itemData = reinterpret_cast<BookmarkFolderItemData *>(data);
-    itemData->addBookmarkPopup->folderSelected(itemData->item->getId());
+    if (data) {
+        BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData *>(data);
+        itemData->addBookmarkPopup->folderSelected(itemData->item->getId());
+    }
 }
 
 void AddBookmarkPopup::clearItems()
@@ -307,7 +307,7 @@ void AddBookmarkPopup::clearItems()
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_gengrid_clear(m_gengrid);
     m_map_bookmark_folder_views.clear();
-    elm_theme_extension_del(nullptr, bm_edjFilePath.c_str());
+    elm_theme_extension_del(nullptr, m_edjFilePath.c_str());
     elm_theme_full_flush();
     elm_cache_all_flush();
 }
@@ -320,24 +320,28 @@ void AddBookmarkPopup::updateGengrid()
     m_map_bookmark_folder_views.clear();
 }
 
-void AddBookmarkPopup::focusItem(void* /*data*/, Evas_Object* /*obj*/, void* event_info)
+void AddBookmarkPopup::focusItem(void*, Evas_Object*, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Elm_Object_Item *item = reinterpret_cast<Elm_Object_Item*>(event_info);
-    elm_object_item_signal_emit( item, "mouse,in", "over2");
+    if (event_info) {
+        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
+        elm_object_item_signal_emit(item, "mouse,in", "over2");
 
-    // selected manually
-    elm_gengrid_item_selected_set(item, EINA_TRUE);
+        // selected manually
+        elm_gengrid_item_selected_set(item, EINA_TRUE);
+    }
 }
 
-void AddBookmarkPopup::unFocusItem(void* /*data*/, Evas_Object* /*obj*/, void* event_info)
+void AddBookmarkPopup::unFocusItem(void*, Evas_Object*, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Elm_Object_Item *item = reinterpret_cast<Elm_Object_Item*>(event_info);
-    elm_object_item_signal_emit( item, "mouse,out", "over2");
+    if (event_info) {
+        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
+        elm_object_item_signal_emit(item, "mouse,out", "over2");
 
-    // unselected manually
-    elm_gengrid_item_selected_set(item, EINA_FALSE);
+        // unselected manually
+        elm_gengrid_item_selected_set(item, EINA_FALSE);
+    }
 }
 
 }
