@@ -42,9 +42,6 @@ public:
     void clearItems();
     void hide();
 
-    /*boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
-    boost::signals2::signal<void (const std::string & )> newTabClicked;
-    boost::signals2::signal<void (const std::string & )> newIncognitoTabClicked;*/
     boost::signals2::signal<void (const std::string & )> resetBrowserClicked;
     boost::signals2::signal<void (const std::string & )> resetMostVisitedClicked;
     boost::signals2::signal<void (const std::string & )> deleteSelectedDataClicked;
@@ -74,10 +71,7 @@ private:
     Evas_Object *m_parent;
     
     Elm_Gengrid_Item_Class * m_item_class;
-    std::string edjFilePath;
-
-    static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
+    std::string m_edjFilePath;
 };
 
 }
