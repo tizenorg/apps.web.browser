@@ -30,8 +30,8 @@ namespace tizen_browser{
 namespace base_ui{
 
 class BROWSER_EXPORT HistoryUI
-        : public tizen_browser::interfaces::AbstractUIComponent
-        , public tizen_browser::core::AbstractService
+    : public tizen_browser::interfaces::AbstractUIComponent
+    , public tizen_browser::core::AbstractService
 {
 public:
     HistoryUI();
@@ -53,21 +53,14 @@ private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part); 
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object* listTodayContentGet(void *data, Evas_Object *obj, const char *part);
-    static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
-    static void _item_deleted(void *data, Evas_Object *obj);
-    static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
-    static void _deleteHistory(void *data, Evas_Object *obj, void *event_info);
+    static Evas_Object* _listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static void _clearhistory_clicked(void *data, Evas_Object *obj, void *event_info);
-    void setEmptyGengrid(bool setEmpty);
-    static char* listTodayTextGet(void* data, Evas_Object* obj , const char* part);
-    static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+    static char* _listTodayTextGet(void* data, Evas_Object* obj , const char* part);
+    static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
-private:
-    
+    void setEmptyGengrid(bool setEmpty);
+
     Evas_Object *m_history_layout;
-    Evas_Object *m_historyitem_layout;
     Evas_Object *m_genListActionBar;
     Evas_Object *m_genListToday;
     Elm_Genlist_Item_Class *m_itemClassActionBar;
@@ -76,14 +69,9 @@ private:
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_history_views;
-    bool m_gengridSetup;
-    std::string edjFilePath;
-    Evas_Object *createNoHistorysLabel();
-
-    static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
+    std::string m_edjFilePath;
+    Evas_Object *createNoHistoryLabel();
 };
-
 
 }
 }
