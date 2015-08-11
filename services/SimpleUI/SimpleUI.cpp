@@ -1046,7 +1046,7 @@ void SimpleUI::showMainUI()
 	m_mainUI->historyClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
 	m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
 	m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
-        m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
+    m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
 	m_isHomePageActive = true;
 }
 
@@ -1107,6 +1107,7 @@ void SimpleUI::showMoreMenu()
                 <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
         M_ASSERT(m_moreMenuUI);
+    m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this, _1));
 	m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
 	m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
 	m_moreMenuUI->closeMoreMenuClicked.disconnect_all_slots();

@@ -452,8 +452,10 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         case SETTINGS:
             itemData->moreMenuUI->settingsClicked(std::string());
             break;
-        case READER_MODE:
         case BOOKMARK_MANAGER:
+            itemData->moreMenuUI->bookmarkManagerClicked(std::string());
+            break;
+        case READER_MODE:
         case SCREEN_ZOOM:
         case START_MINIBROWSER:
         case FOCUS_MODE:

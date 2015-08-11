@@ -65,6 +65,7 @@ public:
     void clearItems();
     void getBookmarkFolderList(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > );
 
+    boost::signals2::signal<void (std::string)> bookmarkManagerClicked;
     boost::signals2::signal<void (std::string)> historyUIClicked;
     boost::signals2::signal<void (const char*, int, int)> BookmarkFolderCreated;
     boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
