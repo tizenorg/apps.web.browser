@@ -298,6 +298,16 @@ int SimpleUI::exec(const std::string& _url)
         }
         m_initialised = true;
 
+        m_mainUI = std::dynamic_pointer_cast <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
+                    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
+        M_ASSERT(m_mainUI.get());
+
+        m_historyService->historyAllDeleted.connect(boost::bind(&tizen_browser::base_ui::MainUI::clearHistoryGenlist, m_mainUI.get()));
+        m_mainUI->historyClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
+        m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
+        m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
+        m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
+
         // only when first run
         if (url.empty()) {
             BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
@@ -1043,16 +1053,11 @@ void SimpleUI::showMainUI()
                 std::dynamic_pointer_cast
                 <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
-        M_ASSERT(m_mainUI);
+	M_ASSERT(m_mainUI);
 	hideWebView();
-        m_mainUI->show(m_window.get());
+	m_mainUI->show(m_window.get());
 	m_mainUI->addHistoryItems(getHistory());
 
- 	m_historyService->historyAllDeleted.connect(boost::bind(&tizen_browser::base_ui::MainUI::clearHistoryGenlist, m_mainUI.get()));
-	m_mainUI->historyClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
-	m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
-	m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
-    m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
 	m_isHomePageActive = true;
 }
 
