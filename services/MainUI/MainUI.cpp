@@ -30,6 +30,8 @@
 namespace tizen_browser{
 namespace base_ui{
 
+const int SMALL_TILES_ROWS = 2;
+
 EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
 
 typedef struct _HistoryItemData
@@ -56,7 +58,6 @@ MainUI::MainUI()
     , m_genListBottom(nullptr)
     , m_parent(nullptr)
     , m_big_item_class(nullptr)
-    , m_medium_item_class(nullptr)
     , m_small_item_class(nullptr)
     , m_bookmark_item_class(nullptr)
 {
@@ -80,29 +81,29 @@ void MainUI::show(Evas_Object* parent)
     evas_object_show(m_layout);
     m_parent = m_layout;
 
-    m_genListMVBig = elm_genlist_add(m_layout);
-    elm_object_part_content_set(m_layout, "elm.swallow.mvBig", m_genListMVBig);
-    elm_genlist_homogeneous_set(m_genListMVBig, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListMVBig, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListMVBig, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListMVBig, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(m_genListMVBig, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    m_genListLeft = elm_genlist_add(m_layout);
+    elm_object_part_content_set(m_layout, "elm.swallow.left", m_genListLeft);
+    elm_genlist_homogeneous_set(m_genListLeft, EINA_FALSE);
+    elm_genlist_multi_select_set(m_genListLeft, EINA_FALSE);
+    elm_genlist_select_mode_set(m_genListLeft, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_mode_set(m_genListLeft, ELM_LIST_LIMIT);
+    evas_object_size_hint_weight_set(m_genListLeft, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    m_genListMVMedium = elm_genlist_add(m_layout);
-    elm_object_part_content_set(m_layout, "elm.swallow.mvMedium", m_genListMVMedium);
-    elm_genlist_homogeneous_set(m_genListMVMedium, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListMVMedium, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListMVMedium, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListMVMedium, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(m_genListMVMedium, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    m_genListCenter = elm_genlist_add(m_layout);
+    elm_object_part_content_set(m_layout, "elm.swallow.center", m_genListCenter);
+    elm_genlist_homogeneous_set(m_genListCenter, EINA_FALSE);
+    elm_genlist_multi_select_set(m_genListCenter, EINA_FALSE);
+    elm_genlist_select_mode_set(m_genListCenter, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_mode_set(m_genListCenter, ELM_LIST_LIMIT);
+    evas_object_size_hint_weight_set(m_genListCenter, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    m_genListMVSmall = elm_genlist_add(m_layout);
-    elm_object_part_content_set(m_layout, "elm.swallow.mvSmall", m_genListMVSmall);
-    elm_genlist_homogeneous_set(m_genListMVSmall, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListMVSmall, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListMVSmall, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListMVSmall, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(m_genListMVSmall, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    m_genListRight = elm_genlist_add(m_layout);
+    elm_object_part_content_set(m_layout, "elm.swallow.right", m_genListRight);
+    elm_genlist_homogeneous_set(m_genListRight, EINA_FALSE);
+    elm_genlist_multi_select_set(m_genListRight, EINA_FALSE);
+    elm_genlist_select_mode_set(m_genListRight, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_mode_set(m_genListRight, ELM_LIST_LIMIT);
+    evas_object_size_hint_weight_set(m_genListRight, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
       if (!m_big_item_class) {
             m_big_item_class = elm_genlist_item_class_new();
@@ -111,15 +112,6 @@ void MainUI::show(Evas_Object* parent)
             m_big_item_class->func.content_get =  _grid_content_get;
             m_big_item_class->func.state_get = nullptr;
             m_big_item_class->func.del = nullptr;
-        }
-
-      if (!m_medium_item_class) {
-            m_medium_item_class = elm_genlist_item_class_new();
-            m_medium_item_class->item_style = "medium_grid_item";
-            m_medium_item_class->func.text_get = _grid_text_get;
-            m_medium_item_class->func.content_get =  _grid_content_get;
-            m_medium_item_class->func.state_get = nullptr;
-            m_medium_item_class->func.del = nullptr;
         }
 
       if (!m_small_item_class) {
@@ -222,7 +214,6 @@ void MainUI::showBottomButton()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
     m_genListBottom = elm_genlist_add(m_layout);
-    elm_object_part_content_set(m_layout, "elm.swallow.genlistBottom", m_genListBottom);
     elm_genlist_homogeneous_set(m_genListBottom, EINA_FALSE);
     elm_genlist_multi_select_set(m_genListBottom, EINA_FALSE);
     elm_genlist_select_mode_set(m_genListBottom, ELM_OBJECT_SELECT_MODE_ALWAYS);
@@ -318,22 +309,16 @@ void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem
     itemData->mainUI = std::shared_ptr<tizen_browser::base_ui::MainUI>(this);
     Elm_Object_Item* historyView = nullptr;
 
-    switch(m_map_history_views.size())
+    if (m_map_history_views.empty())
     {
-	case 0:
-    BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-		historyView = elm_genlist_item_append(m_genListMVBig, m_big_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-		break;
-	case 1:
-	case 2:
-    BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-		historyView = elm_genlist_item_append(m_genListMVMedium, m_medium_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-		break;
-	case 3:
-	case 4:
-    BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-		historyView = elm_genlist_item_append(m_genListMVSmall, m_small_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-		break;
+        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
+        historyView = elm_genlist_item_append(m_genListLeft, m_big_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+    } else if (m_map_history_views.size() <= SMALL_TILES_ROWS) {
+        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
+        historyView = elm_genlist_item_append(m_genListCenter, m_small_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+    } else {
+        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
+        historyView = elm_genlist_item_append(m_genListRight, m_small_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
     }
 
     m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(),historyView));
@@ -463,22 +448,24 @@ void MainUI::_thumbSelected(void * data, Evas_Object * /* obj */, void * /* even
 
 void MainUI::clearHistoryGenlist()
 {
-    elm_genlist_clear(m_genListMVSmall);
-    elm_genlist_clear(m_genListMVBig);
-    elm_genlist_clear(m_genListMVMedium);
+    elm_genlist_clear(m_genListRight);
+    elm_genlist_clear(m_genListLeft);
+    elm_genlist_clear(m_genListCenter);
     m_map_history_views.clear();
-    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvBig"));
-    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvSmall"));
-    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvMedium"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.left"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.right"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.center"));
 }
 
 void MainUI::showHistoryGenlist()
 {
-	evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.grid"));
-	elm_object_part_content_unset(m_layout, "elm.swallow.grid");
-	elm_object_part_content_set(m_layout, "elm.swallow.mvBig", m_genListMVBig);
-	elm_object_part_content_set(m_layout, "elm.swallow.mvSmall", m_genListMVSmall);
-	elm_object_part_content_set(m_layout, "elm.swallow.mvMedium", m_genListMVMedium);
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.grid"));
+    elm_object_part_content_unset(m_layout, "elm.swallow.grid");
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.genlistBottom"));
+    elm_object_part_content_unset(m_layout, "elm.swallow.genlistBottom");
+    elm_object_part_content_set(m_layout, "elm.swallow.left", m_genListLeft);
+    elm_object_part_content_set(m_layout, "elm.swallow.right", m_genListRight);
+    elm_object_part_content_set(m_layout, "elm.swallow.center", m_genListCenter);
 }
 
 void MainUI::clearBookmarkGengrid()
@@ -490,13 +477,14 @@ void MainUI::clearBookmarkGengrid()
 
 void MainUI::showBookmarkGengrid()
 {
-	evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvBig"));
-        evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvSmall"));
-        evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.mvMedium"));
-	elm_object_part_content_unset(m_layout, "elm.swallow.mvBig");
-        elm_object_part_content_unset(m_layout, "elm.swallow.mvSmall");
-        elm_object_part_content_unset(m_layout, "elm.swallow.mvMedium");
-	elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.left"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.right"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.center"));
+    elm_object_part_content_unset(m_layout, "elm.swallow.left");
+    elm_object_part_content_unset(m_layout, "elm.swallow.right");
+    elm_object_part_content_unset(m_layout, "elm.swallow.center");
+    elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
+    elm_object_part_content_set(m_layout, "elm.swallow.genlistBottom", m_genListBottom);
 }
 
 void MainUI::hide()

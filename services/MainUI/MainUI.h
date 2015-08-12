@@ -77,9 +77,9 @@ private:
     static void _bookmark_manager_clicked(void * data, Evas_Object * obj, void * event_info);
 private:
     Evas_Object *m_genListTop;
-    Evas_Object *m_genListMVBig;
-    Evas_Object *m_genListMVMedium;
-    Evas_Object *m_genListMVSmall;
+    Evas_Object *m_genListLeft;
+    Evas_Object *m_genListCenter;
+    Evas_Object *m_genListRight;
     Elm_Genlist_Item_Class *m_itemClassTop;
     Evas_Object *m_genListBottom;
     Elm_Genlist_Item_Class *m_itemClassBottom;
@@ -87,7 +87,6 @@ private:
     Evas_Object *m_layout;
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_big_item_class;
-    Elm_Gengrid_Item_Class * m_medium_item_class;
     Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     std::multimap<std::string,Elm_Object_Item*> m_map_history_views;

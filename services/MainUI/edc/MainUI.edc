@@ -141,37 +141,38 @@ group { name: "mv_bookmarks";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
-					color: 255 255 255 255;
-					min: 1920 181;
-                    max: 1920 181;
-		    align: 0.0 0.0;
+                    color: 255 255 255 255;
+                    min: 0 181;
+                    max: -1 181;
+                    align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-						relative: 0 0; offset: 0 104;
+                        relative: 0 0; offset: 0 104;
                     }
                     rel2{
-						relative: 1 1;
+                        relative: 1 1;
                     }
                 }
             }
-	    part { name: "gengrid_bg";
+            part { name: "gengrid_bg";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
-                                        color: 255 255 255 255;
-					min: 1920 626;
-                    max: 1920 626;
-		    align: 0.0 0.0;
+                    color: 255 255 255 255;
+                    min: 1920 626;
+                    max: -1 626;
+                    align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                                                relative: 0 1; to: "genlistTop_bg";
+                        to: "genlistTop_bg";
+                        relative: 0 1;
                     }
                     rel2{
-                                                relative: 1 1;
+                        relative: 1 1;
                     }
                 }
             }
-	    part { name: "genlistBottom_bg";
+            part { name: "genlistBottom_bg";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
@@ -205,15 +206,33 @@ group { name: "mv_bookmarks";
                     }
                 }
             }
-	    part { name: "elm.swallow.mvBig";
+
+            part { name: "most_visited";
+                type: RECT;
+                description { state: "default" 0.0;
+                    min: 1592 614;
+                    max: 1592 614;
+                    visible: 0;
+                    align: 0.5 0.0;
+                    rel1 {
+                        to: "gengrid_bg";
+                        relative: 0 0;
+                    }
+                    rel2 {
+                        to: "gengrid_bg";
+                        relative: 1 1;
+                    }
+                }
+            }
+            part { name: "elm.swallow.left";
                 type: SWALLOW;
                 description { state: "default" 0.0;
-                                        min: 800 626;
-                    max: 800 626;
+                    min: 784 614;
+                    max: 784 614;
                     align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                        relative: 0 0; to: "gengrid_bg"; offset: 63 0;
+                        relative: 0 0; to: "most_visited";
                     }
                     rel2 {
                         relative: 1 1;
@@ -221,38 +240,44 @@ group { name: "mv_bookmarks";
                     }
                 }
             }
-		part { name: "elm.swallow.mvMedium";
+            part { name: "elm.swallow.center";
                 type: SWALLOW;
                 description { state: "default" 0.0;
-                                        min: 600 626;
-                    max: 600 626;
+                    min: 378 614;
+                    max: 378 614;
                     align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                        relative: 0 0; to: "gengrid_bg"; offset: 889 0;
+                        to: "most_visited";
+                        relative: 0 0;
+                        offset: 810 0;
                     }
                     rel2{
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
-		}
-           }
-                part { name: "elm.swallow.mvSmall";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-                                        min: 342 626;
-                    max: 342 626;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        relative: 0 0; to: "gengrid_bg"; offset: 1515 0;
-                    }
-                    rel2 {
+                        to: "most_visited";
                         relative: 1 1;
                         offset: 0 0;
                     }
                 }
-	    }
+            }
+            part { name: "elm.swallow.right";
+                type: SWALLOW;
+                description { state: "default" 0.0;
+                    min: 378 614;
+                    max: 378 614;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    rel1 {
+                        to: "most_visited";
+                        relative: 0 0;
+                        offset: 1214 0;
+                    }
+                    rel2 {
+                        to: "most_visited";
+                        relative: 1 1;
+                        offset: 0 0;
+                    }
+                }
+            }
 
                 part { name: "elm.swallow.genlistTop";
                 type: SWALLOW;
@@ -331,11 +356,10 @@ group { name: "elm/genlist/item/big_grid_item/default";
 			type: RECT;
 			mouse_events: 0;
 			description { state: "default" 0.0;
-				min: 800 613;
-				max: 800 613;
+				min: 784 614;
+				max: 784 614;
 				visible: 1;
 				color: 231 231 231 255;
-				rel1.offset: 0 13;
 			}
 			description { state: "selected";
 				inherit: "default" 0.0;
@@ -349,8 +373,8 @@ group { name: "elm/genlist/item/big_grid_item/default";
 				fixed: 1 0;
 				align: 0.0 0.0;
 				color : 231 231 231 255;
-				min: 800 526;
-				max: 800 526;
+				min: 784 526;
+				max: 784 526;
 				rel1 {
 					relative: 0.0  0.0; to: "bg";
 				}
@@ -389,8 +413,8 @@ group { name: "elm/genlist/item/big_grid_item/default";
 		part { name: "background";
 			type: RECT;
 			description { state: "default" 0.0;
-				min: 800 87;
-				max: 800 87;
+				min: 784 87;
+				max: 784 87;
 				align: 0.0 0.0;
 				color: 231 231 231 255;
 				rel1 {
@@ -522,209 +546,6 @@ group { name: "elm/genlist/item/big_grid_item/default";
 	}
 }
 
-group { name: "elm/genlist/item/medium_grid_item/default";
-	data.item: "texts" "page_title page_url";
-	data.item: "contents" "elm.thumbnail elm.thumbButton";
-	images {
-		image: "web_frame_selected.png" COMP;
-		image: "ico_bg_round_shape_37x37.png" COMP;
-	}
-	parts {
-		part { name: "bg";
-			type: RECT;
-			mouse_events: 0;
-			description { state: "default" 0.0;
-				min: 600 300;
-				max: 600 300;
-				visible: 1;
-				color: 231 231 231 255;
-				rel1.offset: 0 13;
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-				color: 70 143 254 255;
-			}
-		}
-
-		part { name: "elm.thumbnail";
-			type: SWALLOW;
-			description { state: "default" 0.0;
-				fixed: 1 0;
-				align: 0.0 0.0;
-				color : 231 231 231 255;
-				min: 600 203;
-				max: 600 203;
-				rel1 {
-					relative: 0.0  0.0; to: "bg";
-				}
-				rel2 {
-					relative: 1.0  1.0; to: "bg";
-				}
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-			}
-		}
-
-		part { name: "focus_highlight";
-			type: IMAGE;
-			description { state: "default" 0.0;
-				rel1 {
-					to: "elm.thumbnail";
-					relative: 0.0  0.0;
-				}
-				rel2 {
-					to: "elm.thumbnail";
-					relative: 1.0  1.0;
-				}
-				image.normal: "web_frame_selected.png";
-				image.border: 8 8 8 0;
-				image.border_scale: 1;
-				image.middle: NONE;
-				visible: 0;
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-				visible: 1;
-			}
-		}
-
-		part { name: "background";
-			type: RECT;
-			description { state: "default" 0.0;
-				min: 600 87;
-				max: 600 87;
-				align: 0.0 0.0;
-				color: 231 231 231 255;
-				rel1 {
-					to: "elm.thumbnail";
-					relative: 0.0  1.0;
-				}
-				rel2 {
-					relative: 1.0  1.0;
-				}
-			}
-			description { state: "selected" 0.0;
-				inherit: "default" 0.0;
-				color: 70 143 254 255;
-			}
-		}
-
-		part { name: "page_title";
-			type: TEXT;
-			description { state: "default" 0.0;
-				min: 500 48;
-				max: 500 48;
-				align: 0.0 0.5;
-				rel1 {
-					to: "background";
-					relative: 0.0 0.0;
-					offset: 17 0;
-				}
-				rel2 {
-					to: "background";
-					relative: 1.0  1.0;
-				}
-		color: 51 51 51 255;
-                    text {
-                        text: "Web page title";
-                        font: "Sans";
-                        size: 27;
-                        align: 0 0.5;
-                    }
-                }
-                description { state: "focus" 0.0;
-                    inherit: "default" 0.0;
-                    //color: focusTextColor;
-                }
-                description { state: "highlight" 0.0;
-                    inherit: "default" 0.0;
-                    //color: highlightTextColor;
-                }
-		}
-
-		part { name: "page_url";
-                        type: TEXT;
-                        description { state: "default" 0.0;
-                                min: 500 48;
-                                max: 500 48;
-                                align: 0 0.5;
-                                rel1 {
-                                        to: "page_title";
-                                        relative: 0.0 1.0;
-                                }
-                                rel2 {
-                                        to: "page_title";
-                                        relative: 1.0  1.0;
-                                }
-				color: 153 153 153 255;
-                    text {
-                        text: "Web page url";
-                        font: "Sans";
-                        size: 24;
-                        align: 0 0.5;
-                    }
-                }
-                description { state: "focus" 0.0;
-                    inherit: "default" 0.0;
-                    //color: focusTextColor;
-                }
-                description { state: "highlight" 0.0;
-                    inherit: "default" 0.0;
-                    //color: highlightTextColor;
-                }
-                }
-
-		part { name: "elm.thumbButton";
-			type: SWALLOW;
-			description { state: "default" 0.0;
-				rel1.to: "elm.thumbnail";
-				rel2.to: "elm.thumbnail";
-			}
-		}
-
-		part { name: "over2";
-			type: RECT;
-			mouse_events: 1;
-			repeat_events: 1;
-			description { state: "default" 0.0;
-				color: 0 0 0 0;
-				rel1.to: "bg";
-				rel2.to: "background";
-			}
-		}
-		part { name: "over3";
-			type: RECT;
-			mouse_events: 1;
-			repeat_events: 1;
-			description { state: "default" 0.0;
-				color: 0 0 0 0;
-				rel1.to: "background";
-				rel2.to: "background";
-			}
-		}
-	}
-
-	programs{
-		program { name: "mouse_in";
-			signal: "mouse,in";
-			source: "over2";
-			action:  STATE_SET "selected" 0.0;
-			target:  "background";
-			target: "focus_highlight";
-			target: "bg";
-		}
-		program { name: "mouse_out";
-			signal: "mouse,out";
-			source: "over2";
-			action:  STATE_SET "default" 0.0;
-			target:  "background";
-			target: "focus_highlight";
-			target: "bg";
-		}
-	}
-}
-
 group { name: "elm/genlist/item/small_grid_item/default";
 	data.item: "texts" "page_title page_url";
 	data.item: "contents" "elm.thumbnail elm.thumbButton";
@@ -733,15 +554,30 @@ group { name: "elm/genlist/item/small_grid_item/default";
 		image: "ico_bg_round_shape_37x37.png" COMP;
 	}
 	parts {
+        part { name: "border";
+            type: RECT;
+            description { state: "default" 0.0;
+                min: 378 320;
+                max: 378 320;
+                visible: 0;
+            }
+        }
+
 		part { name: "bg";
 			type: RECT;
 			mouse_events: 0;
 			description { state: "default" 0.0;
-				min: 342 300;
-				max: 342 300;
+				min: 378 294;
+				max: 378 294;
 				visible: 1;
 				color: 231 231 231 255;
-				rel1.offset: 0 13;
+                align: 0.0 0.0;
+                rel1 {
+                    relative: 0.0  0.0; to: "border";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "border";
+                }
 			}
 			description { state: "selected";
 				inherit: "default" 0.0;
@@ -1137,7 +973,7 @@ group { name: "elm/genlist/item/top_button_item/default";
         data.item: "texts" "mostvisited_text bookmark_text";
         data.item: "contents" "mostvisited_click bookmark_click";
         parts{
-	    part {
+            part {
                 name: "bg_clipper";
                 scale:1;
                 mouse_events: 1;
@@ -1152,7 +988,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     rel2 { relative: 1.0 1.0;}
                 }
             }
-	    part {
+            part {
                 name: "mostvisited_button";
                 scale:1;
                 mouse_events: 1;
@@ -1163,8 +999,8 @@ group { name: "elm/genlist/item/top_button_item/default";
                     fixed: 1 1;
                     color: 192 192 192 255;
                     align: 0 0;
-                    min: 348 65;
-                    max: 348 65;
+                    min: 348 64;
+                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 611 58;}
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
@@ -1174,14 +1010,14 @@ group { name: "elm/genlist/item/top_button_item/default";
                     color_class: focusBgColor;
                     visible: 1;
                 }
-                  description {
+                description {
                     state: "focus" 0.0;
                     inherit: "default" 0.0;
                     color_class: focusbtBgColor;
                     visible: 1;
                 }
             }
-	    part{
+            part{
                 name: "mostvisited_text";
                 type: TEXT;
                 scale: 1;
@@ -1191,7 +1027,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     rel1 { relative: 0.0 0.0;to: "mostvisited_button";}
                     rel2 { relative: 1.0 1.0;to: "mostvisited_button";}
                     color: 0 0 0 255;
-		    text {
+                text {
                         text: "Most visited";
                         font: "Sans";
                         size: 27;
@@ -1199,7 +1035,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     }
                 }
             }
-	    part {
+            part {
                 name: "mostvisited_over";
                 scale:1;
                 type: RECT;
@@ -1209,14 +1045,14 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
+                    min: 348 64;
+                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
                     rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
                     color_class: transparent;
                 }
             }
-       part {
+            part {
                 name: "mostvisited_click";
                 scale:1;
                 type: SWALLOW;
@@ -1226,13 +1062,13 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
-                    rel1 { relative: 0.0 0.0; to: "mostvisited_over";}
-                    rel2 { relative: 1.0 1.0; to: "mostvisited_over";}
+                    min: 348 64;
+                    max: 348 64;
+                    rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
+                    rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
                 }
             }
-	    part {
+            part {
                 name: "bookmark_button";
                 scale:1;
                 mouse_events: 1;
@@ -1243,8 +1079,8 @@ group { name: "elm/genlist/item/top_button_item/default";
                     fixed: 1 1;
                     color: 192 192 192 255;
                     align: 0 0;
-                    min: 348 65;
-                    max: 348 65;
+                    min: 348 64;
+                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 961 58;}
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
@@ -1261,7 +1097,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                 }
             }
-	    part{
+            part{
                 name: "bookmark_text";
                 type: TEXT;
                 scale: 1;
@@ -1271,7 +1107,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     rel1 { relative: 0.0 0.0;to: "bookmark_button";}
                     rel2 { relative: 1.0 1.0;to: "bookmark_button";}
                     color: 0 0 0 255;
-		    text {
+                text {
                         text: "Bookmark";
                         font: "Sans";
                         size: 27;
@@ -1279,7 +1115,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     }
                 }
             }
-        part {
+            part {
                 name: "bookmark_over";
                 scale:1;
                 type: RECT;
@@ -1289,8 +1125,8 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
+                    min: 348 64;
+                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "bookmark_button";}
                     rel2 { relative: 1.0 1.0; to: "bookmark_button";}
                     color_class: transparent;
@@ -1306,8 +1142,8 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
+                    min: 348 64;
+                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "bookmark_over";}
                     rel2 { relative: 1.0 1.0; to: "bookmark_over";}
                     color_class: transparent;
@@ -1323,7 +1159,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     emit("elm,action,click", "");
                 }
             }
-     	   program {
+            program {
                 name: "mouse_in_mostvisited_click";
                 signal: "mouse,in";
                 source: "mostvisited_*";
@@ -1349,7 +1185,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                     emit("elm,action,click", "");
                 }
             }
-     	   program {
+            program {
                 name: "mouse_in_bookmark_click";
                 signal: "mouse,in";
                 source: "bookmark_*";
@@ -1367,7 +1203,7 @@ group { name: "elm/genlist/item/top_button_item/default";
                 target: "bookmark_over";
                 target: "mostvisited_text";
             }
-	    }
+        }
     }
 }
 
@@ -1377,7 +1213,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
         data.item: "texts" "bookmarkmanager_text";
         data.item: "contents" "bookmarkmanager_click";
         parts{
-	    part {
+            part {
                 name: "bg_clipper";
                 scale:1;
                 mouse_events: 1;
@@ -1392,7 +1228,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     rel2 { relative: 1.0 1.0;}
                 }
             }
-	    part {
+            part {
                 name: "bookmarkmanager_button";
                 scale:1;
                 mouse_events: 1;
@@ -1421,7 +1257,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     visible: 1;
                 }
             }
-	    part{
+            part{
                 name: "bookmarkmanager_text";
                 type: TEXT;
                 scale: 1;
@@ -1431,7 +1267,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     rel1 { relative: 0.0 0.0;to: "bookmarkmanager_button";}
                     rel2 { relative: 1.0 1.0;to: "bookmarkmanager_button";}
                     color: 0 0 0 255;
-		    text {
+                text {
                         text: "Bookmark Manager";
                         font: "Sans";
                         size: 27;
@@ -1439,7 +1275,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     }
                 }
             }
-	    part {
+            part {
                 name: "bookmarkmanager_over";
                 scale:1;
                 type: RECT;
@@ -1456,7 +1292,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     color_class: transparent;
                 }
             }
-       part {
+            part {
                 name: "bookmarkmanager_click";
                 scale:1;
                 type: SWALLOW;
@@ -1482,7 +1318,7 @@ group { name: "elm/genlist/item/bottom_button_item/default";
                     emit("elm,action,click", "");
                 }
             }
-     	   program {
+            program {
                 name: "mouse_in_bookmarkmanager_click";
                 signal: "mouse,in";
                 source: "bookmarkmanager_*";
