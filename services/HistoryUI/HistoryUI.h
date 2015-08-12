@@ -43,18 +43,19 @@ public:
     void removeHistoryItem(const std::string& uri);
     void clearItems();
     void hide();
-    void showActionBar();  
+    void showActionBar();
     void show(Evas_Object *main_layout);
     void addItems();
     boost::signals2::signal<void (const std::string&)> closeHistoryUIClicked;
+    boost::signals2::signal<void (const std::string&)> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part); 
+    static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* _listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
-    static void _clearhistory_clicked(void *data, Evas_Object *obj, void *event_info);
+    static void _clearHistory_clicked(void *data, Evas_Object *obj, void *event_info);
     static char* _listTodayTextGet(void* data, Evas_Object* obj , const char* part);
     static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 

@@ -132,6 +132,8 @@ private:
     void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
     void onHistoryRemoved(const std::string& uri);
     void onHistoryClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onClearHistoryClicked(const std::string&);
+
     void onMostVisitedClicked(const std::string&);
     void onBookmarkButtonClicked(const std::string&);
     void onBookmarkManagerButtonClicked(const std::string&);
@@ -225,7 +227,7 @@ private:
     void showMoreMenu();
     void closeMoreMenu(const std::string& str);
     void showHistoryUI(const std::string& str);
-    void closeHistoryUI(const std::string& str);
+    void closeHistoryUI(const std::string&);
     void showMainUI();
     void hideMainUI();
     void showURIBar();

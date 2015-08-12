@@ -125,28 +125,14 @@ void HistoryUI::showActionBar()
     m_itemClassActionBar->func.state_get = nullptr;
     m_itemClassActionBar->func.del = nullptr;
 
-    ItemData *id = new ItemData;
-    id->historyUI = this;
     Elm_Object_Item *elmItem = elm_genlist_item_append(m_genListActionBar,    //genlist
                                                        m_itemClassActionBar,  //item Class
-                                                       id,
+                                                       this,
                                                        nullptr,               //parent item
                                                        ELM_GENLIST_ITEM_NONE, //item type
                                                        nullptr,
                                                        nullptr                //data passed to above function
                                                       );
-    id->e_item = elmItem;
-    ItemData *id2 = new ItemData;
-    id2->historyUI = this;
-    Elm_Object_Item *elmItem2 = elm_genlist_item_append(m_genListActionBar,    //genlist
-                                                        m_itemClassActionBar,  //item Class
-                                                        id2,
-                                                        nullptr,               //parent item
-                                                        ELM_GENLIST_ITEM_NONE, //item type
-                                                        nullptr,
-                                                        nullptr                //data passed to above function
-                                                       );
-    id2->e_item = elmItem2;
 }
 
 Evas_Object* HistoryUI::_listActionBarContentGet(void* data, Evas_Object* obj , const char* part)
@@ -161,7 +147,7 @@ Evas_Object* HistoryUI::_listActionBarContentGet(void* data, Evas_Object* obj , 
         if (!strncmp(part_name1, part, part_name1_len)) {
             Evas_Object *clearHistoryButton = elm_button_add(obj);
             elm_object_style_set(clearHistoryButton, "history_button");
-            evas_object_smart_callback_add(clearHistoryButton, "clicked", tizen_browser::base_ui::HistoryUI::_clearhistory_clicked, data);
+            evas_object_smart_callback_add(clearHistoryButton, "clicked", HistoryUI::_clearHistory_clicked, data);
             return clearHistoryButton;
         }
         if (!strncmp(part_name2, part, part_name2_len)) {
@@ -178,9 +164,9 @@ void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData *id = static_cast<ItemData*>(data);
-        id->historyUI->closeHistoryUIClicked(std::string());
-        id->historyUI->clearItems();
+        HistoryUI *historyUI = static_cast<HistoryUI*>(data);
+        historyUI->closeHistoryUIClicked(std::string());
+        historyUI->clearItems();
     }
 }
 
@@ -202,12 +188,13 @@ char* HistoryUI::_listTodayTextGet(void* data, Evas_Object*, const char* part)
     return nullptr;
 }
 
-void HistoryUI::_clearhistory_clicked(void*, Evas_Object*, void*)
+void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-//    ItemData *itemData = static_cast<ItemData*>(data);
-//    itemData->tabUI->clearItems();
-//    itemData->tabUI->newTabClicked(std::string());
+
+    HistoryUI *historyUI = static_cast<HistoryUI*>(data);
+    historyUI->clearHistoryClicked(std::string());
+    historyUI->clearItems();
 }
 
 void HistoryUI::addItems()

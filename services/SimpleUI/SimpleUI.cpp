@@ -588,6 +588,12 @@ void SimpleUI::onHistoryClicked(std::shared_ptr<tizen_browser::services::History
     openNewTab(historyAddress);
 }
 
+void SimpleUI::onClearHistoryClicked(const std::string&)
+{
+  BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+  m_historyService->clearAllHistory();
+}
+
 void SimpleUI::onMostVisitedClicked(const std::string&)
 {
    BROWSER_LOGD("[%s]", __func__);
@@ -1057,6 +1063,7 @@ void SimpleUI::showHistoryUI(const std::string& str)
     std::dynamic_pointer_cast<tizen_browser::base_ui::HistoryUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
     M_ASSERT(m_historyUI);
+    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
     m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
     m_historyUI->addHistoryItems(getHistory());
