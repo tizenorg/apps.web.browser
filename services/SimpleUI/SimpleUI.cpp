@@ -1376,7 +1376,8 @@ void SimpleUI::favicon_clicked(void *data, Evas_Object */*obj*/, const char */*e
 }
 
 void SimpleUI::addToBookmarks(int folder_id)
-{   BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+{
+    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
 	if (m_favoriteService)
 	    {   if( m_webEngine && !m_webEngine->getURI().empty())
                   {  m_favoriteService->addToBookmarks(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
@@ -1387,8 +1388,9 @@ void SimpleUI::addToBookmarks(int folder_id)
 }
 
 void SimpleUI::saveFolder(const char* title,int folder_id, int by_operator)
-{   BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
-     int id = -1;
+{
+    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+    int id = -1;
 	if (m_favoriteService)
 		m_favoriteService->save_folder(title, &id, folder_id, by_operator);
     if (id >= 0 )
@@ -1403,20 +1405,16 @@ void SimpleUI::saveFolder(const char* title,int folder_id, int by_operator)
 
 
 void SimpleUI::NewFolder(const char* title,int folder_id, int by_operator)
-{   BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+{
     int id = -1;
 	if (m_favoriteService)
 	   	m_favoriteService->save_folder(title, &id, folder_id, by_operator);
-    if (id >= 0 )
-     {     BROWSER_LOGD("[%s], Added New Folder", __func__);
-     }
-	if (m_favoriteService)
-	    {   if( m_webEngine && !m_webEngine->getURI().empty())
-                  {  m_favoriteService->addToBookmarks(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
-										  m_webEngine->getSnapshotData(373, 240),
-		   								  m_webEngine->getFavicon(),(unsigned int)id);
-                 }
-        }
+    if (id >= 0)
+    {
+        BROWSER_LOGD("[%s], Added New Folder", __func__);
+        addToBookmarks(id);
+        m_moreMenuUI->getBookmarkFolderList(getBookmarkFolders());
+    }
 }
 
 void SimpleUI::deleteBookmark(void)

@@ -330,12 +330,15 @@ int BookmarkService::save_folder(const char *title, int *saved_folder_id, int pa
     }
 
     bp_bookmark_info_fmt info;
+    std::memset(&info, 0, sizeof(bp_bookmark_info_fmt));
+
     info.type = 1;
     info.parent = parent_id;
     info.sequence = -1;
     info.is_operator = by_operator;
     info.access_count = -1;
     info.editable = 1;
+
     if (title != nullptr && strlen(title) > 0)
     {
         info.title = (char *)title;
