@@ -62,9 +62,8 @@ private:
     void setEmptyGengrid(bool setEmpty);
 
     Evas_Object *m_history_layout;
-    Evas_Object *m_genListActionBar;
+    Evas_Object *m_actionBar;
     Evas_Object *m_genListToday;
-    Elm_Genlist_Item_Class *m_itemClassActionBar;
     Elm_Genlist_Item_Class *m_itemClassToday;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;

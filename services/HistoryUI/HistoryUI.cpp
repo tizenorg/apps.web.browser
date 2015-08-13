@@ -48,7 +48,7 @@ static std::vector<HistoryItemData*> _history_item_data;
 
 HistoryUI::HistoryUI()
     : m_history_layout(nullptr)
-    , m_genListActionBar(nullptr)
+    , m_actionBar(nullptr)
     , m_genListToday(nullptr)
     , m_itemClassToday(nullptr)
     , m_gengrid(nullptr)
@@ -108,56 +108,25 @@ void HistoryUI::show(Evas_Object* parent)
 void HistoryUI::showActionBar()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    m_genListActionBar = elm_genlist_add(m_history_layout);
-    elm_object_part_content_set(m_history_layout, "action_bar_history_genlist", m_genListActionBar);
-    elm_genlist_homogeneous_set(m_genListActionBar, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListActionBar, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListActionBar, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListActionBar, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genListActionBar, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genListActionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    m_itemClassActionBar = elm_genlist_item_class_new();
-    m_itemClassActionBar->item_style = "action_bar_history_items";
-    m_itemClassActionBar->func.text_get = nullptr; // &listTopItemTextGet;
-    m_itemClassActionBar->func.content_get = &_listActionBarContentGet;
-    m_itemClassActionBar->func.state_get = nullptr;
-    m_itemClassActionBar->func.del = nullptr;
+    m_actionBar = elm_layout_add(m_history_layout);
+    elm_object_part_content_set(m_history_layout, "action_bar_history", m_actionBar);
+    evas_object_size_hint_weight_set(m_actionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_actionBar, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    Elm_Object_Item *elmItem = elm_genlist_item_append(m_genListActionBar,    //genlist
-                                                       m_itemClassActionBar,  //item Class
-                                                       this,
-                                                       nullptr,               //parent item
-                                                       ELM_GENLIST_ITEM_NONE, //item type
-                                                       nullptr,
-                                                       nullptr                //data passed to above function
-                                                      );
-}
+    elm_layout_file_set(m_actionBar, m_edjFilePath.c_str(), "action_bar");
 
-Evas_Object* HistoryUI::_listActionBarContentGet(void* data, Evas_Object* obj , const char* part)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (obj && part) {
-        const char *part_name1 = "clearhistory_click";
-        static const int part_name1_len = strlen(part_name1);
-        const char *part_name2 = "close_click";
-        static const int part_name2_len = strlen(part_name2);
+    Evas_Object *button = elm_button_add(m_actionBar);
+    elm_object_style_set(button, "history_button");
+    evas_object_smart_callback_add(button, "clicked", HistoryUI::_clearHistory_clicked, this);
+    elm_object_part_content_set(m_actionBar, "clearhistory_click", button);
 
-        if (!strncmp(part_name1, part, part_name1_len)) {
-            Evas_Object *clearHistoryButton = elm_button_add(obj);
-            elm_object_style_set(clearHistoryButton, "history_button");
-            evas_object_smart_callback_add(clearHistoryButton, "clicked", HistoryUI::_clearHistory_clicked, data);
-            return clearHistoryButton;
-        }
-        if (!strncmp(part_name2, part, part_name2_len)) {
-            Evas_Object *close_click = elm_button_add(obj);
-            elm_object_style_set(close_click, "history_button");
-            evas_object_smart_callback_add(close_click, "clicked", HistoryUI::_close_clicked_cb, data);
-            return close_click;
-        }
-    }
-    return nullptr;
+    button = elm_button_add(m_actionBar);
+    elm_object_style_set(button, "history_button");
+    evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
+    elm_object_part_content_set(m_actionBar, "close_click", button);
+
+    evas_object_show(m_actionBar);
 }
 
 void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
@@ -310,7 +279,7 @@ void HistoryUI::hide()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_hide(elm_layout_content_get(m_history_layout, "m_genListToday"));
     evas_object_hide(elm_layout_content_get(m_history_layout, "m_gengrid"));
-    evas_object_hide(elm_layout_content_get(m_history_layout, "m_genListActionBar"));
+    evas_object_hide(elm_layout_content_get(m_history_layout, "m_ActionBar"));
     evas_object_hide(m_history_layout);
 }
 
@@ -320,7 +289,6 @@ void HistoryUI::clearItems()
     hide();
     elm_genlist_clear(m_genListToday);
     elm_gengrid_clear(m_gengrid);
-    elm_genlist_clear(m_genListActionBar);
     m_map_history_views.clear();
     _history_item_data.clear();
     setEmptyGengrid(true);
