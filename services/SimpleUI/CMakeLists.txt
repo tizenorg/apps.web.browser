@@ -8,6 +8,7 @@ set(SimpleUI_SRCS
     SimplePopup.cpp
     ZoomList.cpp
     TabList.cpp
+    BookmarksManager.cpp
     Settings.cpp
     SimpleScroller.cpp
     WebTitleBar.cpp
@@ -22,6 +23,7 @@ set(SimpleUI_HEADERS
     SimplePopup.h
     ZoomList.h
     TabList.h
+    BookmarksManager.h
     Settings.h
     SimpleScroller.h
     HistoryList.h
@@ -41,10 +43,15 @@ include_directories(${CMAKE_SOURCE_DIR}/services/SimpleURI)
 include_directories(${CMAKE_SOURCE_DIR}/services/WebEngineService)
 include_directories(${CMAKE_SOURCE_DIR}/services/WebEngineService/src)
 include_directories(${CMAKE_SOURCE_DIR}/services/StorageService)
+include_directories(${CMAKE_SOURCE_DIR}/services/BookmarkManagerUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/StorageService/Storage/include)
 include_directories(${CMAKE_SOURCE_DIR}/services/FavoriteService)
 include_directories(${CMAKE_SOURCE_DIR}/services/HistoryService)
-include_directories(${CMAKE_SOURCE_DIR}/services/BookmarksUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/MoreMenuUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/HistoryUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/MainUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/SettingsUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/PlatformInputManager)
 include_directories(${CMAKE_SOURCE_DIR}/services/SessionStorage)
 
@@ -57,13 +64,23 @@ add_library(${PROJECT_NAME} SHARED ${SimpleUI_SRCS})
 add_dependencies(${PROJECT_NAME} SimpleURI)
 add_dependencies(${PROJECT_NAME} StorageService)
 add_dependencies(${PROJECT_NAME} HistoryService)
-add_dependencies(${PROJECT_NAME} BookmarksUI)
+add_dependencies(${PROJECT_NAME} MoreMenuUI)
+add_dependencies(${PROJECT_NAME} BookmarkManagerUI)
+add_dependencies(${PROJECT_NAME} MainUI)
+add_dependencies(${PROJECT_NAME} HistoryUI)
+add_dependencies(${PROJECT_NAME} TabUI)
+add_dependencies(${PROJECT_NAME} SettingsUI)
 add_dependencies(${PROJECT_NAME} PlatformInputManager)
 add_dependencies(${PROJECT_NAME} SessionStorage)
 target_link_libraries(${PROJECT_NAME} SimpleURI)
 target_link_libraries(${PROJECT_NAME} StorageService)
 target_link_libraries(${PROJECT_NAME} HistoryService)
-target_link_libraries(${PROJECT_NAME} BookmarksUI)
+target_link_libraries(${PROJECT_NAME} MoreMenuUI)
+target_link_libraries(${PROJECT_NAME} MainUI)
+target_link_libraries(${PROJECT_NAME} HistoryUI)
+target_link_libraries(${PROJECT_NAME} TabUI)
+target_link_libraries(${PROJECT_NAME} SettingsUI)
+target_link_libraries(${PROJECT_NAME} BookmarkManagerUI)
 target_link_libraries(${PROJECT_NAME} PlatformInputManager)
 target_link_libraries(${PROJECT_NAME} SessionStorage)
 target_link_libraries(${PROJECT_NAME} ${EFL_LDFLAGS})
@@ -86,6 +103,7 @@ set(edcFiles
     AuthenticationPopup.edc
     TabItem.edc
     ZoomItem.edc
+    BookmarksManager.edc
     Settings.edc
     ScrollerDefault.edc
     HistoryItem.edc

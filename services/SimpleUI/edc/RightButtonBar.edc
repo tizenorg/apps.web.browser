@@ -1,11 +1,8 @@
 #include "ImageButton.edc"
 #include "Spacer.edc"
 collections {
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_tab", 70, 70, "web_ico_tab.png")
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_history", 70, 70, "web_ico_history.png")
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_zoom_in", 70, 70, "web_ico_zoom_in.png")
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_rss", 70, 70, "web_ico_rss.png")
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 70, 70, "web_ico_setting.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_tab", 82, 102, "btn_bar_manager_nor.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 82, 102, "btn_bar_more_nor.png")
     group {
         name: "right_button_bar";
         parts {
@@ -44,9 +41,9 @@ FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 70, 70, "web_ico_setting.png"
                     align: 0.0 0.0;
                     min: 70 70;
                     max: 70 70;
-                    color: 255 255 255 153;
-                    rel1 { relative: 0.0 0.0; to: "tab_button"; offset: -3 4;}
-                    rel2 { relative: 1.0 1.0; to: "tab_button";}
+                    color: 86 86 86 255;
+                    rel1 { relative: 0.0 0.0; to: "tab_button"; offset: 5 13; }
+                    rel2 { relative: 1.0 1.0; to: "tab_button"; }
                     text {
                         text: "";
                         font: "Tizen:style=Bold";
@@ -56,81 +53,6 @@ FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 70, 70, "web_ico_setting.png"
                 }
             }
             ADD_SPACER("spacer_1", "tab_button", 10, 70)
-            part { name: "history_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0.0 0.0;
-                    min: 70 70;
-                    max: 70 70;
-                    rel1 { relative: 1.0 0.0; to: "spacer_1"; }
-                    rel2 { relative: 0.0 0.0; }
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-            ADD_SPACER("spacer_2", "history_button", 10, 70)
-            part { name: "zoom_in_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0.0 0.0;
-                    min: 70 70;
-                    max: 70 70;
-                    rel1 { relative: 1.0 0.0; to: "spacer_2"; }
-                    rel2 { relative: 0.0 0.0; }
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-            ADD_SPACER("spacer_3", "zoom_in_button", 10, 70)
-            part { name: "rss_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0.0 0.0;
-                    min: 70 70;
-                    max: 70 70;
-                    rel1 { relative: 1.0 0.0; to: "spacer_3"; }
-                    rel2 { relative: 0.0 0.0; }
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-            ADD_SPACER("spacer_4", "rss_button", 10, 70)
             part { name: "setting_button";
                 type : SWALLOW;
                 scale: 1;
@@ -142,7 +64,7 @@ FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 70, 70, "web_ico_setting.png"
                     min: 70 70;
                     max: 70 70;
                     fixed: 1 1;
-                    rel1 { relative: 1.0 0.0; to: "spacer_4"; }
+                    rel1 { relative: 1.0 0.0; to: "spacer_1"; }
                     rel2 { relative: 0.0 0.0; }
                 }
                 description {

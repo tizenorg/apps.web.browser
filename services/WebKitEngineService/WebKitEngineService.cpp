@@ -43,7 +43,7 @@ EXPORT_SERVICE(WebKitEngineService, "org.tizen.browser.webkitengineservice")
 WebKitEngineService::WebKitEngineService()
     : m_initialised(false)
     , m_privateMode(false)
-    , m_guiParent(NULL)
+    , m_guiParent(nullptr)
     , m_currentTabId(TabId::NONE)
 {
     m_mostRecentTab.clear();
@@ -122,7 +122,10 @@ void WebKitEngineService::setURI(const std::string & uri)
 std::string WebKitEngineService::getURI() const
 {
     M_ASSERT(m_currentWebView);
-    return m_currentWebView->getURI();
+    if(m_currentWebView)
+        return m_currentWebView->getURI();
+    else
+        return std::string("");
 }
 
 bool WebKitEngineService::isLoadError() const
@@ -134,7 +137,10 @@ bool WebKitEngineService::isLoadError() const
 std::string WebKitEngineService::getTitle() const
 {
     M_ASSERT(m_currentWebView);
-    return m_currentWebView->getTitle();
+    if(m_currentWebView)
+        return m_currentWebView->getTitle();
+    else
+        return std::string("");
 }
 
 void WebKitEngineService::stopLoading(void)
@@ -414,7 +420,11 @@ bool WebKitEngineService::isPrivateMode() const
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnapshotData(int width, int height)
 {
     M_ASSERT(m_currentWebView);
-    return m_currentWebView->captureSnapshot(width, height);
+    if(m_currentWebView)
+        return m_currentWebView->captureSnapshot(width, height);
+    else
+        return std::make_shared<tizen_browser::tools::BrowserImage>();
+
 }
 
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnapshotData(TabId id, int width, int height){
@@ -443,7 +453,10 @@ bool WebKitEngineService::hasFocus() const
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getFavicon()
 {
     M_ASSERT(m_currentWebView);
-    return m_currentWebView->getFavicon();
+    if(m_currentWebView)
+        return m_currentWebView->getFavicon();
+    else
+        return std::make_shared<tizen_browser::tools::BrowserImage>();
 }
 
 void WebKitEngineService::webViewClicked()
@@ -470,8 +483,7 @@ void WebKitEngineService::setZoomFactor(int zoomFactor)
 void WebKitEngineService::clearPrivateData()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
-            auto item = *it;
-            item.second->clearPrivateData();
+            it->second->clearPrivateData();
         }
 }
 
@@ -488,7 +500,7 @@ void WebKitEngineService::_IMEStateChanged(bool enable)
 void WebKitEngineService::backButtonClicked() const
 {
     M_ASSERT(m_currentWebView);
-    if (isBackEnabled()) {     
+    if (isBackEnabled()) {
         m_currentWebView->back();
     } else {
         app_efl_exit();

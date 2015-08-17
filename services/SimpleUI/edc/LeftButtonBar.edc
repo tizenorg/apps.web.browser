@@ -3,17 +3,13 @@
 
 collections {
 
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 70, 70, "web_ico_prev.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 82, 102, "btn_bar_back_nor.png")
 
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", 70, 70, "web_ico_next.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", 82, 102, "btn_bar_forward_nor.png")
 
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_reload", 70, 70, "web_ico_reload.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_reload", 82, 102, "btn_bar_reload_nor.png")
 
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_stop", 70, 70, "web_ico_stop.png")
-
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_bookmark", 70, 70, "web_ico_favorite_on.png")
-
-FOUR_STATE_IMAGE_BUTTON("browser/toolbar_unbookmark", 70, 70, "web_ico_favorite_off.png")
+FOUR_STATE_IMAGE_BUTTON("browser/toolbar_stop", 82, 102, "btn_bar_stop_nor.png")
 
     group {
         name: "left_button_bar";
@@ -85,33 +81,6 @@ FOUR_STATE_IMAGE_BUTTON("browser/toolbar_unbookmark", 70, 70, "web_ico_favorite_
                     min: 70 70;
                     max: 70 70;
                     rel1 { relative: 1.0 0.0; to: "spacer_2"; }
-                    rel2 { relative: 0.0 0.0; }
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-
-            ADD_SPACER("spacer_3", "refresh_stop_button", 10, 70)
-
-            part { name: "bookmark_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    fixed: 1 1;
-                    min: 70 70;
-                    max: 70 70;
-                    rel1 { relative: 1.0 0.0; to: spacer_3; }
                     rel2 { relative: 0.0 0.0; }
                 }
                 description {

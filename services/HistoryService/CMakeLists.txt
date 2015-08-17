@@ -1,8 +1,8 @@
 PROJECT(HistoryService)
 
 set(HistoryService_SOURCES
-	src/HistoryService.cpp
-	src/HistoryItem.cpp
+	HistoryService.cpp
+	HistoryItem.cpp
 )
 
 set(HistoryService_HEADERS

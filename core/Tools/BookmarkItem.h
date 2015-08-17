@@ -23,10 +23,8 @@
 #ifndef BOOKMARKITEM_H
 #define BOOKMARKITEM_H
 
-#include <memory>
-#include <list>
-#include <vector>
-
+#include "BrowserLogger.h"
+#include "Config.h"
 #include "BrowserImage.h"
 
 namespace tizen_browser{
@@ -38,7 +36,7 @@ public:
     BookmarkItem();
     BookmarkItem(
         const std::string& url,
-        const std::string& tittle,
+        const std::string& title,
         const std::string& note,
         unsigned int dir = 0,
         unsigned int id = 0
@@ -48,8 +46,8 @@ public:
     void setAddress(const std::string & url) { m_url = url; };
     std::string getAddress() const { return m_url; };
 
-    void setTittle(const std::string & tittle) { m_tittle = tittle; };
-    std::string getTittle() const { return m_tittle; };
+    void setTittle(const std::string & tittle) { m_title = tittle; };
+    std::string getTittle() const { return m_title; };
 
     void setNote(const std::string& note){m_note = note;};
     std::string getNote() const { return m_note;};
@@ -69,15 +67,23 @@ public:
     void setTags(const std::vector<unsigned int>& tags) { m_tags = tags; };
     std::vector<unsigned int> getTags() const { return m_tags; };
 
+    bool is_folder(void) const { return m_is_folder; }
+    bool is_editable(void) const { return m_is_editable; }
+
+    void set_folder_flag(bool flag) { m_is_folder = flag; }
+    void set_editable_flag(bool flag) { m_is_editable = flag; }
+
 private:
     unsigned int m_saved_id;
     std::string m_url;
-    std::string m_tittle;
+    std::string m_title;
     std::string m_note;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_favicon;
     unsigned int m_directory;
     std::vector<unsigned int> m_tags;
+    bool m_is_folder;
+    bool m_is_editable;
 };
 
 typedef std::shared_ptr<BookmarkItem> SharedBookmarkItem;

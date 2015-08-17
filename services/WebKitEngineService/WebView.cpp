@@ -45,7 +45,11 @@
 #include "ServiceManager.h"
 
 #define certificate_crt_path CERTS_DIR
+#if MERGE_ME
 #define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
+#else
+#define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1"
+#endif
 
 using namespace tizen_browser::tools;
 
@@ -56,8 +60,9 @@ namespace webkitengine_service {
 WebView::WebView(Evas_Object * obj, TabId tabId)
     : m_parent(obj)
     , m_tabId(tabId)
-    , m_ewkView(NULL)
     , m_ewkContext(ewk_context_new())
+    , m_title(std::string())
+    , m_ewkView(nullptr)
     , m_isLoading(false)
     , m_loadError(false)
 {
@@ -430,7 +435,7 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int
     M_ASSERT(targetHeight);
     Evas_Coord vw, vh;
     std::shared_ptr<tizen_browser::tools::BrowserImage> noImage = std::make_shared<tizen_browser::tools::BrowserImage>();
-    evas_object_geometry_get(m_ewkView, NULL, NULL, &vw, &vh);
+    evas_object_geometry_get(m_ewkView, nullptr, nullptr, &vw, &vh);
     if (vw == 0 || vh == 0)
         return noImage;
 
@@ -576,7 +581,7 @@ void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)
     {
         BROWSER_LOGD("Stop signal emitted");
         BROWSER_LOGD("Error description: %s", ewk_error_description_get(error));
-        evas_object_smart_callback_call(obj, "load,stop", NULL);
+        evas_object_smart_callback_call(obj, "load,stop", nullptr);
     }
     else
     {
@@ -799,7 +804,7 @@ bool WebView::hasFocus() const
 
 double WebView::getZoomFactor() const
 {
-    if(EINA_UNLIKELY(m_ewkView == NULL)){
+    if(EINA_UNLIKELY(m_ewkView == nullptr)){
         return 1.0;
     }
 

@@ -23,10 +23,10 @@ namespace base_ui
         evas_object_del(popup);
     }
 
-    SimplePopup::SimplePopup() : content(NULL) { }
+    SimplePopup::SimplePopup() : content(nullptr) { }
 
     SimplePopup::SimplePopup(const std::string &title, const std::string &message)
-	: content(NULL)
+	: content(nullptr)
 	, title(title)
 	, message(message)
     { }
@@ -43,12 +43,15 @@ namespace base_ui
         popup = elm_popup_add(mainUi->getMainWindow().get());
         evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-        if(content != NULL)
+        if(content != nullptr)
             elm_object_content_set(popup, content);
         else
             elm_object_text_set(popup, message.c_str());
 
         elm_popup_content_text_wrap_type_set(popup, ELM_WRAP_WORD);
+#if MERGE_ME
+        elm_popup_content_text_wrap_type_set(popup, ELM_WRAP_CHAR);
+#endif
         elm_object_part_text_set(popup, "title,text", title.c_str());
 
         int buttonsCounter = 1;

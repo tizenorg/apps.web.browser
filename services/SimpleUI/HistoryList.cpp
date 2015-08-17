@@ -21,6 +21,12 @@
 #include "EflTools.h"
 #include <Evas.h>
 
+#if MERGE_ME
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/date.hpp>
+#include <boost/date_time/date_defs.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#endif
 
 namespace tizen_browser
 {
@@ -210,11 +216,13 @@ char* HistoryList::listItemTextGet(void* data, Evas_Object* /* obj */, const cha
             return strdup(id->h_item->getUrl().c_str());
         }
     }
+#if MERGE_ME
     else if(!strcmp(part, "page_time"))
     {
         std::string retstr = boost::posix_time::to_simple_string(id->h_item->getLastVisit().time_of_day());
         return strdup(retstr.c_str());
     }
+#endif
     return strdup("");
 }
 

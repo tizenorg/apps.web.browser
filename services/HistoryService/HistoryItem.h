@@ -34,7 +34,9 @@ public:
                 std::shared_ptr<tizen_browser::tools::BrowserImage> image);
 
 	HistoryItem(HistoryItem && other) throw();
+
 	HistoryItem(const std::string& url);
+	HistoryItem(const std::string& url, int& date_created);
 	HistoryItem(const HistoryItem& source);
 	virtual ~HistoryItem();
 
@@ -64,7 +66,10 @@ public:
 	void setVisitCounter(int visitCounter);
 	int getVisitCounter();
 
-	void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favIcon);
+	void setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
+        std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const ;
+
+        void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favIcon);
 	std::shared_ptr<tizen_browser::tools::BrowserImage> getFavIcon();
 
 	void setUriFavicon(const std::string & uri);
@@ -77,6 +82,7 @@ private:
     std::string m_title;
     boost::gregorian::date m_visitDate;
     boost::posix_time::ptime m_lastVisit;
+    std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_favIcon;
     std::string m_urifavicon;
     int m_visitCounter;
