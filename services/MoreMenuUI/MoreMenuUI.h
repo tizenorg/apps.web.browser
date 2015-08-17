@@ -38,16 +38,21 @@ namespace base_ui{
 
 class SimpleUI;
 enum ItemType {
+#ifdef READER_MODE_ENABLED
     READER_MODE,
+#endif
     BOOKMARK_MANAGER,
     HISTORY,
     SCREEN_ZOOM,
+#ifdef START_MINIBROWSER_ENABLED
     START_MINIBROWSER,
+#endif
     FOCUS_MODE,
     VIEW_MOBILE_WEB,
     SHARE,
     SETTINGS,
-    EXIT_BROWSER
+    EXIT_BROWSER,
+    END_OF_RANGE
 } item;
 
 class BROWSER_EXPORT MoreMenuUI

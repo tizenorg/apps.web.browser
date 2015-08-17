@@ -282,7 +282,7 @@ void MoreMenuUI::hide()
 void MoreMenuUI::addItems()
 {
      BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-     for (size_t i = 0; i < 10; i++) {
+     for (size_t i = 0; i < static_cast<int>(END_OF_RANGE); i++) {
          MoreMenuItemData *itemData = new MoreMenuItemData();
          itemData->item = static_cast<ItemType>(i);;
          itemData->moreMenuUI = std::shared_ptr<tizen_browser::base_ui::MoreMenuUI>(this);
@@ -304,9 +304,11 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
         if (!strncmp(part_name, part, part_name_len)) {
             const char* item_name = NULL;
             switch (itemData->item) {
+#ifdef READER_MODE_ENABLED
             case READER_MODE:
                 item_name = "Reader mode";
                 break;
+#endif
             case BOOKMARK_MANAGER:
                 item_name = "Bookmark manager";
                 break;
@@ -316,9 +318,11 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             case SCREEN_ZOOM:
                 item_name = "Screen zoom";
                 break;
+#ifdef START_MINIBROWSER_ENABLED
             case START_MINIBROWSER:
                 item_name = "Start minibrowser";
                 break;
+#endif
             case FOCUS_MODE:
                 item_name = "Focus mode";
                 break;
@@ -347,9 +351,11 @@ static const char* getImageFileNameForType(ItemType type, bool focused)
 {
     const char* file_name = NULL;
     switch (type) {
+#ifdef READER_MODE_ENABLED
     case READER_MODE:
         file_name = focused ? "ic_more_readermode_foc.png" : "ic_more_readermode_nor.png";
         break;
+#endif
     case BOOKMARK_MANAGER:
         file_name = focused ? "ic_more_bookmark_foc.png" : "ic_more_bookmark_nor.png";
         break;
@@ -359,9 +365,11 @@ static const char* getImageFileNameForType(ItemType type, bool focused)
     case SCREEN_ZOOM:
         file_name = focused ? "ic_more_zoom_foc.png" : "ic_more_zoom_nor.png";
         break;
+#ifdef START_MINIBROWSER_ENABLED
     case START_MINIBROWSER:
         file_name = focused ? "ic_more_minibrowser_foc.png" : "ic_more_minibrowser_nor.png";
         break;
+#endif
     case FOCUS_MODE:
         file_name = focused ? "ic_more_focusmode_foc.png" : "ic_more_focusmode_nor.png";
         break;
@@ -455,9 +463,15 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         case BOOKMARK_MANAGER:
             itemData->moreMenuUI->bookmarkManagerClicked(std::string());
             break;
+#ifdef READER_MODE_ENABLED
         case READER_MODE:
+        //TODO: Implement reader mode
+#endif
         case SCREEN_ZOOM:
+#ifdef START_MINIBROWSER_ENABLED
         case START_MINIBROWSER:
+        //TODO: Implement minibrowser launching
+#endif
         case FOCUS_MODE:
         case VIEW_MOBILE_WEB:
         case SHARE:
