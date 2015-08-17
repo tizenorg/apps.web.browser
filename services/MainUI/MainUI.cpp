@@ -53,10 +53,15 @@ struct ItemData{
 };
 
 MainUI::MainUI()
-    : m_gengrid(nullptr)
-    , m_genListTop(nullptr)
+    : m_parent(nullptr)
+    , m_layout(nullptr)
+    , m_layoutTop(nullptr)
+    , m_gengrid(nullptr)
+    , m_genListLeft(nullptr)
+    , m_genListCenter(nullptr)
+    , m_genListRight(nullptr)
     , m_genListBottom(nullptr)
-    , m_parent(nullptr)
+    , m_itemClassBottom(nullptr)
     , m_big_item_class(nullptr)
     , m_small_item_class(nullptr)
     , m_bookmark_item_class(nullptr)
@@ -164,49 +169,25 @@ void MainUI::show(Evas_Object* parent)
 void MainUI::showTopButtons()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, edjFilePath.c_str());
-    m_genListTop = elm_genlist_add(m_layout);
-    elm_object_part_content_set(m_layout, "elm.swallow.genlistTop", m_genListTop);
-    elm_genlist_homogeneous_set(m_genListTop, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListTop, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListTop, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListTop, ELM_LIST_LIMIT);
-    //elm_genlist_decorate_mode_set(m_genListTop, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genListTop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    /*evas_object_smart_callback_add(m_genList, "item,focused", focusItem, this);
-    evas_object_smart_callback_add(m_genList, "item,unfocused", unFocusItem, nullptr);*/
+    m_layoutTop = elm_layout_add(m_layout);
 
-    m_itemClassTop = elm_genlist_item_class_new();
-    m_itemClassTop->item_style = "top_button_item";
-    m_itemClassTop->func.text_get = nullptr; // &listTopItemTextGet;
-    m_itemClassTop->func.content_get = &listTopItemContentGet;
-    m_itemClassTop->func.state_get = 0;
-    m_itemClassTop->func.del = 0;
+    elm_layout_file_set(m_layoutTop, edjFilePath.c_str(), "top_button_item");
+    evas_object_size_hint_weight_set(m_layoutTop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_layoutTop, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_layoutTop);
 
-    ItemData * id = new ItemData;
-    id->mainUI = this;
-    Elm_Object_Item* elmItem = elm_genlist_item_append(m_genListTop,            //genlist
-                                                       m_itemClassTop,          //item Class
-                                                      id,
-                                                      nullptr,                    //parent item
-                                                      ELM_GENLIST_ITEM_NONE,//item type
-                                                      nullptr,
-                                                      nullptr                  //data passed to above function
-                                                     );
-    id->e_item = elmItem;
-    ItemData * id2 = new ItemData;
-    id2->mainUI = this;
-    Elm_Object_Item* elmItem2 = elm_genlist_item_append(m_genListTop,            //genlist
-                                                       m_itemClassTop,          //item Class
-                                                      id2,
-                                                      nullptr,                    //parent item
-                                                      ELM_GENLIST_ITEM_NONE,//item type
-                                                      nullptr,
-                                                      nullptr                  //data passed to above function
-                                                     );
-    id2->e_item = elmItem2;
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Object *mvButton = elm_button_add(m_layoutTop);
+    elm_object_style_set(mvButton, "invisible_button");
+    evas_object_smart_callback_add(mvButton, "clicked", tizen_browser::base_ui::MainUI::_mostVisited_clicked, this);
+    elm_layout_content_set(m_layoutTop, "mostvisited_click", mvButton);
+
+    Evas_Object *bmButton = elm_button_add(m_layoutTop);
+    elm_object_style_set(bmButton, "invisible_button");
+    evas_object_smart_callback_add(bmButton, "clicked", tizen_browser::base_ui::MainUI::_bookmark_clicked, this);
+    elm_layout_content_set(m_layoutTop, "bookmark_click", bmButton);
+
+    elm_object_part_content_set(m_layout, "elm.swallow.genlistTop", m_layoutTop);
 }
 
 void MainUI::showBottomButton()
@@ -244,38 +225,18 @@ void MainUI::showBottomButton()
     id->e_item = elmItem;
 }
 
-Evas_Object* MainUI::listTopItemContentGet(void* data, Evas_Object* obj, const char* part)
-{
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        if(!strcmp(part, "mostvisited_click"))
-        {
-                Evas_Object *mvButton = elm_button_add(obj);
-                elm_object_style_set(mvButton, "invisible_button");
-                evas_object_smart_callback_add(mvButton, "clicked", tizen_browser::base_ui::MainUI::_mostVisited_clicked, data);
-                return mvButton;
-        }
-        else if(!strcmp(part, "bookmark_click"))
-        {
-		Evas_Object *bmButton = elm_button_add(obj);
-                elm_object_style_set(bmButton, "invisible_button");
-                evas_object_smart_callback_add(bmButton, "clicked", tizen_browser::base_ui::MainUI::_bookmark_clicked, data);
-		return bmButton;
-	}
-        return nullptr;
-}
-
 void MainUI::_mostVisited_clicked(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	ItemData* itemData = reinterpret_cast<ItemData *>(data);
-	itemData->mainUI->mostVisitedClicked(std::string());
+    MainUI* mainUI = reinterpret_cast<MainUI *>(data);
+    mainUI->mostVisitedClicked(std::string());
 }
 
 void MainUI::_bookmark_clicked(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	ItemData* itemData = reinterpret_cast<ItemData *>(data);
-	itemData->mainUI->bookmarkClicked(std::string());
+    MainUI* mainUI = reinterpret_cast<MainUI *>(data);
+    mainUI->bookmarkClicked(std::string());
 }
 
 void MainUI::_bookmark_manager_clicked(void * data, Evas_Object * /* obj */, void * event_info)
@@ -501,7 +462,6 @@ void MainUI::clearItems()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     clearHistoryGenlist();
     clearBookmarkGengrid();
-    elm_genlist_clear(m_genListTop);
     elm_genlist_clear(m_genListBottom);
 }
 

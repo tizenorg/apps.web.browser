@@ -967,7 +967,7 @@ group { name: "elm/gengrid/item/grid_item/default";
 	}
 }
 
-group { name: "elm/genlist/item/top_button_item/default";
+group { name: "top_button_item";
         min: 1920 181;
         max: 1920 181;
         data.item: "texts" "mostvisited_text bookmark_text";
@@ -1045,8 +1045,6 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 64;
-                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
                     rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
                     color_class: transparent;
@@ -1062,8 +1060,6 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 64;
-                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
                     rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
                 }
@@ -1125,8 +1121,6 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 64;
-                    max: 348 64;
                     rel1 { relative: 0.0 0.0; to: "bookmark_button";}
                     rel2 { relative: 1.0 1.0; to: "bookmark_button";}
                     color_class: transparent;
@@ -1142,10 +1136,8 @@ group { name: "elm/genlist/item/top_button_item/default";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 64;
-                    max: 348 64;
-                    rel1 { relative: 0.0 0.0; to: "bookmark_over";}
-                    rel2 { relative: 1.0 1.0; to: "bookmark_over";}
+                    rel1 { relative: 0.0 0.0; to: "bookmark_button";}
+                    rel2 { relative: 1.0 1.0; to: "bookmark_button";}
                     color_class: transparent;
                 }
             }

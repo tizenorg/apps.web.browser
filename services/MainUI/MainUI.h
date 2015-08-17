@@ -76,16 +76,15 @@ private:
     static void _bookmark_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object * obj, void * event_info);
 private:
-    Evas_Object *m_genListTop;
+    Evas_Object *m_parent;
+    Evas_Object *m_layout;
+    Evas_Object *m_layoutTop;
+    Evas_Object *m_gengrid;
     Evas_Object *m_genListLeft;
     Evas_Object *m_genListCenter;
     Evas_Object *m_genListRight;
-    Elm_Genlist_Item_Class *m_itemClassTop;
     Evas_Object *m_genListBottom;
     Elm_Genlist_Item_Class *m_itemClassBottom;
-    Evas_Object *m_gengrid;
-    Evas_Object *m_layout;
-    Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_big_item_class;
     Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
