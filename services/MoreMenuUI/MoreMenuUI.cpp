@@ -465,17 +465,24 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             break;
 #ifdef READER_MODE_ENABLED
         case READER_MODE:
-        //TODO: Implement reader mode
+            //TODO: Implement reader mode
+            break;
 #endif
         case SCREEN_ZOOM:
+            break;
 #ifdef START_MINIBROWSER_ENABLED
         case START_MINIBROWSER:
-        //TODO: Implement minibrowser launching
+            //TODO: Implement minibrowser launching
+            break;
 #endif
         case FOCUS_MODE:
+            break;
         case VIEW_MOBILE_WEB:
+            break;
         case SHARE:
+            break;
         case EXIT_BROWSER:
+            _exitClicked();
             break;
         }
     }
@@ -497,6 +504,12 @@ void MoreMenuUI::clearItems()
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
     elm_theme_full_flush();
     elm_cache_all_flush();
+}
+
+void MoreMenuUI::_exitClicked()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    elm_exit();
 }
 
 //void MoreMenuUI::focusItem(void*, Evas_Object*, void* event_info)
