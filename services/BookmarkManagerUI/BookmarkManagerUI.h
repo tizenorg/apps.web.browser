@@ -61,13 +61,13 @@ public:
     boost::signals2::signal<void (int)> bookmarkFolderClicked;
 
 private:
-    static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
+    static char* _grid_folder_text_get(void *data, Evas_Object *obj, const char *part);
+    static Evas_Object * _grid_folder_content_get(void *data, Evas_Object *obj, const char *part);
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
 
-    static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
-    static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
+    static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
+    static void _folderItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
 
     void NewFolderCreate(Evas_Object * popup_content);
@@ -95,9 +95,6 @@ private:
     std::string edjFilePath;
     std::string m_folder;
     bool m_gengridSetup;
-
-    static void focusItem(void*, Evas_Object*, void* event_info);
-    static void unFocusItem(void*, Evas_Object*, void* event_info);
 };
 
 }
