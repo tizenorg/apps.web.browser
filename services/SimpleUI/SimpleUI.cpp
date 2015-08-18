@@ -597,6 +597,15 @@ void SimpleUI::onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryIt
 void SimpleUI::onHistoryClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
 {
     std::string historyAddress = historyItem->getUrl();
+    if(m_historyUI) {                // TODO: remove this section when naviframes will be available
+        m_historyUI->clearItems();
+        m_historyUI = nullptr;
+    }
+
+    if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
+        m_moreMenuUI->clearItems();
+        m_moreMenuUI = nullptr;
+    }
     openNewTab(historyAddress);
 }
 

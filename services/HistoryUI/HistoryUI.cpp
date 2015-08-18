@@ -234,7 +234,7 @@ Evas_Object * HistoryUI::_history_grid_content_get(void *data, Evas_Object*, con
             id->historyUI->m_itemClassToday->func.del = nullptr;
 
             for(auto it = _history_item_data.begin(); it != _history_item_data.end(); it++) {
-                Elm_Object_Item* historyView = elm_genlist_item_append(id->historyUI->m_genListToday, id->historyUI->m_itemClassToday, *it, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, id->historyUI.get());
+                Elm_Object_Item* historyView = elm_genlist_item_append(id->historyUI->m_genListToday, id->historyUI->m_itemClassToday, *it, nullptr, ELM_GENLIST_ITEM_NONE, _history_item_clicked_cb, (*it));
                 id->historyUI->m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>((*it)->item->getUrl(), historyView));
             }
 
@@ -292,6 +292,13 @@ void HistoryUI::clearItems()
     m_map_history_views.clear();
     _history_item_data.clear();
     setEmptyGengrid(true);
+}
+
+void HistoryUI::_history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
+    itemData->historyUI->historyItemClicked(itemData->item);
 }
 
 }

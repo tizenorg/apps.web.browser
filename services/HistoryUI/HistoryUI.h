@@ -58,6 +58,7 @@ private:
     static void _clearHistory_clicked(void *data, Evas_Object *obj, void *event_info);
     static char* _listTodayTextGet(void* data, Evas_Object* obj , const char* part);
     static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+    static void _history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
     void setEmptyGengrid(bool setEmpty);
 
