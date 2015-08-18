@@ -80,15 +80,12 @@ void BookmarkManagerUI::show(Evas_Object* parent)
     elm_object_part_content_set(b_mm_layout, "elm.swallow.grid", m_gengrid);
 
     elm_object_style_set(m_gengrid, "back_ground");
-    evas_object_smart_callback_add(m_gengrid, "item,focused", focusItem, nullptr);
-    evas_object_smart_callback_add(m_gengrid, "item,unfocused", unFocusItem, nullptr);
-    evas_object_smart_callback_add(m_gengrid, "activated", _itemSelected, this);
 
       if (!m_item_class) {
             m_item_class = elm_gengrid_item_class_new();
             m_item_class->item_style = "grid_bm_item";
-            m_item_class->func.text_get = _grid_text_get;
-            m_item_class->func.content_get =  _grid_content_get;
+            m_item_class->func.text_get = _grid_folder_text_get;
+            m_item_class->func.content_get =  _grid_folder_content_get;
             m_item_class->func.state_get = nullptr;
             m_item_class->func.del = nullptr;
         }
@@ -298,7 +295,7 @@ void BookmarkManagerUI::addBookmarkFolderItem(std::shared_ptr<tizen_browser::ser
     BookmarkFolderItemData *itemData = new BookmarkFolderItemData();
     itemData->item = hi;
     itemData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* BookmarkFolderView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, nullptr, this);
+    Elm_Object_Item* BookmarkFolderView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _folderItemClicked, itemData);
     m_map_bookmark_folder_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(),BookmarkFolderView));
     elm_gengrid_item_selected_set(BookmarkFolderView, EINA_FALSE);
     setEmptyGengrid(false);
@@ -322,7 +319,7 @@ void BookmarkManagerUI::addBookmarkItem(std::shared_ptr<tizen_browser::services:
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_detail_item_class, itemData, nullptr, this);
+    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_detail_item_class, itemData, _bookmarkItemClicked, itemData);
     m_map_bookmark_folder_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(),BookmarkView));
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
     setEmptyGengrid(false);
@@ -339,7 +336,7 @@ void BookmarkManagerUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_brows
      evas_object_show(getContent());
 }
 
-char* BookmarkManagerUI::_grid_text_get(void *data, Evas_Object *, const char *part)
+char* BookmarkManagerUI::_grid_folder_text_get(void *data, Evas_Object *, const char *part)
 {
     if ((data != nullptr) && (part != nullptr))
     {
@@ -362,7 +359,7 @@ char* BookmarkManagerUI::_grid_text_get(void *data, Evas_Object *, const char *p
     return strdup("");
 }
 
-Evas_Object * BookmarkManagerUI::_grid_content_get(void *data, Evas_Object *obj, const char *part)
+Evas_Object * BookmarkManagerUI::_grid_folder_content_get(void *data, Evas_Object *obj, const char *part)
 {
     if ((data != nullptr) && (obj != nullptr) && (part != nullptr))
     {
@@ -375,10 +372,10 @@ Evas_Object * BookmarkManagerUI::_grid_content_get(void *data, Evas_Object *obj,
         if (!strncmp(part_name1, part, part_name1_len))
         {
             Evas_Object * thumb = nullptr;
-            std::shared_ptr<tizen_browser::tools::BrowserImage> image = itemData->item->getThumbnail();
+            std::shared_ptr<tools::BrowserImage> image = itemData->item->getThumbnail();
             if (image)
             {
-                thumb = tizen_browser::tools::EflTools::getEvasImage(image, itemData->bookmarkManagerUI->m_parent);
+                thumb = tools::EflTools::getEvasImage(image, itemData->bookmarkManagerUI->m_parent);
             }
             return thumb;
         }
@@ -388,7 +385,6 @@ Evas_Object * BookmarkManagerUI::_grid_content_get(void *data, Evas_Object *obj,
             if (thumbButton != nullptr)
             {
                 elm_object_style_set(thumbButton, "thumbButton");
-                evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::BookmarkManagerUI::_thumbSelected, data);
             }
             return thumbButton;
         }
@@ -446,7 +442,6 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
             if (thumbButton != nullptr)
             {
                 elm_object_style_set(thumbButton, "thumbButton");
-                evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::BookmarkManagerUI::_bookmark_thumbSelected, data);
             }
             return thumbButton;
         }
@@ -454,11 +449,12 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
     return nullptr;
 }
 
-void BookmarkManagerUI::_itemSelected(void * data, Evas_Object *, void * event_info)
+void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void * event_info)
 {
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     (void)data;
     (void)event_info;
-#if 0
+/*
     if ((data != nullptr) && (event_info != nullptr))
     {
         Elm_Object_Item * selected = static_cast<Elm_Object_Item *>(event_info);
@@ -469,11 +465,12 @@ void BookmarkManagerUI::_itemSelected(void * data, Evas_Object *, void * event_i
             self->bookmarkClicked(itemData->item);
         }
     }
-#endif
+*/
 }
 
-void BookmarkManagerUI::_thumbSelected(void * data, Evas_Object *, void *)
+void BookmarkManagerUI::_folderItemClicked(void * data, Evas_Object *, void *)
 {
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     if (data != nullptr)
     {
         BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData *>(data);
@@ -482,7 +479,6 @@ void BookmarkManagerUI::_thumbSelected(void * data, Evas_Object *, void *)
         itemData->bookmarkManagerUI->bookmarkFolderClicked(itemData->item->getId());
     }
 }
-
 
 void BookmarkManagerUI::_bookmark_thumbSelected(void * data, Evas_Object *, void *)
 {
@@ -508,38 +504,11 @@ void BookmarkManagerUI::clearItems()
     elm_cache_all_flush();
 }
 
-
 void BookmarkManagerUI::updateGengrid()
 {
     elm_genlist_clear(m_genList);
     elm_gengrid_clear(m_gengrid);
     m_map_bookmark_folder_views.clear();
-}
-
-void BookmarkManagerUI::focusItem(void*, Evas_Object*, void* event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (event_info != nullptr)
-    {
-        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
-        elm_object_item_signal_emit( item, "mouse,in", "over2");
-
-        // selected manually
-        elm_gengrid_item_selected_set(item, EINA_TRUE);
-    }
-}
-
-void BookmarkManagerUI::unFocusItem(void*, Evas_Object*, void* event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (event_info != nullptr)
-    {
-        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
-        elm_object_item_signal_emit( item, "mouse,out", "over2");
-
-        // unselected manually
-        elm_gengrid_item_selected_set(item, EINA_FALSE);
-    }
 }
 
 }
