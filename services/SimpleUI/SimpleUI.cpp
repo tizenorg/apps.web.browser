@@ -76,7 +76,6 @@ SimpleUI::SimpleUI()
     , m_ewkContext(ewk_context_new())
 {
     elm_init(0, nullptr);
-    ewk_context_default_get();
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");
