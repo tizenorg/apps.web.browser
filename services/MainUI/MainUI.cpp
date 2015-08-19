@@ -64,8 +64,7 @@ MainUI::MainUI()
     , m_genListLeft(nullptr)
     , m_genListCenter(nullptr)
     , m_genListRight(nullptr)
-    , m_genListBottom(nullptr)
-    , m_itemClassBottom(nullptr)
+    , m_layoutBottom(nullptr)
     , m_big_item_class(nullptr)
     , m_small_item_class(nullptr)
     , m_bookmark_item_class(nullptr)
@@ -183,12 +182,12 @@ void MainUI::showTopButtons()
 
     Evas_Object *mvButton = elm_button_add(m_layoutTop);
     elm_object_style_set(mvButton, "invisible_button");
-    evas_object_smart_callback_add(mvButton, "clicked", tizen_browser::base_ui::MainUI::_mostVisited_clicked, this);
+    evas_object_smart_callback_add(mvButton, "clicked", _mostVisited_clicked, this);
     elm_layout_content_set(m_layoutTop, "mostvisited_click", mvButton);
 
     Evas_Object *bmButton = elm_button_add(m_layoutTop);
     elm_object_style_set(bmButton, "invisible_button");
-    evas_object_smart_callback_add(bmButton, "clicked", tizen_browser::base_ui::MainUI::_bookmark_clicked, this);
+    evas_object_smart_callback_add(bmButton, "clicked", _bookmark_clicked, this);
     elm_layout_content_set(m_layoutTop, "bookmark_click", bmButton);
 
     elm_object_part_content_set(m_layout, "elm.swallow.genlistTop", m_layoutTop);
@@ -198,35 +197,17 @@ void MainUI::showBottomButton()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
-    m_genListBottom = elm_genlist_add(m_layout);
-    elm_genlist_homogeneous_set(m_genListBottom, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListBottom, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListBottom, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListBottom, ELM_LIST_LIMIT);
-    //elm_genlist_decorate_mode_set(m_genListBottom, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genListBottom, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    /*evas_object_smart_callback_add(m_genList, "item,focused", focusItem, this);
-    evas_object_smart_callback_add(m_genList, "item,unfocused", unFocusItem, nullptr);*/
+    m_layoutBottom = elm_layout_add(m_layout);
+    evas_object_size_hint_weight_set(m_layoutBottom, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_layoutBottom, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_layout_file_set(m_layoutBottom, edjFilePath.c_str(), "bottom_button_item");
+    //elm_object_part_content_set(m_layout, "elm.swallow.layoutBottom", m_layoutBottom);
 
-    m_itemClassBottom = elm_genlist_item_class_new();
-    m_itemClassBottom->item_style = "bottom_button_item";
-    m_itemClassBottom->func.text_get = nullptr;
-    m_itemClassBottom->func.content_get = &listItemBottomContentGet;
-    m_itemClassBottom->func.state_get = 0;
-    m_itemClassBottom->func.del = 0;
-
-    ItemData * id = new ItemData;
-    id->mainUI = this;
-    Elm_Object_Item* elmItem = elm_genlist_item_append(m_genListBottom,            //genlist
-                                                       m_itemClassBottom,          //item Class
-                                                      id,
-                                                      nullptr,                    //parent item
-                                                      ELM_GENLIST_ITEM_NONE,//item type
-                                                      nullptr,
-                                                      nullptr                  //data passed to above function
-                                                     );
-    id->e_item = elmItem;
+    Evas_Object * bookmark_manager_button = elm_button_add(m_layoutBottom);
+    elm_object_style_set(bookmark_manager_button, "invisible_button");
+    elm_object_part_content_set(m_layoutBottom, "bookmarkmanager_click", bookmark_manager_button);
+    evas_object_smart_callback_add(bookmark_manager_button, "clicked", _bookmark_manager_clicked, this);
 }
 
 void MainUI::_mostVisited_clicked(void * data, Evas_Object * /* obj */, void * event_info)
@@ -250,21 +231,8 @@ void MainUI::_bookmark_clicked(void * data, Evas_Object * /* obj */, void * even
 void MainUI::_bookmark_manager_clicked(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	ItemData* itemData = reinterpret_cast<ItemData *>(data);
-	itemData->mainUI->bookmarkManagerClicked(std::string());
-}
-
-Evas_Object* MainUI::listItemBottomContentGet(void* data, Evas_Object* obj, const char* part)
-{
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	if(!strcmp(part, "bookmarkmanager_click"))
-	{
-		Evas_Object *bmButton = elm_button_add(obj);
-        	elm_object_style_set(bmButton, "invisible_button");
-        	evas_object_smart_callback_add(bmButton, "clicked", tizen_browser::base_ui::MainUI::_bookmark_manager_clicked, data);
-        	return bmButton;
-	}
-	return nullptr;
+    MainUI*  mainUI = static_cast<MainUI *>(data);
+    mainUI->bookmarkManagerClicked(std::string());
 }
 
 void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem> hi)
@@ -275,7 +243,7 @@ void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem
 
     HistoryItemData *itemData = new HistoryItemData();
     itemData->item = hi;
-    itemData->mainUI = std::shared_ptr<tizen_browser::base_ui::MainUI>(this);
+    itemData->mainUI = std::shared_ptr<MainUI>(this);
     Elm_Object_Item* historyView = nullptr;
 
     if (m_map_history_views.empty())
@@ -376,7 +344,7 @@ Evas_Object * MainUI::_grid_content_get(void *data, Evas_Object *obj, const char
     else if (!strcmp(part, "elm.thumbButton")) {
 		Evas_Object *thumbButton = elm_button_add(obj);
 		elm_object_style_set(thumbButton, "thumbButton");
-		evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::MainUI::_thumbSelected, data);
+		evas_object_smart_callback_add(thumbButton, "clicked", _thumbSelected, data);
 		return thumbButton;
     }
     return nullptr;
@@ -399,7 +367,7 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, c
     else if (!strcmp(part, "elm.thumbButton")) {
                 Evas_Object *thumbButton = elm_button_add(obj);
                 elm_object_style_set(thumbButton, "thumbButton");
-                evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::MainUI::_thumbSelected, data);
+                evas_object_smart_callback_add(thumbButton, "clicked", _thumbSelected, data);
                 return thumbButton;
     }
     return nullptr;
@@ -436,8 +404,8 @@ void MainUI::showHistoryGenlist()
 {
     evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.grid"));
     elm_object_part_content_unset(m_layout, "elm.swallow.grid");
-    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.genlistBottom"));
-    elm_object_part_content_unset(m_layout, "elm.swallow.genlistBottom");
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.layoutBottom"));
+    elm_object_part_content_unset(m_layout, "elm.swallow.layoutBottom");
 
     if (m_map_history_views.empty()) {
         setEmptyView(true);
@@ -465,7 +433,7 @@ void MainUI::showBookmarkGengrid()
     elm_object_part_content_unset(m_layout, "elm.swallow.right");
     elm_object_part_content_unset(m_layout, "elm.swallow.center");
     elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
-    elm_object_part_content_set(m_layout, "elm.swallow.genlistBottom", m_genListBottom);
+    elm_object_part_content_set(m_layout, "elm.swallow.layoutBottom", m_layoutBottom);
 }
 
 void MainUI::hide()
@@ -482,7 +450,6 @@ void MainUI::clearItems()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     clearHistoryGenlist();
     clearBookmarkGengrid();
-    elm_genlist_clear(m_genListBottom);
 }
 
 void MainUI::showNoHistoryLabel()
