@@ -610,8 +610,10 @@ void SimpleUI::onHistoryClicked(std::shared_ptr<tizen_browser::services::History
 
 void SimpleUI::onClearHistoryClicked(const std::string&)
 {
-  BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-  m_historyService->clearAllHistory();
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    m_historyService->clearAllHistory();
+    m_mainUI->clearHistoryGenlist();
+    m_mainUI->showHistoryGenlist();
 }
 
 void SimpleUI::onMostVisitedClicked(const std::string&)
@@ -1066,16 +1068,16 @@ void SimpleUI::hideMainUI()
 void SimpleUI::showMainUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	m_mainUI =
-                std::dynamic_pointer_cast
+    m_mainUI = std::dynamic_pointer_cast
                 <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
-	M_ASSERT(m_mainUI);
-	hideWebView();
-	m_mainUI->show(m_window.get());
-	m_mainUI->addHistoryItems(getHistory());
+    M_ASSERT(m_mainUI);
+    hideWebView();
+    m_mainUI->show(m_window.get());
+    m_mainUI->addHistoryItems(getHistory());
+    m_mainUI->showHistoryGenlist();
 
-	m_isHomePageActive = true;
+    m_isHomePageActive = true;
 }
 
 void SimpleUI::showHistoryUI(const std::string& str)

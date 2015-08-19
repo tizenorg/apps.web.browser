@@ -203,7 +203,7 @@ group { name: "mv_bookmarks";
                 }
             }
 
-            part { name: "most_visited";
+            part { name: "center_rect";
                 type: RECT;
                 description { state: "default" 0.0;
                     min: 1592 614;
@@ -219,6 +219,11 @@ group { name: "mv_bookmarks";
                         relative: 1 1;
                     }
                 }
+                description { state: "empty" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    color: 229 229 229 255;
+                }
             }
             part { name: "elm.swallow.left";
                 type: SWALLOW;
@@ -228,7 +233,7 @@ group { name: "mv_bookmarks";
                     align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                        relative: 0 0; to: "most_visited";
+                        relative: 0 0; to: "center_rect";
                     }
                     rel2 {
                         relative: 1 1;
@@ -244,12 +249,12 @@ group { name: "mv_bookmarks";
                     align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                        to: "most_visited";
+                        to: "center_rect";
                         relative: 0 0;
                         offset: 810 0;
                     }
                     rel2{
-                        to: "most_visited";
+                        to: "center_rect";
                         relative: 1 1;
                         offset: 0 0;
                     }
@@ -263,12 +268,12 @@ group { name: "mv_bookmarks";
                     align: 0.0 0.0;
                     fixed: 0 0;
                     rel1 {
-                        to: "most_visited";
+                        to: "center_rect";
                         relative: 0 0;
                         offset: 1214 0;
                     }
                     rel2 {
-                        to: "most_visited";
+                        to: "center_rect";
                         relative: 1 1;
                         offset: 0 0;
                     }
@@ -322,19 +327,51 @@ group { name: "mv_bookmarks";
                         offset: 0 0;
                     }
                 }
-            }
-            part { name: "elm.swallow.empty";
-                type: SWALLOW;
-                description { state: "default" 0.0;
+        }
+
+        part { name: "elm.text.empty";
+            type: TEXT;
+            description { state: "default" 0.0;
+                visible: 0;
                 align: 0.5 0.5;
-                    rel1 {
-                        relative: 0.5 0.5;
-                    }
-                    rel2 {
-                        relative: 0.5 0.5;
-                    }
+                color: 0 0 0 179;
+                text {
+                    text: "empty";
+                    font: "Sans";
+                    size: 32;
+                    align: 0.5 0.5;
+                }
+                rel1 {
+                    to: "gengrid_bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "gengrid_bg";
+                    relative: 1 1;
                 }
             }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+    }
+
+    programs {
+        program { name: "empty";
+            signal: "empty,view";
+            source: "mainui";
+            action:  STATE_SET "empty" 0.0;
+            target: "elm.text.empty";
+            target: "center_rect";
+        }
+        program { name: "not_empty";
+            signal: "not,empty,view";
+            source: "mainui";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.text.empty";
+            target: "center_rect";
+        }
     }
 }
 

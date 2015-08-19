@@ -31,6 +31,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 const int SMALL_TILES_ROWS = 2;
+const int MAX_TILES_NUMBER = 5;
 const int SUFIX_CHAR_DEL = 1;
 const char * HTTP_PREFIX = "http://";
 const char * HTTPS_PREFIX = "https://";
@@ -269,8 +270,8 @@ Evas_Object* MainUI::listItemBottomContentGet(void* data, Evas_Object* obj, cons
 void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    if (m_map_history_views.size() >= 5)
-	return;
+    if (m_map_history_views.size() >= MAX_TILES_NUMBER)
+        return;
 
     HistoryItemData *itemData = new HistoryItemData();
     itemData->item = hi;
@@ -290,19 +291,18 @@ void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem
     }
 
     m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(),historyView));
-
-    setEmptyGengrid(false);
 }
 
 void MainUI::addHistoryItems(std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > items)
 {
-         BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-	 int i = 0;
-         for (auto it = items.begin(); it != items.end(); ++it) {
-		 i++;
-		 if (i > 5) break;
-                 addHistoryItem(*it);
-         }
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    int i = 0;
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        i++;
+        if (i > MAX_TILES_NUMBER)
+            break;
+        addHistoryItem(*it);
+    }
 }
 
 void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
@@ -317,7 +317,7 @@ void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkIt
     // unselect by default
     elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
 
-    setEmptyGengrid(false);
+    setEmptyView(false);
 }
 
 void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
@@ -438,6 +438,12 @@ void MainUI::showHistoryGenlist()
     elm_object_part_content_unset(m_layout, "elm.swallow.grid");
     evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.genlistBottom"));
     elm_object_part_content_unset(m_layout, "elm.swallow.genlistBottom");
+
+    if (m_map_history_views.empty()) {
+        setEmptyView(true);
+        return;
+    }
+    setEmptyView(false);
     elm_object_part_content_set(m_layout, "elm.swallow.left", m_genListLeft);
     elm_object_part_content_set(m_layout, "elm.swallow.right", m_genListRight);
     elm_object_part_content_set(m_layout, "elm.swallow.center", m_genListCenter);
@@ -479,21 +485,23 @@ void MainUI::clearItems()
     elm_genlist_clear(m_genListBottom);
 }
 
-Evas_Object* MainUI::createNoHistoryLabel()
+void MainUI::showNoHistoryLabel()
 {
-    Evas_Object *label = elm_label_add(m_parent);
-    elm_object_text_set(label, "No favorite websites.");
-    evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    return label;
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.left"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.right"));
+    evas_object_hide(elm_object_part_content_get(m_layout, "elm.swallow.center"));
+
+    elm_layout_text_set(m_layout, "elm.text.empty", "No visited site");
+    elm_layout_signal_emit(m_layout, "empty,view", "mainui");
 }
 
-void MainUI::setEmptyGengrid(bool setEmpty)
+void MainUI::setEmptyView(bool empty)
 {
-    if(setEmpty) {
-        elm_object_part_content_set(m_gengrid, "elm.swallow.empty", createNoHistoryLabel());
+    BROWSER_LOGD("%s:%d %s, empty: %d", __FILE__, __LINE__, __func__, empty);
+    if(empty) {
+        showNoHistoryLabel();
     } else {
-        elm_object_part_content_set(m_gengrid, "elm.swallow.empty", nullptr);
+        elm_layout_signal_emit(m_layout, "not,empty,view", "mainui");
     }
 }
 
