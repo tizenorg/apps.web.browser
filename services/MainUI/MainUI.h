@@ -58,9 +58,6 @@ public:
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
 private:
-    static Evas_Object* listItemBottomContentGet(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object* listTopItemContentGet(void *data, Evas_Object *obj, const char *part);
-    //static char*        listItemTextGet(void *data, Evas_Object *obj, const char *part);
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
@@ -79,12 +76,11 @@ private:
     Evas_Object *m_parent;
     Evas_Object *m_layout;
     Evas_Object *m_layoutTop;
+    Evas_Object *m_layoutBottom;
     Evas_Object *m_gengrid;
     Evas_Object *m_genListLeft;
     Evas_Object *m_genListCenter;
     Evas_Object *m_genListRight;
-    Evas_Object *m_genListBottom;
-    Elm_Genlist_Item_Class *m_itemClassBottom;
     Elm_Gengrid_Item_Class * m_big_item_class;
     Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
