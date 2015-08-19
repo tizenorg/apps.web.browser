@@ -70,7 +70,7 @@ private:
     static void _item_deleted(void *data, Evas_Object *obj);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _deleteBookmark(void *data, Evas_Object *obj, void *event_info);
-    void setEmptyGengrid(bool setEmpty);
+    void setEmptyView(bool empty);
 
     static void _mostVisited_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_clicked(void * data, Evas_Object * obj, void * event_info);
@@ -92,7 +92,7 @@ private:
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;
     std::string edjFilePath;
-    Evas_Object *createNoHistoryLabel();
+    void showNoHistoryLabel();
 
     static void focusItem(void* data, Evas_Object* obj, void* event_info);
     static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
