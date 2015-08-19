@@ -121,7 +121,7 @@ private:
 
     void bookmarkCheck();
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
-    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders();
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id);
     std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > getHistory();
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
@@ -219,9 +219,10 @@ private:
     void hideHistory();
     void AddBookmarkPopup(std::string& str);
     void AddNewFolderPopup(std::string& str);
+    void addBookmarkFolders();
 
-    void saveFolder(const char* title, int folder_id, int by_user);
-    void NewFolder(const char* title, int folder_id, int by_user);
+    void newFolderBookmarkManager(const char* title, int by_user);
+    void newFolderMoreMenu(const char* title, int by_user);
     void showTabUI();
     void closeTabUI(const std::string& str);
     void showMoreMenu();
@@ -241,7 +242,7 @@ private:
     void hideProgressBar();
 
     void closeBookmarkManagerMenu(std::string& str);
-    void updateBookmakMangaerGenGrid(int folder_id);
+    void updateBookmarkManagerGenGrid(int folder_id);
     void showBookmarkManagerMenu();
 
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
@@ -313,6 +314,7 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    int m_curr_folder_id;
     // This context object is used to implicitly init internal ewk data used by opengl to create the first and
     // consecutive webviews in the application, otherwise we would encounter a crash after creating
     // the first web view

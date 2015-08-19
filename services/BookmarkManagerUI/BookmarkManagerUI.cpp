@@ -51,8 +51,8 @@ BookmarkManagerUI::BookmarkManagerUI()
     , m_itemClass(nullptr)
     , m_gengrid(nullptr)
     , m_parent(nullptr)
-    , m_item_class(nullptr)
-    , m_detail_item_class(nullptr)
+    , m_folder_item_class(nullptr)
+    , m_bookmark_item_class(nullptr)
     , m_gengridSetup(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -76,29 +76,35 @@ void BookmarkManagerUI::show(Evas_Object* parent)
     evas_object_size_hint_align_set(b_mm_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(b_mm_layout);
 
+    createGenGrid();
+
+    if (!m_folder_item_class) {
+        m_folder_item_class = elm_gengrid_item_class_new();
+        m_folder_item_class->item_style = "grid_bm_item";
+        m_folder_item_class->func.text_get = _grid_folder_text_get;
+        m_folder_item_class->func.content_get =  _grid_folder_content_get;
+        m_folder_item_class->func.state_get = nullptr;
+        m_folder_item_class->func.del = nullptr;
+    }
+
+    if (!m_bookmark_item_class) {
+        m_bookmark_item_class = elm_gengrid_item_class_new();
+        m_bookmark_item_class->item_style = "grid_ds_item";
+        m_bookmark_item_class->func.text_get = _grid_bookmark_text_get;
+        m_bookmark_item_class->func.content_get =  _grid_bookmark_content_get;
+        m_bookmark_item_class->func.state_get = nullptr;
+        m_bookmark_item_class->func.del = nullptr;
+    }
+}
+
+void BookmarkManagerUI::createGenGrid()
+{
+    if(m_gengrid != nullptr)
+        evas_object_del(m_gengrid);
+
     m_gengrid = elm_gengrid_add(b_mm_layout);
     elm_object_part_content_set(b_mm_layout, "elm.swallow.grid", m_gengrid);
-
     elm_object_style_set(m_gengrid, "back_ground");
-
-      if (!m_item_class) {
-            m_item_class = elm_gengrid_item_class_new();
-            m_item_class->item_style = "grid_bm_item";
-            m_item_class->func.text_get = _grid_folder_text_get;
-            m_item_class->func.content_get =  _grid_folder_content_get;
-            m_item_class->func.state_get = nullptr;
-            m_item_class->func.del = nullptr;
-        }
-
-      if (!m_detail_item_class) {
-            m_detail_item_class = elm_gengrid_item_class_new();
-            m_detail_item_class->item_style = "grid_ds_item";
-            m_detail_item_class->func.text_get = _grid_bookmark_text_get;
-            m_detail_item_class->func.content_get =  _grid_bookmark_content_get;
-            m_detail_item_class->func.state_get = nullptr;
-            m_detail_item_class->func.del = nullptr;
-        }
-
     elm_gengrid_align_set(m_gengrid, 0, 0);
     elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
@@ -141,6 +147,7 @@ void BookmarkManagerUI::showTopContent()
                                                       nullptr,
                                                       nullptr                //data passed to above function
                                                      );
+
     id->e_item = elmItem;
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
@@ -204,19 +211,19 @@ void BookmarkManagerUI::newFolderPopup()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_popup.reset(new AddNewFolderPopup(m_parent, nullptr,"Add New Folder?","New Folder","Ok","Cancel"));
     m_popup->on_ok.disconnect_all_slots();
-    m_popup->on_ok.connect(boost::bind(&BookmarkManagerUI::NewFolderCreate, this, _1));
+    m_popup->on_ok.connect(boost::bind(&BookmarkManagerUI::newFolderCreate, this, _1));
     m_popup->on_cancel.disconnect_all_slots();
     m_popup->on_cancel.connect(boost::bind(&BookmarkManagerUI::CancelClicked, this, _1));
     m_popup->show();
 }
 
-void BookmarkManagerUI::NewFolderCreate(Evas_Object * popup_content)
+void BookmarkManagerUI::newFolderCreate(Evas_Object * popup_content)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (popup_content != nullptr)
     {
         m_folderName = elm_entry_entry_get(popup_content);
-        saveFolderClicked(m_folderName.c_str(), 0,0);
+        saveFolderClicked(m_folderName.c_str(), 0);
         m_popup->hide();
     }
 }
@@ -295,7 +302,7 @@ void BookmarkManagerUI::addBookmarkFolderItem(std::shared_ptr<tizen_browser::ser
     BookmarkFolderItemData *itemData = new BookmarkFolderItemData();
     itemData->item = hi;
     itemData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* BookmarkFolderView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _folderItemClicked, itemData);
+    Elm_Object_Item* BookmarkFolderView = elm_gengrid_item_append(m_gengrid, m_folder_item_class, itemData, _folderItemClicked, itemData);
     m_map_bookmark_folder_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(),BookmarkFolderView));
     elm_gengrid_item_selected_set(BookmarkFolderView, EINA_FALSE);
     setEmptyGengrid(false);
@@ -319,7 +326,7 @@ void BookmarkManagerUI::addBookmarkItem(std::shared_ptr<tizen_browser::services:
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_detail_item_class, itemData, _bookmarkItemClicked, itemData);
+    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_bookmark_item_class, itemData, _bookmarkItemClicked, itemData);
     m_map_bookmark_folder_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(),BookmarkView));
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
     setEmptyGengrid(false);
@@ -346,7 +353,6 @@ char* BookmarkManagerUI::_grid_folder_text_get(void *data, Evas_Object *, const 
         const char *part_name2 = "page_url";
         static const int part_name1_len = strlen(part_name1);
         static const int part_name2_len = strlen(part_name2);
-
         if (!strncmp(part_name1, part, part_name1_len) && !itemData->item->getTittle().empty())
         {
             return strdup(itemData->item->getTittle().c_str());
@@ -452,20 +458,12 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
 void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void * event_info)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    (void)data;
-    (void)event_info;
-/*
-    if ((data != nullptr) && (event_info != nullptr))
+    if (data != nullptr)
     {
-        Elm_Object_Item * selected = static_cast<Elm_Object_Item *>(event_info);
-        BookmarkManagerUI * self = static_cast<BookmarkManagerUI *>(data);
-        HistoryItemData * itemData = static_cast<HistoryItemData *>(elm_object_item_data_get(selected));
-        if (itemData != nullptr)
-        {
-            self->bookmarkClicked(itemData->item);
-        }
+        BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData*>(data);
+        BROWSER_LOGD("Bookmark URL: %s" , itemData->item->getAddress().c_str());
+        itemData->bookmarkManagerUI->bookmarkItemClicked(itemData->item);
     }
-*/
 }
 
 void BookmarkManagerUI::_folderItemClicked(void * data, Evas_Object *, void *)
@@ -476,7 +474,7 @@ void BookmarkManagerUI::_folderItemClicked(void * data, Evas_Object *, void *)
         BookmarkFolderItemData * itemData = static_cast<BookmarkFolderItemData *>(data);
         BROWSER_LOGD("Folder ID: %d" , itemData->item->getId());
         itemData->bookmarkManagerUI->set_folder(itemData->item->getTittle().c_str());
-        itemData->bookmarkManagerUI->bookmarkFolderClicked(itemData->item->getId());
+        itemData->bookmarkManagerUI->folderItemClicked(itemData->item->getId());
     }
 }
 
@@ -507,9 +505,10 @@ void BookmarkManagerUI::clearItems()
 void BookmarkManagerUI::updateGengrid()
 {
     elm_genlist_clear(m_genList);
-    elm_gengrid_clear(m_gengrid);
+    //elm_gengrid_clear(m_gengrid);
+    //remove 'createGenGrid' if the elm_gengrid_clear() will be valid again
+    createGenGrid();
     m_map_bookmark_folder_views.clear();
 }
-
 }
 }

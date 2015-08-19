@@ -57,10 +57,12 @@ public:
 
     boost::signals2::signal<void (std::string)> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::string)> addNewFolderClicked;
-    boost::signals2::signal<void (const char*, int, int)> saveFolderClicked;
-    boost::signals2::signal<void (int)> bookmarkFolderClicked;
+    boost::signals2::signal<void (const char*, int)> saveFolderClicked;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
+    boost::signals2::signal<void (int)> folderItemClicked;
 
 private:
+    void createGenGrid();
     static char* _grid_folder_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_folder_content_get(void *data, Evas_Object *obj, const char *part);
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
@@ -70,7 +72,7 @@ private:
     static void _folderItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
 
-    void NewFolderCreate(Evas_Object * popup_content);
+    void newFolderCreate(Evas_Object * popup_content);
     void CancelClicked(Evas_Object * popup_content);
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
@@ -89,8 +91,8 @@ private:
     Elm_Genlist_Item_Class *m_itemClass;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
-    Elm_Gengrid_Item_Class * m_item_class;
-    Elm_Gengrid_Item_Class * m_detail_item_class;
+    Elm_Gengrid_Item_Class * m_bookmark_item_class;
+    Elm_Gengrid_Item_Class * m_folder_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_folder_views;
     std::string edjFilePath;
     std::string m_folder;
