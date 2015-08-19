@@ -180,12 +180,14 @@ void MoreMenuUI::star_clicked_cb(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         ItemData * id = static_cast<ItemData *>(data);
+        id->m_moreMenu->addToBookmarkClicked();
         id->m_moreMenu->AddBookmarkPopupCalled();
     }
 }
 
 void MoreMenuUI::AddBookmarkPopupCalled()
 {
+
     m_add_bookmark_popup = std::make_shared<tizen_browser::base_ui::AddBookmarkPopup>(m_mm_layout);
     m_add_bookmark_popup->show();
     m_add_bookmark_popup->addBookmarkFolderItems(m_map_bookmark_folder_list);
@@ -218,7 +220,7 @@ void MoreMenuUI::NewFolderCreate(Evas_Object* popup_content)
    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
    if (popup_content) {
        m_folderName = elm_entry_entry_get(popup_content);
-       BookmarkFolderCreated(m_folderName.c_str(), 0,0);
+       BookmarkFolderCreated(m_folderName.c_str(), 0);
        m_new_folder_popup->hide();
    }
 }

@@ -191,9 +191,10 @@ int BookmarkService::getBookmarkId(const std::string & url)
 std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int folder_id)
 {
     BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);
+    set_current_folder_id(folder_id);
     int *ids = nullptr;
     int ids_count = 0;
-    int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id, 0, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
+    int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id, BOOKMARK_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
     if (ret<0){
         BROWSER_LOGE("Error! Could not get ids!");
         return std::vector<std::shared_ptr<BookmarkItem>>();
@@ -229,25 +230,26 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
         memcpy(fav->imageData, (void*)image_bytes, bookmark_info.favicon_length);
         bookmark->setFavicon(fav);
         m_bookmarks.push_back(bookmark);
+
     }
     free(ids);
     return m_bookmarks;
 }
 
-std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarkFolders()
+std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarkFolders(int folder_id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    set_current_folder_id(folder_id);
     int *ids = nullptr;
     int ids_count = 0;
-    int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, -1, 1, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
+    int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id, FOLDER_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
     if (ret<0){
         BROWSER_LOGE("Error! Could not get ids!");
         return std::vector<std::shared_ptr<BookmarkItem>>();
     }
 
     m_bookmarks.clear();
-
-    BROWSER_LOGD("Bookmark items: %d", ids_count);
+    BROWSER_LOGD("Bookmark folders: %d", ids_count);
 
     for(int i = 0; i<ids_count; i++)
     {
@@ -299,12 +301,11 @@ int BookmarkService::get_root_folder_id(void)
     return root_id;
 }
 
-int BookmarkService::save_folder(const char *title, int *saved_folder_id, int parent_id, int by_operator)
+int BookmarkService::save_folder(const char *title, int *saved_folder_id, int by_operator)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
     bp_bookmark_property_cond_fmt properties;
-    properties.parent = parent_id;
+    properties.parent = get_current_folder_id();
     properties.type = 1;
     properties.is_operator = -1;
     properties.is_editable = -1;
@@ -333,7 +334,7 @@ int BookmarkService::save_folder(const char *title, int *saved_folder_id, int pa
     std::memset(&info, 0, sizeof(bp_bookmark_info_fmt));
 
     info.type = 1;
-    info.parent = parent_id;
+    info.parent = get_current_folder_id();
     info.sequence = -1;
     info.is_operator = by_operator;
     info.access_count = -1;
@@ -1340,7 +1341,7 @@ void BookmarkService::path_into_sub_folder(int folder_id, const char *folder_nam
     free(path_string);
     BROWSER_LOGD("m_path_string: %s", m_path_string.c_str());
 
-    m_curr_folder = folder_id;
+    set_current_folder_id(folder_id);
 }
 
 bool BookmarkService::path_to_upper_folder(int *curr_folder)
@@ -1392,7 +1393,7 @@ bool BookmarkService::path_to_upper_folder(int *curr_folder)
     }
     BROWSER_LOGD("m_path_string: %s", m_path_string.c_str());
 
-    m_curr_folder = *curr_folder;
+    set_current_folder_id(*curr_folder);
     return true;
 }
 

@@ -84,7 +84,7 @@ public:
      * @return list of bookmark items, bookmark items in a folder & bookmark folders
      */
     std::vector<std::shared_ptr<BookmarkItem> > getBookmarks(int folder_id = -1);
-    std::vector<std::shared_ptr<BookmarkItem> > getBookmarkFolders();
+    std::vector<std::shared_ptr<BookmarkItem> > getBookmarkFolders(int folder_id);
 
    /**
      * @brief Delete all bookmarks
@@ -110,7 +110,7 @@ public:
     } folder_info;
 
     int get_root_folder_id(void);
-    int save_folder(const char *title, int *saved_bookmark_id, int parent_id=0,int by_operator = 0);
+    int save_folder(const char *title, int *saved_bookmark_id, int by_operator = 0);
     bool delete_by_id(int id);
     bool delete_by_id_notify(int id);
     bool delete_by_uri(const char *uri);
@@ -159,10 +159,15 @@ public:
 
     bool get_memory_full(void) { return m_memory_full; }
     int get_current_folder_id(void) { return m_curr_folder; }
+    void set_current_folder_id(int folder_id) { m_curr_folder = folder_id; }
 
 private:
+    enum ItemType{
+          BOOKMARK_TYPE = 0
+        , FOLDER_TYPE = 1
+        , ALL_TYPE = -1
+    };
     bool _get_depth_count_recursive(int folder_id, int cur_depth, int *depth_count);
-
     std::vector<BookmarkItem *> m_bookmark_list;
     std::vector<folder_info *> m_path_history;
     std::string m_path_string;
@@ -171,7 +176,6 @@ private:
     int m_curr_folder;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
     std::vector<std::shared_ptr<BookmarkItem> > m_bookmarks;
-
 ///    \todo Need to change getBookmarkId function for finding stored bookmark - check getBookmarkExists function
     int getBookmarkId(const std::string & url);
     std::shared_ptr<tizen_browser::services::StorageService> getStorageManager();

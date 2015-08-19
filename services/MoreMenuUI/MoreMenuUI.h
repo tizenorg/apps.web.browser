@@ -70,13 +70,14 @@ public:
     void clearItems();
     void getBookmarkFolderList(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > );
 
-    boost::signals2::signal<void (std::string)> bookmarkManagerClicked;
-    boost::signals2::signal<void (std::string)> historyUIClicked;
-    boost::signals2::signal<void (const char*, int, int)> BookmarkFolderCreated;
-    boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
-    boost::signals2::signal<void (std::string)> BookmarkFoldersListImport;
-    boost::signals2::signal<void (const std::string&)> settingsClicked;
+    boost::signals2::signal<void ()> addToBookmarkClicked;
     boost::signals2::signal<void (int)> AddBookmarkInput;
+    boost::signals2::signal<void (const char*, int)> BookmarkFolderCreated;
+    boost::signals2::signal<void (std::string)> bookmarkManagerClicked;
+    boost::signals2::signal<void (std::string)> BookmarkFoldersListImport;
+    boost::signals2::signal<void (std::string)> historyUIClicked;
+    boost::signals2::signal<void (const std::string&)> settingsClicked;
+    boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);

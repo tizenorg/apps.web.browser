@@ -59,10 +59,10 @@ public:
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  unsigned int dirId = 0) = 0;
    /**
-     * @brief Creates a new folder with name "title" in a folder with id, parent_id
+     * @brief Creates a new folder with name "title" in a folder with id and order
      * @return folder_id of created folder
      */
-    virtual int save_folder(const char *title, int *saved_bookmark_id, int parent_id=0, int by_operator=0)=0;
+    virtual int save_folder(const char *title, int *saved_bookmark_id, int by_operator = 0) = 0;
 
    /**
      * @brief get folder id of a folder with name "title" in folder with id, parent_id
@@ -96,7 +96,7 @@ public:
      *
      * @return list of bookmark folders
      */
-    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders()= 0;
+    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id) = 0;
 
     /**
      * @brief Delete all bookmarks

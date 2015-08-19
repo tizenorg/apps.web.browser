@@ -56,6 +56,7 @@ namespace base_ui{
 EXPORT_SERVICE(SimpleUI, "org.tizen.browser.simpleui")
 
 const std::string HomePageURL = "about:home";
+const int ROOT_FOLDER = 0;
 
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
@@ -113,9 +114,9 @@ std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > SimpleUI::ge
 }
 
 
-std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::getBookmarkFolders()
+std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::getBookmarkFolders(int folder_id)
 {
-    return m_favoriteService->getBookmarkFolders();
+    return m_favoriteService->getBookmarkFolders(folder_id);
 }
 
 
@@ -332,8 +333,6 @@ int SimpleUI::exec(const std::string& _url)
     }
 
     BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
-
-    saveFolder("Bookmark Bar",0,1);
 
     m_simpleURI->setFocus();
 
@@ -643,6 +642,15 @@ void SimpleUI::onBookmarkManagerButtonClicked(const std::string&)
 void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
 {
     std::string bookmarkAddress = bookmarkItem->getAddress();
+    if(m_bookmarkManagerUI) {                // TODO: remove this section when naviframes will be available
+        m_bookmarkManagerUI->clearItems();
+        m_bookmarkManagerUI = nullptr;
+    }
+
+    if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
+        m_moreMenuUI->clearItems();
+        m_moreMenuUI = nullptr;
+    }
     openNewTab(bookmarkAddress);
 }
 
@@ -1138,19 +1146,20 @@ void SimpleUI::showMoreMenu()
                 <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
         M_ASSERT(m_moreMenuUI);
-    m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this, _1));
-	m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
-	m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
-	m_moreMenuUI->closeMoreMenuClicked.disconnect_all_slots();
-     	m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this,_1));
-     	m_moreMenuUI->AddBookmarkInput.disconnect_all_slots();
-     	m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
+        m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this, _1));
+        m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
+        m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
+        m_moreMenuUI->closeMoreMenuClicked.disconnect_all_slots();
+        m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this,_1));
+        m_moreMenuUI->addToBookmarkClicked.disconnect_all_slots();
+        m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmarkFolders, this));
+        m_moreMenuUI->AddBookmarkInput.disconnect_all_slots();
+        m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
         m_moreMenuUI->BookmarkFolderCreated.disconnect_all_slots();
-        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::NewFolder, this,_1,_2,_3));
+        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
         m_moreMenuUI->show(m_window.get());
-        m_moreMenuUI->getBookmarkFolderList(getBookmarkFolders());
         m_moreMenuUI->showCurrentTab(current_tab_as_new_tab ? nullptr : m_historyService->getHistoryItems().front());
-	BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -1172,20 +1181,25 @@ void SimpleUI::showBookmarkManagerMenu()
         m_bookmarkManagerUI->closeBookmarkManagerClicked.disconnect_all_slots();
         m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerMenu, this,_1));
         m_bookmarkManagerUI->saveFolderClicked.disconnect_all_slots();
-        m_bookmarkManagerUI->saveFolderClicked.connect(boost::bind(&SimpleUI::saveFolder, this,_1,_2,_3));
-        m_bookmarkManagerUI->bookmarkFolderClicked.disconnect_all_slots();
-        m_bookmarkManagerUI->bookmarkFolderClicked.connect(boost::bind(&SimpleUI::updateBookmakMangaerGenGrid, this,_1));
+        m_bookmarkManagerUI->saveFolderClicked.connect(boost::bind(&SimpleUI::newFolderBookmarkManager, this,_1,_2));
+        m_bookmarkManagerUI->bookmarkItemClicked.disconnect_all_slots();
+        m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
+        m_bookmarkManagerUI->folderItemClicked.disconnect_all_slots();
+        m_bookmarkManagerUI->folderItemClicked.connect(boost::bind(&SimpleUI::updateBookmarkManagerGenGrid, this,_1));
         m_bookmarkManagerUI->show(m_window.get());
-        m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders());
+        m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders(ROOT_FOLDER));
         m_bookmarkManagerUI->showTopContent();
+        m_curr_folder_id = ROOT_FOLDER;
     }
 }
 
-void SimpleUI::updateBookmakMangaerGenGrid(int folder_id)
+void SimpleUI::updateBookmarkManagerGenGrid(int folder_id)
 {
     m_bookmarkManagerUI->updateGengrid();
+    m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders(folder_id));
     m_bookmarkManagerUI->addBookmarkItems(getBookmarks(folder_id));
     m_bookmarkManagerUI->showTopContent();
+    m_curr_folder_id = folder_id;
 }
 
 void SimpleUI::closeBookmarkManagerMenu(std::string& str)
@@ -1406,33 +1420,38 @@ void SimpleUI::addToBookmarks(int folder_id)
         }
 }
 
-void SimpleUI::saveFolder(const char* title,int folder_id, int by_operator)
+void SimpleUI::addBookmarkFolders(void)
+{
+    if(m_moreMenuUI)
+        m_moreMenuUI->getBookmarkFolderList(getBookmarkFolders(ROOT_FOLDER));
+}
+
+
+void SimpleUI::newFolderBookmarkManager(const char* title, int by_operator)
 {
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
     int id = -1;
 	if (m_favoriteService)
-		m_favoriteService->save_folder(title, &id, folder_id, by_operator);
+		m_favoriteService->save_folder(title, &id, by_operator);
     if (id >= 0 )
-     {     BROWSER_LOGD("[%s], Added New Folder", __func__);
-     }
-    if(m_bookmarkManagerUI)
-    {   m_bookmarkManagerUI->updateGengrid();
-        m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders());
+    {
+        BROWSER_LOGD("[%s], Added New Folder", __func__);
+        if(m_bookmarkManagerUI)
+        {
+            updateBookmarkManagerGenGrid(m_curr_folder_id);   // TODO: correct folder displaying behaviour needs to be implemented
+        }
     }
 }
 
-
-
-void SimpleUI::NewFolder(const char* title,int folder_id, int by_operator)
+void SimpleUI::newFolderMoreMenu(const char* title, int by_operator)
 {
     int id = -1;
 	if (m_favoriteService)
-	   	m_favoriteService->save_folder(title, &id, folder_id, by_operator);
+        m_favoriteService->save_folder(title, &id, by_operator);
     if (id >= 0)
     {
         BROWSER_LOGD("[%s], Added New Folder", __func__);
         addToBookmarks(id);
-        m_moreMenuUI->getBookmarkFolderList(getBookmarkFolders());
     }
 }
 
@@ -1441,6 +1460,5 @@ void SimpleUI::deleteBookmark(void)
 	if (m_favoriteService)
 		m_favoriteService->deleteBookmark(m_webEngine->getURI());
 }
-
 }
 }
