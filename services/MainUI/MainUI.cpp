@@ -31,6 +31,9 @@ namespace tizen_browser{
 namespace base_ui{
 
 const int SMALL_TILES_ROWS = 2;
+const int SUFIX_CHAR_DEL = 1;
+const char * HTTP_PREFIX = "http://";
+const char * HTTPS_PREFIX = "https://";
 
 EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
 
@@ -229,6 +232,8 @@ void MainUI::_mostVisited_clicked(void * data, Evas_Object * /* obj */, void * e
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
+    if (elm_object_part_content_get(mainUI->m_layout, "elm.swallow.left"))  // check if most visited view is already set
+        return;
     mainUI->mostVisitedClicked(std::string());
 }
 
@@ -236,6 +241,8 @@ void MainUI::_bookmark_clicked(void * data, Evas_Object * /* obj */, void * even
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
+    if (elm_object_part_content_get(mainUI->m_layout, "elm.swallow.grid"))  // check if bookmark view is already set
+        return;
     mainUI->bookmarkClicked(std::string());
 }
 
@@ -323,14 +330,21 @@ void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::service
 
 char* MainUI::_grid_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	HistoryItemData *itemData = reinterpret_cast<HistoryItemData*>(data);
-	if (!strcmp(part, "page_title")) {
-		return strdup(itemData->item->getTitle().c_str());
-	}
-	if (!strcmp(part, "page_url")) {
-		return strdup(itemData->item->getUrl().c_str());
-	}
-	return strdup("");
+    HistoryItemData *itemData = reinterpret_cast<HistoryItemData*>(data);
+    if (!strcmp(part, "page_title")) {
+        return strdup(itemData->item->getTitle().c_str());
+    }
+    if (!strcmp(part, "page_url")) {
+        if (itemData->item->getUrl().find(HTTPS_PREFIX) == 0) {
+            size_t len = strlen(HTTPS_PREFIX);
+            return strdup(itemData->item->getUrl().substr(len, itemData->item->getUrl().size() - len - SUFIX_CHAR_DEL).c_str());      // remove https prefix
+        } else if (itemData->item->getUrl().find(HTTP_PREFIX) == 0) {
+            size_t len = strlen(HTTP_PREFIX);
+            return strdup(itemData->item->getUrl().substr(len, itemData->item->getUrl().size() - len - SUFIX_CHAR_DEL).c_str());      // remove http prefix
+        }
+        return strdup(itemData->item->getUrl().c_str());
+    }
+    return strdup("");
 }
 
 char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part)
