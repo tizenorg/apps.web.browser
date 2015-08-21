@@ -612,7 +612,7 @@ void SimpleUI::onClearHistoryClicked(const std::string&)
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     m_historyService->clearAllHistory();
     m_mainUI->clearHistoryGenlist();
-    m_mainUI->showHistoryGenlist();
+    m_mainUI->showHistory();
 }
 
 void SimpleUI::onMostVisitedClicked(const std::string&)
@@ -621,7 +621,7 @@ void SimpleUI::onMostVisitedClicked(const std::string&)
    m_mainUI->clearHistoryGenlist();
    m_mainUI->clearBookmarkGengrid();
    m_mainUI->addHistoryItems(getHistory());
-   m_mainUI->showHistoryGenlist();
+   m_mainUI->showHistory();
 }
 
 void SimpleUI::onBookmarkButtonClicked(const std::string&)
@@ -630,7 +630,7 @@ void SimpleUI::onBookmarkButtonClicked(const std::string&)
    m_mainUI->clearBookmarkGengrid();
    m_mainUI->clearHistoryGenlist();
    m_mainUI->addBookmarkItems(getBookmarks());
-   m_mainUI->showBookmarkGengrid();
+   m_mainUI->showBookmarks();
 }
 
 void SimpleUI::onBookmarkManagerButtonClicked(const std::string&)
@@ -1066,11 +1066,11 @@ void SimpleUI::hideWebView()
 
 void SimpleUI::hideMainUI()
 {
-	BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_mainUI)
-    	m_mainUI->hide();
-	m_mainUI = nullptr;
-	m_isHomePageActive = false;
+        m_mainUI->hide();
+    m_mainUI = nullptr;
+    m_isHomePageActive = false;
 }
 
 void SimpleUI::showMainUI()
@@ -1083,8 +1083,7 @@ void SimpleUI::showMainUI()
     hideWebView();
     m_mainUI->show(m_window.get());
     m_mainUI->addHistoryItems(getHistory());
-    m_mainUI->showHistoryGenlist();
-
+    m_mainUI->addBookmarkItems(getBookmarks());
     m_isHomePageActive = true;
 }
 

@@ -30,6 +30,8 @@
 namespace tizen_browser{
 namespace base_ui{
 
+//TODO: This class name is not revelant to what this class actually does.
+//Rename this class and file to "QuickAccessUI".
 class BROWSER_EXPORT MainUI
         : public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
@@ -42,10 +44,8 @@ public:
     virtual std::string getName();
     void clearHistoryGenlist();
     void clearBookmarkGengrid();
-    void showHistoryGenlist();
-    void showBookmarkGengrid();
-    void showTopButtons();
-    void showBottomButton();
+    void showHistory();
+    void showBookmarks();
     void clearItems();
 
     void addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem>);
@@ -58,6 +58,14 @@ public:
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
 private:
+
+    void createItemClasses();
+
+    Evas_Object* createQuickAccessLayout(Evas_Object *parent);
+    Evas_Object* createMostVisitedView(Evas_Object *parent);
+    Evas_Object* createBookmarksView(Evas_Object *parent);
+    Evas_Object* createBottomButton(Evas_Object *parent);
+    Evas_Object* createTopButtons(Evas_Object *parent);
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
@@ -75,23 +83,24 @@ private:
 private:
     Evas_Object *m_parent;
     Evas_Object *m_layout;
-    Evas_Object *m_layoutTop;
-    Evas_Object *m_layoutBottom;
-    Evas_Object *m_gengrid;
+    Evas_Object *m_bookmarksView;
+    Evas_Object *m_mostVisitedView;
+    Evas_Object *m_bookmarksButton;
+    Evas_Object *m_mostVisitedButton;
+    Evas_Object *m_bookmarkGengrid;
     Evas_Object *m_genListLeft;
     Evas_Object *m_genListCenter;
     Evas_Object *m_genListRight;
+
     Elm_Gengrid_Item_Class * m_big_item_class;
     Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
+
     std::multimap<std::string,Elm_Object_Item*> m_map_history_views;
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;
     std::string edjFilePath;
     void showNoHistoryLabel();
-
-    static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
 };
 
 }
