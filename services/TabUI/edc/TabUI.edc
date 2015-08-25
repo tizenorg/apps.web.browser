@@ -140,7 +140,7 @@ group {
             image: "web_shadow.png" COMP;
         }
         parts {
-            part { name: "action_bar_genlist_bg";
+            part { name: "action_bar_bg";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
@@ -157,7 +157,7 @@ group {
                     }
                 }
             }
-	   part { name: "top_bar_genlist_bg";
+	   part { name: "top_bar_bg";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
@@ -167,7 +167,7 @@ group {
                                 max: 1920 181;
                                 color: 70 143 254 255;
                     rel1 {
-                                                relative: 0 1; to: "action_bar_genlist_bg";
+                                                relative: 0 1; to: "action_bar_bg";
                     }
                     rel2{
                                                 relative: 1 1;
@@ -184,7 +184,7 @@ group {
 				max: 1920 714;
                                         color: 231 231 231 255;
                     rel1 {
-                                                relative: 0 1; to: "top_bar_genlist_bg";
+                                                relative: 0 1; to: "top_bar_bg";
                     }
                     rel2{
                                                 relative: 1 1;
@@ -208,7 +208,7 @@ group {
                     }
                 }
             }
-            part { name: "action_bar_genlist";
+            part { name: "action_bar";
                 type : SWALLOW;
                 scale: 1;
                 description {
@@ -218,7 +218,7 @@ group {
                     max: 1920 104;
                     align: 0.0 0.0;
                     fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "action_bar_genlist_bg";}
+                    rel1 { relative: 0.0 0.0; to: "action_bar_bg";}
                     rel2 { relative: 1.0 1.0; }
                 }
                 description {
@@ -232,7 +232,7 @@ group {
                     visible: 1;
                 }
              }
-            part { name: "top_bar_genlist";
+            part { name: "top_bar";
                 type : SWALLOW;
                 scale: 1;
                 description {
@@ -242,7 +242,7 @@ group {
 		    max: 1920 181;
                     align: 0.0 0.0;
                     fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "top_bar_genlist_bg"; offset: 0 0;}
+                    rel1 { relative: 0.0 0.0; to: "top_bar_bg"; offset: 0 0;}
                     rel2 { relative: 1.0 1.0; }
                 }
                 description {
@@ -292,7 +292,7 @@ group {
                     min: 1920 14;
                     max: 1920 14;
                     image.normal: "web_shadow.png";
-                    rel1 { relative: 0.0 1.0; to: "action_bar_genlist_bg"; }
+                    rel1 { relative: 0.0 1.0; to: "action_bar_bg"; }
                     rel2 { relative: 1.0 1.0; }
                 }
              }
@@ -306,7 +306,7 @@ group {
                     max: 1920 81;
                     align: 0.0 0.0;
                     fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "top_bar_genlist_bg"; offset: 0 0;}
+                    rel1 { relative: 0.0 0.0; to: "top_bar_bg"; offset: 0 0;}
                     rel2 { relative: 1.0 1.0; }
                 }
                 description {
@@ -586,7 +586,7 @@ group { name: "elm/gengrid/item/tab_item/default";
 		}
 	}
 }
-group { name: "elm/genlist/item/action_bar_items/default";
+group { name: "action_bar_layout";
         min: 1920 104;
         max: 1920 104;
         data.item: "texts" "closetabs_text";
@@ -1157,7 +1157,7 @@ group { name: "elm/genlist/item/action_bar_items/default";
     }           
 }
 
-group { name: "elm/genlist/item/top_buttons/default";
+group { name: "top_buttons_layout";
         min: 1920 181;
         max: 1920 181;
         data.item: "texts" "openedtabs_button_text onotherdevices_button_text";
