@@ -36,10 +36,8 @@ class BROWSER_EXPORT TabUI
 public:
     TabUI();
     ~TabUI();
-    void show(Evas_Object *main_layout);
+    void show(Evas_Object *parent);
     virtual std::string getName();
-    void showActionBar();
-    void showTopButtons();
     void clearItems();
     void hide();
 
@@ -53,17 +51,15 @@ public:
     boost::signals2::signal<void (const std::string & )> openedTabsClicked;
     boost::signals2::signal<void (const std::string & )> onOtherDevicesClicked;
     boost::signals2::signal<void (const std::string & )> closeTabUIClicked;
-private:
-    static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object* listTopButtonItemsContentGet(void *data, Evas_Object *obj, const char *part);
 
+private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
     static void _item_deleted(void *data, Evas_Object *obj);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _deleteBookmark(void *data, Evas_Object *obj, void *event_info);
-    static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+    static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
     void setEmptyGengrid(bool setEmpty);
 
     static void _openedtabs_clicked(void * data, Evas_Object * obj, void * event_info);
@@ -71,23 +67,22 @@ private:
     static void _newincognitotab_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
+
+    Evas_Object* createTabUILayout(Evas_Object* parent);
+    Evas_Object* createActionBar(Evas_Object* parent);
+    Evas_Object* createTopButtons(Evas_Object* parent);
+    Evas_Object* createNoHistoryLabel();
+    void createTabItemClass();
+
 private:
     Evas_Object *m_tab_layout;
-    Evas_Object *m_genListActionBar;
-    Elm_Genlist_Item_Class *m_itemClassActionBar;
-    Evas_Object *m_genListTop;
-    Elm_Genlist_Item_Class *m_itemClassTop;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
-    
+
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_tab_views;
     bool m_gengridSetup;
     std::string m_edjFilePath;
-    Evas_Object *createNoHistoryLabel();
-
-    static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
 };
 
 }
