@@ -310,29 +310,29 @@ int SimpleUI::exec(const std::string& _url)
         m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
         m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
 
-        // only when first run
-        if (url.empty()) {
-            BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
-            switchViewToHomePage();
-#if MERGE_ME // Not sure if this should be enabled
-            filterURL(HomePageURL);
-#endif
-            if(lastSession.items().size() >= 1){
-                for(auto iter=lastSession.items().begin(),
-                          end=lastSession.items().end();
-                    iter != end;
-                    iter++
-                ){
-                    openNewTab(iter->second);
-                }
-                m_sessionService->getStorage()->deleteSession(lastSession);
-            }
-        }
-        else
-            openNewTab(url);
-    }
+	}
 
-    BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
+	if (url.empty()) {
+		BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
+		switchViewToHomePage();
+#if MERGE_ME // Not sure if this should be enabled
+		filterURL(HomePageURL);
+#endif
+		if(lastSession.items().size() >= 1){
+			for(auto iter=lastSession.items().begin(),
+				end=lastSession.items().end();
+				iter != end;
+				iter++
+				){
+					openNewTab(iter->second);
+				}
+				m_sessionService->getStorage()->deleteSession(lastSession);
+			}
+		}
+		else
+			openNewTab(url);
+
+	BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
 
     m_simpleURI->setFocus();
 
