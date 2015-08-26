@@ -36,7 +36,7 @@ static const std::string LEVEL_TAG_ERROR = "TAG_ERROR";
 #ifdef LOG_LEVEL
 static const LoggerLevel globalLoggerLevel = Logger::parseLoggerLevel(LOG_LEVEL);
 #else
-static const LoggerLevel globalLoggerLevel = LoggerLevel::INFO;
+static const LoggerLevel globalLoggerLevel = LoggerLevel::DEBUG;
 #endif
 
 Logger &Logger::getInstance() {
