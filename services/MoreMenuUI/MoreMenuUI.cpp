@@ -72,10 +72,6 @@ void MoreMenuUI::show(Evas_Object* parent)
     m_gengrid = elm_gengrid_add(m_mm_layout);
     elm_object_part_content_set(m_mm_layout, "elm.swallow.grid", m_gengrid);
 
-    /*evas_object_smart_callback_add(m_gengrid, "item,focused", focusItem, NULL);
-    evas_object_smart_callback_add(m_gengrid, "item,unfocused", unFocusItem, NULL);
-    evas_object_smart_callback_add(m_gengrid, "activated", _itemSelected, this);*/
-
       if (!m_item_class) {
             m_item_class = elm_gengrid_item_class_new();
             m_item_class->item_style = "menu_item";
@@ -98,90 +94,75 @@ void MoreMenuUI::show(Evas_Object* parent)
     addItems();
 }
 
-void MoreMenuUI::showCurrentTab(std::shared_ptr<tizen_browser::services::HistoryItem> item)
+void MoreMenuUI::showCurrentTab()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(NULL, m_edjFilePath.c_str());
-    m_genList = elm_genlist_add(m_mm_layout);
-    elm_object_part_content_set(m_mm_layout, "elm.swallow.genlist", m_genList);
-    elm_genlist_homogeneous_set(m_genList, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genList, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genList, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genList, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genList, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    m_current_tab_bar = elm_layout_add(m_mm_layout);
+    elm_layout_file_set(m_current_tab_bar, m_edjFilePath.c_str(), "current_tab_layout");
+    evas_object_size_hint_weight_set(m_current_tab_bar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_object_part_content_set(m_mm_layout, "current_tab_bar", m_current_tab_bar);
 
-    /*evas_object_smart_callback_add(m_genList, "item,focused", focusItem, this);
-    evas_object_smart_callback_add(m_genList, "item,unfocused", unFocusItem, NULL);*/
+    Evas_Object* button = elm_button_add(m_current_tab_bar);
+    elm_object_style_set(button, "hidden_button");
+    evas_object_smart_callback_add(button, "clicked", _star_clicked, this);
+    elm_object_part_content_set(m_current_tab_bar, "star_click", button);
 
-    m_itemClass = elm_genlist_item_class_new();
-    m_itemClass->item_style = "current_tab";
-    m_itemClass->func.text_get = &listItemTextGet;
-    m_itemClass->func.content_get = &listItemContentGet;
-    m_itemClass->func.state_get = 0;
-    m_itemClass->func.del = &listItemDel;
-
-    ItemData * id = new ItemData;
-    id->m_moreMenu = this;
-    id->h_item = item;
-    Elm_Object_Item* elmItem = elm_genlist_item_append(m_genList,            //genlist
-                                                      m_itemClass,           //item Class
-                                                      id,
-                                                      NULL,                  //parent item
-                                                      ELM_GENLIST_ITEM_NONE, //item type
-                                                      NULL,
-                                                      NULL                   //data passed to above function
-                                                     );
-    id->e_item = elmItem;
+    button = elm_button_add(m_current_tab_bar);
+    elm_object_style_set(button, "hidden_button");
+    evas_object_smart_callback_add(button, "clicked", _close_clicked, this);
+    elm_object_part_content_set(m_current_tab_bar, "close_click", button);
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-Evas_Object* MoreMenuUI::listItemContentGet(void* data, Evas_Object* obj, const char* part)
+void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj && part) {
-        ItemData * id = static_cast<ItemData *>(data);
-        const char *part_name1 = "favicon";
-        static const int part_name1_len = strlen(part_name1);
-        const char *part_name2 = "star_click";
-        static const int part_name2_len =strlen(part_name2);
-        const char *part_name3 = "close_click";
-        static const int part_name3_len = strlen(part_name3);
-
-        if (!strncmp(part_name1, part, part_name1_len) && id->h_item.get() && id->h_item->getFavIcon()) {
-            // Currently favicon is not getting fetched from the engine,
-            // so we are showing Google's favicon by default.
-            Evas_Object *thumb_nail = elm_icon_add(obj);
-            const char *file_name = "favicon.png";
-            elm_image_file_set(thumb_nail, id->m_moreMenu->m_edjFilePath.c_str(), file_name);
-            return thumb_nail;
-            //return tizen_browser::tools::EflTools::getEvasImage(id->h_item->getFavIcon(), obj);
-        }
-
-        if (!strncmp(part_name2, part, part_name2_len)) {
-            Evas_Object *star_click = elm_button_add(obj);
-            elm_object_style_set(star_click, "hidden_button");
-            evas_object_smart_callback_add(star_click, "clicked", MoreMenuUI::star_clicked_cb, id);
-            return star_click;
-        }
-
-        if (!strncmp(part_name3, part, part_name3_len)) {
-            Evas_Object *close_click = elm_button_add(obj);
-            elm_object_style_set(close_click, "hidden_button");
-            evas_object_smart_callback_add(close_click, "clicked", MoreMenuUI::close_clicked_cb, id);
-            return close_click;
+    if(favicon && favicon->imageType != tools::BrowserImage::ImageTypeNoImage){
+        m_icon = tizen_browser::tools::EflTools::getEvasImage(favicon, m_current_tab_bar);
+        if(m_icon){
+            evas_object_size_hint_weight_set(m_icon, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+            evas_object_size_hint_align_set(m_icon, EVAS_HINT_FILL, EVAS_HINT_FILL);
+            elm_object_part_content_set(m_current_tab_bar, "favicon", m_icon);
+            evas_object_show(m_icon);
         }
     }
-    return NULL;
 }
 
-void MoreMenuUI::star_clicked_cb(void* data, Evas_Object*, void*)
+void MoreMenuUI::setWebTitle(const std::string& title)
+{
+    BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, title.c_str());
+    if(!title.empty())
+        elm_object_part_text_set(m_current_tab_bar, "webpage_title", title.c_str());
+    else
+        elm_object_part_text_set(m_current_tab_bar, "webpage_title", "New Tab");
+}
+
+void MoreMenuUI::setURL(const std::string& url)
+{
+    BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
+    if(!url.empty())
+        elm_object_part_text_set(m_current_tab_bar, "webpage_url", url.c_str());
+    else
+        elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
+}
+
+void MoreMenuUI::_star_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData * id = static_cast<ItemData *>(data);
-        id->m_moreMenu->addToBookmarkClicked();
-        id->m_moreMenu->AddBookmarkPopupCalled();
+        MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
+        moreMenuUI->addToBookmarkClicked();
+        moreMenuUI->AddBookmarkPopupCalled();
+    }
+}
+
+void MoreMenuUI::_close_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
+        moreMenuUI->closeMoreMenuClicked(std::string());
+        moreMenuUI->clearItems();
     }
 }
 
@@ -238,53 +219,11 @@ void MoreMenuUI::addToBookmarks(int folder_id)
      m_add_bookmark_popup->hide();
      m_add_bookmark_popup.reset();
 }
-void MoreMenuUI::close_clicked_cb(void* data, Evas_Object*, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data) {
-        ItemData * id = static_cast<ItemData*>(data);
-        id->m_moreMenu->closeMoreMenuClicked(std::string());
-        id->m_moreMenu->clearItems();
-    }
-}
-
-char* MoreMenuUI::listItemTextGet(void* data, Evas_Object*, const char* part)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && part) {
-        ItemData *id = static_cast<ItemData*>(data);
-        const char *part_name1 = "webpage_title";
-        static const int part_name1_len = strlen(part_name1);
-        const char *part_name2 = "webpage_url";
-        static const int part_name2_len = strlen(part_name2);
-
-        if (!strncmp(part_name1, part, part_name1_len)) {
-            if (!id->h_item.get()) {
-                return strdup("New Tab");
-            }
-            return strdup(id->h_item->getTitle().c_str());
-        }
-
-        if (!strncmp(part_name2, part, part_name2_len)) {
-            if(!id->h_item.get())
-                return strdup("");
-            return strdup(id->h_item->getUrl().c_str());
-        }
-    }
-    return strdup("");
-}
-
-void MoreMenuUI::listItemDel(void* data, Evas_Object* obj)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(data)
-        delete (ItemData *)data;
-}
 
 void MoreMenuUI::hide()
 {
     evas_object_hide(elm_layout_content_get(m_mm_layout, "elm.swallow.grid"));
-    evas_object_hide(elm_layout_content_get(m_mm_layout, "elm.swallow.genlist"));
+    evas_object_hide(elm_layout_content_get(m_mm_layout, "current_tab_bar"));
     evas_object_hide(m_mm_layout);
 }
 
@@ -507,9 +446,9 @@ void MoreMenuUI::clearItems()
     hide();
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_clear(m_gengrid);
-    elm_genlist_clear(m_genList);
     m_map_menu_views.clear();
     m_map_bookmark_folder_list.clear();
+    evas_object_del(m_current_tab_bar);
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
     elm_theme_full_flush();
     elm_cache_all_flush();
@@ -520,35 +459,6 @@ void MoreMenuUI::_exitClicked()
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     elm_exit();
 }
-
-//void MoreMenuUI::focusItem(void*, Evas_Object*, void* event_info)
-//{
-//    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-//    if (event_info) {
-//        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
-//        elm_object_item_signal_emit(item, "mouse,in", "over2");
-//
-//        // selected manually
-//        elm_gengrid_item_selected_set(item, EINA_TRUE);
-//    }
-//}
-//
-//void MoreMenuUI::unFocusItem(void*, Evas_Object*, void* event_info)
-//{
-//    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-//    if (event_info) {
-//        Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
-//        elm_object_item_signal_emit( item, "mouse,out", "over2");
-//
-//        // unselected manually
-//        elm_gengrid_item_selected_set(item, EINA_FALSE);
-//    }
-//}
-//
-//void MoreMenuUI::_itemSelected(void*, Evas_Object*, void *)
-//{
-//    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
-//}
 
 }
 }
