@@ -210,7 +210,7 @@ std::string WebView::getURI(void)
 {
 #if defined(USE_EWEBKIT)
     BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, ewk_view_url_get(m_ewkView));
-    return tizen_browser::tools::fromChar(ewk_view_url_get(m_ewkView));
+    return fromChar(ewk_view_url_get(m_ewkView));
 #else
     return std::string();
 #endif
@@ -427,14 +427,14 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 #endif
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
+std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     M_ASSERT(m_ewkView);
     M_ASSERT(targetWidth);
     M_ASSERT(targetHeight);
     Evas_Coord vw, vh;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> noImage = std::make_shared<tizen_browser::tools::BrowserImage>();
+    std::shared_ptr<BrowserImage> noImage = std::make_shared<BrowserImage>();
     evas_object_geometry_get(m_ewkView, nullptr, nullptr, &vw, &vh);
     if (vw == 0 || vh == 0)
         return noImage;
@@ -465,7 +465,7 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::captureSnapshot(int
     Evas_Object *snapshot = ewk_view_screenshot_contents_get( m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
     BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
     if (snapshot)
-        return tizen_browser::tools::EflTools::getBrowserImage(snapshot);
+        return EflTools::getBrowserImage(snapshot);
 #endif
 #endif
 
@@ -594,7 +594,7 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
-    self->m_title = tizen_browser::tools::fromChar(ewk_view_title_get(obj));
+    self->m_title = fromChar(ewk_view_title_get(obj));
 
     self->titleChanged(self->m_title);
 }
@@ -609,7 +609,7 @@ void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * event_in
     m_webEngine = std::dynamic_pointer_cast<basic_webengine::AbstractWebEngine<Evas_Object>, tizen_browser::core::AbstractService>(
             tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
     M_ASSERT(m_webEngine);
-    self->uriChanged(tizen_browser::tools::fromChar(reinterpret_cast<const char *>(event_info)));
+    self->uriChanged(fromChar(reinterpret_cast<const char *>(event_info)));
     self->tabIdChecker(self->m_tabId);
 }
 
@@ -630,7 +630,7 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
         Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(self->m_ewkView), ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
         if (favicon) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
-            self->faviconImage = tizen_browser::tools::EflTools::getBrowserImage(favicon);
+            self->faviconImage = EflTools::getBrowserImage(favicon);
             evas_object_unref(favicon);
             self->favIconChanged(self->faviconImage);
         }
@@ -653,8 +653,8 @@ void WebView::__IMEOpened(void* data, Evas_Object*, void*)
 
 std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
 {
-    std::string protocol = tizen_browser::tools::fromChar(ewk_security_origin_protocol_get(origin));
-    std::string uri = tizen_browser::tools::fromChar(ewk_security_origin_host_get(origin));
+    std::string protocol = fromChar(ewk_security_origin_protocol_get(origin));
+    std::string uri = fromChar(ewk_security_origin_host_get(origin));
     std::string url = (boost::format("%1%://%2%") % protocol % uri).str();
     return url;
 }
@@ -831,42 +831,21 @@ const TabId& WebView::getTabId(){
 }
 
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebView::getFavicon() {
+std::shared_ptr<BrowserImage> WebView::getFavicon()
+{
     BROWSER_LOGD("%s:%d, TabId: %s", __PRETTY_FUNCTION__, __LINE__, m_tabId.toString().c_str());
-    M_ASSERT(m_ewkView);
+    if(faviconImage.get())
+        return faviconImage;
 
-#if defined(USE_EWEBKIT)
-    if (faviconImage.get() == NULL) {
+    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
+    faviconImage = EflTools::getBrowserImage(favicon);
+    evas_object_unref(favicon);
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            Evas_Object * favicon = ewk_context_icon_database_icon_object_add(context, ewk_view_url_get(m_ewkView), evas_object_evas_get(m_ewkView));
+    if(faviconImage.get())
+        return faviconImage;
 
-#ifndef NDEBUG
-                int w = 0, h = 0;
-                evas_object_image_size_get(favicon, &w, &h);
-                BROWSER_LOGD("[%s]: Info about favicon: w:%d h:%d, type: %s", __func__, w, h, evas_object_type_get(favicon));
-#endif
-                if (favicon) {
-                    std::shared_ptr<tizen_browser::tools::BrowserImage>
-                        image = tizen_browser::tools::EflTools::getBrowserImage(favicon);
-
-                    evas_object_unref(favicon);
-
-                    return image;
-                }
-            } else {
-                return faviconImage;
-            }
-        }
-    }
-#endif
-
-    BROWSER_LOGE("[%s:%d]: Returned favicon is empty!", __PRETTY_FUNCTION__, __LINE__);
-    return std::make_shared<tizen_browser::tools::BrowserImage>();
+    BROWSER_LOGD("[%s:%d] Returned favicon is empty!",  __PRETTY_FUNCTION__, __LINE__);
+    return std::make_shared<BrowserImage>();
 }
 
 void WebView::clearPrivateData()

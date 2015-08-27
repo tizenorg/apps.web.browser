@@ -25,7 +25,6 @@
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
-//#include "../SimpleUI/SimpleUI.h"
 
 #include "BookmarkItem.h"
 #include "AddBookmarkPopup.h"
@@ -63,12 +62,15 @@ public:
     MoreMenuUI();
     ~MoreMenuUI();
     void show(Evas_Object *main_layout);
-    void showCurrentTab(std::shared_ptr<tizen_browser::services::HistoryItem> item);
+    void showCurrentTab();
     virtual std::string getName();
     void addItems();
     void hide();
     void clearItems();
     void getBookmarkFolderList(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > );
+    void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
+    void setWebTitle(const std::string& title);
+    void setURL(const std::string& url);
 
     boost::signals2::signal<void ()> addToBookmarkClicked;
     boost::signals2::signal<void (int)> AddBookmarkInput;
@@ -84,10 +86,6 @@ private:
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _exitClicked();
 
-    static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
-    static char*        listItemTextGet(void *data, Evas_Object *obj, const char *part);
-    static void listItemDel(void *, Evas_Object *);
-
     void newFolderPopup(std::string);
     void NewFolderCreate(Evas_Object * popup_content);
     void CancelClicked(Evas_Object * popup_content);
@@ -95,18 +93,17 @@ private:
     void AddBookmarkPopupCalled();
     void addToBookmarks(int folder_id);
 
-    static void star_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-    static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+    static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
+    static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
 
     static void __cb_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info);
     static void __cb_mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info);
 
 private:
-    Evas_Object *m_genList;
+    Evas_Object *m_current_tab_bar;
     std::shared_ptr<tizen_browser::base_ui::NewFolderPopup> m_new_folder_popup;
     Evas_Object *m_mm_layout;
     std::shared_ptr<tizen_browser::base_ui::AddBookmarkPopup> m_add_bookmark_popup;
-    Elm_Genlist_Item_Class *m_itemClass;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_item_class;
@@ -115,10 +112,7 @@ private:
     std::string m_edjFilePath;
     std::string m_folderName;
     bool m_gengridSetup;
-
-    //static void focusItem(void* data, Evas_Object* obj, void* event_info);
-    //static void unFocusItem(void* data, Evas_Object* obj, void* event_info);
-    //static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
+    Evas_Object *m_icon;
 };
 
 }

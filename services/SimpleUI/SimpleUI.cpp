@@ -263,8 +263,6 @@ int SimpleUI::exec(const std::string& _url)
             m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
             m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
             m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
-            m_webEngine->favIconChanged.connect(boost::bind(&SimpleURI::setFavIcon, m_simpleURI.get(), _1));
-            m_webEngine->favIconChanged.connect(boost::bind(&WebTitleBar::setFavIcon, webTitleBar.get(), _1));
             m_webEngine->titleChanged.connect(boost::bind(&WebTitleBar::show, webTitleBar.get(), _1));
             m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
 
@@ -776,10 +774,6 @@ void SimpleUI::loadFinished()
 
     addBookmarkEnable(m_favoriteService->countBookmarksAndSubFolders() < m_favoritesLimit);
 
-    if(m_simpleURI->getCurrentIconTyep() != SimpleURI::IconTypeFav){
-        m_simpleURI->setFavIcon(m_webEngine->getFavicon());
-        webTitleBar->setFavIcon(m_webEngine->getFavicon());
-    }
     if(m_webEngine->isLoadError()){
         loadError();
     }
@@ -1139,32 +1133,39 @@ void SimpleUI::showMoreMenu()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     bool current_tab_as_new_tab = isHomePageActive() || (m_historyService->getHistoryItemsCount() == 0);
-    if (!m_moreMenuUI) {
-        m_moreMenuUI = std::dynamic_pointer_cast<tizen_browser::base_ui::MoreMenuUI, tizen_browser::core::AbstractService>
-                       (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
+    if(!m_moreMenuUI){
+        m_moreMenuUI =
+                std::dynamic_pointer_cast
+                <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
+                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
         M_ASSERT(m_moreMenuUI);
-
+        m_webEngine->favIconChanged.disconnect_all_slots();
+        m_webEngine->favIconChanged.connect(boost::bind(&MoreMenuUI::setFavIcon, m_moreMenuUI.get(), _1));
+        m_webEngine->titleChanged.disconnect_all_slots();
+        m_webEngine->titleChanged.connect(boost::bind(&MoreMenuUI::setWebTitle, m_moreMenuUI.get(), _1));
+        m_webEngine->uriChanged.disconnect_all_slots();
+        m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
         m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this, _1));
-        m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this, _1));
-        m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this, _1));
-        m_moreMenuUI->closeMoreMenuClicked.disconnect_all_slots();
-        m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this, _1));
-        m_moreMenuUI->addToBookmarkClicked.disconnect_all_slots();
+        m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
+        m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
+        m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this,_1));
         m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmarkFolders, this));
-        m_moreMenuUI->AddBookmarkInput.disconnect_all_slots();
-        m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
-        m_moreMenuUI->BookmarkFolderCreated.disconnect_all_slots();
-        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this, _1, _2));
+        m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
+        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
+
         m_moreMenuUI->show(m_window.get());
-        m_moreMenuUI->showCurrentTab(current_tab_as_new_tab ? nullptr : m_historyService->getCurrentTab());
+        m_moreMenuUI->showCurrentTab();
+        m_moreMenuUI->setFavIcon(m_webEngine->getFavicon());
+        m_moreMenuUI->setWebTitle(m_webEngine->getTitle());
+        m_moreMenuUI->setURL(m_webEngine->getURI());
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
 void SimpleUI::closeMoreMenu(const std::string& str)
 {
-	BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	m_moreMenuUI.reset() ;
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_moreMenuUI.reset();
 }
 
 void SimpleUI::showBookmarkManagerMenu()
