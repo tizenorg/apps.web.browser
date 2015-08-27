@@ -126,6 +126,7 @@ bool isDuplicate(const char* title)
                 int freq;
                 bp_history_adaptor_get_frequency(ids[i], &freq);
                 bp_history_adaptor_set_frequency(ids[i], freq + 1);
+                bp_history_adaptor_set_date_visited(ids[i],-1);
                 return true;
         }
     }
@@ -133,6 +134,34 @@ bool isDuplicate(const char* title)
 
 }
 
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryAll()
+{
+    return getHistoryItems(BP_HISTORY_DATE_ALL);
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryToday()
+{
+    return getHistoryItems(BP_HISTORY_DATE_TODAY);
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryYesterday()
+{
+    return getHistoryItems(BP_HISTORY_DATE_YESTERDAY);
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryLastWeek()
+{
+    return getHistoryItems(BP_HISTORY_DATE_LAST_7_DAYS);
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryLastMonth()
+{
+    return getHistoryItems(BP_HISTORY_DATE_LAST_MONTH);
+}
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryOlder()
+{
+    return getHistoryItems(BP_HISTORY_DATE_OLDER);
+}
 
 std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
 {
@@ -319,7 +348,7 @@ void HistoryService::clearURLHistory(const std::string & url)
 
 std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNumber)
 {
-    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED);
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_VISITED);
     bp_history_info_fmt history_info;
     bp_history_adaptor_get_info(ids[idNumber], offset, &history_info);
 
@@ -370,7 +399,7 @@ std::shared_ptr<HistoryItem> HistoryService::getCurrentTab()
     conds.offset = -1;   //the first row's index
     conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
-    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
+    conds.period_offset = BP_HISTORY_O_DATE_VISITED;
     conds.period_type = BP_HISTORY_DATE_TODAY;
 
     int ret = bp_history_adaptor_get_cond_ids_p(&ids , &count, &conds, 0, nullptr, 0);
@@ -381,7 +410,7 @@ std::shared_ptr<HistoryItem> HistoryService::getCurrentTab()
     return getHistoryItem(ids);
 }
 
-std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_date_defs period, int maxItems)
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_date_defs period)
 {
     std::shared_ptr<HistoryItemVector> ret_history_list(new HistoryItemVector);
 
@@ -392,7 +421,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     conds.offset = -1;   //the first row's index
     conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
-    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
+    conds.period_offset = BP_HISTORY_O_DATE_VISITED;
     conds.period_type = period;
 
     int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
