@@ -108,9 +108,14 @@ std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::g
     return m_favoriteService->getBookmarks(folder_id);
 }
 
-std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
+std::shared_ptr<services::HistoryItemVector> SimpleUI::getMostVisitedItems()
 {
     return m_historyService->getMostVisitedHistoryItems();
+}
+
+std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
+{
+    return m_historyService->getHistoryToday();
 }
 
 
@@ -618,7 +623,7 @@ void SimpleUI::onMostVisitedClicked(const std::string&)
    BROWSER_LOGD("[%s]", __func__);
    m_mainUI->clearHistoryGenlist();
    m_mainUI->clearBookmarkGengrid();
-   m_mainUI->addHistoryItems(getHistory());
+   m_mainUI->addHistoryItems(getMostVisitedItems());
    m_mainUI->showHistory();
 }
 
@@ -1076,7 +1081,7 @@ void SimpleUI::showMainUI()
     M_ASSERT(m_mainUI);
     hideWebView();
     m_mainUI->show(m_window.get());
-    m_mainUI->addHistoryItems(getHistory());
+    m_mainUI->addHistoryItems(getMostVisitedItems());
     m_mainUI->addBookmarkItems(getBookmarks());
     m_isHomePageActive = true;
 }
