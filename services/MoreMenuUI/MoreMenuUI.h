@@ -63,7 +63,7 @@ public:
     MoreMenuUI();
     ~MoreMenuUI();
     void show(Evas_Object *main_layout);
-    void showCurrentTab(const std::shared_ptr<tizen_browser::services::HistoryItem> item);
+    void showCurrentTab(std::shared_ptr<tizen_browser::services::HistoryItem> item);
     virtual std::string getName();
     void addItems();
     void hide();
@@ -86,6 +86,7 @@ private:
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
     static char*        listItemTextGet(void *data, Evas_Object *obj, const char *part);
+    static void listItemDel(void *, Evas_Object *);
 
     void newFolderPopup(std::string);
     void NewFolderCreate(Evas_Object * popup_content);

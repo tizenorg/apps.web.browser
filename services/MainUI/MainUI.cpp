@@ -297,7 +297,7 @@ void MainUI::_bookmark_manager_clicked(void * data, Evas_Object * /* obj */, voi
     mainUI->bookmarkManagerClicked(std::string());
 }
 
-void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem> hi)
+void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     if (m_map_history_views.size() >= MAX_TILES_NUMBER)
@@ -323,11 +323,11 @@ void MainUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem
     m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(),historyView));
 }
 
-void MainUI::addHistoryItems(std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > items)
+void MainUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     int i = 0;
-    for (auto it = items.begin(); it != items.end(); ++it) {
+    for (auto it = items->begin(); it != items->end(); ++it) {
         i++;
         if (i > MAX_TILES_NUMBER)
             break;

@@ -76,8 +76,9 @@ public:
     /**
      * @throws HistoryException on error
      */
-    HistoryItemVector & getHistoryItems(int historyDepthInDays = 7, int maxItems = 50);
-    HistoryItemVector & getMostVisitedHistoryItems();
+    std::shared_ptr<HistoryItemVector> getHistoryItems(bp_history_date_defs period = BP_HISTORY_DATE_TODAY, int maxItems = 50);
+    std::shared_ptr<HistoryItem> getCurrentTab();
+    std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
 
     /**
      * @throws HistoryException on error
@@ -106,6 +107,7 @@ private:
      */
     void initDatabaseBookmark(const std::string & db_str);
 
+    std::shared_ptr<HistoryItem> getHistoryItem(int* ids, int idNumber = 0);
     std::shared_ptr<tizen_browser::services::StorageService> getStorageManager();
 
 };

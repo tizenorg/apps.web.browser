@@ -48,8 +48,8 @@ public:
     void showBookmarks();
     void clearItems();
 
-    void addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem>);
-    void addHistoryItems(std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> >);
+    void addHistoryItem(std::shared_ptr<services::HistoryItem>);
+    void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
