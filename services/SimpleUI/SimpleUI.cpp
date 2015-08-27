@@ -646,6 +646,14 @@ void SimpleUI::onBookmarkButtonClicked(const std::string&)
 void SimpleUI::onBookmarkManagerButtonClicked(const std::string&)
 {
     BROWSER_LOGD("[%s]", __func__);
+    if(m_mainUI) {               // TODO: remove this section when naviframes will be available
+        m_mainUI->clearBookmarkGengrid();
+    }
+
+    if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
+        m_moreMenuUI->clearItems();
+    }
+
     showBookmarkManagerMenu();
 }
 
@@ -1217,6 +1225,16 @@ void SimpleUI::closeBookmarkManagerMenu(std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_bookmarkManagerUI.reset();
+
+    if(m_moreMenuUI) {
+        m_moreMenuUI.reset();
+        showMoreMenu();
+    }
+
+    if(m_mainUI) {
+        m_mainUI->addBookmarkItems(getBookmarks());
+        m_mainUI->showBookmarks();
+    }
 }
 
 void SimpleUI::openLinkFromPopup(const std::string &uri)
