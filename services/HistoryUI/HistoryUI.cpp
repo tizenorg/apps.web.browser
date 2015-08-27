@@ -178,7 +178,7 @@ void HistoryUI::addItems()
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 }
 
-void HistoryUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem> hi)
+void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData *itemData = new HistoryItemData();
@@ -188,11 +188,11 @@ void HistoryUI::addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryI
     setEmptyGengrid(false);
 }
 
-void HistoryUI::addHistoryItems(std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > items)
+void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     _history_item_data.clear();
-    for (auto it = items.begin(); it != items.end(); ++it)
+    for (auto it = items->begin(); it != items->end(); ++it)
         addHistoryItem(*it);
 }
 

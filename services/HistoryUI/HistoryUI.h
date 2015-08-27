@@ -38,8 +38,8 @@ public:
     ~HistoryUI();
     void init(Evas_Object *main_layout);
     virtual std::string getName();
-    void addHistoryItem(std::shared_ptr<tizen_browser::services::HistoryItem>);
-    void addHistoryItems(std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> >);
+    void addHistoryItem(std::shared_ptr<services::HistoryItem>);
+    void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void removeHistoryItem(const std::string& uri);
     void clearItems();
     void hide();

@@ -108,7 +108,7 @@ std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::g
     return m_favoriteService->getBookmarks(folder_id);
 }
 
-std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > SimpleUI::getHistory()
+std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
 {
     return m_historyService->getMostVisitedHistoryItems();
 }
@@ -1139,25 +1139,24 @@ void SimpleUI::showMoreMenu()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     bool current_tab_as_new_tab = isHomePageActive() || (m_historyService->getHistoryItemsCount() == 0);
-    if(!m_moreMenuUI){
-   	   m_moreMenuUI =
-                std::dynamic_pointer_cast
-                <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
+    if (!m_moreMenuUI) {
+        m_moreMenuUI = std::dynamic_pointer_cast<tizen_browser::base_ui::MoreMenuUI, tizen_browser::core::AbstractService>
+                       (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
         M_ASSERT(m_moreMenuUI);
+
         m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this, _1));
-        m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
-        m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
+        m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this, _1));
+        m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this, _1));
         m_moreMenuUI->closeMoreMenuClicked.disconnect_all_slots();
-        m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this,_1));
+        m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this, _1));
         m_moreMenuUI->addToBookmarkClicked.disconnect_all_slots();
         m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmarkFolders, this));
         m_moreMenuUI->AddBookmarkInput.disconnect_all_slots();
-        m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
+        m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
         m_moreMenuUI->BookmarkFolderCreated.disconnect_all_slots();
-        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
+        m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this, _1, _2));
         m_moreMenuUI->show(m_window.get());
-        m_moreMenuUI->showCurrentTab(current_tab_as_new_tab ? nullptr : m_historyService->getHistoryItems().front());
+        m_moreMenuUI->showCurrentTab(current_tab_as_new_tab ? nullptr : m_historyService->getCurrentTab());
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
 }

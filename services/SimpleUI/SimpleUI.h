@@ -122,7 +122,7 @@ private:
     void bookmarkCheck();
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id);
-    std::vector<std::shared_ptr<tizen_browser::services::HistoryItem> > getHistory();
+    std::shared_ptr<services::HistoryItemVector> getHistory();
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);

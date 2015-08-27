@@ -34,7 +34,7 @@ EXPORT_SERVICE(MoreMenuUI, "org.tizen.browser.moremenuui")
 
 struct ItemData{
         tizen_browser::base_ui::MoreMenuUI * m_moreMenu;
-        tizen_browser::services::HistoryItem * h_item;
+        std::shared_ptr<tizen_browser::services::HistoryItem> h_item;
         Elm_Object_Item * e_item;
     };
 
@@ -98,7 +98,7 @@ void MoreMenuUI::show(Evas_Object* parent)
     addItems();
 }
 
-void MoreMenuUI::showCurrentTab(const std::shared_ptr<tizen_browser::services::HistoryItem> item)
+void MoreMenuUI::showCurrentTab(std::shared_ptr<tizen_browser::services::HistoryItem> item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(NULL, m_edjFilePath.c_str());
@@ -119,11 +119,11 @@ void MoreMenuUI::showCurrentTab(const std::shared_ptr<tizen_browser::services::H
     m_itemClass->func.text_get = &listItemTextGet;
     m_itemClass->func.content_get = &listItemContentGet;
     m_itemClass->func.state_get = 0;
-    m_itemClass->func.del = 0;
+    m_itemClass->func.del = &listItemDel;
 
     ItemData * id = new ItemData;
     id->m_moreMenu = this;
-    id->h_item = item ? item.get() : NULL;
+    id->h_item = item;
     Elm_Object_Item* elmItem = elm_genlist_item_append(m_genList,            //genlist
                                                       m_itemClass,           //item Class
                                                       id,
@@ -148,7 +148,7 @@ Evas_Object* MoreMenuUI::listItemContentGet(void* data, Evas_Object* obj, const 
         const char *part_name3 = "close_click";
         static const int part_name3_len = strlen(part_name3);
 
-        if (!strncmp(part_name1, part, part_name1_len) && id->h_item && id->h_item->getFavIcon()) {
+        if (!strncmp(part_name1, part, part_name1_len) && id->h_item.get() && id->h_item->getFavIcon()) {
             // Currently favicon is not getting fetched from the engine,
             // so we are showing Google's favicon by default.
             Evas_Object *thumb_nail = elm_icon_add(obj);
@@ -259,19 +259,26 @@ char* MoreMenuUI::listItemTextGet(void* data, Evas_Object*, const char* part)
         static const int part_name2_len = strlen(part_name2);
 
         if (!strncmp(part_name1, part, part_name1_len)) {
-            if (!id->h_item) {
+            if (!id->h_item.get()) {
                 return strdup("New Tab");
             }
             return strdup(id->h_item->getTitle().c_str());
         }
 
         if (!strncmp(part_name2, part, part_name2_len)) {
-            if(!id->h_item)
+            if(!id->h_item.get())
                 return strdup("");
             return strdup(id->h_item->getUrl().c_str());
         }
     }
     return strdup("");
+}
+
+void MoreMenuUI::listItemDel(void* data, Evas_Object* obj)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(data)
+        delete (ItemData *)data;
 }
 
 void MoreMenuUI::hide()
