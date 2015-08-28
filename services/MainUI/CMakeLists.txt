@@ -2,10 +2,12 @@ project(MainUI)
 
 set(MainUI_SRCS
     MainUI.cpp
+    DetailPopup.cpp
     )
 
 set(MainUI_HEADERS
     MainUI.h
+    DetailPopup.h
     )
 
 include(Coreheaders)
@@ -23,7 +25,15 @@ install(TARGETS ${PROJECT_NAME}
             LIBRARY DESTINATION services
             ARCHIVE DESTINATION services/static)
 
-include(EDCCompile)
-EDJ_TARGET(MainUI.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/MainUI.edc
-    ${CMAKE_CURRENT_BINARY_DIR})
+#please do not add edc/ directory
+set(edcFiles
+    MainUI.edc
+    DetailPopup.edc
+    )
+
+foreach(edec ${edcFiles})
+    string(REPLACE ".edc" ".edj" target_name ${edec})
+    EDJ_TARGET(${target_name}
+               ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
+               ${CMAKE_CURRENT_BINARY_DIR})
+endforeach(edec)

@@ -308,7 +308,8 @@ int SimpleUI::exec(const std::string& _url)
         M_ASSERT(m_mainUI.get());
 
         m_historyService->historyAllDeleted.connect(boost::bind(&tizen_browser::base_ui::MainUI::clearHistoryGenlist, m_mainUI.get()));
-        m_mainUI->historyClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
+        m_mainUI->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this,_1));
+        m_mainUI->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
         m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
         m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
         m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
@@ -595,7 +596,7 @@ void SimpleUI::onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryIt
 #endif
 }
 
-void SimpleUI::onHistoryClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
+void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
 {
     std::string historyAddress = historyItem->getUrl();
     if(m_historyUI) {                // TODO: remove this section when naviframes will be available
@@ -608,6 +609,12 @@ void SimpleUI::onHistoryClicked(std::shared_ptr<tizen_browser::services::History
         m_moreMenuUI = nullptr;
     }
     openNewTab(historyAddress);
+}
+
+void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    m_mainUI->openDetailPopup(historyItem, m_historyService->getHistoryItemsByURL(historyItem->getUrl(), itemsNumber));
 }
 
 void SimpleUI::onClearHistoryClicked(const std::string&)
@@ -1095,7 +1102,7 @@ void SimpleUI::showHistoryUI(const std::string& str)
     M_ASSERT(m_historyUI);
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
-    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onHistoryClicked, this,_1));
+    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this,_1));
     m_historyUI->addHistoryItems(getHistory());
     m_historyUI->show(m_window.get());
 }

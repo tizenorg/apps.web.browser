@@ -26,6 +26,7 @@
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
+#include "DetailPopup.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -47,13 +48,15 @@ public:
     void showHistory();
     void showBookmarks();
     void clearItems();
+    void openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
 
     void addHistoryItem(std::shared_ptr<services::HistoryItem>);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyClicked;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> openURLInNewTab;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (const std::string & )> mostVisitedClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
@@ -96,6 +99,7 @@ private:
     Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
 
+    DetailPopup m_detailPopup;
     std::multimap<std::string,Elm_Object_Item*> m_map_history_views;
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;

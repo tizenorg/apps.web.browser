@@ -26,6 +26,7 @@
 #include "HistoryItem.h"
 #include "AbstractWebEngine.h"
 #include "EflTools.h"
+#include "Tools/GeneralTools.h"
 
 
 
@@ -36,6 +37,8 @@ namespace services
 {
 
 EXPORT_SERVICE(HistoryService, DOMAIN_HISTORY_SERVICE)
+
+const int SEARCH_LIKE = 1;
 
 HistoryService::HistoryService() : m_testDbMod(false)
 {
@@ -241,6 +244,42 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
     }
     free(ids);
     return ret_history_list;
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(const std::string& url, int maxItems)
+{
+    std::string search("%" + tools::extractDomain(url) + "%");     // add SQL 'any character' signs
+
+    std::shared_ptr<HistoryItemVector> items(new HistoryItemVector);
+    int *ids=nullptr;
+    int count=-1;
+    bp_history_rows_cond_fmt conds;
+    conds.limit = maxItems;  //no of rows to get negative means no limitation
+    conds.offset = -1;   //the first row's index
+    conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
+    conds.ordering = 1; //way of ordering 0 asc 1 desc
+    conds.period_offset = BP_HISTORY_O_DATE_VISITED;
+    conds.period_type = BP_HISTORY_DATE_ALL;
+
+    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, BP_HISTORY_O_URL, search.c_str(), SEARCH_LIKE);
+    if (ret < 0) {
+        BROWSER_LOGD("Error! Could not get ids!");
+        return items;
+    }
+
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_DATE_VISITED);
+    for(int i = 0; i < count; i++) {
+        bp_history_info_fmt history_info;
+        bp_history_adaptor_get_info(ids[i], offset, &history_info);
+
+        std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(std::string(history_info.url));
+        history->setTitle(std::string(history_info.title ? history_info.title : ""));
+
+        items->push_back(history);
+    }
+
+    free(ids);
+    return items;
 }
 
 void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail){
