@@ -132,7 +132,8 @@ private:
 
     void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
     void onHistoryRemoved(const std::string& uri);
-    void onHistoryClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
     void onClearHistoryClicked(const std::string&);
 
     void onMostVisitedClicked(const std::string&);

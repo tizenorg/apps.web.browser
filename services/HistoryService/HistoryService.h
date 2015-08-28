@@ -84,6 +84,7 @@ public:
     std::shared_ptr<HistoryItemVector> getHistoryOlder();
     std::shared_ptr<HistoryItem> getCurrentTab();
     std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
+    std::shared_ptr<HistoryItemVector> getHistoryItemsByURL(const std::string & url, int maxItems);
 
     /**
      * @throws HistoryException on error

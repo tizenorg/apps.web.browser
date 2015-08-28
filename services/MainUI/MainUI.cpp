@@ -24,6 +24,7 @@
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
+#include "Tools/GeneralTools.h"
 
 #define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
 
@@ -32,9 +33,6 @@ namespace base_ui{
 
 const int SMALL_TILES_ROWS = 2;
 const int MAX_TILES_NUMBER = 5;
-const int SUFIX_CHAR_DEL = 1;
-const char * HTTP_PREFIX = "http://";
-const char * HTTPS_PREFIX = "https://";
 
 EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
 
@@ -70,6 +68,7 @@ MainUI::MainUI()
     , m_big_item_class(nullptr)
     , m_small_item_class(nullptr)
     , m_bookmark_item_class(nullptr)
+    , m_detailPopup(this)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     edjFilePath = EDJE_DIR;
@@ -365,14 +364,7 @@ char* MainUI::_grid_text_get(void *data, Evas_Object *obj, const char *part)
         return strdup(itemData->item->getTitle().c_str());
     }
     if (!strcmp(part, "page_url")) {
-        if (itemData->item->getUrl().find(HTTPS_PREFIX) == 0) {
-            size_t len = strlen(HTTPS_PREFIX);
-            return strdup(itemData->item->getUrl().substr(len, itemData->item->getUrl().size() - len - SUFIX_CHAR_DEL).c_str());      // remove https prefix
-        } else if (itemData->item->getUrl().find(HTTP_PREFIX) == 0) {
-            size_t len = strlen(HTTP_PREFIX);
-            return strdup(itemData->item->getUrl().substr(len, itemData->item->getUrl().size() - len - SUFIX_CHAR_DEL).c_str());      // remove http prefix
-        }
-        return strdup(itemData->item->getUrl().c_str());
+        return tools::clearURL(itemData->item->getUrl());
     }
     return strdup("");
 }
@@ -442,13 +434,13 @@ void MainUI::_itemSelected(void * data, Evas_Object * /* obj */, void * event_in
 	HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(elm_object_item_data_get(selected));
 	MainUI * self = reinterpret_cast<MainUI *>(data);
 
-	self->historyClicked(itemData->item);
+    self->openURLInNewTab(itemData->item);
 }
 
 void MainUI::_thumbSelected(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
-	HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
-	itemData->mainUI->historyClicked(itemData->item);
+    HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
+    itemData->mainUI->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
 }
 
 void MainUI::clearHistoryGenlist()
@@ -523,6 +515,11 @@ void MainUI::clearItems()
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     clearHistoryGenlist();
     clearBookmarkGengrid();
+}
+
+void MainUI::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
+{
+    m_detailPopup.show(m_layout, currItem, prevItems);
 }
 
 void MainUI::showNoHistoryLabel()
