@@ -161,7 +161,7 @@ group { name: "settings-layout";
                     rel2 { relative: 1.0 1.0; }
                 }
              }
-	   part { name: "settings_genlist_swallow";
+	   part { name: "settings_scroller_swallow";
                 type: SWALLOW;
                 description { state: "default" 0.0;
 		align: 0.0 0.0;
@@ -179,7 +179,7 @@ group { name: "settings-layout";
     }
 }
 
-group { name: "elm/genlist/item/settings_items/default";
+group { name: "settings_items";
 	data.item: "contents" "del_selected_data_click reset_mv_click reset_browser_click cache_cb cookies_cb history_cb accept_all_rb ask_rb sr_disable_rb bs_enable_rb bs_disable_rb ts_enable_rb ts_disable_rb";
 	images {
 		image: "web_frame_selected.png" COMP;
