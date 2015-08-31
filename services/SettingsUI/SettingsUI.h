@@ -38,7 +38,7 @@ public:
     void show(Evas_Object *main_layout);
     virtual std::string getName();
     void showActionBar();
-    void showSettingsGenlist();
+    void showSettingsPage();
     void clearItems();
     void hide();
 
@@ -55,7 +55,7 @@ private:
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-    static void __check_changed_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _reset_mv_clicked_cb(void * data, Evas_Object * obj, void * event_info);
@@ -66,12 +66,14 @@ private:
 private:
     Evas_Object *m_settings_layout;
     Evas_Object *m_genListActionBar;
-    Evas_Object *m_genList;
+    Evas_Object *m_scroller;
+    Evas_Object *m_items_layout;
     Elm_Genlist_Item_Class *m_itemClassActionBar;
     Evas_Object *m_parent;
-    
+
     Elm_Gengrid_Item_Class * m_item_class;
     std::string m_edjFilePath;
+
 };
 
 }
