@@ -81,8 +81,19 @@ public:
 
     void destroyUI();
 private:
+    // setup functions
+    void loadThemes();
     void createActions();
     void connectActions();
+    void loadUIServices();
+    void connectUISignals();
+    void loadModelServices();
+    void initModelServices();
+    void connectModelSignals();
+    void restoreLastSession();
+    Evas_Object* createWebLayout(Evas_Object* parent);
+    Evas_Object* createErrorLayout(Evas_Object* parent);
+
 
     void backEnable(bool enable);
     void forwardEnable(bool enable);
@@ -125,6 +136,8 @@ private:
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id);
     std::shared_ptr<services::HistoryItemVector> getHistory();
     std::shared_ptr<services::HistoryItemVector> getMostVisitedItems();
+
+    //UI signal handling functions
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
@@ -146,7 +159,6 @@ private:
 
     void onActionTriggered(const Action& action);
 
-    void loadThemes();
 
     void setwvIMEStatus(bool status);
 
