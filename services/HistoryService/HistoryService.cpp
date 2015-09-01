@@ -185,13 +185,10 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         BROWSER_LOGD("Error! Could not get ids!");
     }
 
-    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED);
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED | BP_HISTORY_O_THUMBNAIL);
 
     int freq_arr[1000];
     for(int i = 0; i< count; i++){
-        bp_history_info_fmt history_info;
-        bp_history_adaptor_get_info(ids[i],offset,&history_info);
-
         int freq;
         if (0 == bp_history_adaptor_get_frequency(ids[i], &freq))
         {
@@ -232,7 +229,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
 
         //thumbail
         std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
-        hi->imageType = tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
+        hi->imageType = tools::BrowserImage::ImageTypePNG;
         hi->width = history_info.thumbnail_width;
         hi->height = history_info.thumbnail_height;
         hi->dataSize = history_info.thumbnail_length;
