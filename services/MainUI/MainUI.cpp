@@ -33,6 +33,8 @@ namespace base_ui{
 
 const int SMALL_TILES_ROWS = 2;
 const int MAX_TILES_NUMBER = 5;
+const int MainUI::MAX_TILE_WIDTH = 784;
+const int MainUI::MAX_TILE_HEIGHT = 498;
 
 EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
 
