@@ -77,6 +77,7 @@ SimpleUI::SimpleUI()
     , m_wvIMEStatus(false)
     , m_ewkContext(ewk_context_new())
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
@@ -86,7 +87,7 @@ SimpleUI::SimpleUI()
 }
 
 SimpleUI::~SimpleUI() {
-    BROWSER_LOGD("%s", __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_sessionService->getStorage()->deleteSession(m_currentSession);
     /// \todo Auto-generated destructor stub
     evas_object_del(m_window.get());
@@ -95,7 +96,7 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::destroyUI()
 {
-    BROWSER_LOGD("%s", __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_del(m_window.get());
 }
 
@@ -119,19 +120,15 @@ std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
     return m_historyService->getHistoryToday();
 }
 
-
 std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::getBookmarkFolders(int folder_id)
 {
     return m_favoriteService->getBookmarkFolders(folder_id);
 }
 
-
-
 int SimpleUI::exec(const std::string& _url)
 {
     BROWSER_LOGD("[%s] _url=%s, initialised=%d", __func__, _url.c_str(), m_initialised);
     std::string url = _url;
-    Session::Session lastSession;
 
     if(!m_initialised){
         if (m_window.get()) {
@@ -139,147 +136,37 @@ int SimpleUI::exec(const std::string& _url)
             config.load("");
             m_tabLimit = boost::any_cast <int> (config.get("TAB_LIMIT"));
             m_favoritesLimit = boost::any_cast <int> (config.get("FAVORITES_LIMIT"));
-            elm_win_alpha_set(m_window.get(), EINA_FALSE);
 
-            // creating main window
+            // Set up main window
+            //TODO: These functions seems redundant. Check if these functions are neccessary.
             int width = 0;
             int height = 0;
             ecore_wl_screen_size_get(&width, &height);
             evas_object_move(m_window.get(), 0, 0);
             evas_object_resize(m_window.get(), width, height);
 
-            // create main layout
-            m_mainLayout = elm_layout_add(m_window.get());
-            evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-            elm_win_resize_object_add(m_window.get(), m_mainLayout);
-
-            ///\todo Integrate with pointer / tab mode switch
             elm_win_focus_highlight_style_set(m_window.get(), "invisible");
-            //elm_config_focus_highlight_animate_set(EINA_TRUE);
-
-            m_errorLayout = elm_layout_add(m_window.get());
-            evas_object_size_hint_weight_set(m_errorLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-            //elm_win_resize_object_add(m_window.get(), m_errorLayout);
 
             //set global show tooltip timeout
             elm_config_tooltip_delay_set( boost::any_cast <double> (config.get("TOOLTIP_DELAY")));
 
             loadThemes();
 
-            if(!elm_layout_file_set(m_mainLayout, edjePath("SimpleUI/MainLayout.edj").c_str(), "main_layout"))
-                throw std::runtime_error("Layout file not found: " + edjePath("SimpleUI/MainLayout.edj"));
-
-            //elm_object_style_set(m_errorLayout, "error_message");
-            if(!elm_layout_file_set(m_errorLayout, edjePath("SimpleUI/ErrorMessage.edj").c_str(), "error_message"))
-                throw std::runtime_error("Layout file not found: " + edjePath("SimpleUI/ErrorMessage.edj"));
-
-            // load && initialize components
-            // simpleURI
-            BROWSER_LOGD("[%s:%d] service: simpleURI ", __PRETTY_FUNCTION__, __LINE__);
-            m_simpleURI =
-                std::dynamic_pointer_cast
-                <tizen_browser::base_ui::SimpleURI,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleuri"));
-            M_ASSERT(m_simpleURI);
-
-            // webengine
-            BROWSER_LOGD("[%s:%d] service: webkitengineservice ", __PRETTY_FUNCTION__, __LINE__);
-            m_webEngine =
-                std::dynamic_pointer_cast
-                <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
-            M_ASSERT(m_webEngine);
-            m_webEngine->init(m_mainLayout);
-
-            // bookmarks UI
-            BROWSER_LOGD("[%s:%d] service: bookmarksui ", __PRETTY_FUNCTION__, __LINE__);
-
-            // favorites service
-            BROWSER_LOGD("[%s:%d] service: favoriteservice ", __PRETTY_FUNCTION__, __LINE__);
-            std::string favoriteService(boost::any_cast < std::string > (config.get("favorite_service_name")));
-            BROWSER_LOGD("favorite config");
-            m_favoriteService =
-                std::dynamic_pointer_cast
-                <tizen_browser::interfaces::AbstractFavoriteService,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService(favoriteService));
-            BROWSER_LOGD("favorite create");
-            M_ASSERT(m_favoriteService);
-            m_favoriteService->synchronizeBookmarks();
-            BROWSER_LOGD("favorite before getBookmarks");
-            m_favoriteService->getBookmarks();
-            BROWSER_LOGD("favorite after getBookmarks");
-
-            // history service
-            BROWSER_LOGD("[%s:%d] service: historyservice ", __PRETTY_FUNCTION__, __LINE__);
-            m_historyService =
-                std::dynamic_pointer_cast
-                <tizen_browser::services::HistoryService,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
-            M_ASSERT(m_historyService);
-
-
-            // Platforminputmanager
-            BROWSER_LOGD("[%s:%d] service: platforminputmanager ", __PRETTY_FUNCTION__, __LINE__);
-            m_platformInputManager =
-                std::dynamic_pointer_cast
-                <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
-            M_ASSERT(m_platformInputManager);
-            m_platformInputManager->init(m_window.get());
-            m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
-            m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
-
+            loadUIServices();
+            loadModelServices();
             createActions();
 
-            // left buttons
-            leftButtonBar = std::make_shared<ButtonBar>(m_mainLayout, "SimpleUI/LeftButtonBar.edj", "left_button_bar");
-            leftButtonBar->addAction(m_back, "prev_button");
-            leftButtonBar->addAction(m_forward, "next_button");
-            leftButtonBar->addAction(m_reload, "refresh_stop_button");
-            //register action that will be used later by buttons
-            leftButtonBar->registerEnabledChangedCallback(m_stopLoading, "refresh_stop_button");
+            // create view layouts
+            m_mainLayout = createWebLayout(m_window.get());
+            elm_win_resize_object_add(m_window.get(), m_mainLayout);
 
-            // right buttons
-            rightButtonBar = std::make_shared<ButtonBar>(m_mainLayout, "SimpleUI/RightButtonBar.edj", "right_button_bar");
-            rightButtonBar->addAction(m_tab, "tab_button");
-            rightButtonBar->addAction(m_showMoreMenu, "setting_button");
+            m_errorLayout = createErrorLayout(m_window.get());
 
-            m_progressBar = elm_progressbar_add(m_mainLayout);
-            elm_object_style_set(m_progressBar,"play_buffer");
+            //this needs to be called after UI is estabilished
+            initModelServices();
 
-            webTitleBar = std::make_shared<WebTitleBar>(m_mainLayout, "SimpleUI/WebTitleBar.edj", "web_title_bar");
-            elm_object_part_content_set(m_mainLayout, "web_title_bar", webTitleBar->getContent());
-
-            elm_object_part_content_set(m_mainLayout, "uri_entry", m_simpleURI->getContent(m_mainLayout));
-            elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_left", leftButtonBar->getContent());
-            elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_right", rightButtonBar->getContent());
-
-            // connecting all together
-            m_simpleURI->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
-            m_webEngine->uriChanged.connect(boost::bind(&SimpleURI::changeUri, m_simpleURI.get(), _1));
-            m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
-            m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
-            m_webEngine->webViewClicked.connect(boost::bind(&SimpleURI::clearFocus, m_simpleURI.get()));
-            m_webEngine->backwardEnableChanged.connect(boost::bind(&SimpleUI::backEnable, this, _1));
-            m_webEngine->forwardEnableChanged.connect(boost::bind(&SimpleUI::forwardEnable, this, _1));
-            m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
-            m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
-            m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
-            m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
-            m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
-            m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
-            m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
-            m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
-            m_webEngine->titleChanged.connect(boost::bind(&WebTitleBar::show, webTitleBar.get(), _1));
-            m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
-
-            m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
-            m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
-
-            //m_historyService->historyEmpty.connect(boost::bind(&SimpleUI::disableHistoryButton, this, _1));
-            m_historyService->historyAdded.connect(boost::bind(&SimpleUI::onHistoryAdded, this,_1));
-            m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
-
+            connectModelSignals();
+            connectUISignals();
             connectActions();
 
             elm_layout_signal_callback_add(m_simpleURI->getContent(), "slide_websearch", "elm", SimpleUI::favicon_clicked, this);
@@ -287,65 +174,208 @@ int SimpleUI::exec(const std::string& _url)
             // show main layout and window
             evas_object_show(m_mainLayout);
             evas_object_show(m_window.get());
-
-            m_netErrorHandler = std::unique_ptr<tizen_browser::basic_ui::NetworkErrorHandler>(new tizen_browser::basic_ui::NetworkErrorHandler);
-            m_netErrorHandler->networkError.connect(boost::bind(&SimpleUI::onNetworkError, this));
-            m_netErrorHandler->networkConnected.connect(boost::bind(&SimpleUI::onNetworkConnected, this));
-
-            m_sessionService = std::dynamic_pointer_cast
-            <
-                tizen_browser::services::SessionStorage,
-                tizen_browser::core::AbstractService
-            >(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.sessionStorageService"));
-            if(m_sessionService){
-                lastSession = std::move(m_sessionService->getStorage()->getLastSession());
-                m_currentSession = std::move(m_sessionService->getStorage()->createSession());
-            }
-
         }
         m_initialised = true;
+    }
 
-        m_mainUI = std::dynamic_pointer_cast <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
-                    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
-        M_ASSERT(m_mainUI.get());
+    m_currentSession = std::move(m_sessionService->getStorage()->createSession());
 
-        m_historyService->historyAllDeleted.connect(boost::bind(&tizen_browser::base_ui::MainUI::clearHistoryGenlist, m_mainUI.get()));
-        m_mainUI->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
-        m_mainUI->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
-        m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
-        m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
-        m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
-	}
-
-	if (url.empty()) {
-		BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
-		switchViewToHomePage();
-#if MERGE_ME // Not sure if this should be enabled
-		filterURL(HomePageURL);
-#endif
-		if(lastSession.items().size() >= 1){
-			for(auto iter=lastSession.items().begin(),
-				end=lastSession.items().end();
-				iter != end;
-				iter++
-				){
-					openNewTab(iter->second);
-				}
-				m_sessionService->getStorage()->deleteSession(lastSession);
-			}
-		}
-		else
-			openNewTab(url);
-
-	BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
-
+    if (url.empty())
+    {
+        BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
+        switchViewToHomePage();
+        restoreLastSession();
+    }
+     else
+         openNewTab(url);
     m_simpleURI->setFocus();
 
+    BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
     return 0;
 }
 
+Evas_Object* SimpleUI::createWebLayout(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    // create web layout
+    Evas_Object* web_layout = elm_layout_add(parent);
+    evas_object_size_hint_weight_set(web_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+    elm_layout_file_set(web_layout, edjePath("SimpleUI/MainLayout.edj").c_str(), "main_layout");
+
+    // left buttons
+    leftButtonBar = std::make_shared<ButtonBar>(web_layout, "SimpleUI/LeftButtonBar.edj", "left_button_bar");
+    leftButtonBar->addAction(m_back, "prev_button");
+    leftButtonBar->addAction(m_forward, "next_button");
+    leftButtonBar->addAction(m_reload, "refresh_stop_button");
+
+    //register action that will be used later by buttons"
+    leftButtonBar->registerEnabledChangedCallback(m_stopLoading, "refresh_stop_button");
+
+    // right buttons
+    rightButtonBar = std::make_shared<ButtonBar>(web_layout, "SimpleUI/RightButtonBar.edj", "right_button_bar");
+    rightButtonBar->addAction(m_tab, "tab_button");
+    rightButtonBar->addAction(m_showMoreMenu, "setting_button");
+
+    // progress bar
+    m_progressBar = elm_progressbar_add(web_layout);
+    elm_object_style_set(m_progressBar,"play_buffer");
+
+    //URL bar (Evas Object is shipped by SimpleURI object)
+    elm_object_part_content_set(web_layout, "uri_entry", m_simpleURI->getContent(web_layout));
+    elm_object_part_content_set(web_layout, "uri_bar_buttons_left", leftButtonBar->getContent());
+    elm_object_part_content_set(web_layout, "uri_bar_buttons_right", rightButtonBar->getContent());
+
+    return web_layout;
+}
+
+Evas_Object* SimpleUI::createErrorLayout(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Object* errorLayout =  elm_layout_add(parent);
+    evas_object_size_hint_weight_set(errorLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+    elm_layout_file_set(errorLayout, edjePath("SimpleUI/ErrorMessage.edj").c_str(), "error_message");
+
+    return errorLayout;
+}
+
+void SimpleUI::restoreLastSession()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_sessionService);
+    Session::Session lastSession = std::move(m_sessionService->getStorage()->getLastSession());
+    if(lastSession.items().size() >= 1)
+    {
+        for(auto iter=lastSession.items().begin(), end=lastSession.items().end(); iter != end; ++iter)
+        {
+            openNewTab(iter->second);
+        }
+        m_sessionService->getStorage()->deleteSession(lastSession);
+    }
+}
+
+
+//TODO: Move all service creation here:
+void SimpleUI::loadUIServices()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_simpleURI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::SimpleURI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleuri"));
+
+    m_mainUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
+
+    m_netErrorHandler =
+        std::unique_ptr
+        <tizen_browser::basic_ui::NetworkErrorHandler>
+        (new tizen_browser::basic_ui::NetworkErrorHandler);
+}
+
+void SimpleUI::connectUISignals()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    M_ASSERT(m_simpleURI.get());
+    m_simpleURI->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
+
+    M_ASSERT(m_mainUI.get());
+    m_mainUI->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
+    m_mainUI->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
+    m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
+    m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
+    m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
+}
+
+void SimpleUI::loadModelServices()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_webEngine =
+        std::dynamic_pointer_cast
+        <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+
+    m_favoriteService =
+        std::dynamic_pointer_cast
+        <tizen_browser::interfaces::AbstractFavoriteService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
+
+    m_historyService =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::HistoryService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
+
+    m_platformInputManager =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
+
+    m_sessionService = std::dynamic_pointer_cast
+        <tizen_browser::services::SessionStorage,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.sessionStorageService"));
+}
+
+void SimpleUI::initModelServices()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    M_ASSERT(m_webEngine);
+    M_ASSERT(m_mainLayout);
+    m_webEngine->init(m_mainLayout);
+
+    M_ASSERT(m_favoriteService);
+    m_favoriteService->synchronizeBookmarks();
+    m_favoriteService->getBookmarks();
+
+    M_ASSERT(m_platformInputManager);
+    m_platformInputManager->init(m_window.get());
+}
+
+void SimpleUI::connectModelSignals()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
+    m_webEngine->uriChanged.connect(boost::bind(&SimpleURI::changeUri, m_simpleURI.get(), _1));
+    m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
+    m_webEngine->webViewClicked.connect(boost::bind(&SimpleURI::clearFocus, m_simpleURI.get()));
+    m_webEngine->backwardEnableChanged.connect(boost::bind(&SimpleUI::backEnable, this, _1));
+    m_webEngine->forwardEnableChanged.connect(boost::bind(&SimpleUI::forwardEnable, this, _1));
+    m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
+    m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
+    m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
+    m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
+    m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
+    m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
+    m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
+    m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
+    m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
+
+    m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
+    m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
+
+    //m_historyService->historyEmpty.connect(boost::bind(&SimpleUI::disableHistoryButton, this, _1));
+    m_historyService->historyAdded.connect(boost::bind(&SimpleUI::onHistoryAdded, this,_1));
+    m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
+    //TODO "clearHistoryGenlist" should be renamed to "onHistoryDeleteFinished"
+    //and "historyAllDeleted"should be renamed to historyDeleteFinished"
+    m_historyService->historyAllDeleted.connect(boost::bind(&MainUI::clearHistoryGenlist, m_mainUI.get()));
+
+    m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
+    m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
+
+}
+
+//TODO: move it to WebUI
 void SimpleUI::loadThemes()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(nullptr, edjePath("SimpleUI/ZoomItem.edj").c_str());
     elm_theme_extension_add(nullptr, edjePath("SimpleUI/TabItem.edj").c_str());
     elm_theme_extension_add(nullptr, edjePath("SimpleUI/ErrorMessage.edj").c_str());
@@ -356,6 +386,7 @@ void SimpleUI::loadThemes()
 
 void SimpleUI::createActions()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ///\todo Add MulitStateAction. and convert m_stopLoading and m_reload actons to it?
 
     m_back = sharedAction(new Action("Back"));
@@ -376,18 +407,10 @@ void SimpleUI::createActions()
     m_tab = sharedAction(new Action("Tabs"));
     m_tab->setToolTip("Tab page");
     m_tab->setIcon("browser/toolbar_tab");
-    //m_tab->setCheckable(true);
 
     m_showMoreMenu = sharedAction(new Action("Settings"));
     m_showMoreMenu->setToolTip("Settings");
     m_showMoreMenu->setIcon("browser/toolbar_setting");
-/*
-    m_settingPointerMode = sharedAction(new Action("Pointer mode"));
-    m_settingPointerMode->setToolTip("Switch to Pointer Mode");
-    m_settingPointerMode->setCheckable(true);
-    m_settingPointerMode->setChecked(m_platformInputManager->getPointerModeEnabled());
-    m_settingPointerMode->setEnabled(true);
-*/
 
     m_settingPrivateBrowsing = sharedAction(new Action("Private browsing"));
     m_settingPrivateBrowsing->setToolTip("On exit from private mode all cookies, history, and stored data will be deleted");
@@ -434,11 +457,7 @@ void SimpleUI::connectActions()
     m_tab->triggered.connect(boost::bind(&SimpleUI::showTabUI, this));
     m_showMoreMenu->triggered.connect(boost::bind(&SimpleUI::showMoreMenu, this));
 
-//  m_settingPointerMode->toggled.connect(boost::bind(&tizen_browser::services::PlatformInputManager::setPointerModeEnabled, m_platformInputManager.get(), _1));
     m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
-//  m_settingDeleteHistory->triggered.connect(boost::bind(&SimpleUI::settingsDeleteHistory, this));
-//  m_settingDeleteData->triggered.connect(boost::bind(&SimpleUI::settingsDeleteData, this));;
-//  m_settingDeleteFavorite->triggered.connect(boost::bind(&SimpleUI::settingsDeleteFavorite, this));;
 }
 
 void SimpleUI::updateURIBarView()
@@ -499,16 +518,6 @@ bool SimpleUI::isErrorPageActive()
 
 void SimpleUI::switchViewToHomePage()
 {
-#if MERGE_ME // remove
-    if(!isHomePageActive()){
-        evas_object_hide(elm_object_part_content_get(m_mainLayout,"web_view"));
-        elm_object_part_content_unset(m_mainLayout, "web_view");
-        elm_object_part_content_set(m_mainLayout, "web_view", m_bookmarksUI->getContent());
-        evas_object_show(m_bookmarksUI->getContent());
-        //m_simpleURI->changeUri(HomePageURL);
-        filterURL(HomePageURL);
-        }
-#endif
     BROWSER_LOGD("[%s:%d] isHomePageActive : %d", __PRETTY_FUNCTION__, __LINE__, m_isHomePageActive);
     if(isHomePageActive())
 	return;
@@ -527,8 +536,6 @@ void SimpleUI::switchViewToHomePage()
     evas_object_hide(leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_simpleURI->getContent(), "shiftback_uribg", "ui");
-
-    webTitleBar->hide();
 
     hideProgressBar();
 }
@@ -577,23 +584,13 @@ void SimpleUI::bookmarkCheck()
         //addBookmarkEnable(m_favoriteService->countBookmarksAndSubFolders() < m_favoritesLimit);
     }
 }
-
+// Consider removing these functions
 void SimpleUI::onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
 {
-#if 0
-    BROWSER_LOGI("Bookmark added with address %s",bookmarkItem->getAddress().c_str());
-    bookmarkCheck();
-    webTitleBar->removeFavIcon();
-    webTitleBar->show("Added to favorites");
-#endif
 }
 
 void SimpleUI::onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
 {
-#if 0
-    m_mainUI->addHistoryItem(historyItem);
-    BROWSER_LOGI("Bookmark added with address %s",historyItem->getUrl().c_str());
-#endif
 }
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
@@ -678,20 +675,15 @@ void SimpleUI::onBookmarkDeleteClicked(std::shared_ptr<tizen_browser::services::
     m_favoriteService->deleteBookmark(bookmarkItem->getAddress());
 }
 
+// Consider removing these functions
 void SimpleUI::onBookmarkRemoved(const std::string& uri)
 {
-#if 0
     BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
-    bookmarkCheck();
-    webTitleBar->removeFavIcon();
-    webTitleBar->show("Removed from favorites");
-#endif
 }
 
 void SimpleUI::onHistoryRemoved(const std::string& uri)
 {
     BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
-    //m_mainUI->removeHistoryItem(uri.c_str());
 }
 
 void SimpleUI::onReturnPressed(MenuButton *m)
@@ -738,14 +730,10 @@ void SimpleUI::stopEnable(bool enable)
 
 void SimpleUI::addBookmarkEnable(bool enable)
 {
-    //MERGE_ME
-    //m_bookmark->setEnabled(enable);
 }
 
 void SimpleUI::removeBookmarkEnable(bool enable)
 {
-    //MERGE_ME
-    //m_unbookmark->setEnabled(enable);
 }
 void SimpleUI::zoomEnable(bool enable)
 {
@@ -769,11 +757,6 @@ void SimpleUI::loadStarted()
     if(!m_webEngine->isPrivateMode()){
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI());
     }
-
-#if 0
-    if(!m_platformInputManager->getPointerModeEnabled())
-        elm_object_focus_set(leftButtonBar->getButton("refresh_stop_button"), EINA_TRUE);
-#endif
 }
 
 void SimpleUI::progressChanged(double progress)
@@ -803,10 +786,6 @@ void SimpleUI::loadFinished()
                                                                                                 m_webEngine->getTitle(),
                                                                                                 m_webEngine->getFavicon()), m_webEngine->getSnapshotData(MainUI::MAX_THUMBNAIL_WIDTH, MainUI::MAX_THUMBNAIL_HEIGHT));
     }
-#if 0
-    if(!m_platformInputManager->getPointerModeEnabled())
-        elm_object_focus_set(leftButtonBar->getButton("refresh_stop_button"), EINA_TRUE);
-#endif
 }
 
 void SimpleUI::loadError()
@@ -830,8 +809,7 @@ void SimpleUI::setErrorButtons()
 
 void SimpleUI::filterURL(const std::string& url)
 {
-    BROWSER_LOGD("[%s] url=%s", __func__, url.c_str());
-
+    BROWSER_LOGD("[%s:%d] url=%s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
     //check for special urls (like:  'about:home')
     //if there will be more addresses may be we should
     //create some kind of std::man<std::string url, bool *(doSomethingWithUrl)()>
@@ -1057,38 +1035,13 @@ void SimpleUI::authPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
     }
 }
 
-#if 0
-void SimpleUI::hideURIBar()
-{
-    evas_object_hide(m_simpleURI->getContent(m_mainLayout));
-        evas_object_hide(rightButtonBar->getContent());
-        evas_object_hide(leftButtonBar->getContent());
-    elm_object_part_content_unset(m_mainLayout, "uri_entry");
-        elm_object_part_content_unset(m_mainLayout, "uri_bar_buttons_left");
-        elm_object_part_content_unset(m_mainLayout, "uri_bar_buttons_right");
-}
-
-void SimpleUI::showURIBar()
-{
-    elm_object_part_content_unset(m_mainLayout, "uri_entry");
-        elm_object_part_content_unset(m_mainLayout, "uri_bar_buttons_left");
-        elm_object_part_content_unset(m_mainLayout, "uri_bar_buttons_right");
-    elm_object_part_content_set(m_mainLayout, "uri_entry", m_simpleURI->getContent(m_mainLayout));
-        elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_left", leftButtonBar->getContent());
-        elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_right", rightButtonBar->getContent());
-    evas_object_show(m_simpleURI->getContent(m_mainLayout));
-    evas_object_show(leftButtonBar->getContent());
-    evas_object_show(rightButtonBar->getContent());
-    m_simpleURI->setFocus();
-}
-#endif
-
 void SimpleUI::hideWebView()
 {
-	evas_object_hide(elm_object_part_content_get(m_mainLayout,"web_view"));
-        elm_object_part_content_unset(m_mainLayout, "web_view");
+    evas_object_hide(elm_object_part_content_get(m_mainLayout,"web_view"));
+    elm_object_part_content_unset(m_mainLayout, "web_view");
 }
 
+//TODO: move it to ViewController
 void SimpleUI::hideMainUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1261,6 +1214,7 @@ void SimpleUI::showBookmarkManagerMenu()
 
 void SimpleUI::updateBookmarkManagerGenGrid(int folder_id)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_bookmarkManagerUI->updateGengrid();
     m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders(folder_id));
     m_bookmarkManagerUI->addBookmarkItems(getBookmarks(folder_id));
@@ -1286,12 +1240,14 @@ void SimpleUI::closeBookmarkManagerMenu(std::string& str)
 
 void SimpleUI::openLinkFromPopup(const std::string &uri)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     filterURL(uri);
     hidePopup();
 }
 
 void SimpleUI::hideHistory()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     hidePopup();
 }
 
@@ -1334,8 +1290,6 @@ void SimpleUI::onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr< 
 		m_webEngine->clearPrivateData();
 	if (dataText.find("HISTORY") != std::string::npos)
 		m_historyService->clearAllHistory();
-        //webTitleBar->removeFavIcon();
-        //webTitleBar->show("History deleted");
     }
 }
 
@@ -1356,9 +1310,6 @@ void SimpleUI::onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr< P
     if(button == OK){
         BROWSER_LOGD("[%s]: OK", __func__);
         BROWSER_LOGD("[%s]: Deleting most visited", __func__);
-        /*m_historyService->clearAllHistory();
-        webTitleBar->removeFavIcon();
-        webTitleBar->show("History deleted");*/
     }
 }
 
@@ -1379,8 +1330,6 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
     if(button == OK){
         BROWSER_LOGD("[%s]: OK", __func__);
         BROWSER_LOGD("[%s]: Resetting browser", __func__);
-        /*webTitleBar->removeFavIcon();
-        webTitleBar->show("History deleted");*/
     }
 }
 
@@ -1454,7 +1403,6 @@ void SimpleUI::onNetworkConnected()
     }
 }
 
-
 void SimpleUI::showProgressBar()
 {
     elm_object_signal_emit(m_mainLayout, "show_progressbar_bg", "ui");
@@ -1474,7 +1422,7 @@ void SimpleUI::searchWebPage(std::string &text, int flags)
     m_webEngine->searchOnWebsite(text, flags);
 }
 
-void SimpleUI::favicon_clicked(void *data, Evas_Object */*obj*/, const char */*emission*/, const char */*source*/)
+void SimpleUI::favicon_clicked(void *data, Evas_Object *, const char *, const char *)
 {
     BROWSER_LOGD("[%s],", __func__);
     SimpleUI *self = reinterpret_cast<SimpleUI*>(data);
@@ -1487,21 +1435,24 @@ void SimpleUI::favicon_clicked(void *data, Evas_Object */*obj*/, const char */*e
 void SimpleUI::addToBookmarks(int folder_id)
 {
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
-	if (m_favoriteService)
-	    {   if( m_webEngine && !m_webEngine->getURI().empty())
-                  {  m_favoriteService->addToBookmarks(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
-										  m_webEngine->getSnapshotData(373, 240),
-		   								  m_webEngine->getFavicon(),(unsigned int)folder_id);
-                 }
-        }
+    if (m_favoriteService)
+    {
+        if( m_webEngine && !m_webEngine->getURI().empty())
+         {
+               m_favoriteService->addToBookmarks(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
+                                                 m_webEngine->getSnapshotData(373, 240),
+                                                 m_webEngine->getFavicon(),(unsigned int)folder_id);
+         }
+    }
 }
 
+//TODO: This probably should be replaced by direct call of m_moreMenuUI->getBookmarkFolderList
+// as it does nothing more.
 void SimpleUI::addBookmarkFolders(void)
 {
     if(m_moreMenuUI)
         m_moreMenuUI->getBookmarkFolderList(getBookmarkFolders(ROOT_FOLDER));
 }
-
 
 void SimpleUI::newFolderBookmarkManager(const char* title, int by_operator)
 {
@@ -1531,7 +1482,8 @@ void SimpleUI::newFolderMoreMenu(const char* title, int by_operator)
     }
 }
 
-void SimpleUI::deleteBookmark(void)
+//TODO: Replace by direct call.
+void SimpleUI::deleteBookmark()
 {
 	if (m_favoriteService)
 		m_favoriteService->deleteBookmark(m_webEngine->getURI());
