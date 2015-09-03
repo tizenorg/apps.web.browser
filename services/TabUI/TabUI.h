@@ -47,7 +47,7 @@ public:
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void (const std::string & )> newTabClicked;
     boost::signals2::signal<void (const std::string & )> newIncognitoTabClicked;
-    boost::signals2::signal<void (const std::string & )> closeTabsClicked;
+    boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> closeTabsClicked;
     boost::signals2::signal<void (const std::string & )> openedTabsClicked;
     boost::signals2::signal<void (const std::string & )> onOtherDevicesClicked;
     boost::signals2::signal<void (const std::string & )> closeTabUIClicked;
@@ -67,17 +67,19 @@ private:
     static void _newincognitotab_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
+    static void _focus_in(void * data, Evas*, Evas_Object * obj, void * event_info);
 
     Evas_Object* createTabUILayout(Evas_Object* parent);
     Evas_Object* createActionBar(Evas_Object* parent);
     Evas_Object* createTopButtons(Evas_Object* parent);
     Evas_Object* createNoHistoryLabel();
     void createTabItemClass();
+    void closeAllTabs();
 
-private:
     Evas_Object *m_tab_layout;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
+    bool editMode;
 
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_tab_views;
