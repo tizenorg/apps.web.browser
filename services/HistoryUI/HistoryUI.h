@@ -60,8 +60,6 @@ private:
     static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void _history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
-    void setEmptyGengrid(bool setEmpty);
-
     Evas_Object *m_history_layout;
     Evas_Object *m_actionBar;
     Evas_Object *m_genListToday;
@@ -71,7 +69,6 @@ private:
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_history_views;
     std::string m_edjFilePath;
-    Evas_Object *createNoHistoryLabel();
 };
 
 }

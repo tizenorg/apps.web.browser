@@ -185,7 +185,6 @@ void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     itemData->item = hi;
     itemData->historyUI = std::shared_ptr<tizen_browser::base_ui::HistoryUI>(this);
     _history_item_data.push_back(itemData);
-    setEmptyGengrid(false);
 }
 
 void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
@@ -253,33 +252,12 @@ void HistoryUI::removeHistoryItem(const std::string& uri)
     Elm_Object_Item* historyView = m_map_history_views.at(uri);
     elm_object_item_del(historyView);
     m_map_history_views.erase(uri);
-
-    setEmptyGengrid(0 == m_map_history_views.size());
-}
-
-Evas_Object* HistoryUI::createNoHistoryLabel()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Evas_Object *label = elm_label_add(m_parent);
-    elm_object_text_set(label, "No favorite websites.");
-    evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    return label;
-}
-
-void HistoryUI::setEmptyGengrid(bool setEmpty)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Evas_Object *obj = (setEmpty ? createNoHistoryLabel() : nullptr);
-    elm_object_part_content_set(m_gengrid, "elm.swallow.empty", obj);
 }
 
 void HistoryUI::hide()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_hide(elm_layout_content_get(m_history_layout, "m_genListToday"));
-    evas_object_hide(elm_layout_content_get(m_history_layout, "m_gengrid"));
-    evas_object_hide(elm_layout_content_get(m_history_layout, "m_ActionBar"));
+    evas_object_hide(elm_layout_content_get(m_history_layout, "action_bar_history"));
     evas_object_hide(m_history_layout);
 }
 
@@ -291,7 +269,6 @@ void HistoryUI::clearItems()
     elm_gengrid_clear(m_gengrid);
     m_map_history_views.clear();
     _history_item_data.clear();
-    setEmptyGengrid(true);
 }
 
 void HistoryUI::_history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
