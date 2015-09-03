@@ -48,10 +48,10 @@ enum ItemType {
 #endif
     FOCUS_MODE,
     VIEW_MOBILE_WEB,
+    VIEW_DESKTOP_WEB,
     SHARE,
     SETTINGS,
-    EXIT_BROWSER,
-    END_OF_RANGE
+    EXIT_BROWSER
 } item;
 
 class BROWSER_EXPORT MoreMenuUI
@@ -80,6 +80,8 @@ public:
     boost::signals2::signal<void (std::string)> historyUIClicked;
     boost::signals2::signal<void (const std::string&)> settingsClicked;
     boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
+    boost::signals2::signal<void ()> switchToMobileView;
+    boost::signals2::signal<void ()> switchToDesktopView;
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
@@ -92,6 +94,8 @@ private:
 
     void AddBookmarkPopupCalled();
     void addToBookmarks(int folder_id);
+
+    void refreshGengrid();
 
     static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
@@ -113,6 +117,7 @@ private:
     std::string m_folderName;
     bool m_gengridSetup;
     Evas_Object *m_icon;
+    bool m_desktopView;
 };
 
 }

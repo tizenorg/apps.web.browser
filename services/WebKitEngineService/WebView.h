@@ -41,7 +41,7 @@ class WebView
 public:
     WebView(Evas_Object *, TabId);
     virtual ~WebView();
-    void init(Evas_Object * opener = NULL);
+    void init(bool desktopView = true, Evas_Object * opener = NULL);
 
 
     void setURI(const std::string &);
@@ -110,9 +110,18 @@ public:
     void searchOnWebsite(const std::string &, int);
 
     /**
+     * @brief Change user agent to desktop type
+     */
+    void switchToDesktopView();
+
+    /**
+     * @brief Change user agent to mobile type
+     */
+    void switchToMobileView();
+
+    /**
      * @brief Get favicon of URL
      */
-
     std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon();
 
 // signals

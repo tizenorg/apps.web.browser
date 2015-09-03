@@ -229,6 +229,8 @@ private:
     void closeTabUI(const std::string& str);
     void showMoreMenu();
     void closeMoreMenu(const std::string& str);
+    void switchToMobileView();
+    void switchToDesktopView();
     void showHistoryUI(const std::string& str);
     void closeHistoryUI(const std::string&);
     void showMainUI();

@@ -159,6 +159,9 @@ public:
      */
     void backButtonClicked() const;
 
+    void switchToMobileView();
+    void switchToDesktopView();
+
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
@@ -206,6 +209,8 @@ private:
     std::list<TabId> m_mostRecentTab;
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
+    // true if desktop view is enabled, false if mobile
+    bool m_desktopView;
 };
 
 } /* end of webkitengine_service */
