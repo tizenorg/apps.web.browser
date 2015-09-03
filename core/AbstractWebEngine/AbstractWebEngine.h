@@ -257,6 +257,16 @@ public:
     virtual void backButtonClicked() const = 0;
 
     /**
+     * @brief Switch view to mobile
+     */
+    virtual void switchToMobileView() = 0;
+
+    /**
+     * @brief Switch view to desktop
+     */
+    virtual void switchToDesktopView() = 0;
+
+    /**
      * FavIcon of current page changed
      */
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;

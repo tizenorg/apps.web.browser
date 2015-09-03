@@ -1169,6 +1169,8 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this,_1));
         m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this,_1));
         m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this,_1));
+        m_moreMenuUI->switchToMobileView.connect(boost::bind(&SimpleUI::switchToMobileView, this));
+        m_moreMenuUI->switchToDesktopView.connect(boost::bind(&SimpleUI::switchToDesktopView, this));
         m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmarkFolders, this));
         m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
         m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
@@ -1186,6 +1188,15 @@ void SimpleUI::closeMoreMenu(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_moreMenuUI.reset();
+}
+
+void SimpleUI::switchToMobileView()
+{
+    m_webEngine->switchToMobileView();
+}
+
+void SimpleUI::switchToDesktopView() {
+    m_webEngine->switchToDesktopView();
 }
 
 void SimpleUI::showBookmarkManagerMenu()

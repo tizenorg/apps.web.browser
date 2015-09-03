@@ -48,6 +48,7 @@ MoreMenuUI::MoreMenuUI()
     : m_gengrid(NULL)
     , m_parent(NULL)
     , m_item_class(NULL)
+    , m_desktopView(true)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -230,9 +231,16 @@ void MoreMenuUI::hide()
 void MoreMenuUI::addItems()
 {
      BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-     for (size_t i = 0; i < static_cast<int>(END_OF_RANGE); i++) {
+     for (int i = 0; i <= EXIT_BROWSER; i++) {
+         ItemType type = static_cast<ItemType>(i);
+         // take proper image for desktop/mobile view
+         if (type == ItemType::VIEW_DESKTOP_WEB && m_desktopView)
+             continue;
+         if (type == ItemType::VIEW_MOBILE_WEB && !m_desktopView)
+             continue;
+
          MoreMenuItemData *itemData = new MoreMenuItemData();
-         itemData->item = static_cast<ItemType>(i);;
+         itemData->item = type;
          itemData->moreMenuUI = std::shared_ptr<tizen_browser::base_ui::MoreMenuUI>(this);
          Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, NULL, this);
          m_map_menu_views.insert(std::pair<ItemType, Elm_Object_Item*>(itemData->item, bookmarkView));
@@ -276,6 +284,9 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 break;
             case VIEW_MOBILE_WEB:
                 item_name = "View mobile web";
+                break;
+            case VIEW_DESKTOP_WEB:
+                item_name = "View desktop web";
                 break;
             case SHARE:
                 item_name = "Share";
@@ -323,6 +334,9 @@ static const char* getImageFileNameForType(ItemType type, bool focused)
         break;
     case VIEW_MOBILE_WEB:
         file_name = focused ? "ic_more_mobileview_foc.png" : "ic_more_mobileview_nor.png";
+        break;
+    case VIEW_DESKTOP_WEB:
+        file_name = focused ? "ic_more_desktopview_foc.png" : "ic_more_desktopview_nor.png";
         break;
     case SHARE:
         file_name = focused ? "ic_more_share_foc.png" : "ic_more_share_nor.png";
@@ -401,6 +415,7 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
+    BROWSER_LOGD("type: %d", itemData->item);
         switch (itemData->item) {
         case HISTORY:
             itemData->moreMenuUI->historyUIClicked(std::string());
@@ -426,6 +441,14 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         case FOCUS_MODE:
             break;
         case VIEW_MOBILE_WEB:
+            itemData->moreMenuUI->switchToMobileView();
+            itemData->moreMenuUI->m_desktopView = false;
+            itemData->moreMenuUI->refreshGengrid();
+            break;
+        case VIEW_DESKTOP_WEB:
+            itemData->moreMenuUI->switchToDesktopView();
+            itemData->moreMenuUI->m_desktopView = true;
+            itemData->moreMenuUI->refreshGengrid();
             break;
         case SHARE:
             break;
@@ -452,6 +475,13 @@ void MoreMenuUI::clearItems()
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
     elm_theme_full_flush();
     elm_cache_all_flush();
+}
+
+void MoreMenuUI::refreshGengrid()
+{
+    elm_gengrid_clear(m_gengrid);
+    m_map_menu_views.clear();
+    addItems();
 }
 
 void MoreMenuUI::_exitClicked()

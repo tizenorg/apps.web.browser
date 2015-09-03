@@ -45,6 +45,7 @@ WebKitEngineService::WebKitEngineService()
     , m_privateMode(false)
     , m_guiParent(nullptr)
     , m_currentTabId(TabId::NONE)
+    , m_desktopView(true)
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
@@ -286,9 +287,9 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
     TabId newTabId;
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId);
     if (openerId)
-        p->init(getTabView(*openerId));
+        p->init(m_desktopView, getTabView(*openerId));
     else
-        p->init();
+        p->init(m_desktopView);
 
     m_tabs[newTabId] = p;
 
@@ -504,6 +505,22 @@ void WebKitEngineService::backButtonClicked() const
         m_currentWebView->back();
     } else {
         app_efl_exit();
+    }
+}
+
+void WebKitEngineService::switchToDesktopView()
+{
+    m_desktopView = true;
+    for (auto it = m_tabs.begin(); it != m_tabs.end(); ++it) {
+        it->second->switchToDesktopView();
+    }
+}
+
+void WebKitEngineService::switchToMobileView()
+{
+    m_desktopView = false;
+    for (auto it = m_tabs.begin(); it != m_tabs.end(); ++it) {
+        it->second->switchToMobileView();
     }
 }
 

@@ -51,6 +51,9 @@
 #define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1"
 #endif
 
+//TODO: temporary user agent for mobile display, change to proper one
+#define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 3.0; SAMSUNG SM-Z130H) AppleWebKit/538.1 (KHTML, like Gecko) SamsungBrowser/1.0 Mobile Safari/538.1"
+
 using namespace tizen_browser::tools;
 
 namespace tizen_browser {
@@ -80,7 +83,7 @@ WebView::~WebView()
     ewk_context_delete(m_ewkContext);
 }
 
-void WebView::init(Evas_Object * opener)
+void WebView::init(bool desktopView, Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
     m_ewkView = ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
@@ -91,7 +94,10 @@ void WebView::init(Evas_Object * opener)
     evas_object_color_set(m_ewkView, 255, 255, 255, 255);
     evas_object_size_hint_weight_set(m_ewkView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_ewkView, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    ewk_view_application_name_for_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
+    if (desktopView)
+        switchToDesktopView();
+    else
+        switchToMobileView();
     //\todo: when value is other than 1.0, scroller is located improperly
 //    ewk_view_device_pixel_ratio_set(m_ewkView, 1.0f);
 
@@ -869,6 +875,16 @@ void WebView::searchOnWebsite(const std::string & searchString, int flags)
     ///\todo: it should be "0" instead of "1024" for unlimited match count but it doesn't work properly in WebKit
     Eina_Bool result = ewk_view_text_find(m_ewkView, searchString.c_str(), static_cast<Ewk_Find_Options>(flags), 1024);
     BROWSER_LOGD("Ewk search; word: %s, result: %d", searchString.c_str(), result);
+}
+
+void WebView::switchToDesktopView() {
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
+}
+
+void WebView::switchToMobileView() {
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT_MOBILE);
 }
 
 } /* namespace webkitengine_service */
