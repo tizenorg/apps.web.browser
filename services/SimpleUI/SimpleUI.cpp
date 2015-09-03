@@ -313,7 +313,6 @@ int SimpleUI::exec(const std::string& _url)
         m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this,_1));
         m_mainUI->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this,_1));
         m_mainUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::onBookmarkManagerButtonClicked, this,_1));
-
 	}
 
 	if (url.empty()) {
@@ -621,8 +620,7 @@ void SimpleUI::onClearHistoryClicked(const std::string&)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     m_historyService->clearAllHistory();
-    m_mainUI->clearHistoryGenlist();
-    m_mainUI->showHistory();
+    m_historyUI.reset();
 }
 
 void SimpleUI::onMostVisitedClicked(const std::string&)
@@ -1111,21 +1109,24 @@ void SimpleUI::showMainUI()
 void SimpleUI::showHistoryUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_historyUI =
-    std::dynamic_pointer_cast<tizen_browser::base_ui::HistoryUI,tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
-    M_ASSERT(m_historyUI);
-    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
-    m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
-    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this,_1));
-    m_historyUI->addHistoryItems(getHistory());
-    m_historyUI->show(m_window.get());
+    if(!m_historyUI)
+    {
+        m_historyUI =
+        std::dynamic_pointer_cast<tizen_browser::base_ui::HistoryUI,tizen_browser::core::AbstractService>
+            (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
+        M_ASSERT(m_historyUI);
+        m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
+        m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
+        m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this,_1));
+        m_historyUI->addHistoryItems(getHistory());
+        m_historyUI->show(m_window.get());
+    }
 }
 
 void SimpleUI::closeHistoryUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_historyUI = nullptr;
+    m_historyUI.reset();
 }
 
 void SimpleUI::showSettingsUI(const std::string& str)
