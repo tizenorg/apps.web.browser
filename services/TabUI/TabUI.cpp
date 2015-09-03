@@ -50,6 +50,7 @@ TabUI::TabUI()
     m_edjFilePath.append("TabUI/TabUI.edj");
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     createTabItemClass();
+    editMode = false;
 }
 
 TabUI::~TabUI()
@@ -105,9 +106,9 @@ Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
     elm_gengrid_align_set(m_gengrid, 0, 0);
     elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
     elm_gengrid_highlight_mode_set(m_gengrid, EINA_TRUE);
-    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(m_gengrid, 0, 327);
 
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -115,6 +116,8 @@ Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
 
     double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
+    evas_object_event_callback_add(m_gengrid, EVAS_CALLBACK_MOUSE_IN, _focus_in, this);
+
     return tab_layout;
 }
 
@@ -160,6 +163,7 @@ void TabUI::_close_clicked(void* data, Evas_Object*, void*)
         TabUI * tabUI = static_cast<TabUI*>(data);
         tabUI->closeTabUIClicked(std::string());
         tabUI->clearItems();
+        tabUI->editMode = false;
     }
 }
 
@@ -203,6 +207,7 @@ void TabUI::_newtab_clicked(void * data, Evas_Object*, void*)
         TabUI* tabUI = static_cast<TabUI*>(data);
         tabUI->clearItems();
         tabUI->newTabClicked(std::string());
+        tabUI->editMode = false;
     }
 
 }
@@ -223,27 +228,34 @@ void TabUI::_newincognitotab_clicked(void* data, Evas_Object*, void*)
         TabUI* tabUI = static_cast<TabUI*>(data);
         tabUI->clearItems();
         tabUI->newIncognitoTabClicked(std::string());
+        tabUI->editMode = false;
     }
 }
 
-void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
+void TabUI::_closetabs_clicked(void* data, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabUI* tabUI = static_cast<TabUI*>(data);
-        tabUI->closeTabsClicked(std::string());
+        if (!tabUI->editMode) {
+            tabUI->editMode = true;
+            BROWSER_LOGD("[%s:%d] --------> edit mode: %d ", __PRETTY_FUNCTION__, __LINE__, tabUI->editMode);
+            elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close all");
+        } else {
+            tabUI->closeAllTabs();
+            elm_gengrid_realized_items_update(tabUI->m_gengrid);
+        }
     }
+
 }
 
 void TabUI::addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabContent> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    if (m_map_tab_views.size() >= 10)
-        return;
     TabItemData *itemData = new TabItemData();
     itemData->item = hi;
     itemData->tabUI = std::shared_ptr<tizen_browser::base_ui::TabUI>(this);
-    Elm_Object_Item* tabView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, nullptr, this);
+    Elm_Object_Item* tabView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _thumbSelected, itemData);
     m_map_tab_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getTitle(),tabView));
 
     // unselect by default
@@ -254,9 +266,7 @@ void TabUI::addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabConten
 void TabUI::addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>>items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    //limiting number of added items to 10
-    auto eit = std::min(items.end(), items.begin() + 10);
-    for (auto it = items.begin(); it != eit; ++it) {
+    for (auto it = items.begin(); it < items.end(); it++) {
         addTabItem(*it);
     }
 }
@@ -292,12 +302,6 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         const char *part_name2 = "tab_thumbButton";
         static const int part_name2_len = strlen(part_name2);
 
-        if (!strncmp(part_name2, part, part_name2_len)) {
-            Evas_Object *thumbButton = elm_button_add(obj);
-            elm_object_style_set(thumbButton, "tab_thumbButton");
-            evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::TabUI::_thumbSelected, data);
-            return thumbButton;
-        }
         if (!strncmp(part_name1, part, part_name1_len)) {
             if (itemData->item->getThumbnail()) {
                 return tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->tabUI->m_parent);
@@ -317,8 +321,15 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     if (data) {
         TabItemData *itemData = static_cast<TabItemData*>(data);
-        itemData->tabUI->clearItems();
-        itemData->tabUI->tabClicked(itemData->item->getId());
+        if (!itemData->tabUI->editMode) {
+            itemData->tabUI->clearItems();
+            itemData->tabUI->tabClicked(itemData->item->getId());
+        } else {
+            itemData->tabUI->closeTabsClicked(itemData->item->getId());
+            Elm_Object_Item* it = elm_gengrid_selected_item_get(itemData->tabUI->m_gengrid);
+            elm_object_item_del(it);
+            elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
+        }
     }
 }
 
@@ -339,6 +350,18 @@ Evas_Object* TabUI::createNoHistoryLabel()
     return label;
 }
 
+void TabUI::closeAllTabs()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Elm_Object_Item* it = elm_gengrid_first_item_get(m_gengrid);
+    while (it) {
+        TabItemData *item = (TabItemData *)elm_object_item_data_get(it);
+        item->tabUI->closeTabsClicked(item->item->getId());
+        it = elm_gengrid_item_next_get(it);
+    }
+    hide();
+}
+
 void TabUI::setEmptyGengrid(bool setEmpty)
 {
     if (setEmpty) {
@@ -348,6 +371,16 @@ void TabUI::setEmptyGengrid(bool setEmpty)
     }
 }
 
+void TabUI::_focus_in(void * data, Evas*, Evas_Object * obj, void * event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Event_Mouse_In* ee  = (Evas_Event_Mouse_In*)event_info;
+    int x, y;
+    TabUI* tabUI = static_cast<TabUI*>(data);
+    Elm_Object_Item* it = elm_gengrid_at_xy_item_get(tabUI->m_gengrid, ee->canvas.x, ee->canvas.y, &x, &y);
+    if(it && tabUI->editMode)
+        elm_object_item_signal_emit(it, "selected", "over3");
+}
 
 }
 }

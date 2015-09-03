@@ -63,12 +63,12 @@ group { name: "elm/button/base/tab_thumbButton";
 		}
 		parts {
 			part { name: "elm.swallow.content";
-				type: RECT;
+			type: RECT;
 				mouse_events: 1;
 				repeat_events: 1;
 				description { state: "default" 0.0;
 					color: 0 0 0 0;
-					visible: 1;
+					visible: 0;
 					rel1.relative: 0.0 0.0;
 	            	rel2.relative: 1.0 1.0;
 	            	align: 0.0 0.0;
@@ -536,14 +536,62 @@ group { name: "elm/gengrid/item/tab_item/default";
                     //color: highlightTextColor;
                 }
                 }
+				part { name: "click_ok_to_close_text";
+					type: TEXT;
+					description { state: "default" 0.0;
+						color: 0 119 246 204;
+						min: 300 48;
+						max: 300 48;
+						align: 0 0.5;
+						rel1 {
+							to: "tab_thumbnail";
+							offset: 10 150;
+							relative: 0.0 0.0;
+						}
+						rel2 {
+							to: "tab_thumbnail";
+							relative: 1.0  1.0;
+							}
+						text {
+						text: "[OK] to close";
+						font: "Sans";
+						size: 20;
+						align: 0.5 0.8;
+					}
+					visible: 0;
+				}
+				description { state: "selected" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+				}
+
 
 		part { name: "tab_thumbButton";
-			type: SWALLOW;
-			description { state: "default" 0.0;
-				rel1.to: "tab_thumbnail";
-				rel2.to: "tab_thumbnail";
+			type: IMAGE;
+				mouse_events: 1;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					color: 0 119 246 204;
+					visible: 0;
+					rel1 {
+						to: "bg";
+						offset: 274 14;
+						relative: 0.0 0.0;
+					}
+					rel2 {
+						to: "bg";
+						offset: 324 64;
+						relative: 0.0 0.0;
+					}
+					align: 0.0 0.0;
+					image.normal: "ico_delete.png";
+				}
+				description { state: "selected";
+					inherit: "default" 0.0;
+					visible: 1;
+				}
 			}
-		}
 
 		part { name: "over2";
 			type: RECT;
@@ -561,7 +609,7 @@ group { name: "elm/gengrid/item/tab_item/default";
 			repeat_events: 1;
 			description { state: "default" 0.0;
 				color: 0 0 0 0;
-				rel1.to: "background";
+				rel1.to: "bg";
 				rel2.to: "background";
 			}
 		}
@@ -583,6 +631,15 @@ group { name: "elm/gengrid/item/tab_item/default";
 			target:  "background";
 			target: "focus_highlight";
 			target: "bg";
+			target: "tab_thumbButton";
+			target: "click_ok_to_close_text";
+		}
+		program { name: "close_icon_show";
+			signal: "selected";
+			source: "over3";
+			action: STATE_SET "selected" 0.0;
+			target: "tab_thumbButton";
+			target: "click_ok_to_close_text";
 		}
 	}
 }
@@ -900,7 +957,7 @@ group { name: "action_bar_layout";
                     visible: 1;
                 }
              }
-               part{
+               part {
                 name: "closetabs_text";
                 type: TEXT;
                 scale: 1;
@@ -911,7 +968,7 @@ group { name: "action_bar_layout";
                     rel2 { relative: 1.0 1.0;to: "closetabs_button";}
                     color: 0 0 0 255;
                     text {
-                        text: "Close all";
+                        text: "Close Tabs";
                         font: "Sans";
                         size: 27;
                         align: 0.5 0.5;
@@ -1108,7 +1165,6 @@ group { name: "action_bar_layout";
                 action: STATE_SET "highlight" 0.0;
                 target: "closetabs_button";
                 target: "closetabs_over";
-                target: "closetabs_text";
              }
             program {
                 name: "mouse_out_closetabs_click";
@@ -1117,7 +1173,6 @@ group { name: "action_bar_layout";
                 action: STATE_SET "default" 0.0;
                 target: "closetabs_button";
                 target: "closetabs_over";
-                target: "closetabs_text";
             }
 	    program {
                 name: "mouse_in_close_click";

@@ -116,6 +116,7 @@ private:
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked(const std::string &);
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
+    void closeTabsClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void tabCreated();
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
