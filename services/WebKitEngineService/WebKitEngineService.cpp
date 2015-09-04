@@ -525,6 +525,11 @@ bool WebKitEngineService::isDesktopMode() const
     return m_currentWebView->isDesktopMode();
 }
 
+void WebKitEngineService::scrollView(const int& dx, const int& dy)
+{
+    m_currentWebView->scrollView(dx, dy);
+}
+
 } /* end of webkitengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */

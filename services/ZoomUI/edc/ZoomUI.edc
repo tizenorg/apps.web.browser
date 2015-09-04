@@ -1,0 +1,277 @@
+#define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
+   group { \
+      name: FILE_NAME; \
+      images.image: FILE_NAME LOSSY 100; \
+      parts { \
+         part { name: "image"; \
+            description { \
+               state: "default" 0.0; \
+               image.normal: FILE_NAME; \
+               aspect: 1 1; \
+               aspect_preference: BOTH; \
+            } \
+         } \
+      } \
+   }
+
+
+collections {
+   
+#define WIDTH 1920
+#define HEIGHT 976
+
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_down_foc.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_down_nor.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_left_foc.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_left_nor.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_right_foc.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_right_nor.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_foc.png");
+RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
+
+    group {
+        name: "zoom-layout";
+        data.item: "contents" "close_button";
+
+        parts {
+        
+            part { name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description { state: "default" 0.0;
+                    color: 0 0 0 50;
+                    visible: 1;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    rel1 {relative: 0.0 0.0; offset: 0 104;}
+                    rel2 {relative: 1.0 1.0;}
+                }
+            }
+
+            part { name: "zoom_rect";
+                type: RECT;
+                mouse_events: 1;
+                description { state: "default" 0.0;
+                    color: 230 230 230 255;
+                    min: 700 300;
+                    max: 700 300;
+                    visible: 1;
+                    align: 0.0 1.0;
+                    rel1 {
+                        to: "bg";
+                        offset: 0 0;
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            
+            part { name: "slider_swallow";
+                type: SWALLOW;
+                description {
+                    min: 500 100;
+                    max: 500 100;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0.0 0.0;
+                    rel1 {
+                        relative: 0.15 0.4;
+                        to: "zoom_rect";
+                    }
+                    rel2 {
+                        relative: 0.0 0.0;
+                        to: "zoom_rect";
+                   }
+                }
+            }
+
+            part { name: "zoom_text";
+                type: TEXT;
+                description {
+                    visible: 1;
+                    min: 200 122;
+                    max: 200 122;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    color: 51 51 51 255;
+                    rel1 {
+                        to: "zoom_rect";
+                        relative: 0.45 0.0;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        to: "zoom_rect";
+                        relative: 1.0 1.0;
+                    }
+                    text {
+                        text: "Zoom";
+                        font: "Sans";
+                        size: 32;
+                        align: 0 0.5;
+                    }
+                }
+            }
+
+            part { name: "slider_begin_text";
+                type: TEXT;
+                description {
+                    visible: 1;
+                    min: 100 122;
+                    max: 100 122;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    color: 51 51 51 255;
+                    rel1 {
+                        to: "slider_swallow";
+                        relative: 0.0 0.0;
+                        offset: -50 -10;
+                    }
+                    rel2 {
+                        to: "slider_swallow";
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                    }
+                    text {
+                        text: "50%";
+                        font: "Sans";
+                        size: 22;
+                        align: 0 0.5;
+                    }
+                }
+            }
+            
+            part { name: "slider_end_text";
+                type: TEXT;
+                description {
+                    visible: 1;
+                    min: 100 122;
+                    max: 100 122;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    color: 51 51 51 255;
+                    rel1 {
+                        to: "slider_swallow";
+                        relative: 1.0 0.0;
+                        offset: 5 -10;
+                    }
+                    rel2 {
+                        to: "slider_swallow";
+                        relative: 1.0 1.0;
+                        offset: 0 0;
+                    }
+                    text {
+                        text: "300%";
+                        font: "Sans";
+                        size: 22;
+                        align: 0 0.5;
+                    }
+                }
+            }
+
+
+            part { 
+                name: "nav_buttons";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    rel1 { relative: 0.0 0.0; to: "bg"; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+            }
+            
+        }
+    }
+
+    group {
+        name: "nav-layout";
+        min: WIDTH HEIGHT;
+        max: WIDTH HEIGHT;
+        data.item: "contents" "left_button right_button up_button down_button";
+        parts {
+            part {
+                name: "left_button";
+                type: SWALLOW;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0.5;
+                    fixed: 1 1;
+                    min: 90 90;
+                    max: 90 90;
+                    rel1 { relative: 0.0 0.0; offset: 38 0;}
+                    rel2 { relative: 1.0 1.0;}
+                }
+            }
+            part {
+                name: "right_button";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 1 0.5;
+                    fixed: 1 1;
+                    min: 90 90;
+                    max: 90 90;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; offset: -38 0; }
+                }
+            }
+            part {
+                name: "up_button";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.5 0;
+                    fixed: 1 1;
+                    min: 90 90;
+                    max: 90 90;
+                    rel1 { relative: 0.0 0.0; offset: 0 38; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "down_button";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.5 1;
+                    fixed: 1 1;
+                    min: 90 90;
+                    max: 90 90;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; offset: 0 -38; }
+                }
+            }
+        }
+        programs{
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "*";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+}

@@ -529,6 +529,7 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             break;
 #endif
         case SCREEN_ZOOM:
+            itemData->moreMenuUI->zoomUIClicked();
             break;
 #ifdef START_MINIBROWSER_ENABLED
         case START_MINIBROWSER:

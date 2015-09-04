@@ -40,6 +40,7 @@
 #include "SettingsUI.h"
 #include "MainUI.h"
 #include "TabUI.h"
+#include "ZoomUI.h"
 #include "HistoryService.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
@@ -183,6 +184,14 @@ private:
      */
     void deleteBookmark(void);
 
+    /**
+     * @brief show Zoom Menu
+     */
+    void showZoomUI();
+    void closeZoomUI();
+    void setZoomFactor(int level);
+    void scrollView(const int& dx, const int& dy);
+
     void showTabUI();
     void closeTabUI();
     void showMoreMenu();
@@ -232,6 +241,7 @@ private:
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
     Session::Session m_currentSession;
+    std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     std::shared_ptr<BookmarksManager> m_bookmarks_manager;
     bool m_initialised;
     int m_tabLimit;

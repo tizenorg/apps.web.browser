@@ -163,6 +163,8 @@ public:
     void switchToDesktopMode();
     bool isDesktopMode() const;
 
+    void scrollView(const int& dx, const int& dy);
+
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
