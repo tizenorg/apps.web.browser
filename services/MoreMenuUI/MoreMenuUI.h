@@ -85,6 +85,7 @@ public:
     boost::signals2::signal<void ()> historyUIClicked;
     boost::signals2::signal<void ()> settingsClicked;
     boost::signals2::signal<void ()> closeMoreMenuClicked;
+    boost::signals2::signal<void ()> zoomUIClicked;
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;

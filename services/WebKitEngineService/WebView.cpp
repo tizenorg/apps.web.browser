@@ -823,11 +823,16 @@ void WebView::setZoomFactor(double zoomFactor)
     if(m_ewkView){
         //using zoomFactor = 0 sets zoom "fit to screen"
 
-        ewk_view_page_zoom_set(m_ewkView, zoomFactor);
+        if(zoomFactor != getZoomFactor()) 
+            ewk_view_page_zoom_set(m_ewkView, zoomFactor);
     }
 #endif
 }
 
+void WebView::scrollView(const int& dx, const int& dy)
+{
+    ewk_view_scroll_by(m_ewkView, dx, dy);
+}
 
 const TabId& WebView::getTabId(){
     return m_tabId;

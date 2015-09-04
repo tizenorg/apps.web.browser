@@ -221,6 +221,11 @@ void SimpleUI::loadUIServices()
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkmanagerui"));
+
+    m_zoomUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::ZoomUI, tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
 }
 
 void SimpleUI::connectUISignals()
@@ -279,11 +284,15 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
+    m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
     m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
 
+    M_ASSERT(m_zoomUI.get());
+    m_zoomUI->setZoom.connect(boost::bind(&SimpleUI::setZoomFactor, this, _1));
+    m_zoomUI->scrollView.connect(boost::bind(&SimpleUI::scrollView, this, _1, _2));
 }
 
 void SimpleUI::loadModelServices()
@@ -341,6 +350,9 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager->getContent());
+
+    M_ASSERT(m_zoomUI.get());
+    m_zoomUI->init(m_viewManager->getContent());
 }
 
 void SimpleUI::initModelServices()
@@ -365,7 +377,9 @@ void SimpleUI::connectModelSignals()
 
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
+    m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
     m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
+    m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::closeZoomUI, this));
     m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
@@ -380,7 +394,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->favIconChanged.connect(boost::bind(&MoreMenuUI::setFavIcon, m_moreMenuUI.get(), _1));
     m_webEngine->titleChanged.connect(boost::bind(&MoreMenuUI::setWebTitle, m_moreMenuUI.get(), _1));
-    m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -659,6 +672,37 @@ void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_webPageUI->getURIEntry().clearFocus();
+}
+
+void SimpleUI::showZoomUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(! m_webPageUI->isHomePageActive()) {
+        M_ASSERT(m_viewManager);
+        m_viewManager->popStackTo(m_webPageUI.get());
+        m_webPageUI->showTabUI.connect(boost::bind(&SimpleUI::closeZoomUI, this));
+        m_webPageUI->showMoreMenu.connect(boost::bind(&SimpleUI::closeZoomUI, this));
+        m_zoomUI->show(m_window.get());
+    }
+}
+
+void SimpleUI::closeZoomUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_zoomUI);
+    m_webPageUI->showTabUI.disconnect(boost::bind(&SimpleUI::closeZoomUI, this));
+    m_webPageUI->showMoreMenu.disconnect(boost::bind(&SimpleUI::closeZoomUI, this));
+    m_zoomUI->hideUI();
+}
+
+void SimpleUI::setZoomFactor(int level)
+{
+    m_webEngine->setZoomFactor(level);
+}
+
+void SimpleUI::scrollView(const int& dx, const int& dy)
+{
+    m_webEngine->scrollView(dx, dy);
 }
 
 void SimpleUI::showTabUI()

@@ -275,6 +275,17 @@ public:
     virtual bool isDesktopMode() const = 0;
 
     /**
+     * Sets an absolute scroll of the given view.
+     *
+     * Both values are from zero to the contents size minus the viewport
+     * size.
+     *
+     * @param x horizontal position to scroll
+     * @param y vertical position to scroll
+     */
+    virtual void scrollView(const int& dx, const int& dy) = 0;
+
+    /**
      * FavIcon of current page changed
      */
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;

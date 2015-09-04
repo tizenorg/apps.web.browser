@@ -43,7 +43,6 @@ public:
     virtual ~WebView();
     void init(bool desktopMode, Evas_Object * opener = NULL);
 
-
     void setURI(const std::string &);
     std::string getURI(void);
 
@@ -130,6 +129,17 @@ public:
      * @brief Get favicon of URL
      */
     std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon();
+
+    /**
+     * Sets an absolute scroll of the given view.
+     *
+     * Both values are from zero to the contents size minus the viewport
+     * size.
+     *
+     * @param x horizontal position to scroll
+     * @param y vertical position to scroll
+     */
+    void scrollView(const int& dx, const int& dy);
 
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
