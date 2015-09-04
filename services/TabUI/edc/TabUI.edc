@@ -256,7 +256,7 @@ group {
                     visible: 1;
                 }
            }
-	   part { name: "tab_gengird";
+	   part { name: "tab_gengrid";
                 type : SWALLOW;
                 scale: 1;
                 description {
@@ -1317,11 +1317,8 @@ group { name: "top_buttons_layout";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
-                    rel1 { relative: 0.0 0.0; to: "openedtabs_over";}
-                    rel2 { relative: 1.0 1.0; to: "openedtabs_over";}
-                    color_class: transparent;
+                    rel1 { relative: 0.0 0.0; to: "openedtabs_button";}
+                    rel2 { relative: 1.0 1.0; to: "openedtabs_button";}
                 }
             }
 	    part {
@@ -1400,7 +1397,7 @@ group { name: "top_buttons_layout";
             }
 
           part {
-                name: "onotherdevicess_click";
+                name: "onotherdevices_click";
                 scale:1;
                 type: SWALLOW;
                 description {
@@ -1408,11 +1405,8 @@ group { name: "top_buttons_layout";
                     visible: 1;
                     align: 0 0;
                     fixed: 1 1;
-                    min: 348 65;
-                    max: 348 65;
-                    rel1 { relative: 0.0 0.0; to: "onotherdevices_over";}
-                    rel2 { relative: 1.0 1.0; to: "onotherdevices_over";}
-                    color_class: transparent;
+                    rel1 { relative: 0.0 0.0; to: "onotherdevices_button";}
+                    rel2 { relative: 1.0 1.0; to: "onotherdevices_button";}
                 }
             }
         }

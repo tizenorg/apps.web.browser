@@ -51,6 +51,7 @@ public:
     boost::signals2::signal<void (const std::string & )> openedTabsClicked;
     boost::signals2::signal<void (const std::string & )> onOtherDevicesClicked;
     boost::signals2::signal<void (const std::string & )> closeTabUIClicked;
+    boost::signals2::signal<int () > tabsCount;
 
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
@@ -80,6 +81,7 @@ private:
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
     bool editMode;
+    bool onOtherDevicesSwitch;
 
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_tab_views;

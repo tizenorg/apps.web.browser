@@ -51,6 +51,7 @@ TabUI::TabUI()
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     createTabItemClass();
     editMode = false;
+    onOtherDevicesSwitch = false;
 }
 
 TabUI::~TabUI()
@@ -100,7 +101,7 @@ Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
 
     //create gengrid containing tabs
     m_gengrid = elm_gengrid_add(tab_layout);
-    elm_object_part_content_set(tab_layout, "tab_gengird", m_gengrid);
+    elm_object_part_content_set(tab_layout, "tab_gengrid", m_gengrid);
 
     M_ASSERT(m_parent);
     elm_gengrid_align_set(m_gengrid, 0, 0);
@@ -155,7 +156,6 @@ Evas_Object* TabUI::createActionBar(Evas_Object* parent)
     return actionBarLayout;
 }
 
-
 void TabUI::_close_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -164,6 +164,7 @@ void TabUI::_close_clicked(void* data, Evas_Object*, void*)
         tabUI->closeTabUIClicked(std::string());
         tabUI->clearItems();
         tabUI->editMode = false;
+        tabUI->onOtherDevicesSwitch = false;
     }
 }
 
@@ -171,7 +172,7 @@ void TabUI::hide()
 {
     evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
-    evas_object_hide(elm_layout_content_get(m_tab_layout, "tab_gengird"));
+    evas_object_hide(elm_layout_content_get(m_tab_layout, "tab_gengrid"));
     evas_object_hide(m_tab_layout);
 }
 
@@ -188,14 +189,14 @@ Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
     Evas_Object *button = elm_button_add(topLayout);
     elm_object_style_set(button, "tab_button");
     evas_object_smart_callback_add(button, "clicked", _openedtabs_clicked, this);
-    //TODO: "openedtabs_button" is not swallow, change it when implementing callbacks
-    elm_object_part_content_set(topLayout, "openedtabs_button", button);
+    evas_object_show(button);
+    elm_layout_content_set(topLayout, "openedtabs_click", button);
 
     button = elm_button_add(topLayout);
     elm_object_style_set(button, "tab_button");
-    //TODO: "onotherdevices_button" is not swallow, change it when implementing callbacks
     evas_object_smart_callback_add(button, "clicked", _onotherdevices_clicked, this);
-    elm_object_part_content_set(topLayout, "onotherdevices_button", button);
+    evas_object_show(button);
+    elm_layout_content_set(topLayout, "onotherdevices_click", button);
 
     return topLayout;
 }
@@ -208,17 +209,36 @@ void TabUI::_newtab_clicked(void * data, Evas_Object*, void*)
         tabUI->clearItems();
         tabUI->newTabClicked(std::string());
         tabUI->editMode = false;
+        tabUI->onOtherDevicesSwitch = false;
     }
 
 }
-void TabUI::_openedtabs_clicked(void*, Evas_Object*, void*)
+void TabUI::_openedtabs_clicked(void* data, Evas_Object*, void*)
 {
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        TabUI* tabUI = static_cast<TabUI*>(data);
+        if(tabUI->onOtherDevicesSwitch) {
+            tabUI->onOtherDevicesSwitch = false;
+            evas_object_show(tabUI->m_gengrid);
+            elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
+            tabUI->editMode = false;
+        }
+    }
 }
 
-void TabUI::_onotherdevices_clicked(void*, Evas_Object*, void*)
+void TabUI::_onotherdevices_clicked(void* data, Evas_Object*, void*)
 {
-        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        TabUI* tabUI = static_cast<TabUI*>(data);
+        if(!tabUI->onOtherDevicesSwitch) {
+            tabUI->onOtherDevicesSwitch = true;
+            evas_object_hide(tabUI->m_gengrid);
+            elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
+            tabUI->editMode = false;
+        }
+    }
 }
 
 void TabUI::_newincognitotab_clicked(void* data, Evas_Object*, void*)
@@ -229,6 +249,7 @@ void TabUI::_newincognitotab_clicked(void* data, Evas_Object*, void*)
         tabUI->clearItems();
         tabUI->newIncognitoTabClicked(std::string());
         tabUI->editMode = false;
+        tabUI->onOtherDevicesSwitch = false;
     }
 }
 
@@ -237,11 +258,11 @@ void TabUI::_closetabs_clicked(void* data, Evas_Object* obj, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabUI* tabUI = static_cast<TabUI*>(data);
-        if (!tabUI->editMode) {
+        if (!tabUI->editMode && !tabUI->onOtherDevicesSwitch) {
             tabUI->editMode = true;
             BROWSER_LOGD("[%s:%d] --------> edit mode: %d ", __PRETTY_FUNCTION__, __LINE__, tabUI->editMode);
             elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close all");
-        } else {
+        } else if (tabUI->editMode && !tabUI->onOtherDevicesSwitch) {
             tabUI->closeAllTabs();
             elm_gengrid_realized_items_update(tabUI->m_gengrid);
         }
@@ -329,6 +350,10 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
             Elm_Object_Item* it = elm_gengrid_selected_item_get(itemData->tabUI->m_gengrid);
             elm_object_item_del(it);
             elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
+            int tabsNumber = *(itemData->tabUI->tabsCount());
+            BROWSER_LOGD("%s:%d %s, items: %d", __FILE__, __LINE__, __func__, tabsNumber);
+            if (!tabsNumber)
+                itemData->tabUI->hide();
         }
     }
 }
