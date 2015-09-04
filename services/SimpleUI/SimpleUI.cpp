@@ -938,6 +938,7 @@ void SimpleUI::showTabUI()
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
     m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this,_1));
+    m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
     m_tabUI->show(m_window.get());
     m_tabUI->addTabItems(m_webEngine->getTabContents());
 }
@@ -964,6 +965,11 @@ void SimpleUI::closeTabsClicked(const tizen_browser::basic_webengine::TabId& tab
 {
     BROWSER_LOGD("%s", __func__);
     m_webEngine->closeTab(tabId);
+}
+
+int SimpleUI::tabsCount()
+{
+    return m_webEngine->tabsCount();
 }
 
 void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation)

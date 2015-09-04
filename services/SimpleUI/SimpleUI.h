@@ -270,6 +270,7 @@ private:
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
     void openLinkFromPopup(const std::string &);
     void disableHistoryButton(bool flag);
+    int tabsCount();
 
     void onNetworkError();
     void onNetworkConnected();
