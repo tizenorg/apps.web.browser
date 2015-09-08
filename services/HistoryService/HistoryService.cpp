@@ -88,24 +88,9 @@ int HistoryService::getHistoryItemsCount(){
     return count;
 }
 
-static int __get_duplicated_ids_p(int **ids, int *count, const int limit, const int offset,
-		const bp_history_offset order_column_offset, const int ordering,
-		const bp_history_offset check_column_offset,
-		const char *keyword, const int is_like)
+bool HistoryService::isDuplicate(const char* url) const
 {
-    bp_history_rows_cond_fmt conds;
-    conds.limit = limit;
-    conds.offset = offset;
-    conds.ordering = ordering;
-    conds.order_offset = order_column_offset;
-    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
-    conds.period_type = BP_HISTORY_DATE_ALL;
-
-    return bp_history_adaptor_get_cond_ids_p(ids, count, &conds, check_column_offset, keyword, is_like);
-}
-
-bool isDuplicate(const char* title)
-{
+    M_ASSERT(url);
     int *ids=nullptr;
     int count=0;
     bp_history_rows_cond_fmt conds;
@@ -120,21 +105,22 @@ bool isDuplicate(const char* title)
         BROWSER_LOGD("Error! Could not get ids!");
     }
 
-    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED);
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_DATE_CREATED);
 
-    for(int i = 0; i< count; i++){
+    for (int i = 0; i < count; i++) {
         bp_history_info_fmt history_info;
-        bp_history_adaptor_get_info(ids[i],offset,&history_info);
-        if(!strcmp(history_info.title, title)) {
-                int freq;
-                bp_history_adaptor_get_frequency(ids[i], &freq);
-                bp_history_adaptor_set_frequency(ids[i], freq + 1);
-                bp_history_adaptor_set_date_visited(ids[i],-1);
-                return true;
+        bp_history_adaptor_get_info(ids[i], offset, &history_info);
+        if (!history_info.url) {
+            BROWSER_LOGD("Warning: history entry without url!");
+        } else if (!strcmp(history_info.url, url)) {
+            int freq;
+            bp_history_adaptor_get_frequency(ids[i], &freq);
+            bp_history_adaptor_set_frequency(ids[i], freq + 1);
+            bp_history_adaptor_set_date_visited(ids[i],-1);
+            return true;
         }
     }
     return false;
-
 }
 
 std::shared_ptr<HistoryItemVector> HistoryService::getHistoryAll()
@@ -284,7 +270,7 @@ void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared
     his->setFavIcon(his->getFavIcon());
     his->setThumbnail(thumbnail);
 
-    if(isDuplicate(his->getTitle().c_str()))
+    if (isDuplicate(his->getUrl().c_str()))
         return;
 
     int id = -1;
@@ -330,14 +316,6 @@ void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared
     historyAdded(his);
 }
 
-
-void HistoryService::insertOrRefresh(std::shared_ptr<HistoryItem> hi) {
-    /**
-      *  No browser- provider implementation till now. Needs to be done
-     */
-    //getStorageManager()->insertOrRefresh(hi);
-}
-
 void HistoryService::clearAllHistory()
 {
     bp_history_adaptor_reset();
@@ -357,7 +335,9 @@ int HistoryService::getHistoryId(const std::string & url)
     int *ids = nullptr;
     int ids_count = 0;
     int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&ids_count, &conds, BP_HISTORY_O_URL, url.c_str(), 0);
-    if (ids_count!=0){
+    if (ret < 0) {
+        BROWSER_LOGD("Error! Could not get ids!");
+    } else if (ids_count != 0) {
         int i = *ids;
         free(ids);
         return i;
@@ -390,9 +370,7 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
 
     int m_year = item_time_info->tm_year;
     int m_month = item_time_info->tm_mon + 1;
-    int m_day = item_time_info->tm_yday;
     int m_month_day = item_time_info->tm_mday;
-    int m_date = date;
     int min = item_time_info->tm_min;
     int hour = item_time_info->tm_hour;
     int sec = item_time_info->tm_sec;
@@ -463,14 +441,6 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     }
     free(ids);
     return ret_history_list;
-}
-
-int HistoryService::getHistoryVisitCounter(const std::string & url)
-{   /**
-     *  No browser- provider implementation till now. Needs to be done
-     */
-//    return getStorageManager()->getHistoryVisitCounter(url);
-
 }
 
 }
