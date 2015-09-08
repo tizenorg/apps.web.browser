@@ -338,9 +338,6 @@ void HistoryService::insertOrRefresh(std::shared_ptr<HistoryItem> hi) {
     //getStorageManager()->insertOrRefresh(hi);
 }
 
-/**
- * @throws HistoryException on error
- */
 void HistoryService::clearAllHistory()
 {
     bp_history_adaptor_reset();
@@ -368,10 +365,6 @@ int HistoryService::getHistoryId(const std::string & url)
     return 0;
 }
 
-
-/**
- * @throws HistoryException on error
- */
 void HistoryService::clearURLHistory(const std::string & url)
 {
     int id = getHistoryId(url);

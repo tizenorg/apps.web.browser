@@ -26,7 +26,6 @@
 #include "service_macros.h"
 #include "BrowserImage.h"
 #include "HistoryItem.h"
-#include "HistoryStorage.h"
 #include "StorageService.h"
 #include <web/web_history.h>
 #define DOMAIN_HISTORY_SERVICE "org.tizen.browser.historyservice"
@@ -42,40 +41,13 @@ public:
     HistoryService();
     virtual ~HistoryService();
     virtual std::string getName();
-
     int getHistoryId(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
     void addHistoryItem(std::shared_ptr<HistoryItem> hi,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>());
-
-    /**
-     * If hi->getUrl() exists on a table HISTORY update visit_counter and visit_date, unless insert hi to database.
-     *
-     * @throws HistoryException on error
-     */
     void insertOrRefresh(std::shared_ptr<HistoryItem> hi);
-
-    /**
-     * @throws HistoryException on error
-     */
     void clearAllHistory();
-
-    /**
-     * @throws HistoryException on error
-     */
     void clearURLHistory(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
     std::shared_ptr<HistoryItem> getHistoryItem(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
     std::shared_ptr<HistoryItemVector> getHistoryAll();
     std::shared_ptr<HistoryItemVector> getHistoryToday();
     std::shared_ptr<HistoryItemVector> getHistoryYesterday();
@@ -85,17 +57,8 @@ public:
     std::shared_ptr<HistoryItem> getCurrentTab();
     std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
     std::shared_ptr<HistoryItemVector> getHistoryItemsByURL(const std::string & url, int maxItems);
-
-    /**
-     * @throws HistoryException on error
-     */
     int getHistoryItemsCount();
-
-    /**
-     * @throws HistoryException on error
-     */
     int getHistoryVisitCounter(const std::string & url);
-
     void setStorageServiceTestMode(bool testmode = true);
 
     boost::signals2::signal<void (bool)>historyEmpty;

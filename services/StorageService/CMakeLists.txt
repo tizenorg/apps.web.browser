@@ -8,9 +8,6 @@ set(StorageServiceSOURCES
 	Storage/SQLDatabase.cpp
     src/BookmarksSorage.cpp
     src/BookmarksSQLite.cpp
-	src/HistoryException.cpp
-	src/HistorySQLite.cpp
-	src/HistoryStorage.cpp
 	src/StorageService.cpp
 )
 
@@ -20,9 +17,6 @@ set(StorageService_HEADERS
 	StorageService.h
 	BookmarksStorage.h
 	BookmarksSQLite.h
-	HistoryStorage.h
-	HistorySQLite.h
-	HistoryException.h
 	Storage/include/Field.h
 	Storage/include/DriverManager.h
 	Storage/include/SQLDatabase.h
