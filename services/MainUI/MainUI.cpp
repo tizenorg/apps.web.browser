@@ -130,6 +130,7 @@ void MainUI::show(Evas_Object* parent)
 Evas_Object* MainUI::createQuickAccessLayout(Evas_Object* parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    m_desktopMode = true;
 
     Evas_Object* layout = elm_layout_add(parent);
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -429,16 +430,6 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, c
     return nullptr;
 }
 
-
-void MainUI::_itemSelected(void * data, Evas_Object * /* obj */, void * event_info)
-{
-	Elm_Object_Item * selected = reinterpret_cast<Elm_Object_Item *>(event_info);
-	HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(elm_object_item_data_get(selected));
-	MainUI * self = reinterpret_cast<MainUI *>(data);
-
-    self->openURLInNewTab(itemData->item);
-}
-
 void MainUI::_thumbSelected(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
@@ -542,6 +533,21 @@ void MainUI::setEmptyView(bool empty)
     } else {
         elm_layout_signal_emit(m_mostVisitedView, "not,empty,view", "mainui");
     }
+}
+
+bool MainUI::isDesktopMode() const
+{
+    return m_desktopMode;
+}
+
+void MainUI::setDesktopMode(bool mode)
+{
+    m_desktopMode = mode;
+}
+
+DetailPopup& MainUI::getDetailPopup()
+{
+    return m_detailPopup;
 }
 
 }

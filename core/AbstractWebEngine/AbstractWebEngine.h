@@ -132,9 +132,10 @@ public:
     /**
      * Adds new tab
      * @param uri if not empty opens specified uri
+     * @param desktopMode true if desktop mode, false if mobile mode
      * @return TabId of created tab
      */
-    virtual TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL) = 0;
+    virtual TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true) = 0;
 
     /**
      * @param tab id
@@ -257,14 +258,21 @@ public:
     virtual void backButtonClicked() const = 0;
 
     /**
-     * @brief Switch view to mobile
+     * @brief Switch current view to mobile mode
      */
-    virtual void switchToMobileView() = 0;
+    virtual void switchToMobileMode() = 0;
 
     /**
-     * @brief Switch view to desktop
+     * @brief Switch current view to desktop mode
      */
-    virtual void switchToDesktopView() = 0;
+    virtual void switchToDesktopMode() = 0;
+
+    /**
+     * @brief Check if desktop mode is enabled for current view
+     *
+     * @return true if desktop mode is enabled
+     */
+    virtual bool isDesktopMode() const = 0;
 
     /**
      * FavIcon of current page changed

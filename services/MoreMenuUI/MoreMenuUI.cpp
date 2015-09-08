@@ -48,7 +48,7 @@ MoreMenuUI::MoreMenuUI()
     : m_gengrid(NULL)
     , m_parent(NULL)
     , m_item_class(NULL)
-    , m_desktopView(true)
+    , m_desktopMode(true)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -59,10 +59,11 @@ MoreMenuUI::~MoreMenuUI()
 {
 }
 
-void MoreMenuUI::show(Evas_Object* parent)
+void MoreMenuUI::show(Evas_Object* parent, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_parent = parent;
+    m_desktopMode = desktopMode;
     elm_theme_extension_add(NULL, m_edjFilePath.c_str());
     m_mm_layout = elm_layout_add(parent);
     elm_layout_file_set(m_mm_layout, m_edjFilePath.c_str(), "moremenu-layout");
@@ -234,9 +235,9 @@ void MoreMenuUI::addItems()
      for (int i = 0; i <= EXIT_BROWSER; i++) {
          ItemType type = static_cast<ItemType>(i);
          // take proper image for desktop/mobile view
-         if (type == ItemType::VIEW_DESKTOP_WEB && m_desktopView)
+         if (type == ItemType::VIEW_DESKTOP_WEB && m_desktopMode)
              continue;
-         if (type == ItemType::VIEW_MOBILE_WEB && !m_desktopView)
+         if (type == ItemType::VIEW_MOBILE_WEB && !m_desktopMode)
              continue;
 
          MoreMenuItemData *itemData = new MoreMenuItemData();
@@ -441,14 +442,16 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         case FOCUS_MODE:
             break;
         case VIEW_MOBILE_WEB:
-            itemData->moreMenuUI->switchToMobileView();
-            itemData->moreMenuUI->m_desktopView = false;
-            itemData->moreMenuUI->refreshGengrid();
+            itemData->moreMenuUI->switchToMobileMode();
+            itemData->moreMenuUI->m_desktopMode = false;
+            itemData->moreMenuUI->closeMoreMenuClicked(std::string());
+            itemData->moreMenuUI->clearItems();
             break;
         case VIEW_DESKTOP_WEB:
-            itemData->moreMenuUI->switchToDesktopView();
-            itemData->moreMenuUI->m_desktopView = true;
-            itemData->moreMenuUI->refreshGengrid();
+            itemData->moreMenuUI->switchToDesktopMode();
+            itemData->moreMenuUI->m_desktopMode = true;
+            itemData->moreMenuUI->closeMoreMenuClicked(std::string());
+            itemData->moreMenuUI->clearItems();
             break;
         case SHARE:
             break;
@@ -475,13 +478,6 @@ void MoreMenuUI::clearItems()
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
     elm_theme_full_flush();
     elm_cache_all_flush();
-}
-
-void MoreMenuUI::refreshGengrid()
-{
-    elm_gengrid_clear(m_gengrid);
-    m_map_menu_views.clear();
-    addItems();
 }
 
 void MoreMenuUI::_exitClicked()

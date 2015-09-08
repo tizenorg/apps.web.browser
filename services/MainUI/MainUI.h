@@ -49,13 +49,15 @@ public:
     void showBookmarks();
     void clearItems();
     void openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
+    bool isDesktopMode() const;
+    void setDesktopMode(bool mode);
+    DetailPopup & getDetailPopup();
 
     void addHistoryItem(std::shared_ptr<services::HistoryItem>);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> openURLInNewTab;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (const std::string & )> mostVisitedClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
@@ -63,8 +65,8 @@ public:
 
     static const int MAX_TILE_WIDTH;
     static const int MAX_TILE_HEIGHT;
-private:
 
+private:
     void createItemClasses();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
@@ -82,11 +84,12 @@ private:
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _deleteBookmark(void *data, Evas_Object *obj, void *event_info);
     void setEmptyView(bool empty);
+    void showNoHistoryLabel();
 
     static void _mostVisited_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object * obj, void * event_info);
-private:
+
     Evas_Object *m_parent;
     Evas_Object *m_layout;
     Evas_Object *m_bookmarksView;
@@ -107,7 +110,7 @@ private:
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;
     std::string edjFilePath;
-    void showNoHistoryLabel();
+    bool m_desktopMode;
 };
 
 }

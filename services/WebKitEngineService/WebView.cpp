@@ -83,7 +83,7 @@ WebView::~WebView()
     ewk_context_delete(m_ewkContext);
 }
 
-void WebView::init(bool desktopView, Evas_Object * opener)
+void WebView::init(bool desktopMode, Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
     m_ewkView = ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
@@ -94,10 +94,11 @@ void WebView::init(bool desktopView, Evas_Object * opener)
     evas_object_color_set(m_ewkView, 255, 255, 255, 255);
     evas_object_size_hint_weight_set(m_ewkView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_ewkView, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    if (desktopView)
-        switchToDesktopView();
-    else
-        switchToMobileView();
+    if (desktopMode) {
+        switchToDesktopMode();
+    } else {
+        switchToMobileMode();
+    }
     //\todo: when value is other than 1.0, scroller is located improperly
 //    ewk_view_device_pixel_ratio_set(m_ewkView, 1.0f);
 
@@ -877,14 +878,20 @@ void WebView::searchOnWebsite(const std::string & searchString, int flags)
     BROWSER_LOGD("Ewk search; word: %s, result: %d", searchString.c_str(), result);
 }
 
-void WebView::switchToDesktopView() {
+void WebView::switchToDesktopMode() {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
+    m_desktopMode = true;
 }
 
-void WebView::switchToMobileView() {
+void WebView::switchToMobileMode() {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT_MOBILE);
+    m_desktopMode = false;
+}
+
+bool WebView::isDesktopMode() const {
+    return m_desktopMode;
 }
 
 } /* namespace webkitengine_service */

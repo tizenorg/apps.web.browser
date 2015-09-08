@@ -75,7 +75,6 @@ void DetailPopup::createLayout(Evas_Object *parent)
     evas_object_show(m_layout);
 }
 
-
 void DetailPopup::show(Evas_Object *parent, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -86,6 +85,10 @@ void DetailPopup::show(Evas_Object *parent, std::shared_ptr<services::HistoryIte
 
 void DetailPopup::hide()
 {
+    edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "bg", _bg_click);
+    edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "url_over", _url_click);
+    edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click);
+    elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
 }
 
@@ -101,7 +104,7 @@ void DetailPopup::_url_click(void* data, Evas_Object* obj, const char* emission,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
     dp->hide();
-    dp->m_mainUI->openURLInNewTab(dp->m_item);
+    dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
 }
 
 char* DetailPopup::_get_history_link_text(void* data, Evas_Object* obj, const char* part)

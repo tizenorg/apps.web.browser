@@ -77,7 +77,7 @@ public:
      * @param uri
      * @return TabId of created tab
      */
-    TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL);
+    TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true);
     Evas_Object* getTabView(TabId id);
     bool switchToTab(TabId);
     bool closeTab();
@@ -159,8 +159,9 @@ public:
      */
     void backButtonClicked() const;
 
-    void switchToMobileView();
-    void switchToDesktopView();
+    void switchToMobileMode();
+    void switchToDesktopMode();
+    bool isDesktopMode() const;
 
 private:
     // callbacks from WebView
@@ -209,8 +210,6 @@ private:
     std::list<TabId> m_mostRecentTab;
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
-    // true if desktop view is enabled, false if mobile
-    bool m_desktopView;
 };
 
 } /* end of webkitengine_service */
