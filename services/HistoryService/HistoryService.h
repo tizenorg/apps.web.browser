@@ -44,7 +44,6 @@ public:
     int getHistoryId(const std::string & url);
     void addHistoryItem(std::shared_ptr<HistoryItem> hi,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>());
-    void insertOrRefresh(std::shared_ptr<HistoryItem> hi);
     void clearAllHistory();
     void clearURLHistory(const std::string & url);
     std::shared_ptr<HistoryItem> getHistoryItem(const std::string & url);
@@ -58,7 +57,6 @@ public:
     std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
     std::shared_ptr<HistoryItemVector> getHistoryItemsByURL(const std::string & url, int maxItems);
     int getHistoryItemsCount();
-    int getHistoryVisitCounter(const std::string & url);
     void setStorageServiceTestMode(bool testmode = true);
 
     boost::signals2::signal<void (bool)>historyEmpty;
@@ -79,7 +77,7 @@ private:
     std::shared_ptr<HistoryItem> getHistoryItem(int* ids, int idNumber = 0);
     std::shared_ptr<HistoryItemVector> getHistoryItems(bp_history_date_defs period = BP_HISTORY_DATE_TODAY);
     std::shared_ptr<tizen_browser::services::StorageService> getStorageManager();
-
+    bool isDuplicate(const char* url) const;
 };
 
 }
