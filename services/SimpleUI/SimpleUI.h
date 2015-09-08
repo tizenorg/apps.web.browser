@@ -112,7 +112,7 @@ private:
     void updateURIBarView();
     void updateView();
 
-    void openNewTab(const std::string &uri);
+    void openNewTab(const std::string &uri, bool desktopMode = true);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked(const std::string &);
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
@@ -133,7 +133,7 @@ private:
 
     void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
     void onHistoryRemoved(const std::string& uri);
-    void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
+    void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
     void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
     void onClearHistoryClicked(const std::string&);
 
@@ -230,8 +230,8 @@ private:
     void closeTabUI(const std::string& str);
     void showMoreMenu();
     void closeMoreMenu(const std::string& str);
-    void switchToMobileView();
-    void switchToDesktopView();
+    void switchToMobileMode();
+    void switchToDesktopMode();
     void showHistoryUI(const std::string& str);
     void closeHistoryUI(const std::string&);
     void showMainUI();

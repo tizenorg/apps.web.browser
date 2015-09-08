@@ -45,7 +45,6 @@ WebKitEngineService::WebKitEngineService()
     , m_privateMode(false)
     , m_guiParent(nullptr)
     , m_currentTabId(TabId::NONE)
-    , m_desktopView(true)
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
@@ -279,7 +278,7 @@ std::vector<std::shared_ptr<TabContent> > WebKitEngineService::getTabContents() 
     return result;
 }
 
-TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId)
+TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -287,9 +286,9 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
     TabId newTabId;
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId);
     if (openerId)
-        p->init(m_desktopView, getTabView(*openerId));
+        p->init(desktopMode, getTabView(*openerId));
     else
-        p->init(m_desktopView);
+        p->init(desktopMode);
 
     m_tabs[newTabId] = p;
 
@@ -508,20 +507,22 @@ void WebKitEngineService::backButtonClicked() const
     }
 }
 
-void WebKitEngineService::switchToDesktopView()
+void WebKitEngineService::switchToDesktopMode()
 {
-    m_desktopView = true;
-    for (auto it = m_tabs.begin(); it != m_tabs.end(); ++it) {
-        it->second->switchToDesktopView();
-    }
+    M_ASSERT(m_currentWebView);
+    m_currentWebView->switchToDesktopMode();
 }
 
-void WebKitEngineService::switchToMobileView()
+void WebKitEngineService::switchToMobileMode()
 {
-    m_desktopView = false;
-    for (auto it = m_tabs.begin(); it != m_tabs.end(); ++it) {
-        it->second->switchToMobileView();
-    }
+    M_ASSERT(m_currentWebView);
+    m_currentWebView->switchToMobileMode();
+}
+
+bool WebKitEngineService::isDesktopMode() const
+{
+    M_ASSERT(m_currentWebView);
+    return m_currentWebView->isDesktopMode();
 }
 
 } /* end of webkitengine_service */

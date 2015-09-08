@@ -38,7 +38,7 @@ namespace base_ui{
         */
         void show(Evas_Object *parent, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
 
-        boost::signals2::signal<void (std::shared_ptr<services::HistoryItem>)> openURLInNewTab;
+        boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
 
         static const int HISTORY_ITEMS_NO;
     private:

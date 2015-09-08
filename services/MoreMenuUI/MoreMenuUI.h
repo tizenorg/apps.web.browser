@@ -61,7 +61,7 @@ class BROWSER_EXPORT MoreMenuUI
 public:
     MoreMenuUI();
     ~MoreMenuUI();
-    void show(Evas_Object *main_layout);
+    void show(Evas_Object *main_layout, bool desktopMode);
     void showCurrentTab();
     virtual std::string getName();
     void addItems();
@@ -80,8 +80,8 @@ public:
     boost::signals2::signal<void (std::string)> historyUIClicked;
     boost::signals2::signal<void (const std::string&)> settingsClicked;
     boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
-    boost::signals2::signal<void ()> switchToMobileView;
-    boost::signals2::signal<void ()> switchToDesktopView;
+    boost::signals2::signal<void ()> switchToMobileMode;
+    boost::signals2::signal<void ()> switchToDesktopMode;
 private:
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
@@ -94,8 +94,6 @@ private:
 
     void AddBookmarkPopupCalled();
     void addToBookmarks(int folder_id);
-
-    void refreshGengrid();
 
     static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
@@ -117,7 +115,7 @@ private:
     std::string m_folderName;
     bool m_gengridSetup;
     Evas_Object *m_icon;
-    bool m_desktopView;
+    bool m_desktopMode;
 };
 
 }

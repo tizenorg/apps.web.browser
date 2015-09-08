@@ -41,7 +41,7 @@ class WebView
 public:
     WebView(Evas_Object *, TabId);
     virtual ~WebView();
-    void init(bool desktopView = true, Evas_Object * opener = NULL);
+    void init(bool desktopMode, Evas_Object * opener = NULL);
 
 
     void setURI(const std::string &);
@@ -112,12 +112,19 @@ public:
     /**
      * @brief Change user agent to desktop type
      */
-    void switchToDesktopView();
+    void switchToDesktopMode();
 
     /**
      * @brief Change user agent to mobile type
      */
-    void switchToMobileView();
+    void switchToMobileMode();
+
+    /**
+     * @brief Check if desktop mode is enabled
+     *
+     * @return true if desktop mode is enabled
+     */
+    bool isDesktopMode() const;
 
     /**
      * @brief Get favicon of URL
@@ -194,8 +201,8 @@ private:
     bool m_isLoading;
     double m_loadProgress;
     bool m_loadError;
-
-
+    // true if desktop view is enabled, false if mobile
+    bool m_desktopMode;
 
     config::DefaultConfig config;
 
