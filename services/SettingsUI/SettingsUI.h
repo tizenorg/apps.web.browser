@@ -63,7 +63,6 @@ private:
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
 
-private:
     Evas_Object *m_settings_layout;
     Evas_Object *m_genListActionBar;
     Evas_Object *m_scroller;
@@ -73,7 +72,19 @@ private:
 
     Elm_Gengrid_Item_Class * m_item_class;
     std::string m_edjFilePath;
-
+    enum SharingRequest {
+        SR_DISABLE = 0,
+        SR_ASK,
+        SR_ACCEPT_ALL,
+    };
+    enum BookmarkSync {
+        BS_DISABLE = 0,
+        BS_ENABLE
+    };
+    enum TabSync {
+        TS_DISABLE = 0,
+        TS_ENABLE
+    };
 };
 
 }

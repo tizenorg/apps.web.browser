@@ -156,35 +156,47 @@ void SettingsUI::showSettingsPage()
     elm_check_state_set(history_checkbox, EINA_TRUE);
     edje_object_signal_callback_add(elm_layout_edje_get(m_items_layout), "mouse,clicked,1", "history_cb_text", __checkbox_label_click_cb, (void*)id);
 
-
     Evas_Object *accept_all_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(accept_all_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "accept_all_rb", accept_all_rb);
+    Evas_Object *sharingRequestGroup = accept_all_rb;
+    elm_radio_state_value_set(accept_all_rb, SR_ACCEPT_ALL);
 
     Evas_Object *ask_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(ask_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "ask_rb", ask_rb);
+    elm_radio_group_add(ask_rb, sharingRequestGroup);
+    elm_radio_state_value_set(ask_rb, SR_ASK);
 
     Evas_Object *sr_disable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(sr_disable_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "sr_disable_rb", sr_disable_rb);
+    elm_radio_group_add(sr_disable_rb, sharingRequestGroup);
+    elm_radio_state_value_set(sr_disable_rb, SR_DISABLE);
 
     Evas_Object *bs_enable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(bs_enable_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "bs_enable_rb", bs_enable_rb);
+    Evas_Object *bookmarkSyncGroup = bs_enable_rb;
+    elm_radio_state_value_set(bs_enable_rb, BS_ENABLE);
 
     Evas_Object *bs_disable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(bs_disable_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "bs_disable_rb", bs_disable_rb);
+    elm_radio_group_add(bs_disable_rb, bookmarkSyncGroup);
+    elm_radio_state_value_set(bs_disable_rb, BS_DISABLE);
 
     Evas_Object *ts_enable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(ts_enable_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "ts_enable_rb", ts_enable_rb);
+    Evas_Object *tabSyncGroup = ts_enable_rb;
+    elm_radio_state_value_set(ts_enable_rb, TS_ENABLE);
 
     Evas_Object *ts_disable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(ts_disable_rb, "settings_radio");
     elm_layout_content_set(m_items_layout, "ts_disable_rb", ts_disable_rb);
-
+    elm_radio_group_add(ts_disable_rb, tabSyncGroup);
+    elm_radio_state_value_set(ts_disable_rb, TS_DISABLE);
 }
 
 Evas_Object* SettingsUI::listActionBarContentGet(void* data, Evas_Object* obj , const char* part)
