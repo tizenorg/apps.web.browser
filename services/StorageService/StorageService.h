@@ -23,12 +23,8 @@
 #include "service_macros.h"
 #include "BrowserImage.h"
 #include "Config.h"
-#include "HistorySQLite.h"
 #include "BookmarksStorage.h"
 #include "BookmarksSQLite.h"
-///\todo temporary dirty include
-//#include "HistoryItem.h"
-#include "../HistoryService/HistoryItem.h"
 
 #define DOMAIN_STORAGE_SERVICE "org.tizen.browser.storageservice"
 
@@ -84,54 +80,6 @@ public:
      */
     static void checkAndCreateTable(storage::SQLTransactionScope * transactionScope, const std::string & tablename, const std::string & ddl);
 
-    /**
-     * @throws HistoryException on error
-     */
-    void addHistoryItem(std::shared_ptr<HistoryItem> hi);
-
-    /**
-     * If hi->getUrl() exists on a table HISTORY update visit_counter and visit_date, unless insert hi to database.
-     *
-     * @throws HistoryException on error
-     */
-    void insertOrRefresh(std::shared_ptr<HistoryItem> hi);
-
-    /**
-     * @throws HistoryException on error
-     */
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
-    void deleteHistory();
-
-    /**
-     * @throws HistoryException on error
-     */
-    void deleteHistory(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
-    std::shared_ptr<HistoryItem> getHistoryItem(const std::string & url);
-
-    /**
-     * @throws HistoryException on error
-     */
-    HistoryItemVector & getHistoryItems(int historyDepthInDays, int maxItems);
-
-    /**
-     * @throws HistoryException on error
-     */
-    int getHistoryItemsCount();
-
-    /**
-     * @throws HistoryException on error
-     */
-    int getHistoryVisitCounter(const std::string & url);
-
-
     void init(bool testmode = false);
 
     /**
@@ -147,9 +95,6 @@ private:
      */
     void initDatabaseSettings(const std::string & db_str);
 
-
-    void initHistoryService(const std::string & storage, bool testmode);
-
     /**
      * @throws StorageExceptionInitialization on error
      */
@@ -159,7 +104,6 @@ private:
     config::DefaultConfig config;
     std::string DB_SETTINGS;
 
-    std::shared_ptr<HistorySQLite> m_history;
 //    std::shared_ptr<RssStorage> m_rssStorage;
     std::shared_ptr<BookmarksSQLite> m_bookmarks;
 

@@ -114,8 +114,6 @@ void StorageService::init(bool testmode)
         BROWSER_LOGE("Cannot initialize database %s!", DB_SETTINGS.c_str());
     }
 
-    initHistoryService("SQLITE", testmode);
-
     m_isInitialized = true;
 }
 
@@ -289,103 +287,6 @@ void StorageService::setSettingsString(const std::string & key, std::string valu
     storage::FieldPtr field = std::make_shared<storage::Field>(value);
     setSettingsValue(key, field);
 }
-
-/**
- * @throws HistoryException on error
- */
-void StorageService::addHistoryItem(std::shared_ptr<HistoryItem> hi)
-{
-    M_ASSERT(m_history);
-    m_history->addHistoryItem(hi);
-}
-
-/**
- * If hi->getUrl() exists on a table HISTORY update visit_counter and visit_date, unless insert hi to database.
- *
- * @throws HistoryException on error
- */
-void StorageService::insertOrRefresh(std::shared_ptr<HistoryItem> hi)
-{
-    M_ASSERT(m_history);
-    m_history->insertOrRefresh(hi);
-}
-
-/**
- * @throws HistoryException on error
- */
-std::shared_ptr<tizen_browser::tools::BrowserImage> StorageService::getFavicon(const std::string & url)
-{
-    M_ASSERT(m_history);
-    return m_history->getFavicon(url);
-}
-
-/**
- * @throws HistoryException on error
- */
-void StorageService::deleteHistory()
-{
-    M_ASSERT(m_history);
-    m_history->deleteHistory();
-}
-
-/**
- * @throws HistoryException on error
- */
-void StorageService::deleteHistory(const std::string & url)
-{
-    M_ASSERT(m_history);
-    m_history->deleteHistory(url);
-}
-
-/**
- * @throws HistoryException on error
- */
-std::shared_ptr<HistoryItem> StorageService::getHistoryItem(const std::string & url)
-{
-    M_ASSERT(m_history);
-    return m_history->getHistoryItem(url);
-}
-
-/**
- * @throws HistoryException on error
- */
-HistoryItemVector & StorageService::getHistoryItems(int historyDepthInDays, int maxItems)
-{
-    M_ASSERT(m_history);
-    return m_history->getHistoryItems(historyDepthInDays, maxItems);
-}
-
-/**
- * @throws HistoryException on error
- */
-int StorageService::getHistoryItemsCount()
-{
-    M_ASSERT(m_history);
-    return m_history->getHistoryItemsCount();
-}
-
-/**
- * @throws HistoryException on error
- */
-int StorageService::getHistoryVisitCounter(const std::string & url)
-{
-    M_ASSERT(m_history);
-    return m_history->getHistoryVisitCounter(url);
-}
-
-void StorageService::initHistoryService(const std::string & storage, bool testmode)
-{
-    // Depend on "storage" variable use an appropriate class as a storage. By default it's a HistorySQLite class.
-    if (m_history.get() == NULL) {
-        if (storage.compare("SQLITE") == 0) {
-            m_history = std::make_shared<HistorySQLite>();
-            m_history->init(testmode);
-        }
-    }
-}
-
-
-
 
 }
 }
