@@ -195,7 +195,7 @@ private:
      * For filtered addresses we need to hide real URI so the user would be confused.
      * and this is a back function that checks if address emited from browser should be changed.
      */
-    void webEngineURLChanged(const std::string& url);
+    void webEngineURLChanged(const std::string url);
     void onmostHistoryvisitedClicked();
     void onBookmarkvisitedClicked();
      /**

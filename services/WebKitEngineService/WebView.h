@@ -134,7 +134,7 @@ public:
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
     boost::signals2::signal<void (const std::string &)> titleChanged;
-    boost::signals2::signal<void (const std::string &)> uriChanged;
+    boost::signals2::signal<void (const std::string)> uriChanged;
     boost::signals2::signal<void (TabId)> tabIdChecker;
 
     boost::signals2::signal<void ()> loadFinished;

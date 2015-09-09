@@ -50,7 +50,7 @@ public:
 
     Evas_Object * getContent() { return m_entry_layout;};
 
-    void changeUri(const std::string&);
+    void changeUri(const std::string);
     boost::signals2::signal<void (const std::string &)> uriChanged;
 
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);

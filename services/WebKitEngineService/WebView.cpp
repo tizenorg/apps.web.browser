@@ -616,7 +616,7 @@ void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * event_in
     m_webEngine = std::dynamic_pointer_cast<basic_webengine::AbstractWebEngine<Evas_Object>, tizen_browser::core::AbstractService>(
             tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
     M_ASSERT(m_webEngine);
-    self->uriChanged(fromChar(reinterpret_cast<const char *>(event_info)));
+    self->uriChanged(self->getURI());
     self->tabIdChecker(self->m_tabId);
 }
 
@@ -841,8 +841,6 @@ const TabId& WebView::getTabId(){
 std::shared_ptr<BrowserImage> WebView::getFavicon()
 {
     BROWSER_LOGD("%s:%d, TabId: %s", __PRETTY_FUNCTION__, __LINE__, m_tabId.toString().c_str());
-    if(faviconImage.get())
-        return faviconImage;
 
     Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
     faviconImage = EflTools::getBrowserImage(favicon);

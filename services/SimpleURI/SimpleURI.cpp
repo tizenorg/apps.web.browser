@@ -96,7 +96,7 @@ Evas_Object * SimpleURI::getContent(Evas_Object *main_layout)
     return m_entry_layout;
 }
 
-void SimpleURI::changeUri(const std::string &newUri)
+void SimpleURI::changeUri(const std::string newUri)
 {
     BROWSER_LOGD("%s: newUri=%s", __func__, newUri.c_str());
     elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(newUri.c_str()));
