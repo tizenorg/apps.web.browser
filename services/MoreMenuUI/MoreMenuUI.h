@@ -88,6 +88,7 @@ private:
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _exitClicked();
 
+    void setDocIcon();
     void newFolderPopup(std::string);
     void NewFolderCreate(Evas_Object * popup_content);
     void CancelClicked(Evas_Object * popup_content);
@@ -101,7 +102,6 @@ private:
     static void __cb_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info);
     static void __cb_mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info);
 
-private:
     Evas_Object *m_current_tab_bar;
     std::shared_ptr<tizen_browser::base_ui::NewFolderPopup> m_new_folder_popup;
     Evas_Object *m_mm_layout;

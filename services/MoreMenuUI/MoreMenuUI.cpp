@@ -119,15 +119,33 @@ void MoreMenuUI::showCurrentTab()
 void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(favicon && favicon->imageType != tools::BrowserImage::ImageTypeNoImage){
+    if(favicon && favicon->imageType != tools::BrowserImage::ImageTypeNoImage) {
+        if(m_icon)
+            evas_object_del(m_icon);
+
         m_icon = tizen_browser::tools::EflTools::getEvasImage(favicon, m_current_tab_bar);
-        if(m_icon){
+        if(m_icon) {
             evas_object_size_hint_weight_set(m_icon, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
             evas_object_size_hint_align_set(m_icon, EVAS_HINT_FILL, EVAS_HINT_FILL);
             elm_object_part_content_set(m_current_tab_bar, "favicon", m_icon);
             evas_object_show(m_icon);
         }
     }
+    else {
+        setDocIcon();
+    }
+}
+
+void MoreMenuUI::setDocIcon()
+{
+    if(m_icon)
+        evas_object_del(m_icon);
+
+    m_icon = elm_icon_add(m_mm_layout);
+    elm_image_file_set(m_icon, m_edjFilePath.c_str(), "ico_url.png");
+    evas_object_size_hint_weight_set(m_icon, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_icon, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_content_set(m_current_tab_bar, "favicon", m_icon);
 }
 
 void MoreMenuUI::setWebTitle(const std::string& title)

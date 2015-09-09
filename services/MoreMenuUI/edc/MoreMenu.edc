@@ -54,6 +54,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_desktopview_foc.png")
 RESOURCE_IMAGE_LOSSY("ic_more_share_foc.png")
 RESOURCE_IMAGE_LOSSY("ic_more_setting_foc.png")
 RESOURCE_IMAGE_LOSSY("ic_more_exit_foc.png")
+RESOURCE_IMAGE_LOSSY("ico_url.png")
 
 #define WIDTH 1920
 #define HEIGHT 366
