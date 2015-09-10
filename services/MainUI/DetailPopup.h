@@ -53,10 +53,18 @@ namespace base_ui{
         static void _url_click(void *data, Evas_Object *obj, const char *emission, const char *source);
 
         /**
+         * @brief History genlist item click callback
+         */
+        static void _history_url_click(void *data, Evas_Object *o, void *event_info);
+
+        /**
         * @brief Hide popup
         */
         void hide();
 
+        /**
+         * @brief Create main layout and all compnents.
+         */
         void createLayout(Evas_Object *parent);
 
         /**
@@ -71,6 +79,8 @@ namespace base_ui{
         std::string edjFilePath;
         std::shared_ptr<services::HistoryItem> m_item;
         std::shared_ptr<services::HistoryItemVector> m_prevItems;
+
+        static const char * URL_SEPARATOR;
     };
 
 }

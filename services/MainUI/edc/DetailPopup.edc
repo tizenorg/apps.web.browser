@@ -2,7 +2,9 @@ collections {
 
     group {
         name: "popup";
-
+        images {
+            image: "ic_popup_list_arrow.png" COMP;
+        }
         parts {
             part { name: "bg";
                 type: RECT;
@@ -44,10 +46,8 @@ collections {
             }
 
             part { name: "thumbnail";
-                //type: SWALLOW;    TODO: change to swallow while adding thumbnail to Detail popup
-                type: RECT;
+                type: SWALLOW;
                 description {
-                    color: 113 128 147 255;
                     min: 840 648;
                     max: 840 648;
                     visible: 1;
@@ -90,8 +90,8 @@ collections {
                 type: TEXT;
                 description {
                     visible: 1;
-                    min: 428 122;
-                    max: 428 122;
+                    min: 408 122;
+                    max: 408 122;
                     align: 0.0 0.0;
                     fixed: 1 1;
                     color: 51 51 51 255;
@@ -114,6 +114,29 @@ collections {
                 description { state: "selected" 0.0;
                     inherit: "default" 0.0;
                     color: 255 255 255 255;
+                }
+            }
+
+            part { name: "url_arrow";
+                type: IMAGE;
+                scale: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.5;
+                    min: 38 38;
+                    max: 38 38;
+                    image.normal: "ic_popup_list_arrow.png";
+                    rel1 {
+                        to: "url_bg";
+                        relative: 0.0 0.0;
+                        offset: 442 0;
+                    }
+                    rel2 {
+                        to: "url_bg";
+                        relative: 1.0 1.0;
+                    }
                 }
             }
 
@@ -229,6 +252,10 @@ collections {
                     color: 255 255 255 255;
                     align: 0.0 0.0;
                 }
+                description { state: "selected" 0.0;
+                    inherit: "default" 0.0;
+                    color: 0 119 246 255;
+                }
             }
 
             part { name: "page_dsc";
@@ -253,8 +280,42 @@ collections {
                         align: 0 0.5;
                     }
                 }
+                description { state: "selected" 0.0;
+                    inherit: "default" 0.0;
+                    color: 255 255 255 255;
+                }
             }
 
+            part { name: "dsc_over";
+                type: RECT;
+                mouse_events: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    color: 0 0 0 0;
+                    rel1.to: "bg";
+                    rel2.to: "bg";
+                }
+            }
+
+        }
+        programs {
+            program {
+                name: "mouse_in_url";
+                signal: "mouse,in";
+                source: "dsc_over";
+                action: STATE_SET "selected" 0.0;
+                target: "bg";
+                target: "page_dsc";
+            }
+            program {
+                name: "mouse_out_url";
+                signal: "mouse,out";
+                source: "dsc_over";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+                target: "page_dsc";
+            }
         }
     }
 }

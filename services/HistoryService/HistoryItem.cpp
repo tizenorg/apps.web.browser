@@ -87,7 +87,7 @@ void HistoryItem::setUrl(const std::string & url)
     m_url = url;
 }
 
-std::string HistoryItem::getUrl()
+std::string HistoryItem::getUrl() const
 {
     return m_url;
 }

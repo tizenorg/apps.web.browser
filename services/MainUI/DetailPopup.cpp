@@ -16,15 +16,19 @@
 
 
 #include <Elementary.h>
+#include <vector>
+#include <algorithm>
 #include "BrowserAssert.h"
 #include "DetailPopup.h"
 #include "BrowserLogger.h"
 #include "Tools/GeneralTools.h"
+#include "Tools/EflTools.h"
 #include "MainUI.h"
 
 namespace tizen_browser{
 namespace base_ui{
 
+const char * DetailPopup::URL_SEPARATOR = " - ";
 const int DetailPopup::HISTORY_ITEMS_NO = 5;
 
 DetailPopup::DetailPopup(MainUI *mainUI)
@@ -62,14 +66,20 @@ void DetailPopup::createLayout(Evas_Object *parent)
     edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click, this);
     elm_layout_text_set(m_layout, "history_title", "History");
     elm_layout_text_set(m_layout, "url", tools::clearURL(m_item->getUrl()));
+
     m_historyList = elm_genlist_add(m_layout);
     evas_object_size_hint_weight_set(m_historyList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_historyList, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_smart_callback_add(m_historyList, "pressed", _history_url_click, this);
+    for (auto it = m_prevItems->begin(); it != m_prevItems->end(); ++it) {
+        elm_genlist_item_append(m_historyList, m_history_item_class, it->get(), nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+    }
     evas_object_show(m_historyList);
     elm_object_part_content_set(m_layout, "history_list", m_historyList);
 
-    for (auto it = m_prevItems->begin(); it != m_prevItems->end(); ++it) {
-        elm_genlist_item_append(m_historyList, m_history_item_class, it->get(), nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+    if (m_item->getThumbnail()) {
+        Evas_Object * thumb = tools::EflTools::getEvasImage(m_item->getThumbnail(), m_layout);
+        elm_object_part_content_set(m_layout, "thumbnail", thumb);
     }
 
     evas_object_show(m_layout);
@@ -88,18 +98,19 @@ void DetailPopup::hide()
     edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "bg", _bg_click);
     edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "url_over", _url_click);
     edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click);
+    evas_object_smart_callback_del(m_historyList, "pressed", _history_url_click);
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
 }
 
-void DetailPopup::_bg_click(void* data, Evas_Object* obj, const char* emission, const char* source)
+void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
     dp->hide();
 }
 
-void DetailPopup::_url_click(void* data, Evas_Object* obj, const char* emission, const char* source)
+void DetailPopup::_url_click(void* data, Evas_Object*, const char*, const char*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
@@ -107,14 +118,34 @@ void DetailPopup::_url_click(void* data, Evas_Object* obj, const char* emission,
     dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
 }
 
-char* DetailPopup::_get_history_link_text(void* data, Evas_Object* obj, const char* part)
+void DetailPopup::_history_url_click(void* data, Evas_Object*, void* event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Elm_Object_Item *glit = reinterpret_cast<Elm_Object_Item*>(event_info);
+    void *itemData = elm_object_item_data_get(glit);
+    services::HistoryItem *item = reinterpret_cast<services::HistoryItem*>(itemData);
+
+    DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
+    // find shared pointer pointed to HistoryItem object
+    auto it = std::find_if(dp->m_prevItems->begin(),
+                           dp->m_prevItems->end(),
+                           [item] (const std::shared_ptr<services::HistoryItem> i)
+                           { return i.get() == item; }
+                          );
+    std::shared_ptr<services::HistoryItem> itemPtr= *it;
+    dp->hide();
+    dp->openURLInNewTab(itemPtr, dp->m_mainUI->isDesktopMode());
+}
+
+char* DetailPopup::_get_history_link_text(void* data, Evas_Object*, const char* part)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     services::HistoryItem *item = reinterpret_cast<services::HistoryItem*>(data);
     if (!strcmp(part, "page_dsc")) {
         if (item != nullptr) {
-            return strdup(tools::clearURL(item->getUrl()));
+            std::string text = item->getTitle() + URL_SEPARATOR + tools::clearURL(item->getUrl());
+            return strdup(text.c_str());
         }
     }
     return strdup("");
