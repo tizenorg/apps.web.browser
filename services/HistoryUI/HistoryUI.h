@@ -36,14 +36,18 @@ class BROWSER_EXPORT HistoryUI
 public:
     HistoryUI();
     ~HistoryUI();
-    void init(Evas_Object *main_layout);
+    void init(Evas_Object *parent);
+    Evas_Object* getContent();
+    void showUI();
+    void hideUI();
+    Evas_Object* createGengrid(Evas_Object* history_layout);
     virtual std::string getName();
     void addHistoryItem(std::shared_ptr<services::HistoryItem>);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void removeHistoryItem(const std::string& uri);
     void clearItems();
     void hide();
-    void showActionBar();
+    Evas_Object* createActionBar(Evas_Object* history_layout);
     void show(Evas_Object *main_layout);
     void addItems();
     boost::signals2::signal<void (const std::string&)> closeHistoryUIClicked;
@@ -51,6 +55,8 @@ public:
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
 private:
+    Evas_Object* createHistoryUILayout(Evas_Object* parent);
+    Elm_Gengrid_Item_Class* crateItemClass();
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);

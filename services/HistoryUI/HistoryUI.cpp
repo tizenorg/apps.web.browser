@@ -53,80 +53,139 @@ HistoryUI::HistoryUI()
     , m_itemClassToday(nullptr)
     , m_gengrid(nullptr)
     , m_parent(nullptr)
-    , m_item_class(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("HistoryUI/History.edj");
+    m_item_class = crateItemClass();
 }
 
 HistoryUI::~HistoryUI()
 {
-
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_itemClassToday)
+        elm_gengrid_item_class_free(m_itemClassToday);
 }
 
+void HistoryUI::showUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_history_layout);
+    m_gengrid = createGengrid(m_history_layout);
+    addItems();
+    evas_object_show(m_actionBar);
+    evas_object_show(m_history_layout);
+}
+
+void HistoryUI::hideUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_history_layout);
+    evas_object_del(m_genListToday);
+    m_genListToday = nullptr;
+    evas_object_del(m_gengrid);
+    m_gengrid = nullptr;
+    evas_object_hide(m_actionBar);
+    evas_object_hide(m_history_layout);
+}
+
+// TODO: Remove this function when proper view handling will be introduced
 void HistoryUI::show(Evas_Object* parent)
 {
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    m_history_layout = elm_layout_add(parent);
-    elm_layout_file_set(m_history_layout, m_edjFilePath.c_str(), "history-layout");
-    evas_object_size_hint_weight_set(m_history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_history_layout);
-
-    showActionBar();
-
-    m_gengrid = elm_gengrid_add(m_history_layout);
-    elm_object_part_content_set(m_history_layout, "history_gengird", m_gengrid);
-
-    if (!m_item_class) {
-        m_item_class = elm_gengrid_item_class_new();
-        m_item_class->item_style = "history_item";
-        m_item_class->func.text_get = _grid_text_get;
-        m_item_class->func.content_get =  _history_grid_content_get;
-        m_item_class->func.state_get = nullptr;
-        m_item_class->func.del = nullptr;
-    }
-
-    elm_gengrid_align_set(m_gengrid, 0, 0);
-    elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_highlight_mode_set(m_gengrid, EINA_TRUE);
-    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_ON, ELM_SCROLLER_POLICY_ON);
-    elm_scroller_page_size_set(m_gengrid, 0, 580);
-
-    evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-    elm_gengrid_item_size_set(m_gengrid, 580 * efl_scale, 580 * efl_scale);
-
-    addItems();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    init(parent);
+    m_history_layout = createHistoryUILayout(m_parent);
+    showUI();
 }
 
-void HistoryUI::showActionBar()
+void HistoryUI::init(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(parent);
+    m_parent = parent;
+}
+
+Evas_Object* HistoryUI::getContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
+    if (!m_history_layout)
+        m_history_layout = createHistoryUILayout(m_parent);
+    return m_history_layout;
+}
+
+Evas_Object* HistoryUI::createHistoryUILayout(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+    Evas_Object* history_layout = elm_layout_add(parent);
+    elm_layout_file_set(history_layout, m_edjFilePath.c_str(), "history-layout");
+    evas_object_size_hint_weight_set(history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    m_actionBar = createActionBar(history_layout);
+    m_gengrid = createGengrid(history_layout);
+
+    return history_layout;
+}
+
+Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(history_layout);
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+    Evas_Object* gengrid = elm_gengrid_add(history_layout);
+    elm_object_part_content_set(history_layout, "history_gengird", gengrid);
+
+    elm_gengrid_align_set(gengrid, 0, 0);
+    elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(gengrid, EINA_TRUE);
+    elm_gengrid_highlight_mode_set(gengrid, EINA_TRUE);
+    elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_ON, ELM_SCROLLER_POLICY_ON);
+    elm_scroller_page_size_set(gengrid, 0, 580);
+    evas_object_size_hint_weight_set(gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    elm_gengrid_item_size_set(gengrid, 580 * efl_scale, 580 * efl_scale);
+    return gengrid;
+}
+
+Elm_Gengrid_Item_Class* HistoryUI::crateItemClass()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Elm_Gengrid_Item_Class* item_class = elm_gengrid_item_class_new();
+    item_class->item_style = "history_item";
+    item_class->func.text_get = _grid_text_get;
+    item_class->func.content_get =  _history_grid_content_get;
+    item_class->func.state_get = nullptr;
+    item_class->func.del = nullptr;
+    return item_class;
+}
+
+Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    m_actionBar = elm_layout_add(m_history_layout);
-    elm_object_part_content_set(m_history_layout, "action_bar_history", m_actionBar);
-    evas_object_size_hint_weight_set(m_actionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_actionBar, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    Evas_Object* actionBar = elm_layout_add(history_layout);
+    elm_object_part_content_set(history_layout, "action_bar_history", actionBar);
+    evas_object_size_hint_weight_set(actionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(actionBar, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_layout_file_set(m_actionBar, m_edjFilePath.c_str(), "action_bar");
+    elm_layout_file_set(actionBar, m_edjFilePath.c_str(), "action_bar");
 
-    Evas_Object *button = elm_button_add(m_actionBar);
+    Evas_Object *button = elm_button_add(actionBar);
     elm_object_style_set(button, "history_button");
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_clearHistory_clicked, this);
-    elm_object_part_content_set(m_actionBar, "clearhistory_click", button);
+    elm_object_part_content_set(actionBar, "clearhistory_click", button);
 
-    button = elm_button_add(m_actionBar);
+    button = elm_button_add(actionBar);
     elm_object_style_set(button, "history_button");
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
-    elm_object_part_content_set(m_actionBar, "close_click", button);
+    elm_object_part_content_set(actionBar, "close_click", button);
 
-    evas_object_show(m_actionBar);
+    return actionBar;
 }
 
 void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
