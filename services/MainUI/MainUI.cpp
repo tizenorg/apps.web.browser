@@ -33,8 +33,8 @@ namespace base_ui{
 
 const int SMALL_TILES_ROWS = 2;
 const int MAX_TILES_NUMBER = 5;
-const int MainUI::MAX_TILE_WIDTH = 784;
-const int MainUI::MAX_TILE_HEIGHT = 498;
+const int MainUI::MAX_THUMBNAIL_WIDTH = 840;
+const int MainUI::MAX_THUMBNAIL_HEIGHT = 648;
 
 EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
 
@@ -49,12 +49,6 @@ typedef struct _BookmarkItemData
         std::shared_ptr<tizen_browser::services::BookmarkItem> item;
         std::shared_ptr<tizen_browser::base_ui::MainUI> mainUI;
 } BookmarkItemData;
-
-struct ItemData{
-        tizen_browser::base_ui::MainUI * mainUI;
-        const char* button_name;
-        Elm_Object_Item * e_item;
-};
 
 MainUI::MainUI()
     : m_parent(nullptr)
@@ -360,7 +354,7 @@ void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::service
          }
 }
 
-char* MainUI::_grid_text_get(void *data, Evas_Object *obj, const char *part)
+char* MainUI::_grid_text_get(void *data, Evas_Object *, const char *part)
 {
     HistoryItemData *itemData = reinterpret_cast<HistoryItemData*>(data);
     if (!strcmp(part, "page_title")) {
@@ -372,7 +366,7 @@ char* MainUI::_grid_text_get(void *data, Evas_Object *obj, const char *part)
     return strdup("");
 }
 
-char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part)
+char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
         BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
         if (!strcmp(part, "page_title")) {

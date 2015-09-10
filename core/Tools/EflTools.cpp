@@ -83,9 +83,6 @@ Evas_Object * getEvasImage(std::shared_ptr<BrowserImage> b_image, Evas_Object * 
             } else {
                 BROWSER_LOGD("Image loaded");
                 evas_object_image_fill_set(eo_image, 0, 0, b_image->width, b_image->height);
-
-                //EFL BUG without resizing image is not displayed
-                evas_object_resize(eo_image, b_image->width, b_image->height);
             }
             return eo_image;
         };

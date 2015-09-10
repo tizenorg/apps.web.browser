@@ -63,8 +63,8 @@ public:
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
 
-    static const int MAX_TILE_WIDTH;
-    static const int MAX_TILE_HEIGHT;
+    static const int MAX_THUMBNAIL_WIDTH;
+    static const int MAX_THUMBNAIL_HEIGHT;
 
 private:
     void createItemClasses();

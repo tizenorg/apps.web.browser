@@ -402,8 +402,8 @@ group { name: "elm/genlist/item/big_grid_item/default";
                 fixed: 1 0;
                 align: 0.0 0.0;
                 color : 231 231 231 255;
-                min: 784 498;
-                max: 784 498;
+                min: 784 577;   // size adjusted to max thubnail with and height
+                max: 784 577;
                 rel1 {
                     relative: 0.0  0.0; to: "bg";
                 }
@@ -494,8 +494,9 @@ group { name: "elm/genlist/item/big_grid_item/default";
                 color: 113 128 147 255;
                 visible: 1;
                 rel1 {
-                    to: "elm.thumbnail";
-                    relative: 0.0  1.0;
+                    to: "bg";
+                    relative: 0.0  0.0;
+                    offset: 0 498;    // thumbnail height
                 }
                 rel2 {
                     relative: 1.0  1.0;
@@ -666,8 +667,8 @@ group { name: "elm/genlist/item/small_grid_item/default";
                 fixed: 1 0;
                 align: 0.0 0.0;
                 color : 231 231 231 255;
-                min: 378 198;
-                max: 378 198;
+                min: 378 292;   // size adjusted to max thubnail with and height
+                max: 378 292;
                 rel1 {
                     relative: 0.0  0.0; to: "bg";
                 }
@@ -758,8 +759,9 @@ group { name: "elm/genlist/item/small_grid_item/default";
                 color: 113 128 147 255;
                 visible: 1;
                 rel1 {
-                    to: "elm.thumbnail";
-                    relative: 0.0  1.0;
+                    to: "bg";
+                    relative: 0.0  0.0;
+                    offset: 0 198;  // thumbnail height
                 }
                 rel2 {
                     relative: 1.0  1.0;

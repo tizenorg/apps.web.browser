@@ -51,7 +51,7 @@ public:
 	bool operator!=(const HistoryItem& other);
 
 	void setUrl(const std::string & url);
-	std::string getUrl();
+	std::string getUrl() const;
 
 	void setTitle(const std::string & title);
 	std::string getTitle() const;

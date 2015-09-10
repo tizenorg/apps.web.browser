@@ -801,7 +801,7 @@ void SimpleUI::loadFinished()
     if(!m_webEngine->isPrivateMode()){
         m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem> (m_webEngine->getURI(),
                                                                                                 m_webEngine->getTitle(),
-                                                                                                m_webEngine->getFavicon()), m_webEngine->getSnapshotData(MainUI::MAX_TILE_WIDTH, MainUI::MAX_TILE_HEIGHT));
+                                                                                                m_webEngine->getFavicon()), m_webEngine->getSnapshotData(MainUI::MAX_THUMBNAIL_WIDTH, MainUI::MAX_THUMBNAIL_HEIGHT));
     }
 #if 0
     if(!m_platformInputManager->getPointerModeEnabled())
