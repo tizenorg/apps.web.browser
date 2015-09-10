@@ -102,6 +102,8 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     }
 
     bp_bookmark_info_fmt info;
+
+    std::memset(&info, 0, sizeof(bp_bookmark_info_fmt));
     info.type = 0;
     info.parent = dirId;
     info.sequence = -1;
@@ -457,6 +459,8 @@ int BookmarkService::update_bookmark(int id, const char *title, const char *uri,
         }
     }
     bp_bookmark_info_fmt info;
+
+    std::memset(&info, 0, sizeof(bp_bookmark_info_fmt));
     info.type = -1;
     info.parent = parent_id;
     info.sequence = order;
