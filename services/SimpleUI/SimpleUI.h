@@ -258,7 +258,7 @@ private:
     void showProgressBar();
     void hideProgressBar();
 
-    void closeBookmarkManagerMenu(std::string& str);
+    void closeBookmarkManagerMenu(const std::string& str);
     void updateBookmarkManagerGenGrid(int folder_id);
     void showBookmarkManagerMenu();
 
