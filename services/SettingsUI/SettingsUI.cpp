@@ -39,8 +39,6 @@ struct ItemData {
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)
-    , m_genListActionBar(nullptr)
-    , m_itemClassActionBar(nullptr)
     , m_parent(nullptr)
     , m_item_class(nullptr)
     , m_scroller(nullptr)
@@ -56,74 +54,97 @@ SettingsUI::~SettingsUI()
 
 }
 
+void SettingsUI::init(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(parent);
+    m_parent = parent;
+}
+
+Evas_Object* SettingsUI::getContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
+    if (!m_settings_layout)
+        m_settings_layout = createSettingsUILayout(m_parent);
+    return m_settings_layout;
+}
+
+void SettingsUI::showUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_show(m_scroller);
+    evas_object_show(m_items_layout);
+    evas_object_show(m_settings_layout);
+    evas_object_show(m_actionBar);
+}
+
+void SettingsUI::hideUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_hide(m_scroller);
+    evas_object_hide(m_items_layout);
+    evas_object_hide(m_settings_layout);
+    evas_object_hide(m_actionBar);
+}
+
+Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(parent);
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+    Evas_Object* settings_layout = elm_layout_add(parent);
+    elm_layout_file_set(settings_layout, m_edjFilePath.c_str(), "settings-layout");
+    evas_object_size_hint_weight_set(settings_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(settings_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    m_actionBar = createActionBar(settings_layout);
+    m_scroller = createSettingsPage(settings_layout);
+    return settings_layout;
+}
+
 void SettingsUI::show(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    m_settings_layout = elm_layout_add(parent);
-    elm_layout_file_set(m_settings_layout, m_edjFilePath.c_str(), "settings-layout");
-    evas_object_size_hint_weight_set(m_settings_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_settings_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_settings_layout);
-
-    showActionBar();
-    showSettingsPage();
+    init(parent);
+    m_settings_layout = createSettingsUILayout(m_parent);
+    showUI();
 }
 
-void SettingsUI::showActionBar()
+Evas_Object* SettingsUI::createActionBar(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    m_genListActionBar = elm_genlist_add(m_settings_layout);
-    elm_object_part_content_set(m_settings_layout, "actionbar_swallow", m_genListActionBar);
-    elm_genlist_homogeneous_set(m_genListActionBar, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genListActionBar, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genListActionBar, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genListActionBar, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genListActionBar, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genListActionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    Evas_Object* actionBar = elm_layout_add(settings_layout);
+    elm_object_part_content_set(settings_layout, "actionbar_swallow", actionBar);
+    evas_object_size_hint_weight_set(actionBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(actionBar, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    m_itemClassActionBar = elm_genlist_item_class_new();
-    m_itemClassActionBar->item_style = "settings_action_bar_items";
-    m_itemClassActionBar->func.text_get = nullptr;
-    m_itemClassActionBar->func.content_get = &listActionBarContentGet;
-    m_itemClassActionBar->func.state_get = nullptr;
-    m_itemClassActionBar->func.del = nullptr;
+    elm_layout_file_set(actionBar, m_edjFilePath.c_str(), "action_bar");
+    Evas_Object *close_click_btn = elm_button_add(actionBar);
+    elm_object_style_set(close_click_btn, "basic_button");
+    evas_object_smart_callback_add(close_click_btn, "clicked", SettingsUI::close_clicked_cb, this);
+    elm_object_part_content_set(actionBar, "close_click", close_click_btn);
 
-    ItemData *id = new ItemData;
-    id->settingsUI = this;
-    Elm_Object_Item *elmItem = elm_genlist_item_append(m_genListActionBar,    //genlist
-                                                       m_itemClassActionBar,  //item Class
-                                                       id,
-                                                       nullptr,               //parent item
-                                                       ELM_GENLIST_ITEM_NONE, //item type
-                                                       nullptr,
-                                                       nullptr                //data passed to above function
-                                                      );
-    id->e_item = elmItem;
-
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    return actionBar;
 }
 
-void SettingsUI::showSettingsPage()
+Evas_Object* SettingsUI::createSettingsPage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     ItemData *id = new ItemData;
     id->settingsUI = this;
 
-    m_scroller = elm_scroller_add(m_settings_layout);
-    m_items_layout = elm_layout_add(m_scroller);
-    elm_object_content_set(m_scroller, m_items_layout);
+    Evas_Object* scroller = elm_scroller_add(settings_layout);
+    m_items_layout = elm_layout_add(scroller);
+    elm_object_content_set(scroller, m_items_layout);
     elm_layout_file_set(m_items_layout, m_edjFilePath.c_str(), "settings_items");
-    elm_object_part_content_set(m_settings_layout, "settings_scroller_swallow", m_scroller);
-    evas_object_size_hint_weight_set(m_scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_content_set(settings_layout, "settings_scroller_swallow", scroller);
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_scroller_policy_set(m_items_layout, ELM_SCROLLER_POLICY_ON, ELM_SCROLLER_POLICY_AUTO);
-    elm_scroller_bounce_set(m_scroller, EINA_TRUE, EINA_FALSE);
-    elm_scroller_propagate_events_set(m_scroller, EINA_TRUE);
-    evas_object_show(m_scroller);
-    evas_object_show(m_items_layout);
+    elm_scroller_bounce_set(scroller, EINA_TRUE, EINA_FALSE);
+    elm_scroller_propagate_events_set(scroller, EINA_TRUE);
 
     Evas_Object *del_selected_data_button = elm_button_add(m_items_layout);
     elm_object_style_set(del_selected_data_button, "basic_button");
@@ -197,6 +218,8 @@ void SettingsUI::showSettingsPage()
     elm_layout_content_set(m_items_layout, "ts_disable_rb", ts_disable_rb);
     elm_radio_group_add(ts_disable_rb, tabSyncGroup);
     elm_radio_state_value_set(ts_disable_rb, TS_DISABLE);
+
+    return scroller;
 }
 
 Evas_Object* SettingsUI::listActionBarContentGet(void* data, Evas_Object* obj , const char* part)
@@ -243,9 +266,9 @@ void SettingsUI::close_clicked_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData * id = static_cast<ItemData*>(data);
-        id->settingsUI->closeSettingsUIClicked(std::string());
-        id->settingsUI->clearItems();
+        SettingsUI * s_ui = static_cast<SettingsUI*>(data);
+        s_ui->closeSettingsUIClicked(std::string());
+        s_ui->clearItems();
     }
 }
 
@@ -294,7 +317,6 @@ void SettingsUI::clearItems()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     hide();
-    elm_genlist_clear(m_genListActionBar);
 }
 
 }
