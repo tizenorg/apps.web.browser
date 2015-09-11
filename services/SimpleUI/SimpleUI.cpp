@@ -599,12 +599,12 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
     std::string historyAddress = historyItem->getUrl();
     if(m_historyUI) {                // TODO: remove this section when naviframes will be available
         m_historyUI->clearItems();
-        m_historyUI = nullptr;
+        closeHistoryUI(std::string());
     }
 
     if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
         m_moreMenuUI->clearItems();
-        m_moreMenuUI = nullptr;
+        closeMoreMenu(std::string());
     }
     openNewTab(historyAddress, desktopMode);
 }
@@ -645,6 +645,7 @@ void SimpleUI::onBookmarkManagerButtonClicked(const std::string&)
     BROWSER_LOGD("[%s]", __func__);
     if(m_mainUI) {               // TODO: remove this section when naviframes will be available
         m_mainUI->clearBookmarkGengrid();
+        m_mainUI->clearHistoryGenlist();
     }
 
     if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
@@ -659,12 +660,12 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     std::string bookmarkAddress = bookmarkItem->getAddress();
     if(m_bookmarkManagerUI) {                // TODO: remove this section when naviframes will be available
         m_bookmarkManagerUI->clearItems();
-        m_bookmarkManagerUI = nullptr;
+        closeBookmarkManagerMenu(std::string());
     }
 
     if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
         m_moreMenuUI->clearItems();
-        m_moreMenuUI = nullptr;
+        closeMoreMenu(std::string());
     }
     openNewTab(bookmarkAddress);
 }
@@ -1085,6 +1086,9 @@ void SimpleUI::showHistoryUI(const std::string& str)
 void SimpleUI::closeHistoryUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_historyUI->clearHistoryClicked.disconnect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
+    m_historyUI->closeHistoryUIClicked.disconnect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
+    m_historyUI->historyItemClicked.disconnect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));     // desktop mode as default
     m_historyUI.reset();
 }
 
@@ -1197,13 +1201,9 @@ void SimpleUI::showBookmarkManagerMenu()
                 <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
                 (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkmanagerui"));
         M_ASSERT(m_bookmarkManagerUI);
-        m_bookmarkManagerUI->closeBookmarkManagerClicked.disconnect_all_slots();
         m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerMenu, this,_1));
-        m_bookmarkManagerUI->saveFolderClicked.disconnect_all_slots();
         m_bookmarkManagerUI->saveFolderClicked.connect(boost::bind(&SimpleUI::newFolderBookmarkManager, this,_1,_2));
-        m_bookmarkManagerUI->bookmarkItemClicked.disconnect_all_slots();
         m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
-        m_bookmarkManagerUI->folderItemClicked.disconnect_all_slots();
         m_bookmarkManagerUI->folderItemClicked.connect(boost::bind(&SimpleUI::updateBookmarkManagerGenGrid, this,_1));
         m_bookmarkManagerUI->show(m_window.get());
         m_bookmarkManagerUI->addBookmarkFolderItems(getBookmarkFolders(ROOT_FOLDER));
@@ -1222,19 +1222,23 @@ void SimpleUI::updateBookmarkManagerGenGrid(int folder_id)
     m_curr_folder_id = folder_id;
 }
 
-void SimpleUI::closeBookmarkManagerMenu(std::string& str)
+void SimpleUI::closeBookmarkManagerMenu(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_bookmarkManagerUI->closeBookmarkManagerClicked.disconnect(boost::bind(&SimpleUI::closeBookmarkManagerMenu, this,_1));
+    m_bookmarkManagerUI->saveFolderClicked.disconnect(boost::bind(&SimpleUI::newFolderBookmarkManager, this,_1,_2));
+    m_bookmarkManagerUI->bookmarkItemClicked.disconnect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
+    m_bookmarkManagerUI->folderItemClicked.disconnect(boost::bind(&SimpleUI::updateBookmarkManagerGenGrid, this,_1));
     m_bookmarkManagerUI.reset();
 
     if(m_moreMenuUI) {
-        m_moreMenuUI.reset();
+        closeMoreMenu(std::string());
         showMoreMenu();
     }
 
     if(m_mainUI) {
-        m_mainUI->addBookmarkItems(getBookmarks());
-        m_mainUI->showBookmarks();
+        m_mainUI->addHistoryItems(getMostVisitedItems());
+        m_mainUI->showHistory();
     }
 }
 
