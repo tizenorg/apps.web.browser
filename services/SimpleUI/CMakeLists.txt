@@ -5,6 +5,7 @@ set(SimpleUI_SRCS
     ButtonBar.cpp
     SimplePopup.cpp
     BookmarksManager.cpp
+    ViewManager.cpp
     )
 
 set(SimpleUI_HEADERS
@@ -12,6 +13,7 @@ set(SimpleUI_HEADERS
     ButtonBar.h
     SimplePopup.h
     BookmarksManager.h
+    ViewManager.h
     )
 
 include(Coreheaders)
