@@ -27,9 +27,33 @@ namespace interfaces
  */
 class AbstractUIComponent
 {
+public:
+/**
+ * @brief Sets the parent which will be used when getContent is used.
+ */
+    virtual void init(Evas_Object* parent) = 0;
+
+/**
+ * @brief If UI content is not created creates it.
+ *        Call init betore calling this function.
+ * @return UI content.
+ */
+    virtual Evas_Object* getContent() = 0;
+
+/**
+ * @brief This makes element visible and clickable.
+ *        Recreates genlists and gengrids (due to elm_genlist_clear and elm_gengrid_clear isue)
+ */
+    virtual void showUI() = 0;
+
+/**
+ * @brief This makes UI element invisible and unclickable.
+ *        Deletes genlists and gengrids (due to elm_genlist_clear and elm_gengrid_clear isue)
+ */
+    virtual void hideUI() = 0;
 };
 
-}
-}
+}//namespace interfaces
+}//namespace tizen_browser
 
 #endif /* __ABSTRACT_UI_COMPONENT_H__ */
