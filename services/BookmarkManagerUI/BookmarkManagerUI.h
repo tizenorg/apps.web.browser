@@ -38,9 +38,16 @@ class BROWSER_EXPORT BookmarkManagerUI
 public:
     BookmarkManagerUI();
     ~BookmarkManagerUI();
-    void show(Evas_Object *main_layout);
+    //AbstractUIComponent interface methods
+    void init(Evas_Object *parent);
+    void showUI();
+    void hideUI();
     Evas_Object *getContent();
-    Evas_Object *getGenList();
+
+    // TODO: remove this (After fixing window managment)
+    void show(Evas_Object *main_layout);
+
+    //TODO: make it private;
     void showTopContent();
     virtual std::string getName();
     void addBookmarkFolderItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
@@ -62,7 +69,11 @@ public:
     boost::signals2::signal<void (int)> folderItemClicked;
 
 private:
+    Evas_Object* createBookmarksLayout(Evas_Object* parent);
     void createGenGrid();
+    void createGengridItemClasses();
+    Evas_Object *getGenList();
+    Evas_Object *getGenGrid();
     static char* _grid_folder_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_folder_content_get(void *data, Evas_Object *obj, const char *part);
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
