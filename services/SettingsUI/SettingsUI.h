@@ -35,10 +35,14 @@ class BROWSER_EXPORT SettingsUI
 public:
     SettingsUI();
     ~SettingsUI();
+    void init(Evas_Object* parent);
+    Evas_Object* getContent();
+    void showUI();
+    void hideUI();
     void show(Evas_Object *main_layout);
     virtual std::string getName();
-    void showActionBar();
-    void showSettingsPage();
+    Evas_Object* createActionBar(Evas_Object* settings_layout);
+    Evas_Object* createSettingsPage(Evas_Object* settings_layout);
     void clearItems();
     void hide();
 
@@ -48,6 +52,7 @@ public:
     boost::signals2::signal<void (const std::string & )> closeSettingsUIClicked;
 
 private:
+    Evas_Object* createSettingsUILayout(Evas_Object* parent);
     static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* listSettingsGenlistContentGet(void *data, Evas_Object *obj, const char *part);
 
@@ -64,10 +69,9 @@ private:
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
 
     Evas_Object *m_settings_layout;
-    Evas_Object *m_genListActionBar;
+    Evas_Object *m_actionBar;
     Evas_Object *m_scroller;
     Evas_Object *m_items_layout;
-    Elm_Genlist_Item_Class *m_itemClassActionBar;
     Evas_Object *m_parent;
 
     Elm_Gengrid_Item_Class * m_item_class;

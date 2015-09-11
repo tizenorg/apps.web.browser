@@ -1197,7 +1197,7 @@ group { name: "settings_items";
 }
 
 
-group { name: "elm/genlist/item/settings_action_bar_items/default";
+group { name: "action_bar";
         min: 1920 104;
         max: 1920 104;
         data.item: "texts" "settings_title";
