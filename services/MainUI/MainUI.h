@@ -75,14 +75,10 @@ private:
     Evas_Object* createBottomButton(Evas_Object *parent);
     Evas_Object* createTopButtons(Evas_Object *parent);
 
-    static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
-    static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
-    static void _item_deleted(void *data, Evas_Object *obj);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
-    static void _deleteBookmark(void *data, Evas_Object *obj, void *event_info);
+    static void _thumbClicked(void *data, Evas_Object *obj, const char *emission, const char *source);
     void setEmptyView(bool empty);
     void showNoHistoryLabel();
 
@@ -97,20 +93,19 @@ private:
     Evas_Object *m_bookmarksButton;
     Evas_Object *m_mostVisitedButton;
     Evas_Object *m_bookmarkGengrid;
-    Evas_Object *m_genListLeft;
-    Evas_Object *m_genListCenter;
-    Evas_Object *m_genListRight;
+    std::vector<Evas_Object *> m_tiles;
 
-    Elm_Gengrid_Item_Class * m_big_item_class;
-    Elm_Gengrid_Item_Class * m_small_item_class;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
-
     DetailPopup m_detailPopup;
-    std::multimap<std::string,Elm_Object_Item*> m_map_history_views;
+    services::HistoryItemVector m_historyItems;
     std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;
     std::string edjFilePath;
     bool m_desktopMode;
+
+    static const int MAX_TILES_NUMBER;
+    static const int BIG_TILE_INDEX;
+    static const std::vector<std::string> TILES_NAMES;
 };
 
 }

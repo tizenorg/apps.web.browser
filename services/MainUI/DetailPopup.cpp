@@ -101,6 +101,7 @@ void DetailPopup::hide()
     evas_object_smart_callback_del(m_historyList, "pressed", _history_url_click);
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
+    evas_object_del(m_layout);
 }
 
 void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
