@@ -45,55 +45,113 @@ typedef struct _MoreItemData
 } MoreMenuItemData;
 
 MoreMenuUI::MoreMenuUI()
-    : m_gengrid(NULL)
-    , m_parent(NULL)
-    , m_item_class(NULL)
+    : m_gengrid(nullptr)
+    , m_parent(nullptr)
+    , m_item_class(nullptr)
+    , m_mm_layout(nullptr)
     , m_desktopMode(true)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("MoreMenuUI/MoreMenu.edj");
+    m_item_class = crateItemClass();
 }
 
 MoreMenuUI::~MoreMenuUI()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_item_class)
+        elm_gengrid_item_class_free(m_item_class);
+}
+
+Elm_Gengrid_Item_Class* MoreMenuUI::crateItemClass()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Elm_Gengrid_Item_Class* item_class = elm_gengrid_item_class_new();
+    item_class->item_style = "menu_item";
+    item_class->func.text_get = _grid_text_get;
+    item_class->func.content_get =  _grid_content_get;
+    item_class->func.state_get = NULL;
+    item_class->func.del = NULL;
+    return item_class;
+}
+
+void MoreMenuUI::init(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(parent);
+    m_parent = parent;
 }
 
 void MoreMenuUI::show(Evas_Object* parent, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_parent = parent;
-    m_desktopMode = desktopMode;
-    elm_theme_extension_add(NULL, m_edjFilePath.c_str());
-    m_mm_layout = elm_layout_add(parent);
-    elm_layout_file_set(m_mm_layout, m_edjFilePath.c_str(), "moremenu-layout");
-    evas_object_size_hint_weight_set(m_mm_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_mm_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_mm_layout);
+    init(parent);
+    //TODO: move this function call to SimpleUI::initUIServices after introducing new window managment.
+    setDesktopMode(desktopMode);
+    m_mm_layout=createMoreMenuLayout(parent);
+    showUI();
+}
 
-    m_gengrid = elm_gengrid_add(m_mm_layout);
-    elm_object_part_content_set(m_mm_layout, "elm.swallow.grid", m_gengrid);
-
-      if (!m_item_class) {
-            m_item_class = elm_gengrid_item_class_new();
-            m_item_class->item_style = "menu_item";
-            m_item_class->func.text_get = _grid_text_get;
-            m_item_class->func.content_get =  _grid_content_get;
-            m_item_class->func.state_get = NULL;
-            m_item_class->func.del = NULL;
-        }
-
-    elm_gengrid_align_set(m_gengrid, 0, 0);
-    elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
-    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(m_gengrid, 0, 327);
-    evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
-
+void MoreMenuUI::showUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
+    evas_object_show(getContent());
+    //regenerate gengrid
+    m_gengrid=createGengrid(getContent());
     addItems();
+    elm_object_part_content_set(getContent(), "elm.swallow.grid", m_gengrid);
+}
+
+void MoreMenuUI::hideUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_mm_layout);
+    evas_object_hide(getContent());
+    //destroy gengrid
+    evas_object_del(m_gengrid);
+}
+
+
+Evas_Object* MoreMenuUI::getContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
+    if(!m_mm_layout)
+        m_mm_layout = createMoreMenuLayout(m_parent);
+    return m_mm_layout;
+}
+
+Evas_Object* MoreMenuUI::createMoreMenuLayout(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_theme_extension_add(NULL, m_edjFilePath.c_str());
+    Evas_Object* mm_layout = elm_layout_add(parent);
+    elm_layout_file_set(mm_layout, m_edjFilePath.c_str(), "moremenu-layout");
+    evas_object_size_hint_weight_set(mm_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(mm_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    evas_object_show(mm_layout);
+    return mm_layout;
+}
+
+Evas_Object* MoreMenuUI::createGengrid(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Object* gengrid = elm_gengrid_add(parent);
+    elm_object_part_content_set(parent, "elm.swallow.grid", gengrid);
+
+    elm_gengrid_align_set(gengrid, 0, 0);
+    elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
+    elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_page_size_set(gengrid, 0, 327);
+    evas_object_size_hint_weight_set(gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_gengrid_item_size_set(gengrid, 364 * efl_scale, 320 * efl_scale);
+    return gengrid;
 }
 
 void MoreMenuUI::showCurrentTab()
@@ -138,6 +196,7 @@ void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> 
 
 void MoreMenuUI::setDocIcon()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_icon)
         evas_object_del(m_icon);
 
@@ -188,7 +247,7 @@ void MoreMenuUI::_close_clicked(void* data, Evas_Object*, void*)
 
 void MoreMenuUI::AddBookmarkPopupCalled()
 {
-
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_add_bookmark_popup = std::make_shared<tizen_browser::base_ui::AddBookmarkPopup>(m_mm_layout);
     m_add_bookmark_popup->show();
     m_add_bookmark_popup->addBookmarkFolderItems(m_map_bookmark_folder_list);
@@ -234,8 +293,8 @@ void MoreMenuUI::CancelClicked(Evas_Object*)
 
 void MoreMenuUI::addToBookmarks(int folder_id)
 {
-     AddBookmarkInput(folder_id);
      BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+     AddBookmarkInput(folder_id);
      m_add_bookmark_popup->hide();
      m_add_bookmark_popup.reset();
 }
@@ -475,6 +534,9 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             break;
         case EXIT_BROWSER:
             _exitClicked();
+            break;
+        default:
+            BROWSER_LOGD("[%s:%d] Warning: Unhandled button.", __PRETTY_FUNCTION__, __LINE__);
             break;
         }
     }
