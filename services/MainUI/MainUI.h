@@ -34,8 +34,7 @@ namespace base_ui{
 //TODO: This class name is not revelant to what this class actually does.
 //Rename this class and file to "QuickAccessUI".
 class BROWSER_EXPORT MainUI
-        : public tizen_browser::interfaces::AbstractUIComponent
-        , public tizen_browser::core::AbstractService
+        : public tizen_browser::core::AbstractService
 {
 public:
     MainUI();

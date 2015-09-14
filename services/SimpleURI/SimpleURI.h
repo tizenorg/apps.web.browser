@@ -34,8 +34,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 class BROWSER_EXPORT SimpleURI
-        : public tizen_browser::interfaces::AbstractUIComponent
-        , public tizen_browser::core::AbstractService
+        : public tizen_browser::core::AbstractService
 {
 public:
     enum IconType{
