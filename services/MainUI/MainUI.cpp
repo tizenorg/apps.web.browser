@@ -31,12 +31,19 @@
 namespace tizen_browser{
 namespace base_ui{
 
-const int SMALL_TILES_ROWS = 2;
-const int MAX_TILES_NUMBER = 5;
+EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
+
+const int MainUI::MAX_TILES_NUMBER = 5;
 const int MainUI::MAX_THUMBNAIL_WIDTH = 840;
 const int MainUI::MAX_THUMBNAIL_HEIGHT = 648;
-
-EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
+const int MainUI::BIG_TILE_INDEX = 0;
+const std::vector<std::string> MainUI::TILES_NAMES = {
+    "elm.swallow.big",
+    "elm.swallow.small_first",
+    "elm.swallow.small_second",
+    "elm.swallow.small_third",
+    "elm.swallow.small_fourth"
+};
 
 typedef struct _HistoryItemData
 {
@@ -53,16 +60,11 @@ typedef struct _BookmarkItemData
 MainUI::MainUI()
     : m_parent(nullptr)
     , m_layout(nullptr)
-    , m_bookmarksButton(nullptr)
-    , m_mostVisitedButton(nullptr)
     , m_bookmarksView(nullptr)
     , m_mostVisitedView(nullptr)
+    , m_bookmarksButton(nullptr)
+    , m_mostVisitedButton(nullptr)
     , m_bookmarkGengrid(nullptr)
-    , m_genListLeft(nullptr)
-    , m_genListCenter(nullptr)
-    , m_genListRight(nullptr)
-    , m_big_item_class(nullptr)
-    , m_small_item_class(nullptr)
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
 {
@@ -76,32 +78,12 @@ MainUI::MainUI()
 MainUI::~MainUI()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    elm_genlist_item_class_free(m_big_item_class);
-    elm_genlist_item_class_free(m_small_item_class);
     elm_gengrid_item_class_free(m_bookmark_item_class);
 }
 
 void MainUI::createItemClasses()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    if (!m_big_item_class) {
-       m_big_item_class = elm_genlist_item_class_new();
-       m_big_item_class->item_style = "big_grid_item";
-       m_big_item_class->func.text_get = _grid_text_get;
-       m_big_item_class->func.content_get =  _grid_content_get;
-       m_big_item_class->func.state_get = nullptr;
-       m_big_item_class->func.del = nullptr;
-    }
-
-    if (!m_small_item_class) {
-        m_small_item_class = elm_genlist_item_class_new();
-        m_small_item_class->item_style = "small_grid_item";
-        m_small_item_class->func.text_get = _grid_text_get;
-        m_small_item_class->func.content_get =  _grid_content_get;
-        m_small_item_class->func.state_get = nullptr;
-        m_small_item_class->func.del = nullptr;
-    }
-
     if (!m_bookmark_item_class) {
         m_bookmark_item_class = elm_gengrid_item_class_new();
         m_bookmark_item_class->item_style = "grid_item";
@@ -149,37 +131,6 @@ Evas_Object* MainUI::createMostVisitedView (Evas_Object * parent)
     elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "mv_bookmarks");
     evas_object_size_hint_weight_set(mostVisitedLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (mostVisitedLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    Evas_Object* genListLeft = elm_genlist_add(mostVisitedLayout);
-
-    elm_genlist_homogeneous_set(genListLeft, EINA_FALSE);
-    elm_genlist_multi_select_set(genListLeft, EINA_FALSE);
-    elm_genlist_select_mode_set(genListLeft, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(genListLeft, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(genListLeft, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-    elm_object_part_content_set(mostVisitedLayout, "elm.swallow.left", genListLeft);
-    m_genListLeft = genListLeft;
-
-    Evas_Object* genListCenter = elm_genlist_add(mostVisitedLayout);
-    elm_genlist_homogeneous_set(genListCenter, EINA_FALSE);
-    elm_genlist_multi_select_set(genListCenter, EINA_FALSE);
-    elm_genlist_select_mode_set(genListCenter, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(genListCenter, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(genListCenter, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-    elm_object_part_content_set(mostVisitedLayout, "elm.swallow.center", genListCenter);
-    m_genListCenter = genListCenter;
-
-    Evas_Object* genListRight = elm_genlist_add(mostVisitedLayout);
-    elm_genlist_homogeneous_set(genListRight, EINA_FALSE);
-    elm_genlist_multi_select_set(genListRight, EINA_FALSE);
-    elm_genlist_select_mode_set(genListRight, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(genListRight, ELM_LIST_LIMIT);
-    evas_object_size_hint_weight_set(genListRight, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-    elm_object_part_content_set(mostVisitedLayout, "elm.swallow.right", genListRight);
-    m_genListRight=genListRight;
 
     Evas_Object* topButtons = createTopButtons(mostVisitedLayout);
     elm_object_part_content_set(mostVisitedLayout, "elm.swallow.layoutTop", topButtons);
@@ -272,21 +223,21 @@ Evas_Object* MainUI::createBottomButton(Evas_Object *parent)
     return layoutBottom;
 }
 
-void MainUI::_mostVisited_clicked(void * data, Evas_Object * /* obj */, void * event_info)
+void MainUI::_mostVisited_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
     mainUI->mostVisitedClicked(std::string());
 }
 
-void MainUI::_bookmark_clicked(void * data, Evas_Object * /* obj */, void * event_info)
+void MainUI::_bookmark_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
     mainUI->bookmarkClicked(std::string());
 }
 
-void MainUI::_bookmark_manager_clicked(void * data, Evas_Object * /* obj */, void * event_info)
+void MainUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI*  mainUI = static_cast<MainUI *>(data);
@@ -296,33 +247,38 @@ void MainUI::_bookmark_manager_clicked(void * data, Evas_Object * /* obj */, voi
 void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    if (m_map_history_views.size() >= MAX_TILES_NUMBER)
-        return;
+    M_ASSERT(m_historyItems.size() < MAX_TILES_NUMBER);
 
+    int tileNumber = m_historyItems.size();
     HistoryItemData *itemData = new HistoryItemData();
     itemData->item = hi;
     itemData->mainUI = std::shared_ptr<MainUI>(this);
-    Elm_Object_Item* historyView = nullptr;
 
-    if (m_map_history_views.empty())
-    {
-        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-        historyView = elm_genlist_item_append(m_genListLeft, m_big_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-    } else if (m_map_history_views.size() <= SMALL_TILES_ROWS) {
-        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-        historyView = elm_genlist_item_append(m_genListCenter, m_small_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-    } else {
-        BROWSER_LOGD("%s:%d %s  m_map_history_views.size %d", __FILE__, __LINE__, __func__, m_map_history_views.size());
-        historyView = elm_genlist_item_append(m_genListRight, m_small_item_class, itemData, nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
-    }
+    Evas_Object* tile = elm_layout_add(m_mostVisitedView);
+    if (tileNumber == BIG_TILE_INDEX)
+        elm_layout_file_set(tile, edjFilePath.c_str(), "big_tile");
+    else
+        elm_layout_file_set(tile, edjFilePath.c_str(), "small_tile");
+    evas_object_size_hint_weight_set(tile, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (tile, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(tile);
+    elm_object_part_content_set(m_mostVisitedView, TILES_NAMES[tileNumber].c_str(), tile);
+    m_tiles.push_back(tile);
 
-    m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(),historyView));
+    elm_layout_text_set(tile, "page_title", hi->getTitle().c_str());
+    elm_layout_text_set(tile, "page_url", hi->getUrl().c_str());
+    Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(hi->getThumbnail(), m_parent);
+    elm_object_part_content_set(tile, "elm.thumbnail", thumb);
+    edje_object_signal_callback_add(elm_layout_edje_get(tile), "mouse,clicked,1", "over", _thumbClicked, itemData);
+
+    m_historyItems.push_back(hi);
 }
 
 void MainUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     int i = 0;
+    m_historyItems.clear();
     for (auto it = items->begin(); it != items->end(); ++it) {
         i++;
         if (i > MAX_TILES_NUMBER)
@@ -354,17 +310,6 @@ void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::service
          }
 }
 
-char* MainUI::_grid_text_get(void *data, Evas_Object *, const char *part)
-{
-    HistoryItemData *itemData = reinterpret_cast<HistoryItemData*>(data);
-    if (!strcmp(part, "page_title")) {
-        return strdup(itemData->item->getTitle().c_str());
-    }
-    if (!strcmp(part, "page_url")) {
-        return tools::clearURL(itemData->item->getUrl());
-    }
-    return strdup("");
-}
 
 char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
@@ -376,29 +321,6 @@ char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *par
                 return strdup(itemData->item->getAddress().c_str());
         }
         return strdup("");
-}
-
-Evas_Object * MainUI::_grid_content_get(void *data, Evas_Object *obj, const char *part)
-{
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
-    HistoryItemData *itemData = reinterpret_cast<HistoryItemData*>(data);
-
-    if (!strcmp(part, "elm.thumbnail")) {
-	if (itemData->item->getThumbnail()) {
-                Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->mainUI->m_parent);
-                return thumb;
-        }
-        else {
-                return nullptr;
-        }
-    }
-    else if (!strcmp(part, "elm.thumbButton")) {
-		Evas_Object *thumbButton = elm_button_add(obj);
-		elm_object_style_set(thumbButton, "thumbButton");
-		evas_object_smart_callback_add(thumbButton, "clicked", _thumbSelected, data);
-		return thumbButton;
-    }
-    return nullptr;
 }
 
 Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part)
@@ -424,8 +346,16 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, c
     return nullptr;
 }
 
-void MainUI::_thumbSelected(void * data, Evas_Object * /* obj */, void * /* event_info */)
+void MainUI::_thumbSelected(void * data, Evas_Object * , void *)
 {
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
+    itemData->mainUI->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
+}
+
+void MainUI::_thumbClicked(void* data, Evas_Object *, const char *, const char *)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
     itemData->mainUI->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
 }
@@ -434,10 +364,10 @@ void MainUI::clearHistoryGenlist()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    elm_genlist_clear(m_genListRight);
-    elm_genlist_clear(m_genListLeft);
-    elm_genlist_clear(m_genListCenter);
-    m_map_history_views.clear();
+    for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it)
+        edje_object_signal_callback_del(elm_layout_edje_get(*it), "mouse,clicked,1", "over", _thumbClicked);
+
+    m_historyItems.clear();
 }
 
 void MainUI::showHistory()
@@ -455,7 +385,7 @@ void MainUI::showHistory()
 
     elm_object_focus_set(m_mostVisitedButton, true);
 
-    if (m_map_history_views.empty()) {
+    if (m_historyItems.empty()) {
         setEmptyView(true);
         return;
     }
@@ -511,10 +441,6 @@ void MainUI::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, st
 
 void MainUI::showNoHistoryLabel()
 {
-    evas_object_hide(elm_object_part_content_get(m_mostVisitedView, "elm.swallow.left"));
-    evas_object_hide(elm_object_part_content_get(m_mostVisitedView, "elm.swallow.right"));
-    evas_object_hide(elm_object_part_content_get(m_mostVisitedView, "elm.swallow.center"));
-
     elm_layout_text_set(m_mostVisitedView, "elm.text.empty", "No visited site");
     elm_layout_signal_emit(m_mostVisitedView, "empty,view", "mainui");
 }

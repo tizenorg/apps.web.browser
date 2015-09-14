@@ -20,43 +20,33 @@ collections {
 #define ITEM_WIDTH 374
 #define PARENT_ITEM_HEIGHT 36
 
-    group{
-        name: "elm/button/base/invisible_button";
-        parts{
-            part{
-                name: "button";
-                type: RECT;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    color: 0 0 0 0;
-                }
-            }
-            part{
-                name: "over";
-                type: RECT;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    rel1 { relative: 0.0 0.0;to: "button";}
-                    rel2 { relative: 1.0 1.0;to: "button";}
-                    color: 0 0 0 0;
-                }
+group{
+    name: "elm/button/base/invisible_button";
+    parts{
+        part{
+            name: "button";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                color: 0 0 0 0;
             }
         }
-        programs{
-            program {
-                name: "mouse_click";
-                signal: "mouse,clicked,1";
-                source: "over";
-                script {
-                    emit("elm,action,click", "");
-                }
+        part{
+            name: "over";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0;to: "button";}
+                rel2 { relative: 1.0 1.0;to: "button";}
+                color: 0 0 0 0;
             }
         }
     }
+}
 
 group { name: "elm/button/base/thumbButton";
 		images {
@@ -90,243 +80,314 @@ group { name: "mv_bookmarks";
     data {
         item: "focus_highlight" "off";
     }
-	images {
-		image: "web_shadow.png" COMP;
-	}
-	color_classes{
-            color_class{
-                name: "defaultBgColor";
-                color: 18 22 34 255;
-            }
-            color_class{
-                name: "focusBgColor";
-                color: 0 119 246 255;
-            }
-            color_class{
-                name: "imageHighlight";
-                color: 255 255 255 102;
-            }
-            color_class{
-                name: "focusbtBgColor";
-                color: 22 120 224 255;
-            }
-            color_class{
-                name: "titleTextColor";
-                color: 74 74 74 255;
-            }
-            color_class{
-                name: "focusTextColor";
+    images {
+        image: "web_shadow.png" COMP;
+    }
+    color_classes{
+        color_class{
+            name: "defaultBgColor";
+            color: 18 22 34 255;
+        }
+        color_class{
+            name: "focusBgColor";
+            color: 0 119 246 255;
+        }
+        color_class{
+            name: "imageHighlight";
+            color: 255 255 255 102;
+        }
+        color_class{
+            name: "focusbtBgColor";
+            color: 22 120 224 255;
+        }
+        color_class{
+            name: "titleTextColor";
+            color: 74 74 74 255;
+        }
+        color_class{
+            name: "focusTextColor";
+            color: 255 255 255 255;
+        }
+        color_class{
+            name: "highlightTextColor";
+            color: 255 255 255 51;
+        }
+        color_class{
+            name: "urlTextColor";
+            color: 116 116 116 204;
+        }
+        color_class{
+            name: "transparent";
+            color: 0 0 0 0;
+        }
+    }
+
+    parts {
+        part { name: "layoutTop_bg";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
                 color: 255 255 255 255;
+                min: 0 181;
+                max: -1 181;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                    relative: 0 0; offset: 0 104;
+                }
+                rel2{
+                    relative: 1 1;
+                }
             }
-            color_class{
-                name: "highlightTextColor";
-                color: 255 255 255 51;
+        }
+        part { name: "gengrid_bg";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                color: 255 255 255 255;
+                min: 1920 626;
+                max: -1 626;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                    to: "layoutTop_bg";
+                    relative: 0 1;
+                }
+                rel2{
+                    relative: 1 1;
+                }
             }
-            color_class{
-                name: "urlTextColor";
-                color: 116 116 116 204;
-            }
-            color_class{
-                name: "transparent";
-                color: 0 0 0 0;
+        }
+        part { name: "layoutBottom_bg";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                                    color: 255 255 255 255;
+                min: 1920 181;
+                        max: 1920 181;
+        align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                                            relative: 0 1; to: "gengrid_bg";
+                }
+                rel2{
+                                            relative: 1 1;
+                }
             }
         }
 
-        parts {
-           part { name: "layoutTop_bg";
-                type: RECT;
-                mouse_events: 0;
-                description { state: "default" 0.0;
-                    color: 255 255 255 255;
-                    min: 0 181;
-                    max: -1 181;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        relative: 0 0; offset: 0 104;
-                    }
-                    rel2{
-                        relative: 1 1;
-                    }
+        part { name: "elm.swallow.grid";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 1920 614;
+                max: 1920 614;
+        align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+        relative: 0 0; to: "gengrid_bg"; offset: 63 0;
+                }
+                rel2 {
+                    relative: 1 1;
+                    offset: 0 0;
                 }
             }
-            part { name: "gengrid_bg";
-                type: RECT;
-                mouse_events: 0;
-                description { state: "default" 0.0;
-                    color: 255 255 255 255;
-                    min: 1920 626;
-                    max: -1 626;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        to: "layoutTop_bg";
-                        relative: 0 1;
-                    }
-                    rel2{
-                        relative: 1 1;
-                    }
-                }
-            }
-            part { name: "layoutBottom_bg";
-                type: RECT;
-                mouse_events: 0;
-                description { state: "default" 0.0;
-                                        color: 255 255 255 255;
-					min: 1920 181;
-		                    max: 1920 181;
-		    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                                                relative: 0 1; to: "gengrid_bg";
-                    }
-                    rel2{
-                                                relative: 1 1;
-                    }
-                }
-            }
+        }
 
-            part { name: "elm.swallow.grid";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-					min: 1920 614;
-                    max: 1920 614;
-		    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-			relative: 0 0; to: "gengrid_bg"; offset: 63 0;
-                    }
-                    rel2 {
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
+        part { name: "center_rect";
+            type: RECT;
+            description { state: "default" 0.0;
+                min: 1592 614;
+                max: 1592 614;
+                visible: 0;
+                align: 0.5 0.0;
+                rel1 {
+                    to: "gengrid_bg";
+                    relative: 0 0;
+                }
+                rel2 {
+                    to: "gengrid_bg";
+                    relative: 1 1;
                 }
             }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                color: 229 229 229 255;
+            }
+        }
 
-            part { name: "center_rect";
-                type: RECT;
-                description { state: "default" 0.0;
-                    min: 1592 614;
-                    max: 1592 614;
-                    visible: 0;
-                    align: 0.5 0.0;
-                    rel1 {
-                        to: "gengrid_bg";
-                        relative: 0 0;
-                    }
-                    rel2 {
-                        to: "gengrid_bg";
-                        relative: 1 1;
-                    }
+        part { name: "elm.swallow.big";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 784 614;
+                max: 784 614;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                rel1 {
+                    relative: 0 0; to: "center_rect";
                 }
-                description { state: "empty" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                    color: 229 229 229 255;
+                rel2 {
+                    relative: 1 1;
+                    offset: 0 0;
                 }
             }
-            part { name: "elm.swallow.left";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-                    min: 784 614;
-                    max: 784 614;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        relative: 0 0; to: "center_rect";
-                    }
-                    rel2 {
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
-                }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
             }
-            part { name: "elm.swallow.center";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-                    min: 378 614;
-                    max: 378 614;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        to: "center_rect";
-                        relative: 0 0;
-                        offset: 810 0;
-                    }
-                    rel2{
-                        to: "center_rect";
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
-                }
-            }
-            part { name: "elm.swallow.right";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-                    min: 378 614;
-                    max: 378 614;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        to: "center_rect";
-                        relative: 0 0;
-                        offset: 1214 0;
-                    }
-                    rel2 {
-                        to: "center_rect";
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
-                }
-            }
+        }
 
-                part { name: "elm.swallow.layoutTop";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-					min: 1920 181;
-                    max: 1920 181;
-		    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                        relative: 0 0; to: "layoutTop_bg";
-                    }
-                    rel2 {
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
+        part { name: "elm.swallow.small_first";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 378 294;
+                max: 378 294;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                rel1 {
+                    to: "center_rect";
+                    relative: 0 0;
+                    offset: 810 0;
+                }
+                rel2{
+                    to: "center_rect";
+                    relative: 1 1;
+                    offset: 0 0;
                 }
             }
-	    part { name: "uri_bar_shadow";
-                type: IMAGE;
-                scale: 1;
-                repeat_events: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    min: 1920 14;
-                    max: 1920 14;
-                    image.normal: "web_shadow.png";
-                    rel1 { relative: 0.0 0.0; to: "elm.swallow.layoutTop"; }
-                    rel2 { relative: 1.0 1.0; }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_second";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 378 294;
+                max: 378 294;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                rel1 {
+                    to: "center_rect";
+                    relative: 0 0;
+                    offset: 810 320;
                 }
-             }
-	    part { name: "elm.swallow.layoutBottom";
-                type: SWALLOW;
-                description { state: "default" 0.0;
-					min: 1920 181;
-                    max: 1920 181;
-		    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 {
-                                                relative: 0 0; to: "layoutBottom_bg";
-                    }
-                    rel2 {
-                        relative: 1 1;
-                        offset: 0 0;
-                    }
+                rel2{
+                    to: "center_rect";
+                    relative: 1 1;
+                    offset: 0 0;
                 }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_third";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 378 294;
+                max: 378 294;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                rel1 {
+                    to: "center_rect";
+                    relative: 0 0;
+                    offset: 1214 0;
+                }
+                rel2 {
+                    to: "center_rect";
+                    relative: 1 1;
+                    offset: 0 0;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_fourth";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 378 294;
+                max: 378 294;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                rel1 {
+                    to: "center_rect";
+                    relative: 0 0;
+                    offset: 1214 320;
+                }
+                rel2 {
+                    to: "center_rect";
+                    relative: 1 1;
+                    offset: 0 0;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.layoutTop";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+            min: 1920 181;
+                max: 1920 181;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                    relative: 0 0; to: "layoutTop_bg";
+                }
+                rel2 {
+                    relative: 1 1;
+                    offset: 0 0;
+                }
+            }
+        }
+
+        part { name: "uri_bar_shadow";
+            type: IMAGE;
+            scale: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                min: 1920 14;
+                max: 1920 14;
+                image.normal: "web_shadow.png";
+                rel1 { relative: 0.0 0.0; to: "elm.swallow.layoutTop"; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+
+        part { name: "elm.swallow.layoutBottom";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                min: 1920 181;
+                max: 1920 181;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                    to: "layoutBottom_bg";
+                    relative: 0 0;
+                }
+                rel2 {
+                    relative: 1 1;
+                    offset: 0 0;
+                }
+            }
         }
 
         part { name: "elm.text.empty";
@@ -362,6 +423,11 @@ group { name: "mv_bookmarks";
             signal: "empty,view";
             source: "mainui";
             action:  STATE_SET "empty" 0.0;
+            target: "elm.swallow.big";
+            target: "elm.swallow.small_first";
+            target: "elm.swallow.small_second";
+            target: "elm.swallow.small_third";
+            target: "elm.swallow.small_fourth";
             target: "elm.text.empty";
             target: "center_rect";
         }
@@ -371,13 +437,18 @@ group { name: "mv_bookmarks";
             action:  STATE_SET "default" 0.0;
             target: "elm.text.empty";
             target: "center_rect";
+            target: "elm.swallow.big";
+            target: "elm.swallow.small_first";
+            target: "elm.swallow.small_second";
+            target: "elm.swallow.small_third";
+            target: "elm.swallow.small_fourth";
         }
     }
 }
 
-group { name: "elm/genlist/item/big_grid_item/default";
+group { name: "big_tile";
     data.item: "texts" "page_title page_url";
-    data.item: "contents" "elm.thumbnail elm.thumbButton";
+    data.item: "contents" "elm.thumbnail";
     min: 600 614;
     max: 600 614;
     images {
@@ -531,14 +602,6 @@ group { name: "elm/genlist/item/big_grid_item/default";
                     align: 0 0.5;
                 }
             }
-            description { state: "focus" 0.0;
-                inherit: "default" 0.0;
-                color_class: focusTextColor;
-            }
-            description { state: "highlight" 0.0;
-                inherit: "default" 0.0;
-                //color_class: highlightTextColor;
-            }
         }
 
         part { name: "page_url";
@@ -564,41 +627,15 @@ group { name: "elm/genlist/item/big_grid_item/default";
                     align: 0 0.5;
                 }
             }
-            description { state: "focus" 0.0;
-                inherit: "default" 0.0;
-                color_class: focusTextColor;
-            }
-            description { state: "highlight" 0.0;
-                inherit: "default" 0.0;
-                //color_class: highlightTextColor;
-            }
         }
 
-        part { name: "elm.thumbButton";
-            type: SWALLOW;
-            description { state: "default" 0.0;
-                rel1.to: "bg";
-                rel2.to: "bg";
-            }
-        }
-
-        part { name: "over2";
+        part { name: "over";
             type: RECT;
             mouse_events: 1;
             repeat_events: 1;
             description { state: "default" 0.0;
                 color: 0 0 0 0;
                 rel1.to: "bg";
-                rel2.to: "background";
-            }
-        }
-        part { name: "over3";
-            type: RECT;
-            mouse_events: 1;
-            repeat_events: 1;
-            description { state: "default" 0.0;
-                color: 0 0 0 0;
-                rel1.to: "background";
                 rel2.to: "background";
             }
         }
@@ -607,7 +644,7 @@ group { name: "elm/genlist/item/big_grid_item/default";
     programs{
         program { name: "mouse_in";
             signal: "mouse,in";
-            source: "over2";
+            source: "over";
             action:  STATE_SET "selected" 0.0;
             target:  "background";
             target: "border_top";
@@ -616,7 +653,7 @@ group { name: "elm/genlist/item/big_grid_item/default";
         }
         program { name: "mouse_out";
             signal: "mouse,out";
-            source: "over2";
+            source: "over";
             action:  STATE_SET "default" 0.0;
             target:  "background";
             target: "border_top";
@@ -626,9 +663,9 @@ group { name: "elm/genlist/item/big_grid_item/default";
     }
 }
 
-group { name: "elm/genlist/item/small_grid_item/default";
+group { name: "small_tile";
     data.item: "texts" "page_title page_url";
-    data.item: "contents" "elm.thumbnail elm.thumbButton";
+    data.item: "contents" "elm.thumbnail";
     images {
         image: "web_frame_selected.png" COMP;
         image: "ico_bg_round_shape_37x37.png" COMP;
@@ -839,32 +876,13 @@ group { name: "elm/genlist/item/small_grid_item/default";
             }
         }
 
-        part { name: "elm.thumbButton";
-            type: SWALLOW;
-            description { state: "default" 0.0;
-                rel1.to: "bg";
-                rel2.to: "bg";
-            }
-        }
-
-        part { name: "over2";
+        part { name: "over";
             type: RECT;
             mouse_events: 1;
             repeat_events: 1;
             description { state: "default" 0.0;
                 color: 0 0 0 0;
                 rel1.to: "bg";
-                rel2.to: "background";
-            }
-        }
-
-        part { name: "over3";
-            type: RECT;
-            mouse_events: 1;
-            repeat_events: 1;
-            description { state: "default" 0.0;
-                color: 0 0 0 0;
-                rel1.to: "background";
                 rel2.to: "background";
             }
         }
@@ -873,7 +891,7 @@ group { name: "elm/genlist/item/small_grid_item/default";
     programs {
         program { name: "mouse_in";
             signal: "mouse,in";
-            source: "over2";
+            source: "over";
             action: STATE_SET "selected" 0.0;
             target: "background";
             target: "border_top";
@@ -882,7 +900,7 @@ group { name: "elm/genlist/item/small_grid_item/default";
         }
         program { name: "mouse_out";
             signal: "mouse,out";
-            source: "over2";
+            source: "over";
             action: STATE_SET "default" 0.0;
             target: "background";
             target: "border_top";
@@ -1053,7 +1071,7 @@ group { name: "elm/gengrid/item/grid_item/default";
 			}
 		}
 
-		part { name: "over2";
+		part { name: "over";
 			type: RECT;
 			mouse_events: 1;
 			repeat_events: 1;
@@ -1063,22 +1081,12 @@ group { name: "elm/gengrid/item/grid_item/default";
 				rel2.to: "background";
 			}
 		}
-		part { name: "over3";
-			type: RECT;
-			mouse_events: 1;
-			repeat_events: 1;
-			description { state: "default" 0.0;
-				color: 0 0 0 0;
-				rel1.to: "background";
-				rel2.to: "background";
-			}
-		}
 	}
 
 	programs{
 		program { name: "mouse_in";
 			signal: "mouse,in";
-			source: "over2";
+			source: "over";
 			action:  STATE_SET "selected" 0.0;
 			target:  "background";
 			target: "focus_highlight";
@@ -1086,7 +1094,7 @@ group { name: "elm/gengrid/item/grid_item/default";
 		}
 		program { name: "mouse_out";
 			signal: "mouse,out";
-			source: "over2";
+			source: "over";
 			action:  STATE_SET "default" 0.0;
 			target:  "background";
 			target: "focus_highlight";
