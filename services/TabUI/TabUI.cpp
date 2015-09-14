@@ -76,17 +76,59 @@ void TabUI::createTabItemClass()
 void TabUI::show(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    init(parent);
+    m_tab_layout = createTabUILayout(m_parent);
+    showUI();
+}
+
+void TabUI::showUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_tab_layout);
+    evas_object_show(m_tab_layout);
+    //regenerate gengrid
+    m_gengrid = createGengrid(m_tab_layout);
+    elm_object_part_content_set(m_tab_layout, "tab_gengrid", m_gengrid);
+    evas_object_show(m_gengrid);
+
+    evas_object_show(elm_layout_content_get(m_tab_layout, "action_bar"));
+    evas_object_show(elm_layout_content_get(m_tab_layout, "top_bar"));
+}
+
+void TabUI::hideUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_tab_layout);
+    evas_object_hide(m_tab_layout);
+
+    //delete gengrid
+    evas_object_del(m_gengrid);
+    m_gengrid = nullptr;
+
+    evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
+    evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
+}
+
+void TabUI::init(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
-    //TODO:check if there is no some memory leak due to not destroying previous instance of this UI element.
-    m_tab_layout = createTabUILayout(parent);
-    evas_object_show(m_tab_layout);
+}
+
+Evas_Object* TabUI::getContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
+    if(!m_tab_layout)
+        m_tab_layout = createTabUILayout(m_parent);
+    return m_tab_layout;
 }
 
 Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(parent);
+
     Evas_Object* tab_layout = elm_layout_add(parent);
     elm_layout_file_set(tab_layout, m_edjFilePath.c_str(), "tab-layout");
     evas_object_size_hint_weight_set(tab_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -98,30 +140,33 @@ Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
 
     buttonBar = createActionBar(tab_layout);
     elm_object_part_content_set(tab_layout, "action_bar", buttonBar);
-
-    //create gengrid containing tabs
-    m_gengrid = elm_gengrid_add(tab_layout);
-    elm_object_part_content_set(tab_layout, "tab_gengrid", m_gengrid);
-
-    M_ASSERT(m_parent);
-    elm_gengrid_align_set(m_gengrid, 0, 0);
-    elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_highlight_mode_set(m_gengrid, EINA_TRUE);
-    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(m_gengrid, 0, 327);
-
-    evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-    elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
-    evas_object_event_callback_add(m_gengrid, EVAS_CALLBACK_MOUSE_IN, _focus_in, this);
-
     return tab_layout;
 }
 
+Evas_Object* TabUI::createGengrid(Evas_Object* parent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(parent);
+
+    Evas_Object* gengrid = elm_gengrid_add(parent);
+
+    elm_gengrid_align_set(gengrid, 0, 0);
+    elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(gengrid, EINA_TRUE);
+    elm_gengrid_highlight_mode_set(gengrid, EINA_TRUE);
+    elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_page_size_set(gengrid, 0, 327);
+
+    evas_object_size_hint_weight_set(gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    elm_gengrid_item_size_set(gengrid, 364 * efl_scale, 320 * efl_scale);
+    evas_object_event_callback_add(gengrid, EVAS_CALLBACK_MOUSE_IN, _focus_in, this);
+
+    return gengrid;
+}
 
 Evas_Object* TabUI::createActionBar(Evas_Object* parent)
 {
@@ -170,6 +215,7 @@ void TabUI::_close_clicked(void* data, Evas_Object*, void*)
 
 void TabUI::hide()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
     evas_object_hide(elm_layout_content_get(m_tab_layout, "tab_gengrid"));
@@ -368,6 +414,7 @@ void TabUI::clearItems()
 
 Evas_Object* TabUI::createNoHistoryLabel()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Object *label = elm_label_add(m_parent);
     elm_object_text_set(label, "No favorite websites.");
     evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -389,6 +436,7 @@ void TabUI::closeAllTabs()
 
 void TabUI::setEmptyGengrid(bool setEmpty)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (setEmpty) {
         elm_object_part_content_set(m_gengrid, "elm.swallow.empty", createNoHistoryLabel());
     } else {
