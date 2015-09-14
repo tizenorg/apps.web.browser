@@ -61,10 +61,21 @@ class BROWSER_EXPORT MoreMenuUI
 public:
     MoreMenuUI();
     ~MoreMenuUI();
+
+    //AbstractUIComponent interface methods
+    void init(Evas_Object* parent);
+    Evas_Object* getContent();
+    void showUI();
+    void hideUI();
+
+    void setDesktopMode(bool desktopMode) {m_desktopMode = desktopMode;}
+
     void show(Evas_Object *main_layout, bool desktopMode);
+    //TODO: remove this function after new view managment introduction.
     void showCurrentTab();
     virtual std::string getName();
     void addItems();
+    //TODO: remove this function after new view managment introduction.
     void hide();
     void clearItems();
     void getBookmarkFolderList(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > );
@@ -75,14 +86,19 @@ public:
     boost::signals2::signal<void ()> addToBookmarkClicked;
     boost::signals2::signal<void (int)> AddBookmarkInput;
     boost::signals2::signal<void (const char*, int)> BookmarkFolderCreated;
+    //TODO: remove redundant argument from this signal.
     boost::signals2::signal<void (std::string)> bookmarkManagerClicked;
     boost::signals2::signal<void (std::string)> BookmarkFoldersListImport;
     boost::signals2::signal<void (std::string)> historyUIClicked;
     boost::signals2::signal<void (const std::string&)> settingsClicked;
+    //TODO: remove redundant argument from this signal.
     boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
 private:
+    Elm_Gengrid_Item_Class* crateItemClass();
+    Evas_Object* createMoreMenuLayout(Evas_Object* parent);
+    Evas_Object* createGengrid(Evas_Object* parent);
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
