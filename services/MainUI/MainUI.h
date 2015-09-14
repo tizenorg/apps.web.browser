@@ -59,6 +59,7 @@ public:
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
     boost::signals2::signal<void (const std::string & )> mostVisitedClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkClicked;
     boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
@@ -77,7 +78,7 @@ private:
 
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
-    static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
+    static void _thumbBookmarkClicked(void * data, Evas_Object * obj, void * event_info);
     static void _thumbClicked(void *data, Evas_Object *obj, const char *emission, const char *source);
     void setEmptyView(bool empty);
     void showNoHistoryLabel();
