@@ -340,17 +340,17 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, c
     else if (!strcmp(part, "elm.thumbButton")) {
                 Evas_Object *thumbButton = elm_button_add(obj);
                 elm_object_style_set(thumbButton, "thumbButton");
-                evas_object_smart_callback_add(thumbButton, "clicked", _thumbSelected, data);
+                evas_object_smart_callback_add(thumbButton, "clicked", _thumbBookmarkClicked, data);
                 return thumbButton;
     }
     return nullptr;
 }
 
-void MainUI::_thumbSelected(void * data, Evas_Object * , void *)
+void MainUI::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
-    itemData->mainUI->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
+    itemData->mainUI->openURLInNewTab(itemData->item, itemData->mainUI->isDesktopMode());
 }
 
 void MainUI::_thumbClicked(void* data, Evas_Object *, const char *, const char *)
