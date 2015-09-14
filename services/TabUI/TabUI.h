@@ -36,6 +36,12 @@ class BROWSER_EXPORT TabUI
 public:
     TabUI();
     ~TabUI();
+    //AbstractUIComponent interface implementation
+    void showUI();
+    void hideUI();
+    void init(Evas_Object *parent);
+    Evas_Object* getContent();
+
     void show(Evas_Object *parent);
     virtual std::string getName();
     void clearItems();
@@ -54,6 +60,7 @@ public:
     boost::signals2::signal<int () > tabsCount;
 
 private:
+
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
@@ -72,6 +79,7 @@ private:
 
     Evas_Object* createTabUILayout(Evas_Object* parent);
     Evas_Object* createActionBar(Evas_Object* parent);
+    Evas_Object* createGengrid(Evas_Object* parent);
     Evas_Object* createTopButtons(Evas_Object* parent);
     Evas_Object* createNoHistoryLabel();
     void createTabItemClass();
