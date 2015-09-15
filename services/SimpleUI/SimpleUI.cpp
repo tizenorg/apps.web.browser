@@ -433,26 +433,36 @@ void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
     updateView();
 }
 
-void SimpleUI::bookmarkCheck()
+bool SimpleUI::checkBookmark()
 {
     if (m_webPageUI->isHomePageActive())
-        return;
+        return false;
 
-    if(m_favoriteService->bookmarkExists(m_webEngine->getURI())){
+    if(m_favoriteService->bookmarkExists(m_webEngine->getURI())) {
         BROWSER_LOGD("[%s] There is bookmark for this site [%s], set indicator on!", __func__, m_webEngine->getURI().c_str());
-        // MERGE_ME
-        //leftButtonBar->setActionForButton("bookmark_button", m_unbookmark);
+        return true;
     }
-    else{
+    else {
         BROWSER_LOGD("[%s] There is no bookmark for this site [%s], set indicator off", __func__, m_webEngine->getURI().c_str());
-        // MERGE_ME
-        //leftButtonBar->setActionForButton("bookmark_button", m_bookmark);
-        //addBookmarkEnable(m_favoriteService->countBookmarksAndSubFolders() < m_favoritesLimit);
+        return false;
     }
 }
 // Consider removing these functions
 void SimpleUI::onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
 {
+    if (m_moreMenuUI) {
+        m_moreMenuUI->changeBookmarkStatus(true);
+        m_moreMenuUI->createToastPopup( (std::string(m_webEngine->getTitle()) + std::string(" added to bookmark")).c_str() );
+    }
+}
+
+void SimpleUI::onBookmarkRemoved(const std::string& uri)
+{
+    BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
+    if (m_moreMenuUI) {
+        m_moreMenuUI->changeBookmarkStatus(false);
+        m_moreMenuUI->createToastPopup( (std::string(m_webEngine->getTitle()) + std::string(" removed from bookmark")).c_str() );
+    }
 }
 
 void SimpleUI::onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
@@ -527,17 +537,7 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     openNewTab(bookmarkAddress);
 }
 
-void SimpleUI::onBookmarkDeleteClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
-{
-    BROWSER_LOGD("[%s] delete %s", __func__, bookmarkItem->getAddress().c_str());
-    m_favoriteService->deleteBookmark(bookmarkItem->getAddress());
-}
-
 // Consider removing these functions
-void SimpleUI::onBookmarkRemoved(const std::string& uri)
-{
-    BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
-}
 
 void SimpleUI::onHistoryRemoved(const std::string& uri)
 {
@@ -667,7 +667,6 @@ void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_webPageUI->getURIEntry().clearFocus();
-    bookmarkCheck();
 }
 
 void SimpleUI::showTabUI()
@@ -876,6 +875,8 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmarkFolders, this));
         m_moreMenuUI->AddBookmarkInput.connect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
         m_moreMenuUI->BookmarkFolderCreated.connect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
+        m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
+        m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
 
         m_moreMenuUI->show(m_window.get(), desktopMode);
         m_moreMenuUI->showCurrentTab();
@@ -901,6 +902,8 @@ void SimpleUI::closeMoreMenu(const std::string& str)
     m_moreMenuUI->addToBookmarkClicked.disconnect(boost::bind(&SimpleUI::addBookmarkFolders, this));
     m_moreMenuUI->AddBookmarkInput.disconnect(boost::bind(&SimpleUI::addToBookmarks, this,_1));
     m_moreMenuUI->BookmarkFolderCreated.disconnect(boost::bind(&SimpleUI::newFolderMoreMenu, this,_1,_2));
+    m_moreMenuUI->isBookmark.disconnect(boost::bind(&SimpleUI::checkBookmark, this));
+    m_moreMenuUI->deleteBookmark.disconnect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI.reset();
 }
 

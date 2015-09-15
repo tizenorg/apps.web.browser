@@ -159,7 +159,7 @@ void AddBookmarkPopup::addBookmarkFolderItems(std::vector<std::shared_ptr<tizen_
 {
     BROWSER_LOGD("%s:%d %s Bookmark Folder Items: %d", __FILE__, __LINE__, __func__, items.size());
     int i = 1;
-    addBookmarkFolderItem(nullptr, i);
+    addBookmarkFolderItem(nullptr, i++);
     for (auto it = items.begin(); it != items.end(); ++it, ++i) {
         addBookmarkFolderItem(*it, i);
     }

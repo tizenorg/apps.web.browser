@@ -43,6 +43,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_share_nor.png")
 RESOURCE_IMAGE_LOSSY("ic_more_setting_nor.png")
 RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
 RESOURCE_IMAGE_LOSSY("ic_add_bookmark.png")
+RESOURCE_IMAGE_LOSSY("ic_add_bookmark_new.png")
 RESOURCE_IMAGE_LOSSY("ic_more_readermode_foc.png")
 RESOURCE_IMAGE_LOSSY("ic_more_bookmark_foc.png")
 RESOURCE_IMAGE_LOSSY("ic_more_history_foc.png")
@@ -115,6 +116,40 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
             }
         }
         parts {
+            part {
+                name: "toast_popup";
+                scale:1;
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                min: 200 120;
+                max: 338 120;
+                rel1 { relative: 0.0 0.0; offset: 63 700;}
+                rel2 { relative: 1.0 1.0;}
+                }
+            }
+            part {
+            name: "toast_text";
+            scale: 1;
+            type: TEXT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0.5 0.5;
+                rel1 { relative: 0.0 0.0; to: "toast_popup";}
+                rel2 { relative: 1.0 1.0; to: "toast_popup";}
+                color_class: titleTextColor;
+                text {
+                    font: "Sans";
+                    size: 28;
+                    align: 0.5 0.5;
+                }
+            }
+            }
             part {
                 name: "bg_rect";
                 scale:1;
@@ -371,7 +406,6 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
                     rel2 { relative: 1.0 1.0; to: "item_background";}
                     color_class: urlTextColor;
                     text {
-                        text: "http:/onet.pl";
                         font: "font_name";
                         size: 28;
                         align: 0 0.5;
@@ -415,6 +449,21 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
                     visible: 1;
                 }
             }
+            part {
+                name: "bookmark_ico";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 58 58;
+                    max: 58 58;
+                    fixed: 1 1;
+                    align: 0.0 0.0;
+                    rel1 { relative: 0.0 0.0; to: "star_bg";}
+                }
+            }
             part{
                 name: "add_to_bookmark_text";
                 type: TEXT;
@@ -422,14 +471,14 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
                 description { state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    rel1 { relative: 0.0 0.0;to: "star_bg";}
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0;to: "star_bg"; offset: 56 0;}
                     rel2 { relative: 1.0 1.0;to: "star_bg";}
                     color: 0 0 0 255;
                     text {
-                        text: "Add to bookmark";
                         font: "Sans";
                         size: 28;
-                        align: 0.5 0.5;
+                        align: 0 0.5;
                     }
                 }
             }
@@ -591,7 +640,7 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
             program {
                 name: "mouse_click";
                 signal: "mouse,clicked,1";
-                source: "over";
+                source: "*";
                 script {
                     emit("elm,action,click", "");
                 }
@@ -671,30 +720,6 @@ group {
                     }
                 }
             }
-            part { name: "current_tab_bar";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    min: 1920 366;
-                    max: 1920 366;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "current_tab_bar_bg";}
-                    rel2 { relative: 1.0 1.0; }
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-             }
             part { name: "elm.swallow.grid";
                 type : SWALLOW;
                 scale: 1;
@@ -719,6 +744,30 @@ group {
                     visible: 1;
                 }
            }
+            part { name: "current_tab_bar";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 1920 366;
+                    max: 1920 366;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    rel1 { relative: 0.0 0.0; to: "current_tab_bar_bg";}
+                    rel2 { relative: 1.0 1.0; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+             }
             part { name: "elm.swallow.empty";
                 type: SWALLOW;
                 description { state: "default" 0.0;

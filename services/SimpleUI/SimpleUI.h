@@ -119,7 +119,6 @@ private:
     void tabCreated();
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
-    void bookmarkCheck();
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id);
     std::shared_ptr<services::HistoryItemVector> getHistory();
@@ -129,7 +128,6 @@ private:
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
-    void onBookmarkDeleteClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onBookmarkRemoved(const std::string& uri);
 
     void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
@@ -188,7 +186,12 @@ private:
     void webEngineURLChanged(const std::string url);
     void onmostHistoryvisitedClicked();
     void onBookmarkvisitedClicked();
-     /**
+    /**
+     * @brief Check if the current page exists as a bookmark.
+     *
+     */
+    bool checkBookmark();
+    /**
      * @brief Adds current page to bookmarks.
      *
      */
