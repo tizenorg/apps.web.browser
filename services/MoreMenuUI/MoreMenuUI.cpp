@@ -50,11 +50,12 @@ MoreMenuUI::MoreMenuUI()
     , m_item_class(nullptr)
     , m_mm_layout(nullptr)
     , m_desktopMode(true)
+    , m_isBookmark(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("MoreMenuUI/MoreMenu.edj");
-    m_item_class = crateItemClass();
+    m_item_class = createItemClass();
 }
 
 MoreMenuUI::~MoreMenuUI()
@@ -64,7 +65,7 @@ MoreMenuUI::~MoreMenuUI()
         elm_gengrid_item_class_free(m_item_class);
 }
 
-Elm_Gengrid_Item_Class* MoreMenuUI::crateItemClass()
+Elm_Gengrid_Item_Class* MoreMenuUI::createItemClass()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Elm_Gengrid_Item_Class* item_class = elm_gengrid_item_class_new();
@@ -164,14 +165,16 @@ void MoreMenuUI::showCurrentTab()
 
     Evas_Object* button = elm_button_add(m_current_tab_bar);
     elm_object_style_set(button, "hidden_button");
-    evas_object_smart_callback_add(button, "clicked", _star_clicked, this);
-    elm_object_part_content_set(m_current_tab_bar, "star_click", button);
-
-    button = elm_button_add(m_current_tab_bar);
-    elm_object_style_set(button, "hidden_button");
     evas_object_smart_callback_add(button, "clicked", _close_clicked, this);
     elm_object_part_content_set(m_current_tab_bar, "close_click", button);
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    button = elm_button_add(m_mm_layout);
+    elm_object_style_set(button, "hidden_button");
+    evas_object_smart_callback_add(button, "clicked", _star_clicked, this);
+
+    m_bookmarkIcon = elm_icon_add(m_mm_layout);
+    elm_object_part_content_set(m_current_tab_bar, "bookmark_ico", m_bookmarkIcon);
+    elm_object_part_content_set(m_current_tab_bar, "star_click", button);
 }
 
 void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
@@ -219,19 +222,75 @@ void MoreMenuUI::setWebTitle(const std::string& title)
 void MoreMenuUI::setURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
-    if(!url.empty())
+    char* part_name = "add_to_bookmark_text";
+
+    if(!url.empty()) {
         elm_object_part_text_set(m_current_tab_bar, "webpage_url", url.c_str());
-    else
+
+        if(true == isBookmark()) {
+            m_isBookmark = EINA_TRUE;
+            changeBookmarkStatus(true);
+        }
+        else {
+            m_isBookmark = EINA_FALSE;
+            changeBookmarkStatus(false);
+        }
+    }
+    else {
         elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
+        m_isBookmark = EINA_FALSE;
+        changeBookmarkStatus(false);
+    }
+}
+
+void MoreMenuUI::changeBookmarkStatus(bool data)
+{
+    if(data) {
+        m_isBookmark = EINA_TRUE;
+        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Remove Bookmark");
+        elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark.png");
+    }
+    else {
+        m_isBookmark = EINA_FALSE;
+        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to Bookmark");
+        elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark_new.png");
+    }
+}
+
+void MoreMenuUI::createToastPopup(const char* text)
+{
+    m_toastPopup = elm_popup_add(m_mm_layout);
+    elm_object_style_set(m_toastPopup, "toast");
+    evas_object_size_hint_weight_set(m_toastPopup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_toastPopup, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_content_set(m_current_tab_bar, "toast_popup", m_toastPopup);
+    elm_object_part_text_set(m_current_tab_bar, "toast_text", text);
+    evas_object_smart_callback_add(m_toastPopup, "timeout", _timeout, this);
+    elm_popup_timeout_set(m_toastPopup, 3.0);
+}
+
+void MoreMenuUI::_timeout(void *data, Evas_Object *obj, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
+    elm_object_part_text_set(moreMenuUI->m_current_tab_bar, "toast_text", "");
+    evas_object_del(moreMenuUI->m_toastPopup);
 }
 
 void MoreMenuUI::_star_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data) {
+    if(data) {
         MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
-        moreMenuUI->addToBookmarkClicked();
-        moreMenuUI->AddBookmarkPopupCalled();
+
+        if (EINA_FALSE == moreMenuUI->m_isBookmark) {
+            moreMenuUI->addToBookmarkClicked();
+            moreMenuUI->AddBookmarkPopupCalled();
+        }
+        else {
+            moreMenuUI->m_isBookmark = EINA_FALSE;
+            moreMenuUI->deleteBookmark();
+        }
     }
 }
 

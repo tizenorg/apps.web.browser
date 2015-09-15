@@ -18,6 +18,7 @@
 #define MOREMENUUI_H
 
 #include <Evas.h>
+#include <Eina.h>
 #include <memory>
 #include <boost/signals2/signal.hpp>
 
@@ -82,6 +83,8 @@ public:
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setWebTitle(const std::string& title);
     void setURL(const std::string& url);
+    void changeBookmarkStatus(bool data);
+    void createToastPopup(const char* text);
 
     boost::signals2::signal<void ()> addToBookmarkClicked;
     boost::signals2::signal<void (int)> AddBookmarkInput;
@@ -95,8 +98,10 @@ public:
     boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
+    boost::signals2::signal<bool ()> isBookmark;
+    boost::signals2::signal<void ()> deleteBookmark;
 private:
-    Elm_Gengrid_Item_Class* crateItemClass();
+    Elm_Gengrid_Item_Class* createItemClass();
     Evas_Object* createMoreMenuLayout(Evas_Object* parent);
     Evas_Object* createGengrid(Evas_Object* parent);
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
@@ -114,6 +119,7 @@ private:
 
     static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
+    static void _timeout(void *data, Evas_Object *obj, void *event_info);
 
     static void __cb_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info);
     static void __cb_mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info);
@@ -124,14 +130,17 @@ private:
     std::shared_ptr<tizen_browser::base_ui::AddBookmarkPopup> m_add_bookmark_popup;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
+    Evas_Object *m_toastPopup;
+    Evas_Object *m_icon;
+    Evas_Object *m_bookmarkIcon;
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<ItemType,Elm_Object_Item*> m_map_menu_views;
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > m_map_bookmark_folder_list;
     std::string m_edjFilePath;
     std::string m_folderName;
     bool m_gengridSetup;
-    Evas_Object *m_icon;
     bool m_desktopMode;
+    Eina_Bool m_isBookmark;
 };
 
 }
