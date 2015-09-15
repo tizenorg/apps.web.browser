@@ -46,6 +46,16 @@ group{
             }
         }
     }
+    programs{
+        program {
+            name: "mouse_click";
+            signal: "mouse,clicked,1";
+            source: "over";
+            script {
+                emit("elm,action,click", "");
+            }
+        }
+    }
 }
 
 group { name: "elm/button/base/thumbButton";
@@ -222,7 +232,7 @@ group { name: "mv_bookmarks";
                 min: 784 614;
                 max: 784 614;
                 align: 0.0 0.0;
-                fixed: 0 0;
+                fixed: 1 1;
                 visible: 1;
                 rel1 {
                     relative: 0 0; to: "center_rect";
@@ -244,7 +254,7 @@ group { name: "mv_bookmarks";
                 min: 378 294;
                 max: 378 294;
                 align: 0.0 0.0;
-                fixed: 0 0;
+                fixed: 1 1;
                 visible: 1;
                 rel1 {
                     to: "center_rect";
@@ -269,7 +279,7 @@ group { name: "mv_bookmarks";
                 min: 378 294;
                 max: 378 294;
                 align: 0.0 0.0;
-                fixed: 0 0;
+                fixed: 1 1;
                 visible: 1;
                 rel1 {
                     to: "center_rect";
@@ -294,7 +304,7 @@ group { name: "mv_bookmarks";
                 min: 378 294;
                 max: 378 294;
                 align: 0.0 0.0;
-                fixed: 0 0;
+                fixed: 1 1;
                 visible: 1;
                 rel1 {
                     to: "center_rect";
@@ -319,7 +329,7 @@ group { name: "mv_bookmarks";
                 min: 378 294;
                 max: 378 294;
                 align: 0.0 0.0;
-                fixed: 0 0;
+                fixed: 1 1;
                 visible: 1;
                 rel1 {
                     to: "center_rect";

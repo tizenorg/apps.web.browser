@@ -46,7 +46,6 @@
 #include "BookmarkItem.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "NetworkErrorHandler.h"
 #include "SqlStorage.h"
 #include "DetailPopup.h"
 
@@ -64,14 +63,12 @@ SimpleUI::SimpleUI()
     , m_mainLayout(nullptr)
     , m_progressBar(nullptr)
     , m_popup(nullptr)
-    , m_settings()
     , m_moreMenuUI()
     , m_tabUI()
     , m_bookmarkManagerUI()
     , m_mainUI()
     , m_initialised(false)
     , m_isHomePageActive(false)
-    , m_currentZoom(ZOOM_TYPE_100)
     , items_vector()
     , m_networkErrorPopup(0)
     , m_wvIMEStatus(false)
@@ -270,11 +267,6 @@ void SimpleUI::loadUIServices()
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
-
-    m_netErrorHandler =
-        std::unique_ptr
-        <tizen_browser::basic_ui::NetworkErrorHandler>
-        (new tizen_browser::basic_ui::NetworkErrorHandler);
 }
 
 void SimpleUI::connectUISignals()
@@ -377,8 +369,6 @@ void SimpleUI::connectModelSignals()
 void SimpleUI::loadThemes()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, edjePath("SimpleUI/ZoomItem.edj").c_str());
-    elm_theme_extension_add(nullptr, edjePath("SimpleUI/TabItem.edj").c_str());
     elm_theme_extension_add(nullptr, edjePath("SimpleUI/ErrorMessage.edj").c_str());
 
     elm_theme_overlay_add(0, edjePath("SimpleUI/ScrollerDefault.edj").c_str());
@@ -839,72 +829,6 @@ void SimpleUI::webEngineURLChanged(const std::string url)
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_simpleURI->clearFocus();
     bookmarkCheck();
-}
-
-void SimpleUI::showZoomMenu()
-{
-    if(!m_zoomList){
-        BROWSER_LOGD("[%s:%d] - create ", __PRETTY_FUNCTION__, __LINE__);
-        m_zoomList = std::make_shared<ZoomList>(m_window,
-                                                rightButtonBar->getButton("zoom_in_button"));
-        m_zoomList->addItem("300%", ZOOM_TYPE_300);
-        m_zoomList->addItem("200%", ZOOM_TYPE_200);
-        m_zoomList->addItem("150%", ZOOM_TYPE_150);
-        m_zoomList->addItem("100%", ZOOM_TYPE_100);
-        m_zoomList->addItem("75%", ZOOM_TYPE_75);
-        m_zoomList->addItem("50%", ZOOM_TYPE_50);
-
-        m_zoomList->zoomChanged.connect(boost::bind(&SimpleUI::zoomLevelChanged, this, _1));
-    }
-
-    zoom_type currentZoomType;
-
-    currentZoomType = static_cast<zoom_type> (m_webEngine->getZoomFactor());
-
-    //Handling Initial case
-    if(m_webEngine->getZoomFactor() == 0){
-        m_webEngine->setZoomFactor(100);
-        m_currentZoom = static_cast<zoom_type> (100);
-        currentZoomType = ZOOM_TYPE_100;
-    }
-    //each tab may have another zoom, but there is only one instance of zoomlist
-    //so we should refresh value of zoom every time
-    m_zoomList->setZoom(currentZoomType);
-    BROWSER_LOGD("Current zoom factor from webkit %d%%", m_webEngine->getZoomFactor());
-
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_zoomList.get()));
-    m_zoomList->showPopup();
-}
-
-void SimpleUI::zoomLevelChanged(int zoom_level)
-{
-    m_webEngine->setZoomFactor(zoom_level);
-    m_currentZoom = static_cast<zoom_type> (zoom_level);
-}
-
-void SimpleUI::AddBookmarkPopup(std::string& str)
-{
-   BROWSER_LOGD("[%s]", __func__);
-   if(!m_bookmarks_manager){
-        m_bookmarks_manager = std::make_shared<BookmarksManager>(m_window,
-                                                rightButtonBar->getButton("bookmark_button"));
-        m_bookmarks_manager->addAction( m_bookmarks_manager_Add_NewFolder);
-        m_bookmarks_manager->addAction( m_bookmarks_manager_BookmarkBar);
-        m_bookmarks_manager->addAction( m_bookmarks_manager_Folder1);
-        m_bookmarks_manager->addAction( m_bookmarks_manager_Folder2);
-        m_bookmarks_manager->addAction( m_bookmarks_manager_Folder3);
-    }
-    m_platformInputManager->returnPressed.disconnect_all_slots();
-    m_platformInputManager->returnPressed.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_bookmarks_manager.get()));
-    hidePopup.connect(boost::bind(&SimpleUI::onReturnPressed, this, m_bookmarks_manager.get()));
-    m_bookmarks_manager->showPopup();
-}
-
-void SimpleUI::AddNewFolderPopup(std::string& str)
-{
-   BROWSER_LOGD("[%s]", __func__);
 }
 
 void SimpleUI::showTabUI()

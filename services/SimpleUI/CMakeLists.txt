@@ -1,35 +1,17 @@
 project(SimpleUI)
 
 set(SimpleUI_SRCS
-    NetworkErrorHandler.cpp
-    HistoryList.cpp
     SimpleUI.cpp
     ButtonBar.cpp
     SimplePopup.cpp
-    ZoomList.cpp
-    TabList.cpp
     BookmarksManager.cpp
-    Settings.cpp
-    SimpleScroller.cpp
-    WebTitleBar.cpp
-    RelatedWebPages.cpp
-    CustomPopup.cpp
     )
 
 set(SimpleUI_HEADERS
-    NetworkErrorHandler.h
     SimpleUI.h
     ButtonBar.h
     SimplePopup.h
-    ZoomList.h
-    TabList.h
     BookmarksManager.h
-    Settings.h
-    SimpleScroller.h
-    HistoryList.h
-    WebTitleBar.h
-    RelatedWebPages.h
-    CustomPopup.h
     )
 
 include(Coreheaders)
@@ -101,17 +83,10 @@ set(edcFiles
     LeftButtonBar.edc
     RightButtonBar.edc
     AuthenticationPopup.edc
-    TabItem.edc
-    ZoomItem.edc
     BookmarksManager.edc
-    Settings.edc
     ScrollerDefault.edc
-    HistoryItem.edc
-    WebTitleBar.edc
     ErrorMessage.edc
-    RelatedPages.edc
     Tooltip.edc
-    CustomPopup.edc
     )
 
 foreach(edec ${edcFiles})
