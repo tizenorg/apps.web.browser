@@ -277,8 +277,8 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 void MainUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    clearHistoryGenlist();
     int i = 0;
-    m_historyItems.clear();
     for (auto it = items->begin(); it != items->end(); ++it) {
         i++;
         if (i > MAX_TILES_NUMBER)
@@ -364,9 +364,12 @@ void MainUI::clearHistoryGenlist()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it)
+    for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it) {
         edje_object_signal_callback_del(elm_layout_edje_get(*it), "mouse,clicked,1", "over", _thumbClicked);
+        evas_object_del(*it);
+    }
 
+    m_tiles.clear();
     m_historyItems.clear();
 }
 

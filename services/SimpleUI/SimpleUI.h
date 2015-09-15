@@ -43,8 +43,6 @@
 #include "HistoryService.h"
 #include "BookmarkManagerUI.h"
 #include "SimpleURI.h"
-#include "SimpleScroller.h"
-#include "WebTitleBar.h"
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "SqlStorage.h"
@@ -53,13 +51,7 @@
 #include "Action.h"
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
-#include "ZoomList.h"
-#include "TabList.h"
 #include "BookmarksManager.h"
-#include "Settings.h"
-#include "HistoryList.h"
-#include "NetworkErrorHandler.h"
-#include "CustomPopup.h"
 #include "Config.h"
 
 namespace tizen_browser{
@@ -223,17 +215,8 @@ private:
      */
     void deleteBookmark(void);
 
-    /**
-     * \brief shows Zoom showZoomMenu
-     */
-    void showZoomMenu();
-
-    void zoomLevelChanged(int zoom_level);
-
     void showHistory();
     void hideHistory();
-    void AddBookmarkPopup(std::string& str);
-    void AddNewFolderPopup(std::string& str);
     void addBookmarkFolders();
 
     void newFolderBookmarkManager(const char* title, int by_user);
@@ -300,14 +283,10 @@ private:
     Evas_Object *m_popup;
     Evas_Object *m_entry;
     Evas_Object *m_errorLayout;
-    CustomPopup *m_ownPopup;
-    SimpleScroller *m_scroller;
 
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
     std::shared_ptr<tizen_browser::base_ui::SimpleURI> m_simpleURI;
     std::shared_ptr<ButtonBar> leftButtonBar;
-    std::shared_ptr<ButtonBar> webviewbar;
-
     std::shared_ptr<ButtonBar> rightButtonBar;
     std::shared_ptr<tizen_browser::interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
@@ -317,18 +296,12 @@ private:
     std::shared_ptr<tizen_browser::base_ui::HistoryUI> m_historyUI;
     std::shared_ptr<tizen_browser::base_ui::SettingsUI> m_settingsUI;
     std::shared_ptr<tizen_browser::base_ui::TabUI> m_tabUI;
-    std::shared_ptr<tizen_browser::base_ui::ZoomList> m_zoomList;
-    std::shared_ptr<tizen_browser::base_ui::TabList> m_tabList;
     std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
     tizen_browser::Session::Session m_currentSession;
     std::shared_ptr<BookmarksManager> m_bookmarks_manager;
-    std::shared_ptr<Settings> m_settings;
-    std::shared_ptr<HistoryList> m_historyList;
-    std::shared_ptr<WebTitleBar> webTitleBar;
     bool m_initialised;
     bool m_isHomePageActive;
-    zoom_type m_currentZoom;
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
@@ -339,7 +312,6 @@ private:
     Ewk_Context *m_ewkContext;
 
     std::vector<std::shared_ptr<tizen_browser::services::HistoryItem>> items_vector;
-    std::unique_ptr<tizen_browser::basic_ui::NetworkErrorHandler> m_netErrorHandler;
     SimplePopup* m_networkErrorPopup;
 
     void searchWebPage(std::string &text, int flags);
