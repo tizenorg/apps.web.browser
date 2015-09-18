@@ -26,7 +26,7 @@ namespace config
 void DefaultConfig::load(const std::string &)
 {
     const char *db_path = NULL;
-    db_path = tzplatform_getenv(TZ_USER_APP);
+    db_path = tzplatform_getenv(TZ_USER_DB);
 
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
