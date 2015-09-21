@@ -2,14 +2,10 @@ project(MoreMenuUI)
 
 set(MoreMenuUI_SRCS
     MoreMenuUI.cpp
-    AddBookmarkPopup.cpp
-    NewFolderPopup.cpp
     )
 
 set(MoreMenuUI_HEADERS
     MoreMenuUI.h
-    AddBookmarkPopup.h
-    NewFolderPopup.h
     )
 
 include(Coreheaders)
@@ -31,8 +27,6 @@ include(EDCCompile)
 #please do not add edc/ directory
 set(edcFiles
     MoreMenu.edc
-    AddBookmarkPopup.edc
-    NewFolderPopup.edc
     )
 
 foreach(edec ${edcFiles})

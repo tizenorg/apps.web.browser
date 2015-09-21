@@ -284,8 +284,7 @@ void MoreMenuUI::_star_clicked(void* data, Evas_Object*, void*)
         MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
 
         if (EINA_FALSE == moreMenuUI->m_isBookmark) {
-            moreMenuUI->addToBookmarkClicked();
-            moreMenuUI->AddBookmarkPopupCalled();
+            moreMenuUI->addToBookmarkClicked(0);
         }
         else {
             moreMenuUI->m_isBookmark = EINA_FALSE;
@@ -302,60 +301,6 @@ void MoreMenuUI::_close_clicked(void* data, Evas_Object*, void*)
         moreMenuUI->closeMoreMenuClicked(std::string());
         moreMenuUI->clearItems();
     }
-}
-
-void MoreMenuUI::AddBookmarkPopupCalled()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_add_bookmark_popup = std::make_shared<tizen_browser::base_ui::AddBookmarkPopup>(m_mm_layout);
-    m_add_bookmark_popup->show();
-    m_add_bookmark_popup->addBookmarkFolderItems(m_map_bookmark_folder_list);
-    m_add_bookmark_popup->folderSelected.disconnect_all_slots();
-    m_add_bookmark_popup->folderSelected.connect(boost::bind(&MoreMenuUI::addToBookmarks, this, _1));
-    m_add_bookmark_popup->addNewFolderClicked.disconnect_all_slots();
-    m_add_bookmark_popup->addNewFolderClicked.connect(boost::bind(&MoreMenuUI::newFolderPopup, this,_1));
-}
-
-void MoreMenuUI::newFolderPopup(std::string)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_new_folder_popup =
-        std::make_shared<tizen_browser::base_ui::NewFolderPopup>(m_mm_layout
-                                                               , nullptr
-                                                               , "Add New Folder for adding to Bookmark"
-                                                               , "New Folder"
-                                                               , "Add to bookmark"
-                                                               , "Cancel");
-   m_new_folder_popup->on_ok.disconnect_all_slots();
-   m_new_folder_popup->on_ok.connect(boost::bind(&MoreMenuUI::NewFolderCreate, this, _1));
-   m_new_folder_popup->on_cancel.disconnect_all_slots();
-   m_new_folder_popup->on_cancel.connect(boost::bind(&MoreMenuUI::CancelClicked, this, _1));
-   m_add_bookmark_popup->hide();
-   m_new_folder_popup->show();
-}
-
-void MoreMenuUI::NewFolderCreate(Evas_Object* popup_content)
-{
-   BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-   if (popup_content) {
-       m_folderName = elm_entry_entry_get(popup_content);
-       BookmarkFolderCreated(m_folderName.c_str(), 0);
-       m_new_folder_popup->hide();
-   }
-}
-
-void MoreMenuUI::CancelClicked(Evas_Object*)
-{
-   BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-   m_new_folder_popup->hide();
-}
-
-void MoreMenuUI::addToBookmarks(int folder_id)
-{
-     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-     AddBookmarkInput(folder_id);
-     m_add_bookmark_popup->hide();
-     m_add_bookmark_popup.reset();
 }
 
 void MoreMenuUI::hide()
@@ -601,18 +546,12 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
     }
 }
 
-void MoreMenuUI::getBookmarkFolderList(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > folderList)
-{
-    m_map_bookmark_folder_list = folderList;
-}
-
 void MoreMenuUI::clearItems()
 {
     hide();
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_clear(m_gengrid);
     m_map_menu_views.clear();
-    m_map_bookmark_folder_list.clear();
     evas_object_del(m_current_tab_bar);
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
     elm_theme_full_flush();

@@ -17,15 +17,11 @@
 collections {
 
 RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
-RESOURCE_IMAGE_LOSSY("btn_bar_new_nor.png")
-RESOURCE_IMAGE_LOSSY("btn_bar_new_foc.png")
-RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder.png")
-RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_all.png")
-RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
 
 #define WIDTH 1920
 #define HEIGHT 181
 #define ITEM_WIDTH 1200
+
 
     group {
         name: "elm/genlist/item/topContent/default";
@@ -37,8 +33,8 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
             image: "thumbnail.png" COMP;
             image: "btn_bar_stop_nor.png" COMP;
         }
-        data.item: "texts" "webpage_title webpage_url folder_text";
-        data.item: "contents" "favicon star_click close_click new_folder_click";
+        data.item: "texts" "webpage_title webpage_url bookmark_group_text";
+        data.item: "contents" "favicon star_click close_click";
         color_classes{
             color_class{
                 name: "defaultBgColor";
@@ -127,92 +123,6 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
                     rel2 { relative: 1.0 1.0; }
                 }
              }
-	    part {
-                name: "new_folder_bg";
-                scale:1;
-                mouse_events: 1;
-                type: RECT;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0 0;
-                    min: 82 102;
-                    max: 82 102;
-                    rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 10 0;}
-                    rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
-                    color_class: transparent;
-                }
-                description {
-                    state: "highlight" 0.0;
-                    inherit: "default" 0.0;
-                    color_class: focusBgColor;
-                    visible: 1;
-                }
-                  description {
-                    state: "focus" 0.0;
-                    inherit: "default" 0.0;
-                    color_class: focusDelBgColor;
-                    visible: 1;
-                }
-            }
-	    part {
-                name: "new_folder_icon";
-                type: IMAGE;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0 0;
-                    min: 82 102;
-                    max: 82 102;
-                    rel1 { relative: 0.0 0.0; to: "new_folder_bg";}
-                    rel2 { relative: 1.0 1.0; to: "new_folder_bg";}
-                    image.normal: "btn_bar_new_nor.png";
-                }
-                description { state: "highlight" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-                description { state: "focus" 0.0;
-                    inherit: "highlight" 0.0;
-                    image.normal: btn_bar_new_foc.png;
-                }
-            }
-	    part {
-                name: "new_folder_over";
-                scale:1;
-                type: RECT;
-                mouse_events :1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0 0;
-                    fixed: 1 1;
-                    min: 82 102;
-                    max: 82 102;
-                    rel1 { relative: 0.0 0.0; to: "new_folder_bg";}
-                    rel2 { relative: 1.0 1.0; to: "new_folder_bg";}
-                    color_class: transparent;
-                }
-            }
-       part {
-                name: "new_folder_click";
-                scale:1;
-                type: SWALLOW;
-                mouse_events :1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0 0;
-                    fixed: 1 1;
-                    min: 82 102;
-                    max: 82 102;
-                    rel1 { relative: 0.0 0.0; to: "new_folder_over";}
-                    rel2 { relative: 1.0 1.0; to: "new_folder_over";}
-                    color_class: transparent;
-                }
-            }
        part {
                 name: "title_text";
                 scale: 1;
@@ -318,7 +228,7 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
           }
 
 	  part {
-              name: "folder_bg";
+              name: "bookmark_group_bg";
               scale:1;
               mouse_events: 1;
               type: RECT;
@@ -347,14 +257,14 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
               }
           }
       part {
-                name: "folder_text";
+                name: "bookmark_group_text";
                 scale: 1;
                 type: TEXT;
                 description { state: "default" 0.0;
                   visible: 1;
                   fixed: 1 1;
-                  rel1 { relative: 0.0 0.0;to: "folder_bg"; offset : 62 104; }
-                  rel2 { relative: 1.0 1.0;to: "folder_bg";}
+                  rel1 { relative: 0.0 0.0;to: "bookmark_group_bg"; offset : 62 104; }
+                  rel2 { relative: 1.0 1.0;to: "bookmark_group_bg";}
                   color: 116 116 116 255;
                   text {
                       text: "Bookmark";
@@ -382,22 +292,6 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
                   emit("mouse_out_close_click", "");
               }
           }
-	     program {
-              name: "mouse_in_new_folder_click";
-              signal: "mouse,in";
-              source: "new_folder_*";
-              script {
-                  emit("mouse_in_new_folder_click", "");
-              }
-          }
-          program {
-              name: "mouse_out_new_folder_click";
-              signal: "mouse,out";
-              source: "new_folder_*";
-              script {
-                  emit("mouse_out_new_folder_click", "");
-              }
-          }
           program {
               name: "mouse_in_close";
               signal: "mouse_in_close_click";
@@ -416,25 +310,6 @@ RESOURCE_IMAGE_LOSSY("ic_thumbnail_folder_mark.png")
               target: "close_bg";
               target: "close_icon";
           }
-          program {
-              name: "mouse_in_new_folder";
-              signal: "mouse_in_new_folder_click";
-              source: "";
-              action: STATE_SET "highlight" 0.0;
-              target: "new_folder_over";
-              target: "new_folder_bg";
-              target: "new_folder_icon";
-          }
-          program {
-              name: "mouse_out_new_folder";
-              signal: "mouse_out_new_folder_click";
-              source: "";
-              action: STATE_SET "default" 0.0;
-              target: "new_folder_over";
-              target: "new_folder_bg";
-              target: "new_folder_icon";
-          }
-
       }
     }
 
@@ -747,23 +622,6 @@ group { name: "elm/gengrid/item/grid_bm_item/default";
                 inherit: "default" 0.0;
             }
         }
-
-       part { name: "folder_image";
-                type: IMAGE;
-                scale: 1;
-                repeat_events: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.5 0.5;
-                    fixed: 0 0;
-                    min: 140 140;
-                    max: 140 140;
-                    image.normal: "ic_thumbnail_folder.png";
-                    rel1 { relative: 0.0 0.0; to: "bg"; }
-                    rel2 { relative: 1.0 1.0; to: "bg"; }
-                }
-             }
 
         part { name: "elm.thumbnail";
             type: SWALLOW;

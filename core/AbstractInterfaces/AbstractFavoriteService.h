@@ -59,22 +59,10 @@ public:
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  unsigned int dirId = 0) = 0;
    /**
-     * @brief Creates a new folder with name "title" in a folder with id and order
-     * @return folder_id of created folder
+     * @brief Counts bookmarks
+     * @return Number of bookmarks
      */
-    virtual int save_folder(const char *title, int *saved_bookmark_id, int by_operator = 0) = 0;
-
-   /**
-     * @brief get folder id of a folder with name "title" in folder with id, parent_id
-     * @return  true if found, false otherwise
-     */
-    virtual bool get_folder_id(const char *title, int parent_id, int *folder_id) = 0 ;
-
-   /**
-     * @brief Count bookmarks and subfolders
-     * @return Number of bookmarks and subfolders
-     */
-    virtual int countBookmarksAndSubFolders() = 0;
+    virtual int countBookmarks() = 0;
 
     /** \todo Need to change this callback function for finding stored bookmark, check getBookmarkId function
      * @brief Check if bookmark exists
@@ -90,13 +78,6 @@ public:
      * @return list of bookmark items in folder with id, folder_id
      */
     virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1)= 0;
-
-    /**
-     * @brief Get bookmark folders from platform service and store it in private m_bookmarkFoldersList
-     *
-     * @return list of bookmark folders
-     */
-    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarkFolders(int folder_id) = 0;
 
     /**
      * @brief Delete all bookmarks

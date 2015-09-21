@@ -2,12 +2,10 @@ project(BookmarkManagerUI)
 
 set(BookmarkManagerUI_SRCS
     BookmarkManagerUI.cpp
-    AddNewFolderPopup.cpp
     )
 
 set(BookmarkManagerUI_HEADERS
     BookmarkManagerUI.h
-    AddNewFolderPopup.h
     )
 
 include(Coreheaders)
@@ -28,7 +26,6 @@ install(TARGETS ${PROJECT_NAME}
 #please do not add edc/ directory
 set(edcFiles
     BookmarkManagerUI.edc
-    AddNewFolderPopup.edc
     )
 
 foreach(edec ${edcFiles})
