@@ -47,7 +47,6 @@ public:
     void switchViewToWebPage(Evas_Object* content, const std::string uri);
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }
-    bool isBackButtonEnabled() { return m_back->isEnabled(); }
     void setTabsNumber(int tabs);
     void setBackButtonEnabled(bool enabled) { m_back->setEnabled(enabled); }
     void setForwardButtonEnabled(bool enabled) { m_forward->setEnabled(enabled); }
