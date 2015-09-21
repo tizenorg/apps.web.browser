@@ -26,7 +26,7 @@ namespace config
 void DefaultConfig::load(const std::string &)
 {
     const char *db_path = NULL;
-    db_path = tzplatform_getenv(TZ_USER_DB);
+    db_path = tzplatform_getenv(TZ_USER_APP);
 
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
@@ -43,7 +43,7 @@ void DefaultConfig::load(const std::string &)
 
 #   include "ConfigValues.h"
 
-    m_data["resourcedb/dir"] = std::string(db_path)+"/";
+    m_data["resourcedb/dir"] = std::string(db_path)+"/"+std::string("org.tizen.browser/data/");
 }
 
 void DefaultConfig::store(const std::string & )
