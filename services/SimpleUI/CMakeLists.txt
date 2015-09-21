@@ -2,7 +2,6 @@ project(SimpleUI)
 
 set(SimpleUI_SRCS
     SimpleUI.cpp
-    ButtonBar.cpp
     SimplePopup.cpp
     BookmarksManager.cpp
     ViewManager.cpp
@@ -10,7 +9,6 @@ set(SimpleUI_SRCS
 
 set(SimpleUI_HEADERS
     SimpleUI.h
-    ButtonBar.h
     SimplePopup.h
     BookmarksManager.h
     ViewManager.h
@@ -23,7 +21,7 @@ include(EWebKitHelpers)
 include_directories(${CMAKE_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/services)
-include_directories(${CMAKE_SOURCE_DIR}/services/SimpleURI)
+include_directories(${CMAKE_SOURCE_DIR}/services/WebPageUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/WebEngineService)
 include_directories(${CMAKE_SOURCE_DIR}/services/WebEngineService/src)
 include_directories(${CMAKE_SOURCE_DIR}/services/StorageService)
@@ -45,7 +43,7 @@ pkg_check_modules(capi_net QUIET capi-network-connection)
 
 add_library(${PROJECT_NAME} SHARED ${SimpleUI_SRCS})
 
-add_dependencies(${PROJECT_NAME} SimpleURI)
+add_dependencies(${PROJECT_NAME} WebPageUI)
 add_dependencies(${PROJECT_NAME} StorageService)
 add_dependencies(${PROJECT_NAME} HistoryService)
 add_dependencies(${PROJECT_NAME} MoreMenuUI)
@@ -56,7 +54,7 @@ add_dependencies(${PROJECT_NAME} TabUI)
 add_dependencies(${PROJECT_NAME} SettingsUI)
 add_dependencies(${PROJECT_NAME} PlatformInputManager)
 add_dependencies(${PROJECT_NAME} SessionStorage)
-target_link_libraries(${PROJECT_NAME} SimpleURI)
+target_link_libraries(${PROJECT_NAME} WebPageUI)
 target_link_libraries(${PROJECT_NAME} StorageService)
 target_link_libraries(${PROJECT_NAME} HistoryService)
 target_link_libraries(${PROJECT_NAME} MoreMenuUI)
@@ -81,13 +79,8 @@ include(EDCCompile)
 
 #please do not add edc/ directory
 set(edcFiles
-    MainLayout.edc
-    LeftButtonBar.edc
-    RightButtonBar.edc
     AuthenticationPopup.edc
     BookmarksManager.edc
-    ScrollerDefault.edc
-    ErrorMessage.edc
     Tooltip.edc
     )
 

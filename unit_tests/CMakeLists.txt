@@ -10,7 +10,7 @@ include(EWebKitHelpers)
 include_directories( ${CMAKE_SOURCE_DIR})
 include_directories( ${CMAKE_SOURCE_DIR}/services/FavoriteService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/SimpleUI)
-include_directories( ${CMAKE_SOURCE_DIR}/services/SimpleURI)
+include_directories( ${CMAKE_SOURCE_DIR}/services/WebPageUI)
 include_directories( ${CMAKE_SOURCE_DIR}/services/WebKitEngineService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService/Storage/include)
@@ -52,7 +52,7 @@ if(TIZEN_BUILD)
         HistoryService
         PlatformInputManager
         SimpleUI
-        SimpleURI
+        WebPageUI
         StorageService
         WebKitEngineService
         SessionStorage

@@ -81,6 +81,34 @@ MainUI::~MainUI()
     elm_gengrid_item_class_free(m_bookmark_item_class);
 }
 
+void MainUI::init(Evas_Object* parent)
+{
+    M_ASSERT(parent);
+    m_parent = parent;
+}
+
+
+Evas_Object* MainUI::getContent()
+{
+    M_ASSERT(m_parent);
+    if (!m_layout) {
+        m_layout = createQuickAccessLayout(m_parent);
+    }
+    return m_layout;
+}
+
+void MainUI::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
+{
+    addHistoryItems(vec);
+    showHistory();
+}
+
+void MainUI::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
+{
+    addBookmarkItems(vec);
+    showBookmarks();
+}
+
 void MainUI::createItemClasses()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
@@ -94,14 +122,6 @@ void MainUI::createItemClasses()
     }
 }
 
-void MainUI::show(Evas_Object* parent)
-{
-    //FIXME: this may be source of memory leak this object is not deleted anywhere
-    m_layout = createQuickAccessLayout(parent);
-    evas_object_show(m_layout);
-
-    m_parent = parent;
-}
 
 Evas_Object* MainUI::createQuickAccessLayout(Evas_Object* parent)
 {
@@ -304,6 +324,7 @@ void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkIt
 
 void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
+    clearBookmarkGengrid();
          BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
          for (auto it = items.begin(); it != items.end(); ++it) {
                  addBookmarkItem(*it);
@@ -393,6 +414,7 @@ void MainUI::showHistory()
         return;
     }
     setEmptyView(false);
+    evas_object_show(m_layout);
 }
 
 void MainUI::clearBookmarkGengrid()
@@ -417,13 +439,12 @@ void MainUI::showBookmarks()
     evas_object_show(m_bookmarksView);
 
     elm_object_focus_set(m_bookmarksButton, true);
+    evas_object_show(m_layout);
 }
 
 void MainUI::hide()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
-    //TODO: remove these "evas_object_hide" after cleaning up the mess in whole app window.
     evas_object_hide(m_layout);
     evas_object_hide(m_mostVisitedView);
     evas_object_hide(m_bookmarksView);
