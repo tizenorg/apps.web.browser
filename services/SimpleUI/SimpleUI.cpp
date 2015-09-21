@@ -562,7 +562,7 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
-    if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus && !m_webPageUI->isHomePageActive() && m_webPageUI->isBackButtonEnabled())
+    if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus && !m_webPageUI->isHomePageActive())
         m_webEngine->backButtonClicked();
 }
 
