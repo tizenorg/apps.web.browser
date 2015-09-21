@@ -21,17 +21,15 @@
 #include "Config.h"
 #include "ButtonBar.h"
 
-namespace tizen_browser
-{
-namespace base_ui
-{
+namespace tizen_browser {
+namespace base_ui {
 
 double ButtonBar::tooltipHideTimeout = 0.;
 double ButtonBar::tooltipShowDelay = 0.;
-Ecore_Timer * ButtonBar::m_tooltipHideTimer = NULL;
-Ecore_Timer * ButtonBar::m_tooltipShowTimer = NULL;
+Ecore_Timer* ButtonBar::m_tooltipHideTimer = NULL;
+Ecore_Timer* ButtonBar::m_tooltipShowTimer = NULL;
 
-ButtonBar::ButtonBar(Evas_Object *parent, const std::string &edjFile, const std::string &groupName)
+ButtonBar::ButtonBar(Evas_Object* parent, const std::string& edjFile, const std::string& groupName)
 {
     config::DefaultConfig config;
     config.load("");
@@ -42,7 +40,7 @@ ButtonBar::ButtonBar(Evas_Object *parent, const std::string &edjFile, const std:
     elm_theme_extension_add(NULL, edjFilePath.c_str());
     m_layout = elm_layout_add(parent);
     Eina_Bool layoutSetResult = elm_layout_file_set(m_layout, edjFilePath.c_str(), groupName.c_str());
-    if(!layoutSetResult)
+    if (!layoutSetResult)
         throw std::runtime_error("Layout file not found: " + edjFilePath);
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -51,22 +49,22 @@ ButtonBar::ButtonBar(Evas_Object *parent, const std::string &edjFile, const std:
 ButtonBar::~ButtonBar()
 {
 
-    if(ButtonBar::m_tooltipShowTimer) {
+    if (ButtonBar::m_tooltipShowTimer) {
         ecore_timer_del(ButtonBar::m_tooltipShowTimer);
         ButtonBar::m_tooltipShowTimer = NULL;
     }
-    if(ButtonBar::m_tooltipHideTimer) {
+    if (ButtonBar::m_tooltipHideTimer) {
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
     }
 }
 
-void ButtonBar::addAction(sharedAction action, const std::string &buttonName)
+void ButtonBar::addAction(sharedAction action, const std::string& buttonName)
 {
     ActionButton actionButton;
     std::shared_ptr<EAction> eAction = std::make_shared<EAction>(action);
     actionButton.eAction = eAction;
-    Evas_Object *button = elm_button_add(m_layout);
+    Evas_Object* button = elm_button_add(m_layout);
 
     evas_object_event_callback_add(button, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, NULL);
     evas_object_event_callback_add(button, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out, NULL);
@@ -78,7 +76,7 @@ void ButtonBar::addAction(sharedAction action, const std::string &buttonName)
     elm_object_disabled_set(button, action->isEnabled() ? EINA_FALSE : EINA_TRUE);
     evas_object_smart_callback_add(button, "clicked", EAction::callbackFunction, eAction.get());
     evas_object_show(button);
-    if(action->isEnabled()){
+    if (action->isEnabled()) {
         elm_object_tooltip_text_set(button, eAction->getAction()->getToolTip().c_str());
         elm_object_tooltip_orient_set(button, ELM_TOOLTIP_ORIENT_BOTTOM);
         elm_object_tooltip_style_set(button, "browserTip");
@@ -92,12 +90,12 @@ void ButtonBar::addAction(sharedAction action, const std::string &buttonName)
     registerEnabledChangedCallback(action, buttonName);
 }
 
-void ButtonBar::registerEnabledChangedCallback(sharedAction action, const std::string &buttonName)
+void ButtonBar::registerEnabledChangedCallback(sharedAction action, const std::string& buttonName)
 {
     action->enabledChanged.connect(boost::bind(&ButtonBar::onEnabledChanged, this, buttonName, action));
 }
 
-void ButtonBar::onEnabledChanged(const std::string &buttonName, sharedAction action)
+void ButtonBar::onEnabledChanged(const std::string& buttonName, sharedAction action)
 {
     // if action match action assigned to button, refresh button
     if (m_actionsMap[buttonName] == action) {
@@ -106,41 +104,38 @@ void ButtonBar::onEnabledChanged(const std::string &buttonName, sharedAction act
 
 }
 
-void ButtonBar::setActionForButton(const std::string &buttonName, sharedAction newAction)
+void ButtonBar::setActionForButton(const std::string& buttonName, sharedAction newAction)
 {
-        ActionButton actionButton;
-        Evas_Object *button = m_buttonsMap[buttonName].button;
-        std::shared_ptr<EAction> eAction = std::make_shared<EAction>(newAction);
+    ActionButton actionButton;
+    Evas_Object* button = m_buttonsMap[buttonName].button;
+    std::shared_ptr<EAction> eAction = std::make_shared<EAction>(newAction);
 
-        elm_object_style_set(button, newAction->getIcon().c_str());
+    elm_object_style_set(button, newAction->getIcon().c_str());
 
-        evas_object_smart_callback_del(button, "clicked", EAction::callbackFunction);
-        evas_object_smart_callback_add(button, "clicked", EAction::callbackFunction, eAction.get());
+    evas_object_smart_callback_del(button, "clicked", EAction::callbackFunction);
+    evas_object_smart_callback_add(button, "clicked", EAction::callbackFunction, eAction.get());
 
 
-        if(elm_object_focus_get(button)) {
-            elm_object_signal_emit(button, "elm,action,focus", "elm");
-        }
+    if (elm_object_focus_get(button)) {
+        elm_object_signal_emit(button, "elm,action,focus", "elm");
+    }
 
-        m_buttonsMap[buttonName].eAction = eAction;
-        m_actionsMap[buttonName] = newAction;
+    m_buttonsMap[buttonName].eAction = eAction;
+    m_actionsMap[buttonName] = newAction;
 
-        refreshButton(buttonName);
+    refreshButton(buttonName);
 
 }
 
-void ButtonBar::refreshButton(const std::string &buttonName)
+void ButtonBar::refreshButton(const std::string& buttonName)
 {
-    Evas_Object * button = m_buttonsMap[buttonName].button;
-    if(m_actionsMap[buttonName]->isEnabled())
-    {
+    Evas_Object* button = m_buttonsMap[buttonName].button;
+    if (m_actionsMap[buttonName]->isEnabled()) {
         elm_object_disabled_set(button, EINA_FALSE);
         elm_object_tooltip_text_set(button, m_actionsMap[buttonName]->getToolTip().c_str());
         elm_object_tooltip_orient_set(button, ELM_TOOLTIP_ORIENT_BOTTOM);
         elm_object_tooltip_style_set(button, "browserTip");
-    }
-    else
-    {
+    } else {
         elm_object_disabled_set(button, EINA_TRUE);
         elm_object_tooltip_unset(button);
     }
@@ -151,14 +146,14 @@ Evas_Object* ButtonBar::getContent()
     return m_layout;
 }
 
-Evas_Object* ButtonBar::getButton(const std::string &buttonName)
+Evas_Object* ButtonBar::getButton(const std::string& buttonName)
 {
     return m_buttonsMap[buttonName].button;
 }
 
 void ButtonBar::clearFocus()
 {
-    for ( auto it = m_buttonsMap.begin(); it != m_buttonsMap.end(); it++) {
+    for (auto it = m_buttonsMap.begin(); it != m_buttonsMap.end(); it++) {
         elm_object_focus_set((*it).second.button, EINA_FALSE);
     }
 }
@@ -171,14 +166,14 @@ void ButtonBar::setDisabled(bool disabled)
     elm_object_disabled_set(getContent(), disabled ? EINA_TRUE : EINA_FALSE);
 }
 
-void ButtonBar::__cb_focus_in(void *data, Evas_Object *obj, void *event_info)
+void ButtonBar::__cb_focus_in(void*, Evas_Object* obj, void*)
 {
     //BROWSER_LOGD("[%s:%d] %d", __PRETTY_FUNCTION__, __LINE__, reinterpret_cast<int>(obj));
-    if(ButtonBar::m_tooltipHideTimer) {
+    if (ButtonBar::m_tooltipHideTimer) {
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
     }
-    if(ButtonBar::m_tooltipShowTimer) {
+    if (ButtonBar::m_tooltipShowTimer) {
         ecore_timer_del(ButtonBar::m_tooltipShowTimer);
         ButtonBar::m_tooltipShowTimer = NULL;
     }
@@ -188,36 +183,36 @@ void ButtonBar::__cb_focus_in(void *data, Evas_Object *obj, void *event_info)
     ButtonBar::m_tooltipShowTimer = ecore_timer_add(elm_config_tooltip_delay_get(), ButtonBar::__cb_tooltip_show_delay, obj);
 }
 
-void ButtonBar::__cb_focus_out(void *data, Evas_Object *obj, void *event_info)
+void ButtonBar::__cb_focus_out(void*, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(ButtonBar::m_tooltipHideTimer) {
+    if (ButtonBar::m_tooltipHideTimer) {
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
     }
-    if(ButtonBar::m_tooltipShowTimer) {
+    if (ButtonBar::m_tooltipShowTimer) {
         ecore_timer_del(ButtonBar::m_tooltipShowTimer);
         ButtonBar::m_tooltipShowTimer = NULL;
     }
-     elm_object_tooltip_hide(obj);
+    elm_object_tooltip_hide(obj);
 }
 
-void ButtonBar::__cb_mouse_in(void * /*data*/, Evas */*e*/, Evas_Object *obj, void */*event_info*/)
+void ButtonBar::__cb_mouse_in(void* /*data*/, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/)
 {
     //BROWSER_LOGD("[%s:%d] %d", __PRETTY_FUNCTION__, __LINE__, reinterpret_cast<int>(obj));
     elm_object_focus_set(obj, EINA_TRUE);
 }
 
-void ButtonBar::__cb_mouse_out(void */*data*/, Evas */*e*/, Evas_Object *obj, void */*event_info*/)
+void ButtonBar::__cb_mouse_out(void* /*data*/, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/)
 {
     elm_object_focus_set(obj, EINA_FALSE);
 }
 
-Eina_Bool ButtonBar::__cb_tooltip_hide_timeout(void * data)
+Eina_Bool ButtonBar::__cb_tooltip_hide_timeout(void* data)
 {
-    Evas_Object * button = static_cast<Evas_Object *> (data);
+    Evas_Object* button = static_cast<Evas_Object*>(data);
 
-    if(ButtonBar::m_tooltipHideTimer) {
+    if (ButtonBar::m_tooltipHideTimer) {
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
     }
@@ -226,11 +221,11 @@ Eina_Bool ButtonBar::__cb_tooltip_hide_timeout(void * data)
     return ECORE_CALLBACK_CANCEL;
 }
 
-Eina_Bool ButtonBar::__cb_tooltip_show_delay(void * data)
+Eina_Bool ButtonBar::__cb_tooltip_show_delay(void* data)
 {
-    Evas_Object * button = static_cast<Evas_Object *> (data);
+    Evas_Object* button = static_cast<Evas_Object*>(data);
 
-    if(ButtonBar::m_tooltipShowTimer) {
+    if (ButtonBar::m_tooltipShowTimer) {
         ecore_timer_del(ButtonBar::m_tooltipShowTimer);
         ButtonBar::m_tooltipShowTimer = NULL;
     }

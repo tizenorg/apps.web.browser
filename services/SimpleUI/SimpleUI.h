@@ -33,16 +33,15 @@
 #include "service_macros.h"
 
 // components
+#include "WebPageUI.h"
 #include "AbstractWebEngine.h"
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #include "SettingsUI.h"
 #include "MainUI.h"
 #include "TabUI.h"
-#include "ButtonBar.h"
 #include "HistoryService.h"
 #include "BookmarkManagerUI.h"
-#include "SimpleURI.h"
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "SqlStorage.h"
@@ -74,13 +73,13 @@ public:
     void destroyUI();
 private:
     // setup functions
-    void loadThemes();
     void createActions();
     void connectActions();
     void loadUIServices();
     void connectUISignals();
     void loadModelServices();
     void initModelServices();
+    void initUIServices();
     void connectModelSignals();
     void restoreLastSession();
     Evas_Object* createWebLayout(Evas_Object* parent);
@@ -108,11 +107,8 @@ private:
     void bookmarkAdded();
     void bookmarkDeleted();
 
-    bool isHomePageActive();
-    void switchViewToHomePage();
-    void updateBrowserView();
-    void updateWebView();
-    void updateURIBarView();
+    void switchViewToQuickAccess();
+    void switchViewToWebPage();
     void updateView();
 
     void openNewTab(const std::string &uri, bool desktopMode = true);
@@ -150,20 +146,10 @@ private:
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
-
-
     void setwvIMEStatus(bool status);
 
-    sharedAction m_back;
-    sharedAction m_forward;
-    sharedAction m_stopLoading;
-    sharedAction m_reload;
-    sharedAction m_bookmark;
-    sharedAction m_unbookmark;
-    sharedAction m_tab;
     sharedAction m_share;
     sharedAction m_zoom_in;
-    sharedAction m_showMoreMenu;
     sharedAction m_showBookmarkManagerUI;
     sharedAction m_settingPointerMode;
     sharedAction m_settingPrivateBrowsing;
@@ -229,17 +215,11 @@ private:
     void switchToDesktopMode();
     void showHistoryUI(const std::string& str);
     void closeHistoryUI(const std::string&);
-    void showMainUI();
-    void hideMainUI();
     void showURIBar();
     void hideURIBar();
-    void hideWebView();
     void hideSettingsMenu();
     void showSettingsUI(const std::string&);
     void closeSettingsUI(const std::string&);
-
-    void showProgressBar();
-    void hideProgressBar();
 
     void closeBookmarkManagerMenu(const std::string& str);
     void updateBookmarkManagerGenGrid(int folder_id);
@@ -263,7 +243,6 @@ private:
     void onDeleteDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onDeleteFavoriteButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
-    void openLinkFromPopup(const std::string &);
     void disableHistoryButton(bool flag);
     int tabsCount();
 
@@ -278,16 +257,13 @@ private:
 
     std::string edjePath(const std::string &);
 
-    Evas_Object *m_mainLayout;
-    Evas_Object *m_progressBar;
     Evas_Object *m_popup;
     Evas_Object *m_entry;
     Evas_Object *m_errorLayout;
 
+    std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
-    std::shared_ptr<tizen_browser::base_ui::SimpleURI> m_simpleURI;
-    std::shared_ptr<ButtonBar> leftButtonBar;
-    std::shared_ptr<ButtonBar> rightButtonBar;
+//     std::shared_ptr<tizen_browser::base_ui::URIEntry> m_simpleURI;
     std::shared_ptr<tizen_browser::interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
     std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> m_moreMenuUI;
@@ -301,7 +277,6 @@ private:
     tizen_browser::Session::Session m_currentSession;
     std::shared_ptr<BookmarksManager> m_bookmarks_manager;
     bool m_initialised;
-    bool m_isHomePageActive;
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
@@ -315,8 +290,6 @@ private:
     SimplePopup* m_networkErrorPopup;
 
     void searchWebPage(std::string &text, int flags);
-    static void favicon_clicked(void *data, Evas_Object *obj, const char *emission, const char *source);
-
 };
 
 }

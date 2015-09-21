@@ -20,7 +20,6 @@
 #include <ewk_chromium.h>
 #endif
 
-#include <boost/format.hpp>
 #include <boost/any.hpp>
 #include <memory>
 #include <algorithm>
@@ -37,7 +36,6 @@
 #include "TabId.h"
 #include "Tools/EflTools.h"
 #include "BrowserImage.h"
-#include "SimpleURI.h"
 #include "SimpleUI.h"
 #include "BookmarkItem.h"
 #include "Tools/EflTools.h"
@@ -60,15 +58,12 @@ const int ROOT_FOLDER = 0;
 
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
-    , m_mainLayout(nullptr)
-    , m_progressBar(nullptr)
     , m_popup(nullptr)
     , m_moreMenuUI()
     , m_tabUI()
     , m_bookmarkManagerUI()
     , m_mainUI()
     , m_initialised(false)
-    , m_isHomePageActive(false)
     , items_vector()
     , m_networkErrorPopup(0)
     , m_wvIMEStatus(false)
@@ -147,29 +142,23 @@ int SimpleUI::exec(const std::string& _url)
             //set global show tooltip timeout
             elm_config_tooltip_delay_set( boost::any_cast <double> (config.get("TOOLTIP_DELAY")));
 
-            loadThemes();
-
             loadUIServices();
             loadModelServices();
             createActions();
 
-            // create view layouts
-            m_mainLayout = createWebLayout(m_window.get());
-            elm_win_resize_object_add(m_window.get(), m_mainLayout);
-
-            m_errorLayout = createErrorLayout(m_window.get());
-
-            //this needs to be called after UI is estabilished
+            // initModelServices() needs to be called after initUIServices()
+            initUIServices();
             initModelServices();
+
+            // create view layouts
+            elm_win_resize_object_add(m_window.get(), m_webPageUI->getContent());
 
             connectModelSignals();
             connectUISignals();
             connectActions();
 
-            elm_layout_signal_callback_add(m_simpleURI->getContent(), "slide_websearch", "elm", SimpleUI::favicon_clicked, this);
-
             // show main layout and window
-            evas_object_show(m_mainLayout);
+            evas_object_show(m_webPageUI->getContent());
             evas_object_show(m_window.get());
         }
         m_initialised = true;
@@ -180,61 +169,15 @@ int SimpleUI::exec(const std::string& _url)
     if (url.empty())
     {
         BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
-        switchViewToHomePage();
+        switchViewToQuickAccess();
         restoreLastSession();
+    } else {
+        openNewTab(url);
     }
-     else
-         openNewTab(url);
-    m_simpleURI->setFocus();
+    m_webPageUI->getURIEntry().setFocus();
 
     BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
     return 0;
-}
-
-Evas_Object* SimpleUI::createWebLayout(Evas_Object* parent)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    // create web layout
-    Evas_Object* web_layout = elm_layout_add(parent);
-    evas_object_size_hint_weight_set(web_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-    elm_layout_file_set(web_layout, edjePath("SimpleUI/MainLayout.edj").c_str(), "main_layout");
-
-    // left buttons
-    leftButtonBar = std::make_shared<ButtonBar>(web_layout, "SimpleUI/LeftButtonBar.edj", "left_button_bar");
-    leftButtonBar->addAction(m_back, "prev_button");
-    leftButtonBar->addAction(m_forward, "next_button");
-    leftButtonBar->addAction(m_reload, "refresh_stop_button");
-
-    //register action that will be used later by buttons"
-    leftButtonBar->registerEnabledChangedCallback(m_stopLoading, "refresh_stop_button");
-
-    // right buttons
-    rightButtonBar = std::make_shared<ButtonBar>(web_layout, "SimpleUI/RightButtonBar.edj", "right_button_bar");
-    rightButtonBar->addAction(m_tab, "tab_button");
-    rightButtonBar->addAction(m_showMoreMenu, "setting_button");
-
-    // progress bar
-    m_progressBar = elm_progressbar_add(web_layout);
-    elm_object_style_set(m_progressBar,"play_buffer");
-
-    //URL bar (Evas Object is shipped by SimpleURI object)
-    elm_object_part_content_set(web_layout, "uri_entry", m_simpleURI->getContent(web_layout));
-    elm_object_part_content_set(web_layout, "uri_bar_buttons_left", leftButtonBar->getContent());
-    elm_object_part_content_set(web_layout, "uri_bar_buttons_right", rightButtonBar->getContent());
-
-    return web_layout;
-}
-
-Evas_Object* SimpleUI::createErrorLayout(Evas_Object* parent)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Evas_Object* errorLayout =  elm_layout_add(parent);
-    evas_object_size_hint_weight_set(errorLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-    elm_layout_file_set(errorLayout, edjePath("SimpleUI/ErrorMessage.edj").c_str(), "error_message");
-
-    return errorLayout;
 }
 
 void SimpleUI::restoreLastSession()
@@ -258,10 +201,10 @@ void SimpleUI::loadUIServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    m_simpleURI =
+    m_webPageUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::SimpleURI,tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleuri"));
+        <tizen_browser::base_ui::WebPageUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webpageui"));
 
     m_mainUI =
         std::dynamic_pointer_cast
@@ -273,8 +216,8 @@ void SimpleUI::connectUISignals()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    M_ASSERT(m_simpleURI.get());
-    m_simpleURI->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
+    M_ASSERT(m_webPageUI.get());
+    m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
 
     M_ASSERT(m_mainUI.get());
     m_mainUI->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
@@ -314,13 +257,19 @@ void SimpleUI::loadModelServices()
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.sessionStorageService"));
 }
 
+void SimpleUI::initUIServices()
+{
+    m_webPageUI->init(m_window.get());
+    m_mainUI->init(m_webPageUI->getContent());
+}
+
 void SimpleUI::initModelServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     M_ASSERT(m_webEngine);
-    M_ASSERT(m_mainLayout);
-    m_webEngine->init(m_mainLayout);
+    M_ASSERT(m_webPageUI->getContent());
+    m_webEngine->init(m_webPageUI->getContent());
 
     M_ASSERT(m_favoriteService);
     m_favoriteService->synchronizeBookmarks();
@@ -335,9 +284,9 @@ void SimpleUI::connectModelSignals()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
-    m_webEngine->uriChanged.connect(boost::bind(&SimpleURI::changeUri, m_simpleURI.get(), _1));
+    m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
-    m_webEngine->webViewClicked.connect(boost::bind(&SimpleURI::clearFocus, m_simpleURI.get()));
+    m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&SimpleUI::backEnable, this, _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&SimpleUI::forwardEnable, this, _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
@@ -353,55 +302,18 @@ void SimpleUI::connectModelSignals()
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
 
-    //m_historyService->historyEmpty.connect(boost::bind(&SimpleUI::disableHistoryButton, this, _1));
     m_historyService->historyAdded.connect(boost::bind(&SimpleUI::onHistoryAdded, this,_1));
     m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
-    //TODO "clearHistoryGenlist" should be renamed to "onHistoryDeleteFinished"
-    //and "historyAllDeleted"should be renamed to historyDeleteFinished"
-    m_historyService->historyAllDeleted.connect(boost::bind(&MainUI::clearHistoryGenlist, m_mainUI.get()));
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
 
 }
 
-//TODO: move it to WebUI
-void SimpleUI::loadThemes()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, edjePath("SimpleUI/ErrorMessage.edj").c_str());
-
-    elm_theme_overlay_add(0, edjePath("SimpleUI/ScrollerDefault.edj").c_str());
-    elm_theme_overlay_add(0, edjePath("SimpleUI/Tooltip.edj").c_str());
-}
-
 void SimpleUI::createActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ///\todo Add MulitStateAction. and convert m_stopLoading and m_reload actons to it?
-
-    m_back = sharedAction(new Action("Back"));
-    m_back->setToolTip("Previous");
-    m_back->setIcon("browser/toolbar_prev");
-
-    m_forward = sharedAction(new Action("Next"));
-    m_forward->setToolTip("Next");
-    m_forward->setIcon("browser/toolbar_next");
-
-    m_stopLoading = sharedAction(new Action("Stop"));
-    m_stopLoading->setToolTip("Stop");
-    m_stopLoading->setIcon("browser/toolbar_stop");
-
-    m_reload = sharedAction(new Action("Reload"));
-    m_reload->setToolTip("Reload");
-    m_reload->setIcon("browser/toolbar_reload");
-    m_tab = sharedAction(new Action("Tabs"));
-    m_tab->setToolTip("Tab page");
-    m_tab->setIcon("browser/toolbar_tab");
-
-    m_showMoreMenu = sharedAction(new Action("Settings"));
-    m_showMoreMenu->setToolTip("Settings");
-    m_showMoreMenu->setIcon("browser/toolbar_setting");
 
     m_settingPrivateBrowsing = sharedAction(new Action("Private browsing"));
     m_settingPrivateBrowsing->setToolTip("On exit from private mode all cookies, history, and stored data will be deleted");
@@ -436,48 +348,30 @@ void SimpleUI::createActions()
 
 void SimpleUI::connectActions()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
+
     //left bar
-    m_back->triggered.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
-    m_back->triggered.connect(boost::bind(&SimpleUI::updateBrowserView, this));
-    m_forward->triggered.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::forward, m_webEngine.get()));
-    m_stopLoading->triggered.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::stopLoading, m_webEngine.get()));
-    m_reload->triggered.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::reload, m_webEngine.get()));
-    m_reload->triggered.connect(boost::bind(&SimpleUI::updateBrowserView, this));
+    m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
+    m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
+    m_webPageUI->forwardPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::forward, m_webEngine.get()));
+    m_webPageUI->stopLoadingPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::stopLoading, m_webEngine.get()));
+    m_webPageUI->reloadPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::reload, m_webEngine.get()));
+    m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
 
     //right bar
-    m_tab->triggered.connect(boost::bind(&SimpleUI::showTabUI, this));
-    m_showMoreMenu->triggered.connect(boost::bind(&SimpleUI::showMoreMenu, this));
-
-    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
+    m_webPageUI->showTabUI.connect(boost::bind(&SimpleUI::showTabUI, this));
+    m_webPageUI->showMoreMenu.connect(boost::bind(&SimpleUI::showMoreMenu, this));
 }
 
-void SimpleUI::updateURIBarView()
-{
-	m_simpleURI->changeUri(m_webEngine->getURI());
-	leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-	stopEnable(true);
-	reloadEnable(true);
-	hideProgressBar();
-}
-
-void SimpleUI::updateWebView()
+void SimpleUI::switchViewToWebPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
-    elm_object_part_content_unset(m_mainLayout, "web_view");
-    elm_object_part_content_set(m_mainLayout, "web_view", m_webEngine->getLayout());
-    evas_object_show(m_webEngine->getLayout());
-}
-
-void SimpleUI::updateBrowserView()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-	if(isHomePageActive())
-        hideMainUI();
-
-	updateWebView();
-
-	updateURIBarView();
+    M_ASSERT(m_webPageUI);
+    M_ASSERT(m_mainUI);
+    if(m_webPageUI->isHomePageActive())
+        m_mainUI->hide();
+    m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI());
 }
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
@@ -493,42 +387,23 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
 	return;
     }
     BROWSER_LOGD("[%s:%d] swiching to web_view ", __PRETTY_FUNCTION__, __LINE__);
-    updateBrowserView();
-}
-
-bool SimpleUI::isHomePageActive()
-{
-    return m_isHomePageActive;
+    switchViewToWebPage();
 }
 
 bool SimpleUI::isErrorPageActive()
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    return elm_object_part_content_get(m_mainLayout, "web_view") == m_errorLayout;
+    return m_webPageUI->isErrorPageActive();
 }
 
-void SimpleUI::switchViewToHomePage()
+void SimpleUI::switchViewToQuickAccess()
 {
-    BROWSER_LOGD("[%s:%d] isHomePageActive : %d", __PRETTY_FUNCTION__, __LINE__, m_isHomePageActive);
-    if(isHomePageActive())
-	return;
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(m_webPageUI->isHomePageActive())
+        return;
 
-    showMainUI();
-    filterURL(HomePageURL);
-
+    m_webPageUI->switchViewToQuickAccess(m_mainUI->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
-
-    leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-
-    stopEnable(false);
-    reloadEnable(false);
-    forwardEnable(false);
-    backEnable(false);
-    evas_object_hide(leftButtonBar->getContent());
-    elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
-    elm_object_signal_emit(m_simpleURI->getContent(), "shiftback_uribg", "ui");
-
-    hideProgressBar();
+    m_mainUI->showMostVisited(getMostVisitedItems());
 }
 
 void SimpleUI::checkTabId(const tizen_browser::basic_webengine::TabId& id){
@@ -560,7 +435,7 @@ void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
 
 void SimpleUI::bookmarkCheck()
 {
-    if (isHomePageActive())
+    if (m_webPageUI->isHomePageActive())
         return;
 
     if(m_favoriteService->bookmarkExists(m_webEngine->getURI())){
@@ -616,28 +491,19 @@ void SimpleUI::onClearHistoryClicked(const std::string&)
 void SimpleUI::onMostVisitedClicked(const std::string&)
 {
    BROWSER_LOGD("[%s]", __func__);
-   m_mainUI->clearHistoryGenlist();
-   m_mainUI->clearBookmarkGengrid();
-   m_mainUI->addHistoryItems(getMostVisitedItems());
-   m_mainUI->showHistory();
+   m_mainUI->showMostVisited(getMostVisitedItems());
 }
 
 void SimpleUI::onBookmarkButtonClicked(const std::string&)
 {
    BROWSER_LOGD("[%s]", __func__);
-   m_mainUI->clearBookmarkGengrid();
-   m_mainUI->clearHistoryGenlist();
-   m_mainUI->addBookmarkItems(getBookmarks());
-   m_mainUI->showBookmarks();
+   m_mainUI->showBookmarks(getBookmarks());
 }
 
 void SimpleUI::onBookmarkManagerButtonClicked(const std::string&)
 {
     BROWSER_LOGD("[%s]", __func__);
-    if(m_mainUI) {               // TODO: remove this section when naviframes will be available
-        m_mainUI->clearBookmarkGengrid();
-        m_mainUI->clearHistoryGenlist();
-    }
+    m_mainUI->hide();
 
     if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
         m_moreMenuUI->clearItems();
@@ -696,28 +562,28 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
-    if (!m_simpleURI->hasFocus() && !m_wvIMEStatus && !isHomePageActive() && m_back->isEnabled())
+    if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus && !m_webPageUI->isHomePageActive() && m_webPageUI->isBackButtonEnabled())
         m_webEngine->backButtonClicked();
 }
 
 void SimpleUI::backEnable(bool enable)
 {
-    m_back->setEnabled(enable);
+    m_webPageUI->setBackButtonEnabled(enable);
 }
 
 void SimpleUI::forwardEnable(bool enable)
 {
-    m_forward->setEnabled(enable);
+    m_webPageUI->setForwardButtonEnabled(enable);
 }
 
 void SimpleUI::reloadEnable(bool enable)
 {
-    m_reload->setEnabled(enable);
+    m_webPageUI->setReloadButtonEnabled(enable);
 }
 
 void SimpleUI::stopEnable(bool enable)
 {
-    m_stopLoading->setEnabled(enable);
+    m_webPageUI->setStopButtonEnabled(enable);
 }
 
 void SimpleUI::addBookmarkEnable(bool enable)
@@ -734,69 +600,42 @@ void SimpleUI::zoomEnable(bool enable)
 
 void SimpleUI::settingsButtonEnable(bool enable)
 {
-    m_showMoreMenu->setEnabled(enable);
+    m_webPageUI->setMoreMenuButtonEnabled(enable);
 }
 
 void SimpleUI::loadStarted()
 {
-    BROWSER_LOGD("Switching \"reload\" to \"stopLoading\".");
-    showProgressBar();
-    elm_object_signal_emit(m_simpleURI->getContent(), "shiftright_uribg", "ui");
-    elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
-    evas_object_show(leftButtonBar->getContent());
-    leftButtonBar->setActionForButton("refresh_stop_button", m_stopLoading);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     addBookmarkEnable(false);
     if(!m_webEngine->isPrivateMode()){
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI());
     }
+    m_webPageUI->loadStarted();
 }
 
 void SimpleUI::progressChanged(double progress)
 {
-    if(progress == 1.0){
-        hideProgressBar();
-    } else {
-        elm_progressbar_value_set(m_progressBar,progress);
-    }
+    m_webPageUI->progressChanged(progress);
 }
 
 void SimpleUI::loadFinished()
 {
-    elm_object_signal_emit(m_mainLayout, "hide_progressbar_bg", "ui");
-    BROWSER_LOGD("Switching \"stopLoading\" to \"reload\".");
-
-    leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     addBookmarkEnable(m_favoriteService->countBookmarksAndSubFolders() < m_favoritesLimit);
-
-    if(m_webEngine->isLoadError()){
-        loadError();
-    }
 
     if(!m_webEngine->isPrivateMode()){
         m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem> (m_webEngine->getURI(),
                                                                                                 m_webEngine->getTitle(),
                                                                                                 m_webEngine->getFavicon()), m_webEngine->getSnapshotData(MainUI::MAX_THUMBNAIL_WIDTH, MainUI::MAX_THUMBNAIL_HEIGHT));
     }
+    m_webPageUI->loadFinished();
 }
 
 void SimpleUI::loadError()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    hideWebView();
-    elm_object_part_content_set(m_mainLayout, "web_view",m_errorLayout);
-    //evas_object_show(m_errorLayout);
-}
-
-void SimpleUI::setErrorButtons()
-{
-//  leftButtonBar->setActionForButton("bookmark_button", m_bookmark);
-    leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-//  addBookmarkEnable(false);
-    stopEnable(false);
-    reloadEnable(true);
-    forwardEnable(false);
-    evas_object_hide(m_progressBar);
+    m_webPageUI->switchViewToErrorPage();
 }
 
 void SimpleUI::filterURL(const std::string& url)
@@ -807,7 +646,7 @@ void SimpleUI::filterURL(const std::string& url)
     //create some kind of std::man<std::string url, bool *(doSomethingWithUrl)()>
     //and then just map[url]() ? m_webEngine->setURI(url) : /*do nothing*/;;
     if(/*url.empty() ||*/ url == HomePageURL){
-        m_simpleURI->changeUri("");
+        m_webPageUI->getURIEntry().changeUri("");
     } else if (!url.empty()){
 
     //check if url is in favorites
@@ -815,19 +654,19 @@ void SimpleUI::filterURL(const std::string& url)
     //check if url is in blocked
 
     //no filtering
-        if (isHomePageActive())
+        if (m_webPageUI->isHomePageActive())
             openNewTab(url);
         else
             m_webEngine->setURI(url);
     }
-    m_simpleURI->clearFocus();
+    m_webPageUI->getURIEntry().clearFocus();
     //addBookmarkEnable(false);
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
-    m_simpleURI->clearFocus();
+    m_webPageUI->getURIEntry().clearFocus();
     bookmarkCheck();
 }
 
@@ -856,7 +695,7 @@ void SimpleUI::closeTabUI(const std::string& str)
 void SimpleUI::newTabClicked(const std::string& str)
 {
     BROWSER_LOGD("%s", __func__);
-    switchViewToHomePage();
+    switchViewToQuickAccess();
 }
 
 void SimpleUI::tabClicked(const tizen_browser::basic_webengine::TabId& tabId)
@@ -885,7 +724,7 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         {
         basic_webengine::AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<basic_webengine::AuthenticationConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
 
-        Evas_Object *popup_content = elm_layout_add(m_mainLayout);
+        Evas_Object *popup_content = elm_layout_add(m_webPageUI->getContent());
         std::string edjFilePath = EDJE_DIR;
         edjFilePath.append("SimpleUI/AuthenticationPopup.edj");
         Eina_Bool layoutSetResult = elm_layout_file_set(popup_content, edjFilePath.c_str(), "authentication_popup");
@@ -961,36 +800,6 @@ void SimpleUI::authPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
     }
 }
 
-void SimpleUI::hideWebView()
-{
-    evas_object_hide(elm_object_part_content_get(m_mainLayout,"web_view"));
-    elm_object_part_content_unset(m_mainLayout, "web_view");
-}
-
-//TODO: move it to ViewController
-void SimpleUI::hideMainUI()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(m_mainUI)
-        m_mainUI->hide();
-    m_mainUI = nullptr;
-    m_isHomePageActive = false;
-}
-
-void SimpleUI::showMainUI()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_mainUI = std::dynamic_pointer_cast
-                <tizen_browser::base_ui::MainUI,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.mainui"));
-    M_ASSERT(m_mainUI);
-    hideWebView();
-    m_mainUI->show(m_window.get());
-    m_mainUI->addHistoryItems(getMostVisitedItems());
-    m_mainUI->addBookmarkItems(getBookmarks());
-    m_isHomePageActive = true;
-}
-
 void SimpleUI::showHistoryUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1048,7 +857,7 @@ void SimpleUI::closeSettingsUI(const std::string& str)
 void SimpleUI::showMoreMenu()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    bool desktopMode = isHomePageActive() ? m_mainUI->isDesktopMode() : m_webEngine->isDesktopMode();
+    bool desktopMode = m_webPageUI->isHomePageActive() ? m_mainUI->isDesktopMode() : m_webEngine->isDesktopMode();
     if(!m_moreMenuUI){
         m_moreMenuUI =
                 std::dynamic_pointer_cast
@@ -1098,7 +907,7 @@ void SimpleUI::closeMoreMenu(const std::string& str)
 void SimpleUI::switchToMobileMode()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!isHomePageActive()) {
+    if (!m_webPageUI->isHomePageActive()) {
         m_webEngine->switchToMobileMode();
         m_webEngine->reload();
     } else {
@@ -1109,7 +918,7 @@ void SimpleUI::switchToMobileMode()
 void SimpleUI::switchToDesktopMode()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!isHomePageActive()) {
+    if (!m_webPageUI->isHomePageActive()) {
         m_webEngine->switchToDesktopMode();
         m_webEngine->reload();
     } else {
@@ -1162,16 +971,8 @@ void SimpleUI::closeBookmarkManagerMenu(const std::string& str)
     }
 
     if(m_mainUI) {
-        m_mainUI->addHistoryItems(getMostVisitedItems());
-        m_mainUI->showHistory();
+        m_mainUI->showBookmarks(getBookmarks());
     }
-}
-
-void SimpleUI::openLinkFromPopup(const std::string &uri)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    filterURL(uri);
-    hidePopup();
 }
 
 void SimpleUI::hideHistory()
@@ -1284,21 +1085,18 @@ void SimpleUI::tabCreated()
         popup->buttonClicked.connect(boost::bind(&SimpleUI::tabLimitPopupButtonClicked, this, _1, _2));
         popup->show();
     }
-    elm_object_part_text_set(rightButtonBar->getContent(), "tabs_number", (boost::format("%1%") % tabs).str().c_str());
+    m_webPageUI->setTabsNumber(tabs);
 }
 
 void SimpleUI::updateView() {
     int tabs = m_webEngine->tabsCount();
     BROWSER_LOGD("[%s] Opened tabs: %d", __func__, tabs);
     if (tabs == 0) {
-        switchViewToHomePage();
-        elm_object_part_text_set(rightButtonBar->getContent(), "tabs_number", "");
-    } else {
-        if (!isHomePageActive()) {
-            updateBrowserView();
-        }
-        elm_object_part_text_set(rightButtonBar->getContent(), "tabs_number", (boost::format("%1%") % tabs).str().c_str());
+        switchViewToQuickAccess();
+    } else if (!m_webPageUI->isHomePageActive()) {
+        switchViewToWebPage();
     }
+    m_webPageUI->setTabsNumber(tabs);
 }
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
@@ -1332,33 +1130,9 @@ void SimpleUI::onNetworkConnected()
     }
 }
 
-void SimpleUI::showProgressBar()
-{
-    elm_object_signal_emit(m_mainLayout, "show_progressbar_bg", "ui");
-    elm_object_part_content_set(m_mainLayout,"progress_bar",m_progressBar);
-}
-
-void SimpleUI::hideProgressBar()
-{
-    elm_object_signal_emit(m_mainLayout, "hide_progressbar_bg", "ui");
-    elm_progressbar_value_set(m_progressBar,0.0);
-    elm_object_part_content_unset(m_mainLayout,"progress_bar");
-    evas_object_hide(m_progressBar);
-}
-
 void SimpleUI::searchWebPage(std::string &text, int flags)
 {
     m_webEngine->searchOnWebsite(text, flags);
-}
-
-void SimpleUI::favicon_clicked(void *data, Evas_Object *, const char *, const char *)
-{
-    BROWSER_LOGD("[%s],", __func__);
-    SimpleUI *self = reinterpret_cast<SimpleUI*>(data);
-    if (!self->isHomePageActive() && !self->isErrorPageActive())
-    {
-        self->m_simpleURI->clearFocus();
-    }
 }
 
 void SimpleUI::addToBookmarks(int folder_id)

@@ -39,23 +39,16 @@ class BROWSER_EXPORT MainUI
 public:
     MainUI();
     ~MainUI();
-    void show(Evas_Object *main_layout);
+    void init(Evas_Object *main_layout);
+    Evas_Object* getContent();
+    void showMostVisited(std::shared_ptr<services::HistoryItemVector> vec);
+    void showBookmarks(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > vec);
     void hide();
     virtual std::string getName();
-    void clearHistoryGenlist();
-    void clearBookmarkGengrid();
-    void showHistory();
-    void showBookmarks();
-    void clearItems();
     void openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
     bool isDesktopMode() const;
     void setDesktopMode(bool mode);
     DetailPopup & getDetailPopup();
-
-    void addHistoryItem(std::shared_ptr<services::HistoryItem>);
-    void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
-    void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
@@ -68,6 +61,15 @@ public:
 
 private:
     void createItemClasses();
+    void addHistoryItem(std::shared_ptr<services::HistoryItem>);
+    void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
+    void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
+    void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+    void clearHistoryGenlist();
+    void clearBookmarkGengrid();
+    void showHistory();
+    void showBookmarks();
+    void clearItems();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);
