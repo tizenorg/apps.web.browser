@@ -239,7 +239,7 @@ void WebPageUI::createActions()
     m_reload->setToolTip("Reload");
     m_reload->setIcon("browser/toolbar_reload");
     m_tab = sharedAction(new Action("Tabs"));
-    m_tab->setToolTip("Tab page");
+    m_tab->setToolTip("Tab Manager");
     m_tab->setIcon("browser/toolbar_tab");
 
     m_showMoreMenu = sharedAction(new Action("More_Menu"));

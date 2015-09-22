@@ -209,7 +209,7 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
                     rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
                     color_class: titleTextColor;
                     text {
-                        text: "More menu";
+                        text: "More Menu";
                         font: "Sans";
                         size: 58;
                         align: 0.5 0.5;
