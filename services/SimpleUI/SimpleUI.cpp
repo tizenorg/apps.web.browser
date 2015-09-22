@@ -863,9 +863,16 @@ void SimpleUI::showMoreMenu()
 
         m_moreMenuUI->show(m_window.get(), desktopMode);
         m_moreMenuUI->showCurrentTab();
-        m_moreMenuUI->setFavIcon(m_webEngine->getFavicon());
-        m_moreMenuUI->setWebTitle(m_webEngine->getTitle());
-        m_moreMenuUI->setURL(m_webEngine->getURI());
+
+        if(!m_webPageUI->isHomePageActive()) {
+            m_moreMenuUI->setFavIcon(m_webEngine->getFavicon());
+            m_moreMenuUI->setWebTitle(m_webEngine->getTitle());
+            m_moreMenuUI->setURL(m_webEngine->getURI());
+        }
+        else {
+            m_moreMenuUI->setHomePageInfo();
+        }
+
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     }
 }
