@@ -79,7 +79,10 @@ public:
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setWebTitle(const std::string& title);
     void setURL(const std::string& url);
+    void setHomePageInfo();
+
     void changeBookmarkStatus(bool data);
+    void enableAddToBookmarkButton(bool data);
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
 
@@ -119,6 +122,7 @@ private:
     Evas_Object *m_toastPopup;
     Evas_Object *m_icon;
     Evas_Object *m_bookmarkIcon;
+    Evas_Object *m_bookmarkButton;
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<ItemType,Elm_Object_Item*> m_map_menu_views;
     std::string m_edjFilePath;

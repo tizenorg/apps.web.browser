@@ -171,13 +171,13 @@ void MoreMenuUI::showCurrentTab()
     evas_object_show(button);
     elm_object_focus_set(button, EINA_TRUE);
 
-    button = elm_button_add(m_mm_layout);
-    elm_object_style_set(button, "hidden_button");
-    evas_object_smart_callback_add(button, "clicked", _star_clicked, this);
+    m_bookmarkButton = elm_button_add(m_mm_layout);
+    elm_object_style_set(m_bookmarkButton, "hidden_button");
+    evas_object_smart_callback_add(m_bookmarkButton, "clicked", _star_clicked, this);
 
     m_bookmarkIcon = elm_icon_add(m_mm_layout);
     elm_object_part_content_set(m_current_tab_bar, "bookmark_ico", m_bookmarkIcon);
-    elm_object_part_content_set(m_current_tab_bar, "star_click", button);
+    elm_object_part_content_set(m_current_tab_bar, "star_click", m_bookmarkButton);
 }
 
 void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
@@ -216,10 +216,7 @@ void MoreMenuUI::setDocIcon()
 void MoreMenuUI::setWebTitle(const std::string& title)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, title.c_str());
-    if(!title.empty())
-        elm_object_part_text_set(m_current_tab_bar, "webpage_title", title.c_str());
-    else
-        elm_object_part_text_set(m_current_tab_bar, "webpage_title", "New Tab");
+    elm_object_part_text_set(m_current_tab_bar, "webpage_title", title.c_str());
 }
 
 void MoreMenuUI::setURL(const std::string& url)
@@ -233,17 +230,27 @@ void MoreMenuUI::setURL(const std::string& url)
         if(true == isBookmark()) {
             m_isBookmark = EINA_TRUE;
             changeBookmarkStatus(true);
+            enableAddToBookmarkButton(true);
         }
         else {
             m_isBookmark = EINA_FALSE;
             changeBookmarkStatus(false);
+            enableAddToBookmarkButton(true);
         }
     }
     else {
-        elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
         m_isBookmark = EINA_FALSE;
+        elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
+        elm_object_part_text_set(m_current_tab_bar, "webpage_title", "No Content");
         changeBookmarkStatus(false);
+        enableAddToBookmarkButton(false);
     }
+}
+
+void MoreMenuUI::setHomePageInfo()
+{
+    setDocIcon();
+    setURL("");
 }
 
 void MoreMenuUI::changeBookmarkStatus(bool data)
@@ -258,6 +265,12 @@ void MoreMenuUI::changeBookmarkStatus(bool data)
         elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to Bookmark");
         elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark_new.png");
     }
+}
+
+void MoreMenuUI::enableAddToBookmarkButton(bool data)
+{
+    if(m_bookmarkButton)
+        elm_object_disabled_set(m_bookmarkButton, data ? EINA_FALSE : EINA_TRUE);
 }
 
 void MoreMenuUI::createToastPopup(const char* text)
