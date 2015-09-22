@@ -242,8 +242,8 @@ void WebPageUI::createActions()
     m_tab->setToolTip("Tab page");
     m_tab->setIcon("browser/toolbar_tab");
 
-    m_showMoreMenu = sharedAction(new Action("Settings"));
-    m_showMoreMenu->setToolTip("Settings");
+    m_showMoreMenu = sharedAction(new Action("More_Menu"));
+    m_showMoreMenu->setToolTip("More Menu");
     m_showMoreMenu->setIcon("browser/toolbar_setting");
 }
 
