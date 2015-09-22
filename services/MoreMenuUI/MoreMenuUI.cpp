@@ -364,27 +364,27 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 break;
 #endif
             case BOOKMARK_MANAGER:
-                item_name = "Bookmark manager";
+                item_name = "Bookmark Manager";
                 break;
             case HISTORY:
-                item_name = "History";
+                item_name = "History Manager";
                 break;
             case SCREEN_ZOOM:
-                item_name = "Screen zoom";
+                item_name = "Screen Zoom";
                 break;
 #ifdef START_MINIBROWSER_ENABLED
             case START_MINIBROWSER:
-                item_name = "Start minibrowser";
+                item_name = "Start Mini Browser";
                 break;
 #endif
             case FOCUS_MODE:
-                item_name = "Focus mode";
+                item_name = "Focus Mode";
                 break;
             case VIEW_MOBILE_WEB:
-                item_name = "View mobile web";
+                item_name = "View Mobile Web";
                 break;
             case VIEW_DESKTOP_WEB:
-                item_name = "View desktop web";
+                item_name = "View Desktop Web";
                 break;
             case SHARE:
                 item_name = "Share";
@@ -393,7 +393,7 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = "Settings";
                 break;
             case EXIT_BROWSER:
-                item_name = "Exit browser";
+                item_name = "Exit Browser";
                 break;
             default:
                 item_name = "";

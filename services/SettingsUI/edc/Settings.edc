@@ -186,7 +186,11 @@ group { name: "settings_items";
 		image: "ico_bg_round_shape_37x37.png" COMP;
 	}
 	styles {
-		style { name: "sub_title_text";
+		style { name: "title_text";
+			base: "font=Sans:style=Bold font_size="30" color=#808080 color_class=T024D text_class=T024D wrap=none";
+			STYLE_TAGS
+		}
+        style { name: "sub_title_text";
 			base: "font=Sans:style=Regular font_size="28" color=#808080 color_class=T024D text_class=T024D wrap=mixed";
 			STYLE_TAGS
 		}
@@ -209,8 +213,8 @@ group { name: "settings_items";
 		part { name: "del_web_browsing_text_bg";
                         type: RECT;
                         description { state: "default" 0.0;
-                                min: 420 152;
-                                max: 420 152;
+                                min: 460 152;
+                                max: 460 152;
                                 align: 0.0 0.0;
                                 color: 231 231 231 255;
                                 rel1 {
@@ -223,24 +227,23 @@ group { name: "settings_items";
                         }
                 }
                 part { name: "del_web_browsing_text";
-                        type: TEXT;
+                        type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 420 36;
-                                max: 420 36;
+                                min: 460 46;
+                                max: 460 46;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "del_web_browsing_text_bg";
                                         relative: 0.0 0.0;
-                                        offset: 0 0;
+                                        offset: -40 0;
                                 }
                                 rel2 {
                                         relative: 1.0  1.0;
                                 }
                     color: 51 51 51 255;
                     text {
-                        text: "Delete web browsing data";
-                        font: "Sans";
-                        size: 32;
+                        text: "Delete Web Browsing Data";
+                        style: "title_text";
                         align: 0 0.5;
                     }
                 }
@@ -248,13 +251,13 @@ group { name: "settings_items";
 		part { name: "del_web_browsing_sub_text";
                         type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 420 116;
-                                max: 420 116;
+                                min: 440 116;
+                                max: 440 116;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "del_web_browsing_text_bg";
                                         relative: 0.0 0.0;
-                                        offset: 0 42;
+                                        offset: -40 62;
                                 }
                                 rel2 {
                                         relative: 1.0  1.0;
@@ -280,7 +283,7 @@ group { name: "settings_items";
 
                     min: 348 64;
                     max: 348 64;
-                    rel1 { relative: 0.0 1.0; to: "del_web_browsing_text_bg"; }
+                    rel1 { relative: 0.0 1.0; to: "del_web_browsing_text_bg"; offset: 0 42;}
                     rel2 { relative: 1.0 1.0; to: "del_web_browsing_text_bg"; }
                     color_class: focusBgColor;
                 }
@@ -308,7 +311,7 @@ group { name: "settings_items";
                     rel2 { relative: 1.0 1.0;to: "del_selected_data_button";}
                     color: 255 255 255 255;
                     text {
-                        text: "Delete selected data";
+                        text: "Delete Selected Data";
                         font: "Sans";
                         size: 24;
                         align: 0.5 0.5;
@@ -468,10 +471,10 @@ group { name: "settings_items";
                         }
                 }
                 part { name: "reset_mv_text";
-                        type: TEXT;
+                        type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 420 36;
-                                max: 420 36;
+                                min: 420 46;
+                                max: 420 46;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "reset_mv_text_bg";
@@ -483,9 +486,8 @@ group { name: "settings_items";
                                 }
                     color: 51 51 51 255;
                     text {
-                        text: "Reset most visited site";
-                        font: "Sans";
-                        size: 32;
+                        text: "Reset Most Visited Site";
+                        style: "title_text";
                         align: 0 0.5;
                     }
                 }
@@ -499,7 +501,7 @@ group { name: "settings_items";
                                 rel1 {
                                         to: "reset_mv_text_bg";
                                         relative: 0.0 0.0;
-                                        offset: 0 42;
+                                        offset: 0 62;
                                 }
                                 rel2 {
                                         relative: 1.0  1.0;
@@ -525,7 +527,7 @@ group { name: "settings_items";
 
                     min: 348 64;
                     max: 348 64;
-                    rel1 { relative: 0.0 1.0; to: "reset_mv_text_bg"; }
+                    rel1 { relative: 0.0 1.0; to: "reset_mv_text_bg"; offset: 0 42;}
                     rel2 { relative: 1.0 1.0; to: "reset_mv_text_bg"; }
                     color_class: focusBgColor;
                 }
@@ -553,7 +555,7 @@ group { name: "settings_items";
                     rel2 { relative: 1.0 1.0;to: "reset_mv_button";}
                     color: 255 255 255 255;
                     text {
-                        text: "Reset most visited site";
+                        text: "Reset Most Visited Site";
                         font: "Sans";
                         size: 24;
                         align: 0.5 0.5;
@@ -612,10 +614,10 @@ group { name: "settings_items";
                         }
                 }
 	part { name: "webcontents_sharing_text";
-                        type: TEXT;
+                        type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 942 32;
-                                max: 942 32;
+                                min: 942 46;
+                                max: 942 46;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "webcontents_sharing_text_bg";
@@ -628,9 +630,8 @@ group { name: "settings_items";
                                 }
                     color: 51 51 51 255;
                     text {
-                        text: "Web contents Sharing";
-                        font: "Sans";
-                        size: 32;
+                        text: "Web Contents Sharing";
+                        style: "title_text";
                         align: 0 0.5;
                     }
                 }
@@ -644,7 +645,7 @@ group { name: "settings_items";
                                 rel1 {
                                         to: "webcontents_sharing_text_bg";
                                         relative: 0.0 0.0;
-                                        offset: 0 42;
+                                        offset: 0 62;
                                 }
                                 rel2 {
                                         relative: 1.0  1.0;
@@ -664,11 +665,11 @@ group { name: "settings_items";
                 description { state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    rel1 { relative: 0.0 1.0;to: "webcontents_sharing_text_bg"; offset: 0 10;}
+                    rel1 { relative: 0.0 1.0;to: "webcontents_sharing_text_bg"; offset: 0 62;}
                     rel2 { relative: 1.0 1.0;to: "webcontents_sharing_text_bg";}
 			color: 51 51 51 255;
                     text {
-                        text: "Sharing request         Bookmark Sync        Tab Sync";
+                        text: "Sharing Request         Bookmark Sync        Tab Sync";
                         font: "Sans";
                         size: 32;
                         align: 0 0.5;
@@ -932,10 +933,10 @@ group { name: "settings_items";
                         }
                 }
                 part { name: "reset_browser_text";
-                        type: TEXT;
+                        type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 420 36;
-                                max: 420 36;
+                                min: 420 46;
+                                max: 420 46;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "reset_browser_text_bg";
@@ -949,8 +950,7 @@ group { name: "settings_items";
                     color: 51 51 51 255;
                     text {
                         text: "Reset Browser";
-                        font: "Sans";
-                        size: 32;
+                        style: "title_text";
                         align: 0 0.5;
                     }
                 }
@@ -964,7 +964,7 @@ group { name: "settings_items";
                                 rel1 {
                                         to: "reset_browser_text_bg";
                                         relative: 0.0 0.0;
-                                        offset: 0 42;
+                                        offset: 0 62;
                                 }
                                 rel2 {
                                         relative: 1.0  1.0;
@@ -990,7 +990,7 @@ group { name: "settings_items";
 
                     min: 348 64;
                     max: 348 64;
-                    rel1 { relative: 0.0 1.0; to: "reset_browser_text_bg"; }
+                    rel1 { relative: 0.0 1.0; to: "reset_browser_text_bg"; offset: 0 42;}
                     rel2 { relative: 1.0 1.0; to: "reset_browser_text_bg"; }
                     color_class: focusBgColor;
                 }
@@ -1018,7 +1018,7 @@ group { name: "settings_items";
                     rel2 { relative: 1.0 1.0;to: "reset_browser_button";}
                     color: 255 255 255 255;
                     text {
-                        text: "Reset browser";
+                        text: "Reset Browser";
                         font: "Sans";
                         size: 24;
                         align: 0.5 0.5;
