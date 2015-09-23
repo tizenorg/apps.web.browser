@@ -103,6 +103,7 @@ void MoreMenuUI::showUI()
     m_gengrid=createGengrid(getContent());
     addItems();
     elm_object_part_content_set(getContent(), "elm.swallow.grid", m_gengrid);
+    setFocus(EINA_TRUE);
 }
 
 void MoreMenuUI::hideUI()
@@ -167,6 +168,8 @@ void MoreMenuUI::showCurrentTab()
     elm_object_style_set(button, "hidden_button");
     evas_object_smart_callback_add(button, "clicked", _close_clicked, this);
     elm_object_part_content_set(m_current_tab_bar, "close_click", button);
+    evas_object_show(button);
+    elm_object_focus_set(button, EINA_TRUE);
 
     button = elm_button_add(m_mm_layout);
     elm_object_style_set(button, "hidden_button");
@@ -499,12 +502,15 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
     BROWSER_LOGD("type: %d", itemData->item);
         switch (itemData->item) {
         case HISTORY:
+            itemData->moreMenuUI->setFocus(EINA_FALSE);
             itemData->moreMenuUI->historyUIClicked(std::string());
             break;
         case SETTINGS:
+            itemData->moreMenuUI->setFocus(EINA_FALSE);
             itemData->moreMenuUI->settingsClicked(std::string());
             break;
         case BOOKMARK_MANAGER:
+            itemData->moreMenuUI->setFocus(EINA_FALSE);
             itemData->moreMenuUI->bookmarkManagerClicked(std::string());
             break;
 #ifdef READER_MODE_ENABLED
@@ -550,6 +556,7 @@ void MoreMenuUI::clearItems()
     hide();
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_clear(m_gengrid);
+    elm_object_tree_focus_allow_set(getContent(), EINA_FALSE);
     m_map_menu_views.clear();
     evas_object_del(m_current_tab_bar);
     elm_theme_extension_del(NULL, m_edjFilePath.c_str());
@@ -561,6 +568,14 @@ void MoreMenuUI::_exitClicked()
 {
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     elm_exit();
+}
+
+void MoreMenuUI::setFocus(Eina_Bool focusable)
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_tree_focus_allow_set(getContent(), focusable);
+    if (focusable == EINA_TRUE)
+        elm_object_focus_set(elm_object_part_content_get(m_current_tab_bar, "close_click"), focusable);
 }
 
 }

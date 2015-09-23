@@ -75,6 +75,7 @@ void HistoryUI::showUI()
     addItems();
     evas_object_show(m_actionBar);
     evas_object_show(m_history_layout);
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 }
 
 void HistoryUI::hideUI()
@@ -87,6 +88,7 @@ void HistoryUI::hideUI()
     m_gengrid = nullptr;
     evas_object_hide(m_actionBar);
     evas_object_hide(m_history_layout);
+    elm_object_focus_custom_chain_unset(m_history_layout);
 }
 
 // TODO: Remove this function when proper view handling will be introduced
@@ -179,11 +181,13 @@ Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
     elm_object_style_set(button, "history_button");
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_clearHistory_clicked, this);
     elm_object_part_content_set(actionBar, "clearhistory_click", button);
+    elm_object_focus_custom_chain_append(history_layout, button, nullptr);
 
     button = elm_button_add(actionBar);
     elm_object_style_set(button, "history_button");
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", button);
+    elm_object_focus_custom_chain_append(history_layout, button, nullptr);
 
     return actionBar;
 }
@@ -193,7 +197,7 @@ void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         HistoryUI *historyUI = static_cast<HistoryUI*>(data);
-        historyUI->closeHistoryUIClicked(std::string());
+        historyUI->closeHistoryUIClicked();
         historyUI->clearItems();
     }
 }
@@ -295,6 +299,7 @@ Evas_Object * HistoryUI::_history_grid_content_get(void *data, Evas_Object*, con
                 Elm_Object_Item* historyView = elm_genlist_item_append(id->historyUI->m_genListToday, id->historyUI->m_itemClassToday, *it, nullptr, ELM_GENLIST_ITEM_NONE, _history_item_clicked_cb, (*it));
                 id->historyUI->m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>((*it)->item->getUrl(), historyView));
             }
+            elm_object_focus_custom_chain_append(id->historyUI->m_history_layout, id->historyUI->m_genListToday, nullptr);
 
             return id->historyUI->m_genListToday;
         }
