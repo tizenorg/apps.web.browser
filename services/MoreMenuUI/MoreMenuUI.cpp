@@ -324,7 +324,7 @@ void MoreMenuUI::addItems()
          MoreMenuItemData *itemData = new MoreMenuItemData();
          itemData->item = type;
          itemData->moreMenuUI = std::shared_ptr<tizen_browser::base_ui::MoreMenuUI>(this);
-         Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, NULL, this);
+         Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _thumbSelected, itemData);
          m_map_menu_views.insert(std::pair<ItemType, Elm_Object_Item*>(itemData->item, bookmarkView));
          elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
      }
@@ -455,7 +455,6 @@ Evas_Object * MoreMenuUI::_grid_content_get(void *data, Evas_Object *obj, const 
         if (!strncmp(part_name2, part, part_name2_len)) {
             Evas_Object *thumbButton = elm_button_add(obj);
             elm_object_style_set(thumbButton, "clickButton");
-            evas_object_smart_callback_add(thumbButton, "clicked", tizen_browser::base_ui::MoreMenuUI::_thumbSelected, data);
             evas_object_event_callback_add(thumbButton, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, data);
             evas_object_event_callback_add(thumbButton, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out, data);
             return thumbButton;
