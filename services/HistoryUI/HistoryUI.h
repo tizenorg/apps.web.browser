@@ -50,7 +50,7 @@ public:
     Evas_Object* createActionBar(Evas_Object* history_layout);
     void show(Evas_Object *main_layout);
     void addItems();
-    boost::signals2::signal<void (const std::string&)> closeHistoryUIClicked;
+    boost::signals2::signal<void ()> closeHistoryUIClicked;
     boost::signals2::signal<void (const std::string&)> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;

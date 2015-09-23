@@ -77,6 +77,7 @@ void SettingsUI::showUI()
     evas_object_show(m_items_layout);
     evas_object_show(m_settings_layout);
     evas_object_show(m_actionBar);
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 }
 
 void SettingsUI::hideUI()

@@ -458,7 +458,7 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
     std::string historyAddress = historyItem->getUrl();
     if(m_historyUI) {                // TODO: remove this section when naviframes will be available
         m_historyUI->clearItems();
-        closeHistoryUI(std::string());
+        closeHistoryUI();
     }
 
     if(m_moreMenuUI) {               // TODO: remove this section when naviframes will be available
@@ -792,20 +792,21 @@ void SimpleUI::showHistoryUI(const std::string& str)
             (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
         M_ASSERT(m_historyUI);
         m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
-        m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
+        m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
         m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));     // desktop mode as default
         m_historyUI->addHistoryItems(getHistory());
         m_historyUI->show(m_window.get());
     }
 }
 
-void SimpleUI::closeHistoryUI(const std::string& str)
+void SimpleUI::closeHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_historyUI->clearHistoryClicked.disconnect(boost::bind(&SimpleUI::onClearHistoryClicked, this,_1));
-    m_historyUI->closeHistoryUIClicked.disconnect(boost::bind(&SimpleUI::closeHistoryUI, this,_1));
+    m_historyUI->closeHistoryUIClicked.disconnect(boost::bind(&SimpleUI::closeHistoryUI, this));
     m_historyUI->historyItemClicked.disconnect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));     // desktop mode as default
     m_historyUI.reset();
+    m_moreMenuUI->setFocus(EINA_TRUE);
 }
 
 void SimpleUI::showSettingsUI(const std::string& str)
@@ -834,6 +835,7 @@ void SimpleUI::closeSettingsUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_settingsUI.reset();
+    m_moreMenuUI->setFocus(EINA_TRUE);
 }
 
 void SimpleUI::showMoreMenu()
@@ -940,6 +942,7 @@ void SimpleUI::closeBookmarkManagerMenu(const std::string& str)
     if(m_mainUI) {
         m_mainUI->showBookmarks(getBookmarks());
     }
+    m_moreMenuUI->setFocus(EINA_TRUE);
 }
 
 void SimpleUI::hideHistory()

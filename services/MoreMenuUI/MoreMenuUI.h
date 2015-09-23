@@ -81,6 +81,7 @@ public:
     void setURL(const std::string& url);
     void changeBookmarkStatus(bool data);
     void createToastPopup(const char* text);
+    void setFocus(Eina_Bool focusable);
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;
     //TODO: remove redundant argument from this signal.

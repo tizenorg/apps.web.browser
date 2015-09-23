@@ -209,7 +209,7 @@ private:
     void switchToMobileMode();
     void switchToDesktopMode();
     void showHistoryUI(const std::string& str);
-    void closeHistoryUI(const std::string&);
+    void closeHistoryUI();
     void showURIBar();
     void hideURIBar();
     void hideSettingsMenu();
