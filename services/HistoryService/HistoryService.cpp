@@ -214,14 +214,18 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
         //thumbail
-        std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
-        hi->imageType = tools::BrowserImage::ImageTypePNG;
-        hi->width = history_info.thumbnail_width;
-        hi->height = history_info.thumbnail_height;
-        hi->dataSize = history_info.thumbnail_length;
-        hi->imageData = (void*)malloc(history_info.thumbnail_length);
-        memcpy(hi->imageData, (void*)history_info.thumbnail, history_info.thumbnail_length);
-        history->setThumbnail(hi);
+        if (history_info.thumbnail_length != -1) {
+            std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
+            hi->imageType = tools::BrowserImage::ImageTypePNG;
+            hi->width = history_info.thumbnail_width;
+            hi->height = history_info.thumbnail_height;
+            hi->dataSize = history_info.thumbnail_length;
+            hi->imageData = (void*)malloc(history_info.thumbnail_length);
+            memcpy(hi->imageData, (void*)history_info.thumbnail, history_info.thumbnail_length);
+            history->setThumbnail(hi);
+        } else {
+            BROWSER_LOGD("history thumbnail lenght is -1");
+        }
 
         ret_history_list->push_back(history);
     }
