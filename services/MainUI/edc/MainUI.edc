@@ -456,7 +456,7 @@ group { name: "mv_bookmarks";
     }
 }
 
-group { name: "big_tile";
+group { name: "elm/button/base/big_tile";
     data.item: "texts" "page_title page_url";
     data.item: "contents" "elm.thumbnail";
     min: 600 614;
@@ -670,10 +670,18 @@ group { name: "big_tile";
             target: "border_left";
             target: "border_right";
         }
+        program {
+            name: "mouse_click";
+            signal: "mouse,clicked,1";
+            source: "over";
+            script {
+                emit("elm,action,click", "");
+            }
+        }
     }
 }
 
-group { name: "small_tile";
+group { name: "elm/button/base/small_tile";
     data.item: "texts" "page_title page_url";
     data.item: "contents" "elm.thumbnail";
     images {
@@ -916,6 +924,14 @@ group { name: "small_tile";
             target: "border_top";
             target: "border_left";
             target: "border_right";
+        }
+        program {
+            name: "mouse_click";
+            signal: "mouse,clicked,1";
+            source: "over";
+            script {
+                emit("elm,action,click", "");
+            }
         }
     }
 }

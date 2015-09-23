@@ -68,6 +68,7 @@ void WebPageUI::showUI()
 void WebPageUI::hideUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_focus_custom_chain_unset(m_mainLayout);
 }
 
 void WebPageUI::loadStarted()
@@ -108,6 +109,13 @@ void WebPageUI::setMainContent(Evas_Object* content)
     hideWebView();
     elm_object_part_content_set(m_mainLayout, "web_view", content);
     evas_object_show(content);
+
+    // set custom focus chain
+    elm_object_focus_custom_chain_unset(m_mainLayout);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
+    if (!isHomePageActive())
+        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
 }
 
 void WebPageUI::switchViewToErrorPage()
@@ -126,6 +134,7 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
     setMainContent(content);
     evas_object_show(m_leftButtonBar->getContent());
     updateURIBar(uri);
+    elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 }
 
 void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
@@ -301,7 +310,16 @@ std::string WebPageUI::edjePath(const std::string& file)
     return std::string(EDJE_DIR) + file;
 }
 
-
+void WebPageUI::showTabUIConnect()
+{
+    hideUI();
+    showTabUI();
+}
+void WebPageUI::showMoreMenuConnect()
+{
+    hideUI();
+    showMoreMenu();
+}
 
 }   // namespace tizen_browser
 }   // namespace base_ui

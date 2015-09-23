@@ -101,6 +101,9 @@ void MainUI::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
 {
     addHistoryItems(vec);
     showHistory();
+    // update focus chain
+    elm_object_focus_custom_chain_append(m_parent, m_mostVisitedButton, NULL);
+    elm_object_focus_custom_chain_append(m_parent, m_bookmarksButton, NULL);
 }
 
 void MainUI::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
@@ -208,7 +211,6 @@ Evas_Object* MainUI::createTopButtons (Evas_Object *parent)
     evas_object_smart_callback_add(mostVisitedButton, "clicked", _mostVisited_clicked, this);
     evas_object_show(mostVisitedButton);
     elm_layout_content_set(layoutTop, "mostvisited_click", mostVisitedButton);
-
     m_mostVisitedButton = mostVisitedButton;
 
     Evas_Object *bookmarksButton = elm_button_add(layoutTop);
@@ -216,7 +218,6 @@ Evas_Object* MainUI::createTopButtons (Evas_Object *parent)
     evas_object_smart_callback_add(bookmarksButton, "clicked", _bookmark_clicked, this);
     evas_object_show(bookmarksButton);
     elm_layout_content_set(layoutTop, "bookmark_click", bookmarksButton);
-
     m_bookmarksButton = bookmarksButton;
 
     return layoutTop;
@@ -274,11 +275,11 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     itemData->item = hi;
     itemData->mainUI = std::shared_ptr<MainUI>(this);
 
-    Evas_Object* tile = elm_layout_add(m_mostVisitedView);
+    Evas_Object* tile = elm_button_add(m_mostVisitedView);
     if (tileNumber == BIG_TILE_INDEX)
-        elm_layout_file_set(tile, edjFilePath.c_str(), "big_tile");
+        elm_object_style_set(tile, "big_tile");
     else
-        elm_layout_file_set(tile, edjFilePath.c_str(), "small_tile");
+        elm_object_style_set(tile, "small_tile");
     evas_object_size_hint_weight_set(tile, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (tile, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(tile);
@@ -289,7 +290,8 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     elm_layout_text_set(tile, "page_url", hi->getUrl().c_str());
     Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(hi->getThumbnail(), m_parent);
     elm_object_part_content_set(tile, "elm.thumbnail", thumb);
-    edje_object_signal_callback_add(elm_layout_edje_get(tile), "mouse,clicked,1", "over", _thumbClicked, itemData);
+    evas_object_smart_callback_add(tile, "clicked", _thumbClicked, itemData);
+    elm_object_focus_custom_chain_append(m_parent, tile, NULL);
 
     m_historyItems.push_back(hi);
 }
@@ -374,7 +376,7 @@ void MainUI::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
     itemData->mainUI->openURLInNewTab(itemData->item, itemData->mainUI->isDesktopMode());
 }
 
-void MainUI::_thumbClicked(void* data, Evas_Object *, const char *, const char *)
+void MainUI::_thumbClicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
@@ -386,7 +388,7 @@ void MainUI::clearHistoryGenlist()
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
     for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it) {
-        edje_object_signal_callback_del(elm_layout_edje_get(*it), "mouse,clicked,1", "over", _thumbClicked);
+        evas_object_smart_callback_del(*it, "clicked", _thumbClicked);
         evas_object_del(*it);
     }
 

@@ -80,8 +80,8 @@ private:
     void forwardPageConnect() { forwardPage(); }
     void stopLoadingPageConnect() { stopLoadingPage(); }
     void reloadPageConnect() { reloadPage(); }
-    void showTabUIConnect() { showTabUI(); }
-    void showMoreMenuConnect() { showMoreMenu(); }
+    void showTabUIConnect();
+    void showMoreMenuConnect();
 
     Evas_Object* m_parent;
     Evas_Object* m_mainLayout;

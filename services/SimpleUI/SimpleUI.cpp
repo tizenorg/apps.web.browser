@@ -886,6 +886,16 @@ void SimpleUI::closeMoreMenu(const std::string& str)
     m_moreMenuUI->isBookmark.disconnect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.disconnect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI.reset();
+
+    // TODO: temporary showing proper view untin VieManger will be available
+    if (m_webPageUI->isHomePageActive()) {
+        m_webPageUI->switchViewToQuickAccess(m_mainUI->getContent());
+        m_webEngine->disconnectCurrentWebViewSignals();
+        m_mainUI->showMostVisited(getMostVisitedItems());
+    }
+    else {
+        switchViewToWebPage();
+    }
 }
 
 void SimpleUI::switchToMobileMode()

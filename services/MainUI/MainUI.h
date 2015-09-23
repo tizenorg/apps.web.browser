@@ -80,7 +80,7 @@ private:
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbBookmarkClicked(void * data, Evas_Object * obj, void * event_info);
-    static void _thumbClicked(void *data, Evas_Object *obj, const char *emission, const char *source);
+    static void _thumbClicked(void * data, Evas_Object * obj, void * event_info);
     void setEmptyView(bool empty);
     void showNoHistoryLabel();
 
