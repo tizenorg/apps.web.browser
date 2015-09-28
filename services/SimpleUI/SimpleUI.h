@@ -86,15 +86,9 @@ private:
     Evas_Object* createWebLayout(Evas_Object* parent);
     Evas_Object* createErrorLayout(Evas_Object* parent);
 
-
     void forwardEnable(bool enable);
     void stopEnable(bool enable);
     void reloadEnable(bool enable);
-    void addBookmarkEnable(bool enable);
-    void removeBookmarkEnable(bool enable);
-    void zoomEnable(bool enable);
-
-    void settingsButtonEnable(bool enable);
 
     void loadFinished();
     void progressChanged(double progress);
@@ -130,7 +124,6 @@ private:
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onBookmarkRemoved(const std::string& uri);
 
-    void onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem);
     void onHistoryRemoved(const std::string& uri);
     void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
     void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
@@ -145,17 +138,8 @@ private:
     void onActionTriggered(const Action& action);
     void setwvIMEStatus(bool status);
 
-    sharedAction m_share;
-    sharedAction m_zoom_in;
     sharedAction m_showBookmarkManagerUI;
-    sharedAction m_settingPointerMode;
     sharedAction m_settingPrivateBrowsing;
-    sharedAction m_settingDeleteHistory;
-    sharedAction m_settingDeleteData;
-    sharedAction m_settingDeleteFavorite;
-    sharedAction m_mostvisited;
-    sharedAction m_bookmarksvisited;
-    sharedAction m_bookmarks_manager_BookmarkBar;
 
     /**
      * \brief filters URL before it is passed to WebEngine.
@@ -207,14 +191,10 @@ private:
     void switchToDesktopMode();
     void showHistoryUI();
     void closeHistoryUI();
-    void showURIBar();
-    void hideURIBar();
-    void hideSettingsMenu();
     void showSettingsUI();
     void closeSettingsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
-
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
 
     void closeTab();
@@ -222,46 +202,37 @@ private:
 
     void settingsPointerModeSwitch(bool newState);
     void settingsPrivateModeSwitch(bool newState);
-    void settingsDeleteData();
-    void settingsDeleteFavorite();
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
     void onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
-    void onDeleteDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
-    void onDeleteFavoriteButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
-    void disableHistoryButton(bool flag);
     int tabsCount();
-
-    void onNetworkError();
-    void onNetErrorButtonPressed(PopupButtons, std::shared_ptr<PopupData>);
 
     void onReturnPressed(MenuButton *m);
     void onBackPressed();
 
+    void searchWebPage(std::string &text, int flags);
+
     std::string edjePath(const std::string &);
 
     Evas_Object *m_popup;
-    Evas_Object *m_entry;
-    Evas_Object *m_errorLayout;
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
-//     std::shared_ptr<tizen_browser::base_ui::URIEntry> m_simpleURI;
-    std::shared_ptr<tizen_browser::interfaces::AbstractFavoriteService> m_favoriteService;
-    std::shared_ptr<tizen_browser::services::HistoryService> m_historyService;
-    std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> m_moreMenuUI;
-    std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> m_bookmarkManagerUI;
-    std::shared_ptr<tizen_browser::base_ui::MainUI> m_mainUI;
-    std::shared_ptr<tizen_browser::base_ui::HistoryUI> m_historyUI;
-    std::shared_ptr<tizen_browser::base_ui::SettingsUI> m_settingsUI;
-    std::shared_ptr<tizen_browser::base_ui::TabUI> m_tabUI;
-    std::shared_ptr<tizen_browser::services::PlatformInputManager> m_platformInputManager;
-    std::shared_ptr<tizen_browser::services::SessionStorage> m_sessionService;
-    tizen_browser::Session::Session m_currentSession;
+    std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
+    std::shared_ptr<services::HistoryService> m_historyService;
+    std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+    std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
+    std::shared_ptr<MainUI> m_mainUI;
+    std::shared_ptr<HistoryUI> m_historyUI;
+    std::shared_ptr<SettingsUI> m_settingsUI;
+    std::shared_ptr<TabUI> m_tabUI;
+    std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
+    std::shared_ptr<services::SessionStorage> m_sessionService;
+    Session::Session m_currentSession;
     std::shared_ptr<BookmarksManager> m_bookmarks_manager;
     bool m_initialised;
     int m_tabLimit;
@@ -275,11 +246,6 @@ private:
     // consecutive webviews in the application, otherwise we would encounter a crash after creating
     // the first web view
     Ewk_Context *m_ewkContext;
-
-    std::vector<std::shared_ptr<tizen_browser::services::HistoryItem>> items_vector;
-    SimplePopup* m_networkErrorPopup;
-
-    void searchWebPage(std::string &text, int flags);
 };
 
 }
