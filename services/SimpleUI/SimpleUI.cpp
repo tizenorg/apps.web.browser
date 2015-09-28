@@ -56,16 +56,18 @@ EXPORT_SERVICE(SimpleUI, "org.tizen.browser.simpleui")
 const std::string HomePageURL = "about:home";
 const int ROOT_FOLDER = 0;
 
+
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_popup(nullptr)
+    , m_webPageUI()
     , m_moreMenuUI()
-    , m_tabUI()
     , m_bookmarkManagerUI()
     , m_mainUI()
+    , m_historyUI()
+    , m_settingsUI()
+    , m_tabUI()
     , m_initialised(false)
-    , items_vector()
-    , m_networkErrorPopup(0)
     , m_wvIMEStatus(false)
     , m_ewkContext(ewk_context_new())
 {
@@ -383,7 +385,6 @@ void SimpleUI::connectModelSignals()
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
 
-    m_historyService->historyAdded.connect(boost::bind(&SimpleUI::onHistoryAdded, this,_1));
     m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
@@ -401,18 +402,6 @@ void SimpleUI::createActions()
     m_settingPrivateBrowsing->setCheckable(true);
     m_settingPrivateBrowsing->setChecked(m_webEngine->isPrivateMode());
     m_settingPrivateBrowsing->setEnabled(true);
-
-    m_settingDeleteHistory = sharedAction(new Action("Delete history"));
-    m_settingDeleteHistory->setToolTip("Delete History");
-
-    m_settingDeleteData = sharedAction(new Action("Delete data"));
-    m_settingDeleteData->setToolTip("Delete Data");
-
-    m_settingDeleteFavorite = sharedAction(new Action("Delete favorite site"));
-    m_settingDeleteFavorite->setToolTip("Delete favorite site");
-
-    m_bookmarks_manager_BookmarkBar = sharedAction(new Action("Bookmark Bar"));
-    m_bookmarks_manager_BookmarkBar->setToolTip("show Bookmark bar");
 }
 
 void SimpleUI::connectActions()
@@ -516,7 +505,7 @@ bool SimpleUI::checkBookmark()
     }
 }
 // Consider removing these functions
-void SimpleUI::onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
+void SimpleUI::onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem>)
 {
     if (m_moreMenuUI) {
         m_moreMenuUI->changeBookmarkStatus(true);
@@ -531,10 +520,6 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
         m_moreMenuUI->changeBookmarkStatus(false);
         m_moreMenuUI->createToastPopup( (std::string(m_webEngine->getTitle()) + std::string(" removed from bookmark")).c_str() );
     }
-}
-
-void SimpleUI::onHistoryAdded(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
-{
 }
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
@@ -615,27 +600,9 @@ void SimpleUI::stopEnable(bool enable)
     m_webPageUI->setStopButtonEnabled(enable);
 }
 
-void SimpleUI::addBookmarkEnable(bool enable)
-{
-}
-
-void SimpleUI::removeBookmarkEnable(bool enable)
-{
-}
-void SimpleUI::zoomEnable(bool enable)
-{
-    m_zoom_in->setEnabled(enable);
-}
-
-void SimpleUI::settingsButtonEnable(bool enable)
-{
-    m_webPageUI->setMoreMenuButtonEnabled(enable);
-}
-
 void SimpleUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    addBookmarkEnable(false);
     if(!m_webEngine->isPrivateMode()){
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI());
     }
@@ -650,8 +617,6 @@ void SimpleUI::progressChanged(double progress)
 void SimpleUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    addBookmarkEnable(m_favoriteService->countBookmarks() < m_favoritesLimit);
 
     if(!m_webEngine->isPrivateMode()){
         m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem> (m_webEngine->getURI(),
@@ -689,7 +654,6 @@ void SimpleUI::filterURL(const std::string& url)
             m_webEngine->setURI(url);
     }
     m_webPageUI->getURIEntry().clearFocus();
-    //addBookmarkEnable(false);
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)
@@ -1041,27 +1005,8 @@ void SimpleUI::updateView() {
     m_webPageUI->setTabsNumber(tabs);
 }
 
-void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
+void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId&) {
     updateView();
-}
-
-void SimpleUI::onNetworkError()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!m_networkErrorPopup) {
-        m_networkErrorPopup = SimplePopup::createPopup();
-        m_networkErrorPopup->setTitle("Network Error");
-        m_networkErrorPopup->addButton(CONNECT);
-        m_networkErrorPopup->addButton(CANCEL);
-        m_networkErrorPopup->setMessage("Network is disconnected. Please check the connection.");
-        m_networkErrorPopup->buttonClicked.connect(boost::bind(&SimpleUI::onNetErrorButtonPressed, this, _1, _2));
-        m_networkErrorPopup->show();
-    }
-}
-
-void SimpleUI::onNetErrorButtonPressed(PopupButtons, std::shared_ptr< PopupData >)
-{
-    m_networkErrorPopup = 0;
 }
 
 void SimpleUI::searchWebPage(std::string &text, int flags)
