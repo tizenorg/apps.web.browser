@@ -76,13 +76,6 @@ void BookmarkManagerUI::createGengridItemClasses()
     m_bookmark_item_class->func.del = nullptr;
 }
 
-void BookmarkManagerUI::show(Evas_Object* parent)
-{
-    init(parent);
-    b_mm_layout=createBookmarksLayout(m_parent);
-    showUI();
-}
-
 void BookmarkManagerUI::init(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -93,18 +86,13 @@ void BookmarkManagerUI::init(Evas_Object* parent)
 void BookmarkManagerUI::showUI()
 {
    evas_object_show(b_mm_layout);
-   //regenerate gengrid and genlist
-   createGenGrid();
-   showTopContent();
 }
 
 void BookmarkManagerUI::hideUI()
 {
-   evas_object_hide(b_mm_layout);
-   evas_object_del(m_gengrid);
-   m_gengrid=nullptr;
-   evas_object_del(m_genList);
-   m_genList=nullptr;
+    evas_object_hide(b_mm_layout);
+    elm_gengrid_clear(m_gengrid);
+    m_map_bookmark.clear();
 }
 
 Evas_Object* BookmarkManagerUI::getContent()
@@ -126,6 +114,7 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
     evas_object_show(b_mm_layout);
 
     createGenGrid();
+    showTopContent();
     return b_mm_layout;
 }
 
@@ -133,10 +122,6 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
 //      (After fixing window managment)
 void BookmarkManagerUI::createGenGrid()
 {
-   //TODO: After fixing window managment remove this.
-    if(m_gengrid != nullptr)
-        evas_object_del(m_gengrid);
-
     m_gengrid = elm_gengrid_add(b_mm_layout);
     elm_object_part_content_set(b_mm_layout, "elm.swallow.grid", m_gengrid);
     elm_object_style_set(m_gengrid, "back_ground");
@@ -152,9 +137,6 @@ void BookmarkManagerUI::createGenGrid()
     elm_gengrid_item_size_set(m_gengrid, 404 * efl_scale, 320 * efl_scale);
 }
 
-//TODO: Remove externall calls and make it private method.
-//      Make parend the argument and return created object
-//      to make code more modular.(After fixing window managment)
 void BookmarkManagerUI::showTopContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -210,19 +192,13 @@ Evas_Object* BookmarkManagerUI::listItemContentGet(void* data, Evas_Object* obj,
     return nullptr;
 }
 
-void BookmarkManagerUI::item_clicked_cb(void*, Evas_Object*, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-}
-
 void BookmarkManagerUI::close_clicked_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr)
     {
         ItemData * id = static_cast<ItemData *>(data);
-        id->m_bookmarkManager->closeBookmarkManagerClicked(std::string());
-        id->m_bookmarkManager->clearItems();
+        id->m_bookmarkManager->closeBookmarkManagerClicked();
     }
 }
 
@@ -230,13 +206,6 @@ char* BookmarkManagerUI::listItemTextGet(void* data, Evas_Object*, const char* p
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return strdup("Bookmark");
-}
-
-void BookmarkManagerUI::hide()
-{
-    evas_object_hide(elm_layout_content_get(b_mm_layout, "elm.swallow.grid"));
-    evas_object_hide(elm_layout_content_get(b_mm_layout, "elm.swallow.genlist"));
-    evas_object_hide(b_mm_layout);
 }
 
 Evas_Object * BookmarkManagerUI::getGenList()
@@ -362,25 +331,5 @@ void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void * 
     }
 }
 
-void BookmarkManagerUI::clearItems()
-{
-    hide();
-    BROWSER_LOGD("Deleting all items from gengrid");
-    elm_gengrid_clear(m_gengrid);
-    elm_genlist_clear(m_genList);
-    m_map_bookmark.clear();
-    elm_theme_extension_del(nullptr, edjFilePath.c_str());
-    elm_theme_full_flush();
-    elm_cache_all_flush();
-}
-
-void BookmarkManagerUI::updateGengrid()
-{
-    elm_genlist_clear(m_genList);
-    //elm_gengrid_clear(m_gengrid);
-    //remove 'createGenGrid' if the elm_gengrid_clear() will be valid again
-    createGenGrid();
-    m_map_bookmark.clear();
-}
 }
 }

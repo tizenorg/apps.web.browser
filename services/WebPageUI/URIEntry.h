@@ -78,6 +78,7 @@ public:
     bool hasFocus() const;
 
     void setDisabled(bool disabled);
+    void editingCanceled();
 
 private:
     static void activated(void* data, Evas_Object* obj, void* event_info);
@@ -90,8 +91,6 @@ private:
     static void _uriEntryBtnClicked(void* data, Evas_Object* obj, void* event_info);
 
     void editingCompleted();
-    void editingCanceled();
-
     void selectWholeText();
 
     /**

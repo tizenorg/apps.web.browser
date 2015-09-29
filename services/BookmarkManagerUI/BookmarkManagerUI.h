@@ -43,26 +43,21 @@ public:
     void hideUI();
     Evas_Object *getContent();
 
-    // TODO: remove this (After fixing window managment)
-    void show(Evas_Object *main_layout);
-
-    //TODO: make it private;
-    void showTopContent();
     virtual std::string getName();
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
     void hide();
     void clearItems();
-    void updateGengrid();
     Evas_Object* createNoHistoryLabel();
     void setEmptyGengrid(bool setEmpty);
 
-    boost::signals2::signal<void (std::string)> closeBookmarkManagerClicked;
+    boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
 
 private:
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
     void createGenGrid();
+    void showTopContent();
     void createGengridItemClasses();
     Evas_Object *getGenList();
     Evas_Object *getGenGrid();
@@ -76,7 +71,6 @@ private:
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
     static char*        listItemTextGet(void *data, Evas_Object *, const char *part);
 
-    static void item_clicked_cb(void *, Evas_Object *, void *);
     static void close_clicked_cb(void *data, Evas_Object *, void *);
 
 private:

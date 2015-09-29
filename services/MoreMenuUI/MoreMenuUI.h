@@ -68,14 +68,8 @@ public:
 
     void setDesktopMode(bool desktopMode) {m_desktopMode = desktopMode;}
 
-    void show(Evas_Object *main_layout, bool desktopMode);
-    //TODO: remove this function after new view managment introduction.
     void showCurrentTab();
     virtual std::string getName();
-    void addItems();
-    //TODO: remove this function after new view managment introduction.
-    void hide();
-    void clearItems();
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setWebTitle(const std::string& title);
     void setURL(const std::string& url);
@@ -87,20 +81,20 @@ public:
     void setFocus(Eina_Bool focusable);
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;
-    //TODO: remove redundant argument from this signal.
-    boost::signals2::signal<void (std::string)> bookmarkManagerClicked;
-    boost::signals2::signal<void (std::string)> historyUIClicked;
-    boost::signals2::signal<void (const std::string&)> settingsClicked;
-    //TODO: remove redundant argument from this signal.
-    boost::signals2::signal<void (std::string)> closeMoreMenuClicked;
+    boost::signals2::signal<void ()> bookmarkManagerClicked;
+    boost::signals2::signal<void ()> historyUIClicked;
+    boost::signals2::signal<void ()> settingsClicked;
+    boost::signals2::signal<void ()> closeMoreMenuClicked;
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
     boost::signals2::signal<void ()> deleteBookmark;
 private:
     Elm_Gengrid_Item_Class* createItemClass();
-    Evas_Object* createMoreMenuLayout(Evas_Object* parent);
-    Evas_Object* createGengrid(Evas_Object* parent);
+    void createMoreMenuLayout();
+    void createGengrid();
+    void addItems();
+    void clearItems();
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);

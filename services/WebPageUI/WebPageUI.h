@@ -60,8 +60,11 @@ public:
     boost::signals2::signal<void ()> reloadPage;
     boost::signals2::signal<void ()> showTabUI;
     boost::signals2::signal<void ()> showMoreMenu;
+    boost::signals2::signal<void ()> hideMainUI;
+    boost::signals2::signal<void ()> showMainUI;
 
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
+
 private:
     void createLayout();
     void createErrorLayout();

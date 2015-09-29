@@ -63,12 +63,45 @@ Evas_Object* WebPageUI::getContent()
 void WebPageUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_mainLayout);
+    evas_object_show(m_mainLayout);
+
+    evas_object_show(elm_object_part_content_get(m_mainLayout, "web_view"));
+    evas_object_show(m_URIEntry->getContent());
+    evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
+    evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
+
+    // set custom focus chain
+    elm_object_focus_custom_chain_unset(m_mainLayout);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
+    if (!isHomePageActive())
+        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
+
+    if (m_homePageActive) {
+        m_URIEntry->setFocus();
+        showMainUI();
+    } else {
+        elm_object_focus_set(elm_object_part_content_get(m_mainLayout, "web_view"), EINA_TRUE);
+    }
 }
+
 
 void WebPageUI::hideUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_mainLayout);
     elm_object_focus_custom_chain_unset(m_mainLayout);
+    evas_object_hide(m_mainLayout);
+
+    if (m_homePageActive)
+        hideMainUI();
+
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
+    m_URIEntry->editingCanceled();
+    evas_object_hide(m_URIEntry->getContent());
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 }
 
 void WebPageUI::loadStarted()
@@ -109,13 +142,6 @@ void WebPageUI::setMainContent(Evas_Object* content)
     hideWebView();
     elm_object_part_content_set(m_mainLayout, "web_view", content);
     evas_object_show(content);
-
-    // set custom focus chain
-    elm_object_focus_custom_chain_unset(m_mainLayout);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
-    if (!isHomePageActive())
-        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
 }
 
 void WebPageUI::switchViewToErrorPage()
@@ -130,7 +156,11 @@ void WebPageUI::switchViewToErrorPage()
 void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_homePageActive = false;
+    if (m_homePageActive)
+    {
+        hideMainUI();
+        m_homePageActive = false;
+    }
     setMainContent(content);
     evas_object_show(m_leftButtonBar->getContent());
     updateURIBar(uri);
@@ -140,8 +170,13 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
 void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (m_homePageActive)
+        return;
+
     m_homePageActive = true;
     setMainContent(content);
+    showMainUI();
 
     m_URIEntry->changeUri("");
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
@@ -149,6 +184,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
     hideProgressBar();
+    m_URIEntry->setFocus();
 }
 
 void WebPageUI::faviconClicked(void* data, Evas_Object*, const char*, const char*)
@@ -280,6 +316,7 @@ void WebPageUI::hideProgressBar()
 void WebPageUI::hideWebView()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
     elm_object_part_content_unset(m_mainLayout, "web_view");
 }

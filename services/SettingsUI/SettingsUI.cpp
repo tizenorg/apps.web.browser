@@ -104,14 +104,6 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
     return settings_layout;
 }
 
-void SettingsUI::show(Evas_Object* parent)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    init(parent);
-    m_settings_layout = createSettingsUILayout(m_parent);
-    showUI();
-}
-
 Evas_Object* SettingsUI::createActionBar(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -268,16 +260,8 @@ void SettingsUI::close_clicked_cb(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         SettingsUI * s_ui = static_cast<SettingsUI*>(data);
-        s_ui->closeSettingsUIClicked(std::string());
-        s_ui->clearItems();
+        s_ui->closeSettingsUIClicked();
     }
-}
-
-void SettingsUI::hide()
-{
-    evas_object_hide(elm_layout_content_get(m_settings_layout, "action_bar_swallow"));
-    evas_object_hide(elm_layout_content_get(m_settings_layout, "settings_scroller_swallow"));
-    evas_object_hide(m_settings_layout);
 }
 
 void SettingsUI::_del_selected_data_clicked_cb(void *data, Evas_Object*, void*)
@@ -301,7 +285,7 @@ void SettingsUI::_reset_mv_clicked_cb(void *data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         ItemData* itemData = static_cast<ItemData*>(data);
-        itemData->settingsUI->resetMostVisitedClicked(std::string());
+        itemData->settingsUI->resetMostVisitedClicked();
     }
 }
 
@@ -310,14 +294,8 @@ void SettingsUI::_reset_browser_clicked_cb(void *data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         ItemData* itemData = static_cast<ItemData*>(data);
-        itemData->settingsUI->resetBrowserClicked(std::string());
+        itemData->settingsUI->resetBrowserClicked();
     }
-}
-
-void SettingsUI::clearItems()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    hide();
 }
 
 }

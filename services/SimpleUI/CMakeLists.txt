@@ -82,6 +82,7 @@ set(edcFiles
     AuthenticationPopup.edc
     BookmarksManager.edc
     Tooltip.edc
+    ViewManager.edc
     )
 
 foreach(edec ${edcFiles})

@@ -58,6 +58,7 @@ TabUI::~TabUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_item_class_free(m_item_class);
+    evas_object_del(m_gengrid);
 }
 
 void TabUI::createTabItemClass()
@@ -73,24 +74,11 @@ void TabUI::createTabItemClass()
     }
 }
 
-void TabUI::show(Evas_Object* parent)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    init(parent);
-    m_tab_layout = createTabUILayout(m_parent);
-    showUI();
-}
-
 void TabUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_tab_layout);
     evas_object_show(m_tab_layout);
-    //regenerate gengrid
-    m_gengrid = createGengrid(m_tab_layout);
-    elm_object_part_content_set(m_tab_layout, "tab_gengrid", m_gengrid);
-    evas_object_show(m_gengrid);
-
     evas_object_show(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_show(elm_layout_content_get(m_tab_layout, "top_bar"));
 }
@@ -99,12 +87,10 @@ void TabUI::hideUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_tab_layout);
+
+    elm_gengrid_clear(m_gengrid);
+    m_map_tab_views.clear();
     evas_object_hide(m_tab_layout);
-
-    //delete gengrid
-    evas_object_del(m_gengrid);
-    m_gengrid = nullptr;
-
     evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
 }
@@ -121,26 +107,29 @@ Evas_Object* TabUI::getContent()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_parent);
     if(!m_tab_layout)
-        m_tab_layout = createTabUILayout(m_parent);
+        createTabUILayout();
     return m_tab_layout;
 }
 
-Evas_Object* TabUI::createTabUILayout(Evas_Object* parent)
+void TabUI::createTabUILayout()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
 
-    Evas_Object* tab_layout = elm_layout_add(parent);
-    elm_layout_file_set(tab_layout, m_edjFilePath.c_str(), "tab-layout");
-    evas_object_size_hint_weight_set(tab_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(tab_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    m_tab_layout = elm_layout_add(m_parent);
+    elm_layout_file_set(m_tab_layout, m_edjFilePath.c_str(), "tab-layout");
+    evas_object_size_hint_weight_set(m_tab_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_tab_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     //Create button bars and put them to layout's swallows
-    Evas_Object* buttonBar = createTopButtons(tab_layout);
-    elm_object_part_content_set(tab_layout, "top_bar", buttonBar);
+    Evas_Object* buttonBar = createTopButtons(m_tab_layout);
+    elm_object_part_content_set(m_tab_layout, "top_bar", buttonBar);
 
-    buttonBar = createActionBar(tab_layout);
-    elm_object_part_content_set(tab_layout, "action_bar", buttonBar);
-    return tab_layout;
+    buttonBar = createActionBar(m_tab_layout);
+    elm_object_part_content_set(m_tab_layout, "action_bar", buttonBar);
+
+    m_gengrid = createGengrid(m_tab_layout);
+    elm_object_part_content_set(m_tab_layout, "tab_gengrid", m_gengrid);
 }
 
 Evas_Object* TabUI::createGengrid(Evas_Object* parent)
@@ -206,20 +195,10 @@ void TabUI::_close_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabUI * tabUI = static_cast<TabUI*>(data);
-        tabUI->closeTabUIClicked(std::string());
-        tabUI->clearItems();
+        tabUI->closeTabUIClicked();
         tabUI->editMode = false;
         tabUI->onOtherDevicesSwitch = false;
     }
-}
-
-void TabUI::hide()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
-    evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
-    evas_object_hide(elm_layout_content_get(m_tab_layout, "tab_gengrid"));
-    evas_object_hide(m_tab_layout);
 }
 
 Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
@@ -252,8 +231,7 @@ void TabUI::_newtab_clicked(void * data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabUI* tabUI = static_cast<TabUI*>(data);
-        tabUI->clearItems();
-        tabUI->newTabClicked(std::string());
+        tabUI->newTabClicked();
         tabUI->editMode = false;
         tabUI->onOtherDevicesSwitch = false;
     }
@@ -292,14 +270,13 @@ void TabUI::_newincognitotab_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabUI* tabUI = static_cast<TabUI*>(data);
-        tabUI->clearItems();
-        tabUI->newIncognitoTabClicked(std::string());
+        tabUI->newIncognitoTabClicked();
         tabUI->editMode = false;
         tabUI->onOtherDevicesSwitch = false;
     }
 }
 
-void TabUI::_closetabs_clicked(void* data, Evas_Object* obj, void*)
+void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
@@ -366,8 +343,6 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         TabItemData *itemData = static_cast<TabItemData*>(data);
         const char *part_name1 = "tab_thumbnail";
         static const int part_name1_len = strlen(part_name1);
-        const char *part_name2 = "tab_thumbButton";
-        static const int part_name2_len = strlen(part_name2);
 
         if (!strncmp(part_name1, part, part_name1_len)) {
             if (itemData->item->getThumbnail()) {
@@ -389,7 +364,6 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
     if (data) {
         TabItemData *itemData = static_cast<TabItemData*>(data);
         if (!itemData->tabUI->editMode) {
-            itemData->tabUI->clearItems();
             itemData->tabUI->tabClicked(itemData->item->getId());
         } else {
             itemData->tabUI->closeTabsClicked(itemData->item->getId());
@@ -398,18 +372,8 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
             elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
             int tabsNumber = *(itemData->tabUI->tabsCount());
             BROWSER_LOGD("%s:%d %s, items: %d", __FILE__, __LINE__, __func__, tabsNumber);
-            if (!tabsNumber)
-                itemData->tabUI->hide();
         }
     }
-}
-
-void TabUI::clearItems()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    hide();
-    elm_gengrid_clear(m_gengrid);
-    m_map_tab_views.clear();
 }
 
 Evas_Object* TabUI::createNoHistoryLabel()
@@ -431,8 +395,9 @@ void TabUI::closeAllTabs()
         item->tabUI->closeTabsClicked(item->item->getId());
         it = elm_gengrid_item_next_get(it);
     }
-    hide();
+    closeTabUIClicked();
 }
+
 
 void TabUI::setEmptyGengrid(bool setEmpty)
 {
@@ -444,7 +409,7 @@ void TabUI::setEmptyGengrid(bool setEmpty)
     }
 }
 
-void TabUI::_focus_in(void * data, Evas*, Evas_Object * obj, void * event_info)
+void TabUI::_focus_in(void* data, Evas*, Evas_Object*, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Event_Mouse_In* ee  = (Evas_Event_Mouse_In*)event_info;
