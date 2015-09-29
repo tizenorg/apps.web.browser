@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -45,10 +45,14 @@ typedef struct _MoreItemData
 } MoreMenuItemData;
 
 MoreMenuUI::MoreMenuUI()
-    : m_gengrid(nullptr)
-    , m_parent(nullptr)
-    , m_item_class(nullptr)
+    : m_current_tab_bar(nullptr)
     , m_mm_layout(nullptr)
+    , m_gengrid(nullptr)
+    , m_parent(nullptr)
+    , m_toastPopup(nullptr)
+    , m_icon(nullptr)
+    , m_bookmarkIcon(nullptr)
+    , m_item_class(nullptr)
     , m_desktopMode(true)
     , m_isBookmark(false)
 {
@@ -63,6 +67,7 @@ MoreMenuUI::~MoreMenuUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_item_class)
         elm_gengrid_item_class_free(m_item_class);
+    evas_object_del(m_gengrid);
 }
 
 Elm_Gengrid_Item_Class* MoreMenuUI::createItemClass()
@@ -84,25 +89,16 @@ void MoreMenuUI::init(Evas_Object* parent)
     m_parent = parent;
 }
 
-void MoreMenuUI::show(Evas_Object* parent, bool desktopMode)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    init(parent);
-    //TODO: move this function call to SimpleUI::initUIServices after introducing new window managment.
-    setDesktopMode(desktopMode);
-    m_mm_layout=createMoreMenuLayout(parent);
-    showUI();
-}
 
 void MoreMenuUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_parent);
-    evas_object_show(getContent());
-    //regenerate gengrid
-    m_gengrid=createGengrid(getContent());
+    M_ASSERT(m_mm_layout);
+    createGengrid();    // recreate gengrid because icons could have changed
     addItems();
-    elm_object_part_content_set(getContent(), "elm.swallow.grid", m_gengrid);
+    evas_object_show(m_mm_layout);
+    evas_object_show(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
+    evas_object_show(m_gengrid);
     setFocus(EINA_TRUE);
 }
 
@@ -110,8 +106,10 @@ void MoreMenuUI::hideUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_mm_layout);
-    evas_object_hide(getContent());
-    //destroy gengrid
+    setFocus(EINA_FALSE);
+    evas_object_hide(m_mm_layout);
+    evas_object_hide(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
+    clearItems();
     evas_object_del(m_gengrid);
 }
 
@@ -119,41 +117,37 @@ void MoreMenuUI::hideUI()
 Evas_Object* MoreMenuUI::getContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_parent);
     if(!m_mm_layout)
-        m_mm_layout = createMoreMenuLayout(m_parent);
+         createMoreMenuLayout();
     return m_mm_layout;
 }
 
-Evas_Object* MoreMenuUI::createMoreMenuLayout(Evas_Object* parent)
+void MoreMenuUI::createMoreMenuLayout()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_parent);
     elm_theme_extension_add(NULL, m_edjFilePath.c_str());
-    Evas_Object* mm_layout = elm_layout_add(parent);
-    elm_layout_file_set(mm_layout, m_edjFilePath.c_str(), "moremenu-layout");
-    evas_object_size_hint_weight_set(mm_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(mm_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    evas_object_show(mm_layout);
-    return mm_layout;
+    m_mm_layout = elm_layout_add(m_parent);
+    elm_layout_file_set(m_mm_layout, m_edjFilePath.c_str(), "moremenu-layout");
+    evas_object_size_hint_weight_set(m_mm_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_mm_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 }
 
-Evas_Object* MoreMenuUI::createGengrid(Evas_Object* parent)
+void MoreMenuUI::createGengrid()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Evas_Object* gengrid = elm_gengrid_add(parent);
-    elm_object_part_content_set(parent, "elm.swallow.grid", gengrid);
+    m_gengrid = elm_gengrid_add(m_mm_layout);
+    elm_object_part_content_set(m_mm_layout, "elm.swallow.grid", m_gengrid);
 
-    elm_gengrid_align_set(gengrid, 0, 0);
-    elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_gengrid_multi_select_set(gengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
-    elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(gengrid, 0, 327);
-    evas_object_size_hint_weight_set(gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_gengrid_item_size_set(gengrid, 364 * efl_scale, 320 * efl_scale);
-    return gengrid;
+    elm_gengrid_align_set(m_gengrid, 0, 0);
+    elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(m_gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
+    elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_page_size_set(m_gengrid, 0, 327);
+    evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
 }
 
 void MoreMenuUI::showCurrentTab()
@@ -222,7 +216,6 @@ void MoreMenuUI::setWebTitle(const std::string& title)
 void MoreMenuUI::setURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
-    char* part_name = "add_to_bookmark_text";
 
     if(!url.empty()) {
         elm_object_part_text_set(m_current_tab_bar, "webpage_url", url.c_str());
@@ -285,7 +278,7 @@ void MoreMenuUI::createToastPopup(const char* text)
     elm_popup_timeout_set(m_toastPopup, 3.0);
 }
 
-void MoreMenuUI::_timeout(void *data, Evas_Object *obj, void *event_info)
+void MoreMenuUI::_timeout(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
@@ -314,17 +307,10 @@ void MoreMenuUI::_close_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
-        moreMenuUI->closeMoreMenuClicked(std::string());
-        moreMenuUI->clearItems();
+        moreMenuUI->closeMoreMenuClicked();
     }
 }
 
-void MoreMenuUI::hide()
-{
-    evas_object_hide(elm_layout_content_get(m_mm_layout, "elm.swallow.grid"));
-    evas_object_hide(elm_layout_content_get(m_mm_layout, "current_tab_bar"));
-    evas_object_hide(m_mm_layout);
-}
 
 void MoreMenuUI::addItems()
 {
@@ -344,7 +330,20 @@ void MoreMenuUI::addItems()
          m_map_menu_views.insert(std::pair<ItemType, Elm_Object_Item*>(itemData->item, bookmarkView));
          elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
      }
-     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+}
+
+void MoreMenuUI::clearItems()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    for (auto it = m_map_menu_views.begin(); it != m_map_menu_views.end(); ++it) {
+        Elm_Object_Item* bookmarkView = it->second;
+        Evas_Object *button = elm_object_item_part_content_get(it->second, "thumbbutton_item");
+        evas_object_event_callback_del(button, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in);
+        evas_object_event_callback_del(button, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out);
+    }
+
+    elm_gengrid_clear(m_gengrid);
+    m_map_menu_views.clear();
 }
 
 char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
@@ -515,16 +514,13 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
     BROWSER_LOGD("type: %d", itemData->item);
         switch (itemData->item) {
         case HISTORY:
-            itemData->moreMenuUI->setFocus(EINA_FALSE);
-            itemData->moreMenuUI->historyUIClicked(std::string());
+            itemData->moreMenuUI->historyUIClicked();
             break;
         case SETTINGS:
-            itemData->moreMenuUI->setFocus(EINA_FALSE);
-            itemData->moreMenuUI->settingsClicked(std::string());
+            itemData->moreMenuUI->settingsClicked();
             break;
         case BOOKMARK_MANAGER:
-            itemData->moreMenuUI->setFocus(EINA_FALSE);
-            itemData->moreMenuUI->bookmarkManagerClicked(std::string());
+            itemData->moreMenuUI->bookmarkManagerClicked();
             break;
 #ifdef READER_MODE_ENABLED
         case READER_MODE:
@@ -543,14 +539,12 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         case VIEW_MOBILE_WEB:
             itemData->moreMenuUI->switchToMobileMode();
             itemData->moreMenuUI->m_desktopMode = false;
-            itemData->moreMenuUI->closeMoreMenuClicked(std::string());
-            itemData->moreMenuUI->clearItems();
+            itemData->moreMenuUI->closeMoreMenuClicked();
             break;
         case VIEW_DESKTOP_WEB:
             itemData->moreMenuUI->switchToDesktopMode();
             itemData->moreMenuUI->m_desktopMode = true;
-            itemData->moreMenuUI->closeMoreMenuClicked(std::string());
-            itemData->moreMenuUI->clearItems();
+            itemData->moreMenuUI->closeMoreMenuClicked();
             break;
         case SHARE:
             break;
@@ -562,19 +556,6 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             break;
         }
     }
-}
-
-void MoreMenuUI::clearItems()
-{
-    hide();
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_gengrid_clear(m_gengrid);
-    elm_object_tree_focus_allow_set(getContent(), EINA_FALSE);
-    m_map_menu_views.clear();
-    evas_object_del(m_current_tab_bar);
-    elm_theme_extension_del(NULL, m_edjFilePath.c_str());
-    elm_theme_full_flush();
-    elm_cache_all_flush();
 }
 
 void MoreMenuUI::_exitClicked()

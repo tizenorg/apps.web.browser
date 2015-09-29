@@ -79,12 +79,20 @@ public:
  */
     Evas_Object* getContent();
 
+/**
+ * @brief Returns actual top of stack which is dispalyed. It stack is empty
+ * returns null.
+ *
+ * @return actual dispalyed view
+ */
+    interfaces::AbstractUIComponent* topOfStack();
+
 private:
-    void updateLayout();
+    void updateLayout(interfaces::AbstractUIComponent* previousView);
 private:
     Evas_Object* m_mainLayout;
+    Evas_Object* m_parentWindow;
     std::stack<interfaces::AbstractUIComponent*> m_viewStack;
-    interfaces::AbstractUIComponent* m_previousTop;
 };
 
 }//namespace base_ui

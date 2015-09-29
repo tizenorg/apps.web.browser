@@ -71,10 +71,9 @@ void HistoryUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_history_layout);
-    m_gengrid = createGengrid(m_history_layout);
-    addItems();
     evas_object_show(m_actionBar);
     evas_object_show(m_history_layout);
+    elm_object_focus_custom_chain_append(m_history_layout, m_genListToday, nullptr);
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 }
 
@@ -82,23 +81,12 @@ void HistoryUI::hideUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_history_layout);
-    evas_object_del(m_genListToday);
-    m_genListToday = nullptr;
-    evas_object_del(m_gengrid);
-    m_gengrid = nullptr;
     evas_object_hide(m_actionBar);
     evas_object_hide(m_history_layout);
     elm_object_focus_custom_chain_unset(m_history_layout);
+    clearItems();
 }
 
-// TODO: Remove this function when proper view handling will be introduced
-void HistoryUI::show(Evas_Object* parent)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    init(parent);
-    m_history_layout = createHistoryUILayout(m_parent);
-    showUI();
-}
 
 void HistoryUI::init(Evas_Object* parent)
 {
@@ -112,7 +100,7 @@ Evas_Object* HistoryUI::getContent()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_parent);
     if (!m_history_layout)
-        m_history_layout = createHistoryUILayout(m_parent);
+        createHistoryUILayout(m_parent);
     return m_history_layout;
 }
 
@@ -120,15 +108,14 @@ Evas_Object* HistoryUI::createHistoryUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    Evas_Object* history_layout = elm_layout_add(parent);
-    elm_layout_file_set(history_layout, m_edjFilePath.c_str(), "history-layout");
-    evas_object_size_hint_weight_set(history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    m_history_layout = elm_layout_add(parent);
+    elm_layout_file_set(m_history_layout, m_edjFilePath.c_str(), "history-layout");
+    evas_object_size_hint_weight_set(m_history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    m_actionBar = createActionBar(history_layout);
-    m_gengrid = createGengrid(history_layout);
-
-    return history_layout;
+    m_actionBar = createActionBar(m_history_layout);
+    m_gengrid = createGengrid(m_history_layout);
+    clearItems();
 }
 
 Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
@@ -151,6 +138,27 @@ Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
 
     double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_gengrid_item_size_set(gengrid, 580 * efl_scale, 580 * efl_scale);
+
+    HistoryItemData *itemData = new HistoryItemData();
+    itemData->historyUI = std::shared_ptr<tizen_browser::base_ui::HistoryUI>(this);
+    Elm_Object_Item* historyView = elm_gengrid_item_append(gengrid, m_item_class, itemData, nullptr, this);
+    elm_gengrid_item_selected_set(historyView, EINA_FALSE);
+
+    // create genlist for today entries
+    m_genListToday = elm_genlist_add(m_history_layout);
+    elm_genlist_homogeneous_set(m_genListToday, EINA_FALSE);
+    elm_genlist_multi_select_set(m_genListToday, EINA_FALSE);
+    elm_genlist_select_mode_set(m_genListToday, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_mode_set(m_genListToday, ELM_LIST_LIMIT);
+    elm_genlist_decorate_mode_set(m_genListToday, EINA_TRUE);
+    evas_object_size_hint_weight_set(m_genListToday, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    m_itemClassToday = elm_genlist_item_class_new();
+    m_itemClassToday->item_style = "history_url_items";
+    m_itemClassToday->func.text_get =  &_listTodayTextGet;
+    m_itemClassToday->func.content_get = nullptr;
+    m_itemClassToday->func.state_get = nullptr;
+    m_itemClassToday->func.del = nullptr;
+
     return gengrid;
 }
 
@@ -198,7 +206,6 @@ void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
     if (data) {
         HistoryUI *historyUI = static_cast<HistoryUI*>(data);
         historyUI->closeHistoryUIClicked();
-        historyUI->clearItems();
     }
 }
 
@@ -225,20 +232,8 @@ void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     HistoryUI *historyUI = static_cast<HistoryUI*>(data);
-    historyUI->clearHistoryClicked(std::string());
+    historyUI->clearHistoryClicked();
     historyUI->clearItems();
-}
-
-void HistoryUI::addItems()
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    for (size_t i = 0; i < 1; i++) {
-        HistoryItemData *itemData = new HistoryItemData();
-        itemData->historyUI = std::shared_ptr<tizen_browser::base_ui::HistoryUI>(this);
-        Elm_Object_Item* historyView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, nullptr, this);
-        elm_gengrid_item_selected_set(historyView, EINA_FALSE);
-    }
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 }
 
 void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
@@ -248,6 +243,8 @@ void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     itemData->item = hi;
     itemData->historyUI = std::shared_ptr<tizen_browser::base_ui::HistoryUI>(this);
     _history_item_data.push_back(itemData);
+    Elm_Object_Item* historyView = elm_genlist_item_append(itemData->historyUI->m_genListToday, itemData->historyUI->m_itemClassToday, itemData, nullptr, ELM_GENLIST_ITEM_NONE, _history_item_clicked_cb, itemData);
+    itemData->historyUI->m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(), historyView));
 }
 
 void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
@@ -279,28 +276,6 @@ Evas_Object * HistoryUI::_history_grid_content_get(void *data, Evas_Object*, con
         static const int part_name_len = strlen(part_name);
 
         if(!strncmp(part_name, part, part_name_len)) {
-            id->historyUI->m_genListToday = elm_genlist_add(id->historyUI->m_history_layout);
-
-            elm_genlist_homogeneous_set(id->historyUI->m_genListToday, EINA_FALSE);
-            elm_genlist_multi_select_set(id->historyUI->m_genListToday, EINA_FALSE);
-            elm_genlist_select_mode_set(id->historyUI->m_genListToday, ELM_OBJECT_SELECT_MODE_ALWAYS);
-            elm_genlist_mode_set(id->historyUI->m_genListToday, ELM_LIST_LIMIT);
-            elm_genlist_decorate_mode_set(id->historyUI->m_genListToday, EINA_TRUE);
-            evas_object_size_hint_weight_set(id->historyUI->m_genListToday, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-
-            id->historyUI->m_itemClassToday = elm_genlist_item_class_new();
-            id->historyUI->m_itemClassToday->item_style = "history_url_items";
-            id->historyUI->m_itemClassToday->func.text_get =  &_listTodayTextGet;
-            id->historyUI->m_itemClassToday->func.content_get = nullptr;
-            id->historyUI->m_itemClassToday->func.state_get = nullptr;
-            id->historyUI->m_itemClassToday->func.del = nullptr;
-
-            for(auto it = _history_item_data.begin(); it != _history_item_data.end(); it++) {
-                Elm_Object_Item* historyView = elm_genlist_item_append(id->historyUI->m_genListToday, id->historyUI->m_itemClassToday, *it, nullptr, ELM_GENLIST_ITEM_NONE, _history_item_clicked_cb, (*it));
-                id->historyUI->m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>((*it)->item->getUrl(), historyView));
-            }
-            elm_object_focus_custom_chain_append(id->historyUI->m_history_layout, id->historyUI->m_genListToday, nullptr);
-
             return id->historyUI->m_genListToday;
         }
     }
@@ -318,19 +293,10 @@ void HistoryUI::removeHistoryItem(const std::string& uri)
     m_map_history_views.erase(uri);
 }
 
-void HistoryUI::hide()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_hide(elm_layout_content_get(m_history_layout, "action_bar_history"));
-    evas_object_hide(m_history_layout);
-}
-
 void HistoryUI::clearItems()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    hide();
     elm_genlist_clear(m_genListToday);
-    elm_gengrid_clear(m_gengrid);
     m_map_history_views.clear();
     _history_item_data.clear();
 }

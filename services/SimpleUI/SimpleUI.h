@@ -52,6 +52,7 @@
 #include "WebConfirmation.h"
 #include "BookmarksManager.h"
 #include "Config.h"
+#include "ViewManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -86,7 +87,6 @@ private:
     Evas_Object* createErrorLayout(Evas_Object* parent);
 
 
-    void backEnable(bool enable);
     void forwardEnable(bool enable);
     void stopEnable(bool enable);
     void reloadEnable(bool enable);
@@ -107,13 +107,14 @@ private:
     void bookmarkAdded();
     void bookmarkDeleted();
 
+    void showMainUI();
     void switchViewToQuickAccess();
     void switchViewToWebPage();
     void updateView();
 
     void openNewTab(const std::string &uri, bool desktopMode = true);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
-    void newTabClicked(const std::string &);
+    void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void closeTabsClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void tabCreated();
@@ -133,11 +134,10 @@ private:
     void onHistoryRemoved(const std::string& uri);
     void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
     void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
-    void onClearHistoryClicked(const std::string&);
+    void onClearHistoryClicked();
 
-    void onMostVisitedClicked(const std::string&);
-    void onBookmarkButtonClicked(const std::string&);
-    void onBookmarkManagerButtonClicked(const std::string&);
+    void onMostVisitedClicked();
+    void onBookmarkButtonClicked();
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
@@ -199,25 +199,21 @@ private:
      */
     void deleteBookmark(void);
 
-    void showHistory();
-    void hideHistory();
-
     void showTabUI();
-    void closeTabUI(const std::string& str);
+    void closeTabUI();
     void showMoreMenu();
-    void closeMoreMenu(const std::string& str);
+    void closeMoreMenu();
     void switchToMobileMode();
     void switchToDesktopMode();
-    void showHistoryUI(const std::string& str);
+    void showHistoryUI();
     void closeHistoryUI();
     void showURIBar();
     void hideURIBar();
     void hideSettingsMenu();
-    void showSettingsUI(const std::string&);
-    void closeSettingsUI(const std::string&);
-
-    void closeBookmarkManagerMenu(const std::string& str);
-    void showBookmarkManagerMenu();
+    void showSettingsUI();
+    void closeSettingsUI();
+    void closeBookmarkManagerUI();
+    void showBookmarkManagerUI();
 
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
 
@@ -229,8 +225,8 @@ private:
     void settingsDeleteData();
     void settingsDeleteFavorite();
     void settingsDeleteSelectedData(const std::string& str);
-    void settingsResetMostVisited(const std::string& str);
-    void settingsResetBrowser(const std::string& str);
+    void settingsResetMostVisited();
+    void settingsResetBrowser();
     void onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
@@ -241,13 +237,10 @@ private:
     int tabsCount();
 
     void onNetworkError();
-    void onNetworkConnected();
     void onNetErrorButtonPressed(PopupButtons, std::shared_ptr<PopupData>);
 
     void onReturnPressed(MenuButton *m);
     void onBackPressed();
-
-    boost::signals2::signal<void ()> hidePopup;
 
     std::string edjePath(const std::string &);
 
@@ -274,6 +267,10 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+
+    //helper object used to view management
+    ViewManager* m_viewManager;
+
     // This context object is used to implicitly init internal ewk data used by opengl to create the first and
     // consecutive webviews in the application, otherwise we would encounter a crash after creating
     // the first web view

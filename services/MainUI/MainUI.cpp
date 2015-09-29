@@ -138,9 +138,6 @@ Evas_Object* MainUI::createQuickAccessLayout(Evas_Object* parent)
     m_mostVisitedView = createMostVisitedView(layout);
     m_bookmarksView   = createBookmarksView  (layout);
 
-    evas_object_show(m_mostVisitedView);
-    //TODO: uncoment this after cleaning up the mess in whole app window.
-    //evas_object_show(m_bookmarksView);
     showHistory();
 
     return layout;
@@ -170,7 +167,21 @@ Evas_Object* MainUI::createBookmarksView (Evas_Object * parent)
     evas_object_size_hint_weight_set(bookmarkViewLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkViewLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    Evas_Object *bookmarkGengrid = elm_gengrid_add(bookmarkViewLayout);
+    m_bookmarkGengrid = createBookmarkGengrid(bookmarkViewLayout);
+    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", m_bookmarkGengrid);
+
+    Evas_Object* topButtons = createTopButtons(bookmarkViewLayout);
+    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutTop", topButtons);
+
+    Evas_Object* bottomButton = createBottomButton(bookmarkViewLayout);
+    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutBottom", bottomButton);
+
+    return bookmarkViewLayout;
+}
+
+Evas_Object* MainUI::createBookmarkGengrid(Evas_Object *parent)
+{
+    Evas_Object *bookmarkGengrid = elm_gengrid_add(parent);
 
     elm_gengrid_align_set(bookmarkGengrid, 0, 0);
     elm_gengrid_select_mode_set(bookmarkGengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
@@ -182,18 +193,8 @@ Evas_Object* MainUI::createBookmarksView (Evas_Object * parent)
     evas_object_size_hint_weight_set(bookmarkGengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkGengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
-    evas_object_show(bookmarkGengrid);
 
-    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", bookmarkGengrid);
-    m_bookmarkGengrid = bookmarkGengrid;
-
-    Evas_Object* topButtons = createTopButtons(bookmarkViewLayout);
-    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutTop", topButtons);
-
-    Evas_Object* bottomButton = createBottomButton(bookmarkViewLayout);
-    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutBottom", bottomButton);
-
-    return bookmarkViewLayout;
+    return bookmarkGengrid;
 }
 
 Evas_Object* MainUI::createTopButtons (Evas_Object *parent)
@@ -248,21 +249,21 @@ void MainUI::_mostVisited_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
-    mainUI->mostVisitedClicked(std::string());
+    mainUI->mostVisitedClicked();
 }
 
 void MainUI::_bookmark_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI* mainUI = reinterpret_cast<MainUI *>(data);
-    mainUI->bookmarkClicked(std::string());
+    mainUI->bookmarkClicked();
 }
 
 void MainUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     MainUI*  mainUI = static_cast<MainUI *>(data);
-    mainUI->bookmarkManagerClicked(std::string());
+    mainUI->bookmarkManagerClicked();
 }
 
 void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
@@ -327,10 +328,9 @@ void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkIt
 void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
     clearBookmarkGengrid();
-         BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-         for (auto it = items.begin(); it != items.end(); ++it) {
-                 addBookmarkItem(*it);
-         }
+    for (auto it = items.begin(); it != items.end(); ++it) {
+         addBookmarkItem(*it);
+    }
 }
 
 
@@ -403,7 +403,6 @@ void MainUI::showHistory()
     if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_mostVisitedView)
         return;
 
-    //TODO: remove these "evas_object_hide" and "evas_object_show" after cleaning up the mess in whole app window.
     elm_layout_content_unset(m_layout, "elm.swallow.content");
     evas_object_hide(m_bookmarksView);
     elm_layout_content_set(m_layout, "elm.swallow.content", m_mostVisitedView);
@@ -422,7 +421,6 @@ void MainUI::showHistory()
 void MainUI::clearBookmarkGengrid()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
     elm_gengrid_clear(m_bookmarkGengrid);
     m_map_bookmark_views.clear();
 }
@@ -431,10 +429,9 @@ void MainUI::showBookmarks()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView)
+    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView && m_bookmarksView != nullptr)
         return;
 
-    //TODO: remove these "evas_object_hide" and "evas_object_show" after cleaning up the mess in whole app window.
     elm_layout_content_unset(m_layout, "elm.swallow.content");
     evas_object_hide(m_mostVisitedView);
     elm_layout_content_set(m_layout, "elm.swallow.content", m_bookmarksView);
@@ -444,18 +441,23 @@ void MainUI::showBookmarks()
     evas_object_show(m_layout);
 }
 
-void MainUI::hide()
+void MainUI::showUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_show(m_layout);
+    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView) {
+        evas_object_show(m_bookmarksView);
+    } else {
+        evas_object_show(m_mostVisitedView);
+    }
+}
+
+void MainUI::hideUI()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     evas_object_hide(m_layout);
     evas_object_hide(m_mostVisitedView);
     evas_object_hide(m_bookmarksView);
-    clearItems();
-}
-
-void MainUI::clearItems()
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     clearHistoryGenlist();
     clearBookmarkGengrid();
 }

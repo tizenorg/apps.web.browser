@@ -45,16 +45,14 @@ public:
     void addHistoryItem(std::shared_ptr<services::HistoryItem>);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
     void removeHistoryItem(const std::string& uri);
-    void clearItems();
-    void hide();
     Evas_Object* createActionBar(Evas_Object* history_layout);
-    void show(Evas_Object *main_layout);
     void addItems();
     boost::signals2::signal<void ()> closeHistoryUIClicked;
-    boost::signals2::signal<void (const std::string&)> clearHistoryClicked;
+    boost::signals2::signal<void ()> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
 private:
+    void clearItems();
     Evas_Object* createHistoryUILayout(Evas_Object* parent);
     Elm_Gengrid_Item_Class* crateItemClass();
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);

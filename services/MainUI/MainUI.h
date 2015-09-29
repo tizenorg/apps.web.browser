@@ -43,7 +43,8 @@ public:
     Evas_Object* getContent();
     void showMostVisited(std::shared_ptr<services::HistoryItemVector> vec);
     void showBookmarks(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > vec);
-    void hide();
+    void hideUI();
+    void showUI();
     virtual std::string getName();
     void openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
     bool isDesktopMode() const;
@@ -52,9 +53,9 @@ public:
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
-    boost::signals2::signal<void (const std::string & )> mostVisitedClicked;
-    boost::signals2::signal<void (const std::string & )> bookmarkClicked;
-    boost::signals2::signal<void (const std::string & )> bookmarkManagerClicked;
+    boost::signals2::signal<void ()> mostVisitedClicked;
+    boost::signals2::signal<void ()> bookmarkClicked;
+    boost::signals2::signal<void ()> bookmarkManagerClicked;
 
     static const int MAX_THUMBNAIL_WIDTH;
     static const int MAX_THUMBNAIL_HEIGHT;
@@ -67,9 +68,9 @@ private:
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
     void clearHistoryGenlist();
     void clearBookmarkGengrid();
+    Evas_Object* createBookmarkGengrid(Evas_Object *parent);
     void showHistory();
     void showBookmarks();
-    void clearItems();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);

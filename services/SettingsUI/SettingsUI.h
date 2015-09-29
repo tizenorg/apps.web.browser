@@ -43,13 +43,11 @@ public:
     virtual std::string getName();
     Evas_Object* createActionBar(Evas_Object* settings_layout);
     Evas_Object* createSettingsPage(Evas_Object* settings_layout);
-    void clearItems();
-    void hide();
 
-    boost::signals2::signal<void (const std::string & )> resetBrowserClicked;
-    boost::signals2::signal<void (const std::string & )> resetMostVisitedClicked;
-    boost::signals2::signal<void (const std::string & )> deleteSelectedDataClicked;
-    boost::signals2::signal<void (const std::string & )> closeSettingsUIClicked;
+    boost::signals2::signal<void ()> resetBrowserClicked;
+    boost::signals2::signal<void ()> resetMostVisitedClicked;
+    boost::signals2::signal<void (std::string&)> deleteSelectedDataClicked;
+    boost::signals2::signal<void ()> closeSettingsUIClicked;
 
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
