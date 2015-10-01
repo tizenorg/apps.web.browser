@@ -115,8 +115,8 @@ void DetailPopup::_url_click(void* data, Evas_Object*, const char*, const char*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
-    dp->hide();
     dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
+    dp->hide();
 }
 
 void DetailPopup::_history_url_click(void* data, Evas_Object*, void* event_info)
@@ -134,8 +134,8 @@ void DetailPopup::_history_url_click(void* data, Evas_Object*, void* event_info)
                            { return i.get() == item; }
                           );
     std::shared_ptr<services::HistoryItem> itemPtr= *it;
-    dp->hide();
     dp->openURLInNewTab(itemPtr, dp->m_mainUI->isDesktopMode());
+    dp->hide();
 }
 
 char* DetailPopup::_get_history_link_text(void* data, Evas_Object*, const char* part)
