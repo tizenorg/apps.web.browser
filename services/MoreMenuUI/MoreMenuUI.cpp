@@ -376,9 +376,6 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = "Start Mini Browser";
                 break;
 #endif
-            case FOCUS_MODE:
-                item_name = "Focus Mode";
-                break;
             case VIEW_MOBILE_WEB:
                 item_name = "View Mobile Web";
                 break;
@@ -426,9 +423,6 @@ static const char* getImageFileNameForType(ItemType type, bool focused)
         file_name = focused ? "ic_more_minibrowser_foc.png" : "ic_more_minibrowser_nor.png";
         break;
 #endif
-    case FOCUS_MODE:
-        file_name = focused ? "ic_more_focusmode_foc.png" : "ic_more_focusmode_nor.png";
-        break;
     case VIEW_MOBILE_WEB:
         file_name = focused ? "ic_more_mobileview_foc.png" : "ic_more_mobileview_nor.png";
         break;
@@ -534,8 +528,6 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             //TODO: Implement minibrowser launching
             break;
 #endif
-        case FOCUS_MODE:
-            break;
         case VIEW_MOBILE_WEB:
             itemData->moreMenuUI->switchToMobileMode();
             itemData->moreMenuUI->m_desktopMode = false;

@@ -54,7 +54,6 @@ public:
     void addAction(sharedAction action);
     void onEnabledChanged(sharedAction action);
     void refreshAction(sharedAction action);
-    void setPointerModeEnabled (bool enabled);
     void showPopup();
     void hidePopup();
     bool isPopupShown();
@@ -76,7 +75,6 @@ private:
     Elm_Object_Item *m_trackedItem;
     Elm_Genlist_Item_Class *m_itemClass;
     bool m_internalPopupVisible;
-    bool m_pointerModeEnabled;
     std::map<Elm_Object_Item*, std::shared_ptr<BookmarksManagerItem>> m_bookmarks_managerItemsMap;
     std::map<sharedAction, Elm_Object_Item*> m_actionButtonMap;
     enum CheckState{

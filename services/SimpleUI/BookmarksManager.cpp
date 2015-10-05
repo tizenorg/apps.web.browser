@@ -64,7 +64,6 @@ BookmarksManager::BookmarksManager(std::shared_ptr< Evas_Object > mainWindow, Ev
     , m_itemClass(nullptr)
     , m_internalPopup(nullptr)
     , m_internalPopupVisible(false)
-    , m_pointerModeEnabled(true)
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("SimpleUI/BookmarksManager.edj");
@@ -342,8 +341,7 @@ void BookmarksManager::showInternalPopup(Elm_Object_Item* listItem)
 
     elm_object_style_set(m_internalPopup, "bookmarks_manager_button");
     evas_object_show(m_internalPopup);
-    if(!m_pointerModeEnabled)
-        elm_object_focus_set(radioOn, EINA_TRUE);
+    elm_object_focus_set(radioOn, EINA_TRUE);
     elm_object_item_signal_emit(m_trackedItem, "selected", "BookmarksManagerModel");
     elm_object_signal_emit(m_genlist, "show_popup", "BookmarksManagerModel");
 }
@@ -388,11 +386,6 @@ void BookmarksManager::unFocusItem(void* /*data*/, Evas_Object* /*obj*/, void* e
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Elm_Object_Item *item = reinterpret_cast<Elm_Object_Item*>(event_info);
     elm_object_item_signal_emit( item, "mouse,out", "option*");
-}
-
-void BookmarksManager::setPointerModeEnabled (bool enabled)
-{
-    m_pointerModeEnabled = enabled;
 }
 
 bool BookmarksManager::canBeDismissed()
