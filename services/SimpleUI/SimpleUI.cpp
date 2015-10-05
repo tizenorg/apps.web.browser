@@ -946,6 +946,10 @@ void SimpleUI::onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr< P
     if (button == OK) {
         BROWSER_LOGD("[%s]: OK", __func__);
         BROWSER_LOGD("[%s]: Deleting most visited", __func__);
+
+        //TODO: display notification popup
+
+        m_historyService->cleanMostVisitedHistoryItems();
     }
 }
 
