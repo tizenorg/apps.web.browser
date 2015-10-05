@@ -36,9 +36,17 @@ namespace base_ui{
         /**
         * @brief Show popup window
         */
-        void show(Evas_Object *parent, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
+        void show(Evas_Object *parent, Evas_Object *main_view, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems);
+
+        /**
+        * @brief Hide popup
+        */
+        void hide();
+
+        bool isVisible() { return m_layout; }
 
         boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
+        boost::signals2::signal<void ()> refreshQuicAccessFocusChain;
 
         static const int HISTORY_ITEMS_NO;
     private:
@@ -51,6 +59,7 @@ namespace base_ui{
         * @brief URL rectangle click callback
         */
         static void _url_click(void *data, Evas_Object *obj, const char *emission, const char *source);
+        static void _url_click_button(void *data, Evas_Object *obj, void *event_info);
 
         /**
          * @brief History genlist item click callback
@@ -58,22 +67,20 @@ namespace base_ui{
         static void _history_url_click(void *data, Evas_Object *o, void *event_info);
 
         /**
-        * @brief Hide popup
-        */
-        void hide();
-
-        /**
          * @brief Create main layout and all compnents.
          */
-        void createLayout(Evas_Object *parent);
+        void createLayout();
 
         /**
         * @brief Provide texts for history genlist
         */
         static char* _get_history_link_text(void *data, Evas_Object *obj, const char *part);
 
+        Evas_Object* m_main_view;
+        Evas_Object* m_parent;
         Evas_Object *m_layout;
         Evas_Object *m_historyList;
+        Evas_Object* m_urlButton;
         Elm_Gengrid_Item_Class * m_history_item_class;
         MainUI *m_mainUI;
         std::string edjFilePath;
