@@ -887,11 +887,6 @@ void SimpleUI::closeBookmarkManagerUI()
     m_viewManager->popTheStack();
 }
 
-void SimpleUI::settingsPointerModeSwitch(bool newState)
-{
-    BROWSER_LOGD("%s: Setting Pointer mode to:%s", __func__, (newState ? "true" : "false"));
-}
-
 void SimpleUI::settingsPrivateModeSwitch(bool newState)
 {
     BROWSER_LOGD("%s: Setting Private mode to: %s", __func__, (newState ? "true" : "false"));

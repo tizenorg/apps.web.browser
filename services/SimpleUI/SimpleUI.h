@@ -200,7 +200,6 @@ private:
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
-    void settingsPointerModeSwitch(bool newState);
     void settingsPrivateModeSwitch(bool newState);
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
