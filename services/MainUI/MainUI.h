@@ -50,6 +50,7 @@ public:
     bool isDesktopMode() const;
     void setDesktopMode(bool mode);
     DetailPopup & getDetailPopup();
+    void backButtonClicked();
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
@@ -71,6 +72,7 @@ private:
     Evas_Object* createBookmarkGengrid(Evas_Object *parent);
     void showHistory();
     void showBookmarks();
+    void refreshFocusChain();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);

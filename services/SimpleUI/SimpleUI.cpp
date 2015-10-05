@@ -243,6 +243,7 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_mainUI.get());
     m_mainUI->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
+    m_mainUI->getDetailPopup().refreshQuicAccessFocusChain.connect(boost::bind(&WebPageUI::showUI, m_webPageUI.get()));
     m_mainUI->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_mainUI->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
     m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
@@ -586,8 +587,12 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
-    if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus && !m_webPageUI->isHomePageActive())
-        m_webEngine->backButtonClicked();
+    if (m_webPageUI->isHomePageActive()) {
+        m_mainUI->backButtonClicked();
+    } else {
+        if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus)
+            m_webEngine->backButtonClicked();
+    }
 }
 
 void SimpleUI::reloadEnable(bool enable)

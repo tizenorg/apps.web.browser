@@ -32,9 +32,12 @@ const char * DetailPopup::URL_SEPARATOR = " - ";
 const int DetailPopup::HISTORY_ITEMS_NO = 5;
 
 DetailPopup::DetailPopup(MainUI *mainUI)
-    : m_layout(nullptr)
+    : m_main_view(nullptr)
+    , m_parent(nullptr)
+    , m_layout(nullptr)
     , m_historyList(nullptr)
     , m_mainUI(mainUI)
+    , m_urlButton(nullptr)
 {
     edjFilePath = EDJE_DIR;
     edjFilePath.append("MainUI/DetailPopup.edj");
@@ -53,16 +56,24 @@ DetailPopup::~DetailPopup()
     elm_genlist_item_class_free(m_history_item_class);
 }
 
-void DetailPopup::createLayout(Evas_Object *parent)
+void DetailPopup::createLayout()
 {
-    m_layout = elm_layout_add(parent);
+    m_layout = elm_layout_add(m_parent);
     elm_layout_file_set(m_layout, edjFilePath.c_str(), "popup");
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     // TODO: add following (or simillar) callback for hardware back button when it will be available
     //evas_object_event_callback_add(m_layout, EVAS_CALLBACK_KEY_DOWN, _back, this);
     edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "bg", _bg_click, this);
-    edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "url_over", _url_click, this);
+    m_urlButton = elm_button_add(m_layout);     // add button to receive focus
+    elm_object_style_set(m_urlButton, "invisible_button");
+    evas_object_smart_callback_add(m_urlButton, "clicked", _url_click_button, this);
+    evas_object_show(m_urlButton);
+    elm_layout_content_set(m_layout, "url_over", m_urlButton);
+    elm_object_focus_custom_chain_unset(m_main_view);
+    elm_object_focus_custom_chain_append(m_main_view, m_urlButton, NULL);
+    elm_object_focus_set(m_urlButton, EINA_TRUE);
+
     edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click, this);
     elm_layout_text_set(m_layout, "history_title", "History");
     elm_layout_text_set(m_layout, "url", tools::clearURL(m_item->getUrl()));
@@ -70,9 +81,10 @@ void DetailPopup::createLayout(Evas_Object *parent)
     m_historyList = elm_genlist_add(m_layout);
     evas_object_size_hint_weight_set(m_historyList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_historyList, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_smart_callback_add(m_historyList, "pressed", _history_url_click, this);
+    elm_genlist_select_mode_set(m_historyList, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_object_focus_custom_chain_append(m_main_view, m_historyList, NULL);
     for (auto it = m_prevItems->begin(); it != m_prevItems->end(); ++it) {
-        elm_genlist_item_append(m_historyList, m_history_item_class, it->get(), nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+        elm_genlist_item_append(m_historyList, m_history_item_class, it->get(), nullptr, ELM_GENLIST_ITEM_NONE, _history_url_click, this);
     }
     evas_object_show(m_historyList);
     elm_object_part_content_set(m_layout, "history_list", m_historyList);
@@ -85,23 +97,26 @@ void DetailPopup::createLayout(Evas_Object *parent)
     evas_object_show(m_layout);
 }
 
-void DetailPopup::show(Evas_Object *parent, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
+void DetailPopup::show(Evas_Object *parent, Evas_Object *main_view, std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_main_view = main_view;
+    m_parent = parent;
     m_item = currItem;
     m_prevItems = prevItems;
-    createLayout(parent);
+    createLayout();
 }
 
 void DetailPopup::hide()
 {
     edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "bg", _bg_click);
-    edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "url_over", _url_click);
+    elm_object_focus_custom_chain_unset(m_main_view);
+    evas_object_smart_callback_del(m_urlButton, "clicked", _url_click_button);
     edje_object_signal_callback_del(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click);
-    evas_object_smart_callback_del(m_historyList, "pressed", _history_url_click);
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
     evas_object_del(m_layout);
+    refreshQuicAccessFocusChain();
 }
 
 void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
@@ -112,6 +127,14 @@ void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
 }
 
 void DetailPopup::_url_click(void* data, Evas_Object*, const char*, const char*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
+    dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
+    dp->hide();
+}
+
+void DetailPopup::_url_click_button(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);

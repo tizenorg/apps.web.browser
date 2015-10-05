@@ -141,7 +141,7 @@ collections {
             }
 
             part { name: "url_over";
-                type: RECT;
+                type: SWALLOW;
                 mouse_events: 1;
                 repeat_events: 1;
                 description { state: "default" 0.0;
@@ -235,6 +235,14 @@ collections {
                 action: STATE_SET "default" 0.0;
                 target: "url_bg";
                 target: "url";
+            }
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "url_over";
+                script {
+                    emit("elm,action,click", "");
+                }
             }
         }
     }

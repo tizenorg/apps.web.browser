@@ -101,9 +101,6 @@ void MainUI::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
 {
     addHistoryItems(vec);
     showHistory();
-    // update focus chain
-    elm_object_focus_custom_chain_append(m_parent, m_mostVisitedButton, NULL);
-    elm_object_focus_custom_chain_append(m_parent, m_bookmarksButton, NULL);
 }
 
 void MainUI::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
@@ -292,7 +289,6 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(hi->getThumbnail(), m_parent);
     elm_object_part_content_set(tile, "elm.thumbnail", thumb);
     evas_object_smart_callback_add(tile, "clicked", _thumbClicked, itemData);
-    elm_object_focus_custom_chain_append(m_parent, tile, NULL);
 
     m_historyItems.push_back(hi);
 }
@@ -450,6 +446,7 @@ void MainUI::showUI()
     } else {
         evas_object_show(m_mostVisitedView);
     }
+    refreshFocusChain();
 }
 
 void MainUI::hideUI()
@@ -464,7 +461,7 @@ void MainUI::hideUI()
 
 void MainUI::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
 {
-    m_detailPopup.show(m_layout, currItem, prevItems);
+    m_detailPopup.show(m_layout, m_parent, currItem, prevItems);
 }
 
 void MainUI::showNoHistoryLabel()
@@ -496,6 +493,22 @@ void MainUI::setDesktopMode(bool mode)
 DetailPopup& MainUI::getDetailPopup()
 {
     return m_detailPopup;
+}
+
+void MainUI::backButtonClicked()
+{
+    if (m_detailPopup.isVisible()) {
+        m_detailPopup.hide();
+    }
+}
+
+void MainUI::refreshFocusChain()
+{
+    elm_object_focus_custom_chain_append(m_parent, m_mostVisitedButton, NULL);
+    elm_object_focus_custom_chain_append(m_parent, m_bookmarksButton, NULL);
+    for (auto tile = m_tiles.begin(); tile != m_tiles.end(); ++tile) {
+            elm_object_focus_custom_chain_append(m_parent, *tile, NULL);
+    }
 }
 
 }
