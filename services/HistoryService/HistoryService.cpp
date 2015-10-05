@@ -159,19 +159,20 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
     int *ids=nullptr;
     int count=-1;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
+    conds.limit = 5;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
-    conds.order_offset =BP_HISTORY_O_DATE_CREATED; // property to sort
+    conds.order_offset = BP_HISTORY_O_FREQUENCY; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
-    conds.period_type = BP_HISTORY_DATE_TODAY;
+    //TODO: consider to change below line to BP_HISTORY_DATE_LAST_MONTH
+    conds.period_type = BP_HISTORY_DATE_ALL; // set from which period most visited sites are generated
 
     int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
     if (ret<0){
         BROWSER_LOGD("Error! Could not get ids!");
     }
 
-    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED | BP_HISTORY_O_THUMBNAIL);
+    bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FREQUENCY | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED | BP_HISTORY_O_THUMBNAIL);
 
     int freq_arr[1000];
     for(int i = 0; i< count; i++){
@@ -213,7 +214,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         history->setUrl(std::string(history_info.url ? history_info.url : ""));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
-        //thumbail
+        //thumbnail
         if (history_info.thumbnail_length != -1) {
             std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
             hi->imageType = tools::BrowserImage::ImageTypePNG;
@@ -226,11 +227,38 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         } else {
             BROWSER_LOGD("history thumbnail lenght is -1");
         }
-
-        ret_history_list->push_back(history);
+        if(history_info.frequency > 0)
+            ret_history_list->push_back(history);
     }
+
     free(ids);
     return ret_history_list;
+}
+
+void HistoryService::cleanMostVisitedHistoryItems()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    int *ids=nullptr;
+    int count=-1;
+    bp_history_rows_cond_fmt conds;
+    conds.limit = -1;  // no of rows to get negative means no limitation
+    conds.offset = -1;   // the first row's index
+    conds.order_offset = BP_HISTORY_O_ALL; // property to sort
+    conds.ordering = 1; // way of ordering 0 asc 1 desc
+    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
+    conds.period_type = BP_HISTORY_DATE_ALL; // set from which period most visited sites are generated
+
+    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
+    if (ret<0){
+        BROWSER_LOGD("Error! Could not get ids!");
+        return;
+    }
+
+    for(int i = 0; i < count; i++){
+            bp_history_adaptor_set_frequency(ids[i], 0);
+    }
+    BROWSER_LOGD("Deleted Most Visited Sites!");
 }
 
 std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(const std::string& url, int maxItems)
