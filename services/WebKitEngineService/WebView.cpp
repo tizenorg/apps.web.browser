@@ -612,10 +612,6 @@ void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * event_in
 
     WebView * self = reinterpret_cast<WebView *>(data);
     BROWSER_LOGD("URL changed for tab: %s", self->getTabId().toString().c_str());
-    std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>> m_webEngine;
-    m_webEngine = std::dynamic_pointer_cast<basic_webengine::AbstractWebEngine<Evas_Object>, tizen_browser::core::AbstractService>(
-            tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
-    M_ASSERT(m_webEngine);
     self->uriChanged(self->getURI());
     self->tabIdChecker(self->m_tabId);
 }
