@@ -609,6 +609,23 @@ RESOURCE_IMAGE_LOSSY("ico_url.png")
     }
 
     group{
+        name: "elm/button/base/dimmed_button";
+        mouse_events: 0;
+        parts{
+            part{
+                name: "button";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 255 255 255 50%;
+                }
+            }
+        }
+    }
+
+    group{
         name: "elm/button/base/hidden_button";
         parts{
             part{

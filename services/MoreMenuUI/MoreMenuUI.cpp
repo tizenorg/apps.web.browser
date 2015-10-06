@@ -255,15 +255,17 @@ void MoreMenuUI::changeBookmarkStatus(bool data)
     }
     else {
         m_isBookmark = EINA_FALSE;
-        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to Bookmark");
+        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to bookmarks");
         elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark_new.png");
     }
 }
 
 void MoreMenuUI::enableAddToBookmarkButton(bool data)
 {
-    if(m_bookmarkButton)
+    if (m_bookmarkButton) {
         elm_object_disabled_set(m_bookmarkButton, data ? EINA_FALSE : EINA_TRUE);
+        elm_object_style_set(m_bookmarkButton, data ? "hidden_button" : "dimmed_button");
+    }
 }
 
 void MoreMenuUI::createToastPopup(const char* text)
