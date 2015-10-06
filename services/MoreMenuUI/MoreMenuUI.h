@@ -29,6 +29,7 @@
 
 #include "BookmarkItem.h"
 #include "services/HistoryService/HistoryItem.h"
+#include "FocusManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -98,6 +99,7 @@ private:
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _exitClicked();
+    void createFocusVector();
 
     void setDocIcon();
 
@@ -122,6 +124,7 @@ private:
     bool m_gengridSetup;
     bool m_desktopMode;
     Eina_Bool m_isBookmark;
+    FocusManager m_focusManager;
 };
 
 }

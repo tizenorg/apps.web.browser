@@ -38,6 +38,7 @@ set(browserCore_SRCS
     Tools/BookmarkItem.cpp
     Tools/FeedItem.cpp
     Tools/FeedChannel.cpp
+    Tools/FocusManager.cpp
     BrowserConstants.cpp
     )
 
@@ -75,6 +76,7 @@ set(browserCore_HDRS
     Tools/GeneralTools.h
     Tools/FeedItem.h
     Tools/FeedChannel.h
+    Tools/FocusManager.h
     )
 
 if(TIZEN_BUILD)

@@ -98,6 +98,7 @@ void MoreMenuUI::showUI()
     addItems();
     evas_object_show(m_mm_layout);
     evas_object_show(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
+    m_focusManager.startFocusManager(m_gengrid);
     evas_object_show(m_gengrid);
     setFocus(EINA_TRUE);
 }
@@ -111,6 +112,7 @@ void MoreMenuUI::hideUI()
     evas_object_hide(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
     clearItems();
     evas_object_del(m_gengrid);
+    m_focusManager.stopFocusManager();
 }
 
 
@@ -148,6 +150,7 @@ void MoreMenuUI::createGengrid()
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
+    evas_object_show(m_gengrid);
 }
 
 void MoreMenuUI::showCurrentTab()
@@ -167,11 +170,13 @@ void MoreMenuUI::showCurrentTab()
 
     m_bookmarkButton = elm_button_add(m_mm_layout);
     elm_object_style_set(m_bookmarkButton, "hidden_button");
+    evas_object_show(m_bookmarkButton);
     evas_object_smart_callback_add(m_bookmarkButton, "clicked", _star_clicked, this);
 
     m_bookmarkIcon = elm_icon_add(m_mm_layout);
     elm_object_part_content_set(m_current_tab_bar, "bookmark_ico", m_bookmarkIcon);
     elm_object_part_content_set(m_current_tab_bar, "star_click", m_bookmarkButton);
+    createFocusVector();
 }
 
 void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
@@ -564,6 +569,15 @@ void MoreMenuUI::setFocus(Eina_Bool focusable)
     elm_object_tree_focus_allow_set(getContent(), focusable);
     if (focusable == EINA_TRUE)
         elm_object_focus_set(elm_object_part_content_get(m_current_tab_bar, "close_click"), focusable);
+}
+
+void MoreMenuUI::createFocusVector()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    m_focusManager.addItem(elm_object_part_content_get(m_current_tab_bar, "close_click"));
+    m_focusManager.addItem(m_bookmarkButton);
+    m_focusManager.addItem(m_gengrid);
+    m_focusManager.setIterator();
 }
 
 }
