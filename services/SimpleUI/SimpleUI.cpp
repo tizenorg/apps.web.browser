@@ -970,6 +970,20 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
     if (button == OK) {
         BROWSER_LOGD("[%s]: OK", __func__);
         BROWSER_LOGD("[%s]: Resetting browser", __func__);
+
+        m_webEngine->clearPrivateData();
+        m_historyService->clearAllHistory();
+        m_favoriteService->deleteAllBookmarks();
+
+        // Close all openend tabs
+        std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>> openedTabs = m_webEngine->getTabContents();
+        for (auto it = openedTabs.begin(); it < openedTabs.end(); ++it) {
+            tizen_browser::basic_webengine::TabId id = it->get()->getId();
+            m_currentSession.removeItem(id.toString());
+            m_webEngine->closeTab(id);
+        }
+
+        //TODO: add here any missing functionality that should be cleaned.
     }
 }
 
