@@ -1208,17 +1208,19 @@ group { name: "action_bar_layout";
                 target: "close_bg";
                 target: "close_icon";
             }
-	}
-    }           
+        }
+    }
 }
 
+// TODO onotherdevices button is excluded from phase 1. Uncomment it
+// when it will be needed (text, content, align, offset, signals, etc.).
 group { name: "top_buttons_layout";
         min: 1920 181;
         max: 1920 181;
-        data.item: "texts" "openedtabs_button_text onotherdevices_button_text";
-        data.item: "contents" "openedtabs_click onotherdevices_click";
+        data.item: "texts" "openedtabs_button_text /*onotherdevices_button_text*/";
+        data.item: "contents" "openedtabs_click /*onotherdevices_click*/";
         parts{
-	    part {
+            part {
                 name: "bg_clipper";
                 scale:1;
                 mouse_events: 1;
@@ -1241,14 +1243,14 @@ group { name: "top_buttons_layout";
                 description {
                     state: "default" 0.0;
                     color: 192 192 192 255;
-                    align: 0 0;
+                    align: 0.5 0.5 /*0 0*/;
                     min: 348 65;
                     max: 348 65;
-                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 611 67;}
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 0 67 /*611 67*/;}
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
             }
-	    part {
+            part {
                 name: "openedtabs_button";
                 scale:1;
                 mouse_events: 1;
@@ -1289,7 +1291,7 @@ group { name: "top_buttons_layout";
                     color: 0 0 0 0;
                 }
             }
-	    part{
+            part{
                 name: "openedtabs_text";
                 type: TEXT;
                 scale: 1;
@@ -1321,7 +1323,7 @@ group { name: "top_buttons_layout";
                     rel2 { relative: 1.0 1.0; to: "openedtabs_button";}
                 }
             }
-	    part {
+/*            part {
                 name: "onotherdevices_button_bg";
                 scale:1;
                 mouse_events: 1;
@@ -1336,7 +1338,7 @@ group { name: "top_buttons_layout";
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
             }
-	    part {
+            part {
                 name: "onotherdevices_button";
                 scale:1;
                 mouse_events: 1;
@@ -1377,7 +1379,7 @@ group { name: "top_buttons_layout";
                     color: 0 0 0 0;
                 }
             }
-	    part{
+            part{
                 name: "onotherdevices_text";
                 type: TEXT;
                 scale: 1;
@@ -1409,10 +1411,10 @@ group { name: "top_buttons_layout";
                     rel2 { relative: 1.0 1.0; to: "onotherdevices_button";}
                 }
             }
-        }
+        }*/
         programs{
 
-	   program {
+           program {
                 name: "mouse_click_openedtabs";
                 signal: "mouse,clicked,1";
                 source: "openedtabs_over";
@@ -1439,7 +1441,7 @@ group { name: "top_buttons_layout";
                 target: "openedtabs_text";
             }
 
-	   program {
+/*          program {
                 name: "mouse_click_onotherdevices";
                 signal: "mouse,clicked,1";
                 source: "onotherdevices_over";
@@ -1464,7 +1466,7 @@ group { name: "top_buttons_layout";
                 target: "onotherdevices_button";
                 target: "onotherdevices_over";
                 target: "onotherdevices_text";
-            }
-	}
+            }*/
+        }
     }
 }
