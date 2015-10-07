@@ -26,6 +26,7 @@
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
+#include "FocusManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -73,8 +74,10 @@ private:
 
     static void close_clicked_cb(void *data, Evas_Object *, void *);
 
+    void createFocusVector();
+
 private:
-    Evas_Object *m_genList;
+    Evas_Object *m_topContent;
     Evas_Object *b_mm_layout;
     Elm_Genlist_Item_Class *m_itemClass;
     Evas_Object *m_gengrid;
@@ -83,6 +86,7 @@ private:
     std::map<std::string,Elm_Object_Item*> m_map_bookmark;
     std::string edjFilePath;
     bool m_gengridSetup;
+    FocusManager m_focusManager;
 };
 
 }

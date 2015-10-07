@@ -44,8 +44,7 @@ typedef struct
 } BookmarkItemData;
 
 BookmarkManagerUI::BookmarkManagerUI()
-    : m_genList(nullptr)
-    , b_mm_layout(nullptr)
+    : b_mm_layout(nullptr)
     , m_itemClass(nullptr)
     , m_gengrid(nullptr)
     , m_parent(nullptr)
@@ -85,7 +84,8 @@ void BookmarkManagerUI::init(Evas_Object* parent)
 
 void BookmarkManagerUI::showUI()
 {
-   evas_object_show(b_mm_layout);
+    evas_object_show(b_mm_layout);
+    m_focusManager.startFocusManager(m_gengrid);
 }
 
 void BookmarkManagerUI::hideUI()
@@ -93,6 +93,7 @@ void BookmarkManagerUI::hideUI()
     evas_object_hide(b_mm_layout);
     elm_gengrid_clear(m_gengrid);
     m_map_bookmark.clear();
+    m_focusManager.stopFocusManager();
 }
 
 Evas_Object* BookmarkManagerUI::getContent()
@@ -115,6 +116,7 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
 
     createGenGrid();
     showTopContent();
+    createFocusVector();
     return b_mm_layout;
 }
 
@@ -140,56 +142,27 @@ void BookmarkManagerUI::createGenGrid()
 void BookmarkManagerUI::showTopContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(b_mm_layout);
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
-    m_genList = elm_genlist_add(b_mm_layout);
-    elm_object_part_content_set(b_mm_layout, "elm.swallow.genlist", m_genList);
-    elm_genlist_homogeneous_set(m_genList, EINA_FALSE);
-    elm_genlist_multi_select_set(m_genList, EINA_FALSE);
-    elm_genlist_select_mode_set(m_genList, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genList, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genList, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_genList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    m_itemClass = elm_genlist_item_class_new();
-    m_itemClass->item_style = "topContent";
-    m_itemClass->func.text_get = &listItemTextGet;
-    m_itemClass->func.content_get = &listItemContentGet;
-    m_itemClass->func.state_get = 0;
-    m_itemClass->func.del = 0;
+    m_topContent = elm_layout_add(b_mm_layout);
+    elm_object_part_content_set(b_mm_layout, "top_content", m_topContent);
+    evas_object_size_hint_weight_set(m_topContent, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_topContent, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_topContent);
 
-    ItemData * id = new ItemData;
-    id->m_bookmarkManager = this;
-    Elm_Object_Item* elmItem = elm_genlist_item_append(m_genList,            //genlist
-                                                      m_itemClass,           //item Class
-                                                      id,
-                                                      nullptr,               //parent item
-                                                      ELM_GENLIST_ITEM_NONE, //item type
-                                                      nullptr,
-                                                      nullptr                //data passed to above function
-                                                     );
+    elm_layout_file_set(m_topContent, edjFilePath.c_str(), "topContent");
 
-    id->e_item = elmItem;
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-}
+    Evas_Object* close_button = elm_button_add(m_topContent);
+    elm_object_style_set(close_button, "hidden_button");
+    evas_object_smart_callback_add(close_button, "clicked", close_clicked_cb, this);
+    elm_object_part_content_set(m_topContent, "close_click", close_button);
 
-Evas_Object* BookmarkManagerUI::listItemContentGet(void* data, Evas_Object* obj, const char* part)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if ((data != nullptr) && (obj != nullptr) && (part != nullptr))
-    {
-        const char *part_name = "close_click";
-        static const int part_name_len = strlen(part_name);
-        ItemData * id = static_cast<ItemData *>(data);
-
-        if(!strncmp(part_name, part, part_name_len))
-        {
-            Evas_Object *close_click = elm_button_add(obj);
-            elm_object_style_set(close_click, "hidden_button");
-            evas_object_smart_callback_add(close_click, "clicked", BookmarkManagerUI::close_clicked_cb, id);
-            return close_click;
-        }
-    }
-    return nullptr;
+    evas_object_show(close_button);
+    elm_object_focus_custom_chain_append(m_topContent, close_button, nullptr);
+    elm_object_focus_set(close_button, EINA_TRUE);
+    elm_object_tree_focus_allow_set(b_mm_layout, EINA_TRUE);
+    elm_object_focus_allow_set(close_button, EINA_TRUE);
 }
 
 void BookmarkManagerUI::close_clicked_cb(void* data, Evas_Object*, void*)
@@ -197,20 +170,9 @@ void BookmarkManagerUI::close_clicked_cb(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr)
     {
-        ItemData * id = static_cast<ItemData *>(data);
-        id->m_bookmarkManager->closeBookmarkManagerClicked();
+        BookmarkManagerUI* id = static_cast<BookmarkManagerUI*>(data);
+        id->closeBookmarkManagerClicked();
     }
-}
-
-char* BookmarkManagerUI::listItemTextGet(void* data, Evas_Object*, const char* part)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    return strdup("Bookmark");
-}
-
-Evas_Object * BookmarkManagerUI::getGenList()
-{
-    return m_genList;
 }
 
 Evas_Object * BookmarkManagerUI::getGenGrid()
@@ -329,6 +291,14 @@ void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void * 
         BROWSER_LOGD("Bookmark URL: %s" , itemData->item->getAddress().c_str());
         itemData->bookmarkManagerUI->bookmarkItemClicked(itemData->item);
     }
+}
+
+void BookmarkManagerUI::createFocusVector()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    m_focusManager.addItem(elm_object_part_content_get(m_topContent, "close_click"));
+    m_focusManager.addItem(m_gengrid);
+    m_focusManager.setIterator();
 }
 
 }
