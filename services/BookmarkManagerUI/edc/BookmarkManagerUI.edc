@@ -24,7 +24,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
 
 
     group {
-        name: "elm/genlist/item/topContent/default";
+        name: "topContent";
         min: WIDTH HEIGHT;
         max: WIDTH HEIGHT;
         images {
@@ -85,7 +85,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    color: 255 255 255 255;
+                    color: 231 231 231 255;
                     align: 0 0;
                     min: 1920 285;
                     max: 1920 285;
@@ -116,8 +116,8 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
                     visible: 1;
                     align: 0.0 0.0;
                     fixed: 0 0;
-                    min: 1920 5;
-                    max: 1920 5;
+                    min: 1920 14;
+                    max: 1920 14;
                     image.normal: "web_shadow.png";
                     rel1 { relative: 0.0 1.0; to: "action_bar_bg"; }
                     rel2 { relative: 1.0 1.0; }
@@ -132,7 +132,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
                   fixed: 1 1;
                   rel1 { relative: 0.0 0.0;to: "action_bar_bg";}
                   rel2 { relative: 1.0 1.0;to: "action_bar_bg";}
-                  color: 116 116 116 255;
+                  color: 51 51 51 255;
                   text {
                       text: "Bookmark Manager";
                       font: "Sans";
@@ -153,7 +153,7 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
                   align: 0 0.5;
                   min: 82 102;
                   max: 82 102;
-                  rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 1828 0;}
+                  rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 1758 0;}
                   rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
                   color_class: transparent;
               }
@@ -265,9 +265,9 @@ RESOURCE_IMAGE_LOSSY("ic_more_exit_nor.png")
                   fixed: 1 1;
                   rel1 { relative: 0.0 0.0;to: "bookmark_group_bg"; offset : 62 104; }
                   rel2 { relative: 1.0 1.0;to: "bookmark_group_bg";}
-                  color: 116 116 116 255;
+                  color: 74 74 74 255;
                   text {
-                      text: "Bookmark";
+                      text: "Bookmarks";
                       font: "Sans";
                       size: 34;
                       align: 0.0 0.0;
@@ -369,6 +369,7 @@ group {
 				visible: 1;
 				min: 1920 1080;
 		        max: 1920 1080;
+		        color: 231 231 231 255;
                     rel1 {
                        relative: 0 0;
                     }
@@ -394,7 +395,7 @@ group {
                     }
                 }
             }
-            part { name: "elm.swallow.genlist";
+            part { name: "top_content";
                 type : SWALLOW;
                 scale: 1;
                 description {
@@ -426,7 +427,7 @@ group {
 				align: 0.0 0.0;
 				min: 1920 614;
 				max: 1920 614;
-                color: 255 255 255 255;
+                color: 231 231 231 255;
                 rel1 {
                        relative: 0 1; to: "genlist_bg";
                     }
@@ -459,48 +460,6 @@ group {
                     visible: 1;
                 }
            }
-
-           part { name: "genlist2_bg";
-                type: RECT;
-                mouse_events: 0;
-                description { state: "default" 0.0;
-				visible: 1;
-				align: 0.0 0.0;
-				min: 1920 181;
-				max: 1920 181;
-                color: 255 255 255 255;
-                rel1 {
-                       relative: 0 1; to: "gengrid_bg";
-                    }
-                rel2{
-                       relative: 1 1;
-                    }
-                }
-            }
-            part { name: "elm.swallow.genlist2";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    min: 1920 149;
-                    max: 1920 149;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "genlist2_bg"; offset: 0 32;}
-                    rel2 { relative: 1.0 1.0; to: "genlist2_bg";}
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-             }
             part { name: "elm.swallow.empty";
                 type: SWALLOW;
                 description { state: "default" 0.0;
@@ -539,7 +498,7 @@ group { name: "elm/gengrid/base/back_ground";
                 type: RECT;
                 mouse_events: 0;
                 description { state: "default" 0.0;
-                    color: 255 255 255 255;
+                    color: 231 231 231 255;
                     rel1 {
                         relative: 0 0;
                     }
@@ -784,7 +743,7 @@ group { name: "elm/gengrid/item/grid_ds_item/default";
                 min: 378 294;
                             max: 378 294;
                 visible: 1;
-                color: 231 231 231 255;
+                color: 255 255 255 255;
                 rel1.offset: -26 -26;
             }
             description { state: "selected";
@@ -798,7 +757,7 @@ group { name: "elm/gengrid/item/grid_ds_item/default";
             description { state: "default" 0.0;
                 fixed: 1 0;
                 align: 0.0 0.0;
-                color : 231 231 231 255;
+                color : 255 255 255 255;
                 min: 378 198;
                 max: 378 198;
                 rel1 {
@@ -842,7 +801,7 @@ group { name: "elm/gengrid/item/grid_ds_item/default";
                 min: 378 96;
                 max: 378 96;
                 align: 0.0 0.0;
-                color: 231 231 231 255;
+                color: 255 255 255 255;
                 rel1 {
                     to: "elm.thumbnail";
                     relative: 0.0  1.0;
