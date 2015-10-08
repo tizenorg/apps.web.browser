@@ -243,7 +243,6 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_mainUI.get());
     m_mainUI->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
-    m_mainUI->getDetailPopup().refreshQuicAccessFocusChain.connect(boost::bind(&WebPageUI::showUI, m_webPageUI.get()));
     m_mainUI->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_mainUI->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
     m_mainUI->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
@@ -414,12 +413,7 @@ void SimpleUI::connectActions()
 void SimpleUI::switchViewToWebPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_mainUI.get());
     M_ASSERT(m_viewManager);
-
-    if(m_webPageUI->isHomePageActive())
-        m_mainUI->hideUI();
-
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI());
 }
 
@@ -455,10 +449,10 @@ void SimpleUI::switchViewToQuickAccess()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    m_viewManager->popStackTo(m_webPageUI.get());
 
     m_webPageUI->switchViewToQuickAccess(m_mainUI->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
+    m_viewManager->popStackTo(m_webPageUI.get());
 }
 
 void SimpleUI::checkTabId(const tizen_browser::basic_webengine::TabId& id){

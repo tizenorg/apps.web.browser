@@ -77,6 +77,7 @@ private:
     void setMainContent(Evas_Object* content);
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
+    void refreshFocusChain();
 
     // wrappers to call singal as a reaction to other signal
     void backPageConnect() { backPage(); }

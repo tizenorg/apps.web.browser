@@ -37,6 +37,9 @@ const int MainUI::MAX_TILES_NUMBER = 5;
 const int MainUI::MAX_THUMBNAIL_WIDTH = 840;
 const int MainUI::MAX_THUMBNAIL_HEIGHT = 648;
 const int MainUI::BIG_TILE_INDEX = 0;
+const int MainUI::TOP_RIGHT_TILE_INDEX = 3;
+const int MainUI::BOTTOM_RIGHT_TILE_INDEX = 4;
+
 const std::vector<std::string> MainUI::TILES_NAMES = {
     "elm.swallow.big",
     "elm.swallow.small_first",
@@ -65,6 +68,8 @@ MainUI::MainUI()
     , m_bookmarksButton(nullptr)
     , m_mostVisitedButton(nullptr)
     , m_bookmarkGengrid(nullptr)
+    , m_bookmarkManagerButton(nullptr)
+    , m_parentFocusChain(nullptr)
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
 {
@@ -79,6 +84,7 @@ MainUI::~MainUI()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_gengrid_item_class_free(m_bookmark_item_class);
+    eina_list_free(m_parentFocusChain);
 }
 
 void MainUI::init(Evas_Object* parent)
@@ -232,12 +238,12 @@ Evas_Object* MainUI::createBottomButton(Evas_Object *parent)
     evas_object_size_hint_align_set(layoutBottom, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(layoutBottom);
 
-    Evas_Object * bookmark_manager_button = elm_button_add(layoutBottom);
-    elm_object_style_set(bookmark_manager_button, "invisible_button");
-    evas_object_smart_callback_add(bookmark_manager_button, "clicked", _bookmark_manager_clicked, this);
-    evas_object_show(bookmark_manager_button);
+    m_bookmarkManagerButton = elm_button_add(layoutBottom);
+    elm_object_style_set(m_bookmarkManagerButton, "invisible_button");
+    evas_object_smart_callback_add(m_bookmarkManagerButton, "clicked", _bookmark_manager_clicked, this);
+    evas_object_show(m_bookmarkManagerButton);
 
-    elm_object_part_content_set(layoutBottom, "bookmarkmanager_click", bookmark_manager_button);
+    elm_object_part_content_set(layoutBottom, "bookmarkmanager_click", m_bookmarkManagerButton);
 
     return layoutBottom;
 }
@@ -313,12 +319,8 @@ void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkIt
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = bi;
-        itemData->mainUI = std::shared_ptr<tizen_browser::base_ui::MainUI>(this);
-        Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_bookmarkGengrid, m_bookmark_item_class, itemData, nullptr, this);
-    m_map_bookmark_views.insert(std::pair<std::string,Elm_Object_Item*>(bi->getAddress(),bookmarkView));
-
-    // unselect by default
-    elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
+    itemData->mainUI = std::shared_ptr<tizen_browser::base_ui::MainUI>(this);
+    elm_gengrid_item_append(m_bookmarkGengrid, m_bookmark_item_class, itemData, _thumbBookmarkClicked, itemData);
 }
 
 void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
@@ -342,7 +344,7 @@ char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *par
         return strdup("");
 }
 
-Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part)
+Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object*, const char *part)
 {
     BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
     BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
@@ -356,12 +358,7 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object *obj, c
                 return nullptr;
         }
     }
-    else if (!strcmp(part, "elm.thumbButton")) {
-                Evas_Object *thumbButton = elm_button_add(obj);
-                elm_object_style_set(thumbButton, "thumbButton");
-                evas_object_smart_callback_add(thumbButton, "clicked", _thumbBookmarkClicked, data);
-                return thumbButton;
-    }
+
     return nullptr;
 }
 
@@ -399,12 +396,10 @@ void MainUI::showHistory()
     if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_mostVisitedView)
         return;
 
-    elm_layout_content_unset(m_layout, "elm.swallow.content");
     evas_object_hide(m_bookmarksView);
     elm_layout_content_set(m_layout, "elm.swallow.content", m_mostVisitedView);
     evas_object_show(m_mostVisitedView);
 
-    elm_object_focus_set(m_mostVisitedButton, true);
 
     if (m_historyItems.empty()) {
         setEmptyView(true);
@@ -412,13 +407,14 @@ void MainUI::showHistory()
     }
     setEmptyView(false);
     evas_object_show(m_layout);
+    refreshFocusChain();
+    elm_object_focus_set(m_mostVisitedButton, true);
 }
 
 void MainUI::clearBookmarkGengrid()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_gengrid_clear(m_bookmarkGengrid);
-    m_map_bookmark_views.clear();
 }
 
 void MainUI::showBookmarks()
@@ -428,13 +424,13 @@ void MainUI::showBookmarks()
     if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView && m_bookmarksView != nullptr)
         return;
 
-    elm_layout_content_unset(m_layout, "elm.swallow.content");
     evas_object_hide(m_mostVisitedView);
     elm_layout_content_set(m_layout, "elm.swallow.content", m_bookmarksView);
     evas_object_show(m_bookmarksView);
 
-    elm_object_focus_set(m_bookmarksButton, true);
     evas_object_show(m_layout);
+    refreshFocusChain();
+    elm_object_focus_set(m_bookmarksButton, true);
 }
 
 void MainUI::showUI()
@@ -446,7 +442,6 @@ void MainUI::showUI()
     } else {
         evas_object_show(m_mostVisitedView);
     }
-    refreshFocusChain();
 }
 
 void MainUI::hideUI()
@@ -502,12 +497,38 @@ void MainUI::backButtonClicked()
     }
 }
 
+bool MainUI::isMostVisitedActive() const
+{
+    return evas_object_visible_get(m_mostVisitedView);
+}
+
 void MainUI::refreshFocusChain()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (!m_parentFocusChain) {
+        m_parentFocusChain = eina_list_clone(elm_object_focus_custom_chain_get(m_parent));
+    } else {
+        elm_object_focus_custom_chain_unset(m_parent);
+        elm_object_focus_custom_chain_set(m_parent, eina_list_clone(m_parentFocusChain));
+    }
+
     elm_object_focus_custom_chain_append(m_parent, m_mostVisitedButton, NULL);
     elm_object_focus_custom_chain_append(m_parent, m_bookmarksButton, NULL);
-    for (auto tile = m_tiles.begin(); tile != m_tiles.end(); ++tile) {
-            elm_object_focus_custom_chain_append(m_parent, *tile, NULL);
+    if (isMostVisitedActive()) {
+        for (auto tile = m_tiles.begin(); tile != m_tiles.end(); ++tile) {
+                elm_object_focus_custom_chain_append(m_parent, *tile, NULL);
+        }
+        // prevent from moving outside of screen
+        elm_object_focus_next_object_set(m_tiles[BIG_TILE_INDEX], m_tiles[BIG_TILE_INDEX], ELM_FOCUS_LEFT);
+        elm_object_focus_next_object_set(m_tiles[TOP_RIGHT_TILE_INDEX], m_tiles[TOP_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
+        elm_object_focus_next_object_set(m_tiles[BOTTOM_RIGHT_TILE_INDEX], m_tiles[BOTTOM_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
+    } else {
+        elm_object_focus_custom_chain_append(m_parent, m_bookmarkGengrid, NULL);
+        elm_object_focus_custom_chain_append(m_parent, m_bookmarkManagerButton, NULL);
+        // prevent from moving outside of screen
+        elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_LEFT);
+        elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_RIGHT);
     }
 }
 

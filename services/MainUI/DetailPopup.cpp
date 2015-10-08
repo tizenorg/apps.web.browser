@@ -116,7 +116,7 @@ void DetailPopup::hide()
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
     evas_object_del(m_layout);
-    refreshQuicAccessFocusChain();
+    m_mainUI->refreshFocusChain();
 }
 
 void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
