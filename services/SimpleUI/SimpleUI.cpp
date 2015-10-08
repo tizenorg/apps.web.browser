@@ -46,6 +46,7 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "SqlStorage.h"
 #include "DetailPopup.h"
+#include "NotificationPopup.h"
 
 
 namespace tizen_browser{
@@ -939,24 +940,16 @@ void SimpleUI::settingsPrivateModeSwitch(bool newState)
 
 void SimpleUI::settingsDeleteSelectedData(const std::string& str)
 {
-    BROWSER_LOGD("[%s]: Deleting Hisory", __func__);
-    SimplePopup *popup = SimplePopup::createPopup();
-    popup->setTitle("Delete selected data");
-    popup->addButton(OK);
-    popup->addButton(CANCEL);
-    popup->setMessage("Are you sure you want to delete all selected data?");
-    std::shared_ptr<EntryPopupData> popupData = std::make_shared<EntryPopupData>();
-    popupData->text = str;
-    popup->setData(popupData);
-    popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteSelectedDataButton, this, _1, _2));
-    popup->show();
+    BROWSER_LOGD("[%s]: Deleting selected data", __func__);
+    M_ASSERT(m_viewManager);
+    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager->getContent());
+    popup->show("Delete Web Browsing Data");
+    onDeleteSelectedDataButton(str);
+    popup->dismiss();
 }
 
-void SimpleUI::onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr< PopupData > popupData)
+void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
 {
-    if (button == OK) {
-        BROWSER_LOGD("[%s]: OK", __func__);
-	std::string dataText = std::static_pointer_cast<EntryPopupData>(popupData)->text;
 	BROWSER_LOGD("[%s]: TYPE : %s", __func__, dataText.c_str());
 	if (dataText.find("CACHE") != std::string::npos)
 		m_webEngine->clearPrivateData();
@@ -964,36 +957,27 @@ void SimpleUI::onDeleteSelectedDataButton(PopupButtons button, std::shared_ptr< 
 		m_webEngine->clearPrivateData();
 	if (dataText.find("HISTORY") != std::string::npos)
 		m_historyService->clearAllHistory();
-    }
 }
 
 void SimpleUI::settingsResetMostVisited()
 {
-    BROWSER_LOGD("[%s]: Deleting Hisory", __func__);
-    SimplePopup *popup = SimplePopup::createPopup();
-    popup->setTitle("Delete most visited");
-    popup->addButton(OK);
-    popup->addButton(CANCEL);
-    popup->setMessage("Are you sure you want to delete most visited sites?");
-    popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteMostVisitedButton, this, _1, _2));
-    popup->show();
+    BROWSER_LOGD("[%s]: Deleting most visited sites", __func__);
+    M_ASSERT(m_viewManager);
+    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager->getContent());
+    popup->show("Reset Most Visited Sites");
+    onDeleteMostVisitedButton(nullptr);
+    popup->dismiss();
 }
 
-void SimpleUI::onDeleteMostVisitedButton(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/)
+void SimpleUI::onDeleteMostVisitedButton(std::shared_ptr< PopupData > /*popupData*/)
 {
-    if (button == OK) {
-        BROWSER_LOGD("[%s]: OK", __func__);
-        BROWSER_LOGD("[%s]: Deleting most visited", __func__);
-
-        //TODO: display notification popup
-
-        m_historyService->cleanMostVisitedHistoryItems();
-    }
+    BROWSER_LOGD("[%s]: Deleting most visited", __func__);
+    m_historyService->cleanMostVisitedHistoryItems();
 }
 
 void SimpleUI::settingsResetBrowser()
 {
-    BROWSER_LOGD("[%s]: Deleting Hisory", __func__);
+    BROWSER_LOGD("[%s]: Resetting browser", __func__);
     SimplePopup *popup = SimplePopup::createPopup();
     popup->setTitle("Reset browser");
     popup->addButton(OK);
@@ -1008,6 +992,10 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
     if (button == OK) {
         BROWSER_LOGD("[%s]: OK", __func__);
         BROWSER_LOGD("[%s]: Resetting browser", __func__);
+        M_ASSERT(m_viewManager);
+
+        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager->getContent());
+        popup->show("Reset Browser");
 
         m_webEngine->clearPrivateData();
         m_historyService->clearAllHistory();
@@ -1020,8 +1008,9 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
             m_currentSession.removeItem(id.toString());
             m_webEngine->closeTab(id);
         }
-
         //TODO: add here any missing functionality that should be cleaned.
+
+        popup->dismiss();
     }
 }
 

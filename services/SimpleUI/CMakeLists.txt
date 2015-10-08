@@ -3,6 +3,7 @@ project(SimpleUI)
 set(SimpleUI_SRCS
     SimpleUI.cpp
     SimplePopup.cpp
+    NotificationPopup.cpp
     BookmarksManager.cpp
     ViewManager.cpp
     )
@@ -10,6 +11,7 @@ set(SimpleUI_SRCS
 set(SimpleUI_HEADERS
     SimpleUI.h
     SimplePopup.h
+    NotificationPopup.h
     BookmarksManager.h
     ViewManager.h
     )
@@ -84,6 +86,7 @@ include(EDCCompile)
 set(edcFiles
     AuthenticationPopup.edc
     BookmarksManager.edc
+    NotificationPopup.edc
     Tooltip.edc
     ViewManager.edc
     )
