@@ -46,7 +46,6 @@ namespace base_ui{
         bool isVisible() { return m_layout; }
 
         boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
-        boost::signals2::signal<void ()> refreshQuicAccessFocusChain;
 
         static const int HISTORY_ITEMS_NO;
     private:

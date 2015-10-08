@@ -51,6 +51,8 @@ public:
     void setDesktopMode(bool mode);
     DetailPopup & getDetailPopup();
     void backButtonClicked();
+    inline bool isMostVisitedActive() const;
+    void refreshFocusChain();
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
@@ -72,7 +74,6 @@ private:
     Evas_Object* createBookmarkGengrid(Evas_Object *parent);
     void showHistory();
     void showBookmarks();
-    void refreshFocusChain();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);
@@ -98,18 +99,21 @@ private:
     Evas_Object *m_bookmarksButton;
     Evas_Object *m_mostVisitedButton;
     Evas_Object *m_bookmarkGengrid;
+    Evas_Object *m_bookmarkManagerButton;
     std::vector<Evas_Object *> m_tiles;
+    Eina_List* m_parentFocusChain;
 
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     DetailPopup m_detailPopup;
     services::HistoryItemVector m_historyItems;
-    std::map<std::string,Elm_Object_Item*> m_map_bookmark_views;
     bool m_gengridSetup;
     std::string edjFilePath;
     bool m_desktopMode;
 
     static const int MAX_TILES_NUMBER;
     static const int BIG_TILE_INDEX;
+    static const int TOP_RIGHT_TILE_INDEX;
+    static const int BOTTOM_RIGHT_TILE_INDEX;
     static const std::vector<std::string> TILES_NAMES;
 };
 

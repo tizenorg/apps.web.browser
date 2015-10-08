@@ -71,19 +71,8 @@ void WebPageUI::showUI()
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
-    // set custom focus chain
-    elm_object_focus_custom_chain_unset(m_mainLayout);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
-    if (!isHomePageActive())
-        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
-
-    if (m_homePageActive) {
-        m_URIEntry->setFocus();
+    if (m_homePageActive)
         showMainUI();
-    } else {
-        elm_object_focus_set(elm_object_part_content_get(m_mainLayout, "web_view"), EINA_TRUE);
-    }
 }
 
 
@@ -151,6 +140,7 @@ void WebPageUI::switchViewToErrorPage()
     setMainContent(m_errorLayout);
     evas_object_show(m_leftButtonBar->getContent());
     setErrorButtons();
+    refreshFocusChain();
 }
 
 void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
@@ -162,8 +152,9 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
         m_homePageActive = false;
     }
     setMainContent(content);
-    evas_object_show(m_leftButtonBar->getContent());
     updateURIBar(uri);
+    refreshFocusChain();
+    evas_object_show(m_leftButtonBar->getContent());
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 }
 
@@ -171,20 +162,16 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (m_homePageActive)
-        return;
-
     m_homePageActive = true;
     setMainContent(content);
-    showMainUI();
-
-    m_URIEntry->changeUri("");
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     evas_object_hide(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
     hideProgressBar();
+    refreshFocusChain();
+    m_URIEntry->changeUri("");
     m_URIEntry->setFocus();
+    showMainUI();
 }
 
 void WebPageUI::faviconClicked(void* data, Evas_Object*, const char*, const char*)
@@ -356,6 +343,19 @@ void WebPageUI::showMoreMenuConnect()
 {
     hideUI();
     showMoreMenu();
+}
+
+void WebPageUI::refreshFocusChain()
+{
+    // set custom focus chain
+    elm_object_focus_custom_chain_unset(m_mainLayout);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
+    if (!m_homePageActive) {
+        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
+    } else {
+        m_reload->setEnabled(false);
+    }
+    elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
 }
 
 }   // namespace tizen_browser
