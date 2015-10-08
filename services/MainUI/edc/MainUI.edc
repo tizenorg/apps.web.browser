@@ -58,32 +58,35 @@ group{
     }
 }
 
-group { name: "elm/button/base/thumbButton";
-		images {
-			image: "ico_delete.png" COMP;
-		}
-		parts {
-			part { name: "elm.swallow.content";
-				type: RECT;
-				mouse_events: 1;
-				repeat_events: 1;
-				description { state: "default" 0.0;
-					color: 0 0 0 0;
-					visible: 1;
-					rel1.relative: 0.0 0.0;
-	            	rel2.relative: 1.0 1.0;
-	            	align: 0.0 0.0;
-            	}
-			}
-		}
-
-		programs {
-			program { name: "mouse,clicked";
-				signal: "mouse,down,1";
-				source: "elm.swallow.content";
-				action: SIGNAL_EMIT "elm,action,click" "";
-			}
-		}
+group {
+    name: "elm/button/base/thumbButton";
+    images {
+        image: "ico_delete.png" COMP;
+    }
+    parts {
+        part {
+            name: "elm.swallow.content";
+            type: RECT;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                visible: 1;
+                rel1.relative: 0.0 0.0;
+                rel2.relative: 1.0 1.0;
+                align: 0.0 0.0;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "mouse,clicked";
+            signal: "mouse,down,1";
+            source: "elm.swallow.content";
+            action: SIGNAL_EMIT "elm,action,click" "";
+        }
+    }
 }
 
 group { name: "mv_bookmarks";
@@ -735,7 +738,6 @@ group { name: "elm/button/base/small_tile";
                 inherit: "default" 0.0;
             }
         }
-
         part { name: "border_top";
             type: RECT;
             description { state: "default" 0.0;
@@ -942,6 +944,7 @@ group { name: "elm/gengrid/item/grid_item/default";
 	images {
 		image: "web_frame_selected.png" COMP;
 		image: "ico_bg_round_shape_37x37.png" COMP;
+                image: "ic_thumbnail_favorite_01.png" COMP;
 	}
 	parts {
 		part { name: "bg";
@@ -979,6 +982,25 @@ group { name: "elm/gengrid/item/grid_item/default";
 				inherit: "default" 0.0;
 			}
 		}
+
+                part {
+                    name: "bookmark_thumbButton";
+                    type: IMAGE;
+                    mouse_events: 1;
+                    repeat_events: 1;
+                    description {
+                        state: "default" 0.0;
+                        visible: 1;
+                        rel1.to: "elm.thumbnail";
+                        rel1.offset: 284 18;
+                        rel1.relative: 0.0 0.0;
+                        rel2.to: "elm.thumbnail";
+                        rel2.offset: 324 58;
+                        rel2.relative: 0.0 0.0;
+                        align: 0.0 0.0;
+                        image.normal: "ic_thumbnail_favorite_01.png";
+                    }
+                }
 
 		part { name: "focus_highlight";
 			type: IMAGE;
