@@ -1061,7 +1061,8 @@ void SimpleUI::updateView() {
     m_webPageUI->setTabsNumber(tabs);
 }
 
-void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId&) {
+void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
+    m_currentSession.removeItem(id.toString());
     updateView();
 }
 
