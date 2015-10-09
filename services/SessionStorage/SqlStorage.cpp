@@ -83,6 +83,7 @@ SqlStorage::~SqlStorage()
 
 bool SqlStorage::init()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_isInitialized){
         return true;
     }
@@ -92,9 +93,7 @@ bool SqlStorage::init()
     std::string sessionDb(boost::any_cast < std::string > (config.get("DB_SESSION")));
 
     m_dbString = resourceDbDir + sessionDb;
-
     bool status = initSessionDatabase();
-
     if( status ) {
         m_isInitialized = true;
         return true;
@@ -114,6 +113,7 @@ SqlStorage* const SqlStorage::getInstance()
 
 bool SqlStorage::initSessionDatabase()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
     try{
         tizen_browser::services::StorageService::checkAndCreateTable(&scope
@@ -161,7 +161,8 @@ Session SqlStorage::createSession(const std::string& name)
 
 Session SqlStorage::getLastSession()
 {
-    boost::format getLastSessionString("SELECT %1%, %2%, %3% FROM %4% ORDER BY %3% DESC LIMIT 1;");
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getLastSessionString("SELECT %1%, %2%, %3% FROM %4% ORDER BY %3% DESC LIMIT 1,1;");
     getLastSessionString % COL_SESSION_ID % COL_SESSION_NAME % COL_SESSION_DATE % TABLE_SESSION;
     unsigned int sessionId;
     std::string sessionName;
@@ -169,7 +170,6 @@ Session SqlStorage::getLastSession()
     try{
         storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
         std::shared_ptr<storage::SQLDatabase> connection = scope.database();
-
         storage::SQLQuery getLastSessionQuery(connection->prepare(getLastSessionString.str()));
 
         getLastSessionQuery.exec();
@@ -327,6 +327,7 @@ void SqlStorage::updateSessionName(Session& session, std::string newName)
 
 void SqlStorage::readSession(Session& session, std::shared_ptr< storage::SQLDatabase > connection)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(session.isValid()){
         boost::format getSessionDataString("SELECT %1%, %2% FROM %3% WHERE %4% = ? ");
         getSessionDataString % COL_URL_TABID % COL_URL_URL % TABLE_URL % COL_URL_SESION_ID;

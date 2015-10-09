@@ -53,13 +53,15 @@ Session::Session(Session&& source)
  , m_lastModificationTime(std::move(source.m_lastModificationTime))
  , m_sessinName(std::move(source.m_sessinName))
  , m_isValid(std::move(source.m_isValid))
+ , m_items(std::move(source.m_items))
 {
 }
 
 Session & Session::operator=(Session&& other)
 {
     if (this != &other) {
-	m_sessionId = std::move(other.m_sessionId);
+        m_sessionId = std::move(other.m_sessionId);
+        m_items = std::move(other.m_items);
         m_lastModificationTime = std::move(other.m_lastModificationTime);
         m_sessinName = std::move(other.m_sessinName);
         m_isValid = std::move(other.m_isValid);
@@ -134,6 +136,7 @@ void Session::removeItem(const std::string& tabId)
         SqlStorage* const storage = SqlStorage::getInstance();
         if(storage){
             storage->removeItem(*this, tabId);
+            storage->updateSession(*this);
         }
     }
 }
