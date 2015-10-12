@@ -42,13 +42,16 @@ public:
     Evas_Object* getContent();
 
 
-    void changeUri(const std::string);
+    void changeUri(const std::string&);
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setCurrentFavIcon();
     void setSearchIcon();
     void setDocIcon();
+    void setPageTitle(const std::string& title);
+    void setURI(const std::string& uri);
+    void showPageTitle();
     IconType getCurrentIconTyep();
     /**
      * \brief Adds Action to URI bar.
@@ -100,8 +103,6 @@ private:
 
     static void _uriEntryClicked(void* data, Evas_Object* obj, void* event_info);
 
-    static void __cb_mouse_in(void* data, Evas* e, Evas_Object* obj, void* event_info);
-    static void __cb_mouse_out(void* data, Evas* e, Evas_Object* obj, void* event_info);
     static void focusedBtn(void* data, Evas_Object* obj, void* event_info);
     static void unfocusedBtn(void* data, Evas_Object* obj, void* event_info);
 
@@ -115,6 +116,8 @@ private:
     Evas_Object* m_entryBtn;
     bool m_entrySelectedAllFirst;
     std::string m_oryginalEntryText;
+    std::string m_pageTitle;
+    std::string m_URI;
     bool m_searchTextEntered;
 };
 

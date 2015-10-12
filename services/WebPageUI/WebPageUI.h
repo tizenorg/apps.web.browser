@@ -44,9 +44,10 @@ public:
     bool isErrorPageActive();
     bool isHomePageActive() { return m_homePageActive; }
     void switchViewToErrorPage();
-    void switchViewToWebPage(Evas_Object* content, const std::string uri);
+    void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }
+    void setPageTitle(const std::string& title);
     void setTabsNumber(int tabs);
     void setBackButtonEnabled(bool enabled) { m_back->setEnabled(enabled); }
     void setForwardButtonEnabled(bool enabled) { m_forward->setEnabled(enabled); }
