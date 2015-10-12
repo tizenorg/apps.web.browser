@@ -280,6 +280,14 @@ std::vector<std::shared_ptr<TabContent> > WebKitEngineService::getTabContents() 
 
 TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, bool desktopMode)
 {
+    AbstractWebEngine::checkIfCreate();
+
+    config::DefaultConfig config;
+    config.load("");
+
+    if (tabsCount() >= boost::any_cast<int>(config.get("TAB_LIMIT")))
+        return currentTabId();
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     // searching for next available tabId

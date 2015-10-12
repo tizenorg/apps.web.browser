@@ -352,9 +352,14 @@ public:
     boost::signals2::signal<void (TabId)> currentTabChanged;
 
     /**
-    * New tab was creted. It could be explicit call (by user) or tab could be opened from JavaScript.
+    * New tab was created. It could be explicit call (by user) or tab could be opened from JavaScript.
     */
     boost::signals2::signal<void ()> tabCreated;
+
+    /**
+    * Checks if tab can be created.
+    */
+    boost::signals2::signal<bool ()> checkIfCreate;
 
     /**
      * Tab closed
