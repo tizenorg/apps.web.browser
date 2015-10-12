@@ -501,11 +501,12 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
     M_ASSERT(m_webEngine);
 
     /// \todo: Choose newly created tab.
-    TabId id = m_webEngine->addTab(std::string(), &self->getTabId());
-    BROWSER_LOGD("Created tab: %s", id.toString().c_str());
-
-    Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
-    *static_cast<Evas_Object**>(out) = tab_ewk_view;
+    TabId id;
+    if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(), &self->getTabId()))) {
+        BROWSER_LOGD("Created tab: %s", id.toString().c_str());
+        Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
+        *static_cast<Evas_Object**>(out) = tab_ewk_view;
+    }
 }
 
 void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
@@ -546,6 +547,7 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
+
     self->m_isLoading = false;
     self->m_loadProgress = 1;
 
@@ -561,7 +563,6 @@ void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_loadProgress = *(double *)event_info;
-
     self->loadProgress(self->m_loadProgress);
 }
 
@@ -597,7 +598,6 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_title = fromChar(ewk_view_title_get(obj));
-
     self->titleChanged(self->m_title);
 }
 
@@ -801,7 +801,7 @@ bool WebView::hasFocus() const
 
 double WebView::getZoomFactor() const
 {
-    if(EINA_UNLIKELY(m_ewkView == nullptr)){
+    if(EINA_UNLIKELY(m_ewkView == nullptr)) {
         return 1.0;
     }
 
@@ -815,7 +815,7 @@ double WebView::getZoomFactor() const
 void WebView::setZoomFactor(double zoomFactor)
 {
 #if defined(USE_EWEBKIT)
-    if(m_ewkView){
+    if(m_ewkView) {
         //using zoomFactor = 0 sets zoom "fit to screen"
 
         if(zoomFactor != getZoomFactor()) 
@@ -829,7 +829,7 @@ void WebView::scrollView(const int& dx, const int& dy)
     ewk_view_scroll_by(m_ewkView, dx, dy);
 }
 
-const TabId& WebView::getTabId(){
+const TabId& WebView::getTabId() {
     return m_tabId;
 }
 

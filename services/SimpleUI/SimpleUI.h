@@ -113,6 +113,7 @@ private:
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void closeTabsClicked(const tizen_browser::basic_webengine::TabId& tabId);
     void tabCreated();
+    bool checkIfCreate();
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);

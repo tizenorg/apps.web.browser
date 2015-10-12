@@ -391,6 +391,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
+    m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->favIconChanged.connect(boost::bind(&MoreMenuUI::setFavIcon, m_moreMenuUI.get(), _1));
@@ -662,6 +663,7 @@ void SimpleUI::filterURL(const std::string& url)
     //check if url is in blocked
 
     //no filtering
+
         if (m_webPageUI->isHomePageActive())
             openNewTab(url);
         else
@@ -725,6 +727,9 @@ void SimpleUI::closeTabUI()
 
 void SimpleUI::newTabClicked()
 {
+    if (!checkIfCreate())
+        return;
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     switchViewToQuickAccess();
 }
@@ -1026,18 +1031,24 @@ void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< 
 void SimpleUI::tabCreated()
 {
     int tabs = m_webEngine->tabsCount();
+    m_webPageUI->setTabsNumber(tabs);
+}
 
-    if (tabs > m_tabLimit)
-    {
+bool SimpleUI::checkIfCreate()
+{
+    int tabs = m_webEngine->tabsCount();
+
+    if (tabs >= m_tabLimit) {
         SimplePopup *popup = SimplePopup::createPopup();
-        popup->setTitle("Too many tabs open");
-        popup->addButton(CONTINUE);
-        popup->addButton(CLOSE_TAB);
-        popup->setMessage("Browser might slow down. Are you sure you want to continue?");
+        popup->setTitle("Maximum tab count reached.");
+        popup->addButton(OK);
+        popup->setMessage("Close other tabs to open another new tab");
         popup->buttonClicked.connect(boost::bind(&SimpleUI::tabLimitPopupButtonClicked, this, _1, _2));
         popup->show();
+        return false;
     }
-    m_webPageUI->setTabsNumber(tabs);
+    else
+        return true;
 }
 
 void SimpleUI::updateView() {
