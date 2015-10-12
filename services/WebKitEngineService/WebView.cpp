@@ -105,8 +105,6 @@ void WebView::init(bool desktopMode, Evas_Object * opener)
 #if PLATFORM(TIZEN)
     ewk_view_resume(m_ewkView);
 #endif
-    // set local storage, favion, cookies
-    std::string webkit_path =  boost::any_cast <std::string> (config.get("webkit/dir"));
 
     if (m_ewkView)
     {
