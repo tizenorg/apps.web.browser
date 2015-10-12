@@ -295,16 +295,10 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
     if (!uri.empty()) {
         p->setURI(uri);
     }
-
     p->tabIdChecker.connect(boost::bind(&WebKitEngineService::_uriChangedOnTab,this,_1));
 
-    // if it is first tab
-    if (m_tabs.size() == 1) {
-        switchToTab(newTabId);
-    }
-
+    switchToTab(newTabId);
     AbstractWebEngine::tabCreated();
-
     m_chronoTabs.push_front(newTabId);
 
     return newTabId;
