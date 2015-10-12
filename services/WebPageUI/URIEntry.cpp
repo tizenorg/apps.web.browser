@@ -91,7 +91,6 @@ Evas_Object* URIEntry::getContent()
 
         m_entryBtn = elm_button_add(m_entry_layout);
 
-        evas_object_event_callback_add(m_entryBtn, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, this);
         evas_object_smart_callback_add(m_entryBtn, "focused", URIEntry::focusedBtn, this);
         evas_object_smart_callback_add(m_entryBtn, "unfocused", URIEntry::unfocusedBtn, this);
 
@@ -103,10 +102,14 @@ Evas_Object* URIEntry::getContent()
     return m_entry_layout;
 }
 
-void URIEntry::changeUri(const std::string newUri)
+void URIEntry::changeUri(const std::string& newUri)
 {
     BROWSER_LOGD("%s: newUri=%s", __func__, newUri.c_str());
-    elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(newUri.c_str()));
+    m_URI = newUri;
+    if (m_URI.empty()) {
+        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
+        m_pageTitle = std::string();
+    }
 }
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
@@ -139,6 +142,30 @@ void URIEntry::setDocIcon()
 {
     m_currentIconType = IconTypeDoc;
     elm_object_signal_emit(m_entry_layout, "set_doc_icon", "model");
+}
+
+void URIEntry::setPageTitle(const std::string& title)
+{
+    BROWSER_LOGD("%s", __func__);
+    m_pageTitle = title;
+    elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
+}
+
+void URIEntry::setURI(const std::string& uri)
+{
+    BROWSER_LOGD("%s, URI: %s", __func__, uri.c_str());
+    m_URI = uri;
+}
+
+void URIEntry::showPageTitle()
+{
+    BROWSER_LOGD("%s, Page title: %s", __func__, m_pageTitle.c_str());
+    if (!m_pageTitle.empty())
+        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
+    else if (!m_URI.empty())
+        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
+    else
+        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
 }
 
 URIEntry::IconType URIEntry::getCurrentIconTyep()
@@ -210,13 +237,15 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
     self->m_entrySelectedAllFirst = false;
 
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
+    elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
 }
 
 void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info */)
 {
     URIEntry* self = static_cast<URIEntry*>(data);
     elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
-    BROWSER_LOGD("%s", __func__);
+    elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
+    BROWSER_LOGD("%s, URI: %s", __func__, self->m_URI.c_str());
 }
 
 void URIEntry::fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Object* /*obj*/, void* event_info)
@@ -254,6 +283,7 @@ void URIEntry::editingCompleted()
 
     elm_entry_input_panel_hide(m_entry);
     uriChanged(rewriteURI(userString));
+    elm_object_focus_set(m_entryBtn, EINA_TRUE);
 }
 
 std::string URIEntry::rewriteURI(const std::string& url)
@@ -315,16 +345,6 @@ bool URIEntry::hasFocus() const
     return elm_object_focus_get(m_entry) == EINA_TRUE ? true : false;
 }
 
-void URIEntry::__cb_mouse_in(void* /*data*/, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/)
-{
-    elm_object_focus_set(obj, EINA_TRUE);
-}
-
-void URIEntry::__cb_mouse_out(void* /*data*/, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/)
-{
-    elm_object_focus_set(obj, EINA_FALSE);
-}
-
 void URIEntry::focusedBtn(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
 {
     URIEntry* self = static_cast<URIEntry*>(data);
@@ -335,6 +355,7 @@ void URIEntry::unfocusedBtn(void* data, Evas_Object* /*obj*/, void* /*event_info
 {
     URIEntry* self = static_cast<URIEntry*>(data);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
+    //elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
 }
 
 void URIEntry::setDisabled(bool disabled)
