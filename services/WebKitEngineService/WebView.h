@@ -225,6 +225,8 @@ private:
     std::map<AuthenticationConfirmationPtr, Ewk_Auth_Request *> m_confirmationAuthenticationMap;
 #endif
 #endif
+
+    static const std::string COOKIES_PATH;
 };
 
 } /* namespace webkitengine_service */
