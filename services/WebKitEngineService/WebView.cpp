@@ -37,6 +37,7 @@
 
 #include "AbstractWebEngine/AbstractWebEngine.h"
 #include "AbstractWebEngine/TabThumbCache.h"
+#include "app_common.h"
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
 #include "EflTools.h"
@@ -59,6 +60,8 @@ using namespace tizen_browser::tools;
 namespace tizen_browser {
 namespace basic_webengine {
 namespace webkitengine_service {
+
+const std::string WebView::COOKIES_PATH = "cookies";
 
 WebView::WebView(Evas_Object * obj, TabId tabId)
     : m_parent(obj)
@@ -86,6 +89,7 @@ WebView::~WebView()
 void WebView::init(bool desktopMode, Evas_Object * opener)
 {
 #if defined(USE_EWEBKIT)
+    M_ASSERT(m_ewkContext);
     m_ewkView = ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
 
     evas_object_data_set(m_ewkView, "_container", this);
@@ -106,17 +110,10 @@ void WebView::init(bool desktopMode, Evas_Object * opener)
     ewk_view_resume(m_ewkView);
 #endif
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
-        }
-    }
+    ewk_context_cache_model_set(m_ewkContext, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
+    std::string path = app_get_data_path() + COOKIES_PATH;
+    ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(m_ewkContext),  path.c_str(), EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
 
-///\note Odroid modification - not exists in WebKit API
-//     ewk_cookie_manager_widget_cookie_directory_set(ewk_context_cookie_manager_get(context), webkit_path.c_str());
     setupEwkSettings();
     registerCallbacks();
 #else
