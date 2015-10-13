@@ -95,6 +95,7 @@ private:
 
     void editingCompleted();
     void selectWholeText();
+    void setUrlGuideText(const char* txt) const;
 
     /**
      * \brief Rewrites URI to support search and prefixing http:// if needed
