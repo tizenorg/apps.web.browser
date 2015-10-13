@@ -81,6 +81,15 @@ void TabUI::showUI()
     evas_object_show(m_tab_layout);
     evas_object_show(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_show(elm_layout_content_get(m_tab_layout, "top_bar"));
+    elm_object_focus_next_object_set(elm_layout_content_get(elm_object_part_content_get(m_tab_layout, "top_bar"), "openedtabs_click"),
+                                     elm_object_part_content_get(elm_object_part_content_get(m_tab_layout, "action_bar"), "closetabs_click"),
+                                     ELM_FOCUS_UP);
+    elm_object_focus_next_object_set(elm_object_part_content_get(elm_object_part_content_get(m_tab_layout, "action_bar"), "closetabs_click"),
+                                     elm_layout_content_get(elm_object_part_content_get(m_tab_layout, "top_bar"), "openedtabs_click"),
+                                     ELM_FOCUS_DOWN);
+    elm_object_focus_next_object_set(elm_object_part_content_get(elm_object_part_content_get(m_tab_layout, "action_bar"), "closetabs_click"),
+                                     elm_object_part_content_get(elm_object_part_content_get(m_tab_layout, "action_bar"), "newincognitotab_click"),
+                                     ELM_FOCUS_LEFT);
 }
 
 void TabUI::hideUI()
