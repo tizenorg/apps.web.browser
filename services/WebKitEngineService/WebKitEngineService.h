@@ -53,6 +53,10 @@ public:
 
     std::string getTitle(void) const;
 
+    void suspend(void);
+    void resume(void);
+    bool isSuspended(void) const;
+
     void stopLoading(void);
     void reload(void);
 

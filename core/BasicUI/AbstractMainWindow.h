@@ -47,7 +47,7 @@ public:
         : m_window()
     {}
 
-    virtual int exec(const std::string& url)=0;
+    virtual int exec(const std::string& url) = 0;
     std::shared_ptr<T> getMainWindow(){return m_window;};
 
     /**
@@ -56,6 +56,10 @@ public:
      */
     void setMainWindow(T *rawPtr){ m_window=std::shared_ptr<T>(rawPtr);}
     virtual void destroyUI() { }
+
+    virtual void suspend() = 0;
+    virtual void resume() = 0;
+
 protected:
     std::shared_ptr<T> m_window;
 };

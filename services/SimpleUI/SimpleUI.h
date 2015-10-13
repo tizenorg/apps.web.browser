@@ -71,6 +71,8 @@ public:
     virtual ~SimpleUI();
     virtual int exec(const std::string& url);
     virtual std::string getName();
+    void suspend() {m_webEngine->suspend();}
+    void resume() {m_webEngine->resume();}
 
     void destroyUI();
 private:

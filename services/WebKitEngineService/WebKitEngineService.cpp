@@ -143,6 +143,28 @@ std::string WebKitEngineService::getTitle() const
         return std::string("");
 }
 
+void WebKitEngineService::suspend()
+{
+    if(tabsCount()>0) {
+        M_ASSERT(m_currentWebView);
+        m_currentWebView->suspend();
+    }
+}
+
+void WebKitEngineService::resume()
+{
+    if(tabsCount()>0) {
+        M_ASSERT(m_currentWebView);
+        m_currentWebView->resume();
+    }
+}
+
+bool WebKitEngineService::isSuspended() const
+{
+    M_ASSERT(m_currentWebView);
+    return m_currentWebView->isSuspended();
+}
+
 void WebKitEngineService::stopLoading(void)
 {
     M_ASSERT(m_currentWebView);
@@ -323,6 +345,7 @@ bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newT
     // if there was any running WebView
     if (m_currentWebView) {
         disconnectSignals(m_currentWebView);
+        suspend();
     }
 
     m_currentWebView = m_tabs[newTabId];
@@ -331,6 +354,7 @@ bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newT
     m_mostRecentTab.push_back(newTabId);
 
     connectSignals(m_currentWebView);
+    resume();
 
     titleChanged(m_currentWebView->getTitle());
     uriChanged(m_currentWebView->getURI());
