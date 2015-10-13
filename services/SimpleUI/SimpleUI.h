@@ -38,7 +38,7 @@
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #include "SettingsUI.h"
-#include "MainUI.h"
+#include "QuickAccess.h"
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
@@ -102,7 +102,7 @@ private:
     void bookmarkAdded();
     void bookmarkDeleted();
 
-    void showMainUI();
+    void showQuickAccess();
     void switchViewToQuickAccess();
     void switchViewToWebPage();
     void updateView();
@@ -234,7 +234,7 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
-    std::shared_ptr<MainUI> m_mainUI;
+    std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;

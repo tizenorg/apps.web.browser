@@ -26,11 +26,11 @@
 namespace tizen_browser{
 namespace base_ui{
 
-    class MainUI;
+    class QuickAccess;
 
     class DetailPopup {
     public:
-        DetailPopup(MainUI *mainUI);
+        DetailPopup(QuickAccess *quickAccess);
         ~DetailPopup();
 
         /**
@@ -81,7 +81,7 @@ namespace base_ui{
         Evas_Object *m_historyList;
         Evas_Object* m_urlButton;
         Elm_Gengrid_Item_Class * m_history_item_class;
-        MainUI *m_mainUI;
+        QuickAccess *m_quickAccess;
         std::string edjFilePath;
         std::shared_ptr<services::HistoryItem> m_item;
         std::shared_ptr<services::HistoryItemVector> m_prevItems;

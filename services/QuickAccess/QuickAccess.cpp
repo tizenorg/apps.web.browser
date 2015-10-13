@@ -19,7 +19,7 @@
 #include <vector>
 #include <AbstractMainWindow.h>
 
-#include "MainUI.h"
+#include "QuickAccess.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
@@ -31,16 +31,16 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(MainUI, "org.tizen.browser.mainui")
+EXPORT_SERVICE(QuickAccess, "org.tizen.browser.quickaccess")
 
-const int MainUI::MAX_TILES_NUMBER = 5;
-const int MainUI::MAX_THUMBNAIL_WIDTH = 840;
-const int MainUI::MAX_THUMBNAIL_HEIGHT = 648;
-const int MainUI::BIG_TILE_INDEX = 0;
-const int MainUI::TOP_RIGHT_TILE_INDEX = 3;
-const int MainUI::BOTTOM_RIGHT_TILE_INDEX = 4;
+const int QuickAccess::MAX_TILES_NUMBER = 5;
+const int QuickAccess::MAX_THUMBNAIL_WIDTH = 840;
+const int QuickAccess::MAX_THUMBNAIL_HEIGHT = 648;
+const int QuickAccess::BIG_TILE_INDEX = 0;
+const int QuickAccess::TOP_RIGHT_TILE_INDEX = 3;
+const int QuickAccess::BOTTOM_RIGHT_TILE_INDEX = 4;
 
-const std::vector<std::string> MainUI::TILES_NAMES = {
+const std::vector<std::string> QuickAccess::TILES_NAMES = {
     "elm.swallow.big",
     "elm.swallow.small_first",
     "elm.swallow.small_second",
@@ -51,16 +51,16 @@ const std::vector<std::string> MainUI::TILES_NAMES = {
 typedef struct _HistoryItemData
 {
         std::shared_ptr<tizen_browser::services::HistoryItem> item;
-        std::shared_ptr<tizen_browser::base_ui::MainUI> mainUI;
+        std::shared_ptr<tizen_browser::base_ui::QuickAccess> quickAccess;
 } HistoryItemData;
 
 typedef struct _BookmarkItemData
 {
         std::shared_ptr<tizen_browser::services::BookmarkItem> item;
-        std::shared_ptr<tizen_browser::base_ui::MainUI> mainUI;
+        std::shared_ptr<tizen_browser::base_ui::QuickAccess> quickAccess;
 } BookmarkItemData;
 
-MainUI::MainUI()
+QuickAccess::QuickAccess()
     : m_parent(nullptr)
     , m_layout(nullptr)
     , m_bookmarksView(nullptr)
@@ -75,26 +75,26 @@ MainUI::MainUI()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     edjFilePath = EDJE_DIR;
-    edjFilePath.append("MainUI/MainUI.edj");
+    edjFilePath.append("QuickAccess/QuickAccess.edj");
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
-    MainUI::createItemClasses();
+    QuickAccess::createItemClasses();
 }
 
-MainUI::~MainUI()
+QuickAccess::~QuickAccess()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_gengrid_item_class_free(m_bookmark_item_class);
     eina_list_free(m_parentFocusChain);
 }
 
-void MainUI::init(Evas_Object* parent)
+void QuickAccess::init(Evas_Object* parent)
 {
     M_ASSERT(parent);
     m_parent = parent;
 }
 
 
-Evas_Object* MainUI::getContent()
+Evas_Object* QuickAccess::getContent()
 {
     M_ASSERT(m_parent);
     if (!m_layout) {
@@ -103,19 +103,19 @@ Evas_Object* MainUI::getContent()
     return m_layout;
 }
 
-void MainUI::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
+void QuickAccess::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
 {
     addHistoryItems(vec);
     showHistory();
 }
 
-void MainUI::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
+void QuickAccess::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
 {
     addBookmarkItems(vec);
     showBookmarks();
 }
 
-void MainUI::createItemClasses()
+void QuickAccess::createItemClasses()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     if (!m_bookmark_item_class) {
@@ -129,7 +129,7 @@ void MainUI::createItemClasses()
 }
 
 
-Evas_Object* MainUI::createQuickAccessLayout(Evas_Object* parent)
+Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     m_desktopMode = true;
@@ -146,7 +146,7 @@ Evas_Object* MainUI::createQuickAccessLayout(Evas_Object* parent)
     return layout;
 }
 
-Evas_Object* MainUI::createMostVisitedView (Evas_Object * parent)
+Evas_Object* QuickAccess::createMostVisitedView (Evas_Object * parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -161,7 +161,7 @@ Evas_Object* MainUI::createMostVisitedView (Evas_Object * parent)
     return mostVisitedLayout;
 }
 
-Evas_Object* MainUI::createBookmarksView (Evas_Object * parent)
+Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -182,7 +182,7 @@ Evas_Object* MainUI::createBookmarksView (Evas_Object * parent)
     return bookmarkViewLayout;
 }
 
-Evas_Object* MainUI::createBookmarkGengrid(Evas_Object *parent)
+Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
 {
     Evas_Object *bookmarkGengrid = elm_gengrid_add(parent);
 
@@ -200,7 +200,7 @@ Evas_Object* MainUI::createBookmarkGengrid(Evas_Object *parent)
     return bookmarkGengrid;
 }
 
-Evas_Object* MainUI::createTopButtons (Evas_Object *parent)
+Evas_Object* QuickAccess::createTopButtons (Evas_Object *parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -227,7 +227,7 @@ Evas_Object* MainUI::createTopButtons (Evas_Object *parent)
     return layoutTop;
 }
 
-Evas_Object* MainUI::createBottomButton(Evas_Object *parent)
+Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -248,28 +248,28 @@ Evas_Object* MainUI::createBottomButton(Evas_Object *parent)
     return layoutBottom;
 }
 
-void MainUI::_mostVisited_clicked(void * data, Evas_Object *, void *)
+void QuickAccess::_mostVisited_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    MainUI* mainUI = reinterpret_cast<MainUI *>(data);
-    mainUI->mostVisitedClicked();
+    QuickAccess* quickAccess = reinterpret_cast<QuickAccess *>(data);
+    quickAccess->mostVisitedClicked();
 }
 
-void MainUI::_bookmark_clicked(void * data, Evas_Object *, void *)
+void QuickAccess::_bookmark_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    MainUI* mainUI = reinterpret_cast<MainUI *>(data);
-    mainUI->bookmarkClicked();
+    QuickAccess* quickAccess = reinterpret_cast<QuickAccess *>(data);
+    quickAccess->bookmarkClicked();
 }
 
-void MainUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
+void QuickAccess::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    MainUI*  mainUI = static_cast<MainUI *>(data);
-    mainUI->bookmarkManagerClicked();
+    QuickAccess*  quickAccess = static_cast<QuickAccess *>(data);
+    quickAccess->bookmarkManagerClicked();
 }
 
-void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
+void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     M_ASSERT(m_historyItems.size() < MAX_TILES_NUMBER);
@@ -277,7 +277,7 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     int tileNumber = m_historyItems.size();
     HistoryItemData *itemData = new HistoryItemData();
     itemData->item = hi;
-    itemData->mainUI = std::shared_ptr<MainUI>(this);
+    itemData->quickAccess = std::shared_ptr<QuickAccess>(this);
 
     Evas_Object* tile = elm_button_add(m_mostVisitedView);
     if (tileNumber == BIG_TILE_INDEX)
@@ -299,7 +299,7 @@ void MainUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     m_historyItems.push_back(hi);
 }
 
-void MainUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
+void QuickAccess::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     clearHistoryGenlist();
@@ -314,16 +314,16 @@ void MainUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
         setEmptyView(false);
 }
 
-void MainUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
+void QuickAccess::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = bi;
-    itemData->mainUI = std::shared_ptr<tizen_browser::base_ui::MainUI>(this);
+    itemData->quickAccess = std::shared_ptr<tizen_browser::base_ui::QuickAccess>(this);
     elm_gengrid_item_append(m_bookmarkGengrid, m_bookmark_item_class, itemData, _thumbBookmarkClicked, itemData);
 }
 
-void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
+void QuickAccess::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
     clearBookmarkGengrid();
     for (auto it = items.begin(); it != items.end(); ++it) {
@@ -332,7 +332,7 @@ void MainUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::service
 }
 
 
-char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
+char* QuickAccess::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
         BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
         if (!strcmp(part, "page_title")) {
@@ -344,14 +344,14 @@ char* MainUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *par
         return strdup("");
 }
 
-Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object*, const char *part)
+Evas_Object * QuickAccess::_grid_bookmark_content_get(void *data, Evas_Object*, const char *part)
 {
     BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
     BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
 
     if (!strcmp(part, "elm.thumbnail")) {
         if (itemData->item->getThumbnail()) {
-                Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->mainUI->m_parent);
+                Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->quickAccess->m_parent);
                 return thumb;
         }
         else {
@@ -362,21 +362,21 @@ Evas_Object * MainUI::_grid_bookmark_content_get(void *data, Evas_Object*, const
     return nullptr;
 }
 
-void MainUI::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
+void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
-    itemData->mainUI->openURLInNewTab(itemData->item, itemData->mainUI->isDesktopMode());
+    itemData->quickAccess->openURLInNewTab(itemData->item, itemData->quickAccess->isDesktopMode());
 }
 
-void MainUI::_thumbClicked(void* data, Evas_Object*, void*)
+void QuickAccess::_thumbClicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
-    itemData->mainUI->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
+    itemData->quickAccess->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
 }
 
-void MainUI::clearHistoryGenlist()
+void QuickAccess::clearHistoryGenlist()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -389,7 +389,7 @@ void MainUI::clearHistoryGenlist()
     m_historyItems.clear();
 }
 
-void MainUI::showHistory()
+void QuickAccess::showHistory()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -411,13 +411,13 @@ void MainUI::showHistory()
     elm_object_focus_set(m_mostVisitedButton, true);
 }
 
-void MainUI::clearBookmarkGengrid()
+void QuickAccess::clearBookmarkGengrid()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_gengrid_clear(m_bookmarkGengrid);
 }
 
-void MainUI::showBookmarks()
+void QuickAccess::showBookmarks()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -433,7 +433,7 @@ void MainUI::showBookmarks()
     elm_object_focus_set(m_bookmarksButton, true);
 }
 
-void MainUI::showUI()
+void QuickAccess::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_show(m_layout);
@@ -444,7 +444,7 @@ void MainUI::showUI()
     }
 }
 
-void MainUI::hideUI()
+void QuickAccess::hideUI()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     evas_object_hide(m_layout);
@@ -454,55 +454,55 @@ void MainUI::hideUI()
     clearBookmarkGengrid();
 }
 
-void MainUI::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
+void QuickAccess::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
 {
     m_detailPopup.show(m_layout, m_parent, currItem, prevItems);
 }
 
-void MainUI::showNoHistoryLabel()
+void QuickAccess::showNoHistoryLabel()
 {
     elm_layout_text_set(m_mostVisitedView, "elm.text.empty", "No visited site");
-    elm_layout_signal_emit(m_mostVisitedView, "empty,view", "mainui");
+    elm_layout_signal_emit(m_mostVisitedView, "empty,view", "quickaccess");
 }
 
-void MainUI::setEmptyView(bool empty)
+void QuickAccess::setEmptyView(bool empty)
 {
     BROWSER_LOGD("%s:%d %s, empty: %d", __FILE__, __LINE__, __func__, empty);
     if(empty) {
         showNoHistoryLabel();
     } else {
-        elm_layout_signal_emit(m_mostVisitedView, "not,empty,view", "mainui");
+        elm_layout_signal_emit(m_mostVisitedView, "not,empty,view", "quickaccess");
     }
 }
 
-bool MainUI::isDesktopMode() const
+bool QuickAccess::isDesktopMode() const
 {
     return m_desktopMode;
 }
 
-void MainUI::setDesktopMode(bool mode)
+void QuickAccess::setDesktopMode(bool mode)
 {
     m_desktopMode = mode;
 }
 
-DetailPopup& MainUI::getDetailPopup()
+DetailPopup& QuickAccess::getDetailPopup()
 {
     return m_detailPopup;
 }
 
-void MainUI::backButtonClicked()
+void QuickAccess::backButtonClicked()
 {
     if (m_detailPopup.isVisible()) {
         m_detailPopup.hide();
     }
 }
 
-bool MainUI::isMostVisitedActive() const
+bool QuickAccess::isMostVisitedActive() const
 {
     return evas_object_visible_get(m_mostVisitedView);
 }
 
-void MainUI::refreshFocusChain()
+void QuickAccess::refreshFocusChain()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
