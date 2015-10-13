@@ -1,12 +1,12 @@
-project(MainUI)
+project(QuickAccess)
 
-set(MainUI_SRCS
-    MainUI.cpp
+set(QuickAccess_SRCS
+    QuickAccess.cpp
     DetailPopup.cpp
     )
 
-set(MainUI_HEADERS
-    MainUI.h
+set(QuickAccess_HEADERS
+    QuickAccess.h
     DetailPopup.h
     )
 
@@ -15,7 +15,7 @@ include(EFLHelpers)
 
 include_directories(${CMAKE_SOURCE_DIR}/services/FavoriteService)
 
-add_library(${PROJECT_NAME} SHARED ${MainUI_SRCS})
+add_library(${PROJECT_NAME} SHARED ${QuickAccess_SRCS})
 
 if(TIZEN_BUILD)
     target_link_libraries(${PROJECT_NAME} ${pkgs_LDFLAGS})
@@ -27,7 +27,7 @@ install(TARGETS ${PROJECT_NAME}
 
 #please do not add edc/ directory
 set(edcFiles
-    MainUI.edc
+    QuickAccess.edc
     DetailPopup.edc
     )
 

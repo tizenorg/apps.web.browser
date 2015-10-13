@@ -72,7 +72,7 @@ void WebPageUI::showUI()
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
     if (m_homePageActive)
-        showMainUI();
+        showQuickAccess();
 }
 
 
@@ -84,7 +84,7 @@ void WebPageUI::hideUI()
     evas_object_hide(m_mainLayout);
 
     if (m_homePageActive)
-        hideMainUI();
+        hideQuickAccess();
 
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
     m_URIEntry->editingCanceled();
@@ -148,7 +148,7 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_homePageActive)
     {
-        hideMainUI();
+        hideQuickAccess();
         m_homePageActive = false;
     }
     setMainContent(content);
@@ -171,7 +171,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     refreshFocusChain();
     m_URIEntry->changeUri("");
     m_URIEntry->setFocus();
-    showMainUI();
+    showQuickAccess();
 }
 
 void WebPageUI::faviconClicked(void* data, Evas_Object*, const char*, const char*)

@@ -434,7 +434,7 @@ group { name: "mv_bookmarks";
     programs {
         program { name: "empty";
             signal: "empty,view";
-            source: "mainui";
+            source: "quickaccess";
             action:  STATE_SET "empty" 0.0;
             target: "elm.swallow.big";
             target: "elm.swallow.small_first";
@@ -446,7 +446,7 @@ group { name: "mv_bookmarks";
         }
         program { name: "not_empty";
             signal: "not,empty,view";
-            source: "mainui";
+            source: "quickaccess";
             action:  STATE_SET "default" 0.0;
             target: "elm.text.empty";
             target: "center_rect";

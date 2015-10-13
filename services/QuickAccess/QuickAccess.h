@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef MAINUI_H
-#define MAINUI_H
+#ifndef QUICKACCESS_H
+#define QUICKACCESS_H
 
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
@@ -33,12 +33,12 @@ namespace base_ui{
 
 //TODO: This class name is not revelant to what this class actually does.
 //Rename this class and file to "QuickAccessUI".
-class BROWSER_EXPORT MainUI
+class BROWSER_EXPORT QuickAccess
         : public tizen_browser::core::AbstractService
 {
 public:
-    MainUI();
-    ~MainUI();
+    QuickAccess();
+    ~QuickAccess();
     void init(Evas_Object *main_layout);
     Evas_Object* getContent();
     void showMostVisited(std::shared_ptr<services::HistoryItemVector> vec);
@@ -120,4 +120,4 @@ private:
 }
 }
 
-#endif // BOOKMARKSUI_H
+#endif // QUICKACCESS_H

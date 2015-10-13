@@ -2,7 +2,7 @@ project(services)
 
 add_subdirectory(WebKitEngineService)
 add_subdirectory(MoreMenuUI)
-add_subdirectory(MainUI)
+add_subdirectory(QuickAccess)
 add_subdirectory(HistoryUI)
 add_subdirectory(TabUI)
 add_subdirectory(SimpleUI)

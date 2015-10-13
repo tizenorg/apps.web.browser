@@ -23,7 +23,7 @@
 #include "BrowserLogger.h"
 #include "Tools/GeneralTools.h"
 #include "Tools/EflTools.h"
-#include "MainUI.h"
+#include "QuickAccess.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -31,16 +31,17 @@ namespace base_ui{
 const char * DetailPopup::URL_SEPARATOR = " - ";
 const int DetailPopup::HISTORY_ITEMS_NO = 5;
 
-DetailPopup::DetailPopup(MainUI *mainUI)
+DetailPopup::DetailPopup(QuickAccess *quickAccess)
     : m_main_view(nullptr)
     , m_parent(nullptr)
     , m_layout(nullptr)
     , m_historyList(nullptr)
-    , m_mainUI(mainUI)
     , m_urlButton(nullptr)
+    , m_history_item_class(nullptr)
+    , m_quickAccess(quickAccess)
 {
     edjFilePath = EDJE_DIR;
-    edjFilePath.append("MainUI/DetailPopup.edj");
+    edjFilePath.append("QuickAccess/DetailPopup.edj");
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
 
     m_history_item_class = elm_genlist_item_class_new();
@@ -116,7 +117,7 @@ void DetailPopup::hide()
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
     evas_object_del(m_layout);
-    m_mainUI->refreshFocusChain();
+    m_quickAccess->refreshFocusChain();
 }
 
 void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
@@ -130,7 +131,7 @@ void DetailPopup::_url_click(void* data, Evas_Object*, const char*, const char*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
-    dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
+    dp->openURLInNewTab(dp->m_item, dp->m_quickAccess->isDesktopMode());
     dp->hide();
 }
 
@@ -138,7 +139,7 @@ void DetailPopup::_url_click_button(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     DetailPopup *dp = reinterpret_cast<DetailPopup*>(data);
-    dp->openURLInNewTab(dp->m_item, dp->m_mainUI->isDesktopMode());
+    dp->openURLInNewTab(dp->m_item, dp->m_quickAccess->isDesktopMode());
     dp->hide();
 }
 
@@ -157,7 +158,7 @@ void DetailPopup::_history_url_click(void* data, Evas_Object*, void* event_info)
                            { return i.get() == item; }
                           );
     std::shared_ptr<services::HistoryItem> itemPtr= *it;
-    dp->openURLInNewTab(itemPtr, dp->m_mainUI->isDesktopMode());
+    dp->openURLInNewTab(itemPtr, dp->m_quickAccess->isDesktopMode());
     dp->hide();
 }
 
