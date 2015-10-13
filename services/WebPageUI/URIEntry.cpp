@@ -26,6 +26,9 @@
 namespace tizen_browser {
 namespace base_ui {
 
+#define GUIDE_TEXT_FOCUSED "Search or URL"
+#define GUIDE_TEXT_UNFOCUSED "Search or URL - Press [A] to enter"
+
 const std::string keynameSelect = "Select";
 const std::string keynameClear = "Clear";
 const std::string keynameKP_Enter = "KP_Enter";
@@ -72,11 +75,7 @@ Evas_Object* URIEntry::getContent()
         elm_entry_scrollable_set(m_entry, EINA_TRUE);
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
 
-#if PLATFORM(TIZEN)
-        elm_object_translatable_part_text_set(m_entry, "elm.guide", "Search words, web address");
-#else
-        elm_object_part_text_set(m_entry, "elm.guide", "Search words, web address");
-#endif
+        setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
 
         evas_object_smart_callback_add(m_entry, "activated", URIEntry::activated, this);
         evas_object_smart_callback_add(m_entry, "aborted", URIEntry::aborted, this);
@@ -230,12 +229,21 @@ void URIEntry::changedUser(void* data, Evas_Object* /* obj */, void* /*event_inf
     }
 }
 
+void URIEntry::setUrlGuideText(const char* txt) const
+{
+#if PLATFORM(TIZEN)
+    elm_object_translatable_part_text_set(m_entry, "elm.guide", txt);
+#else
+    elm_object_part_text_set(m_entry, "elm.guide", txt);
+#endif
+}
+
 void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s", __func__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->m_entrySelectedAllFirst = false;
-
+    self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
 }
@@ -243,6 +251,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info */)
 {
     URIEntry* self = static_cast<URIEntry*>(data);
+    self->setUrlGuideText(GUIDE_TEXT_FOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
     BROWSER_LOGD("%s, URI: %s", __func__, self->m_URI.c_str());
