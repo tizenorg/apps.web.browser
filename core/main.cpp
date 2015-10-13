@@ -120,10 +120,28 @@ static void app_service(service_h service, void */*app_data*/){
 
 static void app_pause(void *){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
+
+    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
+    std::dynamic_pointer_cast
+    <
+        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
+        tizen_browser::core::AbstractService
+    >
+    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
+    mainUi->suspend();
 }
 
 static void app_resume(void *){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
+
+    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
+    std::dynamic_pointer_cast
+    <
+        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
+        tizen_browser::core::AbstractService
+    >
+    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
+    mainUi->resume();
 }
 
 int main(int argc, char* argv[])try

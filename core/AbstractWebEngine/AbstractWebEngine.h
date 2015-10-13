@@ -74,6 +74,21 @@ public:
     virtual std::string getTitle(void) const = 0;
 
     /**
+     * Suspend current webview.
+     */
+    virtual void suspend(void) = 0;
+
+    /**
+     * Resume current webview.
+     */
+    virtual void resume(void) = 0;
+
+    /**
+     * @return true if current webview is suspended, false otherwise
+     */
+    virtual bool isSuspended(void) const = 0;
+
+    /**
      * Stop loading current page.
      */
     virtual void stopLoading(void) = 0;

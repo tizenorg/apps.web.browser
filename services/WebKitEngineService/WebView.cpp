@@ -71,6 +71,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId)
     , m_ewkView(nullptr)
     , m_isLoading(false)
     , m_loadError(false)
+    , m_suspended(false)
     , m_private(-1)
 {
     config.load("whatever");
@@ -117,6 +118,7 @@ void WebView::init(bool desktopMode, Evas_Object * opener)
 
     setupEwkSettings();
     registerCallbacks();
+    resume();
 #else
     m_ewkView = evas_object_rectangle_add(evas_object_evas_get(m_parent));
 #endif
@@ -222,6 +224,24 @@ std::string WebView::getURI(void)
 std::string WebView::getTitle(void)
 {
     return m_title;
+}
+
+void WebView::suspend()
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    M_ASSERT(m_ewkView);
+
+    ewk_view_suspend(m_ewkView);
+    m_suspended = true;
+}
+
+void WebView::resume()
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    M_ASSERT(m_ewkView);
+
+    ewk_view_resume(m_ewkView);
+    m_suspended = false;
 }
 
 void WebView::stopLoading(void)

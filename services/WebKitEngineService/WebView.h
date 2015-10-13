@@ -48,6 +48,10 @@ public:
 
     std::string getTitle(void);
 
+    void suspend(void);
+    void resume(void);
+    bool isSuspended(void) const { return m_suspended; }
+
     void stopLoading(void);
     void reload(void);
 
@@ -223,6 +227,7 @@ private:
     bool m_loadError;
     // true if desktop view is enabled, false if mobile
     bool m_desktopMode;
+    bool m_suspended;
     int m_private;
 
     config::DefaultConfig config;
