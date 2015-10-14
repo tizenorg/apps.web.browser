@@ -3,11 +3,20 @@ project(QuickAccess)
 set(QuickAccess_SRCS
     QuickAccess.cpp
     DetailPopup.cpp
+    UrlHistoryList/UrlHistoryList.cpp
+    UrlHistoryList/GenlistManager.cpp
+    UrlHistoryList/GenlistManagerCallbacks.cpp
+    UrlHistoryList/UrlMatchesStyler.cpp
     )
 
 set(QuickAccess_HEADERS
     QuickAccess.h
     DetailPopup.h
+    UrlHistoryList/UrlHistoryList.h
+    UrlHistoryList/WidgetListManager.h
+    UrlHistoryList/GenlistManager.h
+    UrlHistoryList/GenlistManagerCallbacks.h
+    UrlHistoryList/UrlMatchesStyler.h
     )
 
 include(Coreheaders)
@@ -29,6 +38,7 @@ install(TARGETS ${PROJECT_NAME}
 set(edcFiles
     QuickAccess.edc
     DetailPopup.edc
+    UrlHistoryList.edc
     )
 
 foreach(edec ${edcFiles})

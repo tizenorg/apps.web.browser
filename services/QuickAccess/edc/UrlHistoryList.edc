@@ -1,0 +1,142 @@
+#define URI_INPUTBOX_LENGTH 1720
+#define URI_INPUTBOX_LENGTH_SMALL 1460
+#define HISTORY_ITEM_W URI_INPUTBOX_LENGTH
+#define HISTORY_ITEM_H 82
+#define HISTORY_ITEMS_VISIBLE_MAX 5
+/*
+  Right now, has to be a multiple of item's height.
+*/
+#define LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
+
+collections {
+    group {
+        name: "url_history_list";
+        parts
+        {
+            part {
+                name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description
+                {
+                    color: 232 122 32 150;
+                    state: "default" 0.0;
+                    visible: 0;
+                    min: URI_INPUTBOX_LENGTH LIST_MAX_H;
+                    max: -1 -1;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1
+                    {
+                        relative: 0 0;
+                    }
+                    rel2
+                    {
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+
+            part {
+                name: "list_swallow";
+                type: SWALLOW;
+                description {
+                    color: 255 0 0 150;
+                    min: URI_INPUTBOX_LENGTH LIST_MAX_H;
+                    max: -1 -1;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    rel1 {
+                        relative: 0 0;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 0.5;
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/url_historylist_grid_item/default";
+        data.item: "contents" "matched_url";
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH HISTORY_ITEM_H;
+                    max: -1 -1;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    align: 0.0 0.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default" 0.0;
+                    color: 0 119 246 255;
+                }
+            }
+            part {
+                name: "matched_url";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    fixed: 0 1;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    rel1 {
+                        to: "bg";
+                        relative: 0.0 0.0;
+                        offset: 48 0;
+                    }
+                    rel2 {
+                        to: "bg";
+                        relative: 1.0  1.0;
+                    }
+
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focused";
+                signal: "mouse,in";
+                source: "matched_url";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "selected";
+                signal: "mouse,out";
+                source: "matched_url";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/url_historylist_grid_item_space/default";
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    min: URI_INPUTBOX_LENGTH HISTORY_ITEM_H;
+                    max: -1 -1;
+                    visible: 1;
+                    color: 255 255 255 0;
+                    align: 0.0 0.0;
+                }
+            }
+        }
+    }
+}
