@@ -3,11 +3,13 @@ PROJECT(HistoryService)
 set(HistoryService_SOURCES
 	HistoryService.cpp
 	HistoryItem.cpp
+	HistoryMatchFinder/HistoryMatchFinder.cpp
 )
 
 set(HistoryService_HEADERS
 	HistoryService.h
 	HistoryItem.h
+	HistoryMatchFinder/HistoryMatchFinder.h
 )
 
 include(Coreheaders)

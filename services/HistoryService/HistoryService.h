@@ -35,6 +35,9 @@ namespace tizen_browser
 namespace services
 {
 
+class HistoryMatchFinder;
+typedef std::shared_ptr<HistoryMatchFinder> HistoryMatchFinderPtr;
+
 class BROWSER_EXPORT HistoryService: public tizen_browser::core::AbstractService
 {
 public:
@@ -56,7 +59,23 @@ public:
     std::shared_ptr<HistoryItem> getCurrentTab();
     std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
     void cleanMostVisitedHistoryItems();
+    std::shared_ptr<HistoryItemVector> getHistoryItemsByKeyword(const std::string & keyword, int maxItems);
     std::shared_ptr<HistoryItemVector> getHistoryItemsByURL(const std::string & url, int maxItems);
+
+    /**
+     * @brief Searches for history items matching given pattern.
+     *
+     * Splits pattern into words by removing spaces. History item matches
+     * pattern, when its url contains all words (order not considered).
+     *
+     * @param keywords
+     * @param maxItems
+     * @return vector of shared pointers to history items matching given
+     * pattern
+     */
+    std::shared_ptr<HistoryItemVector> getHistoryItemsByKeywordsString(
+            const std::string& keywordsString, int maxItems);
+
     int getHistoryItemsCount();
     void setStorageServiceTestMode(bool testmode = true);
 
@@ -69,6 +88,7 @@ private:
     bool m_testDbMod;;
     std::vector<std::shared_ptr<HistoryItem>> history_list;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
+    HistoryMatchFinderPtr m_historyMatchFinder;
 
     /**
      * @throws StorageExceptionInitialization on error

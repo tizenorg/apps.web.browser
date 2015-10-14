@@ -25,6 +25,7 @@
 #include "HistoryService.h"
 #include "HistoryItem.h"
 #include "AbstractWebEngine.h"
+#include "HistoryMatchFinder/HistoryMatchFinder.h"
 #include "EflTools.h"
 #include "Tools/GeneralTools.h"
 
@@ -43,6 +44,7 @@ const int SEARCH_LIKE = 1;
 HistoryService::HistoryService() : m_testDbMod(false)
 {
     BROWSER_LOGD("HistoryService");
+    m_historyMatchFinder = std::make_shared<HistoryMatchFinder>();
 }
 
 HistoryService::~HistoryService()
@@ -261,9 +263,10 @@ void HistoryService::cleanMostVisitedHistoryItems()
     BROWSER_LOGD("Deleted Most Visited Sites!");
 }
 
-std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(const std::string& url, int maxItems)
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
+        const std::string & keyword, int maxItems)
 {
-    std::string search("%" + tools::extractDomain(url) + "%");     // add SQL 'any character' signs
+    std::string search("%" + keyword + "%");    // add SQL 'any character' signs
 
     std::shared_ptr<HistoryItemVector> items(new HistoryItemVector);
     int *ids=nullptr;
@@ -473,6 +476,50 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     }
     free(ids);
     return ret_history_list;
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(
+        const std::string& url, int maxItems)
+{
+    return getHistoryItemsByKeyword(tools::extractDomain(url), maxItems);
+}
+
+std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsString(
+        const std::string& keywordsString, int maxItems)
+{
+    if (keywordsString.empty())
+        return std::make_shared<HistoryItemVector>();
+
+    std::vector<std::string> keywords;
+    m_historyMatchFinder->splitKeywordsString(keywordsString, keywords);
+
+    // the longer the keyword is, the faster search will be
+    const unsigned longestKeywordPos = m_historyMatchFinder->getLongest(
+            keywords);
+    std::string longestKeyword = keywords.at(longestKeywordPos);
+    boost::algorithm::to_lower(longestKeyword);
+
+    // assumption: search starts when longest keyword is at least 3 characters long
+    if (longestKeyword.length() < 3) {
+        return std::make_shared<HistoryItemVector>();
+    }
+
+    // get all results for the longest keyword
+    std::shared_ptr<HistoryItemVector> historyItems = getHistoryItemsByKeyword(
+            longestKeyword, -1);
+
+    if (keywords.size() > 1) {
+        // longestKeywordPos is already handled
+        keywords.erase(keywords.begin() + longestKeywordPos);
+        m_historyMatchFinder->downcaseStrings(keywords);
+        m_historyMatchFinder->removeMismatches(historyItems, keywords);
+    }
+
+    if (historyItems->size() > maxItems) {
+        historyItems->erase(historyItems->begin() + maxItems,
+                historyItems->end());
+    }
+    return historyItems;
 }
 
 }
