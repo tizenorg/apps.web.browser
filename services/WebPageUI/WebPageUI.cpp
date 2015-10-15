@@ -31,9 +31,11 @@ WebPageUI::WebPageUI()
     : m_parent(nullptr)
     , m_mainLayout(nullptr)
     , m_errorLayout(nullptr)
+    , m_privateLayout(nullptr)
     , m_progressBar(nullptr)
     , m_URIEntry(new URIEntry())
     , m_homePageActive(false)
+    , m_bookmarkManagerButton(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
@@ -131,6 +133,20 @@ void WebPageUI::setPageTitle(const std::string& title)
      m_URIEntry->setPageTitle(title);
 }
 
+bool WebPageUI::isIncognitoPageActive()
+{
+    return elm_object_part_content_get(m_mainLayout, "web_view") == m_privateLayout;
+}
+
+void WebPageUI::toIncognito(bool incognito)
+{
+    BROWSER_LOGD("[%s:%d,%d] ", __PRETTY_FUNCTION__, __LINE__, incognito);
+    if(incognito)
+        elm_object_signal_emit(m_mainLayout, "incognito,true", "ui");
+    else
+        elm_object_signal_emit(m_mainLayout, "incognito,false", "ui");
+}
+
 void WebPageUI::setMainContent(Evas_Object* content)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -147,6 +163,15 @@ void WebPageUI::switchViewToErrorPage()
     setMainContent(m_errorLayout);
     evas_object_show(m_leftButtonBar->getContent());
     setErrorButtons();
+    refreshFocusChain();
+}
+
+void WebPageUI::switchViewToIncognitoPage()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_homePageActive = false;
+    setMainContent(m_privateLayout);
+    evas_object_show(m_leftButtonBar->getContent());
     refreshFocusChain();
 }
 
@@ -212,6 +237,7 @@ void WebPageUI::createLayout()
     elm_layout_file_set(m_mainLayout, edjePath("WebPageUI/WebPageUI.edj").c_str(), "main_layout");
 
     createErrorLayout();
+    createPrivateLayout();
     createActions();
 
     // left buttons
@@ -250,6 +276,29 @@ void WebPageUI::createErrorLayout()
     evas_object_size_hint_weight_set(m_errorLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_errorLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_layout_file_set(m_errorLayout, edjePath("WebPageUI/ErrorMessage.edj").c_str(), "error_message");
+}
+
+void WebPageUI::createPrivateLayout()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_privateLayout =  elm_layout_add(m_mainLayout);
+    evas_object_size_hint_weight_set(m_privateLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_privateLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_layout_file_set(m_privateLayout, edjePath("WebPageUI/PrivateMode.edj").c_str(), "inco_message");
+
+    m_bookmarkManagerButton = elm_button_add(m_privateLayout);
+    elm_object_style_set(m_bookmarkManagerButton, "invisible_button");
+    evas_object_smart_callback_add(m_bookmarkManagerButton, "clicked", _bookmark_manager_clicked, this);
+    evas_object_show(m_bookmarkManagerButton);
+
+    elm_object_part_content_set(m_privateLayout, "bookmarkmanager_click", m_bookmarkManagerButton);
+}
+
+void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
+    webpageUI->bookmarkManagerClicked();
 }
 
 void WebPageUI::createActions()
@@ -362,6 +411,7 @@ void WebPageUI::refreshFocusChain()
     elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
     if (!m_homePageActive) {
         elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
+        elm_object_focus_custom_chain_append(m_mainLayout, m_bookmarkManagerButton, NULL);
     } else {
         m_reload->setEnabled(false);
     }

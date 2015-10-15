@@ -1,0 +1,374 @@
+
+collections {
+    styles {
+        style {
+            name: "message_style";
+            base: "font=Sans font_size=36 color=#676767 wrap=word align=0.5";
+        }
+        style {
+            name: "message_hint_style";
+            base: "font=Sans font_size=28 color=#676767 wrap=word align=0.0";
+        }
+    }
+    group {
+        name: "inco_message";
+        parts {
+            part {
+                name: "message_background";
+                type: RECT;
+                mouse_events: 1;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    rel1.relative: 0 0;
+                    rel2.relative: 1 1;
+                }
+            }
+            part {
+                name: "inco_message_background";
+                type:RECT;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 920 356;
+                    max: 920 356;
+                    fixed: 1 1;
+                    align: 0.5 0.5;
+            }
+        }
+        part {
+            name: "inco_dot";
+            images {
+                image: "ic_text_form.png" COMP;
+            }
+            type: "IMAGE";
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                min: 20 28;
+                max: 20 28;
+                align: 0 0;
+                image.normal: "ic_text_form.png";
+                rel1 {
+                    offset:  0 100;
+                    relative: 0 0;
+                    to: "inco_message_background";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to: "inco_message_background";
+                }
+            }
+        }
+        part {
+            name: "inco_dot2";
+            images {
+                image: "ic_text_form.png" COMP;
+            }
+            type: "IMAGE";
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                min: 20 28;
+                max: 20 28;
+                align: 0 0;
+                image.normal: "ic_text_form.png";
+                rel1 {
+                    offset:  0 216;
+                    relative: 0 0;
+                    to: "inco_message_background";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to: "inco_message_background";
+                }
+            }
+        }
+        part {
+            name: "inco_dot3";
+            images {
+                image: "ic_text_form.png" COMP;
+            }
+            type: "IMAGE";
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                min: 20 28;
+                max: 20 28;
+                align: 0 0;
+                image.normal: "ic_text_form.png";
+                rel1 {
+                    offset:  0 298;
+                    relative: 0 0;
+                    to: "inco_message_background";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to: "inco_message_background";
+                }
+            }
+        }
+        part {
+            name: "inco_text";
+            type: TEXTBLOCK;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                min: 864 36;
+                max: 864 36;
+                align: 0.5 0;
+                color: 103 103 103 255;
+                rel1 {
+                    relative: 0 0;
+                    to: "inco_message_background";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to: "inco_message_background";
+                }
+                text {
+                    min: 0 1;
+                    max: 0 1;
+                    style: "message_style";
+                    text: "Start Incognito Browsing";
+                }
+            }
+        }
+        part {
+            name: "inco_hint";
+            type: TEXTBLOCK;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 0 1;
+                min: 864 68;
+                max: 864 68;
+                color: 103 103 103 179;
+                align: 0 0;
+                rel1 {
+                    relative: 0 0;
+                    offset:  28 90;
+                    to_y: "inco_message_background";
+                    to_x: "inco_dot";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to_y: "inco_message_background";
+                }
+                text {
+                    min: 0 1;
+                    max: 0 1;
+                    style: "message_hint_style";
+                    text: "You can browse internet in incognito tabs without any traces including browsing history, cookie or search history.";
+                }
+            }
+        }
+        part {
+            name: "inco_hint2";
+            type: TEXTBLOCK;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                min: 864 28;
+                max: 864 28;
+                color: 103 103 103 179;
+                align: 0.0 0;
+                rel1 {
+                    relative: 0 0;
+                    offset:  28 206;
+                    to_y: "inco_message_background";
+                    to_x: "inco_dot2";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to_y: "inco_message_background";
+                }
+                text {
+                    min: 0 1;
+                    max: 0 1;
+                    style: "message_hint_style";
+                    text: "Bookmarks or downloaded files will not be removed.";
+                }
+            }
+        }
+        part {
+            name: "inco_hint3";
+            type: TEXTBLOCK;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                min: 864 68;
+                max: 864 68;
+                color: 103 103 103 179;
+                align: 0.0 0;
+                rel1 {
+                    relative: 0 0;
+                    offset:  28 288;
+                    to_y: "inco_message_background";
+                    to_x: "inco_dot3";
+                }
+                rel2 {
+                    relative: 1 1;
+                    to_y: "inco_message_background";
+                }
+                text {
+                    min: 0 1;
+                    max: 0 1;
+                    style: "message_hint_style";
+                    text: "You can not remove traces from your employer, internet service provider or websites you visit even you go incognito.";
+                }
+            }
+        }
+        part {
+            name: "bookmarkmanager_button";
+            scale:1;
+            mouse_events: 1;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0.5 1.0;
+                min: 348 65;
+                max: 348 65;
+                color: 192 192 192 255;
+                rel1 { relative: 0.0 0.0; to: "message_background";}
+                rel2 { relative: 1.0 1.0; to: "message_background"; offset: 0 -60;}
+            }
+            description {
+                state: "highlight" 0.0;
+                inherit: "default" 0.0;
+                color_class: focusBgColor;
+                visible: 1;
+            }
+            description {
+                state: "focus" 0.0;
+                inherit: "default" 0.0;
+                color_class: focusbtBgColor;
+                visible: 1;
+            }
+        }
+        part {
+            name: "bookmarkmanager_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0;to: "bookmarkmanager_button";}
+                rel2 { relative: 1.0 1.0;to: "bookmarkmanager_button";}
+                color: 0 0 0 255;
+                text {
+                    text: "Bookmark Manager";
+                    font: "Sans";
+                    size: 27;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "bookmarkmanager_over";
+            scale:1;
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 348 65;
+                max: 348 65;
+                rel1 { relative: 0.0 0.0; to: "bookmarkmanager_button";}
+                rel2 { relative: 1.0 1.0; to: "bookmarkmanager_button";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "bookmarkmanager_click";
+            scale:1;
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 348 65;
+                max: 348 65;
+                rel1 { relative: 0.0 0.0; to: "bookmarkmanager_over";}
+                rel2 { relative: 1.0 1.0; to: "bookmarkmanager_over";}
+            }
+        }
+    }//parts
+    programs{
+        program {
+            name: "mouse_click_bookmarkmanager";
+            signal: "mouse,clicked,1";
+            source: "bookmarkmanager_over";
+            script {
+              emit("elm,action,click", "");
+            }
+        }
+        program {
+            name: "mouse_in_bookmarkmanager_click";
+            signal: "mouse,in";
+            source: "bookmarkmanager_*";
+            action: STATE_SET "highlight" 0.0;
+            target: "bookmarkmanager_button";
+            target: "bookmarkmanager_over";
+            target: "bookmarkmanager_text";
+        }
+        program {
+            name: "mouse_out_bookmarkmanager_click";
+            signal: "mouse,out";
+            source: "bookmarkmanager_*";
+            action: STATE_SET "default" 0.0;
+            target: "bookmarkmanager_button";
+            target: "bookmarkmanager_over";
+            target: "bookmarkmanager_text";
+        }
+    }
+}
+
+group {
+    name: "elm/button/base/invisible_button";
+    parts {
+        part {
+            name: "button";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                color: 0 0 0 0;
+            }
+        }
+        part {
+            name: "over";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0;to: "button";}
+                rel2 { relative: 1.0 1.0;to: "button";}
+                color: 0 0 0 0;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "mouse_click";
+            signal: "mouse,clicked,1";
+            source: "over";
+            script {
+                emit("elm,action,click", "");
+            }
+        }
+    }
+}
+

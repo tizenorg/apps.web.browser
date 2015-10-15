@@ -414,6 +414,18 @@ void WebKitEngineService::setPrivateMode(bool state)
         it->second->setPrivateMode(state);
 }
 
+void WebKitEngineService::setPrivateMode(const TabId& id, bool state)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    m_tabs[id]->setPrivateMode(state);
+}
+
+int WebKitEngineService::isPrivateMode(const TabId& id)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    return m_tabs[id]->isPrivateMode();
+}
+
 bool WebKitEngineService::isPrivateMode() const
 {
     return m_privateMode;

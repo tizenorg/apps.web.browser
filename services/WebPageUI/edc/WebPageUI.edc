@@ -21,6 +21,7 @@ collections {
         name: "main_layout";
         images {
             image: "web_shadow.png" COMP;
+            image: "btn_bar_incognito.png" COMP;
         }
         parts {
             part {
@@ -168,6 +169,33 @@ collections {
             }
         }
         part {
+            name: "incognito";
+            type: IMAGE;
+            repeat_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                rel1 {
+                    relative: 0.0 0.0;
+                    to: "uri_bar_bg";
+                    offset: 1623 0;
+                }
+                rel2 {
+                    relative: 0.0 0.0;
+                    to: "uri_bar_bg";
+                    offset: 1623+82 0+102;
+                }
+                align: 0.5 0.5;
+                image.normal: "btn_bar_incognito.png";
+            }
+            description {
+                state: "visible" 1.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
             name: "progress_bar";
             type: SWALLOW;
             scale: 1;
@@ -294,6 +322,20 @@ collections {
             source: "ui";
             action: STATE_SET "visible" 0.0;
             target: "progress_bar_light_bg";
+        }
+        program {
+            name: "show_incognito_ico";
+            signal: "incognito,true";
+            source: "ui";
+            action: STATE_SET "visible" 1.0;
+            target: "incognito";
+        }
+        program {
+            name: "hide_incognito_ico";
+            signal: "incognito,false";
+            source: "ui";
+            action: STATE_SET "default" 0.0;
+            target: "incognito";
         }
         program {
             name: "show_popup";

@@ -58,6 +58,7 @@ set(edcFiles
     LeftButtonBar.edc
     RightButtonBar.edc
     URIEntry.edc
+    PrivateMode.edc
     )
 
 foreach(edec ${edcFiles})

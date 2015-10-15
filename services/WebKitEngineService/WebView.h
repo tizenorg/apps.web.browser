@@ -66,6 +66,16 @@ public:
 
     void setPrivateMode(bool);
 
+    /**
+     * @brief Get the state of private mode
+     *
+     * @return state of private mode where:
+     *     -1 is "Not set"
+     *      0 is "False"
+     *      1 is "True"
+     */
+    int isPrivateMode() {return m_private;}
+
     std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height);
      /**
      * \brief Sets Focus to URI entry.
@@ -213,6 +223,7 @@ private:
     bool m_loadError;
     // true if desktop view is enabled, false if mobile
     bool m_desktopMode;
+    int m_private;
 
     config::DefaultConfig config;
 

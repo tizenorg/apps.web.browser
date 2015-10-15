@@ -108,7 +108,19 @@ public:
     std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height);
 
     void setPrivateMode(bool);
+    void setPrivateMode(const TabId& id, bool state);
     bool isPrivateMode() const;
+
+    /**
+     * @brief Get the state of private mode for a specific tab
+     *
+     * @param id of snapshot
+     * @return state of private mode where:
+     *     -1 is "Not set"
+     *      0 is "False"
+     *      1 is "True"
+     */
+    int isPrivateMode(const TabId& id);
 
 
     /**

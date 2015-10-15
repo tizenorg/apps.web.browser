@@ -104,6 +104,7 @@ private:
 
     void showQuickAccess();
     void switchViewToQuickAccess();
+    void switchViewToIncognitoPage();
     void switchViewToWebPage();
     void updateView();
 
@@ -211,6 +212,7 @@ private:
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
     void settingsPrivateModeSwitch(bool newState);
+    void applyPrivateModeToTab(const tizen_browser::basic_webengine::TabId& id);
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
@@ -248,6 +250,7 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    bool m_incognito;
 
     //helper object used to view management
     ViewManager* m_viewManager;
