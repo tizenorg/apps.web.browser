@@ -71,6 +71,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId)
     , m_ewkView(nullptr)
     , m_isLoading(false)
     , m_loadError(false)
+    , m_private(-1)
 {
     config.load("whatever");
 }
@@ -292,30 +293,32 @@ void WebView::setPrivateMode(bool state)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     M_ASSERT(m_ewkView);
-
+    if(m_private < 0){
 #if defined(USE_EWEBKIT)
 #if PLATFORM(TIZEN)
-    Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
+        Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
 #else
-    Ewk_Settings * settings = ewk_page_group_settings_get(ewk_view_page_group_get(m_ewkView));
+        Ewk_Settings * settings = ewk_page_group_settings_get(ewk_view_page_group_get(m_ewkView));
 #endif
-    ewk_settings_private_browsing_enabled_set(settings, state);
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
+        ewk_settings_private_browsing_enabled_set(settings, state);
+        if (m_ewkView)
         {
-            if(state)
+            Ewk_Context *context = ewk_view_context_get(m_ewkView);
+            if (context)
             {
-                 ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_NEVER);
-            }
-            else
-            {
-                 ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
+                if(state)
+                {
+                    ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_NEVER);
+                }
+                else
+                {
+                    ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
+                }
             }
         }
-    }
 #endif
+        m_private = static_cast<unsigned int>(state);
+    }
 }
 
 void WebView::confirmationResult(WebConfirmationPtr confirmation)

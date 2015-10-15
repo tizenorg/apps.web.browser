@@ -125,6 +125,7 @@ collections {
                 source: "elm/entry/selection/browser_entry";
                 source4: "elm/entry/cursor/browser_entry";
                 description {
+                    max: 1378 82;
                     state: "default" 0.0;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;

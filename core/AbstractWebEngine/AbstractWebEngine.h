@@ -198,7 +198,29 @@ public:
      */
     virtual void setPrivateMode(bool) = 0;
 
+    /**
+     * Set the state of private mode for a specific tab
+     *
+     * \param id of snapshot
+     * \param state to set
+     */
+    virtual void setPrivateMode(const TabId&, bool) = 0;
+
+    /**
+     * Get the state of private mode
+     */
     virtual bool isPrivateMode() const = 0;
+
+    /**
+     * Get the state of private mode for a specific tab
+     *
+     * /param id of snapshot
+     * /return state of private mode where:
+     *     -1 is "Not set"
+     *      0 is "False"
+     *      1 is "True"
+     */
+    virtual int isPrivateMode(const TabId&) = 0;
 
     virtual bool isLoadError() const = 0;
 

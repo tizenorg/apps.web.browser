@@ -42,9 +42,12 @@ public:
     void progressChanged(double progress);
     void loadFinished();
     bool isErrorPageActive();
+    bool isIncognitoPageActive();
     bool isHomePageActive() { return m_homePageActive; }
+    void toIncognito(bool);
     void switchViewToErrorPage();
     void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
+    void switchViewToIncognitoPage();
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }
     void setPageTitle(const std::string& title);
@@ -63,12 +66,14 @@ public:
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
+    boost::signals2::signal<void ()> bookmarkManagerClicked;
 
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
 
 private:
     void createLayout();
     void createErrorLayout();
+    void createPrivateLayout();
     void createActions();
     void connectActions();
     void showProgressBar();
@@ -79,6 +84,8 @@ private:
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
     void refreshFocusChain();
+
+    static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
 
     // wrappers to call singal as a reaction to other signal
     void backPageConnect() { backPage(); }
@@ -91,7 +98,9 @@ private:
     Evas_Object* m_parent;
     Evas_Object* m_mainLayout;
     Evas_Object* m_errorLayout;
+    Evas_Object* m_privateLayout;
     Evas_Object* m_progressBar;
+    Evas_Object* m_bookmarkManagerButton;
     std::unique_ptr<ButtonBar> m_leftButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
     std::unique_ptr<URIEntry> m_URIEntry;

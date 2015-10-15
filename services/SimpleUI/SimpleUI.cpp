@@ -71,6 +71,7 @@ SimpleUI::SimpleUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
     , m_ewkContext(ewk_context_new())
+    , m_incognito(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
@@ -245,6 +246,7 @@ void SimpleUI::connectUISignals()
     m_webPageUI->reloadPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::reload, m_webEngine.get()));
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
+    m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
 
 
     M_ASSERT(m_quickAccess.get());
@@ -258,9 +260,11 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_tabUI.get());
     m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this));
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
+    m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, false));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, true));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::switchViewToIncognitoPage, this));
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
@@ -471,6 +475,16 @@ void SimpleUI::switchViewToQuickAccess()
     m_viewManager->popStackTo(m_webPageUI.get());
 }
 
+void SimpleUI::switchViewToIncognitoPage()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    m_webPageUI->toIncognito(m_incognito);
+    m_webPageUI->switchViewToIncognitoPage();
+    m_webEngine->disconnectCurrentWebViewSignals();
+    m_viewManager->popStackTo(m_webPageUI.get());
+}
+
 void SimpleUI::checkTabId(const tizen_browser::basic_webengine::TabId& id){
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_webEngine->currentTabId() != id || isErrorPageActive()){
@@ -482,7 +496,9 @@ void SimpleUI::checkTabId(const tizen_browser::basic_webengine::TabId& id){
 void SimpleUI::openNewTab(const std::string &uri, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
-    switchToTab(m_webEngine->addTab(uri, nullptr, desktopMode));
+    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, desktopMode);
+    applyPrivateModeToTab(tab);
+    switchToTab(tab);
 }
 
 void SimpleUI::closeTab()
@@ -738,6 +754,7 @@ void SimpleUI::tabClicked(const tizen_browser::basic_webengine::TabId& tabId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager->popStackTo(m_webPageUI.get());
+    applyPrivateModeToTab(tabId);
     switchToTab(tabId);
 }
 
@@ -940,8 +957,18 @@ void SimpleUI::closeBookmarkManagerUI()
 void SimpleUI::settingsPrivateModeSwitch(bool newState)
 {
     BROWSER_LOGD("%s: Setting Private mode to: %s", __func__, (newState ? "true" : "false"));
-    m_webEngine->setPrivateMode(newState);
-    BROWSER_LOGD("[%s:%d] webEngine private mode: %s", __PRETTY_FUNCTION__, __LINE__, (m_webEngine->isPrivateMode() ? "true" : "false"));
+    m_incognito = newState;
+}
+
+void SimpleUI::applyPrivateModeToTab(const tizen_browser::basic_webengine::TabId& tabId)
+{
+    if (m_webEngine->isPrivateMode(tabId) < 0) {
+        m_webEngine->setPrivateMode(tabId, m_incognito);
+        m_webPageUI->toIncognito(m_incognito);
+    } else {
+        m_webEngine->setPrivateMode(tabId, m_webEngine->isPrivateMode(tabId));
+        m_webPageUI->toIncognito(m_webEngine->isPrivateMode(tabId));
+    }
 }
 
 void SimpleUI::settingsDeleteSelectedData(const std::string& str)
