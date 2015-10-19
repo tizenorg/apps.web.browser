@@ -84,7 +84,7 @@ private:
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbBookmarkClicked(void * data, Evas_Object * obj, void * event_info);
-    static void _thumbClicked(void * data, Evas_Object * obj, void * event_info);
+    static void _thumbHistoryClicked(void * data, Evas_Object * obj, void * event_info);
     void setEmptyView(bool empty);
     void showNoHistoryLabel();
 
@@ -100,6 +100,7 @@ private:
     Evas_Object *m_mostVisitedButton;
     Evas_Object *m_bookmarkGengrid;
     Evas_Object *m_bookmarkManagerButton;
+    bool m_after_history_thumb;
     std::vector<Evas_Object *> m_tiles;
     Eina_List* m_parentFocusChain;
 
