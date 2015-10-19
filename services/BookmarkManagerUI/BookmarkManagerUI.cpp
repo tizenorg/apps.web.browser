@@ -282,7 +282,7 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
     return nullptr;
 }
 
-void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void * event_info)
+void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     if (data != nullptr)
