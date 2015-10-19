@@ -181,7 +181,7 @@ int BookmarkService::getBookmarkId(const std::string & url)
     int *ids = nullptr;
     int ids_count = 0;
     int i = 0;
-    int ret = bp_bookmark_adaptor_get_cond_ids_p(&ids, &ids_count, &properties, &conds, BP_BOOKMARK_O_URL, url.c_str(), 0);
+    bp_bookmark_adaptor_get_cond_ids_p(&ids, &ids_count, &properties, &conds, BP_BOOKMARK_O_URL, url.c_str(), 0);
     if (ids_count > 0){
         i = *ids;
     }
