@@ -51,7 +51,7 @@ class  SqlStorage
     bool init();
 public:
     ~SqlStorage();
-    static SqlStorage* const getInstance();
+    static SqlStorage* getInstance();
     Session createSession(const std::string& name = "");
     /**
      * Return newes session in storage.
