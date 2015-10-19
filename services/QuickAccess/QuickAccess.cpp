@@ -72,6 +72,7 @@ QuickAccess::QuickAccess()
     , m_parentFocusChain(nullptr)
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
+    , m_after_history_thumb(false)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     edjFilePath = EDJE_DIR;
@@ -294,7 +295,7 @@ void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     elm_layout_text_set(tile, "page_url", hi->getUrl().c_str());
     Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(hi->getThumbnail(), m_parent);
     elm_object_part_content_set(tile, "elm.thumbnail", thumb);
-    evas_object_smart_callback_add(tile, "clicked", _thumbClicked, itemData);
+    evas_object_smart_callback_add(tile, "clicked", _thumbHistoryClicked, itemData);
 
     m_historyItems.push_back(hi);
 }
@@ -367,13 +368,15 @@ void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
     itemData->quickAccess->openURLInNewTab(itemData->item, itemData->quickAccess->isDesktopMode());
+    itemData->quickAccess->m_after_history_thumb = false;
 }
 
-void QuickAccess::_thumbClicked(void* data, Evas_Object*, void*)
+void QuickAccess::_thumbHistoryClicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
     itemData->quickAccess->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
+    itemData->quickAccess->m_after_history_thumb = true;
 }
 
 void QuickAccess::clearHistoryGenlist()
@@ -381,7 +384,7 @@ void QuickAccess::clearHistoryGenlist()
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
     for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it) {
-        evas_object_smart_callback_del(*it, "clicked", _thumbClicked);
+        evas_object_smart_callback_del(*it, "clicked", _thumbHistoryClicked);
         evas_object_del(*it);
     }
 
@@ -504,6 +507,10 @@ bool QuickAccess::isMostVisitedActive() const
 
 void QuickAccess::refreshFocusChain()
 {
+    if (!isMostVisitedActive() && m_after_history_thumb) {
+        m_after_history_thumb = false;
+        return;
+    }
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (!m_parentFocusChain) {
