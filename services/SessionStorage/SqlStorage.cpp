@@ -101,7 +101,7 @@ bool SqlStorage::init()
     return false;
 }
 
-SqlStorage* const SqlStorage::getInstance()
+SqlStorage* SqlStorage::getInstance()
 {
     static SqlStorage instance;
     if( instance.init() ){
@@ -306,6 +306,9 @@ void SqlStorage::clearSession(const Session& session,
 
 void SqlStorage::updateSessionName(Session& session, std::string newName)
 {
+    //FIXME - newName not used! The sql query creation below should be fixed.
+    // submitted bug: https://bugs.tizen.org/jira/browse/TT-218
+    (void)newName;
     if(session.isValid()){
         boost::format updateSessionNameString("UPDATE %1%  SET %2% = ?  WHERE %3% = ?" );
         updateSessionNameString % TABLE_SESSION % COL_SESSION_NAME % COL_SESSION_ID;
