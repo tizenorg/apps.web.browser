@@ -43,7 +43,7 @@ void FocusManager::stopFocusManager()
     verticalFocusVector.clear();
     ecore_event_handler_del(handlerDown);
 }
-Eina_Bool FocusManager::_key_down_cb(void* data, int type, void* event)
+Eina_Bool FocusManager::_key_down_cb(void* data, int, void* event)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     FocusManager* fm = static_cast<FocusManager*>(data);
