@@ -27,7 +27,7 @@
 
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
-#include "FavoriteService.h"
+#include "BookmarkService.h"
 #include "BookmarkItem.h"
 
 
@@ -40,15 +40,15 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     BROWSER_LOGI("BOOKMARKS_TEST_CASE START --> ");
 
     /// \todo: clean casts, depends on ServiceManager
-    std::shared_ptr<tizen_browser::services::FavoriteService> fs =
+    std::shared_ptr<tizen_browser::services::BookmarkService> fs =
     std::dynamic_pointer_cast
     <
-        tizen_browser::services::FavoriteService,
+        tizen_browser::services::BookmarkService,
         tizen_browser::core::AbstractService
     >
     (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
 
-    fs->setStorageServiceTestMode();
+//    fs->setStorageServiceTestMode();
 
     int bookcount = -1;
     int bookcount2 = -1;
@@ -73,9 +73,9 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     BROWSER_LOGI("Above - current stored bookmarks after deleteAll, deleting resultflag: %d", resultflag);
 
 //  Empty bookmark test
-    bookcount = fs->countBookmarksAndSubFolders();
+    bookcount = fs->countBookmarks();
     BOOST_CHECK(item_is_empty(fs->addToBookmarks("","")));
-    bookcount2 = fs->countBookmarksAndSubFolders();
+    bookcount2 = fs->countBookmarks();
     BOOST_CHECK_EQUAL(bookcount, bookcount2);
     BROWSER_LOGI("Add empty bookmark test summary - number of bookmarks before: %d, after: %d", bookcount ,bookcount2);
     fs->getBookmarks();
@@ -108,10 +108,10 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
 BOOST_AUTO_TEST_CASE(bookmark_synchro)
 {
     /// \todo: clean casts, depends on ServiceManager
-    std::shared_ptr<tizen_browser::services::FavoriteService> fs =
+    std::shared_ptr<tizen_browser::services::BookmarkService> fs =
     std::dynamic_pointer_cast
     <
-        tizen_browser::services::FavoriteService,
+        tizen_browser::services::BookmarkService,
         tizen_browser::core::AbstractService
     >
     (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
