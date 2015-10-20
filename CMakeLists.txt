@@ -46,16 +46,11 @@ else()
     message(FATAL_ERROR "The Compiler ${CMAKE_CXX_COMPILER} doesn't support C++11")
 endif()
 
-
-find_package(Boost 1.49.0 REQUIRED COMPONENTS
-                                        regex
-                                        filesystem
-                                        system
-                                        date_time
-                                        )
+set(BOOST_LIBS regex filesystem system date_time)
 if(BUILD_UT)
-find_package(Boost 1.49.0 REQUIRED COMPONENTS unit_test_framework)
+    set(BOOST_LIBS ${BOOST_LIBS} unit_test_framework)
 ENDIF(BUILD_UT)
+find_package(Boost 1.49.9 REQUIRED COMPONENTS ${BOOST_LIBS})
 
 #RPATH settings
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
