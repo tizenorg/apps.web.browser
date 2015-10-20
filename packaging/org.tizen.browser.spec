@@ -84,6 +84,7 @@ cmake .. \
     -DICONDIR=%{_icondir} \
     -DBUILD_UT=%{BUILD_UT} \
     -DCOVERAGE_STATS=%{COVERAGE_STATS} \
+    -DPROFILE=%{profile} \
 %if "%{?_with_wayland}" == "1"
     -DWAYLAND_SUPPORT=On
 %else
