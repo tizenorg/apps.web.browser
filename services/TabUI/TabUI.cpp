@@ -246,6 +246,7 @@ void TabUI::_newtab_clicked(void * data, Evas_Object*, void*)
     }
 
 }
+
 void TabUI::_openedtabs_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -295,6 +296,7 @@ void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
             BROWSER_LOGD("[%s:%d] --------> edit mode: %d ", __PRETTY_FUNCTION__, __LINE__, tabUI->editMode);
             elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close all");
         } else if (tabUI->editMode && !tabUI->onOtherDevicesSwitch) {
+            tabUI->editMode = false;
             tabUI->closeAllTabs();
             elm_gengrid_realized_items_update(tabUI->m_gengrid);
         }
@@ -319,6 +321,8 @@ void TabUI::addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabConten
 void TabUI::addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>>items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
+    editMode = false;
     for (auto it = items.begin(); it < items.end(); it++) {
         addTabItem(*it);
     }
