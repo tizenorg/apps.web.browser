@@ -139,6 +139,7 @@ private:
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
+    void onMouseClick();
     void setwvIMEStatus(bool status);
 
     sharedAction m_showBookmarkManagerUI;
@@ -152,6 +153,11 @@ private:
      * filter forbidden addresses and to check set favorite icon.
      */
     void filterURL(const std::string& url);
+
+    // // on uri entry widget "changed,user" signal
+    void onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr);
+    // on uri entry widget "changed" signal
+    void onURLEntryEdited();
 
     /**
      * Checks if correct tab is visible to user, and if not, it update browser view

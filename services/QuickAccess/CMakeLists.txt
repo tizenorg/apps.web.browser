@@ -13,7 +13,6 @@ set(QuickAccess_HEADERS
     QuickAccess.h
     DetailPopup.h
     UrlHistoryList/UrlHistoryList.h
-    UrlHistoryList/WidgetListManager.h
     UrlHistoryList/GenlistManager.h
     UrlHistoryList/GenlistManagerCallbacks.h
     UrlHistoryList/UrlMatchesStyler.h

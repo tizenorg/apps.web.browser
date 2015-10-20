@@ -91,6 +91,8 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             return EINA_TRUE;
 
         BROWSER_LOGD("Released key: %s", ev->keyname);
+    } else if (type == ECORE_EVENT_MOUSE_BUTTON_DOWN) {
+        self->mouseClicked();
     }
     return EINA_TRUE;
 }

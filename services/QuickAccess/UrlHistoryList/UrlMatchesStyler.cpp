@@ -17,7 +17,7 @@
 #include "UrlMatchesStyler.h"
 
 namespace tizen_browser {
-namespace services {
+namespace base_ui {
 
 UrlMatchesStyler::UrlMatchesStyler() :
 		TAG_WHOLE_URL("<align=left><color=" + FONT_COLOR_NORMAL + "><font_size="+FONT_SIZE+">"),
@@ -127,5 +127,5 @@ string UrlMatchesStyler::getTaggedString(const string& strToHighlight,
 	return strResult;
 }
 
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */

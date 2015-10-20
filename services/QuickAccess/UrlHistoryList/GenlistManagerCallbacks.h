@@ -17,57 +17,47 @@
 #ifndef GENLISTMANAGERCALLBACKS_H_
 #define GENLISTMANAGERCALLBACKS_H_
 
+#include <services/QuickAccess/UrlHistoryList/GenlistManager.h>
 #include <Elementary.h>
 #include <Evas.h>
 
-class GenlistManager;
-
-namespace tizen_browser
-{
-namespace services
-{
+namespace tizen_browser {
+namespace base_ui {
 
 class GenlistManagerCallbacks
 {
 public:
-	GenlistManagerCallbacks();
-	virtual ~GenlistManagerCallbacks();
+    GenlistManagerCallbacks();
+    virtual ~GenlistManagerCallbacks();
 
-	static void cb_genlistAnimStop(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistEdgeTop(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistEdgeBottom(void *data, Evas_Object *obj,
-			void *event_info);
+    static void _genlist_edge_top(void* data, Evas_Object* obj,
+            void* event_info);
+    static void _genlist_edge_bottom(void* data, Evas_Object* obj,
+            void* event_info);
 
-	static void cb_genlistActivated(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistPressed(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistSelected(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistUnselected(void *data, Evas_Object *obj,
-			void *event_info);
+    static void _genlist_mouse_in(void* data, Evas* e, Evas_Object* obj,
+            void* event_info);
+    static void _genlist_mouse_out(void* data, Evas* e, Evas_Object* obj,
+            void* event_info);
 
-	static void cb_genlistFocused(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistUnfocused(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistMouseIn(void *data, Evas *e, Evas_Object *obj,
-			void *event_info);
-	static void cb_genlistMouseOut(void *data, Evas *e, Evas_Object *obj,
-			void *event_info);
+    static void _genlist_focused(void* data, Evas_Object* obj,
+            void* event_info);
+    static void _genlist_unfocused(void* data, Evas_Object* obj,
+            void* event_info);
 
-	static void cb_itemFocused(void *data, Evas_Object *obj, void *event_info);
-	static void cb_itemUnfocused(void *data, Evas_Object *obj,
-			void *event_info);
-	static void cb_itemMouseIn(void *data, Elm_Object_Item *it,
-            const char *emission, const char *source);
-	static void cb_itemMouseOut(void *data, Evas *e, Evas_Object *obj,
-			void *event_info);
+    static void _item_selected(void* data, Evas_Object* obj, void* event_info);
+
+    static void setGenlistManager(GenlistManager* genlistManager)
+    {
+        GenlistManagerCallbacks::genlistManager = genlistManager;
+    }
+
+private:
+    static GenlistManager* genlistManager;
+
 };
 
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */
 
 #endif /* GENLISTMANAGERCALLBACKS_H_ */

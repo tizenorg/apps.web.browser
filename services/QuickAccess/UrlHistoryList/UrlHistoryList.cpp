@@ -17,66 +17,89 @@
 #include <Elementary.h>
 #include "UrlHistoryList.h"
 #include "GenlistManager.h"
-
 #include "BrowserLogger.h"
+#include "../QuickAccess.h"
 
-namespace tizen_browser
-{
-namespace base_ui
-{
+namespace tizen_browser {
+namespace base_ui {
 
-UrlHistoryList::UrlHistoryList() :
-		m_layout(nullptr)
+UrlHistoryList::UrlHistoryList(QuickAccess* quickAccess) :
+        m_layout(nullptr), m_quickAccess(quickAccess)
 {
-	m_edjFilePath = EDJE_DIR;
-	m_edjFilePath.append("MainUI/UrlHistoryList.edj");
-	m_widgetListManager = make_shared<services::GenlistManager>();
+    m_edjFilePath = EDJE_DIR;
+    m_edjFilePath.append("QuickAccess/UrlHistoryList.edj");
+    m_genlistListManager = make_shared<GenlistManager>();
+    m_genlistListManager->signalItemSelected.connect(
+            boost::bind(&UrlHistoryList::onListItemSelect, this, _1));
+    m_genlistListManager->signalWidgetFocused.connect(
+            boost::bind(&UrlHistoryList::onListWidgetFocused, this));
+    m_genlistListManager->signalWidgetUnfocused.connect(
+            boost::bind(&UrlHistoryList::onListWidgetUnfocused, this));
 }
 
 UrlHistoryList::~UrlHistoryList()
 {
 }
 
-void UrlHistoryList::show()
-{
-	if (m_layout)
-	{
-		evas_object_show(m_layout);
-	}
-}
-
 Evas_Object* UrlHistoryList::getLayout()
 {
-	return m_layout;
+    return m_layout;
 }
 
 void UrlHistoryList::createLayout(Evas_Object* parentLayout)
 {
-	m_layout = elm_layout_add(parentLayout);
-	elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
+    m_layout = elm_layout_add(parentLayout);
+    elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
 
-	Evas_Object* widgetList = m_widgetListManager->createWidget(m_layout);
+    Evas_Object* widgetList = m_genlistListManager->createWidget(m_layout);
 }
 
-void UrlHistoryList::onURLEntryEdit(const string& editedUrl,
-		shared_ptr<services::HistoryItemVector> matchedEntries)
+void UrlHistoryList::onURLEntryEditedByUser(const string& editedUrl,
+        shared_ptr<services::HistoryItemVector> matchedEntries)
 {
-	Evas_Object* widgetList = m_widgetListManager->getWidget();
-	if (matchedEntries->size() == 0)
-	{
-		m_widgetListManager->hideWidget();
-	}
-	else
-	{
-		elm_object_part_content_set(m_layout, "list_swallow", widgetList);
-		m_widgetListManager->showWidget(editedUrl, matchedEntries);
-		evas_object_show(widgetList);
-	}
+    editedUrlStatesHelper.changeState(true);
+
+    if (matchedEntries->size() == 0) {
+        m_genlistListManager->hideWidgetPretty();
+    } else {
+        Evas_Object* widgetList = m_genlistListManager->getWidget();
+        elm_object_part_content_set(m_layout, "list_swallow", widgetList);
+        m_genlistListManager->showWidget(editedUrl, matchedEntries);
+        evas_object_show(widgetList);
+    }
+}
+
+void UrlHistoryList::onURLEntryEdited()
+{
+    editedUrlStatesHelper.changeState(false);
+    if (editedUrlStatesHelper.getCurrentState()
+            == EditedUrlState::EDITED_OTHER_FIRST) {
+        m_genlistListManager->hideWidgetPretty();
+    } else {
+        // in this situation scroll will not work, it has to be hidden instantly
+        m_genlistListManager->hideWidgetInstant();
+    }
 }
 
 void UrlHistoryList::onMouseClick()
 {
-	m_widgetListManager->onMouseClick();
+    m_genlistListManager->onMouseClick();
+}
+
+void UrlHistoryList::onListItemSelect(std::string content)
+{
+    openURLInNewTab(make_shared < services::HistoryItem > (content),
+            m_quickAccess->isDesktopMode());
+}
+
+void UrlHistoryList::onListWidgetFocused()
+{
+    // will be used soon: in a proper focus-chain solution
+}
+
+void UrlHistoryList::onListWidgetUnfocused()
+{
+    // will be used soon: in a proper focus-chain solution
 }
 
 }/* namespace base_ui */

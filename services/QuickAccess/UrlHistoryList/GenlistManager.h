@@ -18,46 +18,54 @@
 #define GENLISTMANAGER_H_
 
 #include <Elementary.h>
-
+#include "services/HistoryService/HistoryItem.h"
+#include <boost/signals2/signal.hpp>
 #include "BrowserLogger.h"
-#include "WidgetListManager.h"
 
 using namespace std;
 
 namespace tizen_browser {
-namespace services {
+namespace base_ui {
 
 class GenlistManagerCallbacks;
 class UrlMatchesStyler;
 typedef shared_ptr<UrlMatchesStyler> UrlMatchesStylerPtr;
 
-class GenlistManager: public WidgetListManager
+typedef struct UrlPair_s {
+    UrlPair_s(string a, string b) : urlOriginal(a), urlHighlighted(b) {}
+    string urlOriginal;
+    string urlHighlighted;
+} UrlPair;
+
+class GenlistManager
 {
     friend class GenlistManagerCallbacks;
 public:
     GenlistManager();
-    virtual ~GenlistManager();
+    ~GenlistManager();
 
-    virtual Evas_Object* createWidget(Evas_Object* parentLayout);
-    virtual Evas_Object* getWidget();
+    Evas_Object* createWidget(Evas_Object* parentLayout);
+    Evas_Object* getWidget();
 
-    virtual void showWidget(const string& editedUrl,
+    void showWidget(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    virtual void hideWidget();
-    void onMouseClick();
-
+    void hideWidgetPretty();
+    void hideWidgetInstant();
     bool isWidgetHidden();
+    void onMouseClick();
 
     /**
      * Add empty list elements to allow scroll in effect.
      */
     void addSpaces();
     void removeSpaces();
-
     void clearWidget();
 
-private:
+    boost::signals2::signal<void(string)> signalItemSelected;
+    boost::signals2::signal<void()> signalWidgetFocused;
+    boost::signals2::signal<void()> signalWidgetUnfocused;
 
+private:
     static Evas_Object* m_contentGet(void *data, Evas_Object *obj,
             const char *part);
     bool widgetExists()
@@ -66,21 +74,23 @@ private:
     }
     void prepareUrlsVector(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    void startScrollIn();
-    void startScrollOut();
+
     void setLastEdgeTop(bool edgeTop);
     bool getLastEdgeTop();
     void onMouseFocusChange(bool mouseInsideWidget);
+
+    void startScrollIn();
+    void startScrollOut();
 
     Evas_Object* m_parentLayout = nullptr;
     Evas_Object* m_genlist = nullptr;
     const bool genlistShowScrollbar = false;
 
     // don't know how to get from edc:
-    const int historyItemH = 82;
-    const int historyItemsVisibleMax = 5;
+    const int HISTORY_ITEM_H = 82;
+    const int HISTORY_ITEMS_VISIBLE_MAX = 5;
     // don't know how to calculate:
-    const int genlistH = historyItemH * historyItemsVisibleMax;
+    const int GENLIST_H = HISTORY_ITEM_H * HISTORY_ITEMS_VISIBLE_MAX;
 
     /*
      * Set to true, whenever hide request occurs. Set to false, whenever show
@@ -96,8 +106,8 @@ private:
      */
     bool lastEdgeTop = true;
 
-    Elm_Gengrid_Item_Class * m_historyItemClass;
-    Elm_Gengrid_Item_Class * m_historyItemSpaceClass;
+    Elm_Gengrid_Item_Class* m_historyItemClass;
+    Elm_Gengrid_Item_Class* m_historyItemSpaceClass;
     Elm_Object_Item* m_itemUrlFirst = nullptr;
     Elm_Object_Item* m_itemUrlLast = nullptr;
     Elm_Object_Item* m_itemSpaceFirst = nullptr;
@@ -111,11 +121,12 @@ private:
      * manually in m_contentGet().
      */
     vector<shared_ptr<string>> m_readyUrls;
+    vector<shared_ptr<UrlPair>> m_readyUrlPairs;
     UrlMatchesStylerPtr m_urlMatchesStyler;
 
 };
 
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */
 
 #endif /* GENLISTMANAGER_H_ */
