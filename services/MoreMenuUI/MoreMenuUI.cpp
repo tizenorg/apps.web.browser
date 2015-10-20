@@ -344,7 +344,7 @@ void MoreMenuUI::clearItems()
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     for (auto it = m_map_menu_views.begin(); it != m_map_menu_views.end(); ++it) {
         Elm_Object_Item* bookmarkView = it->second;
-        Evas_Object *button = elm_object_item_part_content_get(it->second, "thumbbutton_item");
+        Evas_Object *button = elm_object_item_part_content_get(bookmarkView, "thumbbutton_item");
         evas_object_event_callback_del(button, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in);
         evas_object_event_callback_del(button, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out);
     }
