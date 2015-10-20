@@ -241,16 +241,20 @@ void SimpleUI::connectUISignals()
     m_webPageUI->getURIEntry().uriEntryEditingChanged.connect(boost::bind(&SimpleUI::onURLEntryEdited, this));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
+    m_webPageUI->backPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->showTabUI.connect(boost::bind(&SimpleUI::showTabUI, this));
     m_webPageUI->showMoreMenu.connect(boost::bind(&SimpleUI::showMoreMenu, this));
     m_webPageUI->forwardPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::forward, m_webEngine.get()));
+    m_webPageUI->forwardPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->stopLoadingPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::stopLoading, m_webEngine.get()));
+    m_webPageUI->stopLoadingPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::reload, m_webEngine.get()));
+    m_webPageUI->reloadPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
-
+    m_webPageUI->showZoomNavigation.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
 
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
@@ -263,6 +267,7 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_tabUI.get());
     m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this));
+    m_tabUI->closeTabUIClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, false));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
@@ -274,6 +279,7 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_historyUI.get());
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
+    m_historyUI->closeHistoryUIClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     // desktop mode as default
     m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));
 
@@ -288,6 +294,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this));
     m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this));
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
+    m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
     m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
@@ -297,10 +304,12 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
+    m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
 
     M_ASSERT(m_zoomUI.get());
     m_zoomUI->setZoom.connect(boost::bind(&SimpleUI::setZoomFactor, this, _1));
+    m_zoomUI->getZoom.connect(boost::bind(&SimpleUI::getZoomFactor, this));
     m_zoomUI->scrollView.connect(boost::bind(&SimpleUI::scrollView, this, _1, _2));
 }
 
@@ -388,7 +397,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
     m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
-    m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::closeZoomUI, this));
     m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
@@ -459,6 +467,7 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
     }
     BROWSER_LOGD("[%s:%d] swiching to web_view ", __PRETTY_FUNCTION__, __LINE__);
     switchViewToWebPage();
+    m_zoomUI->showNavigation();
 }
 
 bool SimpleUI::isErrorPageActive()
@@ -741,14 +750,19 @@ void SimpleUI::closeZoomUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_zoomUI);
-    m_webPageUI->showTabUI.disconnect(boost::bind(&SimpleUI::closeZoomUI, this));
-    m_webPageUI->showMoreMenu.disconnect(boost::bind(&SimpleUI::closeZoomUI, this));
     m_zoomUI->hideUI();
 }
 
 void SimpleUI::setZoomFactor(int level)
 {
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     m_webEngine->setZoomFactor(level);
+}
+
+int SimpleUI::getZoomFactor()
+{
+    BROWSER_LOGD("[%s:%d] %d", __PRETTY_FUNCTION__, __LINE__, m_webEngine->getZoomFactor());
+    return m_webEngine->getZoomFactor();
 }
 
 void SimpleUI::scrollView(const int& dx, const int& dy)

@@ -31,7 +31,6 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
 
     group {
         name: "zoom-layout";
-        data.item: "contents" "close_button";
 
         parts {
         
@@ -39,7 +38,61 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                 type: RECT;
                 mouse_events: 1;
                 description { state: "default" 0.0;
-                    color: 0 0 0 50;
+                    color: 0 0 0 0;
+                    visible: 0;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    rel1 {relative: 0.0 0.0; offset: 0 104;}
+                    rel2 {relative: 1.0 1.0;}
+                }
+            }
+
+            part {
+                name: "zoom_menu";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 700 300;
+                    max: 700 300;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "bg"; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+            }
+
+            part {
+                name: "nav_buttons";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    rel1 { relative: 0.0 0.0; to: "bg"; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+            }
+
+        }
+    }
+
+    group {
+        name: "zoom-menu";
+
+        parts {
+
+            part { name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description { state: "default" 0.0;
+                    color: 0 0 0 0;
                     visible: 1;
                     min: WIDTH HEIGHT;
                     max: WIDTH HEIGHT;
@@ -171,24 +224,6 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                     }
                 }
             }
-
-
-            part { 
-                name: "nav_buttons";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    min: WIDTH HEIGHT;
-                    max: WIDTH HEIGHT;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
-                    rel1 { relative: 0.0 0.0; to: "bg"; }
-                    rel2 { relative: 1.0 1.0; to: "bg"; }
-                }
-            }
-            
         }
     }
 
@@ -198,6 +233,20 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
         max: WIDTH HEIGHT;
         data.item: "contents" "left_button right_button up_button down_button";
         parts {
+
+            part { name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                description { state: "default" 0.0;
+                    visible: 0;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    rel1 {relative: 0.0 0.0; offset: 0 104;}
+                    rel2 {relative: 1.0 1.0;}
+                }
+            }
+
             part {
                 name: "left_button";
                 type: SWALLOW;
@@ -210,8 +259,8 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                     fixed: 1 1;
                     min: 90 90;
                     max: 90 90;
-                    rel1 { relative: 0.0 0.0; offset: 38 0;}
-                    rel2 { relative: 1.0 1.0;}
+                    rel1 {to: "bg"; relative: 0.0 0.0; offset: 38 0;}
+                    rel2 {to: "bg"; relative: 1.0 1.0;}
                 }
             }
             part {
@@ -226,8 +275,8 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                     fixed: 1 1;
                     min: 90 90;
                     max: 90 90;
-                    rel1 { relative: 0.0 0.0; }
-                    rel2 { relative: 1.0 1.0; offset: -38 0; }
+                    rel1 {to: "bg"; relative: 0.0 0.0; }
+                    rel2 {to: "bg"; relative: 1.0 1.0; offset: -38 0; }
                 }
             }
             part {
@@ -242,8 +291,8 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                     fixed: 1 1;
                     min: 90 90;
                     max: 90 90;
-                    rel1 { relative: 0.0 0.0; offset: 0 38; }
-                    rel2 { relative: 1.0 1.0; }
+                    rel1 {to: "bg"; relative: 0.0 0.0; offset: 0 38; }
+                    rel2 {to: "bg"; relative: 1.0 1.0; }
                 }
             }
             part {
@@ -258,8 +307,8 @@ RESOURCE_IMAGE_LOSSY("ic_zoom_indicator_up_nor.png");
                     fixed: 1 1;
                     min: 90 90;
                     max: 90 90;
-                    rel1 { relative: 0.0 0.0; }
-                    rel2 { relative: 1.0 1.0; offset: 0 -38; }
+                    rel1 {to: "bg";  relative: 0.0 0.0; }
+                    rel2 {to: "bg";  relative: 1.0 1.0; offset: 0 -38; }
                 }
             }
         }
