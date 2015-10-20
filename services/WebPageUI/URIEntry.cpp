@@ -80,11 +80,12 @@ Evas_Object* URIEntry::getContent()
         evas_object_smart_callback_add(m_entry, "activated", URIEntry::activated, this);
         evas_object_smart_callback_add(m_entry, "aborted", URIEntry::aborted, this);
         evas_object_smart_callback_add(m_entry, "preedit,changed", URIEntry::preeditChange, this);
-        evas_object_smart_callback_add(m_entry, "changed,user", URIEntry::changedUser, this);
+        evas_object_smart_callback_add(m_entry, "changed", URIEntry::_uri_entry_editing_changed, this);
+        evas_object_smart_callback_add(m_entry, "changed,user", URIEntry::_uri_entry_editing_changed_user, this);
         evas_object_smart_callback_add(m_entry, "focused", URIEntry::focused, this);
         evas_object_smart_callback_add(m_entry, "unfocused", URIEntry::unfocused, this);
-        evas_object_smart_callback_add(m_entry, "clicked", _uriEntryClicked, this);
-        evas_object_event_callback_priority_add(m_entry, EVAS_CALLBACK_KEY_DOWN, 2 * EVAS_CALLBACK_PRIORITY_BEFORE, URIEntry::fixed_entry_key_down_handler, this);
+        evas_object_smart_callback_add(m_entry, "clicked", _uri_entry_clicked, this);
+        evas_object_event_callback_priority_add(m_entry, EVAS_CALLBACK_KEY_DOWN, 2 * EVAS_CALLBACK_PRIORITY_BEFORE, URIEntry::_fixed_entry_key_down_handler, this);
 
         elm_object_part_content_set(m_entry_layout, "uri_entry_swallow", m_entry);
 
@@ -94,7 +95,7 @@ Evas_Object* URIEntry::getContent()
         evas_object_smart_callback_add(m_entryBtn, "unfocused", URIEntry::unfocusedBtn, this);
 
         elm_object_style_set(m_entryBtn, "entry_btn");
-        evas_object_smart_callback_add(m_entryBtn, "clicked", _uriEntryBtnClicked, this);
+        evas_object_smart_callback_add(m_entryBtn, "clicked", _uri_entry_btn_clicked, this);
 
         elm_object_part_content_set(m_entry_layout, "uri_entry_btn", m_entryBtn);
     }
@@ -182,14 +183,13 @@ void URIEntry::selectWholeText()
     }
 }
 
-void URIEntry::_uriEntryClicked(void* data, Evas_Object* /* obj */, void* /* event_info */)
+void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* event_info */)
 {
-    BROWSER_LOGD("%s", __func__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->selectWholeText();
 }
 
-void URIEntry::_uriEntryBtnClicked(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void URIEntry::_uri_entry_btn_clicked(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
 {
     URIEntry* self = static_cast<URIEntry*>(data);
     elm_object_focus_set(self->m_entry, EINA_TRUE);
@@ -215,7 +215,7 @@ void URIEntry::preeditChange(void* /* data */, Evas_Object* /* obj */, void* /*e
     BROWSER_LOGD("%s", __func__);
 }
 
-void URIEntry::changedUser(void* data, Evas_Object* /* obj */, void* /*event_info*/)
+void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj */, void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = reinterpret_cast<URIEntry*>(data);
@@ -227,6 +227,13 @@ void URIEntry::changedUser(void* data, Evas_Object* /* obj */, void* /*event_inf
     } else {//if(entry.find(" ") != std::string::npos){
         self->setSearchIcon();
     }
+    self->uriEntryEditingChangedByUser(std::make_shared<std::string>(entry));
+}
+
+void URIEntry::_uri_entry_editing_changed(void* data, Evas_Object* /* obj */, void* /* event_info */)
+{
+    URIEntry* self = static_cast<URIEntry*>(data);
+    self->uriEntryEditingChanged();
 }
 
 void URIEntry::setUrlGuideText(const char* txt) const
@@ -257,7 +264,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
     BROWSER_LOGD("%s, URI: %s", __func__, self->m_URI.c_str());
 }
 
-void URIEntry::fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Object* /*obj*/, void* event_info)
+void URIEntry::_fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Object* /*obj*/, void* event_info)
 {
     BROWSER_LOGD("%s", __func__);
     Evas_Event_Key_Down* ev = static_cast<Evas_Event_Key_Down*>(event_info);
@@ -284,8 +291,6 @@ void URIEntry::fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Object
 
 void URIEntry::editingCompleted()
 {
-    BROWSER_LOGD("%s", __func__);
-
     char* text = elm_entry_markup_to_utf8(elm_entry_entry_get(m_entry));
     std::string userString(text);
     free(text);

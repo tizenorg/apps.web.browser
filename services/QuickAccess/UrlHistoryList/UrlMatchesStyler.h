@@ -26,7 +26,7 @@
 using namespace std;
 
 namespace tizen_browser {
-namespace services {
+namespace base_ui {
 
 class UrlMatchesStyler {
 public:
@@ -103,7 +103,7 @@ private:
 
 };
 
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */
 
 #endif /* URLMATCHESSTYLER_H_ */

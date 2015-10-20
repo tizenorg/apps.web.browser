@@ -19,7 +19,7 @@
 #include "UrlMatchesStyler.h"
 
 namespace tizen_browser {
-namespace services {
+namespace base_ui {
 
 GenlistManager::GenlistManager()
 {
@@ -38,6 +38,8 @@ GenlistManager::GenlistManager()
     m_historyItemSpaceClass->func.content_get = nullptr;
     m_historyItemSpaceClass->func.state_get = nullptr;
     m_historyItemSpaceClass->func.del = nullptr;
+
+    GenlistManagerCallbacks::setGenlistManager(this);
 }
 
 GenlistManager::~GenlistManager()
@@ -47,10 +49,8 @@ GenlistManager::~GenlistManager()
 
 void GenlistManager::clearWidget()
 {
-    elm_genlist_clear(m_genlist);
-    elm_genlist_clear(m_genlist);
-    elm_genlist_clear(m_genlist);
-    elm_genlist_clear(m_genlist);
+    if(m_genlist && elm_genlist_items_count(m_genlist))
+        elm_genlist_clear(m_genlist);
 }
 
 void GenlistManager::onMouseFocusChange(bool mouseInsideWidget)
@@ -72,28 +72,22 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
                     ELM_SCROLLER_POLICY_OFF);
         }
 
-        evas_object_smart_callback_add(m_genlist, "scroll,anim,stop",
-                GenlistManagerCallbacks::cb_genlistAnimStop, this);
         evas_object_smart_callback_add(m_genlist, "edge,top",
-                GenlistManagerCallbacks::cb_genlistEdgeTop, this);
+                GenlistManagerCallbacks::_genlist_edge_top, this);
         evas_object_smart_callback_add(m_genlist, "edge,bottom",
-                GenlistManagerCallbacks::cb_genlistEdgeBottom, this);
-
-        evas_object_smart_callback_add(m_genlist, "activated",
-                GenlistManagerCallbacks::cb_genlistActivated, this);
-        evas_object_smart_callback_add(m_genlist, "pressed",
-                GenlistManagerCallbacks::cb_genlistPressed, this);
-        evas_object_smart_callback_add(m_genlist, "selected",
-                GenlistManagerCallbacks::cb_genlistSelected, this);
+                GenlistManagerCallbacks::_genlist_edge_bottom, this);
 
         evas_object_event_callback_add(m_genlist, EVAS_CALLBACK_MOUSE_IN,
-                GenlistManagerCallbacks::cb_genlistMouseIn, this);
+                GenlistManagerCallbacks::_genlist_mouse_in, this);
         evas_object_event_callback_add(m_genlist, EVAS_CALLBACK_MOUSE_OUT,
-                GenlistManagerCallbacks::cb_genlistMouseOut, this);
-        evas_object_smart_callback_add(m_genlist, "unselected",
-                GenlistManagerCallbacks::cb_genlistUnselected, this);
+                GenlistManagerCallbacks::_genlist_mouse_out, this);
+
         evas_object_smart_callback_add(m_genlist, "focused",
-                GenlistManagerCallbacks::cb_genlistFocused, this);
+                GenlistManagerCallbacks::_genlist_focused, this);
+        evas_object_smart_callback_add(m_genlist, "unfocused",
+                GenlistManagerCallbacks::_genlist_unfocused, this);
+
+
     }
     return m_genlist;
 }
@@ -113,9 +107,9 @@ void GenlistManager::showWidget(const string& editedUrl,
 
     m_itemUrlFirst = m_itemUrlLast = nullptr;
     Elm_Object_Item* itemAppended;
-    for (auto it : m_readyUrls) {
+    for(auto it : m_readyUrlPairs) {
         itemAppended = elm_genlist_item_append(m_genlist, m_historyItemClass,
-                it.get(), nullptr, ELM_GENLIST_ITEM_NONE, nullptr, this);
+                it.get(), nullptr, ELM_GENLIST_ITEM_NONE, GenlistManagerCallbacks::_item_selected, it.get());
         if (!m_itemUrlFirst)
             m_itemUrlFirst = itemAppended;
     }
@@ -127,12 +121,20 @@ void GenlistManager::showWidget(const string& editedUrl,
     }
 }
 
-void GenlistManager::hideWidget()
+void GenlistManager::hideWidgetPretty()
 {
-    if (widgetPreviouslyHidden)
+    if (widgetPreviouslyHidden) {
+        hideWidgetInstant();
         return;
+    }
     startScrollOut();
     widgetPreviouslyHidden = true;
+}
+
+void GenlistManager::hideWidgetInstant()
+{
+    if(m_genlist)
+        evas_object_hide(m_genlist);
 }
 
 bool GenlistManager::isWidgetHidden()
@@ -143,7 +145,7 @@ bool GenlistManager::isWidgetHidden()
 void GenlistManager::onMouseClick()
 {
     if (!mouseInsideWidget) {
-        hideWidget();
+        hideWidgetPretty();
     }
 }
 
@@ -181,7 +183,7 @@ void GenlistManager::addSpaces()
     if (m_itemUrlLast) {
         m_itemSpaceFirst = m_itemSpaceLast = nullptr;
         Elm_Object_Item* itemAppended;
-        for (auto i = 0; i < historyItemsVisibleMax; ++i) {
+        for (auto i = 0; i < HISTORY_ITEMS_VISIBLE_MAX; ++i) {
             // append spaces to the last url item, so they can be easily cleared
             itemAppended = elm_genlist_item_append(m_genlist,
                     m_historyItemSpaceClass, nullptr, m_itemUrlLast,
@@ -201,14 +203,14 @@ void GenlistManager::removeSpaces()
     m_itemSpaceFirst = m_itemSpaceLast = nullptr;
 }
 
-Evas_Object* GenlistManager::m_contentGet(void *data, Evas_Object *obj,
-        const char *part)
+Evas_Object* GenlistManager::m_contentGet(void* data, Evas_Object* obj,
+        const char* part)
 {
     Evas_Object* label = elm_label_add(obj);
     if (strcmp(part, "matched_url") == 0) {
-        const string * const item = reinterpret_cast<string*>(data);
+        const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
         if (item) {
-            elm_object_text_set(label, item->c_str());
+            elm_object_text_set(label, item->urlHighlighted.c_str());
             evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND,
             EVAS_HINT_EXPAND);
             evas_object_size_hint_align_set(label, EVAS_HINT_FILL,
@@ -224,13 +226,14 @@ void GenlistManager::prepareUrlsVector(const string& editedUrl,
     // free previously used urls. IMPORTANT: it has to be assured that previous
     // genlist items are not using these pointers.
     m_readyUrls.clear();
+    m_readyUrlPairs.clear();
     for (auto it : *matchedEntries) {
-        m_readyUrls.push_back(
-                make_shared < string
-                        > (m_urlMatchesStyler->getUrlHighlightedMatches(
-                                it->getUrl(), editedUrl)));
+        UrlPair newUrlPair(it->getUrl(),
+                m_urlMatchesStyler->getUrlHighlightedMatches(it->getUrl(),
+                        editedUrl));
+        m_readyUrlPairs.push_back(make_shared < UrlPair > (newUrlPair));
     }
 }
 
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */

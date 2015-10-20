@@ -15,13 +15,12 @@
  */
 
 #include "BrowserLogger.h"
-#include "GenlistManagerCallbacks.h"
-#include "GenlistManager.h"
+#include <services/QuickAccess/UrlHistoryList/GenlistManagerCallbacks.h>
 
-namespace tizen_browser
-{
-namespace services
-{
+namespace tizen_browser {
+namespace base_ui {
+
+GenlistManager* GenlistManagerCallbacks::genlistManager = nullptr;
 
 GenlistManagerCallbacks::GenlistManagerCallbacks()
 {
@@ -31,89 +30,69 @@ GenlistManagerCallbacks::~GenlistManagerCallbacks()
 {
 }
 
-void GenlistManagerCallbacks::cb_genlistAnimStop(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_genlist_edge_top(void *data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
 {
+    auto manager = static_cast<GenlistManager*>(data);
+    manager->setLastEdgeTop(false);
+    // spaces added for 'slide in' effect are not longer needed
+    manager->removeSpaces();
 }
 
-void GenlistManagerCallbacks::cb_genlistEdgeTop(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_genlist_edge_bottom(void *data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
 {
-	BROWSER_LOGD("@@ %s", __FUNCTION__);
-	auto manager = static_cast<GenlistManager*>(data);
-	manager->setLastEdgeTop(false);
-	// spaces added for 'slide in' effect are not longer needed
-	manager->removeSpaces();
+    auto manager = static_cast<GenlistManager*>(data);
+    manager->setLastEdgeTop(true);
+    if (manager->isWidgetHidden()) {
+        manager->clearWidget();
+        evas_object_hide(manager->getWidget());
+    }
 }
 
-void GenlistManagerCallbacks::cb_genlistEdgeBottom(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_genlist_mouse_in(void* data, Evas* /*e*/,
+        Evas_Object* /*obj*/, void* /*event_info*/)
 {
-	auto manager = static_cast<GenlistManager*>(data);
-	manager->setLastEdgeTop(true);
-	if (manager->isWidgetHidden())
-	{
-		manager->clearWidget();
-		evas_object_hide(manager->getWidget());
-	}
+    auto manager = static_cast<GenlistManager*>(data);
+    manager->onMouseFocusChange(true);
+}
+void GenlistManagerCallbacks::_genlist_mouse_out(void* data, Evas* /*e*/,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    auto manager = static_cast<GenlistManager*>(data);
+    manager->onMouseFocusChange(false);
 }
 
-void GenlistManagerCallbacks::cb_genlistActivated(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_genlist_focused(void* /*data*/, Evas_Object* /*obj*/,
+        void* /*event_info*/)
 {
-}
-void GenlistManagerCallbacks::cb_genlistPressed(void *data, Evas_Object *obj,
-		void *event_info)
-{
-}
-void GenlistManagerCallbacks::cb_genlistSelected(void *data, Evas_Object *obj,
-		void *event_info)
-{
-}
-void GenlistManagerCallbacks::cb_genlistUnselected(void *data, Evas_Object *obj,
-		void *event_info)
-{
+    if(genlistManager)
+    {
+        genlistManager->signalWidgetFocused();
+    }
 }
 
-void GenlistManagerCallbacks::cb_genlistFocused(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_genlist_unfocused(void* /*data*/, Evas_Object* /*obj*/,
+        void* /*event_info*/)
 {
+    if(genlistManager)
+    {
+        genlistManager->signalWidgetUnfocused();
+    }
 }
 
-void GenlistManagerCallbacks::cb_genlistUnfocused(void *data, Evas_Object *obj,
-		void *event_info)
+void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
 {
+    const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
+    if (item) {
+        if(genlistManager)
+        {
+            genlistManager->signalItemSelected(item->urlOriginal);
+            genlistManager->hideWidgetPretty();
+        }
+    }
 }
 
-void GenlistManagerCallbacks::cb_genlistMouseIn(void *data, Evas *e,
-		Evas_Object *obj, void *event_info)
-{
-	auto manager = static_cast<GenlistManager*>(data);
-	manager->onMouseFocusChange(true);
-}
-void GenlistManagerCallbacks::cb_genlistMouseOut(void *data, Evas *e,
-		Evas_Object *obj, void *event_info)
-{
-	auto manager = static_cast<GenlistManager*>(data);
-	manager->onMouseFocusChange(false);
-}
-
-void GenlistManagerCallbacks::cb_itemFocused(void *data, Evas_Object *obj,
-		void *event_info)
-{
-}
-void GenlistManagerCallbacks::cb_itemUnfocused(void *data, Evas_Object *obj,
-		void *event_info)
-{
-}
-void GenlistManagerCallbacks::cb_itemMouseIn(void *data, Elm_Object_Item *it,
-        const char *emission, const char *source)
-{
-}
-void GenlistManagerCallbacks::cb_itemMouseOut(void *data, Evas *e,
-		Evas_Object *obj, void *event_info)
-{
-}
-
-} /* namespace services */
+} /* namespace base_ui */
 } /* namespace tizen_browser */

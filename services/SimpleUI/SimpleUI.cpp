@@ -46,6 +46,7 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "SqlStorage.h"
 #include "DetailPopup.h"
+#include "UrlHistoryList/UrlHistoryList.h"
 #include "NotificationPopup.h"
 
 
@@ -236,6 +237,8 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
+    m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
+    m_webPageUI->getURIEntry().uriEntryEditingChanged.connect(boost::bind(&SimpleUI::onURLEntryEdited, this));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
@@ -251,6 +254,7 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
+    m_quickAccess->getUrlHistoryList()->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
     m_quickAccess->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
@@ -409,6 +413,8 @@ void SimpleUI::connectModelSignals()
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
+    m_platformInputManager->mouseClicked.connect(
+            boost::bind(&SimpleUI::onMouseClick, this));
 
 }
 
@@ -686,6 +692,29 @@ void SimpleUI::filterURL(const std::string& url)
             m_webEngine->setURI(url);
     }
     m_webPageUI->getURIEntry().clearFocus();
+}
+
+void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr)
+{
+    string editedUrl(*editedUrlPtr);
+    int historyItemsVisibleMax =
+            m_quickAccess->getUrlHistoryList()->getVisibleItemsMax();
+    int minKeywordLength =
+            m_quickAccess->getUrlHistoryList()->getMinKeywordLength();
+    std::shared_ptr<services::HistoryItemVector> result =
+            m_historyService->getHistoryItemsByKeywordsString(editedUrl,
+                    historyItemsVisibleMax, minKeywordLength);
+    m_quickAccess->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
+}
+
+void SimpleUI::onURLEntryEdited()
+{
+    m_quickAccess->getUrlHistoryList()->onURLEntryEdited();
+}
+
+void SimpleUI::onMouseClick()
+{
+    m_quickAccess->getUrlHistoryList()->onMouseClick();
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)

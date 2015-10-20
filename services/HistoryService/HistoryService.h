@@ -68,13 +68,18 @@ public:
      * Splits pattern into words by removing spaces. History item matches
      * pattern, when its url contains all words (order not considered).
      *
-     * @param keywords
-     * @param maxItems
+     * @param keywords string containing keywords separated by spaces
+     * @param maxItems searched items number will be shortened to this maxItems.
+     * if -1: no shortening.
+     * @param minKeywordLength minimum length of the longest keyword picked,
+     * from which searching will start. If longest keyword is shorter than
+     * #minKeywordLength, then search will not start.
      * @return vector of shared pointers to history items matching given
      * pattern
      */
     std::shared_ptr<HistoryItemVector> getHistoryItemsByKeywordsString(
-            const std::string& keywordsString, int maxItems);
+            const std::string& keywordsString, const int maxItems,
+            const int minKeywordLength);
 
     int getHistoryItemsCount();
     void setStorageServiceTestMode(bool testmode = true);

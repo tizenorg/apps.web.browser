@@ -25,6 +25,7 @@
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
 #include "Tools/GeneralTools.h"
+#include "UrlHistoryList/UrlHistoryList.h"
 
 #define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
 
@@ -75,10 +76,14 @@ QuickAccess::QuickAccess()
     , m_after_history_thumb(false)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    edjFilePath = EDJE_DIR;
+    edjFilePath = edjFilePathUrlHistoryList = EDJE_DIR;
     edjFilePath.append("QuickAccess/QuickAccess.edj");
+    edjFilePathUrlHistoryList.append("QuickAccess/UrlHistoryList.edj");
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
+    elm_theme_extension_add(nullptr, edjFilePathUrlHistoryList.c_str());
     QuickAccess::createItemClasses();
+
+    m_urlHistoryList = std::make_shared<UrlHistoryList>(this);
 }
 
 QuickAccess::~QuickAccess()
@@ -100,6 +105,7 @@ Evas_Object* QuickAccess::getContent()
     M_ASSERT(m_parent);
     if (!m_layout) {
         m_layout = createQuickAccessLayout(m_parent);
+        m_urlHistoryListLayout = createUrlHistoryListLayout(m_layout);
     }
     return m_layout;
 }
@@ -247,6 +253,21 @@ Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
     elm_object_part_content_set(layoutBottom, "bookmarkmanager_click", m_bookmarkManagerButton);
 
     return layoutBottom;
+}
+
+Evas_Object* QuickAccess::createUrlHistoryListLayout(Evas_Object* parent)
+{
+    Evas_Object* urlHistoryListLayout = elm_layout_add(parent);
+    elm_layout_file_set(urlHistoryListLayout, edjFilePath.c_str(), "url_history_list_layout");
+    evas_object_size_hint_weight_set(urlHistoryListLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (urlHistoryListLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    m_urlHistoryList->createLayout(urlHistoryListLayout);
+    if(m_urlHistoryList->getLayout())
+    {
+        elm_object_part_content_set(urlHistoryListLayout, "url_history_list_swallow", m_urlHistoryList->getLayout());
+    }
+    return urlHistoryListLayout;
 }
 
 void QuickAccess::_mostVisited_clicked(void * data, Evas_Object *, void *)
@@ -440,6 +461,7 @@ void QuickAccess::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_show(m_layout);
+    evas_object_show(m_urlHistoryListLayout);
     if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView) {
         evas_object_show(m_bookmarksView);
     } else {
@@ -491,6 +513,11 @@ void QuickAccess::setDesktopMode(bool mode)
 DetailPopup& QuickAccess::getDetailPopup()
 {
     return m_detailPopup;
+}
+
+UrlHistoryPtr QuickAccess::getUrlHistoryList()
+{
+    return m_urlHistoryList;
 }
 
 void QuickAccess::backButtonClicked()

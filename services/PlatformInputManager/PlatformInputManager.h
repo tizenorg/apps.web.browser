@@ -54,6 +54,7 @@ public:
     boost::signals2::signal<void ()> leftPressed;
     boost::signals2::signal<void ()> rightPressed;
     boost::signals2::signal<void ()> backPressed;
+    boost::signals2::signal<void ()> mouseClicked;
 
     /**
      * @brief Returns current service's name.

@@ -45,6 +45,11 @@ public:
     void changeUri(const std::string&);
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
+    // uri edition change
+    boost::signals2::signal<void ()> uriEntryEditingChanged;
+    // uri edition change (by a user)
+    boost::signals2::signal<void (const std::shared_ptr<std::string>)> uriEntryEditingChangedByUser;
+
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setCurrentFavIcon();
     void setSearchIcon();
@@ -87,11 +92,8 @@ private:
     static void activated(void* data, Evas_Object* obj, void* event_info);
     static void aborted(void* data, Evas_Object* obj, void* event_info);
     static void preeditChange(void* data, Evas_Object* obj, void* event_info);
-    static void changedUser(void* data, Evas_Object* obj, void* event_info);
     static void focused(void* data, Evas_Object* obj, void* event_info);
     static void unfocused(void* data, Evas_Object* obj, void* event_info);
-    static void fixed_entry_key_down_handler(void* data, Evas* e, Evas_Object* obj, void* event_info);
-    static void _uriEntryBtnClicked(void* data, Evas_Object* obj, void* event_info);
 
     void editingCompleted();
     void selectWholeText();
@@ -102,7 +104,11 @@ private:
      */
     std::string rewriteURI(const std::string& url);
 
-    static void _uriEntryClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _fixed_entry_key_down_handler(void* data, Evas* e, Evas_Object* obj, void* event_info);
+    static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_clicked(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_editing_changed(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
 
     static void focusedBtn(void* data, Evas_Object* obj, void* event_info);
     static void unfocusedBtn(void* data, Evas_Object* obj, void* event_info);
