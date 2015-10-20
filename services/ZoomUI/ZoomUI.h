@@ -44,16 +44,19 @@ public:
     std::string getName();
 
     void show(Evas_Object* parent);
+    void showNavigation();
     void clearItems();
 
     boost::signals2::signal<void ()> closeZoomUI;
     boost::signals2::signal<void (int)> setZoom;
+    boost::signals2::signal<int ()> getZoom;
     boost::signals2::signal<void (const int&, const int&)> scrollView;
 private:
     void createLayout(Evas_Object* parent);
     void createZoomSlider();
     void createNavigationButtons();
     void setImageFile(Evas_Object* obj, int direction, bool focused);
+    int calculateSliderValue(int zoom);
 
     static void _zoom_slider_changed(void * data, Evas_Object * obj, void * event_info);
     static void _left_button_clicked(void * data, Evas_Object * obj, void * event_info);
@@ -69,12 +72,22 @@ private:
     static void _cb_focus_out_up_button(void * data, Evas *, Evas_Object *obj, void *);
     static void _cb_focus_in_down_button(void * data, Evas *, Evas_Object *obj, void *);
     static void _cb_focus_out_down_button(void * data, Evas *, Evas_Object *obj, void *);
+    static Eina_Bool _key_down_cb(void* data, int type, void* event_info);
+    static Eina_Bool _key_up_cb(void* data, int type, void* event_info);
+    static void _zoom_value_confirmed(void* data, Evas* e, Evas_Object* obj, void* event_info);
 
     std::string m_edjFilePath;
     Evas_Object* m_layout;
     Evas_Object* m_zoom_slider;
+    Evas_Object* m_zoom_menu;
     Evas_Object* m_nav_layout;
     Evas_Object* m_parent;
+    Evas_Object* m_leftArrow;
+    Evas_Object* m_rightArrow;
+    Evas_Object* m_upArrow;
+    Evas_Object* m_downArrow;
+    Ecore_Event_Handler* m_keyDownHandler;
+    Ecore_Event_Handler* m_keyUpHandler;
 
     int m_current_translation_x;
     int m_current_translation_y;

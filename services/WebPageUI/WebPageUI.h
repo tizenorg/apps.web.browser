@@ -67,6 +67,7 @@ public:
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
+    boost::signals2::signal<void ()> showZoomNavigation;
 
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
 

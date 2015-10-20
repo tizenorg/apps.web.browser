@@ -200,6 +200,7 @@ private:
     void showZoomUI();
     void closeZoomUI();
     void setZoomFactor(int level);
+    int getZoomFactor();
     void scrollView(const int& dx, const int& dy);
 
     void showTabUI();
