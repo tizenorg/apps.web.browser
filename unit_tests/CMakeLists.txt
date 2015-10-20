@@ -8,8 +8,9 @@ include(Coreheaders)
 include(EFLHelpers)
 include(EWebKitHelpers)
 include_directories( ${CMAKE_SOURCE_DIR})
-include_directories( ${CMAKE_SOURCE_DIR}/services/FavoriteService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/SimpleUI)
+include_directories( ${CMAKE_SOURCE_DIR}/services/BookmarkService)
+include_directories( ${CMAKE_SOURCE_DIR}/services/HistoryService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/WebPageUI)
 include_directories( ${CMAKE_SOURCE_DIR}/services/WebKitEngineService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService)
@@ -47,8 +48,8 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
 if(TIZEN_BUILD)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME}
-        BookmarksUI
-        FavoriteService
+#        BookmarksUI
+        BookmarkService
         HistoryService
         PlatformInputManager
         SimpleUI
