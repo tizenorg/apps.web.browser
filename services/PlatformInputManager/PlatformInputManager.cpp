@@ -46,6 +46,8 @@ PlatformInputManager::PlatformInputManager()
 void PlatformInputManager::init(Evas_Object* mainWindow)
 {
     M_ASSERT(mainWindow);
+    //Suppress compilation warning
+    (void) mainWindow;
     ecore_event_filter_add(NULL, __filter, NULL, this);
 }
 
