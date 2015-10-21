@@ -33,9 +33,9 @@ WebPageUI::WebPageUI()
     , m_errorLayout(nullptr)
     , m_privateLayout(nullptr)
     , m_progressBar(nullptr)
+    , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
     , m_homePageActive(false)
-    , m_bookmarkManagerButton(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
