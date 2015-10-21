@@ -78,7 +78,7 @@ public:
     /**
      * Change session name.
      */
-    void updateSessionName(tizen_browser::Session::Session& session, std::string newName);
+    void updateSessionName(tizen_browser::Session::Session& session, const std::string& newName);
 
     /**
      * Deletes item form session, and stores changes.
