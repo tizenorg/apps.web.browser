@@ -49,11 +49,11 @@ Session::~Session()
 }
 
 Session::Session(Session&& source)
- :m_sessionId(std::move(source.m_sessionId))
- , m_lastModificationTime(std::move(source.m_lastModificationTime))
- , m_sessinName(std::move(source.m_sessinName))
- , m_isValid(std::move(source.m_isValid))
- , m_items(std::move(source.m_items))
+    :m_sessionId(std::move(source.m_sessionId))
+    ,m_lastModificationTime(std::move(source.m_lastModificationTime))
+    ,m_sessinName(std::move(source.m_sessinName))
+    ,m_items(std::move(source.m_items))
+    ,m_isValid(std::move(source.m_isValid))
 {
 }
 
