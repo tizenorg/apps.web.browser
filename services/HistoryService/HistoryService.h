@@ -79,7 +79,7 @@ public:
      */
     std::shared_ptr<HistoryItemVector> getHistoryItemsByKeywordsString(
             const std::string& keywordsString, const int maxItems,
-            const int minKeywordLength);
+            const unsigned int minKeywordLength);
 
     int getHistoryItemsCount();
     void setStorageServiceTestMode(bool testmode = true);

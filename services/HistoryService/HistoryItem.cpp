@@ -31,8 +31,8 @@ HistoryItem::HistoryItem(const std::string & url,
                          std::shared_ptr<tizen_browser::tools::BrowserImage> image)
     : m_url(url)
     , m_title(title)
-    , m_favIcon(image)
     , m_lastVisit()
+    , m_favIcon(image)
 {
 }
 
