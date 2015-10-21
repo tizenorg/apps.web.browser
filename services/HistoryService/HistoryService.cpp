@@ -486,7 +486,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(
 
 std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsString(
         const std::string& keywordsString, const int maxItems,
-        const int minKeywordLength)
+        const unsigned int minKeywordLength)
 {
     if (keywordsString.empty())
         return std::make_shared<HistoryItemVector>();
@@ -500,7 +500,8 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsStri
     std::string longestKeyword = keywords.at(longestKeywordPos);
     boost::algorithm::to_lower(longestKeyword);
 
-    // assumption: search starts when longest keyword is at least 3 characters long
+    // assumption: search starts when longest keyword is at least
+    // minKeywordLength characters long
     if (longestKeyword.length() < minKeywordLength) {
         return std::make_shared<HistoryItemVector>();
     }
@@ -517,7 +518,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsStri
     }
 
     if (maxItems != -1) {
-        if (historyItems->size() > maxItems) {
+        if (historyItems->size() > static_cast<unsigned int>(maxItems)) {
             historyItems->erase(historyItems->begin() + maxItems,
                     historyItems->end());
         }
