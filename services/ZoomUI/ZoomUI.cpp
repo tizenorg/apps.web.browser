@@ -34,8 +34,8 @@ EXPORT_SERVICE(ZoomUI, "org.tizen.browser.zoomui")
 
 ZoomUI::ZoomUI()
     : m_layout(nullptr)
-    , m_nav_layout(nullptr)
     , m_zoom_slider(nullptr)
+    , m_nav_layout(nullptr)
     , m_current_translation_x(0)
     , m_current_translation_y(0)
 {
@@ -197,7 +197,7 @@ void ZoomUI::setImageFile(Evas_Object* obj, int direction, bool focused)
     }
 }
 
-void ZoomUI::_zoom_slider_changed(void *data, Evas_Object *obj, void *event_info)
+void ZoomUI::_zoom_slider_changed(void *data, Evas_Object *obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(data && obj) {
@@ -225,7 +225,7 @@ void ZoomUI::_zoom_slider_changed(void *data, Evas_Object *obj, void *event_info
     }
 }
 
-void ZoomUI::_zoom_value_confirmed(void* data, Evas*, Evas_Object* obj, void* event_info)
+void ZoomUI::_zoom_value_confirmed(void* data, Evas*, Evas_Object*, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Event_Key_Down* ev = static_cast<Evas_Event_Key_Down*>(event_info);
@@ -248,7 +248,7 @@ void ZoomUI::_zoom_value_confirmed(void* data, Evas*, Evas_Object* obj, void* ev
     }
 }
 
-Eina_Bool ZoomUI::_key_down_cb(void* data, int type, void* event_info)
+Eina_Bool ZoomUI::_key_down_cb(void* data, int, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Ecore_Event_Key* ev = static_cast<Ecore_Event_Key*>(event_info);
@@ -275,7 +275,7 @@ Eina_Bool ZoomUI::_key_down_cb(void* data, int type, void* event_info)
     return EINA_TRUE;
 }
 
-Eina_Bool ZoomUI::_key_up_cb(void* data, int type, void* event_info)
+Eina_Bool ZoomUI::_key_up_cb(void* data, int, void* event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Ecore_Event_Key* ev = static_cast<Ecore_Event_Key*>(event_info);
@@ -298,7 +298,7 @@ Eina_Bool ZoomUI::_key_up_cb(void* data, int type, void* event_info)
     return EINA_TRUE;
 }
 
-void ZoomUI::_left_button_clicked(void * data, Evas_Object * obj, void * event_info)
+void ZoomUI::_left_button_clicked(void * data, Evas_Object * obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data && obj) {
@@ -307,7 +307,7 @@ void ZoomUI::_left_button_clicked(void * data, Evas_Object * obj, void * event_i
     }
 }
 
-void ZoomUI::_right_button_clicked(void * data, Evas_Object * obj, void * event_info)
+void ZoomUI::_right_button_clicked(void * data, Evas_Object * obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data && obj) {
@@ -316,7 +316,7 @@ void ZoomUI::_right_button_clicked(void * data, Evas_Object * obj, void * event_
     }
 }
 
-void ZoomUI::_up_button_clicked(void * data, Evas_Object * obj, void * event_info)
+void ZoomUI::_up_button_clicked(void * data, Evas_Object * obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data && obj) {
@@ -325,7 +325,7 @@ void ZoomUI::_up_button_clicked(void * data, Evas_Object * obj, void * event_inf
     }
 }
 
-void ZoomUI::_down_button_clicked(void * data, Evas_Object * obj, void * event_info)
+void ZoomUI::_down_button_clicked(void * data, Evas_Object * obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data && obj) {
@@ -417,18 +417,19 @@ void ZoomUI::_cb_focus_out_down_button(void * data, Evas *, Evas_Object *obj, vo
 int ZoomUI::calculateSliderValue(int zoom)
 {
     BROWSER_LOGD("[%s:%d] zoom factor: %d", __PRETTY_FUNCTION__, __LINE__, zoom);
+    int rv = 1; //for zoom < ZOOM_75
     if (zoom >= ZOOM_300)
-        return 6;
+        rv = 6;
     else if (zoom >= ZOOM_200)
-        return 5;
+        rv = 5;
     else if (zoom >= ZOOM_150)
-        return 4;
+        rv = 4;
     else if (zoom >= ZOOM_100)
-        return 3;
+        rv = 3;
     else if (zoom >= ZOOM_75)
-        return 2;
-    else if (zoom < ZOOM_75)
-        return 1;
+        rv = 2;
+
+    return rv;
 }
 
 
