@@ -38,6 +38,7 @@ WebPageUI::WebPageUI()
     , m_URIEntry(new URIEntry())
     , m_urlHistoryList(std::make_shared<UrlHistoryList>())
     , m_homePageActive(false)
+    , m_webviewLocked(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
@@ -84,6 +85,12 @@ void WebPageUI::showUI()
         showQuickAccess();
     else
         m_URIEntry->showPageTitle();
+
+    m_WebPageUIvisible = true;
+
+    elm_object_event_callback_add(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_add(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_add(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 }
 
 
@@ -102,6 +109,12 @@ void WebPageUI::hideUI()
     evas_object_hide(m_URIEntry->getContent());
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
+
+    m_WebPageUIvisible = false;
+
+    elm_object_event_callback_del(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_del(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_del(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 }
 
 void WebPageUI::loadStarted()
@@ -244,6 +257,20 @@ void WebPageUI::faviconClicked(void* data, Evas_Object*, const char*, const char
     }
 }
 
+Eina_Bool WebPageUI::_cb_down_pressed_on_urlbar(void *data, Evas_Object */*obj*/, Evas_Object */*src*/, Evas_Callback_Type type, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    WebPageUI* self = reinterpret_cast<WebPageUI*>(data);
+    if(type == EVAS_CALLBACK_KEY_DOWN) {
+        Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
+        const std::string keyName = ev->keyname;
+        if(!keyName.compare("Down")){
+            self->lockWebview();
+        }
+    }
+    return EINA_FALSE;
+}
+
 void WebPageUI::setTabsNumber(int tabs)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -251,6 +278,32 @@ void WebPageUI::setTabsNumber(int tabs)
         elm_object_part_text_set(m_rightButtonBar->getContent(), "tabs_number", "");
     } else {
         elm_object_part_text_set(m_rightButtonBar->getContent(), "tabs_number", (boost::format("%1%") % tabs).str().c_str());
+    }
+}
+
+void WebPageUI::lockWebview()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(isWebPageUIvisible()) {
+        if(!isHomePageActive() && !isErrorPageActive()) {
+            elm_object_focus_custom_chain_unset(m_mainLayout);
+            elm_object_focus_custom_chain_append(m_mainLayout, elm_object_part_content_get(m_mainLayout, "web_view"), NULL);
+            m_webviewLocked = true;
+        }
+    }
+}
+
+void WebPageUI::onRedKeyPressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(isWebPageUIvisible()) {
+        if(!isHomePageActive()) {
+            if(m_webviewLocked) {
+                refreshFocusChain();
+                m_URIEntry->setFocus();
+                m_webviewLocked = false;
+            }
+        }
     }
 }
 
