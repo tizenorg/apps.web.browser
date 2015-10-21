@@ -70,10 +70,10 @@ QuickAccess::QuickAccess()
     , m_mostVisitedButton(nullptr)
     , m_bookmarkGengrid(nullptr)
     , m_bookmarkManagerButton(nullptr)
+    , m_after_history_thumb(false)
     , m_parentFocusChain(nullptr)
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
-    , m_after_history_thumb(false)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     edjFilePath = edjFilePathUrlHistoryList = EDJE_DIR;
