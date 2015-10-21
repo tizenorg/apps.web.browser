@@ -55,6 +55,10 @@ public:
     boost::signals2::signal<void ()> rightPressed;
     boost::signals2::signal<void ()> backPressed;
     boost::signals2::signal<void ()> escapePressed;
+    boost::signals2::signal<void ()> redPressed;
+    boost::signals2::signal<void ()> greenPressed;
+    boost::signals2::signal<void ()> yellowPressed;
+    boost::signals2::signal<void ()> bluePressed;
     boost::signals2::signal<void ()> mouseClicked;
 
     /**

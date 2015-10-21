@@ -49,6 +49,7 @@ public:
     bool isErrorPageActive();
     bool isIncognitoPageActive();
     bool isHomePageActive() { return m_homePageActive; }
+    bool isWebPageUIvisible() { return m_WebPageUIvisible; }
     void toIncognito(bool);
     void switchViewToErrorPage();
     void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
@@ -62,6 +63,8 @@ public:
     void setReloadButtonEnabled(bool enabled) { m_reload->setEnabled(enabled); }
     void setStopButtonEnabled(bool enabled) { m_stopLoading->setEnabled(enabled); }
     void setMoreMenuButtonEnabled(bool enabled) { m_showMoreMenu->setEnabled(enabled); }
+    void lockWebview();
+    void onRedKeyPressed();
 
     boost::signals2::signal<void ()> backPage;
     boost::signals2::signal<void ()> forwardPage;
@@ -75,6 +78,7 @@ public:
     boost::signals2::signal<void ()> showZoomNavigation;
 
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
+    static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
 
 private:
     void createLayout();
@@ -113,6 +117,8 @@ private:
     std::unique_ptr<URIEntry> m_URIEntry;
     UrlHistoryPtr m_urlHistoryList;
     bool m_homePageActive;
+    bool m_webviewLocked;
+    bool m_WebPageUIvisible;
 
     sharedAction m_back;
     sharedAction m_forward;

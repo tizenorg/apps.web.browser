@@ -87,6 +87,15 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->backPressed();
         else if(!keyName.compare("Escape"))
             self->escapePressed();
+        else if(!keyName.compare("XF86Red"))    // F4 - Red
+            self->redPressed();
+        else if(!keyName.compare("XF86Green"))  // F5 - Green
+            self->greenPressed();
+        else if(!keyName.compare("XF86Yellow")) // F6 - Yellow
+            self->yellowPressed();
+        else if(!keyName.compare("XF86Blue"))   // F7 - Blue
+            self->bluePressed();
+
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);
         Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event);

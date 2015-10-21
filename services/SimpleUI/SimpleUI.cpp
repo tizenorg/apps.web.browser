@@ -416,6 +416,7 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
     m_platformInputManager->mouseClicked.connect(
             boost::bind(&SimpleUI::onMouseClick, this));
+    m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
 
 }
 
@@ -746,6 +747,11 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
 void SimpleUI::onMouseClick()
 {
     m_webPageUI->getUrlHistoryList()->onMouseClick();
+}
+
+void SimpleUI::onRedKeyPressed()
+{
+    m_webPageUI->onRedKeyPressed();
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)
