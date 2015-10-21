@@ -71,8 +71,8 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
-    , m_ewkContext(ewk_context_new())
     , m_incognito(false)
+    , m_ewkContext(ewk_context_new())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);

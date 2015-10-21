@@ -59,11 +59,11 @@ BookmarksManagerItem::~BookmarksManagerItem()
 BookmarksManager::BookmarksManager(std::shared_ptr< Evas_Object > mainWindow, Evas_Object* parentButton)
     : MenuButton(mainWindow, parentButton)
     , m_popup (nullptr)
-    , m_isPopupShown (false)
     , m_genlist(nullptr)
-    , m_itemClass(nullptr)
     , m_internalPopup(nullptr)
+    , m_itemClass(nullptr)
     , m_internalPopupVisible(false)
+    , m_isPopupShown (false)
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("SimpleUI/BookmarksManager.edj");
@@ -266,7 +266,7 @@ bool BookmarksManager::isPopupShown()
     return m_isPopupShown;
 }
 
-void BookmarksManager::block_clicked(void *data, Evas_Object *obj, void *event_info)
+void BookmarksManager::block_clicked(void*, Evas_Object *obj, void*)
 {
     evas_object_hide(obj);
 }
