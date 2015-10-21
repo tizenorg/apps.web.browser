@@ -104,7 +104,7 @@ Evas_Object* HistoryUI::getContent()
     return m_history_layout;
 }
 
-Evas_Object* HistoryUI::createHistoryUILayout(Evas_Object* parent)
+void HistoryUI::createHistoryUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
@@ -301,10 +301,10 @@ void HistoryUI::clearItems()
     _history_item_data.clear();
 }
 
-void HistoryUI::_history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+void HistoryUI::_history_item_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
+    HistoryItemData * itemData = static_cast<HistoryItemData *>(data);
     itemData->historyUI->historyItemClicked(itemData->item);
 }
 
