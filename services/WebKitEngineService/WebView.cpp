@@ -66,9 +66,9 @@ const std::string WebView::COOKIES_PATH = "cookies";
 WebView::WebView(Evas_Object * obj, TabId tabId)
     : m_parent(obj)
     , m_tabId(tabId)
+    , m_ewkView(nullptr)
     , m_ewkContext(ewk_context_new())
     , m_title(std::string())
-    , m_ewkView(nullptr)
     , m_isLoading(false)
     , m_loadError(false)
     , m_suspended(false)
@@ -88,7 +88,7 @@ WebView::~WebView()
     ewk_context_delete(m_ewkContext);
 }
 
-void WebView::init(bool desktopMode, Evas_Object * opener)
+void WebView::init(bool desktopMode, Evas_Object*)
 {
 #if defined(USE_EWEBKIT)
     M_ASSERT(m_ewkContext);
@@ -408,13 +408,19 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         break;
     }
     case WebConfirmation::ConfirmationType::CertificateConfirmation: {
+        //FIXME: https://bugs.tizen.org/jira/browse/TT-229
         CertificateConfirmationPtr cert = std::dynamic_pointer_cast<CertificateConfirmation, WebConfirmation>(confirmation);
-        Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
-        Eina_Bool result;
+
+        // The below line doesn't serve any purpose now, but it may become
+        // relevant when implementing https://bugs.tizen.org/jira/browse/TT-229
+        // Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
+
         if (cert->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
+            //FIXME: do something
+            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
         else if (cert->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
+            //FIXME: do something else
+            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
         else {
             BROWSER_LOGE("Wrong ConfirmationResult");
             break;
@@ -428,8 +434,13 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         break;
     }
     case WebConfirmation::ConfirmationType::Authentication: {
+        //FIXME: https://bugs.tizen.org/jira/browse/TT-229
         AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<AuthenticationConfirmation, WebConfirmation>(confirmation);
-        Ewk_Auth_Request *request = m_confirmationAuthenticationMap[auth];
+
+        // The below line doesn't serve any purpose now, but it may become
+        // relevant when implementing https://bugs.tizen.org/jira/browse/TT-229
+        // Ewk_Auth_Request *request = m_confirmationAuthenticationMap[auth];
+
         if (auth->getResult() == WebConfirmation::ConfirmationResult::Confirmed) {
             BROWSER_LOGE("NOT IMPLEMENTED: Autenthication Request Confirmation handling!");
         } else if (auth->getResult() == WebConfirmation::ConfirmationResult::Rejected) {
@@ -624,7 +635,7 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
     self->titleChanged(self->m_title);
 }
 
-void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * event_info)
+void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -897,13 +908,13 @@ void WebView::searchOnWebsite(const std::string & searchString, int flags)
 
 void WebView::switchToDesktopMode() {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
+    ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
     m_desktopMode = true;
 }
 
 void WebView::switchToMobileMode() {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    int res = ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT_MOBILE);
+    ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT_MOBILE);
     m_desktopMode = false;
 }
 
