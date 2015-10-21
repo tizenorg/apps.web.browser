@@ -39,10 +39,10 @@ struct ItemData {
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)
-    , m_parent(nullptr)
-    , m_item_class(nullptr)
     , m_scroller(nullptr)
     , m_items_layout(nullptr)
+    , m_parent(nullptr)
+    , m_item_class(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -231,7 +231,7 @@ Evas_Object* SettingsUI::listActionBarContentGet(void* data, Evas_Object* obj , 
     return nullptr;
 }
 
-void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*, const char *source)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
