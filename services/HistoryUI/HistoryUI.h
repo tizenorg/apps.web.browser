@@ -53,7 +53,7 @@ public:
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
 private:
     void clearItems();
-    Evas_Object* createHistoryUILayout(Evas_Object* parent);
+    void createHistoryUILayout(Evas_Object* parent);
     Elm_Gengrid_Item_Class* crateItemClass();
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part);
