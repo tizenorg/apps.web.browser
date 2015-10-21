@@ -106,7 +106,7 @@ void GenlistManager::showWidget(const string& editedUrl,
     prepareUrlsVector(editedUrl, matchedEntries);
 
     m_itemUrlFirst = m_itemUrlLast = nullptr;
-    Elm_Object_Item* itemAppended;
+    Elm_Object_Item* itemAppended = nullptr;
     for(auto it : m_readyUrlPairs) {
         itemAppended = elm_genlist_item_append(m_genlist, m_historyItemClass,
                 it.get(), nullptr, ELM_GENLIST_ITEM_NONE, GenlistManagerCallbacks::_item_selected, it.get());
@@ -182,7 +182,7 @@ void GenlistManager::addSpaces()
 {
     if (m_itemUrlLast) {
         m_itemSpaceFirst = m_itemSpaceLast = nullptr;
-        Elm_Object_Item* itemAppended;
+        Elm_Object_Item* itemAppended = nullptr;
         for (auto i = 0; i < HISTORY_ITEMS_VISIBLE_MAX; ++i) {
             // append spaces to the last url item, so they can be easily cleared
             itemAppended = elm_genlist_item_append(m_genlist,

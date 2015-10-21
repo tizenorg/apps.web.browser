@@ -51,7 +51,7 @@ void UrlHistoryList::createLayout(Evas_Object* parentLayout)
     m_layout = elm_layout_add(parentLayout);
     elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
 
-    Evas_Object* widgetList = m_genlistListManager->createWidget(m_layout);
+    m_genlistListManager->createWidget(m_layout);
 }
 
 void UrlHistoryList::onURLEntryEditedByUser(const string& editedUrl,
