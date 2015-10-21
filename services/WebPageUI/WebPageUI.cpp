@@ -172,7 +172,11 @@ void WebPageUI::switchViewToIncognitoPage()
     m_homePageActive = false;
     setMainContent(m_privateLayout);
     evas_object_show(m_leftButtonBar->getContent());
+    setPrivateButtons();
     refreshFocusChain();
+    m_URIEntry->changeUri("");
+    m_URIEntry->setPageTitle("Start Incognito Browsing");
+    m_URIEntry->setFocus();
 }
 
 void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title)
@@ -372,6 +376,15 @@ void WebPageUI::setErrorButtons()
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     m_stopLoading->setEnabled(false);
     m_reload->setEnabled(true);
+    m_forward->setEnabled(false);
+    evas_object_hide(m_progressBar);
+}
+
+void WebPageUI::setPrivateButtons()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_stopLoading->setEnabled(false);
+    m_reload->setEnabled(false);
     m_forward->setEnabled(false);
     evas_object_hide(m_progressBar);
 }

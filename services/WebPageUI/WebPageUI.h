@@ -81,6 +81,7 @@ private:
     void hideProgressBar();
     void hideWebView();
     void setErrorButtons();
+    void setPrivateButtons();
     void setMainContent(Evas_Object* content);
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);

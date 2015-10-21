@@ -495,9 +495,8 @@ void SimpleUI::switchViewToIncognitoPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    m_webPageUI->toIncognito(m_incognito);
+    openNewTab("");
     m_webPageUI->switchViewToIncognitoPage();
-    m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager->popStackTo(m_webPageUI.get());
 }
 
@@ -593,11 +592,19 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    m_viewManager->popStackTo(m_webPageUI.get());
     std::string bookmarkAddress = bookmarkItem->getAddress();
-    openNewTab(bookmarkAddress);
+    m_viewManager->popStackTo(m_webPageUI.get());
+    if (!m_incognito) {
+        openNewTab(bookmarkAddress);
+    } else {
+        std::string bookmarkTitle = bookmarkItem->getTittle();
+        m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), bookmarkAddress, bookmarkTitle);
+        m_webEngine->setURI(bookmarkAddress);
+        m_webPageUI->setPageTitle(bookmarkTitle);
+        m_webPageUI->getURIEntry().clearFocus();
+        closeBookmarkManagerUI();
+    }
 }
-
 
 void SimpleUI::onHistoryRemoved(const std::string& uri)
 {
@@ -692,6 +699,9 @@ void SimpleUI::filterURL(const std::string& url)
             openNewTab(url);
         else
             m_webEngine->setURI(url);
+
+        if (m_incognito)
+            switchViewToWebPage();
     }
     m_webPageUI->getURIEntry().clearFocus();
 }
