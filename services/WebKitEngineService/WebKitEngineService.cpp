@@ -223,12 +223,6 @@ void WebKitEngineService::_uriChanged(const std::string & uri)
     uriChanged(uri);
 }
 
-void WebKitEngineService::_uriChangedOnTab(TabId id)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    uriOnTabChanged(id);
-}
-
 void WebKitEngineService::_loadFinished()
 {
     loadFinished();
@@ -325,7 +319,6 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
     if (!uri.empty()) {
         p->setURI(uri);
     }
-    p->tabIdChecker.connect(boost::bind(&WebKitEngineService::_uriChangedOnTab,this,_1));
 
     switchToTab(newTabId);
     AbstractWebEngine::tabCreated();

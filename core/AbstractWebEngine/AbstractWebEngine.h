@@ -340,11 +340,6 @@ public:
     boost::signals2::signal<void (const std::string &)> uriChanged;
 
     /**
-     * URI on current/other page changed
-     */
-    boost::signals2::signal<void (TabId)> uriOnTabChanged;
-
-    /**
      * Possibility of go forward changed
      * \param bool true if it is possible to go forward, false otherwise
      */
