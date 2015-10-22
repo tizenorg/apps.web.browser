@@ -71,7 +71,6 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
-    , m_incognito(false)
     , m_ewkContext(ewk_context_new())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -137,7 +136,6 @@ int SimpleUI::exec(const std::string& _url)
 
             loadUIServices();
             loadModelServices();
-            createActions();
 
             // initModelServices() needs to be called after initUIServices()
             initUIServices();
@@ -146,7 +144,6 @@ int SimpleUI::exec(const std::string& _url)
 
             connectModelSignals();
             connectUISignals();
-            connectActions();
 
             //Push first view to stack.
             m_viewManager->pushViewToStack(m_webPageUI.get());
@@ -267,11 +264,9 @@ void SimpleUI::connectUISignals()
     m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this));
     m_tabUI->closeTabUIClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
-    m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, false));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, true));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::switchViewToIncognitoPage, this));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", false, true));
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
@@ -420,24 +415,6 @@ void SimpleUI::connectModelSignals()
 
 }
 
-void SimpleUI::createActions()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    ///\todo Add MulitStateAction. and convert m_stopLoading and m_reload actons to it?
-
-    m_settingPrivateBrowsing = sharedAction(new Action("Private browsing"));
-    m_settingPrivateBrowsing->setToolTip("On exit from private mode all cookies, history, and stored data will be deleted");
-    m_settingPrivateBrowsing->setCheckable(true);
-    m_settingPrivateBrowsing->setChecked(m_webEngine->isPrivateMode());
-    m_settingPrivateBrowsing->setEnabled(true);
-}
-
-void SimpleUI::connectActions()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_settingPrivateBrowsing->toggled.connect(boost::bind(&SimpleUI::settingsPrivateModeSwitch, this, _1));
-}
-
 void SimpleUI::switchViewToWebPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -490,17 +467,19 @@ void SimpleUI::switchViewToIncognitoPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    openNewTab("");
+    m_webPageUI->toIncognito(true);
     m_webPageUI->switchViewToIncognitoPage();
     m_viewManager->popStackTo(m_webPageUI.get());
 }
 
-void SimpleUI::openNewTab(const std::string &uri, bool desktopMode)
+void SimpleUI::openNewTab(const std::string &uri, bool desktopMode, bool incognitoMode)
 {
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
-    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, desktopMode);
-    applyPrivateModeToTab(tab);
+    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, desktopMode, incognitoMode);
     switchToTab(tab);
+    m_webPageUI->toIncognito(incognitoMode);
+    if (incognitoMode)
+        switchViewToIncognitoPage();
 }
 
 void SimpleUI::closeTab()
@@ -592,11 +571,11 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    std::string bookmarkAddress = bookmarkItem->getAddress();
     m_viewManager->popStackTo(m_webPageUI.get());
-    if (!m_incognito) {
+    std::string bookmarkAddress = bookmarkItem->getAddress();
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         openNewTab(bookmarkAddress);
-    } else {
+    else {
         std::string bookmarkTitle = bookmarkItem->getTittle();
         m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), bookmarkAddress, bookmarkTitle);
         m_webEngine->setURI(bookmarkAddress);
@@ -660,9 +639,8 @@ void SimpleUI::stopEnable(bool enable)
 void SimpleUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(!m_webEngine->isPrivateMode()){
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI());
-    }
     m_webPageUI->loadStarted();
 }
 
@@ -675,11 +653,13 @@ void SimpleUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if(!m_webEngine->isPrivateMode()){
-        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem> (m_webEngine->getURI(),
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
+        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(m_webEngine->getURI(),
                                                                                                 m_webEngine->getTitle(),
-                                                                                                m_webEngine->getFavicon()), m_webEngine->getSnapshotData(QuickAccess::MAX_THUMBNAIL_WIDTH, QuickAccess::MAX_THUMBNAIL_HEIGHT));
-    }
+                                                                                                m_webEngine->getFavicon()),
+                                                                                                m_webEngine->getSnapshotData(
+                                                                                                    QuickAccess::MAX_THUMBNAIL_WIDTH,
+                                                                                                    QuickAccess::MAX_THUMBNAIL_HEIGHT));
     m_webPageUI->loadFinished();
 }
 
@@ -687,7 +667,7 @@ void SimpleUI::loadStopped()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (!m_webEngine->isPrivateMode()) {
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
         m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
                                              m_webEngine->getURI(),
                                              m_webEngine->getURI(),
@@ -725,7 +705,7 @@ void SimpleUI::filterURL(const std::string& url)
         else
             m_webEngine->setURI(url);
 
-        if (m_incognito)
+        if (m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
             switchViewToWebPage();
     }
     m_webPageUI->getURIEntry().clearFocus();
@@ -818,6 +798,7 @@ void SimpleUI::newTabClicked()
         return;
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webPageUI->toIncognito(false);
     switchViewToQuickAccess();
 }
 
@@ -825,7 +806,7 @@ void SimpleUI::tabClicked(const tizen_browser::basic_webengine::TabId& tabId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager->popStackTo(m_webPageUI.get());
-    applyPrivateModeToTab(tabId);
+    m_webPageUI->toIncognito(m_webEngine->isPrivateMode(tabId));
     switchToTab(tabId);
 }
 
@@ -1023,23 +1004,6 @@ void SimpleUI::closeBookmarkManagerUI()
     M_ASSERT(m_viewManager);
     if (m_viewManager->topOfStack() == m_bookmarkManagerUI.get())
     m_viewManager->popTheStack();
-}
-
-void SimpleUI::settingsPrivateModeSwitch(bool newState)
-{
-    BROWSER_LOGD("%s: Setting Private mode to: %s", __func__, (newState ? "true" : "false"));
-    m_incognito = newState;
-}
-
-void SimpleUI::applyPrivateModeToTab(const tizen_browser::basic_webengine::TabId& tabId)
-{
-    if (m_webEngine->isPrivateMode(tabId) < 0) {
-        m_webEngine->setPrivateMode(tabId, m_incognito);
-        m_webPageUI->toIncognito(m_incognito);
-    } else {
-        m_webEngine->setPrivateMode(tabId, m_webEngine->isPrivateMode(tabId));
-        m_webPageUI->toIncognito(m_webEngine->isPrivateMode(tabId));
-    }
 }
 
 void SimpleUI::settingsDeleteSelectedData(const std::string& str)

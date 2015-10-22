@@ -81,7 +81,7 @@ public:
      * @param uri
      * @return TabId of created tab
      */
-    TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true);
+    TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true, bool incognitoMode = false);
     Evas_Object* getTabView(TabId id);
     bool switchToTab(TabId);
     bool closeTab();
@@ -111,10 +111,6 @@ public:
 
     std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height);
 
-    void setPrivateMode(bool);
-    void setPrivateMode(const TabId& id, bool state);
-    bool isPrivateMode() const;
-
     /**
      * @brief Get the state of private mode for a specific tab
      *
@@ -124,7 +120,7 @@ public:
      *      0 is "False"
      *      1 is "True"
      */
-    int isPrivateMode(const TabId& id);
+    bool isPrivateMode(const TabId& id);
 
 
     /**
@@ -213,7 +209,6 @@ private:
 
 private:
     bool m_initialised;
-    bool m_privateMode;
     void * m_guiParent;
     bool m_stopped;
 

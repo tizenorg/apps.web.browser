@@ -42,7 +42,6 @@ EXPORT_SERVICE(WebKitEngineService, "org.tizen.browser.webkitengineservice")
 
 WebKitEngineService::WebKitEngineService()
     : m_initialised(false)
-    , m_privateMode(false)
     , m_stopped(false)
     , m_guiParent(nullptr)
     , m_currentTabId(TabId::NONE)
@@ -303,7 +302,7 @@ std::vector<std::shared_ptr<TabContent> > WebKitEngineService::getTabContents() 
     return result;
 }
 
-TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, bool desktopMode)
+TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, bool desktopMode, bool incognitoMode)
 {
     AbstractWebEngine::checkIfCreate();
 
@@ -317,7 +316,7 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
 
     // searching for next available tabId
     TabId newTabId;
-    WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId);
+    WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, incognitoMode);
     if (openerId)
         p->init(desktopMode, getTabView(*openerId));
     else
@@ -425,36 +424,10 @@ void WebKitEngineService::confirmationResult(WebConfirmationPtr c)
     m_tabs[c->getTabId()]->confirmationResult(c);
 }
 
-void WebKitEngineService::setPrivateMode(bool state)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
-    if (m_privateMode == state) {
-        BROWSER_LOGD("%s:%d %s new privateMode is the same", __FILE__, __LINE__, __func__);
-        return;
-    }
-
-    m_privateMode = state;
-
-    for(std::map<TabId, WebViewPtr>::iterator it = m_tabs.begin(), end = m_tabs.end(); it != end; ++it)
-        it->second->setPrivateMode(state);
-}
-
-void WebKitEngineService::setPrivateMode(const TabId& id, bool state)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    m_tabs[id]->setPrivateMode(state);
-}
-
-int WebKitEngineService::isPrivateMode(const TabId& id)
+bool WebKitEngineService::isPrivateMode(const TabId& id)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     return m_tabs[id]->isPrivateMode();
-}
-
-bool WebKitEngineService::isPrivateMode() const
-{
-    return m_privateMode;
 }
 
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnapshotData(int width, int height)

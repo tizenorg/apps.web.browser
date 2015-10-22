@@ -147,10 +147,16 @@ public:
     /**
      * Adds new tab
      * @param uri if not empty opens specified uri
+     * @param openerId
      * @param desktopMode true if desktop mode, false if mobile mode
+     * @param incognitoMode true if incognito mode, false if not
      * @return TabId of created tab
      */
-    virtual TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true) = 0;
+    virtual TabId addTab(
+            const std::string & uri = std::string(),
+            const TabId * openerId = NULL,
+            bool desktopMode = true,
+            bool incognitoMode = false) = 0;
 
     /**
      * @param tab id
@@ -208,34 +214,12 @@ public:
     virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height) = 0;
 
     /**
-     * Set private mode on/off
-     * \param private mode on when true, off otherwise
-     */
-    virtual void setPrivateMode(bool) = 0;
-
-    /**
-     * Set the state of private mode for a specific tab
-     *
-     * \param id of snapshot
-     * \param state to set
-     */
-    virtual void setPrivateMode(const TabId&, bool) = 0;
-
-    /**
-     * Get the state of private mode
-     */
-    virtual bool isPrivateMode() const = 0;
-
-    /**
      * Get the state of private mode for a specific tab
      *
      * /param id of snapshot
-     * /return state of private mode where:
-     *     -1 is "Not set"
-     *      0 is "False"
-     *      1 is "True"
+     * /return state of private mode
      */
-    virtual int isPrivateMode(const TabId&) = 0;
+    virtual bool isPrivateMode(const TabId&) = 0;
 
     virtual bool isLoadError() const = 0;
 

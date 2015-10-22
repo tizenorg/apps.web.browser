@@ -63,7 +63,7 @@ namespace webkitengine_service {
 
 const std::string WebView::COOKIES_PATH = "cookies";
 
-WebView::WebView(Evas_Object * obj, TabId tabId)
+WebView::WebView(Evas_Object * obj, TabId tabId, bool incognitoMode)
     : m_parent(obj)
     , m_tabId(tabId)
     , m_ewkView(nullptr)
@@ -72,7 +72,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId)
     , m_isLoading(false)
     , m_loadError(false)
     , m_suspended(false)
-    , m_private(-1)
+    , m_private(incognitoMode)
 {
     config.load("whatever");
 }
@@ -92,7 +92,14 @@ void WebView::init(bool desktopMode, Evas_Object*)
 {
 #if defined(USE_EWEBKIT)
     M_ASSERT(m_ewkContext);
-    m_ewkView = ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
+
+    m_ewkView = m_private ? ewk_view_add_in_incognito_mode(evas_object_evas_get(m_parent)) :
+                            ewk_view_add_with_context(evas_object_evas_get(m_parent), m_ewkContext);
+
+    Ewk_Context *context = ewk_view_context_get(m_ewkView);
+    if (context)
+        m_private ? ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_NEVER) :
+                    ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
 
     evas_object_data_set(m_ewkView, "_container", this);
     BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, this);
@@ -309,38 +316,6 @@ bool WebView::isLoading()
 bool WebView::isLoadError() const
 {
     return m_loadError;
-}
-
-void WebView::setPrivateMode(bool state)
-{
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    M_ASSERT(m_ewkView);
-    if(m_private < 0){
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
-        Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
-#else
-        Ewk_Settings * settings = ewk_page_group_settings_get(ewk_view_page_group_get(m_ewkView));
-#endif
-        ewk_settings_private_browsing_enabled_set(settings, state);
-        if (m_ewkView)
-        {
-            Ewk_Context *context = ewk_view_context_get(m_ewkView);
-            if (context)
-            {
-                if(state)
-                {
-                    ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_NEVER);
-                }
-                else
-                {
-                    ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(context), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
-                }
-            }
-        }
-#endif
-        m_private = static_cast<unsigned int>(state);
-    }
 }
 
 void WebView::confirmationResult(WebConfirmationPtr confirmation)
