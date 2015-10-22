@@ -642,7 +642,6 @@ void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event
     WebView * self = reinterpret_cast<WebView *>(data);
     BROWSER_LOGD("URL changed for tab: %s", self->getTabId().toString().c_str());
     self->uriChanged(self->getURI());
-    self->tabIdChecker(self->m_tabId);
 }
 
 void WebView::__backForwardListChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)

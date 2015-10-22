@@ -162,12 +162,6 @@ private:
     void onURLEntryEdited();
 
     /**
-     * Checks if correct tab is visible to user, and if not, it update browser view
-     * @param id of tab that should be visible to user
-     */
-    void checkTabId(const tizen_browser::basic_webengine::TabId& id);
-
-    /**
      * \brief check if url comming back from WebEngine should be passed to URI.
      *
      * For filtered addresses we need to hide real URI so the user would be confused.

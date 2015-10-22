@@ -396,7 +396,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
-    m_webEngine->uriOnTabChanged.connect(boost::bind(&SimpleUI::checkTabId,this,_1));
     m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
@@ -500,14 +499,6 @@ void SimpleUI::switchViewToIncognitoPage()
     m_webPageUI->switchViewToIncognitoPage();
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager->popStackTo(m_webPageUI.get());
-}
-
-void SimpleUI::checkTabId(const tizen_browser::basic_webengine::TabId& id){
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(m_webEngine->currentTabId() != id || isErrorPageActive()){
-        BROWSER_LOGD("URL changed on non-visible tab, updating browser view");
-        switchToTab(id);
-    }
 }
 
 void SimpleUI::openNewTab(const std::string &uri, bool desktopMode)
