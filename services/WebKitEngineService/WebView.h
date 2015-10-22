@@ -39,7 +39,7 @@ namespace webkitengine_service {
 class WebView
 {
 public:
-    WebView(Evas_Object *, TabId);
+    WebView(Evas_Object *, TabId, bool incognitoMode);
     virtual ~WebView();
     void init(bool desktopMode, Evas_Object * opener = NULL);
 
@@ -68,17 +68,12 @@ public:
 
     void confirmationResult(WebConfirmationPtr);
 
-    void setPrivateMode(bool);
-
     /**
      * @brief Get the state of private mode
      *
-     * @return state of private mode where:
-     *     -1 is "Not set"
-     *      0 is "False"
-     *      1 is "True"
+     * @return state of private mode
      */
-    int isPrivateMode() {return m_private;}
+    bool isPrivateMode() {return m_private;}
 
     std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height);
      /**
@@ -227,7 +222,7 @@ private:
     // true if desktop view is enabled, false if mobile
     bool m_desktopMode;
     bool m_suspended;
-    int m_private;
+    bool m_private;
 
     config::DefaultConfig config;
 

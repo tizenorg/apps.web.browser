@@ -77,8 +77,6 @@ public:
     void destroyUI();
 private:
     // setup functions
-    void createActions();
-    void connectActions();
     void loadUIServices();
     void connectUISignals();
     void loadModelServices();
@@ -111,7 +109,7 @@ private:
     void switchViewToWebPage();
     void updateView();
 
-    void openNewTab(const std::string &uri, bool desktopMode = true);
+    void openNewTab(const std::string &uri, bool desktopMode = true, bool incognitoMode = false);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
@@ -151,7 +149,6 @@ private:
     void setwvIMEStatus(bool status);
 
     sharedAction m_showBookmarkManagerUI;
-    sharedAction m_settingPrivateBrowsing;
 
     /**
      * \brief filters URL before it is passed to WebEngine.
@@ -220,8 +217,6 @@ private:
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
-    void settingsPrivateModeSwitch(bool newState);
-    void applyPrivateModeToTab(const tizen_browser::basic_webengine::TabId& id);
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
@@ -260,7 +255,6 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
-    bool m_incognito;
 
     //helper object used to view management
     ViewManager* m_viewManager;
