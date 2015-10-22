@@ -420,6 +420,7 @@ void SimpleUI::connectModelSignals()
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
+    m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
     m_platformInputManager->mouseClicked.connect(
             boost::bind(&SimpleUI::onMouseClick, this));
 
@@ -628,12 +629,20 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
-    if (m_webPageUI->isHomePageActive()) {
+    if (m_zoomUI->isVisible()) {
+        m_zoomUI->escapeZoom();
+    } else if (m_webPageUI->isHomePageActive()) {
         m_quickAccess->backButtonClicked();
     } else {
         if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus)
             m_webEngine->backButtonClicked();
     }
+}
+
+void SimpleUI::onEscapePressed()
+{
+    BROWSER_LOGD("[%s]", __func__);
+    m_zoomUI->escapeZoom();
 }
 
 void SimpleUI::reloadEnable(bool enable)

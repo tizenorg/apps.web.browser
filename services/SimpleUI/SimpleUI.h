@@ -227,6 +227,7 @@ private:
 
     void onReturnPressed(MenuButton *m);
     void onBackPressed();
+    void onEscapePressed();
 
     void searchWebPage(std::string &text, int flags);
 

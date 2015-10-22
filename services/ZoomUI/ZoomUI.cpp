@@ -103,6 +103,15 @@ void ZoomUI::showNavigation()
         evas_object_show(m_nav_layout);
 }
 
+bool ZoomUI::isVisible()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (evas_object_visible_get(m_layout) || (*(getZoom()) != ZOOM_DEFAULT))
+        return true;
+    else
+        return false;
+}
+
 void ZoomUI::createLayout(Evas_Object *parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -245,6 +254,15 @@ void ZoomUI::_zoom_value_confirmed(void* data, Evas*, Evas_Object*, void* event_
             evas_object_hide(self->m_nav_layout);
         }
         evas_object_hide(self->m_zoom_menu);
+    }
+}
+
+void ZoomUI::escapeZoom()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (isVisible()) {
+        setZoom(ZoomUI::ZOOM_DEFAULT);
+        hideUI();
     }
 }
 

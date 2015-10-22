@@ -46,6 +46,8 @@ public:
     void show(Evas_Object* parent);
     void showNavigation();
     void clearItems();
+    bool isVisible();
+    void escapeZoom();
 
     boost::signals2::signal<void ()> closeZoomUI;
     boost::signals2::signal<void (int)> setZoom;

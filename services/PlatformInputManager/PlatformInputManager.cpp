@@ -85,6 +85,8 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             // MERGE_ME dont know if should be commented out
         else if(!keyName.compare("BackSpace") || !keyName.compare("XF86Back"))
             self->backPressed();
+        else if(!keyName.compare("Escape"))
+            self->escapePressed();
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);
         Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event);
