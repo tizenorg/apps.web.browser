@@ -153,8 +153,9 @@ public:
      * @return TabId of created tab
      */
     virtual TabId addTab(
-            const std::string & uri = std::string(),
-            const TabId * openerId = NULL,
+            const std::string& uri = std::string(),
+            const TabId* openerId = NULL,
+            const std::string& title = std::string(),
             bool desktopMode = true,
             bool incognitoMode = false) = 0;
 
@@ -315,7 +316,7 @@ public:
      * Title of current page changed
      * \param new title
      */
-    boost::signals2::signal<void (const std::string &)> titleChanged;
+    boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
 
     /**
      * URI of current page changed

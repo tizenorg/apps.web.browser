@@ -173,6 +173,13 @@ int SimpleUI::exec(const std::string& _url)
     return 0;
 }
 
+void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
+{
+    m_moreMenuUI->setWebTitle(title);
+    m_webPageUI->setPageTitle(title);
+    m_currentSession.setTabTitle(tabId, title);
+}
+
 void SimpleUI::restoreLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -182,7 +189,7 @@ void SimpleUI::restoreLastSession()
     {
         for(auto iter=lastSession.items().begin(), end=lastSession.items().end(); iter != end; ++iter)
         {
-            openNewTab(iter->second);
+            openNewTab(iter->second.first, lastSession.getUrlTitle(iter->second.first));
         }
         m_sessionService->getStorage()->deleteSession(lastSession);
     }
@@ -275,7 +282,7 @@ void SimpleUI::connectUISignals()
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", false, true));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", false, true));
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
@@ -408,8 +415,8 @@ void SimpleUI::connectModelSignals()
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
-    m_webEngine->titleChanged.connect(boost::bind(&WebPageUI::setPageTitle, m_webPageUI.get(), _1));
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
+    m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -478,14 +485,13 @@ void SimpleUI::switchViewToIncognitoPage()
     m_viewManager->popStackTo(m_webPageUI.get());
 }
 
-void SimpleUI::openNewTab(const std::string &uri, bool desktopMode, bool incognitoMode)
+void SimpleUI::openNewTab(const std::string &uri, const std::string& title, bool desktopMode, bool incognitoMode)
 {
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
-    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, desktopMode, incognitoMode);
+    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, title, desktopMode, incognitoMode);
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
-    if (incognitoMode)
-        switchViewToIncognitoPage();
+    incognitoMode ? switchViewToIncognitoPage() : m_currentSession.updateItem(tab.toString(), uri, title);
 }
 
 void SimpleUI::closeTab()
@@ -541,7 +547,7 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     m_viewManager->popStackTo(m_webPageUI.get());
     std::string historyAddress = historyItem->getUrl();
-    openNewTab(historyAddress, desktopMode);
+    openNewTab(historyAddress, historyItem->getTitle(), desktopMode);
 }
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
@@ -648,7 +654,7 @@ void SimpleUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI());
+        m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
     m_webPageUI->loadStarted();
 }
 
@@ -662,12 +668,13 @@ void SimpleUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(m_webEngine->getURI(),
-                                                                                                m_webEngine->getTitle(),
-                                                                                                m_webEngine->getFavicon()),
-                                                                                                m_webEngine->getSnapshotData(
-                                                                                                    QuickAccess::MAX_THUMBNAIL_WIDTH,
-                                                                                                    QuickAccess::MAX_THUMBNAIL_HEIGHT));
+        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
+                                             m_webEngine->getURI(),
+                                             m_webEngine->getTitle(),
+                                             m_webEngine->getFavicon()),
+                                         m_webEngine->getSnapshotData(
+                                             QuickAccess::MAX_THUMBNAIL_WIDTH,
+                                             QuickAccess::MAX_THUMBNAIL_HEIGHT));
     m_webPageUI->loadFinished();
 }
 
@@ -675,13 +682,12 @@ void SimpleUI::loadStopped()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
                                              m_webEngine->getURI(),
                                              m_webEngine->getURI(),
                                              std::make_shared<tizen_browser::tools::BrowserImage>()),
                                          std::make_shared<tizen_browser::tools::BrowserImage>());
-    }
     m_webPageUI->loadStopped();
 }
 

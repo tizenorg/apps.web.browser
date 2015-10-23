@@ -81,7 +81,12 @@ public:
      * @param uri
      * @return TabId of created tab
      */
-    TabId addTab(const std::string & uri = std::string(), const TabId * openerId = NULL, bool desktopMode = true, bool incognitoMode = false);
+    TabId addTab(
+            const std::string & uri = std::string(),
+            const TabId* openerId = NULL,
+            const std::string& title = std::string(),
+            bool desktopMode = true,
+            bool incognitoMode = false);
     Evas_Object* getTabView(TabId id);
     bool switchToTab(TabId);
     bool closeTab();
@@ -180,7 +185,7 @@ public:
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
-    void _titleChanged(const std::string &);
+    void _titleChanged(const std::string&, const std::string&);
     void _uriChanged(const std::string &);
     void _loadFinished();
     void _loadStarted();
@@ -209,7 +214,7 @@ private:
 
 private:
     bool m_initialised;
-    void * m_guiParent;
+    void* m_guiParent;
     bool m_stopped;
 
     // current TabId
