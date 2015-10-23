@@ -60,6 +60,17 @@ public:
     ///\todo implement getSession(name); if needed.
     //Session getSession(const std::string& name);
     SessionsVector getAllSessions();
+
+    /**
+     * Update title of a tab.
+     */
+    void updateTabTitle(tizen_browser::Session::Session& session, const std::string& tabId, const std::string& title);
+
+    /**
+     * Get title of a tab.
+     */
+    std::string getUrlTitle(const std::string& url);
+
     /**
      * Store/update all items in storage
      */
@@ -96,15 +107,13 @@ public:
      void deleteAllSessions();
 private:
     bool initSessionDatabase();
-    void updateSessionTimeStamp(tizen_browser::Session::Session& session
-                               ,const boost::posix_time::ptime& accessTime
-                               ,std::shared_ptr<storage::SQLDatabase> connection
-                               );
+    void updateSessionTimeStamp(tizen_browser::Session::Session& session,
+                                const boost::posix_time::ptime& accessTime,
+                                std::shared_ptr<storage::SQLDatabase> connection);
     void clearSession(const Session& session, std::shared_ptr<storage::SQLDatabase> connection);
-    void updateSession( tizen_browser::Session::Session& session
-                       ,const std::string& itemId
-                       ,std::shared_ptr<storage::SQLDatabase> connection
-                      );
+    void updateSession(tizen_browser::Session::Session& session,
+                       const std::string& itemId,
+                       std::shared_ptr<storage::SQLDatabase> connection);
     void readSession(Session& session, std::shared_ptr<storage::SQLDatabase> connection);
     bool m_isInitialized;
 

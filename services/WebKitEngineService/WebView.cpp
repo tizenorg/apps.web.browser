@@ -63,12 +63,12 @@ namespace webkitengine_service {
 
 const std::string WebView::COOKIES_PATH = "cookies";
 
-WebView::WebView(Evas_Object * obj, TabId tabId, bool incognitoMode)
+WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool incognitoMode)
     : m_parent(obj)
     , m_tabId(tabId)
     , m_ewkView(nullptr)
     , m_ewkContext(nullptr)
-    , m_title(std::string())
+    , m_title(title)
     , m_isLoading(false)
     , m_loadError(false)
     , m_suspended(false)
@@ -609,7 +609,7 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_title = fromChar(ewk_view_title_get(obj));
-    self->titleChanged(self->m_title);
+    self->titleChanged(self->m_title, self->getTabId().toString());
 }
 
 void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)

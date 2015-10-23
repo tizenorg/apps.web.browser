@@ -83,6 +83,7 @@ private:
     void initModelServices();
     void initUIServices();
     void connectModelSignals();
+    void titleChanged(const std::string& title, const std::string& tabId);
     void restoreLastSession();
     Evas_Object* createWebLayout(Evas_Object* parent);
     Evas_Object* createErrorLayout(Evas_Object* parent);
@@ -108,7 +109,7 @@ private:
     void switchViewToWebPage();
     void updateView();
 
-    void openNewTab(const std::string &uri, bool desktopMode = true, bool incognitoMode = false);
+    void openNewTab(const std::string &uri, const std::string& title = std::string(), bool desktopMode = true, bool incognitoMode = false);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
