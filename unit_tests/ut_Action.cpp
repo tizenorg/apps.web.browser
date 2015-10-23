@@ -21,11 +21,15 @@
 #include <boost/concept_check.hpp>
 
 #include "Action.h"
+#include "BrowserLogger.h"
+
 
 BOOST_AUTO_TEST_SUITE(action)
 
 BOOST_AUTO_TEST_CASE(action_constructors)
 {
+    BROWSER_LOGI("[UT] Action - action_constructor - START --> ");
+
     tizen_browser::base_ui::Action action_01;
     BOOST_CHECK_EQUAL(action_01.isEnabled(), true);
     BOOST_CHECK_EQUAL(action_01.isCheckable(), false);
@@ -58,9 +62,12 @@ BOOST_AUTO_TEST_CASE(action_constructors)
     BOOST_CHECK_EQUAL(action_04.getText(), a04_text);
     BOOST_CHECK_EQUAL(action_04.getIcon(), a04_icon);
 
+    BROWSER_LOGI("[UT] --> END - Action - action_constructor");
 }
+
 BOOST_AUTO_TEST_CASE(action_get_and_set){
 
+    BROWSER_LOGI("[UT] Action - action_get_and_set - START --> ");
 
     std::string iconText("iconText");
     std::string text("text");
@@ -87,9 +94,13 @@ BOOST_AUTO_TEST_CASE(action_get_and_set){
     BOOST_CHECK_EQUAL(action.getIcon(), icon);
     BOOST_CHECK_EQUAL(action.getSelIcon(), selIcon);
     BOOST_CHECK_EQUAL(action.getDisIcon(), disIcon);
+
+    BROWSER_LOGI("[UT] --> END - Action - action_get_and_set");
 }
 
 BOOST_AUTO_TEST_CASE(action_bool_behaviour){
+
+    BROWSER_LOGI("[UT] Action - action_bool_behaviour - START --> ");
 
     tizen_browser::base_ui::Action action_01;
     //action is not checkable by defalut,
@@ -108,9 +119,13 @@ BOOST_AUTO_TEST_CASE(action_bool_behaviour){
     action_02.toggle();
     BOOST_CHECK_EQUAL(action_02.isChecked(), false);
 
+    BROWSER_LOGI("[UT] --> END - Action - action_bool_behaviour");
 }
 
 BOOST_AUTO_TEST_CASE(action_trigger_test){
+
+    BROWSER_LOGI("[UT] Action - action_trigger_test - START --> ");
+
     struct TriggerHandler{
         TriggerHandler()
             :beenCalled(false){};
@@ -130,9 +145,14 @@ BOOST_AUTO_TEST_CASE(action_trigger_test){
     action_01.triggered.connect(boost::ref(triggered));
     action_01.trigger();
     BOOST_CHECK_EQUAL(triggered.beenCalled, true);
+
+    BROWSER_LOGI("[UT] --> END - Action - action_trigger_test");
 }
 
 BOOST_AUTO_TEST_CASE(action_togle_test){
+
+    BROWSER_LOGI("[UT] Action - action_togle_test - START --> ");
+
     struct ToggleHandler{
         ToggleHandler()
             :isChecked(false),beenCalled(false){};
@@ -155,6 +175,8 @@ BOOST_AUTO_TEST_CASE(action_togle_test){
     action.toggle();
     BOOST_CHECK_EQUAL(toggelHandler.beenCalled, true);
     BOOST_CHECK_EQUAL(action.isChecked(), toggelHandler.isChecked);
+
+    BROWSER_LOGI("[UT] --> END - Action - action_togle_test");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

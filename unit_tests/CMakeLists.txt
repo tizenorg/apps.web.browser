@@ -1,7 +1,6 @@
 project(browser-ut)
 cmake_minimum_required(VERSION 2.8)
 
-add_subdirectory(Services)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 include(Coreheaders)
@@ -31,8 +30,7 @@ set(UNIT_TESTS_SRCS
     ut_StorageService.cpp
     ut_coreService.cpp
     ut_SessionStorage.cpp
-    Services/ServiceInterface.cpp
-    ut_WebKitEngineService.cpp
+#    ut_WebKitEngineService.cpp
     )
 
 if(TIZEN_BUILD)

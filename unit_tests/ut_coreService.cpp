@@ -19,7 +19,9 @@
 #include <boost/any.hpp>
 
 #include "ServiceManager.h"
-#include "Services/ServiceInterface.h"
+#include "BrowserLogger.h"
+#include "BookmarkService.h"
+
 
 BOOST_AUTO_TEST_SUITE(core_ServiceManager)
 
@@ -27,19 +29,25 @@ namespace tbc=tizen_browser::core;
 
 BOOST_AUTO_TEST_CASE(singleton)
 {
+    BROWSER_LOGI("[UT] CoreService - singleton - START --> ");
+
 //     check if service manager is singleton
     tbc::ServiceManager *serviceManager_instance_01 = &tbc::ServiceManager::getInstance();
     tbc::ServiceManager *serviceManager_instance_02 = &tbc::ServiceManager::getInstance();
 
     BOOST_CHECK_EQUAL(serviceManager_instance_01, serviceManager_instance_02);
+
+    BROWSER_LOGI("[UT] --> END - CoreService - singleton");
 }
 
 BOOST_AUTO_TEST_CASE(getService)
 {
-    std::string serviceName("org.tizen.browser.TestServiceOne");
+    BROWSER_LOGI("[UT] CoreService - getService - START --> ");
+
+    std::string serviceName("org.tizen.browser.favoriteservice");
     tbc::ServiceManager *servManager = &tbc::ServiceManager::getInstance();
-    std::shared_ptr<ServiceInterface> service1 = std::dynamic_pointer_cast
-    <ServiceInterface,tbc::AbstractService>
+    std::shared_ptr<tizen_browser::services::BookmarkService> service1 = std::dynamic_pointer_cast
+    <tizen_browser::services::BookmarkService, tbc::AbstractService>
     (servManager->getService(serviceName));
     BOOST_REQUIRE(service1);
     std::string nameFromService = service1->getName();
@@ -47,6 +55,8 @@ BOOST_AUTO_TEST_CASE(getService)
                                  nameFromService.end(),
                                  serviceName.begin(),
                                  serviceName.end());
+
+    BROWSER_LOGI("[UT] --> END - CoreService - getService");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

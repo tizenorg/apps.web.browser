@@ -29,6 +29,8 @@
 
 #include "Logger.h"
 #include "AbstractLogger.h"
+#include "BrowserLogger.h"
+
 
 #define COLOR "\033[41m\033[37m"
 
@@ -63,6 +65,8 @@ struct StubAbstractLogger: tizen_browser::logger::AbstractLogger {
 
 // simple tests for inherited interface
 BOOST_AUTO_TEST_CASE(logger_abstract_logger) {
+        BROWSER_LOGI("[UT] LOGGER - logger_abstract_logger - START --> ");
+
 	std::stringstream ss;
 	ss << boost::unit_test::framework::current_test_case().p_name;
 
@@ -73,6 +77,7 @@ BOOST_AUTO_TEST_CASE(logger_abstract_logger) {
 
 	sl.log("a", "b", "c");
 	BOOST_CHECK_EQUAL(sl.getLog().compare("abc\n"), 0);
+	BROWSER_LOGI("[UT] --> END - LOGGER - logger_abstract_logger");
 }
 
 class StubLogger: public tizen_browser::logger::Logger {
@@ -89,6 +94,8 @@ private:
 };
 
 BOOST_AUTO_TEST_CASE(logger_init) {
+        BROWSER_LOGI("[UT] LOGGER - logger_init - START --> ");
+
 	std::stringstream ss;
 	ss << boost::unit_test::framework::current_test_case().p_name;
 
@@ -124,6 +131,8 @@ BOOST_AUTO_TEST_CASE(logger_init) {
 	checker.erase(checker.begin(), std::find(checker.begin(), checker.end(), ']') + 1);
 	boost::algorithm::trim(checker);
 	BOOST_CHECK_EQUAL(checker, msg);
+
+        BROWSER_LOGI("[UT] --> END - LOGGER - logger_init");
 }
 
 ///\todo p.chmielewski

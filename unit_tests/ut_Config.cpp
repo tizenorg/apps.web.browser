@@ -30,10 +30,14 @@
 #include "BrowserLogger.h"
 #include "Config.h"
 
+#define TAG "[UT] Config - "
+
 BOOST_AUTO_TEST_SUITE(config)
 
 BOOST_AUTO_TEST_CASE(config_simple_get_set)
 {
+    BROWSER_LOGI(TAG "config_simple_get_set - START --> ");
+
     std::unique_ptr<tizen_browser::config::DefaultConfig> defconf(new tizen_browser::config::DefaultConfig());
     BOOST_CHECK(defconf);
 
@@ -44,6 +48,8 @@ BOOST_AUTO_TEST_CASE(config_simple_get_set)
     defconf->set("intTestKey", testval);
     int retval = boost::any_cast<int>(defconf->get(std::string("intTestKey")));
     BOOST_CHECK_EQUAL(testval, retval);
+
+    BROWSER_LOGI(TAG "Config - config_simple_get_set");
 }
 
 /*
@@ -51,6 +57,8 @@ BOOST_AUTO_TEST_CASE(config_simple_get_set)
  */
 BOOST_AUTO_TEST_CASE(config_load_store)
 {
+    BROWSER_LOGI(TAG "config_load_store - START --> ");
+
     std::unique_ptr<tizen_browser::config::DefaultConfig> configuration1(new tizen_browser::config::DefaultConfig());
     std::unique_ptr<tizen_browser::config::DefaultConfig> configuration2(new tizen_browser::config::DefaultConfig());
     BOOST_CHECK(&configuration1);
@@ -66,12 +74,14 @@ BOOST_AUTO_TEST_CASE(config_load_store)
 	retstring = boost::any_cast<std::string>(configuration2->get(std::string("userInterface")));
     } catch(boost::bad_any_cast & e){
 	/// \todo Need to resolve bad type (void *) from boost::any(empty_string))
-	BROWSER_LOGI("[i] Catched error, msg: %s",e.what());
-	BROWSER_LOGI("[i] std::map not found map[key] and returns NULL to boost::any_cast as type (void*) instead of std::string (this case)\n");
+        BROWSER_LOGI(TAG "[i] Catched error, msg: %s",e.what());
+        BROWSER_LOGI(TAG "[i] std::map not found map[key] and returns NULL to boost::any_cast as type (void*) instead of std::string (this case)\n");
     }
     /// \todo Below test should be enabled when saving and loading to/from config file will be implemented.
     ///  BOOST_CHECK_EQUAL(teststr, retstring);
     configuration2.reset();
+
+    BROWSER_LOGI(TAG "--> END - config_load_store");
 }
 
 
@@ -80,6 +90,8 @@ BOOST_AUTO_TEST_CASE(config_load_store)
  */
 BOOST_AUTO_TEST_CASE(config_boundary_conditions)
 {
+    BROWSER_LOGI(TAG "config_boundary_conditions - START --> ");
+
     std::unique_ptr<tizen_browser::config::DefaultConfig> configuration(new tizen_browser::config::DefaultConfig());
     BOOST_CHECK(&configuration);
     std::string retstring;
@@ -91,8 +103,8 @@ BOOST_AUTO_TEST_CASE(config_boundary_conditions)
 	retany = configuration->get(NULL);
     } catch(std::logic_error & e){
 	/// \todo get() function expects string and cannot construct empty string from NULL
-	BROWSER_LOGI("[i] Catched error, msg: %s",e.what());
-	BROWSER_LOGI("[i] get() function expects string and cannot construct empty string from NULL\n");
+        BROWSER_LOGI(TAG "[i] Catched error, msg: %s",e.what());
+        BROWSER_LOGI(TAG "[i] get() function expects string and cannot construct empty string from NULL\n");
     }
 
     try{
@@ -100,8 +112,8 @@ BOOST_AUTO_TEST_CASE(config_boundary_conditions)
 	BOOST_CHECK(retstring.empty());
     }catch(boost::bad_any_cast & e){
 	/// \todo Need to resolve bad type (void *) from boost::any(empty_string))
-	BROWSER_LOGI("[i] Catched error, msg: %s",e.what());
-	BROWSER_LOGI("[i] std::map not found map[key] and returns NULL to boost::any_cast as type (void*) instead of std::string (this case)\n");
+        BROWSER_LOGI(TAG "[i] Catched error, msg: %s",e.what());
+        BROWSER_LOGI(TAG "[i] std::map not found map[key] and returns NULL to boost::any_cast as type (void*) instead of std::string (this case)\n");
     }
     configuration->set(std::string(""), std::string("value"));
     retstring = boost::any_cast<std::string>(configuration->get(std::string("")));
@@ -136,6 +148,8 @@ BOOST_AUTO_TEST_CASE(config_boundary_conditions)
     retstring = boost::any_cast<std::string>(configuration->get(std::string("SameTestKey")));
     BOOST_CHECK_EQUAL(std::string("valueB"), retstring);
     BOOST_CHECK_PREDICATE( std::not_equal_to<std::string>(), (retstring)(std::string("valueA")) );
+
+    BROWSER_LOGI(TAG "--> END - config_boundary_conditions");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

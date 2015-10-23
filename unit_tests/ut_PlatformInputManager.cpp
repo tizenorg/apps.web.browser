@@ -20,12 +20,16 @@
 
 #include "ServiceManager.h"
 #include "PlatformInputManager.h"
+#include "BrowserLogger.h"
+
 
 BOOST_AUTO_TEST_SUITE(PlatformInputManager)
 
 BOOST_AUTO_TEST_CASE(PointerModeSetting)
 {
-     std::shared_ptr<tizen_browser::services::PlatformInputManager> platformInputManager =
+    BROWSER_LOGI("[UT] PlatformInputManager - PointerModeSetting - START --> ");
+
+        std::shared_ptr<tizen_browser::services::PlatformInputManager> platformInputManager =
         std::dynamic_pointer_cast
         <tizen_browser::services::PlatformInputManager, tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
@@ -41,6 +45,8 @@ BOOST_AUTO_TEST_CASE(PointerModeSetting)
 //    platformInputManager->setPointerModeEnabled(true);
 //
 //    BOOST_CHECK(platformInputManager->getPointerModeEnabled());
+
+    BROWSER_LOGI("[UT] --> END - PlatformInputManager - PointerModeSetting");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
