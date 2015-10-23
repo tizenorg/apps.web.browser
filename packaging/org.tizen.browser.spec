@@ -115,9 +115,6 @@ chmod -R 660 /opt/usr/data/webkit
 %defattr(-,root,root,-)
 %{_appdir}/bin/browser
 %{_appdir}/res/edje/*/*.edj
-%if %BUILD_UT == "ON"
-%exclude %{_appdir}/services/libTestService*
-%endif
 %{_appdir}/services/*
 %{_appdir}/lib/*
 %defattr(-,app,app,-)
@@ -137,6 +134,5 @@ BrowserAPP Unit Tests.
 %files ut
 %defattr(-,root,root,-)
 %{_appdir}/bin/browser-ut
-%{_appdir}/services/libTestService*
 
 %endif

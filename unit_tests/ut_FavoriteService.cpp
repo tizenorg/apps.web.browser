@@ -30,6 +30,7 @@
 #include "BookmarkService.h"
 #include "BookmarkItem.h"
 
+#define TAG "[UT] Bookmarks - "
 
 BOOST_AUTO_TEST_SUITE(bookmarks)
 
@@ -37,7 +38,8 @@ bool item_is_empty(std::shared_ptr<tizen_browser::services::BookmarkItem> item) 
 
 BOOST_AUTO_TEST_CASE(bookmark_add_remove)
 {
-    BROWSER_LOGI("BOOKMARKS_TEST_CASE START --> ");
+    BROWSER_LOGI(TAG "bookmark_add_remove - START --> ");
+
 
     /// \todo: clean casts, depends on ServiceManager
     std::shared_ptr<tizen_browser::services::BookmarkService> fs =
@@ -59,25 +61,25 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> bookmarks_list = fs->getBookmarks();
     while(!bookmarks_list.empty()) {
 	bitem = bookmarks_list.back();
-	BROWSER_LOGI("Element from cached bookmark list: id: %d, tittle: %s, URL: %s", bitem->getId(),
+        BROWSER_LOGI(TAG "Element from cached bookmark list: id: %d, tittle: %s, URL: %s", bitem->getId(),
 			    bitem->getTittle().c_str(), bitem->getAddress().c_str());
 	bookmarks_list.pop_back();
     }
 
-    BROWSER_LOGI("Above - current stored bookmarks (recently adder order");
+    BROWSER_LOGI(TAG "Above - current stored bookmarks (recently adder order");
 
 //  clean all bookmarks
     resultflag = fs->deleteAllBookmarks();
     BOOST_CHECK(resultflag);
     fs->getBookmarks();
-    BROWSER_LOGI("Above - current stored bookmarks after deleteAll, deleting resultflag: %d", resultflag);
+    BROWSER_LOGI(TAG "Above - current stored bookmarks after deleteAll, deleting resultflag: %d", resultflag);
 
 //  Empty bookmark test
     bookcount = fs->countBookmarks();
     BOOST_CHECK(item_is_empty(fs->addToBookmarks("","")));
     bookcount2 = fs->countBookmarks();
     BOOST_CHECK_EQUAL(bookcount, bookcount2);
-    BROWSER_LOGI("Add empty bookmark test summary - number of bookmarks before: %d, after: %d", bookcount ,bookcount2);
+    BROWSER_LOGI(TAG "Add empty bookmark test summary - number of bookmarks before: %d, after: %d", bookcount ,bookcount2);
     fs->getBookmarks();
 
 //  Add bookmark with the same tittle
@@ -86,28 +88,32 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     std::shared_ptr<tizen_browser::services::BookmarkItem> item_to_delete = fs->addToBookmarks("www.thisis.url5","Tittle");
     BOOST_CHECK(!item_is_empty(item_to_delete));
     fs->getBookmarks();
-    BROWSER_LOGI("Before delete last bookmark (%s)", item_to_delete->getAddress().c_str());
+    BROWSER_LOGI(TAG "Before delete last bookmark (%s)", item_to_delete->getAddress().c_str());
     BOOST_CHECK(fs->deleteBookmark(item_to_delete->getAddress()));
-    BROWSER_LOGI("After delete bookmark");
+    BROWSER_LOGI(TAG "After delete bookmark");
     fs->getBookmarks();
 
 //  Add duplicated url
-    BROWSER_LOGI("Add duplicated url");
+    BROWSER_LOGI(TAG "Add duplicated url");
     BOOST_CHECK(item_is_empty(fs->addToBookmarks("www.thisis.url4","Not duplicateTittle")));
     fs->getBookmarks();
 
 //  check existing url
     resultflag = fs->bookmarkExists("www.not_existing.url");
-    BROWSER_LOGI("Check not existing url (%s) resultflag: %d", "www.not_existing.url", resultflag);
+    BROWSER_LOGI(TAG "Check not existing url (%s) resultflag: %d", "www.not_existing.url", resultflag);
     BOOST_CHECK(!resultflag);
     resultflag = fs->bookmarkExists("www.thisis.url4");
-    BROWSER_LOGI("Check existing url (%s) resultflag: %d", "www.thisis.url4", resultflag);
+    BROWSER_LOGI(TAG "Check existing url (%s) resultflag: %d", "www.thisis.url4", resultflag);
     BOOST_CHECK(resultflag);
+
+    BROWSER_LOGI(TAG "--> END - bookmark_add_remove");
 }
 
 BOOST_AUTO_TEST_CASE(bookmark_synchro)
 {
     /// \todo: clean casts, depends on ServiceManager
+    BROWSER_LOGI(TAG "bookmark_synchro - START --> ");
+
     std::shared_ptr<tizen_browser::services::BookmarkService> fs =
     std::dynamic_pointer_cast
     <
@@ -116,11 +122,11 @@ BOOST_AUTO_TEST_CASE(bookmark_synchro)
     >
     (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
 
-    BROWSER_LOGI("Bookmarks synchronize test");
+    BROWSER_LOGI(TAG "Bookmarks synchronize test");
     fs->synchronizeBookmarks();
     BOOST_CHECK(!fs->getBookmarks().empty());
 
-    BROWSER_LOGI("<-- BOOKMARKS_TEST_CASE END");
+    BROWSER_LOGI(TAG "--> END - bookmark_synchro");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

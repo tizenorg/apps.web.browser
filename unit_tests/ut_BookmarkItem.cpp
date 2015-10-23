@@ -27,8 +27,8 @@ BOOST_AUTO_TEST_SUITE(bookmark_item)
 
 BOOST_AUTO_TEST_CASE(bookm_item_set_get)
 {
-    BROWSER_LOGI("BOOKMARK_ITEM_TEST_CASE START --> ");
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGI("[UT] BookmarkItem - bookm_item_set_get - START --> ");
+
     std::string retstr = "";
     std::unique_ptr<tizen_browser::services::BookmarkItem>
 	  bitem(new tizen_browser::services::BookmarkItem());
@@ -54,11 +54,14 @@ BOOST_AUTO_TEST_CASE(bookm_item_set_get)
     BOOST_CHECK_EQUAL(0, bitem->getId());
     bitem->setId(9999);
     BOOST_CHECK_EQUAL(9999, bitem->getId());
+
+    BROWSER_LOGI("[UT] --> END - BookmarkItem - bookm_item_set_get");
 }
 
 BOOST_AUTO_TEST_CASE(bookm_item_favicon_thumb)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGI("[UT] BookmarkItem - bookm_item_favicon_thumb - START --> ");
+
     std::unique_ptr<tizen_browser::services::BookmarkItem>
 	  bitem(new tizen_browser::services::BookmarkItem());
     std::shared_ptr<tizen_browser::tools::BrowserImage> bimg
@@ -78,7 +81,7 @@ BOOST_AUTO_TEST_CASE(bookm_item_favicon_thumb)
     BOOST_CHECK_EQUAL(10, bitem->getThumbnail()->height);
     BOOST_CHECK_EQUAL(500, bitem->getThumbnail()->dataSize);
 
-    BROWSER_LOGI("<-- BOOKMARK_ITEM_TEST_CASE END");
+    BROWSER_LOGI("[UT] --> END - BookmarkItem - bookm_item_favicon_thumb");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

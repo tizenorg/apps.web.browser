@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_SUITE(StorageService)
 
 BOOST_AUTO_TEST_CASE(storage_settings)
 {
-    BROWSER_LOGI("StorageService - history - START --> ");
+    BROWSER_LOGI("[UT] StorageService - storage_settings - START --> ");
 
     std::shared_ptr<tizen_browser::services::StorageService> storageManager = std::dynamic_pointer_cast <
                                                                               tizen_browser::services::StorageService,
@@ -107,13 +107,12 @@ BOOST_AUTO_TEST_CASE(storage_settings)
     auto sString = storageManager->getSettingsText(keyString, "0.0");
     BOOST_CHECK("String" == sString);
 
-
-    BROWSER_LOGI("<-- StorageService - history - END");
+    BROWSER_LOGI("[UT] --> END - StorageService - storage_settings");
 }
 
 BOOST_AUTO_TEST_CASE(storage_bookmark)
 {
-    BROWSER_LOGI("StorageService - bookmark - START --> ");
+    BROWSER_LOGI("[UT] StorageService - storage_bookmark - START --> ");
 
     std::shared_ptr<tizen_browser::services::StorageService> storageManager = std::dynamic_pointer_cast <
                                                                               tizen_browser::services::StorageService,
@@ -137,7 +136,7 @@ BOOST_AUTO_TEST_CASE(storage_bookmark)
 
     storageManager->deleteThumbnail(1);*/
 
-    BROWSER_LOGI("<-- StorageService - bookmark - END");
+    BROWSER_LOGI("[UT] --> END - StorageService - storage_bookmark");
 }
 
 // Should it be moved to ut_historyService ????

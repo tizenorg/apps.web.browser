@@ -25,11 +25,15 @@
 #include "services/SessionStorage/Session.h"
 #include "AbstractWebEngine/TabId.h"
 #include <core/Config/Config.h>
+#include "BrowserLogger.h"
+
 
 BOOST_AUTO_TEST_SUITE(SessionStorage)
 
 BOOST_AUTO_TEST_CASE(InitSession)
 {
+    BROWSER_LOGI("[UT] SessionStorage - InitSession - START --> ");
+
     tizen_browser::config::DefaultConfig config;
     config.load("not used text");
     std::string resourceDbDir(boost::any_cast < std::string > (config.get("resourcedb/dir")));
@@ -52,10 +56,14 @@ BOOST_AUTO_TEST_CASE(InitSession)
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
+
+    BROWSER_LOGI("[UT] --> END - SessionStorage - InitSession");
 }
 
 BOOST_AUTO_TEST_CASE(CreateAndPopulateSession)
 {
+    BROWSER_LOGI("[UT] SessionStorage - CreateAndPopulateSession - START --> ");
+
     std::shared_ptr<tizen_browser::services::SessionStorage> sessionService =
     std::dynamic_pointer_cast
     <
@@ -102,10 +110,13 @@ BOOST_AUTO_TEST_CASE(CreateAndPopulateSession)
 
     BOOST_CHECK_EQUAL(session.items().size(), 2);
 
+    BROWSER_LOGI("[UT] --> END - SessionStorage - CreateAndPopulateSession");
 }
 
 BOOST_AUTO_TEST_CASE(getLastSession)
 {
+    BROWSER_LOGI("[UT] SessionStorage - getLastSession - START --> ");
+
     std::shared_ptr<tizen_browser::services::SessionStorage> sessionService =
     std::dynamic_pointer_cast
     <
@@ -152,10 +163,14 @@ BOOST_AUTO_TEST_CASE(getLastSession)
     );
 
     BOOST_CHECK_EQUAL(lastSession.items().size(), 3);
+
+    BROWSER_LOGI("[UT] --> END - SessionStorage - getLastSession");
 }
 
 BOOST_AUTO_TEST_CASE(getAllSessions)
 {
+    BROWSER_LOGI("[UT] SessionStorage - getAllSessions - START --> ");
+
     std::shared_ptr<tizen_browser::services::SessionStorage> sessionService =
     std::dynamic_pointer_cast
     <
@@ -175,12 +190,14 @@ BOOST_AUTO_TEST_CASE(getAllSessions)
 
     BOOST_CHECK_EQUAL(sessions.size(), 2);
 
-
+    BROWSER_LOGI("[UT] --> END - SessionStorage - getAllSessions");
 }
 
 
 BOOST_AUTO_TEST_CASE(deleteSession)
 {
+    BROWSER_LOGI("[UT] SessionStorage - deleteSession - START --> ");
+
     std::shared_ptr<tizen_browser::services::SessionStorage> sessionService =
     std::dynamic_pointer_cast
     <
@@ -203,11 +220,15 @@ BOOST_AUTO_TEST_CASE(deleteSession)
     tizen_browser::Session::SessionsVector sessionsBucket(storage->getAllSessions());
 
     BOOST_CHECK_EQUAL(sessionsBucket.size(),1);
+
+    BROWSER_LOGI("[UT] --> END - SessionStorage - deleteSession");
 }
 
 
 BOOST_AUTO_TEST_CASE(deleteAllSessions)
 {
+    BROWSER_LOGI("[UT] SessionStorage - deleteAllSessions - START --> ");
+
     std::shared_ptr<tizen_browser::services::SessionStorage> sessionService =
     std::dynamic_pointer_cast
     <
@@ -255,6 +276,8 @@ BOOST_AUTO_TEST_CASE(deleteAllSessions)
     sessionsBucket = storage->getAllSessions();
 
     BOOST_CHECK_EQUAL(sessionsBucket.size(), 0);
+
+    BROWSER_LOGI("[UT] --> END - SessionStorage - deleteAllSessions");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
