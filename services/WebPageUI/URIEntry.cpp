@@ -151,6 +151,13 @@ void URIEntry::setPageTitle(const std::string& title)
     elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
 }
 
+void URIEntry::setPageTitleFromURI()
+{
+    BROWSER_LOGD("%s", __func__);
+    m_pageTitle = m_URI;
+    elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
+}
+
 void URIEntry::setURI(const std::string& uri)
 {
     BROWSER_LOGD("%s, URI: %s", __func__, uri.c_str());

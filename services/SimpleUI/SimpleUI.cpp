@@ -248,7 +248,6 @@ void SimpleUI::connectUISignals()
     m_webPageUI->forwardPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::forward, m_webEngine.get()));
     m_webPageUI->forwardPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->stopLoadingPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::stopLoading, m_webEngine.get()));
-    m_webPageUI->stopLoadingPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::reload, m_webEngine.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
@@ -393,22 +392,19 @@ void SimpleUI::connectModelSignals()
 
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
-    m_webEngine->uriChanged.connect(boost::bind(&MoreMenuUI::setURL, m_moreMenuUI.get(), _1));
     m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
     m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
-    m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
+    m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadStopped, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
-    m_webEngine->favIconChanged.connect(boost::bind(&MoreMenuUI::setFavIcon, m_moreMenuUI.get(), _1));
-    m_webEngine->titleChanged.connect(boost::bind(&MoreMenuUI::setWebTitle, m_moreMenuUI.get(), _1));
     m_webEngine->titleChanged.connect(boost::bind(&WebPageUI::setPageTitle, m_webPageUI.get(), _1));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
@@ -677,6 +673,20 @@ void SimpleUI::loadFinished()
                                                                                                 m_webEngine->getFavicon()), m_webEngine->getSnapshotData(QuickAccess::MAX_THUMBNAIL_WIDTH, QuickAccess::MAX_THUMBNAIL_HEIGHT));
     }
     m_webPageUI->loadFinished();
+}
+
+void SimpleUI::loadStopped()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (!m_webEngine->isPrivateMode()) {
+        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
+                                             m_webEngine->getURI(),
+                                             m_webEngine->getURI(),
+                                             std::make_shared<tizen_browser::tools::BrowserImage>()),
+                                         std::make_shared<tizen_browser::tools::BrowserImage>());
+    }
+    m_webPageUI->loadStopped();
 }
 
 void SimpleUI::loadError()
@@ -948,7 +958,7 @@ void SimpleUI::showMoreMenu()
     m_viewManager->pushViewToStack(m_moreMenuUI.get());
     m_moreMenuUI->showCurrentTab();
 
-    if(!m_webPageUI->isHomePageActive()) {
+    if (!m_webPageUI->isHomePageActive()) {
         m_moreMenuUI->setFavIcon(m_webEngine->getFavicon());
         m_moreMenuUI->setWebTitle(m_webEngine->getTitle());
         m_moreMenuUI->setURL(m_webEngine->getURI());
@@ -973,7 +983,7 @@ void SimpleUI::switchToMobileMode()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_webPageUI->isHomePageActive()) {
         m_webEngine->switchToMobileMode();
-    m_viewManager->popStackTo(m_webPageUI.get());
+        m_viewManager->popStackTo(m_webPageUI.get());
         m_webEngine->reload();
     } else {
         m_quickAccess->setDesktopMode(false);

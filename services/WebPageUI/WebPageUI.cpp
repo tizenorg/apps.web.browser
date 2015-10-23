@@ -122,6 +122,14 @@ void WebPageUI::loadFinished()
     m_URIEntry->showPageTitle();
 }
 
+void WebPageUI::loadStopped()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
+    m_URIEntry->setPageTitleFromURI();
+    m_URIEntry->showPageTitle();
+}
+
 bool WebPageUI::isErrorPageActive()
 {
     return elm_object_part_content_get(m_mainLayout, "web_view") == m_errorLayout;

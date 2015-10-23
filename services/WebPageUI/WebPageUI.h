@@ -38,6 +38,7 @@ public:
     virtual Evas_Object* getContent();
     virtual void showUI();
     virtual void hideUI();
+    void loadStopped();
     void loadStarted();
     void progressChanged(double progress);
     void loadFinished();
