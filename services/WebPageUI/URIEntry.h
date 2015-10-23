@@ -55,6 +55,7 @@ public:
     void setSearchIcon();
     void setDocIcon();
     void setPageTitle(const std::string& title);
+    void setPageTitleFromURI();
     void setURI(const std::string& uri);
     void showPageTitle();
     IconType getCurrentIconTyep();

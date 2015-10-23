@@ -43,6 +43,7 @@ EXPORT_SERVICE(WebKitEngineService, "org.tizen.browser.webkitengineservice")
 WebKitEngineService::WebKitEngineService()
     : m_initialised(false)
     , m_privateMode(false)
+    , m_stopped(false)
     , m_guiParent(nullptr)
     , m_currentTabId(TabId::NONE)
 {
@@ -116,6 +117,7 @@ void WebKitEngineService::setURI(const std::string & uri)
 {
     BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, uri.c_str());
     M_ASSERT(m_currentWebView);
+    m_stopped = false;
     m_currentWebView->setURI(uri);
 }
 
@@ -137,9 +139,12 @@ bool WebKitEngineService::isLoadError() const
 std::string WebKitEngineService::getTitle() const
 {
     M_ASSERT(m_currentWebView);
-    if(m_currentWebView)
-        return m_currentWebView->getTitle();
-    else
+    if (m_currentWebView) {
+        if (m_stopped)
+            return m_currentWebView->getURI();
+        else
+            return m_currentWebView->getTitle();
+    } else
         return std::string("");
 }
 
@@ -168,24 +173,28 @@ bool WebKitEngineService::isSuspended() const
 void WebKitEngineService::stopLoading(void)
 {
     M_ASSERT(m_currentWebView);
+    m_stopped = true;
     m_currentWebView->stopLoading();
 }
 
 void WebKitEngineService::reload(void)
 {
     M_ASSERT(m_currentWebView);
+    m_stopped = false;
     m_currentWebView->reload();
 }
 
 void WebKitEngineService::back(void)
 {
     M_ASSERT(m_currentWebView);
+    m_stopped = false;
     m_currentWebView->back();
 }
 
 void WebKitEngineService::forward(void)
 {
     M_ASSERT(m_currentWebView);
+    m_stopped = false;
     m_currentWebView->forward();
 }
 
@@ -484,9 +493,12 @@ bool WebKitEngineService::hasFocus() const
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getFavicon()
 {
     M_ASSERT(m_currentWebView);
-    if(m_currentWebView)
-        return m_currentWebView->getFavicon();
-    else
+    if (m_currentWebView) {
+        if (m_stopped)
+            return std::make_shared<tizen_browser::tools::BrowserImage>();
+        else
+            return m_currentWebView->getFavicon();
+    } else
         return std::make_shared<tizen_browser::tools::BrowserImage>();
 }
 

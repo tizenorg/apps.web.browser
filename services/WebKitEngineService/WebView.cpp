@@ -247,6 +247,7 @@ void WebView::resume()
 void WebView::stopLoading(void)
 {
 #if defined(USE_EWEBKIT)
+    m_isLoading = false;
     ewk_view_stop(m_ewkView);
 #endif
     loadStop();
@@ -255,6 +256,7 @@ void WebView::stopLoading(void)
 void WebView::reload(void)
 {
 #if defined(USE_EWEBKIT)
+    m_isLoading = true;
     if(m_loadError)
     {
         m_loadError = false;
@@ -596,6 +598,8 @@ void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
+    if (!self->isLoading())
+        return;
     self->m_loadProgress = *(double *)event_info;
     self->loadProgress(self->m_loadProgress);
 }
@@ -659,7 +663,7 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
     {
         WebView * self = static_cast<WebView *>(data);
         Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(self->m_ewkView), ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
-        if (favicon) {
+        if (favicon && self->isLoading()) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
             self->faviconImage = EflTools::getBrowserImage(favicon);
             evas_object_unref(favicon);

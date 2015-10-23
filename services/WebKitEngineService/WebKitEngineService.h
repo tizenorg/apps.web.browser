@@ -215,6 +215,7 @@ private:
     bool m_initialised;
     bool m_privateMode;
     void * m_guiParent;
+    bool m_stopped;
 
     // current TabId
     TabId m_currentTabId;
