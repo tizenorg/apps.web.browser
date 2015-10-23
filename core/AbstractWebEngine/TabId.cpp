@@ -53,21 +53,21 @@ std::string TabId::toString() const {
 }
 
 TabContent::TabContent(TabId id,const std::string& title, std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail){
-    this->id = id;
-    this->title = title;
-    this->thumbnail = thumbnail;
+    this->m_id = id;
+    this->m_title = title;
+    this->m_thumbnail = thumbnail;
 }
 
-TabId TabContent::getId(){
-    return id;
+TabId TabContent::getId() const {
+    return m_id;
 }
 
-std::string TabContent::getTitle(){
-    return title;
+std::string TabContent::getTitle() const {
+    return m_title;
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> TabContent::getThumbnail(){
-    return thumbnail;
+std::shared_ptr<tizen_browser::tools::BrowserImage> TabContent::getThumbnail() const{
+    return m_thumbnail;
 }
 
 
