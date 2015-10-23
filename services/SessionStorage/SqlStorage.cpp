@@ -47,6 +47,7 @@ namespace{
     const std::string COL_URL_SESION_ID = "session_id";
     const std::string COL_URL_TABID = "position"; // position in list.
     const std::string COL_URL_URL = "url";
+    const std::string COL_URL_TITLE = "title";
     const std::string CONSTRAINT_URL_PK = TABLE_URL + "_PK";
     const std::string CONSTRAINT_URL_SESSION_FK = TABLE_URL + "_" + COL_URL_SESION_ID + "_FK";
     const std::string DDL_CREATE_TABLE_URL
@@ -54,6 +55,7 @@ namespace{
                             + " ( " + COL_URL_SESION_ID + " INTEGER, "
                             + "   " + COL_URL_TABID + " TEXT, "
                             + "   " + COL_URL_URL + " TEXT, "
+                            + "   " + COL_URL_TITLE + " TEXT, "
                             + " CONSTRAINT " + CONSTRAINT_URL_PK
                             + "     PRIMARY KEY ( " + COL_URL_SESION_ID + " , " + COL_URL_TABID + " ) "
                             + "     ON CONFLICT REPLACE, "
@@ -190,12 +192,12 @@ Session SqlStorage::getLastSession()
 
 void SqlStorage::updateSession(tizen_browser::Session::Session& session)
 {
-    if(session.isValid()){
+    if (session.isValid()) {
         boost::posix_time::ptime currentTime(boost::posix_time::second_clock::local_time());
         storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
         std::shared_ptr<storage::SQLDatabase> connection = scope.database();
         clearSession(session, connection);
-        for( auto i=session.items().begin(), end=session.items().end(); i != end; i++ ){
+        for (auto i=session.items().begin(), end=session.items().end(); i != end; i++ ) {
             updateSession(session, i->first, connection);
         }
         updateSessionTimeStamp(session, currentTime, connection);
@@ -205,7 +207,7 @@ void SqlStorage::updateSession(tizen_browser::Session::Session& session)
 
 void SqlStorage::updateSession(tizen_browser::Session::Session& session, const std::string& itemId)
 {
-    if(session.isValid()){
+    if (session.isValid()) {
         boost::posix_time::ptime currentTime(boost::posix_time::second_clock::local_time());
         storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
         std::shared_ptr<storage::SQLDatabase> connection = scope.database();
@@ -216,22 +218,21 @@ void SqlStorage::updateSession(tizen_browser::Session::Session& session, const s
 
 }
 
-void SqlStorage::updateSession(
-                                Session& session
-                              , const std::string& itemId
-                              , std::shared_ptr<storage::SQLDatabase> connection
-                              )
+void SqlStorage::updateSession(Session& session,
+                               const std::string& itemId,
+                               std::shared_ptr<storage::SQLDatabase> connection)
 {
-    boost::format updateUrlString("INSERT OR REPLACE INTO %1% ( %2% , %3% , %4% ) VALUES ( ? , ? , ? );");
-    updateUrlString % TABLE_URL  % COL_URL_SESION_ID % COL_URL_TABID % COL_URL_URL;
+    boost::format updateUrlString("INSERT OR REPLACE INTO %1% ( %2% , %3% , %4%, %5% ) VALUES ( ? , ? , ? , ? );");
+    updateUrlString % TABLE_URL  % COL_URL_SESION_ID % COL_URL_TABID % COL_URL_URL % COL_URL_TITLE;
 
-    try{
+    try {
         storage::SQLQuery updateUrlQuery(connection->prepare(updateUrlString.str()));
         updateUrlQuery.bindInt(1, session.sessionId());
         updateUrlQuery.bindText(2, itemId);
-        updateUrlQuery.bindText(3, session.items().at(itemId));
+        updateUrlQuery.bindText(3, session.items().at(itemId).first);
+        updateUrlQuery.bindText(4, session.items().at(itemId).second);
         updateUrlQuery.exec();
-    }catch( storage::StorageException &e){
+    } catch(storage::StorageException& e) {
         BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
     }
 }
@@ -325,6 +326,26 @@ void SqlStorage::updateSessionName(Session& session, const std::string& newName)
     }
 }
 
+std::string SqlStorage::getUrlTitle(const std::string& url)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getTitleString("SELECT %1% FROM %2% WHERE %3% = ?;");
+    getTitleString % COL_URL_TITLE % TABLE_URL % COL_URL_URL;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+        storage::SQLQuery getTitleQuery(connection->prepare(getTitleString.str()));
+        getTitleQuery.bindText(1, url);
+        getTitleQuery.exec();
+
+        return getTitleQuery.getString(0);
+
+    } catch(storage::StorageException& e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return std::string();
+}
+
 void SqlStorage::readSession(Session& session, std::shared_ptr< storage::SQLDatabase > connection)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -338,7 +359,7 @@ void SqlStorage::readSession(Session& session, std::shared_ptr< storage::SQLData
         getSessionDataQuery.exec();
         while(getSessionDataQuery.hasNext()){
             std::cout << __FUNCTION__ <<":"<< &session <<":"<< session.sessionId()<<":"<< getSessionDataQuery.getString(0) << std::endl;
-            session.m_items[getSessionDataQuery.getString(0)] = getSessionDataQuery.getString(1);
+            session.m_items[getSessionDataQuery.getString(0)].first = getSessionDataQuery.getString(1);
             getSessionDataQuery.next();
         }
     }

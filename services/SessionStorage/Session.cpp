@@ -107,8 +107,17 @@ void Session::setSessionName(const std::string& newSessionName)
     }
 }
 
+std::string Session::getUrlTitle(const std::string& url)
+{
+    if (m_isValid) {
+        SqlStorage* instance = SqlStorage::getInstance();
+        if (instance)
+            return instance->getUrlTitle(url);
+    }
+    return std::string();
+}
 
-const std::map< std::string, std::string >& Session::items() const
+const std::map<std::string, std::pair<std::string,std::string>>& Session::items() const
 {
     return m_items;
 }
@@ -118,10 +127,11 @@ bool Session::isValid() const
     return m_isValid;
 }
 
-void Session::updateItem(const std::string& tabId, const std::string& url)
+void Session::updateItem(const std::string& tabId, const std::string& url, const std::string& title)
 {
     if(m_isValid){
-        m_items[tabId] = url;
+        m_items[tabId].first = url;
+        m_items[tabId].second = title;
         SqlStorage* const storage = SqlStorage::getInstance();
         if(storage){
             storage->updateSession(*this);

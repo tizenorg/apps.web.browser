@@ -66,13 +66,13 @@ private:
 class TabContent{
 public:
     TabContent(TabId id,const std::string& title, std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
-    TabId getId();
-    std::string getTitle();
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail();
+    TabId getId() const;
+    std::string getTitle() const;
+    std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const;
 private:
-    TabId id;
-    std::string title;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail;
+    TabId m_id;
+    std::string m_title;
+    std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
 };
 } /* end of basic_webengine */
 } /* end of tizen_browser */

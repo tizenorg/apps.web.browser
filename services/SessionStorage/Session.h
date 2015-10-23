@@ -74,11 +74,12 @@ public:
 
     const std::string& sessionName() const;
     void setSessionName(const std::string& newSessionName);
+    std::string getUrlTitle(const std::string& url);
 
     /**
      * returns read only list of items.
      */
-    const std::map<std::string, std::string>& items() const;
+    const std::map<std::string, std::pair<std::string,std::string>>& items() const;
 
     /**
      * Adds or updates selected item and save changes in storage.
@@ -86,7 +87,7 @@ public:
      * If there is not item with given tabId it will be added to session.
      *
      */
-    void updateItem(const std::string& tabId, const std::string& url);
+    void updateItem(const std::string& tabId, const std::string& url, const std::string& title);
 
     /**
      * Removes item from session and save changes in storage.
@@ -100,7 +101,7 @@ private:
     boost::posix_time::ptime m_lastModificationTime;
     std::string m_sessinName;
 
-    std::map<std::string, std::string> m_items;
+    std::map<std::string, std::pair<std::string,std::string>> m_items;
     bool m_isValid;
 
     friend class SqlStorage;

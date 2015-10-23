@@ -74,7 +74,7 @@ void WebKitEngineService::connectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
     webView->favIconChanged.connect(boost::bind(&WebKitEngineService::_favIconChanged, this, _1));
-    webView->titleChanged.connect(boost::bind(&WebKitEngineService::_titleChanged, this, _1));
+    webView->titleChanged.connect(boost::bind(&WebKitEngineService::_titleChanged, this, _1, _2));
     webView->uriChanged.connect(boost::bind(&WebKitEngineService::_uriChanged, this, _1));
     webView->loadFinished.connect(boost::bind(&WebKitEngineService::_loadFinished, this));
     webView->loadStarted.connect(boost::bind(&WebKitEngineService::_loadStarted, this));
@@ -92,7 +92,7 @@ void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
     webView->favIconChanged.disconnect(boost::bind(&WebKitEngineService::_favIconChanged, this));
-    webView->titleChanged.disconnect(boost::bind(&WebKitEngineService::_titleChanged, this, _1));
+    webView->titleChanged.disconnect(boost::bind(&WebKitEngineService::_titleChanged, this, _1, _2));
     webView->uriChanged.disconnect(boost::bind(&WebKitEngineService::_uriChanged, this, _1));
     webView->loadFinished.disconnect(boost::bind(&WebKitEngineService::_loadFinished, this));
     webView->loadStarted.disconnect(boost::bind(&WebKitEngineService::_loadStarted, this));
@@ -221,9 +221,9 @@ void WebKitEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::
     favIconChanged(bi);
 }
 
-void WebKitEngineService::_titleChanged(const std::string & title)
+void WebKitEngineService::_titleChanged(const std::string& title, const std::string& tabId)
 {
-    titleChanged(title);
+    titleChanged(title, tabId);
 }
 
 void WebKitEngineService::_uriChanged(const std::string & uri)
@@ -302,7 +302,7 @@ std::vector<std::shared_ptr<TabContent> > WebKitEngineService::getTabContents() 
     return result;
 }
 
-TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, bool desktopMode, bool incognitoMode)
+TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, const std::string& title, bool desktopMode, bool incognitoMode)
 {
     AbstractWebEngine::checkIfCreate();
 
@@ -316,7 +316,7 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
 
     // searching for next available tabId
     TabId newTabId;
-    WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, incognitoMode);
+    WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, title, incognitoMode);
     if (openerId)
         p->init(desktopMode, getTabView(*openerId));
     else
@@ -357,7 +357,7 @@ bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newT
     connectSignals(m_currentWebView);
     resume();
 
-    titleChanged(m_currentWebView->getTitle());
+    titleChanged(m_currentWebView->getTitle(), newTabId.toString());
     uriChanged(m_currentWebView->getURI());
     forwardEnableChanged(m_currentWebView->isForwardEnabled());
     backwardEnableChanged(m_currentWebView->isBackEnabled());
