@@ -1,0 +1,750 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Hyerim Bae <hyerim.bae@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define TOP_BUTTON_IMAGE "browser-view/I01_jump_to_top.png"
+#define TOP_BUTTON_IMAGE_PRESS "browser-view/I01_jump_to_top_press.png"
+#define TOP_BUTTON_IMAGE_DIM "browser-view/I01_jump_to_top_dim.png"
+
+#define BOTTOM_BUTTON_IMAGE "browser-view/I01_jump_to_down.png"
+#define BOTTOM_BUTTON_IMAGE_PRESS "browser-view/I01_jump_to_down_press.png"
+#define BOTTOM_BUTTON_IMAGE_DIM "browser-view/I01_jump_to_down_dim.png"
+
+#define JUMP_IMAGE_SIZE_W	72
+#define JUMP_IMAGE_SIZE_H	74
+
+#define MULTI_WINDOW_BUTTON_IMAGE "browser-view/uri-bar/I01_toolbar_icon_windows_manager_web.png"
+#define MULTI_WINDOW_BUTTON_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_icon_windows_manager_press_web.png"
+
+#define FORWARD_BUTTON_IMAGE "browser-view/uri-bar/I01_toolbar_icon_forward_web.png"
+#define FORWARD_BUTTON_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_icon_forward_press_web.png"
+#define FORWARD_BUTTON_IMAGE_DIM "browser-view/uri-bar/I01_toolbar_icon_forward_dim_web.png"
+#define BACKWARD_BUTTON_IMAGE "browser-view/uri-bar/I01_toolbar_icon_back_web.png"
+#define BACKWARD_BUTTON_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_icon_back_press_web.png"
+#define BACKWARD_BUTTON_IMAGE_DIM "browser-view/uri-bar/I01_toolbar_icon_back_dim_web.png"
+
+#define BOOKMARK_BUTTON_IMAGE "browser-view/uri-bar/I01_toolbar_icon_bookmark_web.png"
+#define BOOKMARK_BUTTON_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_icon_bookmark_press_web.png"
+
+#define NOTIFICATION_BUTTON_SIZE	72
+
+#define BLOCK_POPUP_ASK_CANCEL_BUTTON_SIZE 45
+
+#define BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_WIDTH	250
+#define BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_HEIGHT	70
+
+#define ZOOM_BUTTON_W	120
+#define ZOOM_BUTTON_H	111
+
+#define SECURE_IMAGE_SIZE	42
+
+#define STORAGE_ON_BUTTON_IMAGE "I01_icon_memory.png"
+#define STORAGE_ON_BUTTON_IMAGE_PRESS "I01_icon_memory_press.png"
+#define GPS_ON_BUTTON_IMAGE "I01_icon_gps_on.png"
+#define GPS_ON_BUTTON_IMAGE_PRESS "I01_icon_gps_on_press.png"
+#define GPS_OFF_BUTTON_IMAGE "I01_icon_gps_off.png"
+#define GPS_OFF_BUTTON_IMAGE_PRESS "I01_icon_gps_off_press.png"
+#define GPS_IMAGE_SIZE 72
+
+#define MULTIWINDOW_DELETE_IMAGE "multiwindow/I01_delete_btn_x.png"
+#define MULTIWINDOW_DELETE_IMAGE_PRESS "multiwindow/I01_delete_btn_x_press.png"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+	//Apply changable button style.
+	BUTTON_IMAGE_STYLE("multiwindow_item/delete", MULTIWINDOW_DELETE_IMAGE, MULTIWINDOW_DELETE_IMAGE_PRESS, MULTIWINDOW_DELETE_IMAGE, DELETE_BUTTON_SIZE, DELETE_BUTTON_SIZE)
+
+	group {
+		name: "webview-layout";
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "transparent" 0.0;
+					inherit: "default" 0.0;
+					color: 255 255 255 0;
+				}
+			}
+			part { name: "top-tool-bar_guide_left";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 0 0 0 0;
+					align: 0.0 0.0;
+					min: 5 BAR_HEIGHT_PORTRAIT;
+					max: 5 BAR_HEIGHT_PORTRAIT;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.top-tool-bar"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.top-tool-bar"; }
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 5 BAR_HEIGHT_LANDSCAPE;
+					max: 5 BAR_HEIGHT_LANDSCAPE;
+				}
+			}
+			part { name: "top-tool-bar_guide_right";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 0 0 0 0;
+					align: 1.0 0.0;
+					min: 5 BAR_HEIGHT_PORTRAIT;
+					max: 5 BAR_HEIGHT_PORTRAIT;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.top-tool-bar"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.top-tool-bar"; }
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 5 BAR_HEIGHT_LANDSCAPE;
+					max: 5 BAR_HEIGHT_LANDSCAPE;
+				}
+			}
+			part { name: "elm.swallow.content";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 1.0; to: "top-tool-bar_guide_left"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+				description {
+					state: "fullscreen" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.no_content";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "elm.swallow.button-layout";
+				repeat_events: 1;
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.5 0.5;
+					min: 1 1;
+					max: 1 1;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "gesture_rect";
+				mouse_events: 1;
+				repeat_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "elm.swallow.progressbar";
+				mouse_events: 0;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 PROGRESS_BAR_HEIGHT;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.content"; }
+				}
+			}
+			part { name: "uri_input_bar_dim";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					color: 0 0 0 100;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.top-tool-bar";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 0 0 0 0;
+					align: 0.0 0.0;
+					min: 0 48;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.reader";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 2.0; }
+				}
+				description {
+					state: "visible" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.find-on-page";}
+				}
+			}
+			part { name: "find-on-page_dim_area";
+				mouse_events: 1;
+				repeat_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.find-on-page"; }
+				}
+				description {
+					state: "fullscreen_view" 0.0;
+					inherit: "default" 0.0;
+				}
+				description {
+					state: "find-on-page_visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.find-on-page";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					min: 0 BAR_HEIGHT_PORTRAIT;
+					rel1 { relative: 0.0 1.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "fullscreen_view" 0.0;
+					inherit: "default" 0.0;
+				}
+				description {
+					state: "find-on-page_visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+				}
+			}
+			part { name: "elm.swallow.recommend";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					min: 100 100;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; to:"elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to:"elm.swallow.content"; }
+				}
+				description {
+					state: "show_recommend" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.block_popup_ask";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					fixed: 1 1;
+					min: 0 90;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.content"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.content"; }
+				}
+				description {
+					state: "show_block_popup_ask" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "window_tray";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+		programs {
+			program { name: "show,recommend_layout";
+				signal: "show,recommend_layout,signal";
+				action: STATE_SET "show_recommend" 0.0;
+				target: "elm.swallow.recommend";
+			}
+			program { name: "hide,recommend_layout";
+				signal: "hide,recommend_layout,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.recommend";
+			}
+			program { name: "fullscreen,on";
+				signal: "fullscreen,on,signal";
+				action: STATE_SET "fullscreen" 0.0;
+				target: "elm.swallow.content";
+			}
+			program { name: "normal_mode,on";
+				signal: "normal_mode,on,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.content";
+			}
+			program { name: "touch_snd";
+				signal: "play,touch_sound,signal";
+				action: RUN_PLUGIN "touch_sound";
+			}
+			// show / hide bg
+			program { name: "show,transparent";
+				signal: "show,transparent,signal";
+				action: STATE_SET "transparent" 0.0;
+				target: "bg";
+			}
+			program { name: "hide,transparent";
+				signal: "hide,transparent,signal";
+				action: STATE_SET "default" 0.0;
+				target: "bg";
+			}
+			program { name: "show,uri_input_bar_dim";
+				signal: "show,uri_input_bar_dim,signal";
+				action: STATE_SET "visible" 0.0;
+				target: "uri_input_bar_dim";
+			}
+			program { name: "hide,uri_input_bar_dim";
+				signal: "hide,uri_input_bar_dim,signal";
+				action: STATE_SET "default" 0.0;
+				target: "uri_input_bar_dim";
+			}
+			program { name: "show,landscape-mode";
+				signal: "show,landscape-mode,signal";
+				action: STATE_SET "landscape" 0.0;
+				target: "top-tool-bar_guide_left";
+				target: "top-tool-bar_guide_right";
+			}
+			program { name: "show,portrait-mode";
+				signal: "show,portrait-mode,signal";
+				action: STATE_SET "default" 0.0;
+				target: "top-tool-bar_guide_left";
+				target: "top-tool-bar_guide_right";
+			}
+			// show / hide reader
+			program { name: "show,reader";
+				signal: "show,reader,signal";
+				action: STATE_SET "visible" 0.0;
+				transition: DECELERATE 0.5;
+				target: "elm.swallow.reader";
+			}
+			program { name: "hide,reader";
+				signal: "hide,reader,signal";
+				action: STATE_SET "default" 0.0;
+				transition: DECELERATE 0.5;
+				target: "elm.swallow.reader";
+				after: "hide,reader,finished";
+			}
+			program { name: "hide,reader,finished";
+				signal: "hide,reader,finished,signal";
+				action: SIGNAL_EMIT "hide,reader,finished" "";
+			}
+			program { name: "show,block_popup_ask";
+				signal: "show,block_popup_ask,signal";
+				action: STATE_SET "show_block_popup_ask" 0.0;
+				target: "elm.swallow.block_popup_ask";
+			}
+			program { name: "hide,block_popup_ask";
+				signal: "hide,block_popup_ask,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.block_popup_ask";
+			}
+		}
+	}
+
+	group {
+		name: "recommend-layout";
+		images {
+			image: "browser-view/I01_notification_bg.#.png" COMP;
+		}
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: RECT;//IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 100 100;
+					fixed: 0 0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+					//image.normal: "browser-view/I01_notification_bg.#.png";
+					color_class:"B061L5";
+				}
+			}
+			part { name: "top_padding";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 12;
+					color: 0 0 255 255;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to:"bg";}
+					rel2 { relative: 1.0 0.0; to:"bg";}
+				}
+			}
+			part { name: "bottom_padding";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 1.0;
+					min: 0 12;
+					color: 0 255 0 255;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to:"bg";}
+					rel2 { relative: 1.0 1.0; to:"bg";}
+				}
+			}
+			part { name: "left_padding";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 16 0;
+					color: 255 0 0 255;
+					fixed: 1 0;
+					rel1 { relative: 0.0 1.0; to:"top_padding";}
+					rel2 { relative: 0.0 0.0; to:"bottom_padding";}
+				}
+			}
+			part { name: "right_padding";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 12 0;
+					color: 100 100 0 255;
+					fixed: 1 0;
+					rel1 { relative: 1.0 1.0; to:"top_padding";}
+					rel2 { relative: 1.0 0.0; to:"bottom_padding";}
+				}
+			}
+			part { name: "elm.swallow.cancel_button";
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: 62 62;
+					max: 62 62;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to:"right_padding";}
+					rel2 { relative: 0.0 1.0; to:"right_padding";}
+				}
+			}
+			part { name: "pad_between_cancel_add";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 12 0;
+					color: 100 100 0 255;
+					fixed: 1 0;
+					rel1 { relative: 0.0 1.0; to_x:"elm.swallow.cancel_button";to_y:"top_padding";}
+					rel2 { relative: 0.0 0.0; to_x:"elm.swallow.cancel_button";to_y:"bottom_padding";}
+				}
+			}
+			part { name: "elm.swallow.add_button";
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: 115 74;
+					max: 115 74;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to:"pad_between_cancel_add";}
+					rel2 { relative: 0.0 1.0; to:"pad_between_cancel_add";}
+
+				}
+			}
+			part { name: "pad_between_add_label";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 1.0 0.0;
+					min: 16 0;
+					color: 0 100 100 255;
+					fixed: 1 0;
+					rel1 { relative: 0.0 1.0; to_x:"elm.swallow.add_button";to_y:"top_padding";}
+					rel2 { relative: 0.0 0.0; to_x:"elm.swallow.add_button";to_y:"bottom_padding";}
+				}
+			}
+			part { name: "elm.swallow.label";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 200 76;
+					align: 0.0 0.0;
+					rel1 { relative: 1.0 0.0; to: "left_padding";}
+					rel2 { relative: 0.0 1.0; to: "pad_between_add_label";}
+				}
+			}
+		}
+	}
+	group {
+		name: "block-popup-ask-layout";
+		images {
+			//image: "browser-view/I01_block_popup_ask_bg.png" COMP;
+		}
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: RECT;//IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0 90;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					//image.normal: "browser-view/I01_block_popup_ask_bg.png";
+				}
+			}
+			part { name: "pad_left";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 20 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_right";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.0;
+					min: 20 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_bottom";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 0.0 1.0;
+					min: 0 10;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_top";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 10;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.cancel_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					fixed: 1 1;
+					min: BLOCK_POPUP_ASK_CANCEL_BUTTON_SIZE BLOCK_POPUP_ASK_CANCEL_BUTTON_SIZE;
+					max: BLOCK_POPUP_ASK_CANCEL_BUTTON_SIZE BLOCK_POPUP_ASK_CANCEL_BUTTON_SIZE;
+					rel1 { relative: 0.0 0.0; to_x: "pad_right"; to_y: "pad_top";}
+					rel2 { relative: 0.0 1.0; to_x: "pad_right"; to_y: "pad_bottom";}
+				}
+			}
+			part { name: "pad_between_close_show_buttons";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.0;
+					min: 15 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.cancel_button"; }
+					rel2 { relative: 0.0 1.0; to: "elm.swallow.cancel_button"; }
+				}
+			}
+			part { name: "elm.swallow.show_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					fixed: 1 1;
+					min: BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_WIDTH BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_HEIGHT;
+					max: BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_WIDTH BLOCK_POPUP_ASK_SHOW_BUTTON_SIZE_HEIGHT;
+					rel1 { relative: 0.0 0.0; to_x: "pad_between_close_show_buttons"; to_y: "pad_top";}
+					rel2 { relative: 0.0 1.0; to_x: "pad_between_close_show_buttons"; to_y: "pad_bottom";}
+				}
+			}
+			part { name: "pad_between_show_button_label";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.0;
+					min: 20 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.show_button"; }
+					rel2 { relative: 0.0 1.0; to: "elm.swallow.show_button"; }
+				}
+			}
+			part { name: "elm.swallow.label";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					rel1 { relative: 1.0 0.5; to: "pad_left"; }
+					rel2 { relative: 0.0 0.5; to: "pad_between_show_button_label"; }
+				}
+			}
+		}
+	}
+}

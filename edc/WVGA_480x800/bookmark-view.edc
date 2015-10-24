@@ -1,0 +1,213 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Hyerim Bae <hyerim.bae@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+#define BOOKMARK_PLUS_BUTTON_IMAGE "bookmark-view/I01_icon_bookmark_plus.png"
+#define BOOKMARK_PLUS_BUTTON_IMAGE_PRESS "bookmark-view/I01_icon_bookmark_plus_press.png"
+#define BOOKMARK_PLUS_BUTTON_IMAGE_DIM "bookmark-view/I01_icon_bookmark_plus_dim.png"
+#define BOOKMARK_PLUS_BUTTON_SIZE	60
+#define TABBAR_HEIGHT 80.0
+#define SELECT_ALL_LAYOUT_HEIGHT 84
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+BUTTON_IMAGE_STYLE("browser/bookmark_plus_menu", BOOKMARK_PLUS_BUTTON_IMAGE, BOOKMARK_PLUS_BUTTON_IMAGE_PRESS, BOOKMARK_PLUS_BUTTON_IMAGE_DIM, BOOKMARK_PLUS_BUTTON_SIZE, BOOKMARK_PLUS_BUTTON_SIZE)
+
+RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
+RESOURCE_IMAGE_LOSSY("00_icon_edit.png")
+RESOURCE_IMAGE_LOSSY("00_icon_plus.png")
+RESOURCE_IMAGE_LOSSY("00_icon_select_all.png")
+RESOURCE_IMAGE_LOSSY("contacts_ic_folder_history.png")
+RESOURCE_IMAGE_LOSSY("contacts_ic_folder.png")
+RESOURCE_IMAGE_LOSSY("internet_ic_default.png")
+
+	group {
+		name: "main-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.selectall_layout";
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					min: 0 SELECT_ALL_LAYOUT_HEIGHT;
+					max: -1 SELECT_ALL_LAYOUT_HEIGHT;
+					rel1 { relative: 0.0 0.0; to:"bg"; }
+				}
+				description { state: "edit_mode" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.tabbar";
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					min: 0.0 TABBAR_HEIGHT;
+					max: -1.0 TABBAR_HEIGHT;
+					rel1 { relative: 0.0 0.0; to:"bg"; }
+				}
+				description { state: "edit_mode" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
+			}
+			part { name: "elm.swallow.contents";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.tabbar"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+				description { state: "edit_mode" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 1.0; to: "elm.swallow.selectall_layout"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+		programs {
+			program {
+				name: "set_edit_mode";
+				signal: "set,edit,mode,signal";
+				action: STATE_SET "edit_mode" 0.0;
+				target: "elm.swallow.selectall_layout";
+				target: "elm.swallow.contents";
+				target: "elm.swallow.tabbar";
+			}
+			program {
+				name: "set_default_mode";
+				signal: "set,default,mode,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.selectall_layout";
+				target: "elm.swallow.contents";
+				target: "elm.swallow.tabbar";
+			}
+		}
+	}
+	group {
+		name: "favicon-layout";
+		images {
+			image: "bookmark-view/favicon_bg.png" COMP;
+		}
+		parts {
+			part {
+				name: "favicon_bg";
+				scale: 1;
+				type: IMAGE;
+				description {
+					state: "default" 0.0;
+					min: 64 64;
+					max: 64 64;
+					fixed: 1 1;
+					image.normal: "bookmark-view/favicon_bg.png";
+				}
+			}
+			part {
+				name: "elm.swallow.favicon";
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					min: 48 48;
+					max: 48 48;
+					fixed: 1 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.0; to: "favicon_bg"; }
+					rel2 { relative: 1.0 1.0; to: "favicon_bg"; }
+				}
+			}
+		}
+	}
+	group {
+		name: "edit-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.contents";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+	group {
+		name: "contents";
+		parts {
+			part {
+				name: "elm.swallow.bookmarks";
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+				}
+			}
+		}
+	}
+}

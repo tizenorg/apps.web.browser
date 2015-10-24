@@ -1,0 +1,63 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Hyerim Bae <hyerim.bae@samsung.com>
+ *
+ */
+
+#define URI_BAR_BG "browser-view/uri-bar/I01_toolbar_bg_02.png"
+
+#define ENTRY_LAYOUT_BG "browser-view/uri-bar/I01_toolbar_input_field.png"
+#define ENTRY_CANCEL_IMAGE "browser-view/uri-bar/I01_toolbar_input_icon_cancel.png"
+#define ENTRY_CANCEL_PRESS_IMAGE "browser-view/uri-bar/I01_toolbar_input_icon_cancel_press.png"
+#define ENTRY_RELOAD_IMAGE "browser-view/uri-bar/I01_toolbar_input_icon_refresh.png"
+#define ENTRY_RELOAD_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_input_icon_refresh_press.png"
+
+#define URI_BAR_HEIGHT	108
+#define URI_BAR_EASY_MODE_HEIGHT	206
+#define URI_ENTRY_LAYOUT_HEIGHT	70
+#define ENTRY_TEXT_PADDING	8
+#define VERTICAL_PADDING_ENTRY_LAYOUT	16
+#define VERTICAL_PADDING_SMALL 11
+#define VERTICAL_PADDING_MIDDLE	22
+#define TOOLBAR_BUTTON_SIZE	63
+#define RELOAD_ICON_SIZE	42
+#define MULTIWINDOW_BG_COLOR	244 243 243 255
+#define READER_BG_COLOR	212 212 212 255
+
+#define URI_INPUT_BAR_BG "browser-view/uri-input-bar/I01_toolbar_bg_01.png"
+
+#define URI_INPUT_BACK_IMAGE "browser-view/uri-input-bar/00_icon_Back.png"
+#define URI_INPUT_BACK_PRESS "browser-view/uri-input-bar/00_icon_Back_press.png"
+#define URI_INPUT_BACK_DIM "browser-view/uri-input-bar/00_icon_Back_dim.png"
+
+#define URI_INPUT_BAR_VERTICAL_PADDING_1	4
+#define URI_INPUT_BAR_VERTICAL_PADDING_2	10
+#define URI_INPUT_BAR_VERTICAL_PADDING_3	18
+#define URI_INPUT_BAR_VERTICAL_PADDING_4	26
+
+#define BACK_IMAGE_SIZE	60
+
+#define MENU_BUTTON_IMAGE "browser-view/uri-bar/I01_toolbar_icon_menu_web.png"
+#define MENU_BUTTON_IMAGE_PRESS "browser-view/uri-bar/I01_toolbar_icon_menu_press_web.png"
+#define MENU_BUTTON_IMAGE_DIM "browser-view/uri-bar/I01_toolbar_icon_menu_dim_web.png"
+
+#define BUTTON_NAVIFRAME_TITLE_TEXT_BG_NORMAL_MIN_INC 182 70
+#define BUTTON_NAVIFRAME_LONG_TITLE_TEXT_BG_NORMAL_MIN_INC 350 70
+
+#define PROGRESS_BAR_HEIGHT	6
+
+#define BAR_HEIGHT_PORTRAIT 98
+#define BAR_HEIGHT_LANDSCAPE 85

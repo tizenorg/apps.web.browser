@@ -1,0 +1,960 @@
+/*
+ * Copyright 2014  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Kwangyong Choi <ky0.choi@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#define URLBAR_BUTTON_IMAGE "url-bar/toolbar_bg.#.png"
+#define URLBAR_BUTTON_IMAGE_PRESS "url-bar/search_bg_press.#.png"
+#define URLBAR_PR_BUTTON_IMAGE "url-bar/search_pr_bg.#.png"
+#define URLBAR_PR_BUTTON_IMAGE_PRESS "url-bar/search_pr_bg_press.#.png"
+#define URLBAR_BUTTON_WIDTH 90
+#define URLBAR_BUTTON_ICON_SIZE 42
+#define URLBAR_BUTTON_TEXT_SIZE 20
+#define URLBAR_URL_SWALLOW_HEIGHT 57
+
+#define TAB_MANAGER_ICON "url-bar/toolbar_input_ic_bookmark.png"
+
+#define URLBAR_BUTTON_IMAGE_STYLE(style_name, image_normal, image_press, normal_icon, button_width, rgb_r, rgb_g, rgb_b, rgb_a, text_r, text_g, text_b) \
+   group { name: "elm/button/base/"style_name; \
+      images { \
+         image: image_normal COMP; \
+         image: image_press COMP; \
+         image: normal_icon COMP; \
+      } \
+      parts { \
+         part { name: "button_image"; \
+            type: RECT; \
+            scale: 1; \
+            description { state: "default" 0.0; \
+               min: button_width 0; \
+               max: button_width 9999; \
+               visible: 0; \
+            } \
+            description { state: "clicked" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+            description { state: "focused" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+         } \
+         part { name: "back_button"; \
+            scale: 1; \
+            mouse_events: 0; \
+            description { state: "default" 0.0; \
+               min: button_width 0; \
+               max: button_width 9999; \
+               rel1.to: "button_image"; \
+               rel2.to: "button_image"; \
+               image.normal: image_normal; \
+            } \
+            description { state: "clicked" 0.0; \
+               inherit: "default" 0.0; \
+               image.normal: image_press; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+               image.normal: image_normal; \
+            } \
+         } \
+         part { name: "elm.text"; \
+            type: TEXT; \
+            mouse_events: 0; \
+            repeat_events: 1; \
+            scale: 1; \
+            description { state: "default" 0.0; \
+               visible: 1; \
+               align: 0.5 0.5; \
+               min: 0 21; \
+               max: button_width 21; \
+               rel1 { \
+                  relative: 0.0 0.0; to: "button_image"; \
+               } \
+               rel2 { \
+                  relative: 1.0 1.0; to: "button_image"; \
+               } \
+               color: text_r text_g text_b 255;  \
+  		 text { \
+                  style: "M"; \
+                  size: URLBAR_BUTTON_TEXT_SIZE; \
+               } \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+               color: text_r text_g text_b 76.5;  \
+            } \
+         } \
+         part { name: "over2"; \
+            type: RECT; \
+            repeat_events: 1; \
+            ignore_flags: ON_HOLD; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               rel1 { \
+                  relative: 0.0 0.0; \
+               } \
+               rel2 { \
+                  relative: 1.0 1.0; \
+               } \
+            } \
+         } \
+         part { name: "over3"; \
+            type: RECT; \
+            repeat_events: 1; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               rel1 { \
+                  relative: 0.0 0.0; \
+               } \
+               rel2 { \
+                  relative: 1.0 1.0; \
+               } \
+            } \
+         } \
+         part { name: "disabler"; \
+            type: RECT; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               visible: 0; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+               visible: 1; \
+            } \
+         } \
+      } \
+      programs { \
+         program { name: "button_click"; \
+            signal: "mouse,down,1"; \
+            source: "over2"; \
+            action: SIGNAL_EMIT "elm,action,press" ""; \
+            after: "button_click_anim"; \
+         } \
+         program { name: "button_click_anim"; \
+            action: STATE_SET "clicked" 0.0; \
+            target: "button_image"; \
+            target: "back_button"; \
+         } \
+         program { name: "button_unclick"; \
+            signal: "mouse,up,1"; \
+            source: "over3"; \
+            action: SIGNAL_EMIT "elm,action,unpress" ""; \
+            after: "button_unclick_anim"; \
+         } \
+         program { name: "button_unclick_anim"; \
+            action: STATE_SET "default" 0.0; \
+            target: "button_image"; \
+            target: "back_button"; \
+         } \
+         program { name: "touch_snd"; \
+            signal: "mouse,clicked,1"; \
+            source: "over2"; \
+            action: RUN_PLUGIN "touch_sound"; \
+            after: button_unclick3; \
+         } \
+         program { name: "button_unclick3"; \
+            action: SIGNAL_EMIT "elm,action,click" ""; \
+         } \
+         program { name: "disable"; \
+            signal: "elm,state,disabled"; \
+            source: "elm"; \
+            action: STATE_SET "disabled" 0.0; \
+            target: "button_image"; \
+            target: "disabler"; \
+            target: "back_button"; \
+            target: "elm.text"; \
+         } \
+         program { name: "enable"; \
+            signal: "elm,state,enabled"; \
+            source: "elm"; \
+            action: STATE_SET "default" 0.0; \
+            target: "button_image"; \
+            target: "disabler"; \
+            target: "back_button"; \
+            target: "elm.text"; \
+         } \
+      } \
+   }
+
+#define TEXT_LAYOUT_BUTTON_SIZE 34
+
+#define STAR_ICON_ON_IMAGE "url-bar/toolbar_input_ic_favorite.png"
+
+#define SECURE_ICON_ON_IMAGE "url-bar/toolbar_input_ic_security.png"
+#define SECURE_ICON_OFF_IMAGE "url-bar/toolbar_input_ic_security_off.png"
+
+#define CANCEL_ICON_IMAGE "url-bar/toolbar_input_ic_cancel.png"
+#define RELOAD_ICON_IMAGE "url-bar/toolbar_input_ic_refresh.png"
+
+#define TEXT_LAYOUT_BUTTON_IMAGE_STYLE(style_name, normal_icon, rgb_r, rgb_g, rgb_y, rgb_a) \
+   group { name: "elm/button/base/"style_name; \
+      images { \
+         image: normal_icon COMP; \
+         image: PRESS_BG_IMAGE COMP; \
+      } \
+      parts { \
+         part { name: "button_image"; \
+            type: RECT; \
+            scale: 1; \
+            description { state: "default" 0.0; \
+               min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE; \
+               max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE; \
+               visible: 0; \
+            } \
+            description { state: "clicked" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+            description { state: "focused" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+         }  \
+         part { name: "elm.icon"; \
+            scale: 1; \
+            mouse_events: 0; \
+            repeat_events: 1; \
+            description { state: "default" 0.0; \
+               min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE; \
+               max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE; \
+               rel1.to: "button_image"; \
+               rel2.to: "button_image"; \
+               image.normal: normal_icon; \
+               color: rgb_r rgb_g rgb_y rgb_a; \
+            } \
+            description { state: "clicked" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+            } \
+         } \
+         part { name: "over2"; \
+            type: RECT; \
+            repeat_events: 1; \
+            ignore_flags: ON_HOLD; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               rel1 { \
+                  relative: 0.0 0.0; \
+               } \
+               rel2 { \
+                  relative: 1.0 1.0; \
+               } \
+            } \
+         } \
+         part { name: "over3"; \
+            type: RECT; \
+            repeat_events: 1; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               rel1 { \
+                  relative: 0.0 0.0; \
+               } \
+               rel2 { \
+                  relative: 1.0 1.0; \
+               } \
+            } \
+         } \
+         part { name: "disabler"; \
+            type: RECT; \
+            description { state: "default" 0.0; \
+               color: 0 0 0 0; \
+               visible: 0; \
+            } \
+            description { state: "disabled" 0.0; \
+               inherit: "default" 0.0; \
+               visible: 1; \
+            } \
+         } \
+      } \
+      programs { \
+         program { name: "button_click"; \
+            signal: "mouse,down,1"; \
+            source: "over2"; \
+            action: SIGNAL_EMIT "elm,action,press" ""; \
+            after: "button_click_anim"; \
+         } \
+         program { name: "button_click_anim"; \
+            action: STATE_SET "clicked" 0.0; \
+            target: "button_image"; \
+            target: "elm.icon"; \
+         } \
+         program { name: "button_unclick"; \
+            signal: "mouse,up,1"; \
+            source: "over3"; \
+            action: SIGNAL_EMIT "elm,action,unpress" ""; \
+            after: "button_unclick_anim"; \
+         } \
+         program { name: "button_unclick_anim"; \
+            action: STATE_SET "default" 0.0; \
+            target: "button_image"; \
+            target: "elm.icon"; \
+         } \
+         program { name: "touch_snd"; \
+            signal: "mouse,clicked,1"; \
+            source: "over2"; \
+            action: RUN_PLUGIN "touch_sound"; \
+            after: button_unclick3; \
+         } \
+         program { name: "button_unclick3"; \
+            action: SIGNAL_EMIT "elm,action,click" ""; \
+         } \
+         program { name: "disable"; \
+            signal: "elm,state,disabled"; \
+            source: "elm"; \
+            action: STATE_SET "disabled" 0.0; \
+            target: "button_image"; \
+            target: "disabler"; \
+            target: "elm.icon"; \
+         } \
+         program { name: "enable"; \
+            signal: "elm,state,enabled"; \
+            source: "elm"; \
+            action: STATE_SET "default" 0.0; \
+            target: "button_image"; \
+            target: "disabler"; \
+            target: "elm.icon"; \
+         } \
+      } \
+   }
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+	
+	URLBAR_BUTTON_IMAGE_STYLE("browser/url-bar/tab_manager", URLBAR_BUTTON_IMAGE, URLBAR_BUTTON_IMAGE_PRESS, TAB_MANAGER_ICON, URLBAR_BUTTON_WIDTH, \
+								104, 104, 104, 255, 104, 104, 104)
+	URLBAR_BUTTON_IMAGE_STYLE("browser/url-bar/tab_manager_pr", URLBAR_PR_BUTTON_IMAGE, URLBAR_PR_BUTTON_IMAGE_PRESS, TAB_MANAGER_ICON, URLBAR_BUTTON_WIDTH, \
+								244, 244, 244, 255, 68, 68, 69)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/star_on", STAR_ICON_ON_IMAGE, 255, 178, 0, 255)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/star_off", STAR_ICON_ON_IMAGE, 7, 7, 7, 77)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/secure_on", SECURE_ICON_ON_IMAGE, 0 ,0, 0, 255)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/secure_off", SECURE_ICON_OFF_IMAGE, 0 , 0, 0, 255)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/cancel", CANCEL_ICON_IMAGE, 158, 158, 158, 255)
+	TEXT_LAYOUT_BUTTON_IMAGE_STYLE("browser/text-layout/reload", RELOAD_ICON_IMAGE, 158, 158, 158, 255)
+	group { name: "url-bar-layout";
+		images {
+			image: URLBAR_BUTTON_IMAGE COMP;
+			image: "url-bar/toolbar_input_bg.#.png" COMP;
+		}
+		parts {
+			part { name: "bg_guide_left";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 2 BAR_HEIGHT_PORTRAIT;
+					max: 2 BAR_HEIGHT_PORTRAIT;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 2 BAR_HEIGHT_LANDSCAPE;
+					max: 2 BAR_HEIGHT_LANDSCAPE;
+				}
+			}
+			part { name: "bg_guide_right";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.0;
+					min: 5 BAR_HEIGHT_PORTRAIT;
+					max: 5 BAR_HEIGHT_PORTRAIT;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 5 BAR_HEIGHT_LANDSCAPE;
+					max: 5 BAR_HEIGHT_LANDSCAPE;
+				}
+			}
+			part { name: "bg";
+				type: IMAGE;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					image.normal: URLBAR_BUTTON_IMAGE;
+					rel1 { relative: 0.0 0.0; to: "bg_guide_left"; }
+					rel2 { relative: 1.0 1.0; to: "bg_guide_right";  }
+				}
+				description {
+					state: "private" 0.0;
+					inherit: "default" 0.0;
+					image.normal: URLBAR_PR_BUTTON_IMAGE;
+				}
+			}
+			part { name: "pad-left";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.5;
+					min: 10 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "entry-layout-bg";
+				type: IMAGE;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					image.normal: "url-bar/toolbar_input_bg.#.png";
+					rel1 { relative: 0.0 0.0; to: "elm.swallow.text-layout"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.text-layout"; }
+				}
+			}
+			part { name: "elm.swallow.text-layout";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.5;
+					min: 0 URLBAR_URL_SWALLOW_HEIGHT;
+					max: -1 URLBAR_URL_SWALLOW_HEIGHT;
+					fixed: 0 1;
+					rel1 { relative: 1.0 0.0; to: "pad-left"; }
+					rel2 { relative: 0.0 1.0; to_x: "elm.swallow.tab-manager-button"; to_y: "pad-left"; }
+				}
+			}
+			part { name: "elm.swallow.tab-manager-button";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.5;
+					min: URLBAR_BUTTON_WIDTH 0;
+					max: URLBAR_BUTTON_WIDTH -1;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+		programs {
+			program { name: "show,private-mode";
+				signal: "show,private-mode,signal";
+				action: STATE_SET "private" 0.0;
+				target: "bg";
+			}
+			program { name: "hide,private-mode";
+				signal: "hide,private-mode,signal";
+				action: STATE_SET "default" 0.0;
+				target: "bg";
+			}
+			program { name: "show,portrait-mode";
+				signal: "show,portrait-mode,signal";
+				action: STATE_SET "default" 0.0;
+				target: "bg_guide_left";
+				target: "bg_guide_right";
+			}
+			program { name: "show,landscape-mode";
+				signal: "show,landscape-mode,signal";
+				action: STATE_SET "landscape" 0.0;
+				target: "bg_guide_left";
+				target: "bg_guide_right";
+			}
+			program { name: "play,touch_sound";
+				signal: "play,touch_sound,signal";
+				action: RUN_PLUGIN "touch_sound";
+			}
+		}
+	}
+	group { name: "text-layout";
+		styles {
+			style { name: "uri_text_style";
+				base: "font=Tizen:style=Light font_size=22 color=#3A3A3A color_class=TO001 text_class=ATO001E02";
+				tag: "br" "";
+				tag: "ps" "ps";
+				tag: "tab" "\t";
+				tag: "em" "+ font=Tizen:style=Oblique";
+				tag: "b" "+ font=Tizen:style=Bold";
+				tag: "link" "+ color=#800 underline=on underline_color=#8008";
+				tag: "hilight" "+ font=Tizen:style=Bold";
+			}
+			style { name: "guide_text_style";
+				base: "font=Tizen:style=Light font_size=22 color=#777777 color_class=TO001 text_class=ATO001E01";
+				tag: "br" "";
+				tag: "ps" "ps";
+				tag: "tab" "\t";
+				tag: "em" "+ font=Tizen:style=Oblique";
+				tag: "b" "+ font=Tizen:style=Bold";
+				tag: "link" "+ color=#800 underline=on underline_color=#8008";
+				tag: "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		script {
+			public star_icon_visible = 0;
+			public secure_icon_visible = 0;
+			public fav_icon_visible = 0;
+		}
+		parts {
+			part { name: "bg";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "pad-left";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default";
+					align: 0.0 0.5;
+					min: 8 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.star-icon";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.5;
+					min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad-left"; }
+					rel2 { relative: 1.0 1.0; to: "pad-left"; }
+				}
+				description {
+					state: "star-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "elm.swallow.secure-icon";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.5;
+					min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad-left"; }
+					rel2 { relative: 1.0 1.0; to: "pad-left"; }
+				}
+				description {
+					state: "secure-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+				description {
+					state: "secure-icon-after-star-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.star-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.star-icon"; }
+				}
+			}
+			part { name: "elm.swallow.fav-icon";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.5;
+					min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "pad-left"; }
+					rel2 { relative: 1.0 1.0; to: "pad-left"; }
+				}
+				description {
+					state: "fav-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+				description {
+					state: "fav-icon-after-star-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.star-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.star-icon"; }
+				}
+				description {
+					state: "fav-icon-after-secure-icon" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.secure-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.secure-icon"; }
+				}
+			}
+			part { name: "pad-icon-entry";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default";
+					align: 0.0 0.5;
+					min: 8 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "pad-left"; }
+					rel2 { relative: 1.0 1.0; to: "pad-left"; }
+				}
+				description {
+					state: "pad-icon-entry-after-star-icon" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.star-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.star-icon"; }
+				}
+				description {
+					state: "pad-icon-entry-after-secure-icon" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.secure-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.secure-icon"; }
+				}
+				description {
+					state: "pad-icon-entry-after-fav-icon" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; to: "elm.swallow.fav-icon"; }
+					rel2 { relative: 1.0 1.0; to: "elm.swallow.fav-icon"; }
+				}
+			}
+			part { name: "uri_text,access";
+				repeat_events: 1;
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.5 0.5;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to_x: "uri_text"; to_y: "elm.swallow.reload-cancel-icon"; }
+					rel2 { relative: 1.0 1.0; to_x: "uri_text"; to_y: "elm.swallow.reload-cancel-icon"; }
+				}
+				description {
+					state: "fixed" 0.0;
+					inherit: "default" 0.0;
+					rel2 { relative: 0.0 1.0; to_x: "pad-right"; }
+				}
+			}
+			part { name: "uri_text";
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.5 0.5;
+					min: 0 34;
+					max: 9999 34;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to_x: "pad-left"; to_y: "bg"; }
+					rel2 { relative: 0.0 1.0; to_x: "pad_entry_reload"; to_y: "bg"; }
+					text {
+						style: "uri_text_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+				description {
+					state: "uri_text-after-pad-icon-entry" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; to_x: "pad-icon-entry"; to_y: "bg"; }
+					rel2 { relative: 0.0 1.0; to_x: "pad_entry_reload"; to_y: "bg"; }
+				}
+				description {
+					state: "fixed" 0.0;
+					inherit: "default" 0.0;
+					text {
+						style: "guide_text_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+			}
+			part { name: "pad_entry_reload";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.5;
+					min: 8 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to_x: "elm.swallow.reload-cancel-icon"; }
+					rel2 { relative: 0.0 1.0; to_x: "elm.swallow.reload-cancel-icon"; }
+				}
+				description {
+					state: "hide" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "elm.swallow.reload-cancel-icon";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.5;
+					min: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					max: TEXT_LAYOUT_BUTTON_SIZE TEXT_LAYOUT_BUTTON_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "pad-right"; }
+					rel2 { relative: 0.0 1.0; to: "pad-right"; }
+				}
+				description {
+					state: "hide" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
+			}
+			part { name: "pad-right";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default";
+					align: 1.0 0.5;
+					min: 8 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+		programs {
+			program { name: "set,default";
+				signal: "set,default,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.star-icon";
+				target: "elm.swallow.secure-icon";
+				target: "elm.swallow.fav-icon";
+				target: "pad-icon-entry";
+				target: "uri_text";
+				script {
+					set_int(star_icon_visible, 0);
+					set_int(secure_icon_visible, 0);
+					set_int(fav_icon_visible, 0);
+				}
+			}
+			program { name: "set,star-icon";
+				signal: "set,star-icon,signal";
+				action: STATE_SET "star-icon" 0.0;
+				script {
+					set_int(star_icon_visible, 1);
+
+					// star-icon
+					set_state(PART:"elm.swallow.star-icon", "star-icon", 0.0);
+
+					// secure-icon
+					if (get_int(secure_icon_visible) == 1)
+						set_state(PART:"elm.swallow.secure-icon", "secure-icon-after-star-icon", 0.0);
+
+					// fav-icon
+					if (get_int(secure_icon_visible) == 0 && get_int(fav_icon_visible) == 1)
+						set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-star-icon", 0.0);
+
+					// pad-icon-entry
+					if (get_int(secure_icon_visible) == 0 && get_int(fav_icon_visible) == 0)
+						set_state(PART:"pad-icon-entry", "pad-icon-entry-after-star-icon", 0.0);
+
+					// uri_text
+					set_state(PART:"uri_text", "uri_text-after-pad-icon-entry", 0.0);
+				}
+			}
+			program { name: "set,no-star-icon";
+				signal: "set,no-star-icon,signal";
+				action: STATE_SET "no-star-icon" 0.0;
+				script {
+					set_int(star_icon_visible, 0);
+
+					// star-icon
+					set_state(PART:"elm.swallow.star-icon", "default", 0.0);
+
+					// secure-icon
+					if (get_int(secure_icon_visible) == 1)
+						set_state(PART:"elm.swallow.secure-icon", "secure-icon", 0.0);
+
+					// fav-icon
+					if (get_int(secure_icon_visible) == 0 && get_int(fav_icon_visible) == 1)
+						set_state(PART:"elm.swallow.fav-icon", "fav-icon", 0.0);
+
+					// pad-icon-entry
+					if (get_int(secure_icon_visible) == 0 && get_int(fav_icon_visible) == 0)
+						set_state(PART:"pad-icon-entry", "default", 0.0);
+
+					// uri_text
+					if (get_int(secure_icon_visible) == 0 && get_int(fav_icon_visible) == 0)
+						set_state(PART:"uri_text", "default", 0.0);
+				}
+			}
+			program { name: "set,secure-icon";
+				signal: "set,secure-icon,signal";
+				action: STATE_SET "secure-icon" 0.0;
+				script {
+					set_int(secure_icon_visible, 1);
+
+					// secure-icon
+					if (get_int(star_icon_visible) == 1)
+						set_state(PART:"elm.swallow.secure-icon", "secure-icon-after-star-icon", 0.0);
+					else
+						set_state(PART:"elm.swallow.secure-icon", "secure-icon", 0.0);
+
+					// fav-icon
+					if (get_int(fav_icon_visible) == 1)
+						set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-secure-icon", 0.0);
+
+					// pad-icon-entry
+					if (get_int(fav_icon_visible) == 0)
+						set_state(PART:"pad-icon-entry", "pad-icon-entry-after-secure-icon", 0.0);
+
+					// uri_text
+					set_state(PART:"uri_text", "uri_text-after-pad-icon-entry", 0.0);
+				}
+			}
+			program { name: "set,no-secure-icon";
+				signal: "set,no-secure-icon,signal";
+				action: STATE_SET "no-secure-icon" 0.0;
+				script {
+					set_int(secure_icon_visible, 0);
+
+					// secure-icon
+					set_state(PART:"elm.swallow.secure-icon", "default", 0.0);
+
+					// fav-icon
+					if (get_int(fav_icon_visible) == 1) {
+						if (get_int(star_icon_visible) == 1)
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-star-icon", 0.0);
+						else
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon", 0.0);
+					}
+
+					// pad-icon-entry
+					if (get_int(fav_icon_visible) == 0) {
+						if (get_int(star_icon_visible) == 1)
+							set_state(PART:"pad-icon-entry", "pad-icon-entry-after-star-icon", 0.0);
+						else
+							set_state(PART:"pad-icon-entry", "default", 0.0);
+					}
+
+					// uri_text
+					if (get_int(star_icon_visible) == 0 && get_int(fav_icon_visible) == 0)
+						set_state(PART:"uri_text", "default", 0.0);
+				}
+			}
+			program { name: "set,fav-icon";
+				signal: "set,fav-icon,signal";
+				action: STATE_SET "fav-icon" 0.0;
+				script {
+					set_int(fav_icon_visible, 1);
+
+					// fav-icon
+					if (get_int(star_icon_visible) == 1) {
+						// secure-icon
+						if (get_int(secure_icon_visible) == 1)
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-secure-icon", 0.0);
+						else
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-star-icon", 0.0);
+					} else {
+						// secure-icon
+						if (get_int(secure_icon_visible) == 1)
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon-after-secure-icon", 0.0);
+						else
+							set_state(PART:"elm.swallow.fav-icon", "fav-icon", 0.0);
+					}
+
+					// pad-icon-entry
+					set_state(PART:"pad-icon-entry", "pad-icon-entry-after-fav-icon", 0.0);
+
+					// uri_text
+					set_state(PART:"uri_text", "uri_text-after-pad-icon-entry", 0.0);
+				}
+			}
+			program { name: "set,no-fav-icon";
+				signal: "set,no-fav-icon,signal";
+				action: STATE_SET "no-fav-icon" 0.0;
+				script {
+					set_int(fav_icon_visible, 0);
+
+					// fav-icon
+					set_state(PART:"elm.swallow.fav-icon", "default", 0.0);
+
+					// pad-icon-entry
+					if (get_int(secure_icon_visible) == 1)
+						set_state(PART:"pad-icon-entry", "pad-icon-entry-after-secure-icon", 0.0);
+					else if (get_int(star_icon_visible) == 1)
+						set_state(PART:"pad-icon-entry", "pad-icon-entry-after-star-icon", 0.0);
+					else
+						set_state(PART:"pad-icon-entry", "default", 0.0);
+
+					// uri_text
+					if (get_int(star_icon_visible) == 0 && get_int(secure_icon_visible) == 0)
+						set_state(PART:"uri_text", "default", 0.0);
+				}
+			}
+			program { name: "show,reload-cancel-icon";
+				signal: "show,reload-cancel-icon,signal";
+				action: STATE_SET "default" 0.0;
+				target: "pad_entry_reload";
+				target: "elm.swallow.reload-cancel-icon";
+			}
+			program { name: "hide,reload-cancel-icon";
+				signal: "hide,reload-cancel-icon,signal";
+				action: STATE_SET "hide" 0.0;
+				target: "pad_entry_reload";
+				target: "elm.swallow.reload-cancel-icon";
+			}
+			program { name: "set,default-bar";
+				signal: "set,default-bar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "uri_text";
+				target: "uri_text,access";
+			}
+			program { name: "set,fixed-bar";
+				signal: "set,fixed-bar,signal";
+				action: STATE_SET "fixed" 0.0;
+				target: "uri_text";
+				target: "uri_text,access";
+			}
+		}
+	}
+}

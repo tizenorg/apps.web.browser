@@ -1,0 +1,241 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Sangpyo Kim <sangpyo7.kim@samsung.com>
+ *
+ */
+
+// 2.2.5.1
+   group { name: "elm/genlist/item/mode/slide/default";
+
+      GENLIST_PROLOG
+
+      data.item: "contents" "elm.slide.swallow.1";
+      data.item: "mode_part" "elm.swallow.origin";
+
+      parts {
+         GENLIST_PART_RECT("bg_sweep",
+            description { state: "default" 0.0;
+            color: GENLIST_SWEEP_BG_COLOR;
+            }
+         )
+         GENLIST_PART_BASE
+         GENLIST_PART_PADDING_LEFT
+         GENLIST_PART_PADDING_RIGHT
+         GENLIST_PART_PADDING_L_SIZE("elm.padding.btn.left", "elm.padding.left", 171)
+         GENLIST_PART_PADDING_R_SIZE("elm.padding.btn.right", "elm.padding.right", 171)
+
+         GENLIST_PART_ICON("elm.slide.swallow.1",
+            GENLIST_DESCRIPTION_LR("elm.padding.btn.left", "elm.padding.btn.right",
+               min: 326 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_RECT("overlay",
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               color: 0 0 0 128;
+            }
+            description { state: "slide" 0.0;
+               inherit: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         )
+         /*
+         GENLIST_PART_RECT("elm.shadow.left",
+            description { state: "default" 0.0;
+               rel1 {
+                  to: "elm.swallow.origin";
+                  relative: 0 0;
+               }
+               rel2 {
+                  to: "elm.swallow.origin";
+                  relative: 0 1;
+               }
+               align: 1 0.5;
+               min: 20 0;
+               color: 0 0 0 128;
+            }
+         )
+         */
+         // Swallow part for original genlist item
+         GENLIST_PART_ICON("elm.swallow.origin";,
+            GENLIST_DESCRIPTION_ENVELOP("base", )
+            description { state: "slide" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  relative: 1 0;
+                  to: "base";
+               }
+               rel2 {
+                  relative: 2 1;
+                  to: "base";
+               }
+            }
+         )
+         GENLIST_PART_FOCUS
+      }
+      programs {
+         program {
+            name: "slide_right";
+            signal: "elm,state,slide,active";
+            source: "elm";
+            action: PLAY_SAMPLE "sweep_sound" 1.0;
+            after: "animate_slide_right";
+         }
+         program {
+            name: "animate_slide_right";
+            action: STATE_SET "slide" 0.0;
+            target: "elm.swallow.origin";
+            target: "overlay";
+            transition: ACCELERATE 0.5;
+         }
+         program {
+            name: "slide_left";
+            signal: "elm,state,slide,passive";
+            source: "elm";
+            action: PLAY_SAMPLE "sweep_sound" 1.0;
+            after: "animate_slide_left";
+         }
+         program {
+            name: "animate_slide_left";
+            action: STATE_SET "default" 0.0;
+            target: "elm.swallow.origin";
+            target: "overlay";
+            transition: DECELERATE 0.5;
+            after: "signal";
+         }
+         program {
+            name: "signal";
+            action: SIGNAL_EMIT "elm,state,slide,passive,finished" "elm";
+         }
+         GENLIST_PROGRAM_FOCUS
+      }
+   }
+
+// 2.2.5.2
+   group { name: "elm/genlist/item/mode/slide2/default";
+      inherit: "elm/genlist/item/mode/slide/default";
+      data.item: "contents" "elm.slide.swallow.1 elm.slide.swallow.2";
+      parts {
+         GENLIST_PART_PADDING_L_SIZE("elm.padding.btn.left", "elm.padding.left", 0)
+         GENLIST_PART_PADDING_R_SIZE("elm.padding.btn.right", "elm.padding.right", 0)
+         GENLIST_PART_PADDING("elm.padding.center", GENLIST_PADDING_SIZE_DEFAULT, 0.5 0, 0.5 1)
+         part { name: "base";
+            scale: 1;
+            description { state: "default" 0.0;
+               min: GENLIST_MIN_SLIDE2_BASE_WIDTH 0;
+            }
+         }
+         GENLIST_PART_ICON("elm.slide.swallow.1",
+            GENLIST_DESCRIPTION_LR("elm.padding.left", "elm.padding.center",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.2",
+            insert_before: "elm.slide.swallow.1";
+            GENLIST_DESCRIPTION_LR("elm.padding.center", "elm.padding.right",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+      }
+   }
+
+#define GENLIST_PART_PADDING_TO( NAME, SIZE, TO, ALIGN, REL1, REL2 ) \
+      GENLIST_PART_SPACER(NAME, \
+         description { state: "default" 0.0; \
+            min: SIZE 0; \
+            max: SIZE -1; \
+            fixed: 1 0; \
+            align: ALIGN; \
+            rel1 { \
+               relative: REL1; \
+               to: TO; \
+            } \
+            rel2 { \
+               relative: REL2; \
+               to: TO; \
+            } \
+         } \
+      )
+
+// 2.2.5.3
+   group { name: "elm/genlist/item/mode/slide3/default";
+      inherit: "elm/genlist/item/mode/slide2/default";
+      data.item: "contents" "elm.slide.swallow.1 elm.slide.swallow.2 elm.slide.swallow.3";
+      parts {
+         part { name: "base";
+            description { state: "default" 0.0;
+               min: GENLIST_MIN_SLIDE3_BASE_WIDTH 0;
+            }
+         }
+         GENLIST_PART_SPACER("dummy",
+            GENLIST_DESCRIPTION_LR("elm.padding.left", "elm.padding.right", )
+         )
+         GENLIST_PART_PADDING_TO("elm.padding.center", GENLIST_PADDING_SIZE_DEFAULT, "dummy",  0.666 0.5, 0.333 0, 0.333 1)
+         GENLIST_PART_PADDING_TO("elm.padding.center1", GENLIST_PADDING_SIZE_DEFAULT, "dummy", 0.333 0.5, 0.666 0, 0.666 1)
+         GENLIST_PART_ICON("elm.slide.swallow.1",
+            GENLIST_DESCRIPTION_LR("elm.padding.left", "elm.padding.center",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.2",
+            GENLIST_DESCRIPTION_LR("elm.padding.center", "elm.padding.center1",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.3",
+            insert_before: "elm.slide.swallow.2";
+            GENLIST_DESCRIPTION_LR("elm.padding.center1", "elm.padding.right",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+      }
+   }
+// 2.2.5.4
+   group { name: "elm/genlist/item/mode/slide4/default";
+      inherit: "elm/genlist/item/mode/slide3/default";
+      data.item: "contents" "elm.slide.swallow.1 elm.slide.swallow.2 elm.slide.swallow.3 elm.slide.swallow.4";
+      parts {
+         part { name: "base";
+            description { state: "default" 0.0;
+               min: GENLIST_MIN_SLIDE4_BASE_WIDTH 0;
+            }
+         }
+         GENLIST_PART_PADDING_TO("elm.padding.center", GENLIST_PADDING_SIZE_DEFAULT,  "dummy", 0.75 0.5, 0.25 0, 0.25 1)
+         GENLIST_PART_PADDING_TO("elm.padding.center1", GENLIST_PADDING_SIZE_DEFAULT, "dummy", 0.50 0.5, 0.5 0,  0.5 1)
+         GENLIST_PART_PADDING_TO("elm.padding.center2", GENLIST_PADDING_SIZE_DEFAULT, "dummy", 0.25 0.5, 0.75 0, 0.75 1)
+         GENLIST_PART_ICON("elm.slide.swallow.1",
+            GENLIST_DESCRIPTION_LR("elm.padding.left", "elm.padding.center",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.2",
+            GENLIST_DESCRIPTION_LR("elm.padding.center", "elm.padding.center1",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.3",
+            GENLIST_DESCRIPTION_LR("elm.padding.center1", "elm.padding.center2",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+         GENLIST_PART_ICON("elm.slide.swallow.4",
+            insert_before: "elm.slide.swallow.3";
+            GENLIST_DESCRIPTION_LR("elm.padding.center2", "elm.padding.right",
+               min: 0 GENLIST_BTN_01_HEIGHT;
+               max: -1 GENLIST_BTN_01_HEIGHT; )
+         )
+      }
+   }

@@ -1,0 +1,48 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Kwangyong Choi <ky0.choi@samsung.com>
+ *
+ */
+
+#include "macro.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_share.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_add.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_add_to_webclip.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_edit.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_keepit.png")
+#if defined(ENABLE_SAVED_PAGE)
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_save_page.png")
+#endif
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_find_on_page.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_minimize.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_desktop_view.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_mobile_view.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_print.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_brightness.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_setting.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_help.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_add_to_home.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_private_view.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_public_view.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_new_window.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_delete.png")
+	RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_reorder.png")
+}

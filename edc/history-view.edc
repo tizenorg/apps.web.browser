@@ -1,0 +1,273 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Jihye Song <jihye3.song@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+
+RESOURCE_IMAGE_LOSSY("I01_history_favicon.png")
+RESOURCE_IMAGE_LOSSY("00_icon_select_all.png")
+
+	group {
+		name: "arrow-layout";
+		images {
+			image: "history-view/00_list_button_expand_closed.png" COMP;
+			image: "history-view/00_list_button_expand_opened.png" COMP;
+		}
+
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 64 64 ;
+					max: 64 64;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part {
+				name: "elm.icon.image";
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 48 48 ;
+					max: 48 48;
+					fixed: 1 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+					image.normal: "history-view/00_list_button_expand_opened.png";
+					color: 61 185 204 255;
+				}
+				description {
+					state: "contract" 0.0;
+					inherit: "default" 0.0;
+					image.normal: "history-view/00_list_button_expand_closed.png";
+				}
+			}
+		}
+		programs {
+			program {
+				name: "expanded";
+				signal: "state,expanded,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.icon.image";
+			}
+			program {
+				name: "contracted";
+				signal: "state,contracted,signal";
+				action: STATE_SET "contract" 0.0;
+				target: "elm.icon.image";
+			}
+		}
+	}
+
+	group {
+		name: "star-layout";
+		images {
+			image: "history-view/favorite_on.png" COMP;
+		}
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 64 64 ;
+					max: 64 64;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.icon.image";
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 48 48 ;
+					max: 48 48;
+					fixed: 1 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+					image.normal: "history-view/favorite_on.png";
+				}
+			}
+		}
+	}
+
+	group {
+		name: "checkbox-layout";
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : RECT;
+				mouse_events: 1;
+				repeat_events: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.check";
+				type: SWALLOW;
+				scale : 1;
+				description {
+					rel1 { relative: 0.0 0.0; to:"bg"; }
+				}
+			}
+			part { name: "padding";
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: 48 48;
+					max: 48 48;
+					align: 0.0 0.0;
+					rel1 { relative: 1.0 0.0; to:"elm.swallow.check"; }
+					rel2 { relative: 1.0 1.0; to:"bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "favicon-layout";
+		images {
+			image: "history-view/I01_history_icon_bg.png" COMP;
+		}
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: 64 64;
+					max: 64 64;
+					fixed: 1 1;
+				}
+			}
+			part {
+				name: "elm.swallow.favicon";
+				type: SWALLOW;
+				scale : 1;
+				description {
+					state: "default" 0.0;
+					min: 48 48;
+					max: 48 48;
+					fixed: 1 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+
+		programs {
+			program {
+				name: "touch_snd1";
+				signal: "mouse,clicked,1";
+				source: "bg";
+				action: RUN_PLUGIN "touch_sound";
+			}
+			program {
+				name: "touch_snd2";
+				signal: "mouse,clicked,1";
+				source: "elm.swallow.favicon";
+				action: RUN_PLUGIN "touch_sound";
+			}
+		}
+	}
+
+	group {
+		name: "history-default-icon-layout";
+		images {
+			image: "history-view/I01_history_icon_bg.png" COMP;
+		}
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: 96 96;
+					max: 96 96;
+					fixed: 1 1;
+				}
+			}
+			part {
+				name: "elm.swallow.favicon";
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					min: 96 96;
+					max: 96 96;
+					fixed: 1 1;
+					align: 0.5 0.5;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+
+		programs {
+			program {
+				name: "touch_snd1";
+				signal: "mouse,clicked,1";
+				source: "bg";
+				action: RUN_PLUGIN "touch_sound";
+			}
+			program {
+				name: "touch_snd2";
+				signal: "mouse,clicked,1";
+				source: "elm.swallow.favicon";
+				action: RUN_PLUGIN "touch_sound";
+			}
+		}
+	}
+}

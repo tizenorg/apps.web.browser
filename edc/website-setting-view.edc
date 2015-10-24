@@ -1,0 +1,181 @@
+#include "config.edc"
+#include "macro.edc"
+
+#define STORAGE_ON_BUTTON_IMAGE "I01_icon_memory.png"
+#define STORAGE_ON_BUTTON_IMAGE_PRESS "I01_icon_memory_press.png"
+#define GPS_ON_BUTTON_IMAGE "I01_icon_gps_on.png"
+#define GPS_ON_BUTTON_IMAGE_PRESS "I01_icon_gps_on_press.png"
+#define GPS_IMAGE_SIZE 72
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+
+	RESOURCE_IMAGE_LOSSY("I01_icon_memory.png")
+	RESOURCE_IMAGE_LOSSY("I01_icon_gps_on.png")
+	RESOURCE_IMAGE_LOSSY("I01_icon_memory_press.png")
+	RESOURCE_IMAGE_LOSSY("I01_icon_gps_on_press.png")
+
+	group {
+		name: "gps-icon-layout";
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					max: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.icon.image";
+				mouse_events: 1;
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					max: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+					image.normal: GPS_ON_BUTTON_IMAGE;
+				}
+				description { state: "clicked" 0.0;
+					inherit: "default" 0.0;
+					image.normal: GPS_ON_BUTTON_IMAGE_PRESS;
+				}
+			}
+			part { name: "item_icon,touch_area";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "elm.icon.image"; }
+					rel2 { relative: 1.0 1.0; to: "elm.icon.image"; }
+				}
+			}
+		}
+		programs {
+			program {
+				name: "button_click";
+				signal: "mouse,down,1";
+				source: "item_icon,touch_area";
+				action: SIGNAL_EMIT "elm,action,press" "";
+				after: "button_click_anim";
+			}
+			program {
+				name: "button_click_anim";
+				action: STATE_SET "clicked" 0.0;
+				target: "elm.icon.image";
+			}
+			program {
+				name: "button_unclick";
+				signal: "mouse,up,1";
+				source: "item_icon,touch_area";
+				action: SIGNAL_EMIT "elm,action,unpress" "";
+				after: "button_unclick_anim";
+			}
+			program {
+				name: "button_unclick_anim";
+				action: STATE_SET "default" 0.0;
+				target: "elm.icon.image";
+			}
+		}
+	}
+	group {
+		name : "storage-icon-layout";
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					max: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part {
+				name: "elm.icon.image";
+				mouse_events: 1;
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					max: GPS_IMAGE_SIZE GPS_IMAGE_SIZE;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+					image.normal: STORAGE_ON_BUTTON_IMAGE;
+				}
+				description { state: "clicked" 0.0;
+					inherit: "default" 0.0;
+					image.normal: STORAGE_ON_BUTTON_IMAGE_PRESS;
+				}
+			}
+			part { name: "item_icon,touch_area";
+				mouse_events: 1;
+				repeat_events: 0;
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; to: "elm.icon.image"; }
+					rel2 { relative: 1.0 1.0; to: "elm.icon.image"; }
+				}
+			}
+		}
+		programs {
+			program {
+				name: "button_click";
+				signal: "mouse,down,1";
+				source: "item_icon,touch_area";
+				action: SIGNAL_EMIT "elm,action,press" "";
+				after: "button_click_anim";
+			}
+			program {
+				name: "button_click_anim";
+				action: STATE_SET "clicked" 0.0;
+				target: "elm.icon.image";
+			}
+			program {
+				name: "button_unclick";
+				signal: "mouse,up,1";
+				source: "item_icon,touch_area";
+				action: SIGNAL_EMIT "elm,action,unpress" "";
+				after: "button_unclick_anim";
+			}
+			program {
+				name: "button_unclick_anim";
+				action: STATE_SET "default" 0.0;
+				target: "elm.icon.image";
+			}
+		}
+	}
+}

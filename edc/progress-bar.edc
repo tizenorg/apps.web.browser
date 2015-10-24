@@ -1,0 +1,151 @@
+/*
+ * Copyright 2014  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Kwangyong Choi <ky0.choi@samsung.com>
+ *
+ */
+
+#include "config.edc"
+
+#define PROGRESS_DESCRIPTIONS\
+	PROGRESS_DESCRIPTION(0.00)\
+	PROGRESS_DESCRIPTION(0.05)\
+	PROGRESS_DESCRIPTION(0.10)\
+	PROGRESS_DESCRIPTION(0.15)\
+	PROGRESS_DESCRIPTION(0.20)\
+	PROGRESS_DESCRIPTION(0.25)\
+	PROGRESS_DESCRIPTION(0.30)\
+	PROGRESS_DESCRIPTION(0.35)\
+	PROGRESS_DESCRIPTION(0.40)\
+	PROGRESS_DESCRIPTION(0.45)\
+	PROGRESS_DESCRIPTION(0.50)\
+	PROGRESS_DESCRIPTION(0.55)\
+	PROGRESS_DESCRIPTION(0.60)\
+	PROGRESS_DESCRIPTION(0.65)\
+	PROGRESS_DESCRIPTION(0.70)\
+	PROGRESS_DESCRIPTION(0.75)\
+	PROGRESS_DESCRIPTION(0.80)\
+	PROGRESS_DESCRIPTION(0.85)\
+	PROGRESS_DESCRIPTION(0.90)\
+	PROGRESS_DESCRIPTION(0.95)\
+	PROGRESS_DESCRIPTION(1.00)
+
+#define PROGRESS_DESCRIPTION(RATE)\
+	description { state: "progress" RATE;\
+		inherit: "default" 0.0;\
+		visible: 1;\
+		rel1 { relative: 0.0 0.0; to: "bg"; }\
+		rel2 { relative: RATE 1.0; to: "bg"; }\
+	}
+
+#define PROGRESS_PROGRAMS\
+	PROGRESS_PROGRAM(0.10)\
+	PROGRESS_PROGRAM(0.15)\
+	PROGRESS_PROGRAM(0.20)\
+	PROGRESS_PROGRAM(0.25)\
+	PROGRESS_PROGRAM(0.30)\
+	PROGRESS_PROGRAM(0.35)\
+	PROGRESS_PROGRAM(0.40)\
+	PROGRESS_PROGRAM(0.45)\
+	PROGRESS_PROGRAM(0.50)\
+	PROGRESS_PROGRAM(0.55)\
+	PROGRESS_PROGRAM(0.60)\
+	PROGRESS_PROGRAM(0.65)\
+	PROGRESS_PROGRAM(0.70)\
+	PROGRESS_PROGRAM(0.75)\
+	PROGRESS_PROGRAM(0.80)\
+	PROGRESS_PROGRAM(0.85)\
+	PROGRESS_PROGRAM(0.90)\
+	PROGRESS_PROGRAM(0.95)
+
+#define PROGRESS_PROGRAM(RATE)\
+	program { name: "update,progress,"RATE;\
+		signal: "update,progress,"RATE",signal";\
+		transition: DECELERATE 0.1;\
+		action: STATE_SET "progress" RATE;\
+		target: "progress_bar";\
+	}
+
+#define PROGRESS_BG_IMAGE "progress-bar/I01_toolbar_progress_bg.#.png"
+#define PROGRESS_BAR_IMAGE "progress-bar/I01_toolbar_progress.#.png"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	group { name: "progress-bar-layout";
+		images {
+			image: PROGRESS_BG_IMAGE COMP;
+			image: PROGRESS_BAR_IMAGE COMP;
+		}
+		parts {
+			part { name: "bg";
+				type: IMAGE;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					image.normal: PROGRESS_BG_IMAGE;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+				description {
+					state: "progress" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "progress_bar";
+				type: IMAGE;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					align: 0.0 0.0;
+					image.normal: PROGRESS_BAR_IMAGE;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+				PROGRESS_DESCRIPTIONS
+			}
+		}
+		programs {
+			program { name: "hide,progress";
+				signal: "hide,progress,signal";
+				transition: DECELERATE 0.1;
+				action: STATE_SET "default" 0.0;
+				target: "progress_bar";
+				target: "bg";
+			}
+			program { name: "show,progress";
+				signal: "show,progress,signal";
+				action: STATE_SET "progress" 0.0;
+				target: "bg";
+			}
+			program { name: "update,progress,0.00";
+				signal: "update,progress,0.00,signal";
+				action: STATE_SET "progress" 0.05;
+				target: "progress_bar";
+			}
+			PROGRESS_PROGRAMS
+			program { name: "update,progress,1.0";
+				signal: "update,progress,1.00,signal";
+				transition: DECELERATE 0.05;
+				action: STATE_SET "progress" 1.00;
+				target: "progress_bar";
+			}
+		}
+	}
+}

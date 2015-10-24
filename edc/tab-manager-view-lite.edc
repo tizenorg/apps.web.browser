@@ -1,0 +1,453 @@
+/*
+ * Copyright 2014  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Karthick R <karthick.r@samsung.com>
+ *
+ */
+
+#include "macro.edc"
+#include "WVGA_480x800/config.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+
+#define TAB_MANAGER_BOTTOM_BAR_HEIGHT 80
+
+RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
+
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+
+	group {
+		name: "main-layout";
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				mouse_events: 0;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					color: TAB_MANAGER_BG_COLOR;
+				}
+				description {
+					state: "no_contents" 0.0;
+					inherit: "default" 0.0;
+					color: 255 255 255 0;
+				}
+			}
+			part {
+				name: "top_padding";
+				scale : 1;
+				type : SPACER;
+				mouse_events: 0;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 0.0; }
+				}
+			}
+			part { name: "elm.swallow.grid";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 1.0; to:"top_padding"; }
+					rel2 { relative: 1.0 0.0; to:"bottom_bar"; }
+
+				}
+			}
+			part { 	name : "bottom_bar";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 0  TAB_MANAGER_BOTTOM_BAR_HEIGHT;
+					max: 9999 TAB_MANAGER_BOTTOM_BAR_HEIGHT;
+					align: 0.5 1.0;
+					color: 255 255 255 255;
+				}
+			}
+			part {	name : "elm.swallow.new_tab_button";
+				scale : 1;
+        			type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					rel1 { relative: 0.1 0.1; to:"bottom_bar"; }
+					rel2 { relative: 0.9 0.9; to:"bottom_bar"; }
+				}
+			}
+		}
+		programs {
+			program { name: "set_no_contents_bg";
+				signal: "set,no_contents_bg,signal";
+				action: STATE_SET "no_contents" 0.0;
+				target: "bg";
+			}
+		}
+	}
+
+	group {
+		name: "tab-item";
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.content";
+				scale : 1;
+				type : SWALLOW;
+				mouse_events: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to:"bg"; }
+					rel2 { relative: 1.0 1.0; to:"bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "tab-layout";
+		images {
+			image: TAB_MANAGER_TAB_BG COMP;
+		}
+		styles {
+				style { name: "title_style";
+				base: "font=Tizen:style=Regular font_size=24 color=#000000 color_class=ATO006 text_class=ATO006 wrap=last ellipsis=1 text_class=tizen";
+				tag:  "br" "\n";
+				tag:  "ps" "ps";
+				tag:  "tab" "\t";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
+				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		styles {
+				style { name: "title_style_secret_item";
+				base: "font=Tizen:style=Regular font_size=24 color=#FFFFFF color_class=ATO007 text_class=ATO007 wrap=last ellipsis=1 text_class=tizen";
+				tag:  "br" "\n";
+				tag:  "ps" "ps";
+				tag:  "tab" "\t";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
+				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		styles {
+				style { name: "uri_style";
+				base: "font=Tizen:style=Regular font_size=24 color=#000000 color_class=ATO007 text_class=ATO007 wrap=last ellipsis=1 text_class=tizen";
+				tag:  "br" "\n";
+				tag:  "ps" "ps";
+				tag:  "tab" "\t";
+				tag:  "em" "+ font=Tizen:style=Oblique";
+				tag:  "b" "+ font=Tizen:style=Bold";
+				tag:  "link" "+ color=#800 underline=on underline_color=#8008";
+				tag:  "hilight" "+ font=Tizen:style=Bold";
+			}
+		}
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part {
+				name: "item_bg";
+				scale : 1;
+				type : IMAGE;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1.to: "bg";
+					rel2.to: "bg";
+					image.normal: TAB_MANAGER_TAB_BG;
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+				}
+			}
+			part { name: "title_bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 TAB_MANAGER_TITLE_HEIGHT;
+					max: -1 TAB_MANAGER_TITLE_HEIGHT;
+					fixed: 1 1;
+					color: TITLE_BG_COLOR_UNFOCUSED_ITEM;
+					rel1 { relative: 0.02 0.07; to: "item_bg"; }
+					rel2 { relative: 0.98 1.0; to: "item_bg"; }
+				}
+				description {
+					state: "selected_item" 0.0;
+					inherit: "default" 0.0;
+					color: TITLE_BG_COLOR_FOCUSED_ITEM;
+				}
+				description {
+					state: "unselected_item" 0.0;
+					inherit: "default" 0.0;
+					color: TITLE_BG_COLOR_UNFOCUSED_ITEM;
+				}
+				description {
+					state: "secret_item" 0.0;
+					inherit: "default" 0.0;
+					color: TITLE_BG_COLOR_SECRET_ITEM;
+				}
+			}
+			part { name: "bg_favicon_padding";
+				scale : 1;
+				type : SPACER;
+				mouse_events: 0;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: TAB_MANAGER_FAVICON_LEFT_PADDING 0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to:"title_bg"; }
+					rel2 { relative: 0.0 1.0; to:"title_bg"; }
+				}
+			}
+			part {
+				name: "elm.swallow.favicon";
+				scale : 1;
+				mouse_events: 0;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					align: 0 0.5;
+					min: TAB_MANAGER_FAVICON_HEIGHT_WIDTH;
+					max: TAB_MANAGER_FAVICON_HEIGHT_WIDTH;
+					rel1 { relative: 1.0 0.0; to_x: "bg_favicon_padding"; to_y: "title_bg"; }
+					rel2 { relative: 1.0 1.0; to: "title_bg"; }
+				}
+			}
+			part { name: "favicon_title_padding";
+				scale : 1;
+				type : SPACER;
+				mouse_events: 0;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: TAB_MANAGER_FAVICON_RIGHT_PADDING 0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to:"elm.swallow.favicon"; }
+					rel2 { relative: 1.0 1.0; to:"elm.swallow.favicon"; }
+				}
+			}
+			part { name: "elm.swallow.delete_button";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.5;
+					min: DELETE_BUTTON_SIZE DELETE_BUTTON_SIZE;
+					rel1 { relative: 1.0 0.0; to: "title_bg"; }
+					rel2 { relative: 1.0 1.0; to: "title_bg"; }
+				}
+			}
+			part { name: "title_text_padding";
+				scale : 1;
+				type : SPACER;
+				mouse_events: 0;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.5;
+					min: TAB_MANAGER_TITLE_TEXT_RIGHT_PADDING 0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to_x:"elm.swallow.delete_button"; to_y: "title_bg"; }
+					rel2 { relative: 0.0 1.0; to_x:"elm.swallow.delete_button"; to_y: "title_bg"; }
+				}
+			}
+			part { name: "elm.swallow.title_text";
+				scale : 1;
+				mouse_events: 1;
+				type : TEXTBLOCK;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.5;
+					rel1 { relative: 1.0 0.0; to_x: "favicon_title_padding"; to_y: "title_bg"; }
+					rel2 { relative: 0.0 1.0; to_x:"title_text_padding"; to_y: "title_bg"; }
+					text {
+						style: "title_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+				description {
+					state: "secret_item" 0.0;
+					inherit: "default" 0.0;
+					text {
+						style: "title_style_secret_item";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+			}
+			part { name: "uri_bg";
+				mouse_events: 0;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 TAB_MANAGER_URL_HEIGHT;
+					max: -1 TAB_MANAGER_URL_HEIGHT;
+					rel1 { relative: 0.0 1.0; to_x:"item_bg"; to_y: "title_bg"; }
+					rel2 { relative: 1.0 1.0; to: "item_bg"; }
+				}
+			}
+			part { name: "elm.swallow.uri_text";
+				mouse_events: 1;
+				scale: 1;
+				type: TEXTBLOCK;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0 0.5;
+					rel1 { relative: 0.0 0.0; to_x: "elm.swallow.favicon"; to_y: "uri_bg"; }
+					rel2 { relative: 0.0 1.0; to_x: "title_text_padding"; to_y: "uri_bg"; }
+					text {
+						style: "uri_style";
+						min: 0 0;
+						max: 0 1;
+					}
+				}
+			}
+			part { name: "top_padding";
+                                type: RECT;
+                                scale : 1;
+                                description { state: "default" 0.0;
+                                        fixed: 1 1;
+                                        align: 0.0 0.0;
+                                        color: TAB_MANAGER_BG_COLOR;
+                                        rel1 { relative: 0.0 0.0; to:"item_bg"; }
+                                        rel2 { relative: 1.0 0.05; to:"item_bg"; }
+
+                                }
+                        }
+                        part { name: "bottom_padding";
+                                type: RECT;
+                                scale : 1;
+                                description { state: "default" 0.0;
+                                        fixed: 1 1;
+                                        align: 0.0 0.0;
+                                        color: TAB_MANAGER_BG_COLOR;
+                                        rel1 { relative: 0.0 0.99; to:"item_bg"; }
+                                        rel2 { relative: 1.0 1.0; to:"item_bg"; }
+
+                                }
+                        }
+                        part { name: "left_padding";
+                                type: RECT;
+                                scale : 1;
+                                description { state: "default" 0.0;
+                                        fixed: 1 1;
+                                        align: 0.0 0.0;
+                                        color: TAB_MANAGER_BG_COLOR;
+                                        rel1 { relative: 0.0 0.0; to:"item_bg"; }
+                                        rel2 { relative: 0.01 1.0; to:"item_bg"; }
+
+                                }
+                        }
+                        part { name: "right_padding";
+                                type: RECT;
+                                scale : 1;
+                                description { state: "default" 0.0;
+                                        fixed: 1 1;
+                                        align: 0.0 0.0;
+                                        color: TAB_MANAGER_BG_COLOR;
+                                        rel1 { relative: 0.99 0.0; to:"item_bg"; }
+                                        rel2 { relative: 1.0 1.0; to:"item_bg"; }
+
+                                }
+                        }
+		}
+		programs{
+			program { name: "selected_item";
+				signal: "selected_item,signal";
+				action: STATE_SET "selected_item" 0.0;
+				target: "title_bg";
+			}
+			program { name: "unselected_item";
+				signal: "unselected_item,signal";
+				action: STATE_SET "unselected_item" 0.0;
+				target: "title_bg";
+			}
+			program { name: "secret_item";
+				signal: "secret_item,signal";
+				action: STATE_SET "secret_item" 0.0;
+				target: "title_bg";
+				target: "elm.swallow.title_text";
+			}
+			/*program {
+					name: "portrait";
+					signal: "portrait,signal";
+					action: STATE_SET "default" 0.0;
+					target: "item_bg";
+					target: "left_top_padding";
+					target: "right_bottom_padding";
+				}
+			program {
+					name: "landscape";
+					signal: "landscape,signal";
+					action: STATE_SET "landscape" 0.0;
+					target: "item_bg";
+					target: "left_top_padding";
+					target: "right_bottom_padding";
+			}*/
+		}
+	}
+}

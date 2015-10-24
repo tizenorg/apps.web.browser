@@ -1,0 +1,125 @@
+/*
+ * Copyright 2014  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Kwangyong Choi <ky0.choi@samsung.com>
+ *
+ */
+
+#include "config.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	group { name: "main-layout";
+		parts {
+			part { name: "bg";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.scroller";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+				description {
+					state: "resized" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "elm.swallow.toolbar-scroller"; }
+				}
+			}
+			part { name: "bottom-toolbar";
+				repeat_events: 1;
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 0 0 0 0;
+					align: 0.0 1.0;
+					min: 0 BAR_HEIGHT_PORTRAIT;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 0 BAR_HEIGHT_LANDSCAPE;
+				}
+			}
+			part { name: "elm.swallow.toolbar-scroller";
+				repeat_events: 1;
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "bottom-toolbar"; }
+					rel2 { relative: 1.0 1.0; to: "bottom-toolbar"; }
+				}
+				description {
+					state: "hidden" 0.0;
+					inherit: "default" 0.0;
+					align: 0.0 0.0;
+					visible: 0;
+				}
+			}
+		}
+		programs {
+			program { name: "set,fullscreen-content";
+				signal: "set,fullscreen-content,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.scroller";
+			}
+			program { name: "set,resized-content";
+				signal: "set,resized-content,signal";
+				action: STATE_SET "resized" 0.0;
+				target: "elm.swallow.scroller";
+			}
+			program { name: "show,main-toolbar";
+				signal: "show,main-toolbar,signal";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.toolbar-scroller";
+			}
+			program { name: "hide,main-toolbar";
+				signal: "hide,main-toolbar,signal";
+				action: STATE_SET "hidden" 0.0;
+				target: "elm.swallow.toolbar-scroller";
+			}
+			program { name: "show,landscape-mode";
+				signal: "show,landscape-mode,signal";
+				action: STATE_SET "landscape" 0.0;
+				target: "bottom-toolbar";
+			}
+			program { name: "show,portrait-mode";
+				signal: "show,portrait-mode,signal";
+				action: STATE_SET "default" 0.0;
+				target: "bottom-toolbar";
+			}
+		}
+	}
+}

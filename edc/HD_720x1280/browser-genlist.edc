@@ -1,0 +1,3055 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Sangpyo Kim <sangpyo7.kim@samsung.com>
+ *
+ */
+
+#define FOCUS_BORDER		8 8 8 8
+
+collections {
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+   sounds {
+      sample {
+         name: "sweep_sound" RAW;
+         source: "Slider_sweep.wav";
+      }
+   }
+   sounds {
+      sample {
+         name: "reorder_sound" RAW;
+         source: "List_reorder.wav";
+      }
+   }
+   #include "genlist/tizen-hd-inc.edc"
+   #include "gengrid.edc"
+   #include "genlist/genlist.edc"
+   #include "naviframe.edc"
+   #include "config.edc"
+   group { name: "elm/focus_highlight/top/default";
+      images {
+         image: "00_focus_01.png" COMP;
+      }
+      data {
+         item: "animate" "off";
+      }
+      parts {
+         part { name: "base";
+            type: RECT;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+               rel1.relative: 0.0 0.0;
+               rel2.relative: 1.0 1.0;
+               visible: 0;
+            }
+         }
+         part { name: "shine";
+            type: IMAGE;
+            mouse_events: 0;
+            repeat_events: 1;
+            ignore_flags: ON_HOLD;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               rel1.offset: -4 -4;
+               rel2.offset: 4 4;
+               image {
+                  normal: "00_focus_01.png";
+                  border: FOCUS_BORDER;
+                  border_scale: 1;
+               }
+            }
+            description { state: "show" 0.0;
+               inherit:  "default" 0.0;
+               visible: 1;
+            }
+         }
+      }
+      programs {
+         program { name: "show";
+            signal: "elm,action,focus,show";
+            source: "elm";
+            action: STATE_SET "show" 0.0;
+            target: "shine";
+            after: "show_end";
+         }
+         program { name: "show_end";
+            action: SIGNAL_EMIT "elm,action,focus,show,end" "";
+         }
+         program { name: "hide";
+            signal: "elm,action,focus,hide";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "shine";
+            after: "hide_end";
+         }
+         program { name: "hide_end";
+            action: SIGNAL_EMIT "elm,action,focus,hide,end" "";
+         }
+      }
+   }
+
+   /**********************************************
+	browser customized genlist style
+   **********************************************/
+#define BROWSER_GROUPINDEX_TEXT_HEIGHT 45
+#define GROUPINDEX_EXP_PADDING_SIZE_RIGHT 13
+#define GROUPINDEX_TEXT_COLOR_BROWSER "#0E80A6FF"
+styles{
+   style { name: "genlist_style_groupindex_text_browser";
+      base: "font=Tizen:style=Bold font_size="GENLIST_GROUPINDEX_LIST_SIZE" color=#ffffff color_class=T0271 text_class=T0271 ellipsis=1.0";
+      STYLE_TAG
+      STYLE_TAG_MATCH
+   }
+}
+
+// Group Index
+#define GENLIST_PARAM_INDEX_LIST_BROWSER \
+   text { \
+      align: 0 0.5; \
+      min: 0 1; \
+      style: "genlist_style_groupindex_text_browser"; \
+   }
+
+#define GENLIST_PARAM_INDEX_BROWSER \
+   text { \
+      align: 0 0.5; \
+      min: 0 1; \
+      style: "genlist_style_expgroupindex_text_browser"; \
+   }
+
+   group { GENLIST_NAME("browser/groupindex/default")
+      inherit: "elm/genlist/item/groupindex/default";
+      parts {
+         GENLIST_PART_RECT("bg",
+            description { state: "default" 0.0;
+               //color: GENLIST_GROUPINDEX_LIST_BG_COLOR;
+               color: GROUPINDEX_BG_COLOR;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_GROUPINDEX_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_GROUPINDEX_LIST_BG_COLOR;
+            }
+         )
+         GENLIST_PART_PADDING_TOP_SIZE(19)
+         GENLIST_PART_PADDING_B_SIZE("elm.padding.line.top", "elm.padding.bottom", 12);
+         GENLIST_PART_TEXTBLOCK("elm.text",
+            GENLIST_DESCRIPTION("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.line.top",
+               GENLIST_PARAM_INDEX_LIST_BROWSER
+               min: 0 BROWSER_GROUPINDEX_TEXT_HEIGHT;
+               align: 0 0.5;
+               fixed: 1 0;
+            )
+            description { state: "sliding" 0.0;
+               inherit: "default";
+               text.min: 1 1;
+            }
+            GENLIST_DESCRIPTION_INDEX_LIST_TB
+         )
+      GENLIST_PART_EXPANDED_PAD
+         GENLIST_PART_RECT("elm.padding.left",
+            GENLIST_DESCRIPTION_L("elm.swallow.pad",
+               //color: GENLIST_LIST_BG_COLOR;
+               color: GROUPINDEX_BG_COLOR;
+               min: GROUPINDEX_PADDING_SIZE_LEFT 0;
+               max: GROUPINDEX_PADDING_SIZE_LEFT -1;
+               fixed: 1 0;
+            )
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_GROUPINDEX_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               //color: GENLIST_GROUPINDEX_LIST_BG_COLOR;
+               color: GROUPINDEX_BG_COLOR;
+            }
+            GENLIST_DESCRIPTION_DECORATE_PADDING
+            GENLIST_DESCRIPTION_REORDER_PADDING
+            GENLIST_DESCRIPTION_DECORATE_REORDER_PADDING
+         )
+         GENLIST_PART_RECT("elm.padding.right",
+            description { state: "default" 0.0;
+               //color: GENLIST_LIST_BG_COLOR;
+               color: GROUPINDEX_BG_COLOR;
+               min: GROUPINDEX_PADDING_SIZE_RIGHT 0;
+               max: GROUPINDEX_PADDING_SIZE_RIGHT -1;
+               fixed: 1 0;
+               align: 1.0 0.5;
+               rel1.to: "base";
+               rel2.to: "base";
+               rel1.relative: 1 0;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_GROUPINDEX_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               //color: GENLIST_GROUPINDEX_LIST_BG_COLOR;
+               color: GROUPINDEX_BG_COLOR;
+            }
+            GENLIST_DESCRIPTION_DECORATE_PADDING
+            GENLIST_DESCRIPTION_REORDER_PADDING
+            GENLIST_DESCRIPTION_DECORATE_REORDER_PADDING
+         )
+	part { name: "index_line";
+		description {
+			state: "default" 0.0;
+			visible: 0;
+		}
+	}
+     }
+   }
+
+	group { GENLIST_NAME("browser/expandablegroupindex/default")
+		inherit: "elm/genlist/item/groupindex_for_expading/default";
+		images {
+			image: "00_group_index_bg.#.png" COMP;
+			image: "00_group_index_bg_ef.#.png" COMP;
+		}
+		parts {
+			GENLIST_PART_GROUP_INDEX_BG
+			GENLIST_PART_PADDING_TOP_SIZE(7)
+			GENLIST_PART_PADDING_B_SIZE("elm.padding.line.top", "elm.padding.bottom", 7);
+			GENLIST_PART_TEXTBLOCK("elm.text",
+				GENLIST_DESCRIPTION("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.line.top",
+					GENLIST_PARAM_INDEX_LIST_BROWSER
+					min: 0 BROWSER_GROUPINDEX_TEXT_HEIGHT;
+					align: 0 0.5;
+					fixed: 1 0;
+				)
+				description { state: "sliding" 0.0;
+					inherit: "default";
+					text.min: 1 1;
+				}
+				GENLIST_DESCRIPTION_INDEX_LIST_TB
+			)
+			GENLIST_PART_EXPANDED_PAD
+			GENLIST_PART_RECT("elm.padding.left",
+					GENLIST_DESCRIPTION_L("elm.swallow.pad",
+						color_class:"W022";
+						min: GROUPINDEX_PADDING_SIZE_LEFT 0;
+						max: GROUPINDEX_PADDING_SIZE_LEFT -1;
+						fixed: 1 0;
+					)
+					description { state: "selected" 0.0;
+						inherit: "default" 0.0;
+						color_class:"B041P";
+					}
+					description { state: "disabled" 0.0;
+						inherit: "default" 0.0;
+						color_class:"W022";
+					}
+					GENLIST_DESCRIPTION_DECORATE_PADDING
+					GENLIST_DESCRIPTION_REORDER_PADDING
+					GENLIST_DESCRIPTION_DECORATE_REORDER_PADDING
+			)
+			GENLIST_PART_RECT("elm.padding.right",
+				description { state: "default" 0.0;
+					color_class:"W022";
+					min: GROUPINDEX_EXP_PADDING_SIZE_RIGHT 0;
+					max: GROUPINDEX_EXP_PADDING_SIZE_RIGHT -1;
+					fixed: 1 0;
+					align: 1.0 0.5;
+					rel1.to: "base";
+					rel2.to: "base";
+					rel1.relative: 1 0;
+				}
+				description { state: "selected" 0.0;
+					inherit: "default" 0.0;
+					color_class:"B041P";
+				}
+				description { state: "disabled" 0.0;
+					inherit: "default" 0.0;
+					color_class:"W022";
+				}
+				GENLIST_DESCRIPTION_DECORATE_PADDING
+				GENLIST_DESCRIPTION_REORDER_PADDING
+				GENLIST_DESCRIPTION_DECORATE_REORDER_PADDING
+			)
+			part { name: "index_line";
+				description {
+				state: "default" 0.0;
+				visible: 0;
+				}
+			}
+			GENLIST_PART_PADDING_R("elm.padding.arrow.left", "arrow")
+			GENLIST_PART_EXPANDABLE_ARROW_NO_SHADOW
+			programs {
+				program { name: "play_sound_bg_sound";
+					signal: "mouse,clicked,1";
+					source: "bg_sound";
+					action: RUN_PLUGIN "touch_sound";
+				}
+				GENLIST_PROGRAM_SELECT_ARROW_NO_SHADOW
+				GENLIST_PROGRAM_EXPAND_ROOT( target: "arrow"; )
+			}
+		}
+	}
+   group { GENLIST_NAME("browser/2text.1icon.4/default")
+styles {
+   style { name: "genlist_style_list_main_text_focus_wrap_saved_pages";
+	  base: "font=Tizen:style=Regular font_size="38" color=""#000000FF"" text_class=list_item wrap=mixed";
+	  STYLE_TAG
+	  STYLE_TAG_MATCH_FOCUS
+   }
+
+   style { name: "genlist_style_list_main_text_focus_wrap_saved_pages_large";
+	  base: "font=Tizen:style=Regular font_size="38" color=""#000000FF"" text_class=tizen ellipsis=1.0";
+	  STYLE_TAG
+	  STYLE_TAG_MATCH_FOCUS
+   }
+   }
+}
+   group { GENLIST_NAME("browser/scrap.2text.1icon.4/default")
+      inherit: "elm/genlist/item/2text.1icon.4/default";
+   data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub";
+   data.item: "contents" "elm.icon elm.icon.1";
+      parts {
+
+	  GENLIST_PART_PADDING_TOP_SIZE(18)
+	  GENLIST_PART_SPACER("elm.padding.left", \
+            GENLIST_DESCRIPTION_L("elm.swallow.pad",  \
+               min: 0 0; \
+               max: 0 0; \
+               fixed: 1 0; \
+            ) \
+			)
+         GENLIST_PART_RECT("bg",
+            clip_to: "bg_clip";
+            description { state: "default" 0.0;
+               color: GENLIST_LIST_TEXT_FOCUS_COLOR;
+            }
+            description { state: "selected" 0.0;
+			inherit: "default" 0.0;
+			color_class:"B041P";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_DIM_COLOR;
+            }
+         )
+
+		 part { name: "elm.padding.check";
+				 scale: 1;
+				 type: SPACER;
+				 repeat_events: 1;
+				  description { state: "default" 0.0;
+					 align: 0 0;
+					 fixed: 1 1;
+					 rel1 {
+						relative: 0 0;
+						to_x: "base";
+						to_y: "base";
+					 }
+					 rel2 {
+						relative:0 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					 }
+					 min: CHECK_BOX_PADDING;
+					 max: CHECK_BOX_PADDING;
+				  }
+			  }
+		 part { name: "elm.icon.1";
+			scale: 1;
+			repeat_events: 0;
+			type: SWALLOW;
+			description { state: "default" 0.0;
+				 align: 0 0;
+				 fixed: 1 1;
+				 rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.check";
+					to_y: "elm.padding.top";
+				 }
+				 rel2 {
+					relative:0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				 }
+				 min: CHECK_BOX_SIZE;
+				 max: CHECK_BOX_SIZE;
+				 }
+			 }
+		part { name: "elm.icon";
+			scale: 1;
+			type: SWALLOW;
+			mouse_events: 1;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 0;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2{
+					relative: 1 1;
+					to_x: "base";
+					to_y: "base";
+				}
+				min: NORMAL_ITEM_IMAGE_SIZE;
+				max: NORMAL_ITEM_IMAGE_SIZE;
+			}
+			description { state: "clicked" 0.0;
+				inherit:"default";
+				min: 400 204;
+			}
+		 }
+		 part { name: "elm.icon.bottom.padding";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				 align: 0 0;
+				 fixed: 1 1;
+				 rel1 {
+					relative: 0 1;
+					to_x: "elm.icon";
+					to_y: "elm.icon";
+				 }
+				rel2{
+					 relative: 1 1;
+					 to_x: "base";
+					 to_y: "base";
+				 }
+				min: 0  PADDING_BENEATH_IMAGE_HEIGHT;
+				max: -1 PADDING_BENEATH_IMAGE_HEIGHT;
+				color: LINE_COLOR_BELOW_THE_IMAGE;
+			}
+		}
+		 part { name: "elm.bottom.line";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				 align: 0 0;
+				 fixed: 1 1;
+				 rel1 {
+					relative: 0 1;
+					to_x: "elm.icon";
+					to_y: "elm.icon.bottom.padding";
+				 }
+				rel2{
+					 relative: 1 1;
+					 to_x: "base";
+					 to_y: "base";
+				}
+				color: SPACER_BETWEEN_ITEMS_COLOR;
+				min: 0 SPACER_BETWEEN_ITEMS_HEIGHT;
+				max: -1 SPACER_BETWEEN_ITEMS_HEIGHT;
+			}
+		}
+		 part { name: "elm.height";
+			 scale: 1;
+			 type: SWALLOW;
+			 repeat_events: 1;
+			description { state: "default" 0.0;
+				 align: 0 0;
+				 fixed: 1 0;
+				 rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				 }
+				min: NORMAL_ITEM_TOTAL_HEIGHT;
+				max: NORMAL_ITEM_TOTAL_HEIGHT;
+			}
+		}
+		part { name: "elm.padding.icon.right";
+			scale: 1;
+			type: SPACER;
+			 repeat_events: 1;
+			description { state: "default" 0.0;
+					align:0 0;
+					rel1 {
+						 relative: 1 1;
+						 to_x:"elm.icon";
+						 to_y:"elm.padding.top";
+					}
+					rel2 {
+						 relative: 0 0;
+						 to_x: "elm.padding.right";
+						 to_y: "elm.padding.bottom";
+					}
+				max: PADDING_BETWEEN_IMAGE_AND_TEXT;
+				fixed: 1 1;
+			 }
+		  }
+		  part { name: "elm.text.scrap_main";
+			scale: 1;
+			type: TEXTBLOCK;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align:0 0;
+				rel1 {
+				relative: 1 1;
+					to_x:  "elm.padding.icon.right";
+					to_y:  "elm.padding.top";
+				 }
+				 rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				 }
+				max: NORMAL_ITEM_TITLE_TEXTBLOCK_HEIGHT;
+				text {
+					min: 0 1;
+					align: 0 1;
+					style: "saved_main_text_style";
+				}
+				fixed: 1 1;
+			}
+			description { state: "selected" 0.0;
+				inherit: "default" 0.0;
+			}
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+		 }
+		part { name: "elm.text.scrap_sub";
+			scale: 1;
+			type: TEXTBLOCK;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.icon.right";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				max: URL_TEXTBLOCK_HEIGHT;
+				text {
+					min: 0 1;
+					align: 0 0;
+					style: "saved_pages_sub_text_style";
+				}
+				fixed: 1 1;
+			}
+			description { state: "selected" 0.0;
+				inherit: "default" 0.0;
+			}
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_SUB_TEXT
+		}
+	}
+
+	GENLIST_PROGRAMS_NORMAL( target: "elm.text.scrap_main"; target: "elm.text.scrap_sub";
+         target: "elm.icon"; )
+}
+
+#ifdef QUICK_FEED
+group { GENLIST_NAME("browser/feed.2text.1icon.4/default")
+		 inherit: "elm/genlist/item/browser/scrap.2text.1icon.4/default";
+		data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub";
+		data.item: "contents" "elm.icon elm.icon.1";
+		styles {
+			style { name: "sub_text_style_focused_feed";
+				  base: "font=Tizen:style=Regular font_size="38" color=""#FFFFFFFF"" text_class=list_item wrap=mixed";
+				  STYLE_TAG
+				  STYLE_TAG_MATCH_FOCUS
+			}
+		}
+		parts {
+		 part { name: "elm.icon";
+					 scale: 1;
+					 type: SWALLOW;
+					 mouse_events: 1;
+					 repeat_events: 1;
+					 description { state: "default" 0.0;
+						 align: 0 0;
+						 fixed: 1 1;
+						 rel1 {
+							 relative: 0 0;
+							 to_x: "base";
+							 to_y: "base";
+						 }
+						 rel2{
+							 relative: 1 1;
+							 to_x: "base";
+							 to_y: "base";
+						 }
+						 min: 0 233;
+						 max: 296 233;
+					 }
+					 description { state: "clicked" 0.0;
+						 inherit:"default";
+						 //n: 400 204;
+					 }
+				  }
+		 part { name: "elm.height";
+			 scale: 1;
+			 type: SWALLOW;
+			 repeat_events: 1;
+			description { state: "default" 0.0;
+				 align: 0 0;
+				 fixed: 1 0;
+				 rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				 }
+				min:  0 250;
+				max: -1 250;
+			}
+		}
+		 part { name: "elm.text.scrap_main";
+					 scale: 1;
+					 type: TEXTBLOCK;
+					 repeat_events: 1;
+					 description { state: "default" 0.0;
+						 align:0 0;
+						 rel1 {
+						 relative: 1 1;
+							 to_x:	"elm.padding.icon.right";
+							 to_y:	"elm.padding.top";
+						  }
+						  rel2 {
+							 relative: 0 0;
+							 to_x: "elm.padding.right";
+							 to_y: "elm.padding.bottom";
+						  }
+						 max: -1 44;
+						 text {
+							 min: 0 1;
+							 align: 0 0;
+							 style: "saved_main_text_style";
+						 }
+						 fixed: 1 1;
+					 }
+					 description { state: "selected" 0.0;
+						 inherit: "default" 0.0;
+					 }
+					 GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+				  }
+			part { name: "elm.text.scrap_sub";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					rel1 {
+						relative: 1 1;
+						to_x: "elm.padding.icon.right";
+						to_y: "elm.text.scrap_main";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					}
+					max: -1 132;
+					text {
+						min: 0 1;
+						style: "genlist_style_list_main_text_focus_wrap_saved_pages";
+					}
+					align: 0 0;
+					fixed: 1 1;
+				}
+				description { state: "selected" 0.0;
+					inherit: "default" 0.0;
+					text.style: "sub_text_style_focused_feed";
+				}
+			}
+		}
+}
+
+group { GENLIST_NAME("browser/feed.2text.1/default")
+		 inherit: "elm/genlist/item/browser/feed.2text.1icon.4/default";
+		data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub";
+		data.item: "contents" "elm.icon.1";
+
+		parts {
+		part { name: "elm.icon";
+			scale: 1;
+			type: SWALLOW;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 0;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2{
+					relative: 1 1;
+					to_x: "base";
+					to_y: "base";
+				}
+				min: 0 0;
+				max: 0 0;
+			}
+			description { state: "clicked" 0.0;
+				inherit:"default";
+				min: 0 0;
+			}
+		 }
+		}
+}
+#endif
+
+   group { GENLIST_NAME("browser/helpui.1text.1icon.2/default")
+		inherit: "elm/genlist/item/1text.1icon.2/default";
+		parts {
+			GENLIST_PART_RECT("bottom_line",
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					color: 0 0 0 0;
+				}
+			 )
+			GENLIST_PART_RECT("bottom_line2",
+				mouse_events: 0;
+				description { state: "default" 0.0;
+				   color: 0 0 0 0;
+				}
+			 )
+			GENLIST_PART_RECT("bg",
+				clip_to: "bg_clip";
+				description {state: "default" 0.0;
+					color: 0 0 0 0;
+				}
+			)
+			part {
+				name: "elm.text";
+				scale: 1;
+				type: TEXT;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					color: 0 0 0 255;
+					rel1 {
+						relative: 1 1;
+						to_x:   "elm.padding.icon.right";
+						to_y: "elm.padding.top";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "elm.padding.right";
+						to_y:  "elm.padding.bottom";
+					}
+				}
+			}
+		}
+	}
+	 group { GENLIST_NAME("browser/scrap.3text.2icon.1/default")
+		 inherit: "elm/genlist/item/3text.1icon/scrap_default";
+		images {
+			image:"I01_icon_button_article_reader.png" COMP;
+		}
+		GENLIST_PROLOG_NORMAL
+		data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub elm.text.3";
+		data.item: "contents" "elm.reader.icon elm.image.reader elm.icon.1";
+		parts {
+			GENLIST_PART_RECT("bg",
+			clip_to: "bg_clip";
+			description { state: "default" 0.0;
+				color: GENLIST_LIST_TEXT_FOCUS_COLOR;
+			}
+			description { state: "selected" 0.0;
+				inherit: "default" 0.0;
+				color_class:"B041P";
+			}
+			description { state: "disabled" 0.0;
+				inherit: "default" 0.0;
+				color: GENLIST_LIST_DIM_COLOR;
+			}
+			)
+			part { name:"elm.padding.bottom";
+				scale: 1;
+				mouse_events: 0;
+				type: RECT;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					min: 0 1;
+					max: -1 1;
+					fixed: 0 1;
+					rel1.to: "base";
+					rel2.to: "base";
+					rel1.relative: 0.0 1.0;
+					align: 0.5 1.0;
+					color: SPACER_BETWEEN_ITEMS_COLOR;
+				}
+			}
+			part { name:  "elm.icon.height";
+				scale: 1;
+				type: SWALLOW;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 0;
+					rel1 {
+						relative: 0 0;
+						to_x: "base";
+						to_y: "base";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y:"base";
+					}
+					min: READER_ITEM_TOTAL_HEIGHT;
+					max: READER_ITEM_TOTAL_HEIGHT;
+				}
+			}
+			part { name:  "elm.reader.icon";
+				scale: 1;
+				type: SWALLOW;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 0 0;
+						to_x: "base";
+						to_y: "base";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y:"base";
+					}
+					min: READER_ITEM_IMAGE_HEIGHT;
+					max: READER_ITEM_IMAGE_HEIGHT;
+				}
+			}
+			part { name:  "elm.icon.read.padding";
+				scale: 1;
+				type: RECT;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 0 1;
+						to_x: "elm.reader.icon";
+						to_y: "elm.reader.icon";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y:"base";
+					}
+					min: 0 PADDING_BENEATH_IMAGE_HEIGHT;
+					max: -1 PADDING_BENEATH_IMAGE_HEIGHT;
+					color: LINE_COLOR_BELOW_THE_IMAGE;
+				}
+			}
+			part { name:  "elm.bottom.line";
+				scale: 1;
+				type: RECT;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 0 1;
+						to_x: "elm.icon.read.padding";
+						to_y: "elm.icon.read.padding";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y:"base";
+					}
+					color: SPACER_BETWEEN_ITEMS_COLOR;
+					min: 0 SPACER_BETWEEN_ITEMS_HEIGHT;
+					max: -1 SPACER_BETWEEN_ITEMS_HEIGHT;
+				}
+			}
+			part { name: "elm.check.space";
+				scale: 1;
+				type: SPACER;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+					relative: 0 0;
+						to_x: "base";
+						to_y: "base";
+					}
+					rel2 {
+						relative:0 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					}
+					min: CHECK_BOX_PADDING;
+					max: CHECK_BOX_PADDING;
+				}
+			}
+			part { name: "elm.icon.1";
+				scale: 1;
+				type: SWALLOW;
+				repeat_events: 0;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 1 1;
+						to_x: "elm.check.space";
+						to_y: "elm.padding.top";
+					}
+					rel2 {
+						relative:0 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					}
+					min: CHECK_BOX_SIZE;
+					max: CHECK_BOX_SIZE;
+				}
+			}
+			part { name: "elm.padding.icon.right";
+				scale: 1;
+				type: SPACER;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align:0 0;
+					rel1 {
+						relative: 1 0;
+						to_x:"elm.reader.icon";
+						to_y:"elm.reader.icon";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y: "base";
+					}
+					max: PADDING_BETWEEN_IMAGE_AND_TEXT;
+					fixed: 1 1;
+				}
+			}
+			part { name: "elm.padding.top";
+				scale: 1;
+				type: SPACER;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align:0 0;
+					rel1 {
+						relative: 0 0;
+						to_x:"base";
+						to_y:"base";
+					}
+					rel2 {
+						relative: 1 1;
+						to_x: "base";
+						to_y: "base";
+					}
+					max: READER_PAGE_NO_ICON_PADDING_TOP;
+					fixed: 1 1;
+				}
+			}
+			  part { name: "elm.text.scrap_main";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 1 1;
+						to_x: "elm.padding.icon.right";
+						to_y:  "elm.padding.top";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "elm.padding.right";
+						to_y:  "elm.padding.bottom";
+					}
+					min:0 READER_ITEM_TITLE_TEXTBLOCK_HEIGHT;
+					max: -1 READER_ITEM_TITLE_TEXTBLOCK_HEIGHT;
+					text {
+					   min: 0 1;
+					   align: 0 1;
+					   style: "genlist_style_list_main_text_focus_wrap_saved_pages";
+					}
+					align: 0 0;
+					fixed: 1 1;
+				}
+				description { state: "selected" 0.0;
+					inherit: "default" 0.0;
+				}
+				GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+			}
+			part { name:  "elm.image.reader";
+				scale: 1;
+				type: IMAGE;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 0;
+					rel1 {
+						relative: 1 0.97;
+						to_x: "elm.padding.icon.right";
+						to_y: "elm.text.scrap_main";
+					}
+					rel2 {
+						relative: 1 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					}
+					image.normal:"I01_icon_button_article_reader.png";
+					min: READER_IMAGE_SIZE;
+					max: READER_IMAGE_SIZE;
+				}
+			}
+			part { name:  "elm.icon.reader.padding";
+				scale: 1;
+				type: SPACER;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					align: 0 0;
+					fixed: 1 0;
+					rel1 {
+						relative: 1 1;
+						to_x: "elm.image.reader";
+						to_y: "elm.text.scrap_main";
+					}
+					rel2 {
+						relative: 1 0;
+						to_x: "elm.padding.right";
+						to_y: "elm.padding.bottom";
+					}
+					min: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+					max: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+				}
+			}
+			part { name: "elm.text.scrap_sub";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 1 0.93;
+						to_x: "elm.icon.reader.padding";
+						to_y: "elm.text.scrap_main";
+					}
+					rel2 {
+						relative: 0 1;
+						to_x: "elm.padding.right";
+						to_y:"elm.padding.bottom";
+					}
+					align: 0 0;
+					max: -1 READER_ITEM_URL_TEXTBLOCK_HEIGHT;
+					STYLE_SUB_TEXT
+					fixed: 1 1;
+				}
+				description { state: "selected" 0.0;
+					inherit: "default" 0.0;
+				}
+				GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_SUB_TEXT
+			}
+			part { name: "elm.text.3";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 1 1;
+						to_x:"elm.padding.icon.right";
+						to_y:"elm.text.scrap_sub";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "elm.padding.right";
+						to_y:"elm.padding.bottom";
+					}
+					align: 0 0;
+					max:-1 PAGE_CONTENT_TEXTBLOCK_HEIGHT;
+					//color: 127 127 127 255;
+					text {
+						align: 0 0;
+						style: "genlist_style_list_main_text_focus_wrap_saved_pages";
+					}
+					fixed: 1 1;
+				}
+				GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_DESCRIPTION_TEXT
+			}
+			GENLIST_PART_FLIP
+			GENLIST_PART_FOCUS_NORMAL
+		}
+		GENLIST_PROGRAMS_NORMAL( target: "elm.text.scrap_main"; target: "elm.text.scrap_sub"; target: "elm.text.3";
+		target: "elm.reader.icon"; target:"elm.image.reader";)
+	 }
+
+	group { GENLIST_NAME("browser/scrap.3text.1/default")
+		inherit: "elm/genlist/item/3text.1icon/scrap_default";
+		images {
+			image:"I01_icon_button_article_reader.png" COMP;
+		}
+		GENLIST_PROLOG_NORMAL
+		data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub elm.text.3";
+		data.item: "contents" "elm.icon.1";
+		parts {
+			GENLIST_PART_RECT("bg",
+			clip_to: "bg_clip";
+			description { state: "default" 0.0;
+			color: GENLIST_LIST_TEXT_FOCUS_COLOR;
+			}
+			description { state: "selected" 0.0;
+			inherit: "default" 0.0;
+			color_class:"B041P";
+			}
+			description { state: "disabled" 0.0;
+				inherit: "default" 0.0;
+				color: GENLIST_LIST_DIM_COLOR;
+			}
+			)
+		part { name: "elm.check.padding";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					 relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative:0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				min: CHECK_BOX_PADDING;
+				max: CHECK_BOX_PADDING;
+			}
+		}
+		part { name: "elm.padding.top";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative:1 1;
+					to_x: "base";
+					to_y: "base";
+				}
+				min: READER_PAGE_NO_ICON_PADDING_TOP;
+				max: READER_PAGE_NO_ICON_PADDING_TOP;
+			}
+		}
+		part { name: "elm.icon.1";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 0;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.check.padding";
+					to_y: "elm.padding.top";
+				}
+				rel2 {
+					relative:0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				max: 1 1;
+			}
+		}
+		part { name:  "elm.icon.height";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 0;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y:  "base";
+				}
+				min: 0 READER_PAGE_NO_ICON_HEIGHT;
+				max: -1 READER_PAGE_NO_ICON_HEIGHT;
+			}
+		}
+		part { name: "elm.text.scrap_main";
+			scale: 1;
+			type: TEXTBLOCK;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.left";
+					to_y: "elm.padding.top";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y:  "elm.padding.bottom";
+				}
+				max: -1 READER_IMAGE_TITLE_TEXTBLOCK_HEIGHT;
+				align: 0 0;
+				fixed: 1 1;
+				STYLE_MAIN_TEXT
+			}
+			description { state: "selected" 0.0;
+				inherit: "default" 0.0;
+			}
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+		}
+		part { name:  "elm.icon.reader";
+			scale: 1;
+			type: IMAGE;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 0.9;
+					to_x: "elm.padding.left";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				image.normal:"I01_icon_button_article_reader.png";
+				min: READER_IMAGE_SIZE;
+				max: READER_IMAGE_SIZE;
+			}
+		}
+		part { name:  "elm.icon.reader.padding";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.icon.reader";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				 }
+				 min: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+				 max: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+			}
+		}
+		part { name: "elm.text.scrap_sub";
+			scale: 1;
+			 type: TEXTBLOCK;
+			 repeat_events: 1;
+			 description { state: "default" 0.0;
+				rel1 {
+					relative: 1 0.9;
+					to_x: "elm.icon.reader.padding";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 1;
+					to_x: "elm.padding.right";
+					to_y:"elm.icon.reader";
+				 }
+				align: 0.5 0.5;
+				max: URL_TEXTBLOCK_HEIGHT;
+				STYLE_SUB_TEXT
+				fixed: 1 1;
+			}
+			 description { state: "selected" 0.0;
+				 inherit: "default" 0.0;
+			 }
+			 GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_SUB_TEXT
+		}
+		part { name: "elm.text.2.bottm.padding";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.left";
+					to_y: "elm.text.scrap_sub";
+				}
+				rel2 {
+					relative: 0 1;
+					to_x: "elm.padding.right";
+					to_y:  "base";
+				}
+				min: PADDING_BETWEEN_IMAGE_AND_TEXT;
+				max: PADDING_BETWEEN_IMAGE_AND_TEXT;
+				fixed: 1 1;
+			}
+		}
+		part { name: "elm.text.3";
+			scale: 1;
+			type: TEXTBLOCK;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.left";
+					to_y: "elm.text.2.bottm.padding";
+				}
+				rel2 {
+					relative: 0 1;
+					to_x: "elm.padding.right";
+					to_y:  "base";
+				}
+				min: 0 PAGE_CONTENT_NOIMAGE_TEXTBLOCK_HEIGHT;
+				max: -1 PAGE_CONTENT_NOIMAGE_TEXTBLOCK_HEIGHT;
+				fixed: 1 1;
+				text {
+					align: 0 0;
+					min: 0 1;
+					size: 40;
+					style: "genlist_style_list_main_text_focus_wrap_saved_pages";
+				}
+			}
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_DESCRIPTION_TEXT
+		}
+		part { name: "elm.padding.bottom";
+			scale: 1;
+			mouse_events: 0;
+			repeat_events: 1;
+			type: SPACER;
+			description { state: "default" 0.0;
+				min: 0 READER_PAGE_NO_ICON_BOTTOM_PADDING_HEIGHT;
+				max: -1 READER_PAGE_NO_ICON_BOTTOM_PADDING_HEIGHT;
+				fixed: 0 1;
+				rel1 {
+					relative: 0 1;
+					to_x: "base";
+					to_y: "elm.text.3";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y:  "base";
+					}
+				 align: 0 0;
+			}
+		}
+		part { name: "elm.padding.line.bottom";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 1;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative:1 0;
+					to_x: "base";
+					to_y: "elm.padding.bottom.spacer";
+				}
+				min: 0 PADDING_BENEATH_IMAGE_HEIGHT;
+				max: -1 PADDING_BENEATH_IMAGE_HEIGHT;
+				color: LINE_COLOR_BELOW_THE_IMAGE;
+			}
+		}
+		part { name: "elm.padding.bottom.spacer";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 1;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 1;
+					to_x: "base";
+					to_y: "elm.padding.line.bottom";
+				}
+				rel2 {
+					relative:1 1;
+					to_x: "base";
+					to_y: "base";
+				}
+				min: 0 SPACER_BETWEEN_ITEMS_HEIGHT;
+				max: -1 SPACER_BETWEEN_ITEMS_HEIGHT;
+				color: SPACER_BETWEEN_ITEMS_COLOR;
+			}
+		}
+		GENLIST_PART_FLIP
+		GENLIST_PART_FOCUS_NORMAL
+		}
+	GENLIST_PROGRAMS_NORMAL( target: "elm.text.scrap_main"; target: "elm.text.scrap_sub"; target: "elm.text.3";
+	 target: "elm.icon.reader"; )
+	 }
+
+	group { GENLIST_NAME("browser/scrap.reader.2text.1icon.1/default")
+		inherit: "elm/genlist/item/2text.1icon.4/default";
+		images {
+			image:"I01_icon_button_article_reader.png" COMP;
+		}
+		GENLIST_PROLOG_NORMAL
+		data.item: "texts" "elm.text.scrap_main elm.text.scrap_sub";
+		data.item: "contents" "elm.icon elm.icon.1";
+		parts {
+			GENLIST_PART_RECT("bg",
+				clip_to: "bg_clip";
+				description { state: "default" 0.0;
+					color: GENLIST_LIST_TEXT_FOCUS_COLOR;
+				}
+				description { state: "selected" 0.0;
+				color_class:"B041P";
+				}
+			)
+		part { name: "elm.check.padding";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative:0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				min: CHECK_BOX_PADDING;
+				max: CHECK_BOX_PADDING;
+			 }
+		}
+		part { name:  "elm.icon.height";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+					   fixed: 1 0;
+					   rel1 {
+						  relative: 1 1;
+						  to_x: "elm.padding.left";
+						  to_y: "elm.padding.top";
+					   }
+						rel2 {
+						   relative: 0 0;
+						   to_x: "elm.padding.right";
+						   to_y:  "elm.padding.bottom";
+					   }
+					   min: 0 READER_PAGE_LARGE_ICON_HEIGHT;
+					   max: -1 READER_PAGE_LARGE_ICON_HEIGHT;
+					}
+				}
+		part { name:  "elm.icon";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 1;
+			 description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y: "base";
+				}
+				min: 0 READER_LARGE_IMAGE_HEIGHT;
+				max: -1 READER_LARGE_IMAGE_HEIGHT;
+			 }
+		}
+		part { name:  "elm.icon.bottom.padding";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 0 1;
+					to_x: "elm.icon";
+					to_y: "elm.icon";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y:  "base";
+				}
+				min: 0 READER_IMAGE_BOTTOM_PADDING;
+				max: -1 READER_IMAGE_BOTTOM_PADDING;
+			}
+		}
+		part { name: "elm.icon.1";
+			scale: 1;
+			type: SWALLOW;
+			repeat_events: 0;
+			description { state: "default" 0.0;
+			align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.check.padding";
+					to_y: "elm.padding.top";
+				}
+				rel2 {
+					relative:0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				 }
+				min: 0 0;
+				max: CHECK_BOX_SIZE;
+			}
+		}
+		part { name: "elm.right.padding.text";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+			align: 0 1;
+				fixed: 1 1;
+				rel1 {
+					relative: 1.0 0;
+					to_x: "base";
+					to_y: "base";
+				}
+				rel2 {
+					relative:1.0 1.0;
+					to_x: "base";
+					to_y: "base";
+				 }
+				min: READER_IMAGE_TITLE_RIGHT_WIDTH;
+				max: READER_IMAGE_TITLE_RIGHT_WIDTH;
+			}
+		}
+		part { name: "elm.text.scrap_main";
+			 scale: 1;
+			 type: TEXTBLOCK;
+			 repeat_events: 1;
+			 description { state: "default" 0.0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.left";
+					to_y: "elm.icon.bottom.padding";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.right.padding.text";
+					to_y: "elm.right.padding.text";
+				}
+				max: -1 READER_IMAGE_TITLE_TEXTBLOCK_HEIGHT_LARGE_ICON;
+				align: 0 0;
+				fixed: 1 1;
+				STYLE_MAIN_TEXT
+			}
+			description { state: "selected" 0.0;
+				 inherit: "default" 0.0;
+			 }
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+		}
+		part { name:  "elm.icon.reader";
+			scale: 1;
+			type: IMAGE;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.padding.left";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 0;
+				to_x: "elm.padding.right";
+				to_y: "elm.padding.bottom";
+				}
+				image.normal:"I01_icon_button_article_reader.png";
+				min: READER_IMAGE_SIZE;
+				max: READER_IMAGE_SIZE;
+			}
+		}
+		part { name:  "elm.reader.icon.padding";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				align: 0 0;
+				fixed: 1 1;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.icon.reader";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0 0;
+					to_x: "elm.padding.right";
+					to_y: "elm.padding.bottom";
+				}
+				min: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+				max: PADDING_SIZE_BETWEEN_IMAGE_AND_URL;
+			}
+		}
+		 part { name: "elm.text.scrap_sub";
+			scale: 1;
+			type: TEXTBLOCK;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 {
+					relative: 1 1;
+					to_x: "elm.reader.icon.padding";
+					to_y: "elm.text.scrap_main";
+				}
+				rel2 {
+					relative: 0.98 0;
+					to_x: "elm.text.scrap_main";
+					to_y: "elm.right.padding.text";
+				}
+				max: URL_TEXTBLOCK_HEIGHT;
+				align: 0 0;
+				STYLE_SUB_TEXT
+				fixed: 1 1;
+			}
+			description { state: "selected" 0.0;
+				inherit: "default" 0.0;
+			}
+			GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_SUB_TEXT
+		}
+		part { name: "elm.text.2.space";
+			scale: 1;
+			type: SPACER;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 {
+					relative: 0 1;
+					to_x: "elm.text.scrap_sub";
+					to_y: "elm.text.scrap_sub";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y:"base";
+				}
+				max: -1 READER_IMAGE_BOTTOM_PADDING;
+				align: 0 0;
+				fixed: 1 1;
+			}
+		}
+		part { name: "elm.padding.bottom.spacer";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 {
+					relative: 0 1;
+					to_x: "base";
+					to_y: "elm.text.2.space";
+				}
+				rel2 {
+					relative: 1 0;
+					to_x: "base";
+					to_y:"elm.bottom.padding";
+				}
+				color: LINE_COLOR_BELOW_THE_IMAGE;
+				min: 0 PADDING_BENEATH_IMAGE_HEIGHT;
+				max: -1 PADDING_BENEATH_IMAGE_HEIGHT;
+				align: 0 1;
+				fixed: 1 1;
+			}
+		}
+		part { name: "elm.bottom.padding";
+			scale: 1;
+			type: RECT;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 {
+					relative: 0 1;
+					to_x: "base";
+					to_y: "elm.padding.bottom.spacer";
+				}
+				rel2 {
+					relative: 1 1;
+					to_x: "base";
+					to_y:"base";
+				}
+				color: SPACER_BETWEEN_ITEMS_COLOR;
+				max: -1 SPACER_BETWEEN_ITEMS_HEIGHT;
+				align: 0 1;
+				fixed: 1 1;
+			}
+		}
+		GENLIST_PART_FLIP
+		GENLIST_PART_FOCUS_NORMAL
+	}
+		 GENLIST_PROGRAMS_NORMAL( target: "elm.text.scrap_main"; target: "elm.text.scrap_sub";
+		  target: "elm.icon"; )
+		  }
+
+     group { GENLIST_NAME("browser/2text.2icon.4/default")
+     inherit: "elm/genlist/item/2text.2icon.4/default";
+      parts {
+         GENLIST_PART_RECT("bg",
+            clip_to: "bg_clip";
+            description { state: "default" 0.0;
+               //color: GENLIST_LIST_BG_COLOR;
+               color: TRAY_BG_COLOR;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_DIM_COLOR;
+            }
+         )
+     }
+   }
+
+      group { GENLIST_NAME("browser/2text.2icon.5/default")
+      inherit: "elm/genlist/item/2text.2icon.5/default";
+      parts {
+		part{
+			name: "elm.padding.left";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				min: 0 0;
+				max: 0 -1;
+				fixed: 1 0;
+			}
+		}
+
+		part {
+			name: "elm.icon.1";
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: 0 0;
+			}
+		}
+
+		part {
+			name: "elm.padding.icon1.right";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				fixed: 1 0;
+				min: 0 0;
+				max: 0 -1;
+			 }
+		}
+
+         GENLIST_PART_RECT("bg",
+            clip_to: "bg_clip";
+            description { state: "default" 0.0;
+               //color: GENLIST_LIST_BG_COLOR;
+               color: TRAY_BG_COLOR;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color_class:"B041P";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_DIM_COLOR;
+            }
+         )
+     }
+   }
+
+     group { GENLIST_NAME("browser/2text.3icon.4/default")
+     inherit: "elm/genlist/item/2text.3icon.4/default";
+     parts {
+		part{
+			name: "elm.padding.left";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				min: 0 0;
+				max: 0 -1;
+				fixed: 1 0;
+			}
+		}
+
+		part {
+			name: "elm.icon.1";
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: 0 0;
+			}
+		}
+
+		part {
+			name: "elm.padding.icon1.right";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				fixed: 1 0;
+				min: 0 0;
+				max: 0 -1;
+			 }
+		}
+
+		part {
+			name: "elm.icon.3";
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: 0 0;
+			}
+		}
+
+         GENLIST_PART_RECT("bg",
+            clip_to: "bg_clip";
+            description { state: "default" 0.0;
+               //color: GENLIST_LIST_BG_COLOR;
+               color: TRAY_BG_COLOR;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_DIM_COLOR;
+            }
+         )
+     }
+}
+   group { GENLIST_NAME("browser/1text/default")
+      inherit: "elm/genlist/item/1text/default";
+      parts {
+         GENLIST_PART_RECT("bg",
+            clip_to: "bg_clip";
+            description { state: "default" 0.0;
+               //color: GENLIST_LIST_BG_COLOR;
+               color: TRAY_BG_COLOR;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_PRESS_COLOR;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: GENLIST_LIST_DIM_COLOR;
+            }
+         )
+     }
+   }
+#define GENLIST_HL_COLOR 95 160 233 255
+#define GENLIST_PART_MATCH_TAG_COLOR                    "+ color=#FFFFFF + color_class=ATO012M"
+#define GENLIST_LIST_TEXT_FOCUS_COLOR_STYLE                 "#FFFFFFFF"
+#define GENLIST_ICON_COLOR_CLASS_NORMAL "AO008"
+#define GENLIST_ICON_COLOR_CLASS_PRESSED "AO008P"
+#define STYLE_TAG \
+      tag:  "br" "\n";\
+      tag:  "ps" "ps";\
+      tag:  "tab" "\t";\
+      tag:  "b" "+ font_weight=Bold";
+
+#define STYLE_TAG_MATCH \
+      tag:  "match" GENLIST_PART_MATCH_TAG_COLOR;
+
+// FIXME: Why this is needed? just don't use match color, right? damn textblock bug...
+#define STYLE_TAG_MATCH_FOCUS \
+      tag:  "match" GENLIST_LIST_TEXT_FOCUS_COLOR_STYLE;
+
+/* predictive history genlist item */
+		styles {
+			style { name: "main_text_style";
+	      		base: "font=Tizen:style=Regular font_size=40 color=#FFFFFF color_class=ATO012L1 text_class=ATO012L1 align=left valign=bottom ellipsis=1.0";
+				STYLE_TAG
+				STYLE_TAG_MATCH
+			}
+			style { name: "main_text_style_focused";
+	      		base: "font=Tizen:style=Regular font_size=40 color=#FFFFFF color_class=ATO012L1P text_class=ATO012L1P align=left valign=bottom ellipsis=1.0";
+				STYLE_TAG
+				STYLE_TAG_MATCH_FOCUS
+			}
+			style { name: "sub_text_style";
+				base: "font=Tizen:style=Regular font_size=30 color=#FFFFFF color_class=ATO012L2 text_class=ATO012L2 align=left wrap=mixed ellipsis=1 valign=top";
+				STYLE_TAG
+				STYLE_TAG_MATCH
+			}
+			style { name: "sub_text_style_focused";
+				base: "font=Tizen:style=Regular font_size=30 color=#FFFFFF color_class=ATO012L2P text_class=ATO012L2P align=left wrap=mixed ellipsis=1 valign=top";
+				STYLE_TAG
+				STYLE_TAG_MATCH_FOCUS
+			}
+			style { name: "description_text_style_focused";
+				base: "font=Tizen:style=Regular font_size=38 color=#FFFFFF text_class=list_item align=left wrap=mixed";
+				STYLE_TAG
+				STYLE_TAG_MATCH_FOCUS
+			}
+		}
+
+styles {
+	style { name: "saved_main_text_style";
+		base: "font=Tizen:style=Regular font_size=40 color=#FFFFFF color_class=ATO012L1 text_class=ATO012L1 align=left valign=bottom ellipsis=1.0";
+		STYLE_TAG
+		STYLE_TAG_MATCH
+	}
+	style { name: "saved_pages_sub_text_style";
+		base: "font=Tizen:style=Regular font_size=30 color=#FFFFFF color_class=ATO012L2 text_class=ATO012L2 align=left ellipsis=1 valign=top";
+		STYLE_TAG
+		STYLE_TAG_MATCH
+	}
+}
+
+
+/* 1 text 1 icon */
+	group { GENLIST_NAME("browser/1text.1icon.4.tb.custom1/default")
+		inherit: "elm/genlist/item/1text.1icon.2.tb/default";
+		data.item: "texts" "elm.text.1";
+		data.item: "contents" "elm.icon.1";
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: RECT;
+				clip_to: "bg_clip";
+				description {
+					state: "default" 0.0;
+					//color: GENLIST_LIST_BG_COLOR;
+					color: 0 0 0 0;
+				}
+				description {
+					state: "selected" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_HL_COLOR;
+				}
+				description {
+					state: "disabled" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_LIST_DIM_COLOR;
+				}
+			}
+
+			// top padding, bottom padding is 5
+			GENLIST_PART_ICON_L_CUSTOM("elm.icon.1", "elm.padding.left", 60) // left icon
+			GENLIST_PART_PADDING_L_SIZE("elm.padding.icon.1.right", "elm.icon.1", 16) //padding on right side of icon
+			GENLIST_PART_LISTITEM_LR_TB_CUSTOM("elm.text.1", 102, "elm.padding.icon.1.right", "elm.padding.right",)
+		}
+		GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.icon.1";)
+		GENLIST_PROGRAM_SOUND("elm.text.1")
+	}
+
+
+/* 2 text 1 icon */
+	group { GENLIST_NAME("browser/2text.1icon.4.tb.custom1/default")
+		inherit: "elm/genlist/item/2text.1icon.4.tb/default";
+		data.item: "texts" "elm.text.1 elm.text.2";
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: RECT;
+				clip_to: "bg_clip";
+				description {
+					state: "default" 0.0;
+					//color: GENLIST_LIST_BG_COLOR;
+					color: 0 0 0 0;
+				}
+				description {
+					state: "selected" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_HL_COLOR;
+				}
+				description {
+					state: "disabled" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_LIST_DIM_COLOR;
+				}
+			}
+			GENLIST_PART_PADDING_TOP_SIZE(8)
+			GENLIST_PART_PADDING_BOTTOM_SIZE(8)
+			// top bottom padding 19 + 19
+			GENLIST_PART_ICON_L_CUSTOM("elm.icon", "elm.padding.left", 60) // left icon
+			GENLIST_PART_PADDING_L_SIZE("elm.padding.icon.right", "elm.icon", 16) //padding on right side of icon
+			part { name: "elm.text.1_guide_left_top";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 5 50;
+					max: 5 50;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 { relative: 1.0 1.0; to_x: "elm.padding.icon.right"; to_y: "elm.padding.top";}
+					rel2 { relative: 0.0 0.0; to_x: "elm.padding.right"; to_y: "elm.padding.bottom";}
+				}
+			}
+			part { name: "elm.text.1_guide_right_top";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 5 50;
+					max: 5 50;
+					fixed: 1 1;
+					align: 1.0 0.0;
+					rel1 { relative: 1.0 1.0; to_x: "elm.padding.icon.right"; to_y: "elm.padding.top";}
+					rel2 { relative: 0.0 0.0; to_x: "elm.padding.right"; to_y: "elm.padding.bottom";}
+				}
+			}
+			part { name: "elm.text.2_guide_left_bottom";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 5 50;
+					max: 5 50;
+					fixed: 1 1;
+					align: 0.0 1.0;
+					rel1 { relative: 1.0 1.0; to_x: "elm.padding.icon.right"; to_y: "elm.padding.top";}
+					rel2 { relative: 0.0 0.0; to_x: "elm.padding.right"; to_y: "elm.padding.bottom";}
+				}
+			}
+			part { name: "elm.text.2_guide_right_bottom";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 5 50;
+					max: 5 50;
+					fixed: 1 1;
+					align: 1.0 1.0;
+					rel1 { relative: 1.0 1.0; to_x: "elm.padding.icon.right"; to_y: "elm.padding.top";}
+					rel2 { relative: 0.0 0.0; to_x: "elm.padding.right"; to_y: "elm.padding.bottom";}
+				}
+			}
+			part { name: "elm.text.1";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "elm.text.1_guide_left_top";}
+					rel2 { relative: 1.0 1.0; to: "elm.text.1_guide_right_top";}
+					STYLE_MAIN_TEXT
+				}
+				GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_MAIN_TEXT
+			}
+			part { name: "elm.text.2";
+				scale: 1;
+				type: TEXTBLOCK;
+				repeat_events: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "elm.text.2_guide_left_bottom";}
+					rel2 { relative: 1.0 1.0; to: "elm.text.2_guide_right_bottom";}
+					STYLE_SUB_TEXT
+				}
+				GENLIST_DESCRIPTION_LISTITEM_OTHERS_TB_SUB_TEXT
+			}
+		}
+		GENLIST_PROGRAMS_NORMAL( target: "elm.text.1"; target: "elm.text.2"; target: "elm.icon";)
+		GENLIST_PROGRAM_SOUND("elm.text.1")
+		GENLIST_PROGRAM_SOUND("elm.text.2")
+	}
+/* 1 text 2 icon */
+	group { GENLIST_NAME("browser/1text.2icon.4.tb.custom1/default")
+		inherit: "elm/genlist/item/1text.2icon.tb/default";
+		data.item: "texts" "elm.text";
+		data.item: "contents" "elm.icon.2";
+		parts {
+			part { name: "bg";
+				scale: 1;
+				type: RECT;
+				clip_to: "bg_clip";
+				description {
+					state: "default" 0.0;
+					//color: GENLIST_LIST_BG_COLOR;
+					color: 0 0 0 0;
+				}
+				description {
+					state: "selected" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_HL_COLOR;
+				}
+				description {
+					state: "disabled" 0.0;
+					inherit: "default" 0.0;
+					color: GENLIST_LIST_DIM_COLOR;
+				}
+			}
+			GENLIST_PART_PADDING_RIGHT_SIZE(10)
+			GENLIST_PART_ICON_L_CUSTOM("elm.icon.1", "elm.padding.left", 60) // left icon
+			GENLIST_PART_PADDING_L_SIZE("elm.padding.icon1.right", "elm.icon.1", 16) //padding on right side of icon
+			GENLIST_PART_LISTITEM_LR_TB_CUSTOM("elm.text", 102, "elm.padding.icon1.right", "elm.icon.2",) // textblock height
+			//GENLIST_PART_PADDING_R("elm.padding.icon2.left", "elm.icon.2")
+			//GENLIST_PART_PADDING_R_SIZE("elm.padding.icon2.left", "elm.icon.2", 0)
+
+			part { name: "icon2_guide_top";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 102 5;
+					max: 102 5;
+					fixed: 1 1;
+					align: 1.0 0.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+				}
+			}
+			part { name: "icon2_guide_bottom";
+				scale : 1;
+				type : SPACER;
+				description {
+					state: "default" 0.0;
+					min: 102 2;
+					max: 102 2;
+					fixed: 1 1;
+					align: 1.0 1.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 0.0; to: "bottom_line";}
+				}
+			}
+			part { name: "elm.icon.2";
+				scale : 1;
+         		mouse_events: 1;
+         		repeat_events: 0;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 102 110;
+					max: 102 110;
+					color: 0 0 0 0;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to: "icon2_guide_top"; }
+					rel2 { relative: 1.0 0.0; to: "icon2_guide_bottom"; }
+				}
+			}
+			part { name: "divider_bg";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					color: 240 243 245 255;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to_x: "divider"; to_y: "elm.padding.top"; }
+					rel2 { relative: 1.0 1.0; to_x: "divider"; to_y: "icon2_guide_bottom"; }
+				}
+			}
+			part { name: "divider";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					min: 2 70;
+					max: 2 70;
+					fixed: 1 1;
+					color: 180 180 180 150;
+					color_class: "AO005";
+					align: 1.0 0.5;
+					rel1 { relative: 1.0 0.0; to: "elm.padding.icon1.right"; }
+					rel2 { relative: 0.0 1.0; to: "icon2_guide_bottom"; }
+				}
+			}
+		}
+		GENLIST_PROGRAMS_NORMAL( target: "elm.text"; target: "elm.icon.1"; target: "elm.icon.2";)
+		GENLIST_PROGRAM_SOUND("elm.text")
+   }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   group { GENLIST_NAME("browser/multiline/2text.2/default")
+      inherit: "elm/genlist/item/2text.2/default";
+      parts {
+	GENLIST_PART_PADDING_T_SIZE("elm.padding.text1.bottom", "elm.text.1", GENLIST_PADDING_SIZE_TOP_2LINE)
+	GENLIST_PART_TEXTBLOCK("elm.text.2",
+	GENLIST_DESCRIPTION("elm.padding.left", "elm.padding.right", "elm.padding.bottom", "elm.padding.bottom",
+            GENLIST_PARAM_SUBITEM_DEFAULT_TB_WRAP
+            min: 0 GENLIST_HEIGHT_MULTILINE_SUB; )
+            GENLIST_DESCRIPTION_SUBITEM_DEFAULT_OTHERS_TB_WRAP
+        )
+      }
+	programs{
+		program { name: "selected";
+			signal: "elm,state,selected";
+			source: "elm";
+			action: STATE_SET "default" 0.0;
+			target: "bg";
+			target: "bg_reorder";
+		}
+	}
+   }
+
+   /********************************************************
+	browser gengrid customized style
+   ********************************************************/
+
+#define GENGRID_PART_TEXTBLOCK_STYLE_COLOR_INC_BLACK_THEME "#FFFFFF"
+   styles {
+      style { name: "gengrid_textblock_style_for_black_theme";
+         base: "font=Tizen:style=Bold font_size=32 color="GENGRID_PART_TEXTBLOCK_STYLE_COLOR_INC_BLACK_THEME" align=center wrap=mixed ellipsis=1.0 text_class=tizen";
+         tag: "br" "\n";
+         tag: "ps" "ps";
+         tag: "tab" "\t";
+         tag: "b" "+ font=Tizen:style=Bold";
+      }
+   }
+   styles {
+      style { name: "bookmark_gengrid_textblock_style";
+         base: "font=Tizen:style=Bold font_size=34 color=#FFFFFF color_class=ATO011 align=center wrap=mixed ellipsis=1.0 text_class=ATO011";
+         tag: "br" "\n";
+         tag: "ps" "ps";
+         tag: "tab" "\t";
+         tag: "b" "+ font_weight=Bold";
+      }
+   }
+
+   group { name: "elm/gengrid/item/bookmark_gridtext/default";
+      inherit: "elm/gengrid/item/default/default";
+      data.item: "texts" "elm.text";
+      data.item: "contents" "elm.swallow.icon elm.swallow.block elm.swallow.end";
+      parts {
+         part { name: "left_top_padding";
+            description { state: "default" 0.0;
+               min: 14 13;
+            }
+         }
+         part { name: "right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 14 47;
+            }
+         }
+         part { name: "item_bg";
+            type: RECT;
+            description { state: "default" 0.0;
+               visible: 0;
+               min: 196 220;
+               max: 196 220;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to: "right_bottom_padding";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "item_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_real_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_real_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "elm.swallow.icon";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "item_real_bg_left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to_x: "item_real_bg_right_bottom_padding";
+                  to_y: "icon_text_padding";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "icon_text_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 6;
+               align: 0.5 1.0;
+               fixed: 0 1;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "elm.text";
+               }
+               rel2 {
+                  relative: 1.0 0.0;
+                  to: "elm.text";
+               }
+            }
+         }
+         part { name: "elm.text";
+            type: TEXT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 40;
+               fixed: 0 1;
+               align: 0.5 1.0;
+               color: 0 0 0 255;
+               rel1 {
+                  relative: 1.0 0.0;
+                  to_x: "item_real_bg_left_top_padding";
+                  to_y: "right_bottom_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to_x: "item_real_bg_right_bottom_padding";
+                  to_y: "right_bottom_padding";
+               }
+               text {
+                  min: 0 1;
+                  align: 0.5 0.0;
+                  font: "Tizen:style=Light";
+                  size: 34;
+                  text_class: "ATO011";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "elm.swallow.block";
+            type: SWALLOW;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               rel1.to : "elm.text";
+               rel2.to : "elm.text";
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "elm.swallow.end";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  offset: 63 63;
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+      }
+   }
+
+    group { name: "elm/gengrid/item/tab_manager_grid/default";
+      inherit: "elm/gengrid/item/default/default";
+      data.item: "contents" "elm.swallow.icon";
+      parts {
+         part { name: "left_top_padding";
+            description { state: "default" 0.0;
+               //min: GENGRID_GRID_TEXT_LEFT_TOP_PADDING_INC;
+		min: 0 0;
+            }
+         }
+         part { name: "right_bottom_padding";
+            description { state: "default" 0.0;
+               //min: GENGRID_GRID_TEXT_RIGHT_BOTTOM_PADDING_INC;
+		min: 0 0;
+            }
+         }
+         part { name: "item_bg";
+            type: RECT;
+            description { state: "default" 0.0;
+			color: 0 255 0 150;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to: "right_bottom_padding";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+
+         part { name: "item_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_real_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: GENGRID_GRID_TEXT_ITEM_REAL_BG_RIGHT_PADDING_INC;
+            }
+         }
+         part { name: "item_real_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: GENGRID_GRID_TEXT_ITEM_REAL_BG_RIGHT_PADDING_INC;
+            }
+         }
+      }
+   }
+
+#define RED 255 0 0 150
+#define ORANGE 255 127 0 150
+#define YELLOW 255 255 0 150
+#define GREEN 0 255 0 150
+#define BLUE 0 0 255 150
+#define INDIGO 75 0 130 150
+#define VIOLET 143 0 255 150
+#define TITLE_BG_COLOR_FOCUSED_ITEM 52 51 51 255
+#define TITLE_BG_COLOR_UNFOCUSED_ITEM 108 108 108 255
+	/* STYLE - MULTIWINDOW GENGRID (LANDSCAPE MODE) */
+	group { name: "elm/gengrid/item/multiwindow_gengrid/default";
+		inherit: "elm/gengrid/item/default/default";
+		data {
+		item: "texts" "elm.text";
+		item: "contents" "elm.swallow.button elm.swallow.icon elm.rect.text_bg elm.swallow.stroke";
+		}
+	images {
+		image : "00_thumbs_line_bg.png" COMP;
+		image : "I01_bookmarks_reorder_frame.#.png" COMP;
+	}
+	parts {
+		part { name: "left_top_padding";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				//min: GENGRID_GRID_TEXT_LEFT_TOP_PADDING_INC;
+				min: 13 16; // gap between each item is 26..so 26/2 left right padding
+			}
+		}
+		part { name: "right_bottom_padding";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				//min: GENGRID_GRID_TEXT_RIGHT_BOTTOM_PADDING_INC;
+				min: 13 13;
+			}
+		}
+		part { name: "focus_bg_left_top_padding";
+        scale : 1;
+        type: SPACER;
+        description { state: "default" 0.0;
+           min: 4 3;
+           max: 4 3;
+           fixed: 1 1;
+           align: 1.0 1.0;
+           rel1 { relative: 0.0 0.0; to: "bg"; }
+           rel2 { relative: 0.0 0.0; to: "item_bg"; }
+        }
+     }
+     part { name: "focus_bg_right_bottom_padding";
+     	scale: 1;
+     	type: SPACER;
+        description { state: "default" 0.0;
+           min: 4 8;
+           max : 4 8;
+           fixed: 1 1;
+           align: 0.0 0.0;
+           rel1 { relative: 1.0 1.0; to: "item_bg"; }
+           rel2 { relative: 1.0 1.0; to: "bg"; }
+        }
+     }
+     part { name: "elm.swallow.stroke";
+     	scale: 1;
+     	type: SWALLOW;
+        description { state: "default" 0.0;
+           visible: 1;
+           rel1 { relative: 0.0 0.0; to: "focus_bg_left_top_padding"; }
+           rel2 { relative: 1.0 1.0; to: "focus_bg_right_bottom_padding"; }
+           GENGRID_ITEM_SELECT_VI_EFFECT
+        }
+     }
+		part { name: "item_real_bg";
+            type: RECT;
+            description { state: "default" 0.0;
+               visible: 1;
+               color: 232 232 232 255;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "item_bg_left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to: "item_bg_right_bottom_padding";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "left_line";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: 71 72 73 255;
+					min: 1 0;
+					fixed: 1 0;
+					rel1 { relative: 0.0 0.0; to: "item_real_bg"; }
+					rel2 { relative: 0.0 1.0; to: "item_real_bg"; }
+					GENGRID_ITEM_SELECT_VI_EFFECT
+				}
+			}
+			part { name: "right_line";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 1.0 0.0;
+					color: 71 72 73 255;
+					min: 1 0;
+					fixed: 1 0;
+					rel1 { relative: 1.0 0.0; to: "item_real_bg"; }
+					rel2 { relative: 1.0 1.0; to: "item_real_bg"; }
+					GENGRID_ITEM_SELECT_VI_EFFECT
+				}
+			}
+			part { name: "top_line";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: 71 72 73 255;
+					min: 0 1;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "item_real_bg"; }
+					rel2 { relative: 1.0 0.0; to: "item_real_bg"; }
+					GENGRID_ITEM_SELECT_VI_EFFECT
+				}
+			}
+			part { name: "bottom_line";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+					color: 71 72 73 255;
+					min: 0 1;
+					fixed: 0 1;
+					rel1 { relative: 0.0 1.0; to: "item_real_bg"; }
+					rel2 { relative: 1.0 1.0; to: "item_real_bg"; }
+					GENGRID_ITEM_SELECT_VI_EFFECT
+				}
+			}
+/* X BUTTON PADDING*/
+      	part { name: "elm.rect.button_padding";
+      		type: SPACER;
+      		mouse_events: 0;
+      		repeat_events: 0;
+      		scale: 1;
+      		description {
+      			state: "default" 0.0;
+      			align: 0 0;
+      			rel1 { relative: -0.4 -0.4; to: "elm.swallow.button";}
+      			rel2 { relative: 1.4 1.4; to: "elm.swallow.button"; }
+      		}
+      	}
+      	/* X BUTTON */
+      	part { name: "elm.swallow.button";
+      		type: SWALLOW;
+      		mouse_events: 1;
+      		repeat_events: 0;
+      		scale: 1;
+      		description {
+      			state: "default" 0.0;
+      			visible: 1;
+      			align: 0 0;
+      			min: 62 62;
+      			max: 62 62;
+      			fixed: 1 1;
+      			rel1 { relative: 0.0 0.0; to: "item_real_bg";}
+      			rel2 { relative: 1.0 1.0; to: "item_real_bg"; }
+      			GENGRID_ITEM_SELECT_VI_EFFECT
+      		}
+      	}
+		/* TEXT BG */
+		part { name: "elm.rect.text_bg";
+			type: SWALLOW;
+			mouse_events: 0;
+			description {
+				state: "default" 0.0;
+				visible: 1;
+				align: 0 0;
+				//color: TITLE_BG_COLOR_UNFOCUSED_ITEM;
+				rel1 { relative: 1.0 0.0; to: "elm.swallow.button"; } // we can use item_bg becuase its inherited
+				rel2 { relative: 1.0 1.0; to_x: "item_real_bg"; to_y: "elm.swallow.button"; }
+				GENGRID_ITEM_SELECT_VI_EFFECT
+			}
+		}
+		/* TEXT PADDING LEFT */
+		part { name: "elm.spacer.text_pad_left";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				min: 8 8;
+				fixed: 1 1;
+				align: 0 0;
+				rel1 { relative: 1.0 0.0; to: "elm.swallow.button"; }
+				rel2 { relative: 0.0 1.0; to_y: "elm.rect.text_bg"; }
+			}
+		}
+		/* TEXT PADDING RIGHT */
+		part { name: "elm.spacer.text_pad_right";
+			type: SPACER;
+			description {
+				state: "default" 0.0;
+				min: 8 8;
+				max: 8 8;
+				fixed: 1 1;
+				align: 1 1;
+				rel1 { relative: 1.0 0.0; to: "elm.spacer.text_pad_left"; }
+				rel2 { relative: 1.0 1.0; to: "elm.rect.text_bg"; }
+			}
+		}
+		/* TEXT */
+		part { name: "elm.text";
+			type: TEXTBLOCK;
+			mouse_events: 0;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				rel1 { relative: 1.0 0.0; to_x: "elm.spacer.text_pad_left"; to_y: "elm.rect.text_bg"; }
+				rel2 { relative: 0.0 1.0; to_x: "elm.spacer.text_pad_right"; to_y: "elm.rect.text_bg"; }
+				text {
+					style: "gengrid_textblock_style_for_black_theme";
+					min: 0 0;
+					max: 0 1;
+					align: 0.5 0.5;
+				}
+				GENGRID_ITEM_SELECT_VI_EFFECT
+			}
+		}
+/* IMAGE */
+		part { name: "focus_bg";
+			type: IMAGE;
+			description {
+				state: "default" 0.0;
+				visible: 0;
+				rel1 { relative: 0.0 0.0; to: "item_real_bg"; }
+				rel2 { relative: 1.0 1.0; to: "item_real_bg"; }
+				//image.normal: "00_thumbs_line_bg.png";
+				//image.border: 1 1 1 1;
+				//image.border_scale: 1;
+				//GENGRID_ITEM_SELECT_VI_EFFECT
+			}
+		}
+		part { name: "elm.swallow.icon";
+			type: SWALLOW;
+			mouse_events: 0;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				visible: 1;
+				align: 0 0;
+				rel1 { relative: 0.0 1.0; to: "elm.swallow.button";}
+				rel2 { relative: 1.0 1.0; to: "item_real_bg"; }
+				GENGRID_ITEM_SELECT_VI_EFFECT
+			}
+		}
+      }
+      programs {
+		GENGRID_PROGRAM_ITEM_SELECT_VI_EFFECT(
+			target: "item_bg";
+			target: "item_real_bg";
+			target: "elm.text";
+			target: "elm.swallow.button";
+			target: "elm.swallow.icon";
+			target: "elm.rect.text_bg";
+			target: "elm.swallow.stroke";
+			target: "top_line";
+			target: "right_line";
+			target: "bottom_line";
+			target: "left_line";
+		)
+      }
+   }
+
+    group { name: "elm/gengrid/item/bookmark_reorder_gridtext/default";
+      inherit: "elm/gengrid/item/default/default";
+      data.item: "texts" "elm.text";
+      data.item: "contents" "elm.swallow.icon elm.swallow.block elm.swallow.end";
+      parts {
+         part { name: "left_top_padding";
+            description { state: "default" 0.0;
+               min: 3 4;
+            }
+         }
+         part { name: "right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 3 3;
+            }
+         }
+         part { name: "item_bg";
+            type: RECT;
+            description { state: "default" 0.0;
+               visible: 0;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to: "right_bottom_padding";
+               }
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+         part { name: "bg_reorder_que";
+            type: IMAGE;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "item_bg";
+               }
+               rel2 {
+                  relative: 1.0 1.0;
+                  to: "item_bg";
+               }
+                   image.normal: "I01_bookmarks_reorder_frame.#.png";
+                   image.border: 2 2 2 2;
+                   image.middle: NONE;
+                   image.border_scale: 1;
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "item_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: 10 9;
+            }
+         }
+         part { name: "item_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 10 7;
+            }
+         }
+         part { name: "item_real_bg_left_top_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "item_real_bg_right_bottom_padding";
+            description { state: "default" 0.0;
+               min: 0 0;
+            }
+         }
+         part { name: "elm.swallow.icon";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               rel1 {
+                  relative: 1.0 1.0;
+                  to: "item_real_bg_left_top_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to_x: "item_real_bg_right_bottom_padding";
+                  to_y: "icon_text_padding";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "icon_text_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 5;
+               align: 0.5 1.0;
+               fixed: 0 1;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "elm.text";
+               }
+               rel2 {
+                  relative: 1.0 0.0;
+                  to: "elm.text";
+               }
+            }
+         }
+         part { name: "elm.text";
+            type: TEXT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 37;
+               align: 0.5 1.0;
+               color: 0 0 0 255;
+               rel1 {
+                  relative: 1.0 0.0;
+                  to_x: "item_real_bg_left_top_padding";
+                  to_y: "right_bottom_padding";
+               }
+               rel2 {
+                  relative: 0.0 0.0;
+                  to_x: "item_real_bg_right_bottom_padding";
+                  to_y: "right_bottom_padding";
+               }
+               text {
+                  min: 0 1;
+                  align: 0.5 0.0;
+                  font: "Tizen:style=Light";
+                  size: 32;
+                  text_class: "list_item";
+               }
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+         part { name: "elm.swallow.block";
+            type: SWALLOW;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               rel1.to : "elm.text";
+               rel2.to : "elm.text";
+               GENGRID_ITEM_SELECT_VI_EFFECT
+            }
+         }
+      }
+   }
+
+	group { name: "elm/naviframe/item/empty/browser_transparent/default";
+		inherit: "elm/naviframe/item/empty/transparent/default";
+		data.item: "tizen_zoom" 0;
+		parts {
+			part { name: "clipper";
+				type: RECT;
+				description { state: "default" 0.0;
+					visible: 1;
+				}
+				description { state: "hide" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "base";
+				type: RECT;
+				mouse_events: 0;
+				clip_to: "clipper";
+				description { state: "default" 0.0;
+					visible: 0;
+				}
+				description { state: "zoom" 0.0;
+					inherit: "default" 0.0;
+					min: 0 0;
+					max: 0 0;
+					visible: 0;
+				}
+				description { state: "flip" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 1.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+		}
+		programs {
+			program { name: "content_new_pushed";
+				signal: "elm,state,new,pushed,deferred";
+				in: 0.3 0.0;
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "base";
+				transition: DIVIS 0.3 0.0 0.0;
+				after: "show_finished";
+			}
+			program { name: "set_flip_mode";
+				signal: "flip,transition,mode";
+				source: "";
+				action: STATE_SET "flip" 0.0;
+				target: "base";
+			}
+			program { name: "set_zoom_mode";
+				signal: "zoom,transition,mode";
+				source: "";
+				action: STATE_SET "zoom" 0.0;
+				target: "base";
+			}
+		}
+	}
+
+	group { name: "elm/naviframe/item/tab_manager/default";
+		inherit: "elm/naviframe/item/basic/default";
+		data.item: "tizen_zoom" 0;
+		parts {
+			part { name: "clipper";
+				type: RECT;
+				description { state: "default" 0.0;
+					visible: 1;
+				}
+				description { state: "hide" 0.0;
+					visible: 1;
+				}
+			}
+			part { name: "base";
+				type: RECT;
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					color: 0 0 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "title_bg";
+				type: RECT;
+				scale: 1;
+				clip_to: "title_clip";
+				description { state: "default" 0.0;
+					min: 0 NAVIFRAME_TITLE_H_INC;
+					max: -1 NAVIFRAME_TITLE_H_INC;
+					align: 0.0 0.0;
+					fixed: 0 1;
+					rel1 { relative: 1.0 0.0; to: "base"; }
+					rel2 { relative: 1.0 0.0; to: "base"; }
+					color_class: "B0511";
+				}
+				description { state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: 0 NAVIFRAME_LANDSCAPE_TITLE_H_INC;
+					max: -1 NAVIFRAME_LANDSCAPE_TITLE_H_INC;
+				}
+				description { state: "left" 0.0;
+					inherit: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "base"; }
+					rel2 { relative: 1.0 0.0; to: "base"; }
+				}
+			}
+			part { name: "title_right_btn";
+				type: SWALLOW;
+				scale: 1;
+				clip_to: "title_clip";
+				description { state: "default" 0.0;
+					max: NAVIFRAME_TITLE_FUNC_BTN_SIZE_INC;
+					fixed: 1 1;
+					align: 1.0 0.5;
+					rel1 { relative: 1.0 0.0; to: "title_bg"; }
+					rel2 { relative: 1.0 1.0; to: "title_bg"; }
+					visible: 0;
+				}
+				description { state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					max: NAVIFRAME_LANDSCAPE_TITLE_FUNC_BTN_SIZE_INC;
+				}
+				description { state: "hide" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
+				description { state: "visible" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+		}
+
+		programs {
+			program { name: "content_new_pushed";
+				signal: "elm,state,new,pushed,deferred";
+				source: "elm";
+				action: STATE_SET "left" 0.0;
+				target: "title_bg";
+				transition: DIVIS 0.3 0.0 0.0;
+				after: "show_finished";
+				after: "show_title_right_btn";
+			}
+			program { name: "content_cur_pushed";
+				signal: "elm,state,cur,pushed,deferred";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "base";
+				transition: DECELERATE 0.3;
+				after: "pushed_finished";
+			}
+			program { name: "content_prev_popped";
+				signal: "elm,state,prev,popped,deferred";
+				source: "elm";
+				action: STATE_SET "left" 0.0;
+				target: "title_bg";
+				transition: DIVIS 0.3 0.0 0.0;
+				after: "show_finished";
+			}
+			program { name: "content_cur_popped";
+				signal: "elm,state,cur,popped,deferred";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "divider2";
+				target: "title_bg";
+				transition: DIVIS 0.3 0.0 0.0;
+			}
+			program { name: "new_pushed";
+				signal: "elm,state,new,pushed";
+				source: "elm";
+				action: STATE_SET "hide" 0.0;
+				target: "clipper";
+			}
+			program { name: "prev_popped";
+				signal: "elm,state,prev,popped";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "clipper";
+			}
+			program { name: "cur_popped";
+				signal: "elm,state,cur,popped";
+				source: "elm";
+				action: STATE_SET "hide" 0.0;
+				target: "title_right_btn";
+			}
+			program { name: "show_title_right_btn";
+				action: STATE_SET "visible" 0.0;
+				target: "title_right_btn";
+			}
+		}
+	}
+}

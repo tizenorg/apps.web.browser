@@ -1,0 +1,100 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Sangpyo Kim <sangpyo7.kim@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+
+RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_rename_folder.png")
+RESOURCE_IMAGE_LOSSY("I01_more_popup_icon_create_folder.png")
+
+	group {
+		name: "main-layout";
+		parts {
+			part { name: "bg";
+				mouse_events: 1;
+				scale: 1;
+				type: RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+					color_class: "B011";
+				}
+			}
+			part {
+				name: "pathinfo";
+				type: SWALLOW;
+				scale: 1;
+				repeat_events: 1;
+				description {
+					state: "default" 0.0;
+					min, 0 76;
+					fixed,0  1;
+					align: 0.5 0;
+					rel1 { relative: 0.0 0.0; to:"bg";}
+					rel2 { relative: 1.0 0.0; to:"bg";}
+				}
+				description {
+					state: "hide" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+					min: 0 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 0.0 0.0; }
+				}
+			}
+			part { name: "elm.swallow.contents";
+				mouse_events: 1;
+				scale: 1;
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					//rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel1 { relative: 0.0 1.0; to_y: "pathinfo";}
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+		}
+	}
+
+	group {
+		name: "contents";
+		parts {
+			part {
+				name: "elm.swallow.contents";
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+				}
+			}
+		}
+	}
+}
+

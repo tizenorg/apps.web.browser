@@ -1,0 +1,656 @@
+/*
+ * Copyright 2014  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Kwangyong Choi <ky0.choi@samsung.com>
+ *
+ */
+
+#include "br-genlist.edc"
+
+#define POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 15
+#define POPUP_CONTENT_DEFAULT_PADDING_RIGHT_MIN_INC 15
+#define POPUP_CERTIFICATE_CONTENT_LAYOUT_MIN_INC 0 680
+#define POPUP_CERTIFICATE_CONTENT_LAYOUT_MAX_INC -1 680
+#define POPUP_CHECK_VIEW_LAYOUT_MIN_INC 0 240
+#define POPUP_CHECK_VIEW_LAYOUT_CONTENT_MIN_INC 0 168
+#define POPUP_CHECK_VIEW_LAYOUT_BOTTOM_MIN_INC 0 81
+#define POPUP_CHECK_VIEW_SWALLOW_END_MIN_INC 36 36
+#define POPUP_EDITFIELD_LAYOUT_MINMAX_HEIGHT_INC 96
+#define POPUP_CONTENT_DEFAULT_PADDING_TOP_MIN_INC 32
+#define POPUP_CONTENT_DEFAULT_PADDING_BOTTOM_MIN_INC 32
+#define POPUP_CERTIFICATE_DEFAULT_PADDING_TOP_MIN_INC 10
+#define POPUP_CERTIFICATE_LAYOUT_BG_MIN_INC 0 140
+#define POPUP_CERTIFICATE_LAYOUT_BG_MAX_INC -1 140
+#define POPUP_CERTIFICATE_LAYOUT_CONTENT_MIN_INC 0 76
+#define POPUP_CERTIFICATE_LAYOUT_CONTENT_MAX_INC -1 76
+#define POPUP_CERTIFICATE_VIEW_LAYOUT_BOTTOM_MIN_INC 0 25
+#define POPUP_DESCRIPTION_DEFAULT_TEXT_BLOCK_SIZE_INC 32
+#define POPUP_CERTIFICATE_LINK_FONT_SIZE 18
+#define POPUP_CERTIFICATE_TITLE_FONT_SIZE 18
+#define POPUP_CERTIFICATE_H1_FONT_SIZE 16
+#define POPUP_CERTIFICATE_H2_FONT_SIZE 13
+#define POPUP_CERTIFICATE_NORMAL_TEXT_FONT_SIZE 12
+
+
+collections {
+	group {
+		name: "certificate_content_layout";
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CERTIFICATE_CONTENT_LAYOUT_MIN_INC;
+					max: POPUP_CERTIFICATE_CONTENT_LAYOUT_MAX_INC;
+					fixed: 1 0;
+				}
+			}
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CERTIFICATE_CONTENT_LAYOUT_MIN_INC;
+					max: POPUP_CERTIFICATE_CONTENT_LAYOUT_MAX_INC;
+					fixed: 1 0;
+					align: 0.5 0.0;
+				}
+			}
+		}
+	}
+	group {
+		name: "popup_checkview_layout";
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CHECK_VIEW_LAYOUT_MIN_INC;
+					fixed: 1 0;
+				}
+			}
+			part {
+				name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 0.0 0.0;
+					rel2.relative: 0.0 1.0;
+					align: 0.0 0.0;
+				}
+			}
+			part {
+				name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_RIGHT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 1.0 0.0;
+					rel2.relative: 1.0 1.0;
+					align: 1.0 0.0;
+				}
+			}
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					fixed: 0 1;
+					min: POPUP_CHECK_VIEW_LAYOUT_CONTENT_MIN_INC;
+					align: 0.5 0.0;
+					rel2 {
+						relative: 1.0 0.0;
+						to: "pad_b";
+					}
+				}
+			}
+			part {
+				name: "pad_b";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 1.0;
+					min: POPUP_CHECK_VIEW_LAYOUT_BOTTOM_MIN_INC;
+					fixed: 0 1;
+					rel1.relative: 0.0 1.0;
+				}
+			}
+			part {
+				name: "elm.swallow.end";
+				type: SWALLOW;
+				scale: 0;
+				description {
+					state: "default" 0.0;
+					align: 1.0 0.5;
+					min: POPUP_CHECK_VIEW_SWALLOW_END_MIN_INC;
+					max: POPUP_CHECK_VIEW_SWALLOW_END_MIN_INC;
+					fixed: 1 1;
+					rel1 {
+						relative: 1.0 0.0;
+						to_x: "pad_l";
+						to_y: "pad_b";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to_x: "pad_r";
+						to_y: "pad_b";
+					}
+				}
+			}
+			part{ name:"elm.text.popup";
+				type: TEXT;
+				scale : 1;
+				description { state: "default" 0.0;
+					color: 0 0 0 255;
+					text {
+						font: "Tizen:style=Medium";
+						size: 17;
+						align: 0.1 0.5;
+					}
+					align: 0.0 1.0;
+					fixed: 1 1;
+					rel1 {
+						relative: 1.0 0.0;
+						to_x: "pad_l";
+						to_y: "elm.swallow.end";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to: "elm.swallow.end";
+					}
+				}
+			}
+		}
+	}
+	
+	group { name: "html_web_notification_ask_popup";
+		parts {
+			part { name: "bg";
+				type: RECT;
+				scale : 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min:  0 THREE_LINE_POPUP_HEIGHT;
+					visible: 0;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "pad_t";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 NEVER_ASK_POPUP_TOP_PADDING;
+					fixed: 0 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 0.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_b";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 1.0;
+					min: 0 NEVER_ASK_POPUP_BOTTOM_PADDING;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min: NEVER_ASK_POPUP_LEFT_PADDING 0;
+					fixed: 1 1;
+					rel1 { relative: 0.0 0.0; to: "bg"; }
+					rel2 { relative: 0.0 1.0; to: "bg"; }
+				}
+			}
+			part { name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 1.0 0.0;
+					min: NEVER_ASK_POPUP_RIGHT_PADDING 0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to: "bg"; }
+					rel2 { relative: 1.0 1.0; to: "bg"; }
+				}
+			}
+			part{ name:"elm.swallow.checkbox";
+				type: SWALLOW;
+				scale : 1;
+				description { state: "default" 0.0;
+					visible: 1;
+					align: 0.0 1.0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to_x: "pad_l"; to_y: "pad_b";}
+					rel2 { relative: 0.0 0.0; to_x: "pad_r"; to_y: "pad_b";}
+				}
+			}
+			part { name: "pad_checkbox_scroller";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 1.0;
+					min: 0 NEVER_ASK_POPUP_SPACER_H;
+					fixed: 1 1;
+					rel1 { relative: 1.0 0.0; to_x: "pad_l"; to_y: "elm.swallow.checkbox";}
+					rel2 { relative: 0.0 0.0; to_x: "pad_r"; to_y: "elm.swallow.checkbox";}
+				}
+			}
+			part{ name:"elm.swallow.scroller";
+				type: SWALLOW;
+				scale : 1;
+				description { state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1 { relative: 1.0 1.0; to_x: "pad_l"; to_y: "pad_t";}
+					rel2 { relative: 0.0 0.0; to_x: "pad_r"; to_y: "pad_checkbox_scroller";}
+				}
+			}
+		}
+	}
+	
+	group {
+		name: "popup_input_text";
+		parts {
+			part {
+				name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 0.0 0.0;
+					rel2.relative: 0.0 1.0;
+					align: 0.0 0.0;
+				}
+			}
+			part {
+				name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 1.0 0.0;
+					rel2.relative: 1.0 1.0;
+					align: 1.0 0.0;
+				}
+			}
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 POPUP_EDITFIELD_LAYOUT_MINMAX_HEIGHT_INC;
+					max: -1 POPUP_EDITFIELD_LAYOUT_MINMAX_HEIGHT_INC;
+					align: 0.5 0.5;
+					rel1 {
+						relative: 1.0 0.0 ;
+						to_x: "pad_l";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to_x: "pad_r";
+					}
+				}
+			}
+		}
+	}
+	group { name: "processing_popup";
+		parts {
+			part { name: "pad_t";
+				type: SPACER;
+				scale: 1;
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					align: 0.5 0.0;
+					min: 0 POPUP_CONTENT_DEFAULT_PADDING_TOP_MIN_INC;
+					fixed: 0 1;
+					rel1 {
+						relative: 1.0 0.0;
+						to_x: "pad_l";
+					}
+					rel2 {
+						relative: 0.0 0.0;
+						to_x: "pad_r";
+					}
+				}
+			}
+			part { name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 0;
+					fixed: 1 0;
+					rel2.relative: 0.0 1.0;
+					align: 0.0 0.0;
+				}
+			}
+			part { name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				mouse_events: 0;
+				description { state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_RIGHT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 1.0 0.0;
+					align: 1.0 0.0;
+				}
+			}
+			part { name: "pad_b";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 1.0;
+					min: 0 POPUP_CONTENT_DEFAULT_PADDING_BOTTOM_MIN_INC;
+					fixed: 0 1;
+					rel1 {
+						relative: 1.0 1.0;
+						to_x: "pad_l";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to_x: "pad_r";
+					}
+				}
+			}
+			part{ name:"elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description { state: "default" 0.0;
+					min: 0 0;
+					align: 0.5 0.5;
+					fixed: 1 0;
+					rel1 {
+						relative: 1.0 1.0;
+						to_x: "pad_l";
+						to_y: "pad_t";
+					}
+					rel2 {
+						relative: 0.0 0.0;
+						to_x: "pad_r";
+						to_y: "pad_b";
+					}
+				}
+			}
+		}
+	}
+	group { name: "certificate_popup_layout";
+		styles {
+			style { name: "popup_clickable_content_style";
+				base: "font=Tizen:style=Regular align=center color=#A3D4FF font_size="POPUP_CERTIFICATE_LINK_FONT_SIZE" wrap=mixed ellipsis=1.0 underline=on underline_color=#A3D4FF";
+				tag: "br" "\n";
+				tag: "tab" "\t";
+			}
+		}
+		parts {
+			part {
+				name: "bg";
+				scale: 1;
+				type: SPACER;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CERTIFICATE_LAYOUT_BG_MIN_INC;
+					max: POPUP_CERTIFICATE_LAYOUT_BG_MAX_INC;
+				}
+			}
+			part {
+				name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 0.0 0.0;
+					rel2.relative: 0.0 1.0;
+					align: 0.0 0.0;
+				}
+			}
+			part {
+				name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: POPUP_CONTENT_DEFAULT_PADDING_RIGHT_MIN_INC 0;
+					fixed: 1 0;
+					rel1.relative: 1.0 0.0;
+					rel2.relative: 1.0 1.0;
+					align: 1.0 0.0;
+				}
+			}
+			part { name: "pad_t";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 POPUP_CERTIFICATE_DEFAULT_PADDING_TOP_MIN_INC;
+					fixed: 1 1;
+					rel1 {
+						relative: 0.0 0.0;to: "bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;to: "bg";
+					}
+				}
+			}
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					fixed: 0 1;
+					align: 0.0 0.0;
+					min: POPUP_CERTIFICATE_LAYOUT_CONTENT_MIN_INC;
+					max: POPUP_CERTIFICATE_LAYOUT_CONTENT_MAX_INC;
+					rel1 {
+						relative: 1 1;
+						to_x: "pad_l";
+						to_y: "pad_t";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "pad_r";
+						to_y: "bg";
+					}
+				}
+			}
+			part {
+				name: "pad_b";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: POPUP_CERTIFICATE_VIEW_LAYOUT_BOTTOM_MIN_INC;
+					fixed: 1 1;
+					rel1 {
+						relative: 1 1;
+						to_x: "pad_l";
+						to_y: "elm.swallow.content";
+					}
+					rel2 {
+						relative: 0 0;
+						to_x: "pad_r";
+						to_y: "bg";
+					}
+				}
+			}
+			part { name: "elm.text";
+				type: TEXTBLOCK;
+				scale: 1;
+				description { state: "default" 0.0;
+					min: 1 POPUP_DESCRIPTION_DEFAULT_TEXT_BLOCK_SIZE_INC;
+					max: -1 POPUP_DESCRIPTION_DEFAULT_TEXT_BLOCK_SIZE_INC;
+					align: 0.0 0.0;
+					fixed: 0 0;
+				        rel1 {
+				              relative: 1 1;
+				               to_x: "pad_l";
+				               to_y: "pad_b";
+				        }
+				        rel2 {
+				               relative: 0 0;
+					        to_x: "pad_r";
+						to_y: "bg";
+				        }
+					text {
+						style: "popup_clickable_content_style";
+						min: 0 1;
+					}
+				}
+			}
+		}
+	}
+	group { name : "elm/genlist/item/browser/certificate_view/multiline_sub.main/default";
+		inherit: "elm/genlist/item/multiline_sub.main/default";
+		styles {
+			style { name: "list_text_main_certificate_view";
+				base: "font=Tizen:style=Regular font_size="POPUP_CERTIFICATE_H2_FONT_SIZE" color=#000000 ellipsis=1.0";
+			}
+			style { name: "list_text_multiline_sub_certificate_view";
+				base: "font=Tizen:style=Regular font_size="POPUP_CERTIFICATE_NORMAL_TEXT_FONT_SIZE" color=#000000 wrap=mixed";
+			}
+		}
+		parts {
+			PART(RECT, "bg",
+				description { state: "default" 0.0;
+				color_class: "W021L1";
+				}
+			)
+			PART(SPACER, "elm.padding.top",
+				DSC_FROM_T("default" 0.0,
+				min: 0 10;
+				max: -1 10;
+				)
+			)
+			PART(TEXTBLOCK, "elm.text.main",
+				DSC_LRTB("default" 0.0,
+				"elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.text.multiline",
+				min: 0 15;
+				text.min: 0 1;
+				text.style: "list_text_main_certificate_view";
+				)
+			)
+			PART(TEXTBLOCK, "elm.text.multiline",
+				DSC_LR("default" 0.0,
+				"elm.padding.left", "elm.padding.right",
+				min: 0 14;
+				text.min: 0 1;
+				text.style: "list_text_multiline_sub_certificate_view";
+				)
+			)
+		}
+	}
+	group { name : "elm/genlist/item/browser/certificate_view/multiline_main/default";
+		inherit: "elm/genlist/item/multiline_main/default";
+		styles {
+			style { name: "list_text_multiline_main_certificate_view";
+				base: "font=Tizen:style=Regular font_size="POPUP_CERTIFICATE_TITLE_FONT_SIZE" color=#000000 wrap=mixed";
+			}
+		}
+		 parts {
+			PART(RECT, "bg",
+				description { state: "default" 0.0;
+				color_class: "W021L1";
+				}
+			)
+
+			PART(SPACER, "elm.padding.top",
+		        	DSC_FROM_T("default" 0.0,
+				min: 0 10;
+				max: -1 10;
+				)
+			)
+			PART(SPACER, "elm.padding.bottom",
+				DSC_FROM_B("default" 0.0,
+				min: 0 0;
+				max: -1 0;
+				)
+			)
+			PART(TEXTBLOCK, "elm.text.multiline",
+				DSC_LRTB("default" 0.0,
+				"elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+				min: 0 10;
+				text.min: 0 1;
+				text.style: "list_text_multiline_main_certificate_view";
+				)
+			)
+		}
+	}
+	group { name : "elm/genlist/item/browser/certificate_view/groupindex/default";
+		inherit: "elm/genlist/item/groupindex/default";
+		styles {
+			style { name: "list_text_index_main_certificate_view";
+				base: "font=Tizen:style=Medium font_size="POPUP_CERTIFICATE_H1_FONT_SIZE" color=#000000 ellipsis=1.0 wrap=mixed";
+			}
+		}
+		parts {
+			PART(SPACER, "elm.padding.bottom",
+				DSC_FROM_B("default" 0.0,
+				min: 0 0;
+				max: -1 0;
+				)
+			)
+			PART(SPACER, "elm.padding.top",
+				DSC_FROM_T("default" 0.0,
+				min: 0 10;
+				max: -1 10;
+				)
+			)
+			PART(TEXTBLOCK, "elm.text.main",
+				DSC_LRTB("default" 0.0,
+				"elm.padding.left", "elm.text.sub",
+				"elm.padding.top", "elm.padding.bottom",
+				min: 0 15;
+				text.min: 0 1;
+				text.style: "list_text_index_main_certificate_view";
+			)
+			)
+			PART(RECT, "elm.bottomline",
+				DSC_FROM_B("default" 0.0,
+				min: 0 1;
+				max: -1 1;
+				color_class: "W021L1";
+				)
+		      )
+		}
+	}
+}

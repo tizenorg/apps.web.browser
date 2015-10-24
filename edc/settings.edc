@@ -1,0 +1,149 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Junghwan Kang <junghwan.kang@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+#include "br-genlist.edc"
+
+#define SETTING_TITLE_ICON_IMAGE "I01_icon_setting_title.png"
+#define SETTING_TITLE_BACK_BUTTON_IMAGE "I01_icon_setting_title_back.png"
+
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+RESOURCE_IMAGE_LOSSY(SETTING_TITLE_ICON_IMAGE)
+RESOURCE_IMAGE_LOSSY(SETTING_TITLE_BACK_BUTTON_IMAGE)
+
+	group {
+		name: "main-layout";
+		parts {
+			part {
+				name: "bg";
+				scale : 1;
+				type : RECT;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					color: MULTIWINDOW_BG_COLOR;
+					rel1 { relative: 0.0 0.0; }
+					rel2 { relative: 1.0 1.0; }
+				}
+			}
+			part { name: "elm.swallow.content";
+				scale : 1;
+				type : SWALLOW;
+				description {
+					state: "default" 0.0;
+					visible: 1;
+					align: 0.0 0.0;
+					rel1 { relative: 0.0 0.0; to:"bg"; }
+					rel2 { relative: 1.0 1.0; to:"bg"; }
+				}
+			}
+		}
+	}
+	group {
+		name: "contents";
+		parts {
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				description {
+					state: "default" 0.0;
+				}
+			}
+		}
+	}
+	group { name : "elm/genlist/item/browser/1line/default";
+		inherit: "elm/genlist/item/1line/default";
+
+		parts {
+			PART(SPACER, "elm.padding.bottom",
+	         DSC_FROM_B("default" 0.0,
+	            min: 0 0;
+	            max: -1 0;
+	         )
+	      )
+
+		}
+		programs{
+		   program { name: "play_sound";
+			signal: "play,touch_sound,signal";
+			source: "";
+			action: RUN_PLUGIN "touch_sound";
+		   }
+		}
+	}
+	group { name : "elm/genlist/item/browser/multiline_sub/default";
+		inherit: "elm/genlist/item/multiline_sub/default";
+
+		parts {
+			 PART(SPACER, "elm.padding.top",
+	         DSC_FROM_T("default" 0.0,
+	            min: 0 0;
+	            max: -1 0;
+	         )
+	      )
+
+		}
+	}
+	group { name : "elm/genlist/item/browser/multiline_sub.main/default";
+		inherit: "elm/genlist/item/multiline_sub.main/default";
+		parts {
+			PART(TEXTBLOCK, "elm.text.multiline",
+				DSC_LRB("default" 0.0,
+					"elm.padding.left", "elm.padding.right", "elm.padding.bottom",
+					min: 0 LIST_TEXT_SUB_HEIGHT;
+					text.min: 0 1;
+					text.style: "list_text_multiline_sub";
+				)
+				description { state: "pressed" 0.0;
+					inherit: "default" 0.0;
+					text.style: "list_text_multiline_sub_press_01";
+				}
+				description { state: "disabled" 0.0;
+					inherit: "default" 0.0;
+					text.style: "list_text_multiline_sub_dim_01";
+				}
+			)
+		}
+	}
+}
+
+styles {
+	style { name: "list_text_multiline_sub_dim_01";
+      base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=ATO0015 text_class=ATO0015 wrap=mixed";
+      STYLE_TAGS
+	}
+	style { name: "list_text_multiline_sub_press_01";
+      base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=ATO006 text_class=ATO006 wrap=mixed";
+      STYLE_TAGS
+	}
+}
+

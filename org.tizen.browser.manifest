@@ -1,0 +1,31 @@
+<manifest>
+        <define>
+                <domain name="org.tizen.browser" policy="shared"/>
+                <provide>
+                        <label name="org.tizen.browser::db_external"/>
+                </provide>
+                <request>
+                        <smack request="browser-provider::bookmark" type="rw"/>
+                        <smack request="browser-provider::history" type="rw"/>
+                        <smack request="browser-provider::tab" type="rw"/>
+                        <smack request="browser-provider::scrap" type="rw"/>
+			<smack request="tizen::vconf::platform::rw" type="rwl"/>
+			<smack request="tizen::vconf::public::r::platform::rw" type="rl"/>
+			<smack request="tizen::vconf::setting::admin" type="rl"/>
+                </request>
+                <permit>
+                        <smack permit="chromium-efl" type="rwx"/>
+                </permit>
+        </define>
+        <assign>
+                <filesystem path="/usr/share/applications/org.tizen.browser.desktop" label="_" />
+                <filesystem path="/usr/share/icons/default/small/org.tizen.browser.png" label="_" />
+                <filesystem path="/usr/share/icons/default/small/br_prv_1.png" label="_" />
+                <filesystem path="/usr/share/icons/default/small/br_prv_2.png" label="_" />
+                <filesystem path="/usr/apps/org.tizen.browser/author-signature.xml" label="_" />
+                <filesystem path="/usr/apps/org.tizen.browser/signature1.xml" label="_" />
+        </assign>
+        <request>
+                <domain name="org.tizen.browser"/>
+        </request>
+</manifest>

@@ -1,0 +1,103 @@
+/*
+ * Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Sangpyo Kim <sangpyo7.kim@samsung.com>
+ *
+ */
+
+#include "config.edc"
+#include "macro.edc"
+#include "../HD_720x1280/genlist/genlist_macro.edc"
+#include "../HD_720x1280/genlist/tizen-hd-inc.edc"
+
+collections {
+#if defined(TIZEN_LITE)
+	base_scale: 1.8;
+#endif
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "1 0";
+		}
+	}
+	sounds {
+		sample {
+			name: "sweep_sound" RAW;
+			source: "Slider_sweep.wav";
+		}
+		sample {
+			name: "reorder_sound" RAW;
+			source: "List_reorder.wav";
+		}
+	}
+	#include "gengrid.edc"
+
+	 group { name: "elm/gengrid/item/tab_manager_grid/default";
+	   inherit: "elm/gengrid/item/default/default";
+	   data.item: "contents" "elm.swallow.icon";
+	   images {
+		  image: "00_focus_01.png" COMP;
+	   }
+	   parts {
+		  part { name: "left_top_padding";
+			 description { state: "default" 0.0;
+		 min: 0 0;
+			 }
+		  }
+		  part { name: "right_bottom_padding";
+			 description { state: "default" 0.0;
+		 min: 0 0;
+			 }
+		  }
+		  part { name: "item_bg";
+			 type: RECT;
+			 description { state: "default" 0.0;
+			 color: 0 255 0 150;
+				rel1 {
+				   relative: 1.0 1.0;
+				   to: "left_top_padding";
+				}
+				rel2 {
+				   relative: 0.0 0.0;
+				   to: "right_bottom_padding";
+				}
+				GENGRID_ITEM_SELECT_VI_EFFECT
+			 }
+		  }
+
+		  part { name: "item_bg_left_top_padding";
+			 description { state: "default" 0.0;
+				min: 0 0;
+			 }
+		  }
+		  part { name: "item_bg_right_bottom_padding";
+			 description { state: "default" 0.0;
+				min: 0 0;
+			 }
+		  }
+		  part { name: "item_real_bg_left_top_padding";
+			 description { state: "default" 0.0;
+				min: GENGRID_GRID_TEXT_ITEM_REAL_BG_RIGHT_PADDING_INC;
+			 }
+		  }
+		  part { name: "item_real_bg_right_bottom_padding";
+			 description { state: "default" 0.0;
+				min: GENGRID_GRID_TEXT_ITEM_REAL_BG_RIGHT_PADDING_INC;
+			 }
+		  }
+	   }
+	}
+}

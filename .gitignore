@@ -1,0 +1,25 @@
+# Generated and temporary files
+*.autosave
+*.edj
+*.lo
+*.mo
+*.o
+*.obj
+*.slo
+*~
+.deps
+browser
+
+# Autotools temporary files
+*.cmake
+*.list
+CMakeCache.txt
+CMakeFiles/
+Makefile
+Makefile.in
+
+# Compiled Dynamic libraries
+*.so
+
+# Another
+install_manifest.txt

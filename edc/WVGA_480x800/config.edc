@@ -1,0 +1,56 @@
+/*
+ *  Copyright 2013  Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Contact: Hyerim Bae <hyerim.bae@samsung.com>
+ *
+ */
+
+#define PROGRESS_BAR_HEIGHT	6
+
+#define BAR_HEIGHT_PORTRAIT 66
+#define BAR_HEIGHT_LANDSCAPE 66
+
+// Tab-manager
+
+#define TAB_MANAGER_PADDING 5
+
+#define TAB_MANAGER_TITLE_HEIGHT 42
+#define TAB_MANAGER_TITLE_WIDTH 424
+
+#define TAB_MANAGER_URL_HEIGHT 60
+#define TAB_MANAGER_FAVICON_HEIGHT_WIDTH 28 28
+#define TAB_MANAGER_TITLE_TEXT_RIGHT_PADDING 8
+#define TAB_MANAGER_FAVICON_LEFT_PADDING 4
+#define TAB_MANAGER_FAVICON_RIGHT_PADDING 4
+#define MULTIWINDOW_BG_COLOR 244 243 243 255
+
+#define TAB_MANAGER_ITEM_TOP_PADDING_POTRAIT 8
+#define TAB_MANAGER_ITEM_TOP_PADDING_LANDSCAPE 8
+#define TAB_MANAGER_ITEM_RIGHT_PADDING 0
+#define TAB_MANAGER_ITEM_BOTTOM_PADDING 8
+#define TAB_MANAGER_ITEM_BOTTOM_PADDING_LANDSCAPE 8
+#define TAB_MANAGER_ITEM_LEFT_PADDING 0
+#define TAB_MANAGER_ITEM_LEFT_RIGHT_PADDING_LANDSCAPE 5
+
+#define TAB_MANAGER_ITEM_WIDTH_HEIGHT 450 108
+#define TAB_MANAGER_LANDSCAPE_ITEM_WIDTH_HEIGHT 377 108
+
+#define TAB_MANAGER_TAB_BG "tab-manager/win_manager_tab_bg.#.png"
+#define TAB_MANAGER_BG_COLOR 2 61 132 255
+#define TITLE_BG_COLOR_FOCUSED_ITEM 102 150 209 255
+#define TITLE_BG_COLOR_UNFOCUSED_ITEM 235 235 235 255
+#define TITLE_BG_COLOR_SECRET_ITEM 46 46 46 255
+
+#define DELETE_BUTTON_SIZE 46
