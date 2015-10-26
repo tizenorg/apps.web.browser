@@ -75,6 +75,8 @@ void WebPageUI::showUI()
 
     if (m_homePageActive)
         showQuickAccess();
+    else
+        m_URIEntry->showPageTitle();
 }
 
 
