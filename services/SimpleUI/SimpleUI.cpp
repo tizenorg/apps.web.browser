@@ -279,7 +279,6 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_historyUI.get());
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    m_historyUI->closeHistoryUIClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     // desktop mode as default
     m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));
 
@@ -304,7 +303,6 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
-    m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
     m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
 
     M_ASSERT(m_zoomUI.get());
