@@ -170,6 +170,8 @@ void WebPageUI::switchViewToErrorPage()
     m_homePageActive = false;
     setMainContent(m_errorLayout);
     evas_object_show(m_leftButtonBar->getContent());
+    elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
+    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setErrorButtons();
     refreshFocusChain();
 }
@@ -180,6 +182,8 @@ void WebPageUI::switchViewToIncognitoPage()
     m_homePageActive = false;
     setMainContent(m_privateLayout);
     evas_object_show(m_leftButtonBar->getContent());
+    elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
+    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setPrivateButtons();
     refreshFocusChain();
     m_URIEntry->changeUri("");
@@ -201,6 +205,8 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri,
     m_URIEntry->showPageTitle();
     refreshFocusChain();
     evas_object_show(m_leftButtonBar->getContent());
+    elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
+    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 }
 
