@@ -627,9 +627,10 @@ void SimpleUI::onBackPressed()
         m_zoomUI->escapeZoom();
     } else if (m_webPageUI->isHomePageActive()) {
         m_quickAccess->backButtonClicked();
+    } else if ((m_viewManager->topOfStack() == m_webPageUI.get()) && !m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {
+        m_webEngine->backButtonClicked();
     } else {
-        if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus)
-            m_webEngine->backButtonClicked();
+        m_viewManager->popTheStack();
     }
 }
 
