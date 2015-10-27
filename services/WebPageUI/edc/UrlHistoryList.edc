@@ -4,11 +4,6 @@
 #define URI_INPUTBOX_LENGTH_SHORT 1460
 #define HISTORY_ITEM_W URI_INPUTBOX_LENGTH
 #define HISTORY_ITEM_H 82
-#define HISTORY_ITEMS_VISIBLE_MAX 5
-/*
-  has to be a multiple of item's height.
-*/
-#define LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
 
 collections {
     group {
@@ -20,7 +15,7 @@ collections {
                 type: SWALLOW;
                 description {
                     color: 255 0 0 150;
-                    min: URI_INPUTBOX_LENGTH_SHORT LIST_MAX_H;
+                    min: URI_INPUTBOX_LENGTH_SHORT 0;
                     max: -1 -1;
                     visible: 1;
                     align: 0.0 0.0;

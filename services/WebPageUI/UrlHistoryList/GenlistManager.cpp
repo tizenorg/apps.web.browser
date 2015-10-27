@@ -134,6 +134,8 @@ void GenlistManager::showWidget(const string& editedUrl,
     }
     m_itemsManager->setItems( { GenlistItemType::ITEM_LAST }, itemAppended);
 
+    adjustWidgetHeight();
+
     if (getWidgetPreviouslyHidden()) {
         setWidgetPreviouslyHidden(false);
         startScrollIn();
@@ -191,6 +193,23 @@ void GenlistManager::onMouseClick()
     if (!mouseInsideWidget) {
         hideWidgetPretty();
     }
+}
+
+void GenlistManager::adjustWidgetHeight()
+{
+    const int ITEMS_NUMBER = elm_genlist_items_count(m_genlist);
+    if (ITEMS_NUMBER == 0)
+        return;
+
+    int itemsVisibleNumber = HISTORY_ITEMS_VISIBLE_MAX;
+    if (ITEMS_NUMBER < itemsVisibleNumber)
+        itemsVisibleNumber = ITEMS_NUMBER;
+
+    Evas_Coord w, h;
+    evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, nullptr);
+    h = HISTORY_ITEM_H * itemsVisibleNumber;
+
+    evas_object_resize(m_genlist, w, h);
 }
 
 void GenlistManager::startScrollIn()
