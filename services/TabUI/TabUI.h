@@ -45,6 +45,8 @@ public:
     virtual std::string getName();
 
     void addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent> > items);
+    bool isEditMode();
+    void onBackKey();
 
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void ()> newTabClicked;
