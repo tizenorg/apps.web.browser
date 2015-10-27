@@ -629,6 +629,8 @@ void SimpleUI::onBackPressed()
     BROWSER_LOGD("[%s]", __func__);
     if (m_zoomUI->isVisible()) {
         m_zoomUI->escapeZoom();
+    } else if ((m_viewManager->topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
+        m_tabUI->onBackKey();
     } else if (m_webPageUI->isHomePageActive()) {
         m_quickAccess->backButtonClicked();
     } else if ((m_viewManager->topOfStack() == m_webPageUI.get()) && !m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {

@@ -210,6 +210,13 @@ void TabUI::_close_clicked(void* data, Evas_Object*, void*)
     }
 }
 
+void TabUI::onBackKey()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    editMode = false;
+    elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
+}
+
 Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -431,6 +438,11 @@ void TabUI::_focus_in(void* data, Evas*, Evas_Object*, void* event_info)
     Elm_Object_Item* it = elm_gengrid_at_xy_item_get(tabUI->m_gengrid, ee->canvas.x, ee->canvas.y, &x, &y);
     if(it && tabUI->editMode)
         elm_object_item_signal_emit(it, "selected", "over3");
+}
+
+bool TabUI::isEditMode()
+{
+    return editMode;
 }
 
 }
