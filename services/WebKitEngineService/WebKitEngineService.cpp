@@ -513,11 +513,14 @@ void WebKitEngineService::_IMEStateChanged(bool enable)
     IMEStateChanged(enable);
 }
 
-void WebKitEngineService::backButtonClicked() const
+void WebKitEngineService::backButtonClicked()
 {
     M_ASSERT(m_currentWebView);
     if (isBackEnabled()) {
         m_currentWebView->back();
+    } else if (m_currentWebView->isPrivateMode()) {
+        closeTab();
+        switchToWebPage();
     } else {
         app_efl_exit();
     }

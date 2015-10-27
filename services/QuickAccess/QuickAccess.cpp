@@ -499,6 +499,9 @@ void QuickAccess::backButtonClicked()
 {
     if (m_detailPopup.isVisible()) {
         m_detailPopup.hide();
+    } else {
+        hideUI();
+        switchViewToWebPage();
     }
 }
 

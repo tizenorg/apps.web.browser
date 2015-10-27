@@ -276,7 +276,7 @@ public:
     /**
      * @brief back or exit when back key is pressed
      */
-    virtual void backButtonClicked() const = 0;
+    virtual void backButtonClicked() = 0;
 
     /**
      * @brief Switch current view to mobile mode
@@ -403,6 +403,11 @@ public:
      * \param bool true if IME is opened, false otherwise
      */
     boost::signals2::signal<void (bool)> IMEStateChanged;
+
+    /**
+     * Switch view to actual web page
+     */
+    boost::signals2::signal<void ()> switchToWebPage;
 };
 
 } /* end of basic_webengine */

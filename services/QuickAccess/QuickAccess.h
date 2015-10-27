@@ -59,6 +59,7 @@ public:
     boost::signals2::signal<void ()> mostVisitedClicked;
     boost::signals2::signal<void ()> bookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
+    boost::signals2::signal<void ()> switchViewToWebPage;
 
     static const int MAX_THUMBNAIL_WIDTH;
     static const int MAX_THUMBNAIL_HEIGHT;

@@ -266,6 +266,7 @@ void SimpleUI::connectUISignals()
     m_quickAccess->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
     m_quickAccess->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this));
     m_quickAccess->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
+    m_quickAccess->switchViewToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
 
     M_ASSERT(m_tabUI.get());
     m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this));
@@ -407,6 +408,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->titleChanged.connect(boost::bind(&WebPageUI::setPageTitle, m_webPageUI.get(), _1));
+    m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -429,6 +431,7 @@ void SimpleUI::switchViewToWebPage()
     if(m_webEngine->isSuspended())
         m_webEngine->resume();
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI(), m_webEngine->getTitle());
+    m_webPageUI->toIncognito(m_webEngine->isPrivateMode(m_webEngine->currentTabId()));
 }
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
@@ -615,10 +618,12 @@ void SimpleUI::onBackPressed()
         m_tabUI->onBackKey();
     } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_quickAccess->backButtonClicked();
-    } else if ((m_viewManager->topOfStack() == m_webPageUI.get()) && !m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {
-        m_webEngine->backButtonClicked();
-    } else {
-        m_viewManager->popTheStack();
+    } else if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {
+        if ((m_viewManager->topOfStack() == m_webPageUI.get())) {
+            m_webEngine->backButtonClicked();
+        } else {
+            m_viewManager->popTheStack();
+        }
     }
 }
 
