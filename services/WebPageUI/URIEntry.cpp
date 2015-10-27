@@ -80,7 +80,6 @@ Evas_Object* URIEntry::getContent()
         evas_object_smart_callback_add(m_entry, "activated", URIEntry::activated, this);
         evas_object_smart_callback_add(m_entry, "aborted", URIEntry::aborted, this);
         evas_object_smart_callback_add(m_entry, "preedit,changed", URIEntry::preeditChange, this);
-        evas_object_smart_callback_add(m_entry, "changed", URIEntry::_uri_entry_editing_changed, this);
         evas_object_smart_callback_add(m_entry, "changed,user", URIEntry::_uri_entry_editing_changed_user, this);
         evas_object_smart_callback_add(m_entry, "focused", URIEntry::focused, this);
         evas_object_smart_callback_add(m_entry, "unfocused", URIEntry::unfocused, this);
@@ -100,6 +99,11 @@ Evas_Object* URIEntry::getContent()
         elm_object_part_content_set(m_entry_layout, "uri_entry_btn", m_entryBtn);
     }
     return m_entry_layout;
+}
+
+Evas_Object* URIEntry::getEntryWidget()
+{
+    return m_entry;
 }
 
 void URIEntry::changeUri(const std::string& newUri)
@@ -237,12 +241,6 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
     self->uriEntryEditingChangedByUser(std::make_shared<std::string>(entry));
 }
 
-void URIEntry::_uri_entry_editing_changed(void* data, Evas_Object* /* obj */, void* /* event_info */)
-{
-    URIEntry* self = static_cast<URIEntry*>(data);
-    self->uriEntryEditingChanged();
-}
-
 void URIEntry::setUrlGuideText(const char* txt) const
 {
 #if PLATFORM(TIZEN)
@@ -254,7 +252,6 @@ void URIEntry::setUrlGuideText(const char* txt) const
 
 void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
-    BROWSER_LOGD("%s", __func__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->m_entrySelectedAllFirst = false;
     self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+#include "BrowserLogger.h"
 #include "GenlistManager.h"
 #include "GenlistManagerCallbacks.h"
 #include "UrlMatchesStyler.h"
+#include "GenlistItemsManager.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -24,11 +26,12 @@ namespace base_ui {
 GenlistManager::GenlistManager()
 {
     m_urlMatchesStyler = make_shared<UrlMatchesStyler>();
+    m_itemsManager = make_shared<GenlistItemsManager>();
 
     m_historyItemClass = elm_genlist_item_class_new();
     m_historyItemClass->item_style = "url_historylist_grid_item";
     m_historyItemClass->func.text_get = nullptr;
-    m_historyItemClass->func.content_get = m_contentGet;
+    m_historyItemClass->func.content_get = m_itemClassContentGet;
     m_historyItemClass->func.state_get = nullptr;
     m_historyItemClass->func.del = nullptr;
 
@@ -49,13 +52,23 @@ GenlistManager::~GenlistManager()
 
 void GenlistManager::clearWidget()
 {
-    if(m_genlist && elm_genlist_items_count(m_genlist))
+    if (m_genlist && elm_genlist_items_count(m_genlist))
         elm_genlist_clear(m_genlist);
 }
 
 void GenlistManager::onMouseFocusChange(bool mouseInsideWidget)
 {
     this->mouseInsideWidget = mouseInsideWidget;
+}
+
+void GenlistManager::setSingleBlockHide(bool block)
+{
+    m_singleHideBlock = block;
+}
+
+bool GenlistManager::getSingleBlockHide()
+{
+    return m_singleHideBlock;
 }
 
 Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
@@ -67,11 +80,12 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
         EVAS_HINT_EXPAND);
         evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL,
         EVAS_HINT_FILL);
-        if (!genlistShowScrollbar) {
+        if (!GENLIST_SHOW_SCROLLBAR) {
             elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF,
                     ELM_SCROLLER_POLICY_OFF);
         }
-
+        elm_object_event_callback_add(m_genlist,
+                GenlistManagerCallbacks::_object_event, this);
         evas_object_smart_callback_add(m_genlist, "edge,top",
                 GenlistManagerCallbacks::_genlist_edge_top, this);
         evas_object_smart_callback_add(m_genlist, "edge,bottom",
@@ -86,8 +100,6 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
                 GenlistManagerCallbacks::_genlist_focused, this);
         evas_object_smart_callback_add(m_genlist, "unfocused",
                 GenlistManagerCallbacks::_genlist_unfocused, this);
-
-
     }
     return m_genlist;
 }
@@ -99,47 +111,79 @@ Evas_Object* GenlistManager::getWidget()
     return m_genlist;
 }
 
+GenlistItemsManagerPtr GenlistManager::getItemsManager()
+{
+    return m_itemsManager;
+}
+
 void GenlistManager::showWidget(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
     clearWidget();
     prepareUrlsVector(editedUrl, matchedEntries);
 
-    m_itemUrlFirst = m_itemUrlLast = nullptr;
+    m_itemsManager->setItems( { GenlistItemType::ITEM_FIRST,
+            GenlistItemType::ITEM_LAST }, nullptr);
     Elm_Object_Item* itemAppended = nullptr;
-    for(auto it : m_readyUrlPairs) {
+    for (auto it : m_readyUrlPairs) {
         itemAppended = elm_genlist_item_append(m_genlist, m_historyItemClass,
-                it.get(), nullptr, ELM_GENLIST_ITEM_NONE, GenlistManagerCallbacks::_item_selected, it.get());
-        if (!m_itemUrlFirst)
-            m_itemUrlFirst = itemAppended;
+                it.get(), nullptr, ELM_GENLIST_ITEM_NONE,
+                GenlistManagerCallbacks::_item_selected, it.get());
+        m_itemsManager->setItemsIfNullptr( { GenlistItemType::ITEM_FIRST },
+                itemAppended);
     }
-    m_itemUrlLast = itemAppended;
+    m_itemsManager->setItems( { GenlistItemType::ITEM_LAST }, itemAppended);
 
-    if (widgetPreviouslyHidden) {
-        widgetPreviouslyHidden = false;
+    if (getWidgetPreviouslyHidden()) {
+        setWidgetPreviouslyHidden(false);
         startScrollIn();
     }
 }
 
+const char* GenlistManager::getItemUrl(GenlistItemType type)
+{
+    if (!m_itemsManager->getItem( { type }))
+        return "";
+    void* data = elm_object_item_data_get(m_itemsManager->getItem( { type }));
+    if (!data)
+        return "";
+    const UrlPair* const urlPair = reinterpret_cast<UrlPair*>(data);
+    if (!urlPair)
+        return "";
+    return urlPair->urlOriginal.c_str();
+}
+
 void GenlistManager::hideWidgetPretty()
 {
-    if (widgetPreviouslyHidden) {
+    if (getSingleBlockHide()) {
+        setSingleBlockHide(false);
+        return;
+    }
+
+    m_itemsManager->setItems( { GenlistItemType::ITEM_CURRENT }, nullptr);
+
+    if (getWidgetPreviouslyHidden()) {
         hideWidgetInstant();
         return;
     }
     startScrollOut();
-    widgetPreviouslyHidden = true;
+    setWidgetPreviouslyHidden(true);
 }
 
 void GenlistManager::hideWidgetInstant()
 {
-    if(m_genlist)
+    if (m_genlist)
         evas_object_hide(m_genlist);
 }
 
-bool GenlistManager::isWidgetHidden()
+bool GenlistManager::getWidgetPreviouslyHidden()
 {
-    return widgetPreviouslyHidden;
+    return m_widgetPreviouslyHidden;
+}
+
+void GenlistManager::setWidgetPreviouslyHidden(bool previouslyHidden)
+{
+    this->m_widgetPreviouslyHidden = previouslyHidden;
 }
 
 void GenlistManager::onMouseClick()
@@ -151,10 +195,13 @@ void GenlistManager::onMouseClick()
 
 void GenlistManager::startScrollIn()
 {
-    if (m_itemUrlFirst) {
+    if (m_itemsManager->getItem(GenlistItemType::ITEM_FIRST)) {
         addSpaces();
-        elm_genlist_item_show(m_itemSpaceLast, ELM_GENLIST_ITEM_SCROLLTO_TOP);
-        elm_genlist_item_bring_in(m_itemUrlFirst,
+        elm_genlist_item_show(
+                m_itemsManager->getItem(GenlistItemType::ITEM_SPACE_LAST),
+                ELM_GENLIST_ITEM_SCROLLTO_TOP);
+        elm_genlist_item_bring_in(
+                m_itemsManager->getItem(GenlistItemType::ITEM_FIRST),
                 ELM_GENLIST_ITEM_SCROLLTO_TOP);
     }
 }
@@ -162,48 +209,45 @@ void GenlistManager::startScrollIn()
 void GenlistManager::startScrollOut()
 {
     addSpaces();
-    if (m_itemSpaceFirst) {
-        elm_genlist_item_bring_in(m_itemSpaceFirst,
-                ELM_GENLIST_ITEM_SCROLLTO_TOP);
+    Elm_Object_Item* first = m_itemsManager->getItem(
+            GenlistItemType::ITEM_SPACE_FIRST);
+    if (first) {
+        elm_genlist_item_bring_in(first, ELM_GENLIST_ITEM_SCROLLTO_TOP);
     }
-}
-
-void GenlistManager::setLastEdgeTop(bool edgeTop)
-{
-    lastEdgeTop = edgeTop;
-}
-
-bool GenlistManager::getLastEdgeTop()
-{
-    return lastEdgeTop;
 }
 
 void GenlistManager::addSpaces()
 {
-    if (m_itemUrlLast) {
-        m_itemSpaceFirst = m_itemSpaceLast = nullptr;
+    if (m_itemsManager->getItem(GenlistItemType::ITEM_LAST)) {
+        m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
+                GenlistItemType::ITEM_SPACE_LAST }, nullptr);
         Elm_Object_Item* itemAppended = nullptr;
         for (auto i = 0; i < HISTORY_ITEMS_VISIBLE_MAX; ++i) {
             // append spaces to the last url item, so they can be easily cleared
             itemAppended = elm_genlist_item_append(m_genlist,
-                    m_historyItemSpaceClass, nullptr, m_itemUrlLast,
-                    ELM_GENLIST_ITEM_NONE, nullptr, this);
-            if (!m_itemSpaceFirst)
-                m_itemSpaceFirst = itemAppended;
+                    m_historyItemSpaceClass, nullptr,
+                    m_itemsManager->getItem(GenlistItemType::ITEM_LAST),
+                    ELM_GENLIST_ITEM_NONE, nullptr, nullptr);
+            elm_object_focus_allow_set(itemAppended, EINA_FALSE);
+            m_itemsManager->setItemsIfNullptr( {
+                    GenlistItemType::ITEM_SPACE_FIRST }, itemAppended);
         }
-        m_itemSpaceLast = itemAppended;
+        m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_LAST },
+                itemAppended);
     }
 }
 
 void GenlistManager::removeSpaces()
 {
-    if (m_itemUrlLast) {
-        elm_genlist_item_subitems_clear(m_itemUrlLast);
+    if (m_itemsManager->getItem(GenlistItemType::ITEM_LAST)) {
+        elm_genlist_item_subitems_clear(
+                m_itemsManager->getItem(GenlistItemType::ITEM_LAST));
     }
-    m_itemSpaceFirst = m_itemSpaceLast = nullptr;
+    m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
+            GenlistItemType::ITEM_SPACE_LAST }, nullptr);
 }
 
-Evas_Object* GenlistManager::m_contentGet(void* data, Evas_Object* obj,
+Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
         const char* part)
 {
     Evas_Object* label = elm_label_add(obj);
@@ -225,7 +269,6 @@ void GenlistManager::prepareUrlsVector(const string& editedUrl,
 {
     // free previously used urls. IMPORTANT: it has to be assured that previous
     // genlist items are not using these pointers.
-    m_readyUrls.clear();
     m_readyUrlPairs.clear();
     for (auto it : *matchedEntries) {
         UrlPair newUrlPair(it->getUrl(),

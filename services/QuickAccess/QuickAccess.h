@@ -31,9 +31,6 @@
 namespace tizen_browser{
 namespace base_ui{
 
-class UrlHistoryList;
-typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
-
 //TODO: This class name is not revelant to what this class actually does.
 //Rename this class and file to "QuickAccessUI".
 class BROWSER_EXPORT QuickAccess
@@ -53,7 +50,6 @@ public:
     bool isDesktopMode() const;
     void setDesktopMode(bool mode);
     DetailPopup & getDetailPopup();
-    UrlHistoryPtr getUrlHistoryList();
     void backButtonClicked();
     inline bool isMostVisitedActive() const;
     void refreshFocusChain();
@@ -84,7 +80,6 @@ private:
     Evas_Object* createBookmarksView(Evas_Object *parent);
     Evas_Object* createBottomButton(Evas_Object *parent);
     Evas_Object* createTopButtons(Evas_Object *parent);
-    Evas_Object* createUrlHistoryListLayout(Evas_Object *parent);
 
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
@@ -109,15 +104,11 @@ private:
     std::vector<Evas_Object *> m_tiles;
     Eina_List* m_parentFocusChain;
 
-    UrlHistoryPtr m_urlHistoryList;
-    Evas_Object* m_urlHistoryListLayout;
-
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     DetailPopup m_detailPopup;
     services::HistoryItemVector m_historyItems;
     bool m_gengridSetup;
     std::string edjFilePath;
-    std::string edjFilePathUrlHistoryList;
     bool m_desktopMode;
 
     static const int MAX_TILES_NUMBER;
