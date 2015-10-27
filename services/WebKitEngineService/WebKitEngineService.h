@@ -169,7 +169,7 @@ public:
     /**
      * @brief back or exit when back key is pressed
      */
-    void backButtonClicked() const;
+    void backButtonClicked();
 
     void switchToMobileMode();
     void switchToDesktopMode();

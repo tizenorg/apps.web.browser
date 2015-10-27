@@ -170,6 +170,8 @@ public:
 
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
+    boost::signals2::signal<void ()> switchToWebPage;
+
 private:
     void registerCallbacks();
     void unregisterCallbacks();
