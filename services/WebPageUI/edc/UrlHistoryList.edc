@@ -1,7 +1,8 @@
-#define LIST_OFFSET_X 255
+#define LIST_OFFSET_X_QUICKACCESS 10
+#define LIST_OFFSET_X_WEBPAGE 255
 #define LIST_OFFSET_Y 104
-#define URI_INPUTBOX_LENGTH 1720
-#define URI_INPUTBOX_LENGTH_SHORT 1460
+#define URI_INPUTBOX_LENGTH_QUICKACCESS 1720
+#define URI_INPUTBOX_LENGTH_WEBPAGE 1460
 #define HISTORY_ITEM_W URI_INPUTBOX_LENGTH
 #define HISTORY_ITEM_H 82
 
@@ -14,19 +15,49 @@ collections {
                 name: "list_swallow";
                 type: SWALLOW;
                 description {
+                    state: "default" 0.0;
                     color: 255 0 0 150;
-                    min: URI_INPUTBOX_LENGTH_SHORT 0;
+                    min: URI_INPUTBOX_LENGTH_QUICKACCESS 0;
                     max: -1 -1;
                     visible: 1;
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0 0;
-                        offset: LIST_OFFSET_X LIST_OFFSET_Y;
+                        offset: LIST_OFFSET_X_QUICKACCESS LIST_OFFSET_Y;
                     }
                     rel2 {
                         relative: 1.0 0.5;
                     }
                 }
+                description {
+                    state: "view_quickaccess" 0.0;
+                    inherit: "default" 0.0;
+                }
+                description {
+                    state: "view_webpage";
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_WEBPAGE 0;
+                    rel1 {
+                        relative: 0 0;
+                        offset: LIST_OFFSET_X_WEBPAGE LIST_OFFSET_Y;
+                    }
+                }
+            }
+        }
+        programs {
+            program {
+                name: "switch_view_quickaccess";
+                signal: "switch_view_quickaccess";
+                source: "ui";
+                action: STATE_SET "view_quickaccess" 0.0;
+                target: "list_swallow";
+            }
+            program {
+                name: "switch_view_webpage";
+                signal: "switch_view_webpage";
+                source: "ui";
+                action: STATE_SET "view_webpage" 0.0;
+                target: "list_swallow";
             }
         }
     }

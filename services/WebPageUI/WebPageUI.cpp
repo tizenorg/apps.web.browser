@@ -229,6 +229,7 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri,
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
+    elm_object_signal_emit(m_urlHistoryList->getContent(), "switch_view_webpage", "ui");
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 }
 
@@ -241,6 +242,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     evas_object_hide(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
+    elm_object_signal_emit(m_urlHistoryList->getContent(), "switch_view_quickaccess", "ui");
     hideProgressBar();
     refreshFocusChain();
     m_URIEntry->changeUri("");
