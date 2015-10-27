@@ -105,6 +105,10 @@ private:
 
     void onMouseFocusChange(bool mouseInsideWidget);
 
+    /**
+     * Adjust widget's height to item's number.
+     */
+    void adjustWidgetHeight();
     void startScrollIn();
     void startScrollOut();
 
