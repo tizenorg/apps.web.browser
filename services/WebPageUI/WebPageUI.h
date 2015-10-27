@@ -29,6 +29,9 @@
 namespace tizen_browser {
 namespace base_ui {
 
+class UrlHistoryList;
+typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
+
 class BROWSER_EXPORT WebPageUI : public tizen_browser::core::AbstractService, public tizen_browser::interfaces::AbstractUIComponent {
 public:
     WebPageUI();
@@ -36,6 +39,7 @@ public:
     virtual std::string getName();
     virtual void init(Evas_Object* parent);
     virtual Evas_Object* getContent();
+    UrlHistoryPtr getUrlHistoryList();
     virtual void showUI();
     virtual void hideUI();
     void loadStopped();
@@ -107,6 +111,7 @@ private:
     std::unique_ptr<ButtonBar> m_leftButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
     std::unique_ptr<URIEntry> m_URIEntry;
+    UrlHistoryPtr m_urlHistoryList;
     bool m_homePageActive;
 
     sharedAction m_back;

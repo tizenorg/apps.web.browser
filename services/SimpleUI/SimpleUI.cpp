@@ -238,7 +238,7 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
-    m_webPageUI->getURIEntry().uriEntryEditingChanged.connect(boost::bind(&SimpleUI::onURLEntryEdited, this));
+    m_webPageUI->getUrlHistoryList()->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
     m_webPageUI->backPage.connect(boost::bind(&ZoomUI::showNavigation, m_zoomUI.get()));
@@ -257,7 +257,6 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
-    m_quickAccess->getUrlHistoryList()->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
     m_quickAccess->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
@@ -559,6 +558,11 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
     openNewTab(historyAddress, desktopMode);
 }
 
+void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
+{
+    onOpenURLInNewTab(historyItem, m_quickAccess->isDesktopMode());
+}
+
 void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
@@ -728,23 +732,18 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
 {
     string editedUrl(*editedUrlPtr);
     int historyItemsVisibleMax =
-            m_quickAccess->getUrlHistoryList()->getVisibleItemsMax();
+            m_webPageUI->getUrlHistoryList()->getVisibleItemsMax();
     int minKeywordLength =
-            m_quickAccess->getUrlHistoryList()->getMinKeywordLength();
+            m_webPageUI->getUrlHistoryList()->getMinKeywordLength();
     std::shared_ptr<services::HistoryItemVector> result =
             m_historyService->getHistoryItemsByKeywordsString(editedUrl,
                     historyItemsVisibleMax, minKeywordLength);
-    m_quickAccess->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
-}
-
-void SimpleUI::onURLEntryEdited()
-{
-    m_quickAccess->getUrlHistoryList()->onURLEntryEdited();
+    m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
 
 void SimpleUI::onMouseClick()
 {
-    m_quickAccess->getUrlHistoryList()->onMouseClick();
+    m_webPageUI->getUrlHistoryList()->onMouseClick();
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)

@@ -1,10 +1,12 @@
+#define LIST_OFFSET_X 255
+#define LIST_OFFSET_Y 104
 #define URI_INPUTBOX_LENGTH 1720
-#define URI_INPUTBOX_LENGTH_SMALL 1460
+#define URI_INPUTBOX_LENGTH_SHORT 1460
 #define HISTORY_ITEM_W URI_INPUTBOX_LENGTH
 #define HISTORY_ITEM_H 82
 #define HISTORY_ITEMS_VISIBLE_MAX 5
 /*
-  Right now, has to be a multiple of item's height.
+  has to be a multiple of item's height.
 */
 #define LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
 
@@ -14,41 +16,17 @@ collections {
         parts
         {
             part {
-                name: "bg";
-                type: RECT;
-                mouse_events: 1;
-                description
-                {
-                    color: 232 122 32 150;
-                    state: "default" 0.0;
-                    visible: 0;
-                    min: URI_INPUTBOX_LENGTH LIST_MAX_H;
-                    max: -1 -1;
-                    align: 0.0 0.0;
-                    fixed: 1 1;
-                    rel1
-                    {
-                        relative: 0 0;
-                    }
-                    rel2
-                    {
-                        relative: 1.0 1.0;
-                    }
-                }
-            }
-
-            part {
                 name: "list_swallow";
                 type: SWALLOW;
                 description {
                     color: 255 0 0 150;
-                    min: URI_INPUTBOX_LENGTH LIST_MAX_H;
+                    min: URI_INPUTBOX_LENGTH_SHORT LIST_MAX_H;
                     max: -1 -1;
                     visible: 1;
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0 0;
-                        offset: 0 0;
+                        offset: LIST_OFFSET_X LIST_OFFSET_Y;
                     }
                     rel2 {
                         relative: 1.0 0.5;

@@ -4,12 +4,22 @@ set(WebPageUI_SRCS
     WebPageUI.cpp
     ButtonBar.cpp
     URIEntry.cpp
+    UrlHistoryList/UrlHistoryList.cpp
+    UrlHistoryList/GenlistManager.cpp
+    UrlHistoryList/GenlistManagerCallbacks.cpp
+    UrlHistoryList/UrlMatchesStyler.cpp
+    UrlHistoryList/GenlistItemsManager.cpp
     )
 
 set(WebPageUI_HEADERS
     WebPageUI.h
     ButtonBar.h
     URIEntry.h
+    UrlHistoryList/UrlHistoryList.h
+    UrlHistoryList/GenlistManager.h
+    UrlHistoryList/GenlistManagerCallbacks.h
+    UrlHistoryList/UrlMatchesStyler.h
+    UrlHistoryList/GenlistItemsManager.h
     )
 
 include(Coreheaders)
@@ -59,6 +69,7 @@ set(edcFiles
     RightButtonBar.edc
     URIEntry.edc
     PrivateMode.edc
+    UrlHistoryList.edc
     )
 
 foreach(edec ${edcFiles})

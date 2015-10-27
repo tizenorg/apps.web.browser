@@ -15,7 +15,9 @@
  */
 
 #include "BrowserLogger.h"
-#include <services/QuickAccess/UrlHistoryList/GenlistManagerCallbacks.h>
+#include "GenlistManagerCallbacks.h"
+#include "GenlistItemsManager.h"
+#include <Ecore_Input.h>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -30,21 +32,19 @@ GenlistManagerCallbacks::~GenlistManagerCallbacks()
 {
 }
 
-void GenlistManagerCallbacks::_genlist_edge_top(void *data, Evas_Object* /*obj*/,
-        void* /*event_info*/)
+void GenlistManagerCallbacks::_genlist_edge_top(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
 {
     auto manager = static_cast<GenlistManager*>(data);
-    manager->setLastEdgeTop(false);
     // spaces added for 'slide in' effect are not longer needed
     manager->removeSpaces();
 }
 
-void GenlistManagerCallbacks::_genlist_edge_bottom(void *data, Evas_Object* /*obj*/,
-        void* /*event_info*/)
+void GenlistManagerCallbacks::_genlist_edge_bottom(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
 {
     auto manager = static_cast<GenlistManager*>(data);
-    manager->setLastEdgeTop(true);
-    if (manager->isWidgetHidden()) {
+    if (manager->getWidgetPreviouslyHidden()) {
         manager->clearWidget();
         evas_object_hide(manager->getWidget());
     }
@@ -56,6 +56,7 @@ void GenlistManagerCallbacks::_genlist_mouse_in(void* data, Evas* /*e*/,
     auto manager = static_cast<GenlistManager*>(data);
     manager->onMouseFocusChange(true);
 }
+
 void GenlistManagerCallbacks::_genlist_mouse_out(void* data, Evas* /*e*/,
         Evas_Object* /*obj*/, void* /*event_info*/)
 {
@@ -63,20 +64,18 @@ void GenlistManagerCallbacks::_genlist_mouse_out(void* data, Evas* /*e*/,
     manager->onMouseFocusChange(false);
 }
 
-void GenlistManagerCallbacks::_genlist_focused(void* /*data*/, Evas_Object* /*obj*/,
-        void* /*event_info*/)
+void GenlistManagerCallbacks::_genlist_focused(void* /*data*/,
+        Evas_Object* /*obj*/, void* /*event_info*/)
 {
-    if(genlistManager)
-    {
+    if (genlistManager) {
         genlistManager->signalWidgetFocused();
     }
 }
 
-void GenlistManagerCallbacks::_genlist_unfocused(void* /*data*/, Evas_Object* /*obj*/,
-        void* /*event_info*/)
+void GenlistManagerCallbacks::_genlist_unfocused(void* /*data*/,
+        Evas_Object* /*obj*/, void* /*event_info*/)
 {
-    if(genlistManager)
-    {
+    if (genlistManager) {
         genlistManager->signalWidgetUnfocused();
     }
 }
@@ -86,12 +85,44 @@ void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
 {
     const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
     if (item) {
-        if(genlistManager)
-        {
+        if (genlistManager) {
             genlistManager->signalItemSelected(item->urlOriginal);
             genlistManager->hideWidgetPretty();
         }
     }
+}
+
+Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
+        Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type /*type*/,
+        void* event_info)
+{
+    genlistManager->removeSpaces();
+    genlistManager->setWidgetPreviouslyHidden(false);
+
+    if (genlistManager) {
+        Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
+        const std::string keyName = ev->keyname;
+        if (!keyName.compare("Down") || !keyName.compare("Up")) {
+            GenlistItemsManagerPtr itemsManager =
+                    genlistManager->getItemsManager();
+            if (!itemsManager->getItem(GenlistItemType::ITEM_CURRENT)) {
+                itemsManager->assignItem(GenlistItemType::ITEM_CURRENT,
+                        GenlistItemType::ITEM_FIRST);
+            } else {
+                if (!keyName.compare("Down")) {
+                    itemsManager->shiftItemDown(GenlistItemType::ITEM_CURRENT);
+                } else {
+                    if (!itemsManager->shiftItemUp(
+                            GenlistItemType::ITEM_CURRENT)) {
+                        // 'up' pressed on a first item. don't hide widget
+                        genlistManager->setSingleBlockHide(true);
+                    }
+                }
+            }
+            genlistManager->signalItemFocusChange();
+        }
+    }
+    return EINA_FALSE;
 }
 
 } /* namespace base_ui */

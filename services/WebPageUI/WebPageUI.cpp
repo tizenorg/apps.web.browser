@@ -21,6 +21,7 @@
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
 #include "BrowserAssert.h"
+#include "UrlHistoryList/UrlHistoryList.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -35,6 +36,7 @@ WebPageUI::WebPageUI()
     , m_progressBar(nullptr)
     , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
+    , m_urlHistoryList(std::make_shared<UrlHistoryList>())
     , m_homePageActive(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -60,6 +62,11 @@ Evas_Object* WebPageUI::getContent()
         createLayout();
     }
     return m_mainLayout;
+}
+
+UrlHistoryPtr WebPageUI::getUrlHistoryList()
+{
+    return m_urlHistoryList;
 }
 
 void WebPageUI::showUI()
@@ -286,6 +293,9 @@ void WebPageUI::createLayout()
 
     elm_layout_signal_callback_add(m_URIEntry->getContent(), "slide_websearch", "elm", faviconClicked, this);
 
+    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
+    m_urlHistoryList->setMembers(m_parent, m_URIEntry->getEntryWidget());
+
     connectActions();
 }
 
@@ -445,6 +455,7 @@ void WebPageUI::refreshFocusChain()
         m_reload->setEnabled(false);
     }
     elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
+    elm_object_focus_custom_chain_append(m_mainLayout, m_urlHistoryList->getContent(), NULL);
 }
 
 }   // namespace tizen_browser

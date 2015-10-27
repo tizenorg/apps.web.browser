@@ -28,7 +28,6 @@ using namespace std;
 namespace tizen_browser {
 namespace base_ui {
 
-class QuickAccess;
 class GenlistManager;
 typedef shared_ptr<GenlistManager> GenlistManagerPtr;
 
@@ -43,56 +42,35 @@ enum class EditedUrlState
 };
 
 /**
- * Needed to indicate who did the last url entry edition (user/other/other many times). Used
- * to indicate when widget can be hidden in a pretty way or an instant way.
- */
-class EditedUrlStatesHelper
-{
-public:
-    EditedUrlStatesHelper()
-    {
-    }
-    void changeState(bool editedByUser)
-    {
-        if (editedByUser) {
-            currentState = EditedUrlState::EDITED_BY_USER;
-        } else {
-            if (currentState == EditedUrlState::EDITED_BY_USER) {
-                currentState = EditedUrlState::EDITED_OTHER_FIRST;
-            } else {
-                currentState = EditedUrlState::EDITED_OTHER_MANY_TIMES;
-            }
-        }
-    }
-    EditedUrlState getCurrentState()
-    {
-        return currentState;
-    }
-private:
-    EditedUrlState currentState = EditedUrlState::EDITED_BY_USER;
-};
-
-/**
  * Manages list of url matches (URL from history). Manages top layout, creates
  * widget displaying url items.
  */
 class UrlHistoryList
 {
 public:
-    UrlHistoryList(QuickAccess* quickAccess);
+    UrlHistoryList();
     virtual ~UrlHistoryList();
-    void createLayout(Evas_Object* parentLayout);
-    Evas_Object* getLayout();
+    Evas_Object* getContent();
+    Evas_Object* getEditedEntry();
+    void saveEntryEditedContent();
+    void restoreEntryEditedContent();
+    void saveEntryURLContent();
+    void restoreEntryURLContent();
+    Evas_Object* getGenlist();
+
+    // remove if unused
+    void hideWidgetPretty();
+
+    void setMembers(Evas_Object* parent, Evas_Object* chainObject);
 
     // // on uri entry widget "changed,user" signal
     void onURLEntryEditedByUser(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    // on uri entry widget "changed" signal
-    void onURLEntryEdited();
 
+    void onItemFocusChange();
     void onMouseClick();
 
-    boost::signals2::signal<void(shared_ptr<services::HistoryItem>, bool)> openURLInNewTab;
+    boost::signals2::signal<void(shared_ptr<services::HistoryItem>)> openURLInNewTab;
 
     int getVisibleItemsMax() const
     {
@@ -105,21 +83,29 @@ public:
     }
 
 private:
+    void createLayout(Evas_Object* parentLayout);
     void onListItemSelect(std::string content);
     void onListWidgetFocused();
     void onListWidgetUnfocused();
 
-    EditedUrlStatesHelper editedUrlStatesHelper;
+    static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_unfocused(void* data, Evas_Object* obj, void* event_info);
 
     // the maximum items number on a list
     const int VISIBLE_ITEMS_MAX = 12;
     // the minimum length of the keyword used to search matches
     const int MIN_KEYWORD_LENGTH = 3;
-    Evas_Object* m_layout;
+    Evas_Object* m_parent = nullptr;
+    // entry widget from which change signals are received
+    Evas_Object* m_entry = nullptr;
+    // content of the entry, needed to restore edited value
+    string m_entryEditedContent;
+    // content of the entry before edition: needed to restore original URL value
+    string m_entryURLContent;
+    Evas_Object* m_layout = nullptr;
     string m_edjFilePath;
 
     GenlistManagerPtr m_genlistListManager = nullptr;
-    QuickAccess* m_quickAccess;
 
 };
 

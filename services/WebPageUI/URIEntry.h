@@ -40,13 +40,12 @@ public:
     ~URIEntry();
     void init(Evas_Object* parent);
     Evas_Object* getContent();
+    Evas_Object* getEntryWidget();
 
 
     void changeUri(const std::string&);
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
-    // uri edition change
-    boost::signals2::signal<void ()> uriEntryEditingChanged;
     // uri edition change (by a user)
     boost::signals2::signal<void (const std::shared_ptr<std::string>)> uriEntryEditingChangedByUser;
 
@@ -108,7 +107,6 @@ private:
     static void _fixed_entry_key_down_handler(void* data, Evas* e, Evas_Object* obj, void* event_info);
     static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_clicked(void* data, Evas_Object* obj, void* event_info);
-    static void _uri_entry_editing_changed(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
 
     static void focusedBtn(void* data, Evas_Object* obj, void* event_info);

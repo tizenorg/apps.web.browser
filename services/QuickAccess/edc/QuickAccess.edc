@@ -20,11 +20,6 @@ collections {
 #define ITEM_WIDTH 374
 #define PARENT_ITEM_HEIGHT 36
 
-#define URI_INPUTBOX_LENGTH 1720
-#define URL_HISTORY_ITEM_H 82
-#define URL_HISTORY_ITEMS_VISIBLE_MAX 5
-#define URL_HISTORY_LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
-
 group{
     name: "elm/button/base/invisible_button";
     parts{
@@ -1383,33 +1378,6 @@ group { name: "top_button_item";
                 target: "bookmark_button";
                 target: "bookmark_over";
                 target: "mostvisited_text";
-            }
-        }
-    }
-}
-
-group {
-    name: "url_history_list_layout";
-    parts
-    {
-        part
-        {
-            name: "url_history_list_swallow";
-            type: SWALLOW;
-            description {
-                state: "default" 0.0;
-                min: URI_INPUTBOX_LENGTH URL_HISTORY_LIST_MAX_H;
-                max: -1 -1;
-                align: 0.0 0.0;
-                fixed: 1 1;
-                visible: 1;
-                rel1 {
-                    relative: 0 0;
-                    offset: 10 106;
-                }
-                rel2 {
-                    relative: 1.0 1.0;
-                }
             }
         }
     }

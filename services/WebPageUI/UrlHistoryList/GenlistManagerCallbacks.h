@@ -17,7 +17,7 @@
 #ifndef GENLISTMANAGERCALLBACKS_H_
 #define GENLISTMANAGERCALLBACKS_H_
 
-#include <services/QuickAccess/UrlHistoryList/GenlistManager.h>
+#include "GenlistManager.h"
 #include <Elementary.h>
 #include <Evas.h>
 
@@ -44,6 +44,9 @@ public:
             void* event_info);
     static void _genlist_unfocused(void* data, Evas_Object* obj,
             void* event_info);
+
+    static Eina_Bool _object_event(void* data, Evas_Object* obj,
+            Evas_Object* src, Evas_Callback_Type type, void* event_info);
 
     static void _item_selected(void* data, Evas_Object* obj, void* event_info);
 
