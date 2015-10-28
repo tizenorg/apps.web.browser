@@ -128,27 +128,17 @@ collections {
             }
         }
         ADD_SPACER("right_spacer", "uri_bar_buttons_right", 74, 102)
-            part {
-                name: "web_view";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    fixed: 0 0;
+        part {
+            name: "web_view";
+            type : SWALLOW;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0.0 0.0;
+                fixed: 0 0;
                 rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
                 rel2 { relative: 1.0 1.0; }
-            }
-            description {
-                state: "hidden" 0.0;
-                inherit: "default" 0.0;
-                visible: 0;
-            }
-            description {
-                state: "visible" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
             }
         }
         part {
@@ -236,22 +226,6 @@ collections {
                 visible: 1;
             }
         }
-        part{
-            name: "web_title_bar";
-            type: SWALLOW;
-            scale: 1;
-            description {
-                state: "default" 0.0;
-                min: 1920 87;
-                max: 1920 87;
-                fixed: 1 1;
-                align: 0 1;
-                rel1 { to: "web_view"; relative: 0.0 1.0; }
-                rel2 { to: "web_view"; relative: 1.0 1.0; }
-            }
-        }
-
-
         part {
             name: "popup_bg";
             type: RECT;

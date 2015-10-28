@@ -44,6 +44,8 @@ void DefaultConfig::load(const std::string &)
 #   include "ConfigValues.h"
 
     m_data["resourcedb/dir"] = std::string(db_path)+"/"+std::string("org.tizen.browser/data/");
+
+    m_data["mobile_scale"] = 1.98;
 }
 
 void DefaultConfig::store(const std::string & )
@@ -58,6 +60,11 @@ boost::any DefaultConfig::get(const std::string & key)
 void DefaultConfig::set(const std::string & key, const boost::any & value)
 {
 	m_data[key] = value;
+}
+
+bool DefaultConfig::isMobileProfile() const
+{
+    return boost::any_cast<std::string>(m_data.at("profile")) == MOBILE;
 }
 
 } /* end of namespace config */
