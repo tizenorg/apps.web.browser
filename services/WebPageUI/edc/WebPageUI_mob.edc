@@ -1,0 +1,215 @@
+#define URI_LENGTH 518
+#define URI_LENGTH_SHORT 320
+#define URI_WIDTH 64
+#define URI_BG_HEIGHT 108
+#define URI_BG_WIDTH 720
+#include "Spacer.edc"
+
+collections {
+    group {
+        name: "main_layout";
+        parts {
+            part {
+                name: "uri_bar_bg";
+                type : RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    min: URI_BG_WIDTH URI_BG_HEIGHT;
+                    max: URI_BG_WIDTH URI_BG_HEIGHT;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 0.0; }
+                }
+            }
+            ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 32, URI_BG_HEIGHT)
+            part {
+                name: "uri_bar_buttons_left";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0.5;
+                    min: 196 64;
+                    max: 196 64;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 1.0; to: "left_spacer"; }
+                    rel2 { relative: 0.0 0.0; to: "left_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            ADD_SPACER("left_buttons_spacer", "uri_bar_buttons_left", 0.5, 102)
+            part {
+                name: "uri_entry";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.5;
+                    min: URI_LENGTH URI_WIDTH;
+                    max: URI_LENGTH URI_WIDTH;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.5; to: "left_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "left_spacer"; }
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    min: URI_LENGTH_SHORT URI_WIDTH;
+                    max: URI_LENGTH_SHORT URI_WIDTH;
+                    rel1 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            ADD_SPACER("right_buttons_spacer", "uri_entry", 24, URI_BG_HEIGHT)
+            part {
+                name: "uri_bar_buttons_right";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.5;
+                    min: 130 64;
+                    max: 130 64;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "TEST_web_view";
+                type : RECT;
+                scale: 1;
+                description {
+                color: 0 255 0 255;
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "web_view";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "progress_bar";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: URI_BG_WIDTH 2;
+                    max: URI_BG_WIDTH 2;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 1;
+                        to: "web_view";
+                    }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "progress_bar_light_bg";
+                type: RECT;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    fixed: 1 1;
+                    min: 0 8;
+                    max: URI_BG_WIDTH 8;
+                    align: 0 0;
+                    visible: 0;
+                    rel1.to: "web_view";
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 0.0;
+                    color: 69 143 255 55;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "shiftright_uribar";
+                signal: "shiftright_uri";
+                source: "ui";
+                action: STATE_SET "moveright" 0.0;
+                target: "uri_entry";
+            }
+            program {
+                name: "shiftback_uribar";
+                signal: "shiftback_uri";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "uri_entry";
+            }
+            program {
+                name: "hide_progress";
+                signal: "hide_progressbar_bg";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "progress_bar_light_bg";
+            }
+            program {
+                name: "show_progress";
+                signal: "show_progressbar_bg";
+                source: "ui";
+                action: STATE_SET "visible" 0.0;
+                target: "progress_bar_light_bg";
+            }
+        }
+    }
+}

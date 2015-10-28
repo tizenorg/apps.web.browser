@@ -11,17 +11,6 @@ set(WebPageUI_SRCS
     UrlHistoryList/GenlistItemsManager.cpp
     )
 
-set(WebPageUI_HEADERS
-    WebPageUI.h
-    ButtonBar.h
-    URIEntry.h
-    UrlHistoryList/UrlHistoryList.h
-    UrlHistoryList/GenlistManager.h
-    UrlHistoryList/GenlistManagerCallbacks.h
-    UrlHistoryList/UrlMatchesStyler.h
-    UrlHistoryList/GenlistItemsManager.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 include(EWebKitHelpers)
@@ -62,19 +51,31 @@ install(TARGETS ${PROJECT_NAME}
 include(EDCCompile)
 
 #please do not add edc/ directory
-set(edcFiles
-    WebPageUI.edc
-    ErrorMessage.edc
-    LeftButtonBar.edc
-    RightButtonBar.edc
-    URIEntry.edc
-    PrivateMode.edc
-    UrlHistoryList.edc
-    )
+if (${PROFILE} MATCHES "mobile")    # mobile profile
+    set(edcFiles
+        WebPageUI_mob.edc
+        ErrorMessage.edc
+        LeftButtonBar_mob.edc
+        RightButtonBar_mob.edc
+        URIEntry_mob.edc
+        PrivateMode.edc
+        UrlHistoryList.edc
+        )
+else (${PROFILE} MATCHES "mobile")  # tv profile
+    set(edcFiles
+        WebPageUI.edc
+        ErrorMessage.edc
+        LeftButtonBar.edc
+        RightButtonBar.edc
+        URIEntry.edc
+        PrivateMode.edc
+        UrlHistoryList.edc
+        )
+endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REPLACE ".edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
-               ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
-               ${CMAKE_CURRENT_BINARY_DIR})
+        ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
+        ${CMAKE_CURRENT_BINARY_DIR})
 endforeach(edec)

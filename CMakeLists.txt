@@ -98,6 +98,7 @@ if(TIZEN_BUILD)
         -DM_VCS_ID=\"${VCS_ID}\"
         -DTIZEN_BUILD=\"${TIZEN_BUILD}\"
         -DCERTS_DIR=\"${CERTS_DIR}\"
+        -DPROFILE=${PROFILE}
         )
 endif(TIZEN_BUILD)
 

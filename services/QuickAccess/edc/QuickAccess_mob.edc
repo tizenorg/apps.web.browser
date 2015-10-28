@@ -1,30 +1,20 @@
 #include "InvisibleButton.edc"
 
-#define DEBUG_RECT_OVER(over_part, r, g, b)                         \
-    part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
-								    \
-scale:1;                                                            \
-        type : RECT;                                                \
-        repeat_events: 1;                                           \
-        description {                                               \
-            state: "default" 0.0;                                   \
-            visible: 1;                                             \
-            color: r g b 128;                                       \
-            rel1 { to: over_part; relative: 0 0; }                  \
-            rel2 { to: over_part; relative: 1 1; }                  \
-        }                                                           \
-    }
-
 collections {
 
-#define WIDTH 1920
-#define HEIGHT 181
-#define ITEM_WIDTH 374
-#define PARENT_ITEM_HEIGHT 36
 #define URI_INPUTBOX_LENGTH 1720
 #define URL_HISTORY_ITEM_H 82
 #define URL_HISTORY_ITEMS_VISIBLE_MAX 5
 #define URL_HISTORY_LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
+#define LAYOUT_WIDTH 720
+#define LAYOUT_HEIGHT 1120
+
+#define BIG_TILE_WIDTH 656
+#define BIG_TILE_HEIGHT 450
+#define SMALL_TILE_WIDTH 319
+#define SMALL_TILE_HEIGHT 361
+#define TILE_SEPARATOR 18
+#define TILE_LABEL_BG_HEIGHT 100
 
 group {
     name: "elm/button/base/thumbButton";
@@ -35,6 +25,7 @@ group {
         part {
             name: "elm.swallow.content";
             type: RECT;
+            scale: 1;
             mouse_events: 1;
             repeat_events: 1;
             description {
@@ -83,9 +74,6 @@ group { name: "mv_bookmarks";
     data {
         item: "focus_highlight" "off";
     }
-    images {
-        image: "web_shadow.png" COMP;
-    }
     color_classes{
         color_class{
             name: "focusBgColor";
@@ -100,9 +88,10 @@ group { name: "mv_bookmarks";
     parts {
         part { name: "bg";
             type: RECT;
+            scale: 1;
             mouse_events: 0;
             description { state: "default" 0.0;
-                color: 255 255 255 255;
+                color: 244 244 244 255;
                 align: 0.0 0.0;
                 fixed: 0 0;
                 rel1 {
@@ -116,11 +105,13 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.layoutTop";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-            min: 1920 181;
-                max: 1920 181;
+                min: LAYOUT_WIDTH 181;
+                max: LAYOUT_WIDTH 181;
                 align: 0.0 0.0;
                 fixed: 0 0;
+                visible: 1;
                 rel1 {
                     relative: 0 0;
                     to: "bg";
@@ -132,31 +123,22 @@ group { name: "mv_bookmarks";
             }
         }
 
-        part { name: "layoutBottom_bg";
-            type: RECT;
-            mouse_events: 0;
-            description { state: "default" 0.0;
-                color: 255 255 255 255;
-                min: 1920 181;
-                max: 1920 181;
-                align: 0.0 1.0;
-                fixed: 0 0;
-                rel1 {
-                    relative: 0 0; to: "bg";
-                }
-                rel2{
-                    relative: 1 1;
-                }
+        part { name: "elm.swallow.layoutBottom";
+            type: SWALLOW;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;     // only plug for unused bottom layout
             }
         }
 
         part { name: "elm.swallow.grid";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 1920 614;
-                max: 1920 614;
                 align: 0.0 0.0;
                 fixed: 0 0;
+                visible: 1;
                 rel1 {
                     relative: 0 1;
                     to: "elm.swallow.layoutTop";
@@ -170,18 +152,20 @@ group { name: "mv_bookmarks";
 
         part { name: "center_rect";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 1592 614;
-                max: 1592 614;
-                visible: 0;
-                align: 0.5 0.0;
+                color: 0 0 0 0;
+                min: 720 0;
+                max: 720 -1;
+                align: 0 0;
+                visible: 1;
                 rel1 {
-                    relative: 0 1;
                     to: "elm.swallow.layoutTop";
+                    relative: 0 1;
                 }
                 rel2 {
-                    relative: 1 1;
                     to: "bg";
+                    relative: 1 1;
                 }
             }
             description { state: "empty" 0.0;
@@ -193,14 +177,17 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.big";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 784 614;
-                max: 784 614;
-                align: 0.0 0.0;
+                min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
+                max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
+                align: 0.5 0.0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    relative: 0 0; to: "center_rect";
+                    to: "center_rect";
+                    relative: 0 0;
+                    offset: TILE_SEPARATOR 0;
                 }
                 rel2 {
                     relative: 1 1;
@@ -215,16 +202,17 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.small_first";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 378 294;
-                max: 378 294;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
                 align: 0.0 0.0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "center_rect";
-                    relative: 0 0;
-                    offset: 810 0;
+                    to: "elm.swallow.big";
+                    relative: 0 1;
+                    offset: 0 TILE_SEPARATOR;
                 }
                 rel2{
                     to: "center_rect";
@@ -240,16 +228,17 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.small_second";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 378 294;
-                max: 378 294;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
                 align: 0.0 0.0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "center_rect";
-                    relative: 0 0;
-                    offset: 810 320;
+                    to: "elm.swallow.small_first";
+                    relative: 1 0;
+                    offset: TILE_SEPARATOR 0;
                 }
                 rel2{
                     to: "center_rect";
@@ -265,16 +254,17 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.small_third";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 378 294;
-                max: 378 294;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
                 align: 0.0 0.0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "center_rect";
-                    relative: 0 0;
-                    offset: 1214 0;
+                    to: "elm.swallow.small_first";
+                    relative: 0 1;
+                    offset: 0 TILE_SEPARATOR;
                 }
                 rel2 {
                     to: "center_rect";
@@ -290,16 +280,17 @@ group { name: "mv_bookmarks";
 
         part { name: "elm.swallow.small_fourth";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 378 294;
-                max: 378 294;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
                 align: 0.0 0.0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "center_rect";
-                    relative: 0 0;
-                    offset: 1214 320;
+                    to: "elm.swallow.small_third";
+                    relative: 1 0;
+                    offset: TILE_SEPARATOR 0;
                 }
                 rel2 {
                     to: "center_rect";
@@ -313,26 +304,9 @@ group { name: "mv_bookmarks";
             }
         }
 
-        part { name: "elm.swallow.layoutBottom";
-            type: SWALLOW;
-            description { state: "default" 0.0;
-                min: 1920 181;
-                max: 1920 181;
-                align: 0.0 0.0;
-                fixed: 0 0;
-                rel1 {
-                    to: "layoutBottom_bg";
-                    relative: 0 0;
-                }
-                rel2 {
-                    relative: 1 1;
-                    offset: 0 0;
-                }
-            }
-        }
-
         part { name: "elm.text.empty";
             type: TEXT;
+            scale: 1;
             description { state: "default" 0.0;
                 visible: 0;
                 align: 0.5 0.5;
@@ -390,8 +364,6 @@ group { name: "mv_bookmarks";
 group { name: "elm/button/base/big_tile";
     data.item: "texts" "page_title page_url";
     data.item: "contents" "elm.thumbnail";
-    min: 600 614;
-    max: 600 614;
     images {
         image: "web_frame_selected.png" COMP;
         image: "ico_bg_round_shape_37x37.png" COMP;
@@ -399,10 +371,15 @@ group { name: "elm/button/base/big_tile";
     parts {
         part { name: "bg";
             type: RECT;
+            scale: 1;
             mouse_events: 0;
             description { state: "default" 0.0;
-                min: 784 614;
-                max: 784 614;
+                rel1 {
+                    relative: 0.0  0.0; to: "bg";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "bg";
+                }
                 visible: 1;
                 color: 231 231 231 255;
             }
@@ -410,12 +387,13 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "elm.thumbnail";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
-                fixed: 1 0;
+                fixed: 1 1;
                 align: 0.0 0.0;
                 color : 231 231 231 255;
-                min: 784 577;   // size adjusted to max thubnail with and height
-                max: 784 577;
+                min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;   // size adjusted to max thubnail with and height
+                max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
                 rel1 {
                     relative: 0.0  0.0; to: "bg";
                 }
@@ -430,6 +408,7 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "border_top";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 0 6;
@@ -453,6 +432,7 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "border_left";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 6 0;
@@ -476,6 +456,7 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "border_right";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 6 0;
@@ -497,20 +478,21 @@ group { name: "elm/button/base/big_tile";
             }
         }
 
-        part { name: "background";
+        part { name: "lb_bg";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 784 116;
-                max: 784 116;
-                align: 0.0 0.0;
+                min: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
+                max: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
+                align: 0.0 1.0;
                 color: 113 128 147 255;
                 visible: 1;
                 rel1 {
-                    to: "bg";
+                    to: "elm.thumbnail";
                     relative: 0.0  0.0;
-                    offset: 0 498;    // thumbnail height
                 }
                 rel2 {
+                    to: "elm.thumbnail";
                     relative: 1.0  1.0;
                 }
             }
@@ -522,18 +504,19 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "page_title";
             type: TEXT;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 700 36;
-                max: 700 36;
+                min: 584 34;
+                max: 584 34;
                 align: 0.0 0.0;
                 color: 255 255 255 255;
                 rel1 {
-                    to: "background";
+                    to: "lb_bg";
                     relative: 0.0 0.0;
-                    offset: 32 22;
+                    offset: 36 33;
                 }
                 rel2 {
-                    to: "background";
+                    to: "lb_bg";
                     relative: 1.0  1.0;
                 }
                 text {
@@ -547,37 +530,21 @@ group { name: "elm/button/base/big_tile";
 
         part { name: "page_url";
             type: TEXT;
+            scale: 1;
             description { state: "default" 0.0;
-                min: 700 28;
-                max: 700 28;
-                align: 0 0.0;
-                color: 255 255 255 255;
-                rel1 {
-                        to: "page_title";
-                        relative: 0.0 1.0;
-                        offset: 0 10;
-                }
-                rel2 {
-                        to: "background";
-                        relative: 1.0  1.0;
-                }
-                text {
-                    text: "Web page url";
-                    font: "Sans";
-                    size: 28;
-                    align: 0 0.5;
-                }
+                visible: 0;
             }
         }
 
         part { name: "over";
             type: RECT;
+            scale: 1;
             mouse_events: 1;
             repeat_events: 1;
             description { state: "default" 0.0;
                 color: 0 0 0 0;
                 rel1.to: "bg";
-                rel2.to: "background";
+                rel2.to: "lb_bg";
             }
         }
     }
@@ -587,7 +554,7 @@ group { name: "elm/button/base/big_tile";
             signal: "mouse,in";
             source: "over";
             action:  STATE_SET "selected" 0.0;
-            target:  "background";
+            target:  "lb_bg";
             target: "border_top";
             target: "border_left";
             target: "border_right";
@@ -596,7 +563,7 @@ group { name: "elm/button/base/big_tile";
             signal: "mouse,out";
             source: "over";
             action:  STATE_SET "default" 0.0;
-            target:  "background";
+            target:  "lb_bg";
             target: "border_top";
             target: "border_left";
             target: "border_right";
@@ -622,6 +589,7 @@ group { name: "elm/button/base/small_tile";
     parts {
         part { name: "container";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 min: 378 320;
                 max: 378 320;
@@ -631,6 +599,7 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "bg";
             type: RECT;
+            scale: 1;
             mouse_events: 0;
             description { state: "default" 0.0;
                 min: 378 294;
@@ -649,6 +618,7 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "elm.thumbnail";
             type: SWALLOW;
+            scale: 1;
             description { state: "default" 0.0;
                 fixed: 1 0;
                 align: 0.0 0.0;
@@ -666,8 +636,10 @@ group { name: "elm/button/base/small_tile";
                 inherit: "default" 0.0;
             }
         }
+
         part { name: "border_top";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 0 6;
@@ -691,6 +663,7 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "border_left";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 6 0;
@@ -714,6 +687,7 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "border_right";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 color_class: focusBgColor;
                 min: 6 0;
@@ -735,18 +709,18 @@ group { name: "elm/button/base/small_tile";
             }
         }
 
-        part { name: "background";
+        part { name: "lb_bg";
             type: RECT;
+            scale: 1;
             description { state: "default" 0.0;
                 min: 378 96;
                 max: 378 96;
-                align: 0.0 0.0;
+                align: 0.0 1.0;
                 color: 113 128 147 255;
                 visible: 1;
                 rel1 {
                     to: "bg";
                     relative: 0.0  0.0;
-                    offset: 0 198;  // thumbnail height
                 }
                 rel2 {
                     relative: 1.0  1.0;
@@ -760,18 +734,19 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "page_title";
             type: TEXT;
+            scale: 1;
             description { state: "default" 0.0;
                 min: 314 28;
                 max: 314 28;
                 align: 0.0 0.0;
                 color: 255 255 255 255;
                 rel1 {
-                    to: "background";
+                    to: "lb_bg";
                     relative: 0.0 0.0;
                     offset: 32 18;
                 }
                 rel2 {
-                    to: "background";
+                    to: "lb_bg";
                     relative: 1.0  1.0;
                 }
                 text {
@@ -785,6 +760,7 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "page_url";
             type: TEXT;
+            scale: 1;
             description { state: "default" 0.0;
                 min: 314 24;
                 max: 314 24;
@@ -796,7 +772,7 @@ group { name: "elm/button/base/small_tile";
                     offset: 0 8;
                 }
                 rel2 {
-                    to: "background";
+                    to: "lb_bg";
                     relative: 1.0  1.0;
                 }
                 text {
@@ -810,12 +786,13 @@ group { name: "elm/button/base/small_tile";
 
         part { name: "over";
             type: RECT;
+            scale: 1;
             mouse_events: 1;
             repeat_events: 1;
             description { state: "default" 0.0;
                 color: 0 0 0 0;
                 rel1.to: "bg";
-                rel2.to: "background";
+                rel2.to: "lb_bg";
             }
         }
     }
@@ -825,7 +802,7 @@ group { name: "elm/button/base/small_tile";
             signal: "mouse,in";
             source: "over";
             action: STATE_SET "selected" 0.0;
-            target: "background";
+            target: "lb_bg";
             target: "border_top";
             target: "border_left";
             target: "border_right";
@@ -834,7 +811,7 @@ group { name: "elm/button/base/small_tile";
             signal: "mouse,out";
             source: "over";
             action: STATE_SET "default" 0.0;
-            target: "background";
+            target: "lb_bg";
             target: "border_top";
             target: "border_left";
             target: "border_right";
@@ -851,205 +828,212 @@ group { name: "elm/button/base/small_tile";
 }
 
 group { name: "elm/gengrid/item/grid_item/default";
-	data.item: "texts" "page_title page_url";
-	data.item: "contents" "elm.thumbnail elm.thumbButton";
-	images {
-		image: "web_frame_selected.png" COMP;
-		image: "ico_bg_round_shape_37x37.png" COMP;
+    data.item: "texts" "page_title page_url";
+    data.item: "contents" "elm.thumbnail elm.thumbButton";
+    images {
+        image: "web_frame_selected.png" COMP;
+        image: "ico_bg_round_shape_37x37.png" COMP;
                 image: "ic_thumbnail_favorite_01.png" COMP;
-	}
-	parts {
-		part { name: "bg";
-			type: RECT;
-			mouse_events: 0;
-			description { state: "default" 0.0;
-				min: 338 294;
-                        	max: 338 294;
-				visible: 1;
-				color: 231 231 231 255;
-				rel1.offset: -26 -26;
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-				color: 70 143 254 255;
-			}
-		}
+    }
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                min: 338 294;
+                            max: 338 294;
+                visible: 1;
+                color: 231 231 231 255;
+                rel1.offset: -26 -26;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                color: 70 143 254 255;
+            }
+        }
 
-		part { name: "elm.thumbnail";
-			type: SWALLOW;
-			description { state: "default" 0.0;
-				fixed: 1 0;
-				align: 0.0 0.0;
-				color : 231 231 231 255;
-				min: 338 198;
-				max: 338 198;
-				rel1 {
-					relative: 0.0  0.0; to: "bg";
-				}
-				rel2 {
-					relative: 1.0  1.0; to: "bg";
-				}
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-			}
-		}
-
-                part {
-                    name: "bookmark_thumbButton";
-                    type: IMAGE;
-                    mouse_events: 1;
-                    repeat_events: 1;
-                    description {
-                        state: "default" 0.0;
-                        visible: 1;
-                        rel1.to: "elm.thumbnail";
-                        rel1.offset: 284 18;
-                        rel1.relative: 0.0 0.0;
-                        rel2.to: "elm.thumbnail";
-                        rel2.offset: 324 58;
-                        rel2.relative: 0.0 0.0;
-                        align: 0.0 0.0;
-                        image.normal: "ic_thumbnail_favorite_01.png";
-                    }
+        part { name: "elm.thumbnail";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                fixed: 1 0;
+                align: 0.0 0.0;
+                color : 231 231 231 255;
+                min: 338 198;
+                max: 338 198;
+                rel1 {
+                    relative: 0.0  0.0; to: "bg";
                 }
-
-		part { name: "focus_highlight";
-			type: IMAGE;
-			description { state: "default" 0.0;
-				rel1 {
-					to: "elm.thumbnail";
-					relative: 0.0  0.0;
-				}
-				rel2 {
-					to: "elm.thumbnail";
-					relative: 1.0  1.0;
-				}
-				image.normal: "web_frame_selected.png";
-				image.border: 8 8 8 0;
-				image.border_scale: 1;
-				image.middle: NONE;
-				visible: 0;
-			}
-			description { state: "selected";
-				inherit: "default" 0.0;
-				visible: 1;
-			}
-		}
-
-		part { name: "background";
-			type: RECT;
-			description { state: "default" 0.0;
-				min: 338 87;
-				max: 338 87;
-				align: 0.0 0.0;
-				color: 231 231 231 255;
-				rel1 {
-					to: "elm.thumbnail";
-					relative: 0.0  1.0;
-				}
-				rel2 {
-					relative: 1.0  1.0;
-				}
-			}
-			description { state: "selected" 0.0;
-				inherit: "default" 0.0;
-				color: 70 143 254 255;
-			}
-		}
-
-		part { name: "page_title";
-			type: TEXT;
-			description { state: "default" 0.0;
-				min: 300 48;
-				max: 300 48;
-				align: 0.0 0.5;
-				rel1 {
-					to: "background";
-					relative: 0.0 0.0;
-					offset: 17 0;
-				}
-				rel2 {
-					to: "background";
-					relative: 1.0  1.0;
-				}
-		color: 51 51 51 255;
-                    text {
-                        text: "Web page title";
-                        font: "Sans";
-                        size: 27;
-                        align: 0 0.5;
-                    }
+                rel2 {
+                    relative: 1.0  1.0; to: "bg";
                 }
-		}
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+            }
+        }
 
-		part { name: "page_url";
-                        type: TEXT;
-                        description { state: "default" 0.0;
-                                min: 300 48;
-                                max: 300 48;
-                                align: 0 0.5;
-                                rel1 {
-                                        to: "page_title";
-                                        relative: 0.0 1.0;
-                                }
-                                rel2 {
-                                        to: "page_title";
-                                        relative: 1.0  1.0;
-                                }
-				color: 153 153 153 255;
-                    text {
-                        text: "Web page url";
-                        font: "Sans";
-                        size: 24;
-                        align: 0 0.5;
-                    }
+        part {
+            name: "bookmark_thumbButton";
+            type: IMAGE;
+            scale: 1;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                rel1.to: "elm.thumbnail";
+                rel1.offset: 284 18;
+                rel1.relative: 0.0 0.0;
+                rel2.to: "elm.thumbnail";
+                rel2.offset: 324 58;
+                rel2.relative: 0.0 0.0;
+                align: 0.0 0.0;
+                image.normal: "ic_thumbnail_favorite_01.png";
+            }
+        }
+
+        part { name: "focus_highlight";
+            type: IMAGE;
+            scale: 1;
+            description { state: "default" 0.0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0  0.0;
                 }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0  1.0;
                 }
+                image.normal: "web_frame_selected.png";
+                image.border: 8 8 8 0;
+                image.border_scale: 1;
+                image.middle: NONE;
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
 
-		part { name: "elm.thumbButton";
-			type: SWALLOW;
-			description { state: "default" 0.0;
-				rel1.to: "elm.thumbnail";
-				rel2.to: "elm.thumbnail";
-			}
-		}
+        part { name: "background";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 338 87;
+                max: 338 87;
+                align: 0.0 0.0;
+                color: 231 231 231 255;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0  1.0;
+                }
+                rel2 {
+                    relative: 1.0  1.0;
+                }
+            }
+            description { state: "selected" 0.0;
+                inherit: "default" 0.0;
+                color: 70 143 254 255;
+            }
+        }
 
-		part { name: "over";
-			type: RECT;
-			mouse_events: 1;
-			repeat_events: 1;
-			description { state: "default" 0.0;
-				color: 0 0 0 0;
-				rel1.to: "bg";
-				rel2.to: "background";
-			}
-		}
-	}
+        part { name: "page_title";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 300 48;
+                max: 300 48;
+                align: 0.0 0.5;
+                color: 51 51 51 255;
+                rel1 {
+                    to: "background";
+                    relative: 0.0 0.0;
+                    offset: 17 0;
+                }
+                rel2 {
+                    to: "background";
+                    relative: 1.0  1.0;
+                }
+                text {
+                    text: "Web page title";
+                    font: "Sans";
+                    size: 27;
+                    align: 0 0.5;
+                }
+            }
+        }
 
-	programs{
-		program { name: "mouse_in";
-			signal: "mouse,in";
-			source: "over";
-			action:  STATE_SET "selected" 0.0;
-			target:  "background";
-			target: "focus_highlight";
-			target: "bg";
-		}
-		program { name: "mouse_out";
-			signal: "mouse,out";
-			source: "over";
-			action:  STATE_SET "default" 0.0;
-			target:  "background";
-			target: "focus_highlight";
-			target: "bg";
-		}
-	}
+        part { name: "page_url";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 300 48;
+                max: 300 48;
+                align: 0 0.5;
+                color: 153 153 153 255;
+                rel1 {
+                    to: "page_title";
+                    relative: 0.0 1.0;
+                }
+                rel2 {
+                    to: "page_title";
+                    relative: 1.0  1.0;
+                }
+                text {
+                    text: "Web page url";
+                    font: "Sans";
+                    size: 24;
+                    align: 0 0.5;
+                }
+            }
+        }
+
+        part { name: "elm.thumbButton";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                rel1.to: "elm.thumbnail";
+                rel2.to: "elm.thumbnail";
+            }
+        }
+
+        part { name: "over";
+            type: RECT;
+            scale: 1;
+            mouse_events: 1;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1.to: "bg";
+                rel2.to: "background";
+            }
+        }
+    }
+
+    programs{
+        program { name: "mouse_in";
+            signal: "mouse,in";
+            source: "over";
+            action:  STATE_SET "selected" 0.0;
+            target:  "background";
+            target: "focus_highlight";
+            target: "bg";
+        }
+        program { name: "mouse_out";
+            signal: "mouse,out";
+            source: "over";
+            action:  STATE_SET "default" 0.0;
+            target:  "background";
+            target: "focus_highlight";
+            target: "bg";
+        }
+    }
 }
 
 group { name: "top_button_item";
-        min: 1920 181;
-        max: 1920 181;
         data.item: "texts" "mostvisited_text bookmark_text";
         data.item: "contents" "mostvisited_click bookmark_click";
         parts{
@@ -1058,30 +1042,29 @@ group { name: "top_button_item";
                 scale:1;
                 mouse_events: 1;
                 type: RECT;
+                scale: 1;
                 description {
                     state: "default" 0.0;
-                    color: 255 255 255 255;
+                    color: 0 0 0 0;
                     align: 0 0;
-                    min: 1920 181;
-                    max: 1920 181;
                     rel1 { relative: 0.0 0.0;}
                     rel2 { relative: 1.0 1.0;}
                 }
             }
             part {
                 name: "mostvisited_button";
-                scale:1;
                 mouse_events: 1;
                 type: RECT;
+                scale: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
                     color: 192 192 192 255;
                     align: 0 0;
-                    min: 348 64;
-                    max: 348 64;
-                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 611 58;}
+                    min: 300 64;
+                    max: 300 64;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 20 58;}
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
                 description {
@@ -1149,9 +1132,9 @@ group { name: "top_button_item";
                     fixed: 1 1;
                     color: 192 192 192 255;
                     align: 0 0;
-                    min: 348 64;
-                    max: 348 64;
-                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 961 58;}
+                    min: 300 64;
+                    max: 300 64;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 600 58;}
                     rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
                 }
                 description {

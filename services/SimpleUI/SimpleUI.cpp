@@ -41,7 +41,6 @@
 #include "Tools/EflTools.h"
 #include "BrowserImage.h"
 #include "HistoryItem.h"
-#include "BookmarkItem.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "SqlStorage.h"
@@ -75,6 +74,13 @@ SimpleUI::SimpleUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
+
+    config::DefaultConfig config;
+    config.load("");
+    if (config.isMobileProfile()) {
+        elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
+    }
+
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");

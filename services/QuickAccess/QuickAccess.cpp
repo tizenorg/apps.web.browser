@@ -136,13 +136,12 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
     m_desktopMode = true;
 
     Evas_Object* layout = elm_layout_add(parent);
+    elm_layout_file_set(layout, edjFilePath.c_str(), "main_layout");
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     m_mostVisitedView = createMostVisitedView(layout);
     m_bookmarksView   = createBookmarksView  (layout);
-
-    showHistory();
 
     return layout;
 }
@@ -397,11 +396,12 @@ void QuickAccess::showHistory()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_mostVisitedView)
+    if (elm_layout_content_get(m_layout, "view") == m_mostVisitedView)
         return;
 
     evas_object_hide(m_bookmarksView);
-    elm_layout_content_set(m_layout, "elm.swallow.content", m_mostVisitedView);
+    elm_layout_content_unset(m_layout, "view");
+    elm_layout_content_set(m_layout, "view", m_mostVisitedView);
     evas_object_show(m_mostVisitedView);
 
 
@@ -425,11 +425,12 @@ void QuickAccess::showBookmarks()
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
-    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView && m_bookmarksView != nullptr)
+    if (elm_layout_content_get(m_layout, "view") == m_bookmarksView && m_bookmarksView != nullptr)
         return;
 
     evas_object_hide(m_mostVisitedView);
-    elm_layout_content_set(m_layout, "elm.swallow.content", m_bookmarksView);
+    elm_layout_content_unset(m_layout, "view");
+    elm_layout_content_set(m_layout, "view", m_bookmarksView);
     evas_object_show(m_bookmarksView);
 
     evas_object_show(m_layout);
@@ -441,7 +442,7 @@ void QuickAccess::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_show(m_layout);
-    if (elm_layout_content_get(m_layout, "elm.swallow.content") == m_bookmarksView) {
+    if (elm_layout_content_get(m_layout, "view") == m_bookmarksView) {
         evas_object_show(m_bookmarksView);
     } else {
         evas_object_show(m_mostVisitedView);

@@ -74,8 +74,15 @@ public:
      * @param value Value to be set.
      */
     void set(const std::string & key, const boost::any & value);
+
+    /**
+     * @brief Check if current profile is mobile.
+     */
+    bool isMobileProfile() const;
 private:
     std::map<std::string, boost::any> m_data;
+
+    const std::string MOBILE = "mobile";
 };
 
 

@@ -2,3 +2,4 @@
 m_data["services/dir"] = std::string("@CMAKE_INSTALL_PREFIX@/services");
 m_data["resource/dir"] = std::string("@RESDIR@");
 m_data["webkit/dir"] = std::string("@WEBKITDIR@");
+m_data["profile"] = std::string("@PROFILE@");
