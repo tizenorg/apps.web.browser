@@ -42,8 +42,8 @@ EXPORT_SERVICE(WebKitEngineService, "org.tizen.browser.webkitengineservice")
 
 WebKitEngineService::WebKitEngineService()
     : m_initialised(false)
-    , m_stopped(false)
     , m_guiParent(nullptr)
+    , m_stopped(false)
     , m_currentTabId(TabId::NONE)
 {
     m_mostRecentTab.clear();
