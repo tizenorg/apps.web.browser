@@ -29,6 +29,10 @@
 namespace tizen_browser {
 namespace base_ui {
 
+class WebPageUIStatesManager;
+enum class WPUState;
+typedef std::shared_ptr<WebPageUIStatesManager> WPUStatesManagerPtr;
+typedef std::shared_ptr<const WebPageUIStatesManager> WPUStatesManagerPtrConst;
 class UrlHistoryList;
 typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
 
@@ -46,9 +50,17 @@ public:
     void loadStarted();
     void progressChanged(double progress);
     void loadFinished();
-    bool isErrorPageActive();
-    bool isIncognitoPageActive();
-    bool isHomePageActive() { return m_homePageActive; }
+    WPUStatesManagerPtrConst getStatesMgr() {return m_statesMgr;}
+    /**
+     * @param state The state to compare
+     * @returns True if manager's state equals to given state
+     */
+    bool stateEquals(WPUState state) const;
+    /**
+     * @param states The states to compare
+     * @returns True if one of the given states equals to the manager's state
+     */
+    bool stateEquals(std::initializer_list<WPUState> states) const;
     bool isWebPageUIvisible() { return m_WebPageUIvisible; }
     void toIncognito(bool);
     void switchViewToErrorPage();
@@ -116,7 +128,7 @@ private:
     std::unique_ptr<ButtonBar> m_rightButtonBar;
     std::unique_ptr<URIEntry> m_URIEntry;
     UrlHistoryPtr m_urlHistoryList;
-    bool m_homePageActive;
+    WPUStatesManagerPtr m_statesMgr;
     bool m_webviewLocked;
     bool m_WebPageUIvisible;
 

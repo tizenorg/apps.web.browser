@@ -37,6 +37,7 @@
 #include "Tools/EflTools.h"
 #include "BrowserImage.h"
 #include "SimpleUI.h"
+#include "WebPageUIStatesManager.h"
 #include "BookmarkItem.h"
 #include "Tools/EflTools.h"
 #include "BrowserImage.h"
@@ -447,11 +448,6 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
     m_zoomUI->showNavigation();
 }
 
-bool SimpleUI::isErrorPageActive()
-{
-    return m_webPageUI->isErrorPageActive();
-}
-
 void SimpleUI::showQuickAccess()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -506,7 +502,7 @@ void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
 bool SimpleUI::checkBookmark()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_webPageUI->isHomePageActive())
+    if(m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
         return false;
 
     if(m_favoriteService->bookmarkExists(m_webEngine->getURI())) {
@@ -617,7 +613,7 @@ void SimpleUI::onBackPressed()
         m_zoomUI->escapeZoom();
     } else if ((m_viewManager->topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
         m_tabUI->onBackKey();
-    } else if (m_webPageUI->isHomePageActive()) {
+    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_quickAccess->backButtonClicked();
     } else if ((m_viewManager->topOfStack() == m_webPageUI.get()) && !m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {
         m_webEngine->backButtonClicked();
@@ -706,7 +702,7 @@ void SimpleUI::filterURL(const std::string& url)
 
     //no filtering
 
-        if (m_webPageUI->isHomePageActive())
+        if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
             openNewTab(url);
         else
             m_webEngine->setURI(url);
@@ -749,7 +745,7 @@ void SimpleUI::webEngineURLChanged(const std::string url)
 void SimpleUI::showZoomUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(! m_webPageUI->isHomePageActive()) {
+    if(! m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         M_ASSERT(m_viewManager);
         m_viewManager->popStackTo(m_webPageUI.get());
         m_webPageUI->showTabUI.connect(boost::bind(&SimpleUI::closeZoomUI, this));
@@ -948,12 +944,12 @@ void SimpleUI::showMoreMenu()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
 
-    bool desktopMode = m_webPageUI->isHomePageActive() ? m_quickAccess->isDesktopMode() : m_webEngine->isDesktopMode();
+    bool desktopMode = m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) ? m_quickAccess->isDesktopMode() : m_webEngine->isDesktopMode();
     m_moreMenuUI->setDesktopMode(desktopMode);
     m_viewManager->pushViewToStack(m_moreMenuUI.get());
     m_moreMenuUI->showCurrentTab();
 
-    if (!m_webPageUI->isHomePageActive()) {
+    if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_moreMenuUI->setFavIcon(m_webEngine->getFavicon());
         m_moreMenuUI->setWebTitle(m_webEngine->getTitle());
         m_moreMenuUI->setURL(m_webEngine->getURI());
@@ -976,7 +972,7 @@ void SimpleUI::closeMoreMenu()
 void SimpleUI::switchToMobileMode()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!m_webPageUI->isHomePageActive()) {
+    if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_webEngine->switchToMobileMode();
         m_viewManager->popStackTo(m_webPageUI.get());
         m_webEngine->reload();
@@ -988,7 +984,7 @@ void SimpleUI::switchToMobileMode()
 void SimpleUI::switchToDesktopMode()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!m_webPageUI->isHomePageActive()) {
+    if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_webEngine->switchToDesktopMode();
         m_webEngine->reload();
     } else {
@@ -1124,7 +1120,7 @@ void SimpleUI::updateView() {
     BROWSER_LOGD("[%s] Opened tabs: %d", __func__, tabs);
     if (tabs == 0) {
         switchViewToQuickAccess();
-    } else if (!m_webPageUI->isHomePageActive()) {
+    } else if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         switchViewToWebPage();
     }
     m_webPageUI->setTabsNumber(tabs);
