@@ -239,6 +239,10 @@ void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
 void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    for (auto it : _history_item_data) {
+        if (it->item->getTitle() == hi->getTitle())
+            return;
+    }
     HistoryItemData *itemData = new HistoryItemData();
     itemData->item = hi;
     itemData->historyUI = std::shared_ptr<tizen_browser::base_ui::HistoryUI>(this);
