@@ -22,6 +22,7 @@
 #include "ServiceManager.h"
 #include "BrowserAssert.h"
 #include "UrlHistoryList/UrlHistoryList.h"
+#include "WebPageUIStatesManager.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -37,7 +38,7 @@ WebPageUI::WebPageUI()
     , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
     , m_urlHistoryList(std::make_shared<UrlHistoryList>())
-    , m_homePageActive(false)
+    , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
     , m_webviewLocked(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -81,7 +82,7 @@ void WebPageUI::showUI()
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
-    if (m_homePageActive)
+    if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
         showQuickAccess();
     else
         m_URIEntry->showPageTitle();
@@ -101,7 +102,7 @@ void WebPageUI::hideUI()
     elm_object_focus_custom_chain_unset(m_mainLayout);
     evas_object_hide(m_mainLayout);
 
-    if (m_homePageActive)
+    if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
         hideQuickAccess();
 
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
@@ -136,6 +137,16 @@ void WebPageUI::progressChanged(double progress)
     }
 }
 
+bool WebPageUI::stateEquals(WPUState state) const
+{
+    return m_statesMgr->equals(state);
+}
+
+bool WebPageUI::stateEquals(std::initializer_list<WPUState> states) const
+{
+    return m_statesMgr->equals(states);
+}
+
 void WebPageUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -152,20 +163,10 @@ void WebPageUI::loadStopped()
     m_URIEntry->showPageTitle();
 }
 
-bool WebPageUI::isErrorPageActive()
-{
-    return elm_object_part_content_get(m_mainLayout, "web_view") == m_errorLayout;
-}
-
 void WebPageUI::setPageTitle(const std::string& title)
 {
      BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
      m_URIEntry->setPageTitle(title);
-}
-
-bool WebPageUI::isIncognitoPageActive()
-{
-    return elm_object_part_content_get(m_mainLayout, "web_view") == m_privateLayout;
 }
 
 void WebPageUI::toIncognito(bool incognito)
@@ -189,7 +190,7 @@ void WebPageUI::setMainContent(Evas_Object* content)
 void WebPageUI::switchViewToErrorPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_homePageActive = false;
+    m_statesMgr->set(WPUState::MAIN_ERROR_PAGE);
     setMainContent(m_errorLayout);
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
@@ -200,8 +201,8 @@ void WebPageUI::switchViewToErrorPage()
 
 void WebPageUI::switchViewToIncognitoPage()
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_homePageActive = false;
+    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_statesMgr->set(WPUState::MAIN_INCOGNITO_PAGE);
     setMainContent(m_privateLayout);
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
@@ -215,11 +216,11 @@ void WebPageUI::switchViewToIncognitoPage()
 
 void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_homePageActive)
+    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
     {
         hideQuickAccess();
-        m_homePageActive = false;
+        m_statesMgr->set(WPUState::MAIN_WEB_PAGE);
     }
     setMainContent(content);
     updateURIBar(uri);
@@ -237,7 +238,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    m_homePageActive = true;
+    m_statesMgr->set(WPUState::QUICK_ACCESS);
     setMainContent(content);
     evas_object_hide(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
@@ -254,7 +255,7 @@ void WebPageUI::faviconClicked(void* data, Evas_Object*, const char*, const char
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebPageUI* self = reinterpret_cast<WebPageUI*>(data);
-    if (!self->isHomePageActive() && !self->isErrorPageActive()) {
+    if(!self->stateEquals({ WPUState::QUICK_ACCESS, WPUState::MAIN_ERROR_PAGE })) {
         self->getURIEntry().clearFocus();
     }
 }
@@ -287,7 +288,7 @@ void WebPageUI::lockWebview()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(isWebPageUIvisible()) {
-        if(!isHomePageActive() && !isErrorPageActive()) {
+        if(m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
             elm_object_focus_custom_chain_unset(m_mainLayout);
             elm_object_focus_custom_chain_append(m_mainLayout, elm_object_part_content_get(m_mainLayout, "web_view"), NULL);
             m_webviewLocked = true;
@@ -299,7 +300,7 @@ void WebPageUI::onRedKeyPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(isWebPageUIvisible()) {
-        if(!isHomePageActive()) {
+        if(m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
             if(m_webviewLocked) {
                 refreshFocusChain();
                 m_URIEntry->setFocus();
@@ -503,7 +504,7 @@ void WebPageUI::refreshFocusChain()
     // set custom focus chain
     elm_object_focus_custom_chain_unset(m_mainLayout);
     elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
-    if (!m_homePageActive) {
+    if(!m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
         elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
         elm_object_focus_custom_chain_append(m_mainLayout, m_bookmarkManagerButton, NULL);
     } else {

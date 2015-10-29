@@ -2,6 +2,7 @@ project(WebPageUI)
 
 set(WebPageUI_SRCS
     WebPageUI.cpp
+    WebPageUIStatesManager.cpp
     ButtonBar.cpp
     URIEntry.cpp
     UrlHistoryList/UrlHistoryList.cpp

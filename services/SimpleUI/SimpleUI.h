@@ -98,7 +98,6 @@ private:
 
     void loadError();
     void setErrorButtons();
-    bool isErrorPageActive();
 
     void bookmarkAdded();
     void bookmarkDeleted();
