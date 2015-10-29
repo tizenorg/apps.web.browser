@@ -28,6 +28,8 @@ using namespace std;
 namespace tizen_browser {
 namespace base_ui {
 
+class WebPageUIStatesManager;
+typedef std::shared_ptr<const WebPageUIStatesManager> WPUStatesManagerPtrConst;
 class GenlistManager;
 typedef shared_ptr<GenlistManager> GenlistManagerPtr;
 
@@ -48,7 +50,7 @@ enum class EditedUrlState
 class UrlHistoryList
 {
 public:
-    UrlHistoryList();
+    UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr);
     virtual ~UrlHistoryList();
     Evas_Object* getContent();
     Evas_Object* getEditedEntry();
@@ -71,6 +73,7 @@ public:
     void onMouseClick();
 
     boost::signals2::signal<void(shared_ptr<services::HistoryItem>)> openURLInNewTab;
+    boost::signals2::signal<void (const std::string&)> uriChanged;
 
     int getVisibleItemsMax() const
     {
@@ -90,6 +93,8 @@ private:
 
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_unfocused(void* data, Evas_Object* obj, void* event_info);
+
+    WPUStatesManagerPtrConst m_webPageUiStatesMgr = nullptr;
 
     // the maximum items number on a list
     const int VISIBLE_ITEMS_MAX = 12;

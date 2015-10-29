@@ -37,8 +37,8 @@ WebPageUI::WebPageUI()
     , m_progressBar(nullptr)
     , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
-    , m_urlHistoryList(std::make_shared<UrlHistoryList>())
     , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
+    , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

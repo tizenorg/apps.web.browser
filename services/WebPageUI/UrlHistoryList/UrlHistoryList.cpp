@@ -19,12 +19,14 @@
 #include "GenlistManager.h"
 #include "BrowserLogger.h"
 #include "GenlistItemsManager.h"
+#include "WebPageUI/WebPageUIStatesManager.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
-UrlHistoryList::UrlHistoryList() :
-        m_layout(nullptr)
+UrlHistoryList::UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr)
+    : m_webPageUiStatesMgr(webPageUiStatesMgr)
+    , m_layout(nullptr)
 {
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("WebPageUI/UrlHistoryList.edj");
@@ -138,7 +140,12 @@ void UrlHistoryList::onMouseClick()
 
 void UrlHistoryList::onListItemSelect(std::string content)
 {
-    openURLInNewTab (make_shared<services::HistoryItem>(content));hideWidgetPretty();
+    if (m_webPageUiStatesMgr->equals(WPUState::QUICK_ACCESS)) {
+        openURLInNewTab (make_shared<services::HistoryItem>(content));
+    } else {
+        uriChanged(content);
+    }
+    hideWidgetPretty();
 }
 
 void UrlHistoryList::onListWidgetFocused()

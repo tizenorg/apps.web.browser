@@ -127,8 +127,8 @@ private:
     std::unique_ptr<ButtonBar> m_leftButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
     std::unique_ptr<URIEntry> m_URIEntry;
-    UrlHistoryPtr m_urlHistoryList;
     WPUStatesManagerPtr m_statesMgr;
+    UrlHistoryPtr m_urlHistoryList;
     bool m_webviewLocked;
     bool m_WebPageUIvisible;
 
