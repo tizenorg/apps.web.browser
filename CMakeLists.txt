@@ -98,8 +98,14 @@ if(TIZEN_BUILD)
         -DM_VCS_ID=\"${VCS_ID}\"
         -DTIZEN_BUILD=\"${TIZEN_BUILD}\"
         -DCERTS_DIR=\"${CERTS_DIR}\"
-        -DPROFILE=${PROFILE}
         )
+
+    if (${PROFILE} MATCHES "mobile")
+        ADD_DEFINITIONS(-DPROFILE_MOBILE=1)
+    else (${PROFILE} MATCHES "mobile")
+        ADD_DEFINITIONS(-DPROFILE_TV=1)
+    endif (${PROFILE} MATCHES "mobile")
+
 endif(TIZEN_BUILD)
 
 ADD_DEFINITIONS(-DEDJE_DIR=\"${EDJE_DIR}\")

@@ -31,8 +31,6 @@
 namespace tizen_browser{
 namespace base_ui{
 
-//TODO: This class name is not revelant to what this class actually does.
-//Rename this class and file to "QuickAccessUI".
 class BROWSER_EXPORT QuickAccess
         : public tizen_browser::core::AbstractService
 {
@@ -95,6 +93,8 @@ private:
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
+    Evas_Object *m_scroller;
+    Evas_Object *m_centerLayout;
     Evas_Object *m_bookmarksView;
     Evas_Object *m_mostVisitedView;
     Evas_Object *m_bookmarksButton;
