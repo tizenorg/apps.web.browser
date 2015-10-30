@@ -1,0 +1,370 @@
+#define CONTENT_HEIGHT 99;
+#define CONTENT_BG_HEIGHT (CONTENT_HEIGHT+294);
+
+#define DEBUG_RECT_OVER(over_part, r, g, b)                         \
+    part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
+                                                                    \
+scale:1;                                                            \
+        type : RECT;                                                \
+        repeat_events: 1;                                           \
+        description {                                               \
+            state: "default" 0.0;                                   \
+            visible: 1;                                             \
+            color: r g b 128;                                       \
+            rel1 { to: over_part; relative: 0 0; }                  \
+            rel2 { to: over_part; relative: 1 1; }                  \
+        }                                                           \
+    }
+
+#define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
+   group { \
+      name: FILE_NAME; \
+      images.image: FILE_NAME LOSSY 100; \
+      parts { \
+         part { name: "image"; \
+            description { \
+               state: "default" 0.0; \
+               image.normal: FILE_NAME; \
+               min: 134 167; \
+               max: 134 167; \
+               aspect_preference: BOTH; \
+            } \
+         } \
+      } \
+   }
+
+
+
+collections{
+    RESOURCE_IMAGE_LOSSY("btn_bar_new_foc.png")
+    RESOURCE_IMAGE_LOSSY("btn_bar_new_nor.png")
+
+    group { name: "bookmark_popup";
+      parts{
+       part{ name: "content_bg";
+            type: RECT;
+            scale: 1;
+            description{
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                color: 255 255 255 255;
+                align: 0.5 0.5;
+                min: 740 658;
+                max: 740 884;
+                rel1 {relative: 0.0 0.0;}
+                rel2 {relative: 1.0 1.0;}
+              }
+          }
+            part{ name: "title_bg";
+                type: RECT;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    min: 740 144;
+                    max: 740 144;
+                    align: 0.0 0;
+                    rel1 {relative: 0.0 0.0; to: "content_bg"; offset: 0 0;}
+                    rel2 {relative: 1.0 1.0; to: "content_bg";}
+                }
+            }
+           part{ name: "title_text_bm";
+                type: TEXT;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 {relative: 0.0 0.0; to: "title_bg"; offset: 40 46;}
+                    rel2 {relative: 1.0 1.0; to: "title_bg"; offset: -40 0;}
+                    color: 51 51 51 255;
+                    text{
+                        text: "Add to bookmark";
+                        font: "Sans";
+                        size: 42;
+                        align: 0.5 0.0;
+                    }
+                }
+            }
+           part{ name: "sub_title_text_bm";
+                type: TEXT;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 {relative: 0.0 0.0; to: "title_bg"; offset: 40 112;}
+                    rel2 {relative: 1.0 1.0; to: "title_bg"; offset: -40 0;}
+                    color: 104 104 104 255;
+                    text{
+                        text: "Select folder for adding to bookmark";
+                        font: "Sans";
+                        size: 32;
+                        align: 0.5 0.0;
+                    }
+                }
+            }
+            part{ name: "gengrid_bg";
+                type: RECT;
+                mouse_events: 0;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    rel1 {relative: 0.0 1.0; to: "title_bg"; offset: 40 40;}
+                    rel2 {relative: 1.0 1.0; }
+                    align: 0 0;
+                    min: 698 452;
+                    max: 698 678;
+                }
+            }
+            part{ name: "elm.swallow.gengrid";
+                type: SWALLOW;
+                scale: 1;
+                description{
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 0 0;
+                    rel1 {relative: 0.0 0.0; to: "gengrid_bg";}
+                    rel2 {relative: 1.0 1.0; to: "gengrid_bg";}
+                    align: 0.0 0.0;
+                    min: 698 452;
+                    max: 698 678;
+                }
+            }
+       }
+  }
+
+  /* group {
+        name: "own_popup_bm_long";
+        inherit: "own_popup_bm";
+        parts {
+                        part{ name: "content";
+            type: SWALLOW;
+            scale: 1;
+            description{
+                state: "default" 0.0;
+                visible: 1;
+                rel1 {relative: 0.0 0.0;}
+                rel2 {relative: 1.0 1.0;}
+        fixed: 1 1;
+                align: 0.5 0.5;
+        min: 542 0;
+        max: 542 450;
+                }
+            }
+        }
+    }
+  */
+
+group { name: "elm/gengrid/item/folder_grid_item/default";
+    data.item: "texts" "page_title";
+    data.item: "contents" "elm.thumbnail elm.thumbButton";
+    images {
+        image: "web_frame_selected.png" COMP;
+        image: "ico_bg_round_shape_37x37.png" COMP;
+        image: "btn_bar_new_nor.png" COMP;
+    }
+    parts {
+        part { name: "bg";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                visible: 1;
+                min: 226 226;
+                max: 226 226;
+                color: 255 255 255 255;
+                rel1.offset: -18 -18;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                color: 70 143 254 255;
+            }
+        }
+
+        part { name: "thumbnail_bg";
+            type: RECT;
+            description { state: "default" 0.0;
+                visible: 1;
+                min: 208 208;
+                max: 208 208;
+                align: 0.0 0.0;
+                color : 231 231 231 255;
+                rel1 {
+                    relative: 0.0  0.0; to: "bg";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "bg";
+                }
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                color: 70 143 254 255;
+            }
+        }
+        part { name: "elm.thumbnail";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+                fixed: 1 0;
+                visible: 1;
+                align: 0.0 0.0;
+                color : 255 255 255 255;
+                rel1 {
+                    relative: 0.0  0.0; to: "thumbnail_bg";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "thumbnail_bg";
+                }
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+            }
+        }
+        part { name: "page_title";
+            type: TEXT;
+            description { state: "default" 0.0;
+                align: 0.5 0.5;
+                rel1 {
+                    to: "thumbnail_bg";
+                    relative: 0.0 0.0;
+                    offset: 0 0;
+                }
+                rel2 {
+                    to: "thumbnail_bg";
+                    relative: 1.0  1.0;
+                }
+                color: 51 51 51 255;
+                    text {
+                        text: "Web page title";
+                        font: "Sans";
+                        size: 32;
+                        align: 0.5 0.5;
+                    }
+                }
+                description { state: "selected" 0.0;
+                    inherit: "default" 0.0;
+                    color: 255 255 255 255;
+                }
+                description { state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    //color: highlightTextColor;
+                }
+        }
+         part { name: "elm.thumbButton";
+            type: SWALLOW;
+            mouse_events: 1;
+            description { state: "default" 0.0;
+                rel1.to: "elm.thumbnail";
+                rel2.to: "elm.thumbnail";
+            }
+        }
+        part { name: "over";
+            type: RECT;
+            mouse_events: 1;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1.to: "thumbnail_bg";
+                rel2.to: "thumbnail_bg";
+            }
+        }
+        }
+ programs{
+       program {
+                name: "mouse_click_newtab";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+       program {
+                name: "mouse_click_thumbbutton";
+                signal: "mouse,clicked";
+                source: "elm.thumbButton";
+                script {
+                    emit("clicked", "elm.thumbButton");
+                }
+            }
+        program { name: "mouse_in";
+            signal: "mouse,in";
+            source: "over";
+            action:  STATE_SET "selected" 0.0;
+            target: "thumbnail_bg";
+            target: "page_title";
+        }
+        program { name: "mouse_out";
+            signal: "mouse,out";
+            source: "over";
+            action:  STATE_SET "default" 0.0;
+            target: "thumbnail_bg";
+            target: "page_title";
+        }
+    }
+}
+
+
+group{
+        name: "elm/button/base/hidden_bm_button";
+        parts{
+            part{
+                name: "button";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 0 0 0 0;
+                }
+            }
+            part{
+                name: "over";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;to: "button";}
+                    rel2 { relative: 1.0 1.0;to: "button";}
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs{
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+group { name: "elm/button/base/elm.thumbButton";
+        images {
+            image: "ico_delete.png" COMP;
+        }
+        parts {
+            part { name: "elm.swallow.content";
+                type: RECT;
+                mouse_events: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    color: 0 0 0 0;
+                    visible: 1;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                }
+            }
+        }
+
+        programs {
+            program { name: "mouse,clicked";
+                signal: "mouse,down,1";
+                source: "elm.swallow.content";
+                action: SIGNAL_EMIT "elm,action,click" "";
+            }
+        }
+
+}

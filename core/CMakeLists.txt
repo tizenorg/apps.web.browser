@@ -1,0 +1,126 @@
+project(browserApp)
+
+include(Coreheaders)
+include(EFLHelpers)
+include(EWebKitHelpers)
+
+find_package(PNG REQUIRED)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}
+    ${PNG_INCLUDE_DIRS}
+    )
+
+### browserCore library
+### current platform CMake desn't support clean o build
+set(browserCore_SRCS
+    BasicUI/EAction.cpp
+    BasicUI/Action.cpp
+    BasicUI/MenuButton.cpp
+    Config/Config.cpp
+    Logger/Logger.cpp
+    Logger/LoggerTools.cpp
+    Logger/TextLogger.cpp
+    Logger/Useloggers.cpp
+    ServiceManager/Debug/BrowserAssert.cpp
+    ServiceManager/Debug/Type.cpp
+    ServiceManager/ServiceFactory.cpp
+    ServiceManager/ServiceLib.cpp
+    ServiceManager/ServiceLoader.cpp
+    ServiceManager/ServiceManager.cpp
+    AbstractWebEngine/TabId.cpp
+    AbstractWebEngine/TabThumbCache.cpp
+    AbstractWebEngine/WebConfirmation.cpp
+    Tools/EflTools.cpp
+    Tools/BrowserImage.cpp
+    Tools/Blob.cpp
+    Tools/BookmarkItem.cpp
+    Tools/FeedItem.cpp
+    Tools/FeedChannel.cpp
+    BrowserConstants.cpp
+    )
+
+if(TIZEN_BUILD)
+    set(browserCore_SRCS
+        ${browserCore_SRCS}
+        Logger/DLOGLogger.cpp
+        )
+endif(TIZEN_BUILD)
+
+set(browserCore_HDRS
+    AbstractInterfaces/AbstractServiceDefinition.h
+    AbstractInterfaces/AbstractUIComponent.h
+    AbstractInterfaces/AbstractFavoriteService.h
+    AbstractWebengine/AbstractWebengine.h
+    BasicUI/AbstractMainWindow.h
+    BasicUI/MenuButton.h
+    Config/Config.h
+    Logger/AbstractLogger.h
+    Logger/Logger.h
+    Logger/TextLogger.h
+    ServiceManager/Debug/BrowserAssert.h
+    ServiceManager/Debug/Lifecycle.h
+    ServiceManager/Debug/Type.h
+    ServiceManager/ServiceLib.h
+    ServiceManager/ServiceLoader.h
+    ServiceManager/ServiceFactory.h
+    ServiceManager/AbstractService.h
+    ServiceManager/ServiceManager.h
+    ServiceManager/service_macros.h
+    Tools/BrowserImage.h
+    Tools/EflTools.h
+    Tools/Blob.h
+    Tools/BookmarkItem.h
+    Tools/GeneralTools.h
+    Tools/FeedItem.h
+    Tools/FeedChannel.h
+    )
+
+if(TIZEN_BUILD)
+    set(${browserCore_SRCS} ${browserCore_SRCS}
+    DLOGLogger.cpp)
+endif(TIZEN_BUILD)
+
+configure_file(Config/ConfigValues.h.in Config/ConfigValues.h @ONLY)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/Config)
+
+if(DYN_INT_LIBS)
+    add_library(browserCore SHARED ${browserCore_SRCS})
+else(DYN_INT_LIBS)
+    add_library(browserCore STATIC ${browserCore_SRCS})
+endif(DYN_INT_LIBS)
+
+target_link_libraries(browserCore dl)
+target_link_libraries(browserCore ${Boost_LIBRARIES})
+target_link_libraries(browserCore ${EFL_LDFLAGS})
+target_link_libraries(browserCore ${PNG_LIBRARIES})
+target_link_libraries(browserCore ${EWEBKIT2_LDFLAGS})
+
+if(TIZEN_BUILD)
+    target_link_libraries(browserCore ${tizen_pkgs_LDFLAGS})
+endif(TIZEN_BUILD)
+
+install(TARGETS browserCore
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib)
+### end browserCore library
+
+
+### browser binary
+set(BIN_NAME "browser")
+add_executable(${BIN_NAME} main.cpp)
+add_dependencies(${BIN_NAME} browserCore)
+target_link_libraries(${BIN_NAME} browserCore)
+target_link_libraries(${BIN_NAME} ${EFL_LDFLAGS})
+target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
+
+
+if(TIZEN_BUILD)
+    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS})
+endif(TIZEN_BUILD)
+
+install(TARGETS ${BIN_NAME} RUNTIME DESTINATION bin)
+
+
+
