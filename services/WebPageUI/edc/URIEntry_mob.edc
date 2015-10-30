@@ -67,6 +67,10 @@ collections {
                 name: "browser-entry-uri-style-selected";
                 base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#4088d3";
             }
+            style {
+                name: "browser-entry-uri-style-selected-incognito";
+                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" right_margin="60" color=#4088d3";
+            }
         }
         data {
             item: focus_highlight "off";
@@ -125,13 +129,24 @@ collections {
                 source: "elm/entry/selection/browser_entry";
                 source4: "elm/entry/cursor/browser_entry";
                 description {
-                    max: URI_INPUTBOX_LENGTH 82;
                     state: "default" 0.0;
+                    max: -1 82;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
                     align: 0.0 0.0;
                     text {
                         style: "browser-entry-uri-style-selected";
+                        min: 0 1;
+                    }
+                }
+                description {
+                    state: "incognito" 0.0;
+                    max: -1 82;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    text {
+                        style: "browser-entry-uri-style-selected-incognito";
                         min: 0 1;
                     }
                 }
@@ -158,6 +173,20 @@ collections {
                 source: "elm";
                 action: STATE_SET "default" 0.0;
                 target: "elm.guide";
+            }
+            program {
+                name: "normal_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_normal";
+                action: STATE_SET "default" 0.0;
+                target: "elm.text";
+            }
+            program {
+                name: "incognito_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_incognito";
+                action: STATE_SET "incognito" 0.0;
+                target: "elm.text";
             }
         }
     }//group
