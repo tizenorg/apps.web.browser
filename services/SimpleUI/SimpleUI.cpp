@@ -78,9 +78,9 @@ SimpleUI::SimpleUI()
 
     config::DefaultConfig config;
     config.load("");
-    if (config.isMobileProfile()) {
-        elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
-    }
+#if PROFILE_MOBILE
+    elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
+#endif
 
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
