@@ -172,10 +172,14 @@ void WebPageUI::setPageTitle(const std::string& title)
 void WebPageUI::toIncognito(bool incognito)
 {
     BROWSER_LOGD("[%s:%d,%d] ", __PRETTY_FUNCTION__, __LINE__, incognito);
-    if(incognito)
+    if (incognito) {
         elm_object_signal_emit(m_mainLayout, "incognito,true", "ui");
-    else
+        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_incognito", "ui");
+    }
+    else {
         elm_object_signal_emit(m_mainLayout, "incognito,false", "ui");
+        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_normal", "ui");
+    }
 }
 
 void WebPageUI::setMainContent(Evas_Object* content)
