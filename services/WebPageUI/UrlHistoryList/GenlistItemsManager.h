@@ -41,7 +41,7 @@ public:
     GenlistItemsManager();
     virtual ~GenlistItemsManager();
 
-    Elm_Object_Item* getItem(GenlistItemType type);
+    Elm_Object_Item* getItem(GenlistItemType type) const;
     void setItems(std::initializer_list<GenlistItemType> types,
             Elm_Object_Item* item);
     /**
@@ -60,8 +60,17 @@ public:
     bool shiftItemDown(GenlistItemType item);
     bool shiftItemUp(GenlistItemType item);
 
+    /**
+     * clear all pointers
+     */
+    void clear();
+
+    std::string toString(GenlistItemType item) const;
+
+
 private:
     map<GenlistItemType, shared_ptr<Elm_Object_Item*>> ptrMap;
+    std::map<GenlistItemType, std::string> namesMap;
 
 };
 

@@ -33,16 +33,6 @@ typedef std::shared_ptr<const WebPageUIStatesManager> WPUStatesManagerPtrConst;
 class GenlistManager;
 typedef shared_ptr<GenlistManager> GenlistManagerPtr;
 
-enum class EditedUrlState
-{
-    // url was edited by a user (by typing)
-    EDITED_BY_USER,
-    // url was edited in other way than typing (but for the first time after previous user edition)
-    EDITED_OTHER_FIRST,
-    // url was edited in other way than typing (and previously was not edited by the user)
-    EDITED_OTHER_MANY_TIMES
-};
-
 /**
  * Manages list of url matches (URL from history). Manages top layout, creates
  * widget displaying url items.
@@ -52,65 +42,85 @@ class UrlHistoryList
 public:
     UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr);
     virtual ~UrlHistoryList();
-    Evas_Object* getContent();
-    Evas_Object* getEditedEntry();
-    void saveEntryEditedContent();
-    void restoreEntryEditedContent();
-    void saveEntryURLContent();
-    void restoreEntryURLContent();
-    Evas_Object* getGenlist();
-
-    // remove if unused
-    void hideWidgetPretty();
 
     void setMembers(Evas_Object* parent, Evas_Object* chainObject);
+    Evas_Object* getContent();
+    Evas_Object* getEditedEntry();
+    Evas_Object* getGenlist();
 
-    // // on uri entry widget "changed,user" signal
+    /**
+     * On uri entry widget "changed,user" signal.
+     *
+     * @param matchedEntries The entries matches for editedUrl
+     */
     void onURLEntryEditedByUser(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
 
+    /**
+     * On genlist's item focus change.
+     */
     void onItemFocusChange();
     void onMouseClick();
+
+    /**
+     * Hide widget by sliding out.
+     */
+    void hideWidgetPretty();
+
+    /**
+     * @return True if widget is focused.
+     */
+    bool widgetFocused() const;
+    void onListWidgetFocusChange(bool focused);
+    void listWidgetFocusChangeTimerStart();
+
+    void saveEntryAsEditedContent();
+    void saveEntryAsURLContent();
+    void restoreEntryEditedContent();
+    void restoreEntryURLContent();
 
     boost::signals2::signal<void(shared_ptr<services::HistoryItem>)> openURLInNewTab;
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
     int getVisibleItemsMax() const
     {
-        return VISIBLE_ITEMS_MAX;
+        return m_VISIBLE_ITEMS_MAX;
     }
 
     int getMinKeywordLength() const
     {
-        return MIN_KEYWORD_LENGTH;
+        return m_MIN_KEYWORD_LENGTH;
     }
 
 private:
     void createLayout(Evas_Object* parentLayout);
-    void onListItemSelect(std::string content);
-    void onListWidgetFocused();
-    void onListWidgetUnfocused();
+    void onItemSelect(std::string content);
 
+    static Eina_Bool onListWidgetFocusChangeDelayed(void *data);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_unfocused(void* data, Evas_Object* obj, void* event_info);
 
-    WPUStatesManagerPtrConst m_webPageUiStatesMgr = nullptr;
+    GenlistManagerPtr m_genlistListManager;
+    WPUStatesManagerPtrConst m_webPageUiStatesMgr;
 
     // the maximum items number on a list
-    const int VISIBLE_ITEMS_MAX = 12;
+    const int m_VISIBLE_ITEMS_MAX = 12;
     // the minimum length of the keyword used to search matches
-    const int MIN_KEYWORD_LENGTH = 3;
+    const int m_MIN_KEYWORD_LENGTH = 3;
+
     Evas_Object* m_parent = nullptr;
     // entry widget from which change signals are received
     Evas_Object* m_entry = nullptr;
-    // content of the entry, needed to restore edited value
-    string m_entryEditedContent;
-    // content of the entry before edition: needed to restore original URL value
-    string m_entryURLContent;
     Evas_Object* m_layout = nullptr;
     string m_edjFilePath;
 
-    GenlistManagerPtr m_genlistListManager = nullptr;
+    // content of the edited entry, needed to restore edited value
+    string m_entryEditedContent;
+    // content of the entry before edition: needed to restore original URL value
+    string m_entryURLContent;
+
+    bool m_widgetFocused = false;
+    static Ecore_Timer* m_widgetFocusChangeDelayedTimer;
 
 };
 

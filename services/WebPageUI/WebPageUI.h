@@ -76,7 +76,10 @@ public:
     void setStopButtonEnabled(bool enabled) { m_stopLoading->setEnabled(enabled); }
     void setMoreMenuButtonEnabled(bool enabled) { m_showMoreMenu->setEnabled(enabled); }
     void lockWebview();
+    void lockUrlHistoryList();
+    void unlockUrlHistoryList();
     void onRedKeyPressed();
+    void onYellowKeyPressed();
 
     boost::signals2::signal<void ()> backPage;
     boost::signals2::signal<void ()> forwardPage;
