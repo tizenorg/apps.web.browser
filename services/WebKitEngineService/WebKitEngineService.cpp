@@ -45,6 +45,7 @@ WebKitEngineService::WebKitEngineService()
     , m_guiParent(nullptr)
     , m_stopped(false)
     , m_currentTabId(TabId::NONE)
+    , m_timer(nullptr)
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
@@ -311,6 +312,8 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
 
     if (tabsCount() >= boost::any_cast<int>(config.get("TAB_LIMIT")))
         return currentTabId();
+    else
+        m_timer = ecore_timer_add(0.01, _windowCreated, this);
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -511,6 +514,14 @@ void WebKitEngineService::searchOnWebsite(const std::string & searchString, int 
 void WebKitEngineService::_IMEStateChanged(bool enable)
 {
     IMEStateChanged(enable);
+}
+
+Eina_Bool WebKitEngineService::_windowCreated(void* data)
+{
+    WebKitEngineService *self = reinterpret_cast<WebKitEngineService *>(data);
+    self->windowCreated();
+    ecore_timer_del(self->m_timer);
+    return ECORE_CALLBACK_CANCEL;
 }
 
 void WebKitEngineService::backButtonClicked()

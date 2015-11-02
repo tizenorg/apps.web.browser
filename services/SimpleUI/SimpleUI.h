@@ -146,6 +146,7 @@ private:
     void onMouseClick();
     void onRedKeyPressed();
     void setwvIMEStatus(bool status);
+    void windowCreated();
 
     sharedAction m_showBookmarkManagerUI;
 
