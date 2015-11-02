@@ -53,8 +53,9 @@ public:
      */
     bool equals(std::initializer_list<WPUState> states) const;
 
-private:
     std::string toString(WPUState state) const;
+
+private:
     WPUState m_state;
     std::map<WPUState, std::string> namesMap;
 
