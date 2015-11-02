@@ -54,11 +54,12 @@ void GenlistManager::clearWidget()
 {
     if (m_genlist && elm_genlist_items_count(m_genlist))
         elm_genlist_clear(m_genlist);
+    m_itemsManager->clear();
 }
 
 void GenlistManager::onMouseFocusChange(bool mouseInsideWidget)
 {
-    this->mouseInsideWidget = mouseInsideWidget;
+    this->m_mouseInsideWidget = mouseInsideWidget;
 }
 
 void GenlistManager::setSingleBlockHide(bool block)
@@ -95,11 +96,6 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
                 GenlistManagerCallbacks::_genlist_mouse_in, this);
         evas_object_event_callback_add(m_genlist, EVAS_CALLBACK_MOUSE_OUT,
                 GenlistManagerCallbacks::_genlist_mouse_out, this);
-
-        evas_object_smart_callback_add(m_genlist, "focused",
-                GenlistManagerCallbacks::_genlist_focused, this);
-        evas_object_smart_callback_add(m_genlist, "unfocused",
-                GenlistManagerCallbacks::_genlist_unfocused, this);
     }
     return m_genlist;
 }
@@ -142,17 +138,20 @@ void GenlistManager::showWidget(const string& editedUrl,
     }
 }
 
-const char* GenlistManager::getItemUrl(GenlistItemType type)
+string GenlistManager::getItemUrl(std::initializer_list<GenlistItemType> types) const
 {
-    if (!m_itemsManager->getItem( { type }))
-        return "";
-    void* data = elm_object_item_data_get(m_itemsManager->getItem( { type }));
-    if (!data)
-        return "";
-    const UrlPair* const urlPair = reinterpret_cast<UrlPair*>(data);
-    if (!urlPair)
-        return "";
-    return urlPair->urlOriginal.c_str();
+    for (auto t : types) {
+        if (!m_itemsManager->getItem( { t }))
+            continue;
+        void* data = elm_object_item_data_get(m_itemsManager->getItem( { t }));
+        if (!data)
+            continue;
+        const UrlPair* const urlPair = reinterpret_cast<UrlPair*>(data);
+        if (!urlPair)
+            continue;
+        return urlPair->urlOriginal;
+    }
+    return "";
 }
 
 void GenlistManager::hideWidgetPretty()
@@ -162,20 +161,13 @@ void GenlistManager::hideWidgetPretty()
         return;
     }
 
-    m_itemsManager->setItems( { GenlistItemType::ITEM_CURRENT }, nullptr);
-
     if (getWidgetPreviouslyHidden()) {
-        hideWidgetInstant();
         return;
     }
+
+    m_itemsManager->setItems( { GenlistItemType::ITEM_CURRENT }, nullptr);
     startScrollOut();
     setWidgetPreviouslyHidden(true);
-}
-
-void GenlistManager::hideWidgetInstant()
-{
-    if (m_genlist)
-        evas_object_hide(m_genlist);
 }
 
 bool GenlistManager::getWidgetPreviouslyHidden()
@@ -190,24 +182,24 @@ void GenlistManager::setWidgetPreviouslyHidden(bool previouslyHidden)
 
 void GenlistManager::onMouseClick()
 {
-    if (!mouseInsideWidget) {
+    if (!m_mouseInsideWidget) {
         hideWidgetPretty();
     }
 }
 
 void GenlistManager::adjustWidgetHeight()
 {
-    const int ITEMS_NUMBER = elm_genlist_items_count(m_genlist);
-    if (ITEMS_NUMBER == 0)
+    const int LIST_ITEMS_NUMBER = elm_genlist_items_count(m_genlist);
+    if (LIST_ITEMS_NUMBER == 0)
         return;
 
-    int itemsVisibleNumber = HISTORY_ITEMS_VISIBLE_MAX;
-    if (ITEMS_NUMBER < itemsVisibleNumber)
-        itemsVisibleNumber = ITEMS_NUMBER;
+    m_historyItemsVisibleCurrent = HISTORY_ITEMS_VISIBLE_MAX;
+    if (LIST_ITEMS_NUMBER < m_historyItemsVisibleCurrent)
+        m_historyItemsVisibleCurrent = LIST_ITEMS_NUMBER;
 
     Evas_Coord w, h;
     evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, nullptr);
-    h = HISTORY_ITEM_H * itemsVisibleNumber;
+    h = HISTORY_ITEM_H * m_historyItemsVisibleCurrent;
 
     evas_object_resize(m_genlist, w, h);
 }
@@ -238,19 +230,21 @@ void GenlistManager::startScrollOut()
 void GenlistManager::addSpaces()
 {
     if (m_itemsManager->getItem(GenlistItemType::ITEM_LAST)) {
+
         m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
                 GenlistItemType::ITEM_SPACE_LAST }, nullptr);
+
         Elm_Object_Item* itemAppended = nullptr;
-        for (auto i = 0; i < HISTORY_ITEMS_VISIBLE_MAX; ++i) {
+        for (auto i = 0; i < m_historyItemsVisibleCurrent; ++i) {
             // append spaces to the last url item, so they can be easily cleared
             itemAppended = elm_genlist_item_append(m_genlist,
                     m_historyItemSpaceClass, nullptr,
                     m_itemsManager->getItem(GenlistItemType::ITEM_LAST),
                     ELM_GENLIST_ITEM_NONE, nullptr, nullptr);
-            elm_object_focus_allow_set(itemAppended, EINA_FALSE);
             m_itemsManager->setItemsIfNullptr( {
                     GenlistItemType::ITEM_SPACE_FIRST }, itemAppended);
         }
+
         m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_LAST },
                 itemAppended);
     }
