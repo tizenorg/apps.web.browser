@@ -15,39 +15,20 @@
  */
 
 #include <boost/algorithm/string.hpp>
-#include <services/HistoryService/HistoryMatchFinder/HistoryMatchFinder.h>
-#include <core/BrowserLogger.h>
+#include "StringTools.h"
 
 namespace tizen_browser {
-namespace services {
+namespace tools {
+namespace string_tools {
 
-void HistoryMatchFinder::removeMismatches(
-        const shared_ptr<HistoryItemVector>& historyItems,
-        const vector<string>& keywords) const
+void downcase(vector<string>& toDowncase)
 {
-    for (auto itItem = historyItems->begin(); itItem != historyItems->end();) {
-        if (!stringMatchesKeywords((*itItem)->getUrl(), keywords.begin(),
-                keywords.end())) {
-            // remove url not matching all keywords
-            itItem = historyItems->erase(itItem);
-        } else {
-            ++itItem;
-        }
+    for (auto& str : toDowncase) {
+        boost::algorithm::to_lower(str);
     }
 }
 
-bool HistoryMatchFinder::stringMatchesKeywords(const string& url,
-        const vector<string>::const_iterator itKeywordsBegin,
-        const vector<string>::const_iterator itKeywordsEnd) const
-{
-    for (auto it = itKeywordsBegin; it != itKeywordsEnd; ++it)
-        if (!simplePatternMatch(url, *it))
-            return false;
-    return true;
-}
-
-void HistoryMatchFinder::splitKeywordsString(const string& keywordsString,
-        vector<string>& resultKeywords) const
+void splitString(const string& keywordsString, vector<string>& resultKeywords)
 {
     boost::algorithm::split(resultKeywords, keywordsString,
             boost::is_any_of("\t "), boost::token_compress_on);
@@ -61,14 +42,7 @@ void HistoryMatchFinder::splitKeywordsString(const string& keywordsString,
     }
 }
 
-void HistoryMatchFinder::downcaseStrings(vector<string>& resultKeywords) const
-{
-    for (auto& str : resultKeywords) {
-        boost::algorithm::to_lower(str);
-    }
-}
-
-unsigned HistoryMatchFinder::getLongest(const vector<string>& strVec) const
+unsigned getLongest(const vector<string>& strVec)
 {
     unsigned posLongest = 0;
     for (auto it = strVec.begin() + 1; it != strVec.end(); ++it)
@@ -77,8 +51,7 @@ unsigned HistoryMatchFinder::getLongest(const vector<string>& strVec) const
     return posLongest;
 }
 
-bool HistoryMatchFinder::simplePatternMatch(const string &text,
-        const string &pattern) const
+bool simplePatternMatch(const string &text, const string &pattern)
 {
     if (pattern.empty() || text.empty()) {
         return pattern.empty() && text.empty();
@@ -92,5 +65,16 @@ bool HistoryMatchFinder::simplePatternMatch(const string &text,
     return false;
 }
 
-} /* namespace services */
-} /* namespace tizen_browser */
+bool stringMatchesKeywords(const string& url,
+        const vector<string>::const_iterator itKeywordsBegin,
+        const vector<string>::const_iterator itKeywordsEnd)
+{
+    for (auto it = itKeywordsBegin; it != itKeywordsEnd; ++it)
+        if (!simplePatternMatch(url, *it))
+            return false;
+    return true;
+}
+
+} /* namespace tizen_browser  */
+} /* namespace tools */
+} /* namespace string */
