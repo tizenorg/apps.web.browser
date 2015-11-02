@@ -25,12 +25,10 @@
 #include "HistoryService.h"
 #include "HistoryItem.h"
 #include "AbstractWebEngine.h"
-#include "HistoryMatchFinder/HistoryMatchFinder.h"
 #include "EflTools.h"
 #include "Tools/GeneralTools.h"
-
-
-
+#include "Tools/StringTools.h"
+#include "HistoryServiceTools.h"
 
 namespace tizen_browser
 {
@@ -44,7 +42,6 @@ const int SEARCH_LIKE = 1;
 HistoryService::HistoryService() : m_testDbMod(false)
 {
     BROWSER_LOGD("HistoryService");
-    m_historyMatchFinder = std::make_shared<HistoryMatchFinder>();
 }
 
 HistoryService::~HistoryService()
@@ -492,11 +489,10 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsStri
         return std::make_shared<HistoryItemVector>();
 
     std::vector<std::string> keywords;
-    m_historyMatchFinder->splitKeywordsString(keywordsString, keywords);
+    tools::string_tools::splitString(keywordsString, keywords);
 
     // the longer the keyword is, the faster search will be
-    const unsigned longestKeywordPos = m_historyMatchFinder->getLongest(
-            keywords);
+    const unsigned longestKeywordPos = tools::string_tools::getLongest(keywords);
     std::string longestKeyword = keywords.at(longestKeywordPos);
     boost::algorithm::to_lower(longestKeyword);
 
@@ -513,8 +509,8 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsStri
     if (keywords.size() > 1) {
         // longestKeywordPos is already handled
         keywords.erase(keywords.begin() + longestKeywordPos);
-        m_historyMatchFinder->downcaseStrings(keywords);
-        m_historyMatchFinder->removeMismatches(historyItems, keywords);
+        tools::string_tools::downcase(keywords);
+        removeMismatches(historyItems, keywords);
     }
 
     if (maxItems != -1) {
