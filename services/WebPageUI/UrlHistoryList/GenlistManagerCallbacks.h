@@ -40,11 +40,6 @@ public:
     static void _genlist_mouse_out(void* data, Evas* e, Evas_Object* obj,
             void* event_info);
 
-    static void _genlist_focused(void* data, Evas_Object* obj,
-            void* event_info);
-    static void _genlist_unfocused(void* data, Evas_Object* obj,
-            void* event_info);
-
     static Eina_Bool _object_event(void* data, Evas_Object* obj,
             Evas_Object* src, Evas_Callback_Type type, void* event_info);
 
