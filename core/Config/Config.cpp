@@ -38,6 +38,7 @@ void DefaultConfig::load(const std::string &)
 
     m_data["TOOLTIP_DELAY"] = 0.05; // time from mouse in to tooltip show
     m_data["TOOLTIP_HIDE_TIMEOUT"] = 2.0; // time from tooltip show to tooltip hide
+    m_data["RELOAD_WEBVIEW_TIMEOUT"] = 0.1; // time for webpage to initialize
     m_data["TAB_LIMIT"] = 10;    // max number of open tabs
     m_data["FAVORITES_LIMIT"] = 40;    // max number of added favorites
 
