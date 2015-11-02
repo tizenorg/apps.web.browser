@@ -77,9 +77,12 @@ void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
 }
 
 Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
-        Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type /*type*/,
+        Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type type,
         void* event_info)
 {
+    if(type != EVAS_CALLBACK_KEY_UP)
+        return EINA_FALSE;
+
     if (!genlistManager)
         return EINA_FALSE;
 
