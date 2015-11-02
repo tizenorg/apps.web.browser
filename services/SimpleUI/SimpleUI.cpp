@@ -429,6 +429,7 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->mouseClicked.connect(
             boost::bind(&SimpleUI::onMouseClick, this));
     m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
+    m_platformInputManager->yellowPressed.connect(boost::bind(&SimpleUI::onYellowKeyPressed, this));
 
 }
 
@@ -746,6 +747,11 @@ void SimpleUI::onMouseClick()
 void SimpleUI::onRedKeyPressed()
 {
     m_webPageUI->onRedKeyPressed();
+}
+
+void SimpleUI::onYellowKeyPressed()
+{
+    m_webPageUI->onYellowKeyPressed();
 }
 
 void SimpleUI::webEngineURLChanged(const std::string url)

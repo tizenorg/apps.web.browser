@@ -80,11 +80,16 @@ Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
         Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type type,
         void* event_info)
 {
+<<<<<<< HEAD
     if(type != EVAS_CALLBACK_KEY_UP)
         return EINA_FALSE;
 
+    genlistManager->removeSpaces();
+    genlistManager->setWidgetPreviouslyHidden(false);
+=======
     if (!genlistManager)
         return EINA_FALSE;
+>>>>>>> UrlHistoryList: focusing on [C] (yellow key/f6).
 
     Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
     const std::string keyName = ev->keyname;
