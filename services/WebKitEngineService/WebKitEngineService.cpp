@@ -45,6 +45,7 @@ WebKitEngineService::WebKitEngineService()
     , m_guiParent(nullptr)
     , m_stopped(false)
     , m_currentTabId(TabId::NONE)
+    , m_timer(nullptr)
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
@@ -311,6 +312,8 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
 
     if (tabsCount() >= boost::any_cast<int>(config.get("TAB_LIMIT")))
         return currentTabId();
+    else
+        m_timer = ecore_timer_add(boost::any_cast <double> (config.get("RELOAD_WEBVIEW_TIMEOUT")), _windowCreated, this);
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -333,6 +336,14 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
     m_chronoTabs.push_front(newTabId);
 
     return newTabId;
+}
+
+Eina_Bool WebKitEngineService::_windowCreated(void* data)
+{
+    WebKitEngineService *self = reinterpret_cast<WebKitEngineService *>(data);
+    self->windowCreated();
+    ecore_timer_del(self->m_timer);
+    return ECORE_CALLBACK_CANCEL;
 }
 
 Evas_Object* WebKitEngineService::getTabView(TabId id){

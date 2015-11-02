@@ -21,6 +21,7 @@
 #include <string>
 #include <Evas.h>
 #include <memory>
+#include <Ecore.h>
 
 #include "ServiceFactory.h"
 #include "service_macros.h"
@@ -197,6 +198,7 @@ private:
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void webViewClicked();
+    static Eina_Bool _windowCreated(void *data);
 
     /**
      * disconnect signals from specified WebView
@@ -228,6 +230,8 @@ private:
     std::list<TabId> m_mostRecentTab;
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
+    // timer for reloading webview correctly
+    Ecore_Timer *m_timer;
 };
 
 } /* end of webkitengine_service */
