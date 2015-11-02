@@ -205,7 +205,7 @@ void WebPageUI::switchViewToErrorPage()
 
 void WebPageUI::switchViewToIncognitoPage()
 {
-    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_statesMgr->set(WPUState::MAIN_INCOGNITO_PAGE);
     setMainContent(m_privateLayout);
     evas_object_show(m_leftButtonBar->getContent());
@@ -220,7 +220,7 @@ void WebPageUI::switchViewToIncognitoPage()
 
 void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title)
 {
-    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
     {
         hideQuickAccess();
@@ -300,6 +300,22 @@ void WebPageUI::lockWebview()
     }
 }
 
+void WebPageUI::lockUrlHistoryList()
+{
+    elm_object_focus_custom_chain_unset(m_mainLayout);
+    elm_object_focus_custom_chain_append(m_mainLayout,
+            getUrlHistoryList()->getContent(), NULL);
+    getUrlHistoryList()->listWidgetFocusChangeTimerStart();
+    elm_object_focus_set(getUrlHistoryList()->getContent(), EINA_TRUE);
+}
+
+void WebPageUI::unlockUrlHistoryList()
+{
+    refreshFocusChain();
+    elm_object_focus_set(m_URIEntry->getEntryWidget(), EINA_TRUE);
+    getUrlHistoryList()->onListWidgetFocusChange(false);
+}
+
 void WebPageUI::onRedKeyPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -311,6 +327,23 @@ void WebPageUI::onRedKeyPressed()
                 m_webviewLocked = false;
             }
         }
+    }
+}
+
+void WebPageUI::onYellowKeyPressed()
+{
+    if (!isWebPageUIvisible())
+        return;
+
+    Eina_Bool listVisible = evas_object_visible_get(
+            getUrlHistoryList()->getGenlist());
+    if(!listVisible) return;
+
+    bool listFocused = getUrlHistoryList()->widgetFocused();
+    if (listFocused) {
+        unlockUrlHistoryList();
+    } else {
+        lockUrlHistoryList();
     }
 }
 
@@ -354,7 +387,7 @@ void WebPageUI::createLayout()
     elm_layout_signal_callback_add(m_URIEntry->getContent(), "slide_websearch", "elm", faviconClicked, this);
 
     elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
-    m_urlHistoryList->setMembers(m_parent, m_URIEntry->getEntryWidget());
+    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
 
     connectActions();
 }
@@ -515,7 +548,6 @@ void WebPageUI::refreshFocusChain()
         m_reload->setEnabled(false);
     }
     elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_urlHistoryList->getContent(), NULL);
 }
 
 }   // namespace tizen_browser
