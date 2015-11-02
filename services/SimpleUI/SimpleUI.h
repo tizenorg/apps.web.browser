@@ -109,6 +109,8 @@ private:
     void switchViewToWebPage();
     void updateView();
 
+    void windowCreated();
+
     void openNewTab(const std::string &uri, const std::string& title = std::string(), bool desktopMode = true, bool incognitoMode = false);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();

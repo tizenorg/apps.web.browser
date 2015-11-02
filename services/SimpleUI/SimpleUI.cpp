@@ -417,6 +417,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
+    m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -1136,6 +1137,12 @@ void SimpleUI::updateView() {
         switchViewToWebPage();
     }
     m_webPageUI->setTabsNumber(tabs);
+}
+
+void SimpleUI::windowCreated()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    switchViewToWebPage();
 }
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
