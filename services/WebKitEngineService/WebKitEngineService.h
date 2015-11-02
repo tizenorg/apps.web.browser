@@ -21,6 +21,7 @@
 #include <string>
 #include <Evas.h>
 #include <memory>
+#include <Ecore.h>
 
 #include "ServiceFactory.h"
 #include "service_macros.h"
@@ -191,6 +192,7 @@ private:
     void _loadProgress(double);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
+    static Eina_Bool _windowCreated(void *data);
     void webViewClicked();
 
     /**
@@ -223,6 +225,7 @@ private:
     std::list<TabId> m_mostRecentTab;
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
+    Ecore_Timer *m_timer;
 };
 
 } /* end of webkitengine_service */

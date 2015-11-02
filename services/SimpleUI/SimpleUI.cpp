@@ -407,6 +407,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
+    m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->titleChanged.connect(boost::bind(&WebPageUI::setPageTitle, m_webPageUI.get(), _1));
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
 
@@ -607,6 +608,12 @@ void SimpleUI::setwvIMEStatus(bool status)
 {
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
+}
+
+void SimpleUI::windowCreated()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    switchViewToWebPage();
 }
 
 void SimpleUI::onBackPressed()
