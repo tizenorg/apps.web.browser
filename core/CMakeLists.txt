@@ -39,6 +39,7 @@ set(browserCore_SRCS
     Tools/FeedItem.cpp
     Tools/FeedChannel.cpp
     Tools/FocusManager.cpp
+    Tools/StringTools.cpp
     BrowserConstants.cpp
     )
 
@@ -77,6 +78,7 @@ set(browserCore_HDRS
     Tools/FeedItem.h
     Tools/FeedChannel.h
     Tools/FocusManager.h
+    Tools/StringTools.h
     )
 
 if(TIZEN_BUILD)
