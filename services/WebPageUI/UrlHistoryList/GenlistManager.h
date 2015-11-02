@@ -28,8 +28,7 @@ namespace base_ui {
 
 class GenlistManagerCallbacks;
 class GenlistItemsManager;
-enum class GenlistItemType
-;
+enum class GenlistItemType;
 typedef shared_ptr<GenlistItemsManager> GenlistItemsManagerPtr;
 class UrlMatchesStyler;
 typedef shared_ptr<UrlMatchesStyler> UrlMatchesStylerPtr;
@@ -67,7 +66,6 @@ public:
     /**
      * Hide widget by evas_object_hide.
      */
-    void hideWidgetInstant();
     void setWidgetPreviouslyHidden(bool previouslyHidden);
     bool getWidgetPreviouslyHidden();
     void onMouseClick();
@@ -88,11 +86,14 @@ public:
     bool getSingleBlockHide();
 
     boost::signals2::signal<void(string)> signalItemSelected;
-    boost::signals2::signal<void()> signalWidgetFocused;
-    boost::signals2::signal<void()> signalWidgetUnfocused;
     boost::signals2::signal<void()> signalItemFocusChange;
 
-    const char* getItemUrl(GenlistItemType type);
+    /**
+     * Get url from item of a given type.
+     * @param types The types of list items: url will be searched in these item types.
+     * @return Url from the first item from the list, which has valid url. Empty if neither of items has url assigned.
+     */
+    string getItemUrl(std::initializer_list<GenlistItemType> types) const;
 
 private:
     static Evas_Object* m_itemClassContentGet(void *data, Evas_Object *obj,
@@ -121,17 +122,19 @@ private:
     const int HISTORY_ITEMS_VISIBLE_MAX = 5;
     // don't know how to calculate:
     const int GENLIST_H = HISTORY_ITEM_H * HISTORY_ITEMS_VISIBLE_MAX;
+    // currently visible items number
+    int m_historyItemsVisibleCurrent = HISTORY_ITEMS_VISIBLE_MAX;
 
-    /*
+    /**
      * Set to true, whenever hide request occurs. Set to false, whenever show
      * request occurs. Needed to indicate when genlist should slide in.
      */
     bool m_widgetPreviouslyHidden = true;
     bool m_singleHideBlock = false;
-    /*
+    /**
      * If mouse click received and mouse is outside widget, hide it.
      */
-    bool mouseInsideWidget = true;
+    bool m_mouseInsideWidget = true;
 
     Elm_Gengrid_Item_Class* m_historyItemClass;
     Elm_Gengrid_Item_Class* m_historyItemSpaceClass;

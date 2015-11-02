@@ -146,6 +146,7 @@ private:
     void onActionTriggered(const Action& action);
     void onMouseClick();
     void onRedKeyPressed();
+    void onYellowKeyPressed();
     void setwvIMEStatus(bool status);
 
     sharedAction m_showBookmarkManagerUI;

@@ -64,22 +64,6 @@ void GenlistManagerCallbacks::_genlist_mouse_out(void* data, Evas* /*e*/,
     manager->onMouseFocusChange(false);
 }
 
-void GenlistManagerCallbacks::_genlist_focused(void* /*data*/,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    if (genlistManager) {
-        genlistManager->signalWidgetFocused();
-    }
-}
-
-void GenlistManagerCallbacks::_genlist_unfocused(void* /*data*/,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    if (genlistManager) {
-        genlistManager->signalWidgetUnfocused();
-    }
-}
-
 void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
         void* /*event_info*/)
 {
@@ -93,37 +77,31 @@ void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
 }
 
 Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
-        Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type type,
+        Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type /*type*/,
         void* event_info)
 {
     if(type != EVAS_CALLBACK_KEY_UP)
         return EINA_FALSE;
 
-    genlistManager->removeSpaces();
-    genlistManager->setWidgetPreviouslyHidden(false);
+    if (!genlistManager)
+        return EINA_FALSE;
 
-    if (genlistManager) {
-        Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
-        const std::string keyName = ev->keyname;
-        if (!keyName.compare("Down") || !keyName.compare("Up")) {
-            GenlistItemsManagerPtr itemsManager =
-                    genlistManager->getItemsManager();
-            if (!itemsManager->getItem(GenlistItemType::ITEM_CURRENT)) {
-                itemsManager->assignItem(GenlistItemType::ITEM_CURRENT,
-                        GenlistItemType::ITEM_FIRST);
-            } else {
-                if (!keyName.compare("Down")) {
-                    itemsManager->shiftItemDown(GenlistItemType::ITEM_CURRENT);
-                } else {
-                    if (!itemsManager->shiftItemUp(
-                            GenlistItemType::ITEM_CURRENT)) {
-                        // 'up' pressed on a first item. don't hide widget
-                        genlistManager->setSingleBlockHide(true);
-                    }
-                }
-            }
-            genlistManager->signalItemFocusChange();
+    Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
+    const std::string keyName = ev->keyname;
+    if (keyName.compare("Down") == 0 || keyName.compare("Up") == 0) {
+        genlistManager->removeSpaces();
+        genlistManager->setWidgetPreviouslyHidden(false);
+        GenlistItemsManagerPtr itemsManager = genlistManager->getItemsManager();
+        if (!itemsManager->getItem(GenlistItemType::ITEM_CURRENT)) {
+            itemsManager->assignItem(GenlistItemType::ITEM_CURRENT,
+                    GenlistItemType::ITEM_FIRST);
         }
+        if (keyName.compare("Down") == 0) {
+            itemsManager->shiftItemDown(GenlistItemType::ITEM_CURRENT);
+        } else {
+            itemsManager->shiftItemUp(GenlistItemType::ITEM_CURRENT);
+        }
+        genlistManager->signalItemFocusChange();
     }
     return EINA_FALSE;
 }
