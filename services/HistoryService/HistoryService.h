@@ -35,9 +35,6 @@ namespace tizen_browser
 namespace services
 {
 
-class HistoryMatchFinder;
-typedef std::shared_ptr<HistoryMatchFinder> HistoryMatchFinderPtr;
-
 class BROWSER_EXPORT HistoryService: public tizen_browser::core::AbstractService
 {
 public:
@@ -93,7 +90,6 @@ private:
     bool m_testDbMod;;
     std::vector<std::shared_ptr<HistoryItem>> history_list;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
-    HistoryMatchFinderPtr m_historyMatchFinder;
 
     /**
      * @throws StorageExceptionInitialization on error
