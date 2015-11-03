@@ -19,6 +19,7 @@
 #include "GenlistManagerCallbacks.h"
 #include "UrlMatchesStyler.h"
 #include "GenlistItemsManager.h"
+#include "Config.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -43,6 +44,15 @@ GenlistManager::GenlistManager()
     m_historyItemSpaceClass->func.del = nullptr;
 
     GenlistManagerCallbacks::setGenlistManager(this);
+
+    config::DefaultConfig config;
+    config.load("");
+    GENLIST_SHOW_SCROLLBAR = boost::any_cast<bool>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR));
+    ITEM_H = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT));
+    ITEMS_VISIBLE_NUMBER_MAX = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX));
 }
 
 GenlistManager::~GenlistManager()
@@ -201,13 +211,13 @@ void GenlistManager::adjustWidgetHeight()
     if (ITEMS_NUMBER == 0)
         return;
 
-    int itemsVisibleNumber = HISTORY_ITEMS_VISIBLE_MAX;
+    int itemsVisibleNumber = ITEMS_VISIBLE_NUMBER_MAX;
     if (ITEMS_NUMBER < itemsVisibleNumber)
         itemsVisibleNumber = ITEMS_NUMBER;
 
     Evas_Coord w, h;
     evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, nullptr);
-    h = HISTORY_ITEM_H * itemsVisibleNumber;
+    h = ITEM_H * itemsVisibleNumber;
 
     evas_object_resize(m_genlist, w, h);
 }
@@ -241,7 +251,7 @@ void GenlistManager::addSpaces()
         m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
                 GenlistItemType::ITEM_SPACE_LAST }, nullptr);
         Elm_Object_Item* itemAppended = nullptr;
-        for (auto i = 0; i < HISTORY_ITEMS_VISIBLE_MAX; ++i) {
+        for (auto i = 0; i < ITEMS_VISIBLE_NUMBER_MAX; ++i) {
             // append spaces to the last url item, so they can be easily cleared
             itemAppended = elm_genlist_item_append(m_genlist,
                     m_historyItemSpaceClass, nullptr,
