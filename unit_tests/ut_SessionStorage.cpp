@@ -82,14 +82,14 @@ BOOST_AUTO_TEST_CASE(CreateAndPopulateSession)
 
     BOOST_CHECK(session.isValid());
 
-    std::map<std::string, std::string> urls;
+    std::map<std::string, std::pair<std::string, std::string>> urls;
 
-    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = "http://www.calligra.org";
-    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = "http://www.kde.org";
-    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = "http://www.krita.org";
+    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = std::pair<std::string, std::string>("http://www.calligra.org", "Title");
+    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = std::pair<std::string, std::string>("http://www.kde.org", "Title");
+    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = std::pair<std::string, std::string>("http://www.krita.org", "Title");
 
     for(auto iter = urls.begin(), end = urls.end(); iter != end; iter++){
-        session.updateItem(iter->first, iter->second);
+        session.updateItem(iter->first, iter->second.first, iter->second.second);
     }
 
 
@@ -98,12 +98,12 @@ BOOST_AUTO_TEST_CASE(CreateAndPopulateSession)
     std::string replaceUrl("https://marble.kde.org/");
 
 
-    session.updateItem(std::next(urls.begin(),2)->first,replaceUrl);
+    session.updateItem(std::next(urls.begin(), 2)->first, replaceUrl, std::next(urls.begin(), 2)->second.second);
     BOOST_CHECK_EQUAL_COLLECTIONS(
         replaceUrl.begin(),
         replaceUrl.end(),
-        session.items().at(std::next(urls.begin(),2)->first).begin(),
-        session.items().at(std::next(urls.begin(),2)->first).end()
+        session.items().at(std::next(urls.begin(),2)->first).first.begin(),
+        session.items().at(std::next(urls.begin(),2)->first).first.end()
     );
 
     session.removeItem(std::next(urls.begin(),1)->first);
@@ -139,14 +139,14 @@ BOOST_AUTO_TEST_CASE(getLastSession)
 
     BOOST_CHECK(session.isValid());
 
-    std::map<std::string, std::string> urls;
+    std::map<std::string, std::pair<std::string, std::string>> urls;
 
-    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = "http://www.calligra.org";
-    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = "http://www.kde.org";
-    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = "http://www.krita.org";
+    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = std::pair<std::string, std::string>("http://www.calligra.org", "Title");
+    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = std::pair<std::string, std::string>("http://www.kde.org", "Title");
+    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = std::pair<std::string, std::string>("http://www.krita.org", "Title");
 
     for(auto iter = urls.begin(), end = urls.end(); iter != end; iter++){
-        session.updateItem(iter->first, iter->second);
+        session.updateItem(iter->first, iter->second.first, iter->second.second);
     }
 
     BOOST_CHECK_EQUAL(session.items().size(), 3);
@@ -252,18 +252,18 @@ BOOST_AUTO_TEST_CASE(deleteAllSessions)
     tizen_browser::Session::Session session4(storage->createSession());
 
 
-    std::map<std::string, std::string> urls;
+    std::map<std::string, std::pair<std::string, std::string>> urls;
 
-    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = "http://www.calligra.org";
-    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = "http://www.kde.org";
-    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = "http://www.krita.org";
+    urls["54379ff6-f9ff-4ef3-99b0-a0de00edd473"] = std::pair<std::string, std::string>("http://www.calligra.org", "Title");
+    urls["7b5719d4-c2f5-4d87-89ff-9cd70da1710f"] = std::pair<std::string, std::string>("http://www.kde.org", "Title");
+    urls["ce18e8e2-8d33-4ba7-9fc4-d602cdf3fa36"] = std::pair<std::string, std::string>("http://www.krita.org", "Title");
 
     for(auto iter = urls.begin(), end = urls.end(); iter != end; iter++){
-        session2.updateItem(iter->first, iter->second);
+        session2.updateItem(iter->first, iter->second.first, iter->second.second);
         sleep(1);
-        session3.updateItem(iter->first, iter->second);
+        session3.updateItem(iter->first, iter->second.first, iter->second.second);
         sleep(1);
-        session4.updateItem(iter->first, iter->second);
+        session4.updateItem(iter->first, iter->second.first, iter->second.second);
     }
 
 
