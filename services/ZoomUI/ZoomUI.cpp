@@ -35,7 +35,6 @@ EXPORT_SERVICE(ZoomUI, "org.tizen.browser.zoomui")
 ZoomUI::ZoomUI()
     : m_layout(nullptr)
     , m_zoom_slider(nullptr)
-    , m_nav_layout(nullptr)
     , m_current_translation_x(0)
     , m_current_translation_y(0)
 {
@@ -65,11 +64,10 @@ Evas_Object* ZoomUI::getContent()
 
 void ZoomUI::showUI()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_show(m_layout);
     evas_object_show(m_zoom_menu);
     evas_object_show(m_zoom_slider);
-    m_keyDownHandler = ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, _key_down_cb, this);
-    m_keyUpHandler = ecore_event_handler_add(ECORE_EVENT_KEY_UP, _key_up_cb, this);
     int zoomFactor = *(getZoom());
     elm_slider_value_set(m_zoom_slider, calculateSliderValue(zoomFactor));
 }
@@ -77,11 +75,8 @@ void ZoomUI::showUI()
 void ZoomUI::hideUI()
 {
     evas_object_hide(m_zoom_slider);
-    evas_object_hide(m_nav_layout);
     evas_object_hide(m_zoom_menu);
     evas_object_hide(m_layout);
-    ecore_event_handler_del(m_keyDownHandler);
-    ecore_event_handler_del(m_keyUpHandler);
 }
 
 void ZoomUI::show(Evas_Object* parent)
@@ -92,15 +87,6 @@ void ZoomUI::show(Evas_Object* parent)
         createLayout(parent);
     showUI();
     elm_object_focus_set(m_zoom_slider, EINA_TRUE);
-}
-
-void ZoomUI::showNavigation()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_nav_layout);
-    int zoomFactor = *(getZoom());
-    if (zoomFactor > ZOOM_DEFAULT)
-        evas_object_show(m_nav_layout);
 }
 
 bool ZoomUI::isVisible()
@@ -121,7 +107,6 @@ void ZoomUI::createLayout(Evas_Object *parent)
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     createZoomSlider();
-    createNavigationButtons();
 }
 
 void ZoomUI::createZoomSlider()
@@ -147,63 +132,10 @@ void ZoomUI::createZoomSlider()
     evas_object_event_callback_add(m_zoom_slider, EVAS_CALLBACK_KEY_DOWN, _zoom_value_confirmed, this);
 }
 
-void ZoomUI::createNavigationButtons()
-{
-    m_nav_layout = elm_layout_add(m_layout);
-    elm_layout_file_set(m_nav_layout, m_edjFilePath.c_str(), "nav-layout");
-    evas_object_size_hint_weight_set(m_nav_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_nav_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    m_leftArrow = elm_icon_add(m_nav_layout);
-    setImageFile(m_leftArrow, LEFT, false);
-    evas_object_smart_callback_add(m_leftArrow, "clicked", _left_button_clicked, this);
-    evas_object_event_callback_add(m_leftArrow, EVAS_CALLBACK_MOUSE_IN, _cb_focus_in_left_button, this);
-    evas_object_event_callback_add(m_leftArrow, EVAS_CALLBACK_MOUSE_OUT, _cb_focus_out_left_button, this);
-    elm_object_part_content_set(m_nav_layout, "left_button", m_leftArrow);
-
-    m_rightArrow = elm_icon_add(m_nav_layout);
-    setImageFile(m_rightArrow, RIGHT, false);
-    evas_object_smart_callback_add(m_rightArrow, "clicked", _right_button_clicked, this);
-    evas_object_event_callback_add(m_rightArrow, EVAS_CALLBACK_MOUSE_IN, _cb_focus_in_right_button, this);
-    evas_object_event_callback_add(m_rightArrow, EVAS_CALLBACK_MOUSE_OUT, _cb_focus_out_right_button, this);
-    elm_object_part_content_set(m_nav_layout, "right_button", m_rightArrow);
-
-    m_downArrow = elm_icon_add(m_nav_layout);
-    setImageFile(m_downArrow, DOWN, false);
-    evas_object_smart_callback_add(m_downArrow, "clicked", _down_button_clicked, this);
-    evas_object_event_callback_add(m_downArrow, EVAS_CALLBACK_MOUSE_IN, _cb_focus_in_down_button, this);
-    evas_object_event_callback_add(m_downArrow, EVAS_CALLBACK_MOUSE_OUT, _cb_focus_out_down_button, this);
-    elm_object_part_content_set(m_nav_layout, "down_button", m_downArrow);
-
-    m_upArrow = elm_icon_add(m_nav_layout);
-    setImageFile(m_upArrow, UP, false);
-    evas_object_smart_callback_add(m_upArrow, "clicked", _up_button_clicked, this);
-    evas_object_event_callback_add(m_upArrow, EVAS_CALLBACK_MOUSE_IN, _cb_focus_in_up_button, this);
-    evas_object_event_callback_add(m_upArrow, EVAS_CALLBACK_MOUSE_OUT, _cb_focus_out_up_button, this);
-    elm_object_part_content_set(m_nav_layout, "up_button", m_upArrow);
-}
-
 void ZoomUI::clearItems()
 {
     evas_object_del(m_layout);
     setZoom(ZOOM_DEFAULT);
-}
-
-void ZoomUI::setImageFile(Evas_Object* obj, int direction, bool focused)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    switch (direction) {
-        case LEFT:  elm_image_file_set(obj, m_edjFilePath.c_str(), focused ? "ic_zoom_indicator_left_foc.png" : "ic_zoom_indicator_left_nor.png");
-                    break;
-        case RIGHT: elm_image_file_set(obj, m_edjFilePath.c_str(), focused ? "ic_zoom_indicator_right_foc.png" : "ic_zoom_indicator_right_nor.png");
-                    break;
-        case DOWN:  elm_image_file_set(obj, m_edjFilePath.c_str(), focused ? "ic_zoom_indicator_down_foc.png" : "ic_zoom_indicator_down_nor.png");
-                    break;
-        case UP:    elm_image_file_set(obj, m_edjFilePath.c_str(), focused ? "ic_zoom_indicator_up_foc.png" : "ic_zoom_indicator_up_nor.png");
-                    break;
-        default:    BROWSER_LOGD("[%s:%d] Warning: Unhandled button", __PRETTY_FUNCTION__, __LINE__);
-                    break;
-    }
 }
 
 void ZoomUI::_zoom_slider_changed(void *data, Evas_Object *obj, void*)
@@ -246,13 +178,6 @@ void ZoomUI::_zoom_value_confirmed(void* data, Evas*, Evas_Object*, void* event_
     if (std::string(ev->keyname) == "Return") {
         int val = (int)elm_slider_value_get(self->m_zoom_slider);
         BROWSER_LOGD("[%s:%d] val: %d", __PRETTY_FUNCTION__, __LINE__, val);
-        if (val > 3) {
-            BROWSER_LOGD("[%s:%d] value is greater than 3", __PRETTY_FUNCTION__, __LINE__);
-            evas_object_show(self->m_nav_layout);
-        } else {
-            BROWSER_LOGD("[%s:%d] value is smaller or equal to 3", __PRETTY_FUNCTION__, __LINE__);
-            evas_object_hide(self->m_nav_layout);
-        }
         evas_object_hide(self->m_zoom_menu);
     }
 }
@@ -263,172 +188,6 @@ void ZoomUI::escapeZoom()
     if (isVisible()) {
         setZoom(ZoomUI::ZOOM_DEFAULT);
         hideUI();
-    }
-}
-
-Eina_Bool ZoomUI::_key_down_cb(void* data, int, void* event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Ecore_Event_Key* ev = static_cast<Ecore_Event_Key*>(event_info);
-
-    if (!data || !ev || !ev->keyname)
-        return EINA_FALSE;
-
-    ZoomUI* self = static_cast<ZoomUI*>(data);
-    if (std::string(ev->keyname) == "Left") {
-        _left_button_clicked(data, self->m_leftArrow, event_info);
-        _cb_focus_in_left_button(data, nullptr, self->m_leftArrow, event_info);
-    } else if (std::string(ev->keyname) == "Right") {
-        _right_button_clicked(data, self->m_rightArrow, event_info);
-        _cb_focus_in_right_button(data, nullptr, self->m_rightArrow, event_info);
-    } else if (std::string(ev->keyname) == "Up") {
-        _up_button_clicked(data, self->m_upArrow, event_info);
-        _cb_focus_in_up_button(data, nullptr, self->m_upArrow, event_info);
-    } else if (std::string(ev->keyname) == "Down") {
-        _down_button_clicked(data, self->m_downArrow, event_info);
-        _cb_focus_in_down_button(data, nullptr, self->m_downArrow, event_info);
-    } else
-        return EINA_FALSE;
-
-    return EINA_TRUE;
-}
-
-Eina_Bool ZoomUI::_key_up_cb(void* data, int, void* event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Ecore_Event_Key* ev = static_cast<Ecore_Event_Key*>(event_info);
-
-    if (!data || !ev || !ev->keyname)
-        return EINA_FALSE;
-
-    ZoomUI* self = static_cast<ZoomUI*>(data);
-    if (std::string(ev->keyname) == "Left") {
-        _cb_focus_out_left_button(data, nullptr, self->m_leftArrow, event_info);
-    } else if (std::string(ev->keyname) == "Right") {
-        _cb_focus_out_right_button(data, nullptr, self->m_rightArrow, event_info);
-    } else if (std::string(ev->keyname) == "Up") {
-        _cb_focus_out_up_button(data, nullptr, self->m_upArrow, event_info);
-    } else if (std::string(ev->keyname) == "Down") {
-        _cb_focus_out_down_button(data, nullptr, self->m_downArrow, event_info);
-    } else
-        return EINA_FALSE;
-
-    return EINA_TRUE;
-}
-
-void ZoomUI::_left_button_clicked(void * data, Evas_Object * obj, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->scrollView(iDX, 0);
-    }
-}
-
-void ZoomUI::_right_button_clicked(void * data, Evas_Object * obj, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->scrollView(DX, 0);
-    }
-}
-
-void ZoomUI::_up_button_clicked(void * data, Evas_Object * obj, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->scrollView(0, iDX);
-    }
-}
-
-void ZoomUI::_down_button_clicked(void * data, Evas_Object * obj, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->scrollView(0, DX);
-    }
-}
-
-void ZoomUI::_cb_focus_in_left_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_TRUE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, LEFT, true);
-    }
-}
-
-void ZoomUI::_cb_focus_out_left_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_FALSE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, LEFT, false);
-    }
-}
-
-void ZoomUI::_cb_focus_in_right_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_TRUE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, RIGHT, true);
-    }
-}
-
-void ZoomUI::_cb_focus_out_right_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_FALSE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, RIGHT, false);
-    }
-}
-
-void ZoomUI::_cb_focus_in_up_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_TRUE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, UP, true);
-    }
-}
-
-void ZoomUI::_cb_focus_out_up_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_FALSE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, UP, false);
-    }
-}
-
-void ZoomUI::_cb_focus_in_down_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_TRUE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, DOWN, true);
-    }
-}
-
-void ZoomUI::_cb_focus_out_down_button(void * data, Evas *, Evas_Object *obj, void *)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data && obj) {
-        elm_object_focus_set(obj, EINA_FALSE);
-        ZoomUI *zoomUI = static_cast<ZoomUI*>(data);
-        zoomUI->setImageFile(obj, DOWN, false);
     }
 }
 
