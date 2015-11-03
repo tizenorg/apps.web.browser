@@ -47,8 +47,7 @@ struct StubAbstractLogger: tizen_browser::logger::AbstractLogger {
 		initialized = true;
 	}
 	void log(const std::string &timeStamp, const std::string &tag,
-			const std::string &msg, bool errorFlag = false) {
-		errorFlag = false;
+			const std::string &msg, bool /*errorFlag*/ = false) {
 		std::string str = timeStamp + tag + msg;
 		ss << str << '\n';
 	}
