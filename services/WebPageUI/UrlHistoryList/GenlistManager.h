@@ -116,14 +116,12 @@ private:
     Evas_Object* m_parentLayout = nullptr;
     Evas_Object* m_genlist = nullptr;
 
-    const bool GENLIST_SHOW_SCROLLBAR = false;
+    bool GENLIST_SHOW_SCROLLBAR;
     // don't know how to get from edc:
-    const int HISTORY_ITEM_H = 82;
-    const int HISTORY_ITEMS_VISIBLE_MAX = 5;
-    // don't know how to calculate:
-    const int GENLIST_H = HISTORY_ITEM_H * HISTORY_ITEMS_VISIBLE_MAX;
+    int ITEM_H;
+    int ITEMS_VISIBLE_NUMBER_MAX;
     // currently visible items number
-    int m_historyItemsVisibleCurrent = HISTORY_ITEMS_VISIBLE_MAX;
+    int m_historyItemsVisibleCurrent;
 
     /**
      * Set to true, whenever hide request occurs. Set to false, whenever show

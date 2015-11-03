@@ -21,6 +21,7 @@
 #include <map>
 
 #include <boost/any.hpp>
+#include "ConfigKey.h"
 
 namespace tizen_browser
 {
@@ -67,6 +68,7 @@ public:
      * @return Value from config.
      */
     boost::any get(const std::string & key);
+    const boost::any& get(const CONFIG_KEY& key) const;
     /**
      * @brief This method sets passed value under passed key.
      *
@@ -81,6 +83,7 @@ public:
     bool isMobileProfile() const;
 private:
     std::map<std::string, boost::any> m_data;
+    std::map<CONFIG_KEY, boost::any> m_keysValues;
 
     const std::string MOBILE = "mobile";
 };

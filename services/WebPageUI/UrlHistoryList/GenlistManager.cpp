@@ -19,6 +19,7 @@
 #include "GenlistManagerCallbacks.h"
 #include "UrlMatchesStyler.h"
 #include "GenlistItemsManager.h"
+#include "Config.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -43,6 +44,16 @@ GenlistManager::GenlistManager()
     m_historyItemSpaceClass->func.del = nullptr;
 
     GenlistManagerCallbacks::setGenlistManager(this);
+
+    config::DefaultConfig config;
+    config.load("");
+    GENLIST_SHOW_SCROLLBAR = boost::any_cast<bool>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR));
+    ITEM_H = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT));
+    ITEMS_VISIBLE_NUMBER_MAX = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX));
+    m_historyItemsVisibleCurrent = ITEMS_VISIBLE_NUMBER_MAX;
 }
 
 GenlistManager::~GenlistManager()
@@ -193,13 +204,13 @@ void GenlistManager::adjustWidgetHeight()
     if (LIST_ITEMS_NUMBER == 0)
         return;
 
-    m_historyItemsVisibleCurrent = HISTORY_ITEMS_VISIBLE_MAX;
+    m_historyItemsVisibleCurrent = ITEMS_VISIBLE_NUMBER_MAX;
     if (LIST_ITEMS_NUMBER < m_historyItemsVisibleCurrent)
         m_historyItemsVisibleCurrent = LIST_ITEMS_NUMBER;
 
     Evas_Coord w, h;
     evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, nullptr);
-    h = HISTORY_ITEM_H * m_historyItemsVisibleCurrent;
+    h = ITEM_H * m_historyItemsVisibleCurrent;
 
     evas_object_resize(m_genlist, w, h);
 }

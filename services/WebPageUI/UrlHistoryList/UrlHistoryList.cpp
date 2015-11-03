@@ -21,6 +21,7 @@
 #include "BrowserLogger.h"
 #include "GenlistItemsManager.h"
 #include "WebPageUI/WebPageUIStatesManager.h"
+#include "Config.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -38,6 +39,13 @@ UrlHistoryList::UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr)
             boost::bind(&UrlHistoryList::onItemSelect, this, _1));
     m_genlistManager->signalItemFocusChange.connect(
             boost::bind(&UrlHistoryList::onItemFocusChange, this));
+
+    config::DefaultConfig config;
+    config.load("");
+    ITEMS_NUMBER_MAX = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_ITEMS_NUMBER_MAX));
+    KEYWORD_LENGTH_MIN = boost::any_cast<int>(
+            config.get(CONFIG_KEY::URLHISTORYLIST_KEYWORD_LENGTH_MIN));
 }
 
 UrlHistoryList::~UrlHistoryList()

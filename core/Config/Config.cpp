@@ -46,6 +46,12 @@ void DefaultConfig::load(const std::string &)
     m_data["resourcedb/dir"] = std::string(db_path)+"/"+std::string("org.tizen.browser/data/");
 
     m_data["mobile_scale"] = 1.98;
+
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_NUMBER_MAX] = 12;
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX] = 5;
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_KEYWORD_LENGTH_MIN] = 3;
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT] = 82;
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR] = false;
 }
 
 void DefaultConfig::store(const std::string & )
@@ -55,6 +61,11 @@ void DefaultConfig::store(const std::string & )
 boost::any DefaultConfig::get(const std::string & key)
 {
 	return m_data[key];
+}
+
+const boost::any& DefaultConfig::get(const CONFIG_KEY& key) const
+{
+    return m_keysValues.at(key);
 }
 
 void DefaultConfig::set(const std::string & key, const boost::any & value)

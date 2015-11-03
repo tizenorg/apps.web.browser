@@ -82,14 +82,14 @@ public:
     boost::signals2::signal<void(shared_ptr<services::HistoryItem>)> openURLInNewTab;
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
-    int getVisibleItemsMax() const
+    int getItemsNumberMax() const
     {
-        return VISIBLE_ITEMS_MAX;
+        return ITEMS_NUMBER_MAX;
     }
 
-    int getMinKeywordLength() const
+    int getKeywordLengthMin() const
     {
-        return MIN_KEYWORD_LENGTH;
+        return KEYWORD_LENGTH_MIN;
     }
 
 private:
@@ -104,10 +104,9 @@ private:
     WPUStatesManagerPtrConst m_webPageUiStatesMgr;
 
     // the maximum items number on a list
-    const int VISIBLE_ITEMS_MAX = 12;
+    int ITEMS_NUMBER_MAX;
     // the minimum length of the keyword used to search matches
-    const int MIN_KEYWORD_LENGTH = 3;
-
+    int KEYWORD_LENGTH_MIN;
     Evas_Object* m_parent = nullptr;
     // entry widget from which change signals are received
     Evas_Object* m_entry = nullptr;
