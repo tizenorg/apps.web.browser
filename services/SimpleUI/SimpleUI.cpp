@@ -76,12 +76,6 @@ SimpleUI::SimpleUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
 
-    config::DefaultConfig config;
-    config.load("");
-#if PROFILE_MOBILE
-    elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
-#endif
-
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");
@@ -262,6 +256,7 @@ void SimpleUI::connectUISignals()
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
+    m_webPageUI->setWebViewTouchEvents.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setTouchEvents, m_webEngine.get(), _1));
 
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));

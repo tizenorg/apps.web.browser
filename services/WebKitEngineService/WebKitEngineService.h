@@ -182,6 +182,12 @@ public:
 
     void scrollView(const int& dx, const int& dy);
 
+    /**
+     * @brief Enable or disable touch events for current web view
+     *
+     * @param enabled True if touch event have to be enabled, false else.
+     */
+    void setTouchEvents(bool enabled);
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);

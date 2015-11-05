@@ -36,10 +36,13 @@ WebPageUI::WebPageUI()
     , m_privateLayout(nullptr)
     , m_progressBar(nullptr)
     , m_bookmarkManagerButton(nullptr)
+    , m_geastureLayer(nullptr)
     , m_URIEntry(new URIEntry())
     , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
     , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
+    , m_WebPageUIvisible(false)
+    , m_uriBarHidden(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
@@ -92,6 +95,10 @@ void WebPageUI::showUI()
     elm_object_event_callback_add(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_add(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_add(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
+#if PROFILE_MOBILE
+    elm_gesture_layer_cb_add(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
+    elm_object_signal_callback_add(m_mainLayout,  "animation_finished", "ui", _geasture_finished, this);
+#endif
 }
 
 
@@ -116,6 +123,10 @@ void WebPageUI::hideUI()
     elm_object_event_callback_del(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_del(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_del(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
+#if PROFILE_MOBILE
+    elm_gesture_layer_cb_del(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
+    elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _geasture_finished);
+#endif
 }
 
 void WebPageUI::loadStarted()
@@ -390,6 +401,60 @@ void WebPageUI::createLayout()
     m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
 
     connectActions();
+
+#if PROFILE_MOBILE
+    m_geastureLayer = elm_gesture_layer_add(m_mainLayout);
+    elm_gesture_layer_attach(m_geastureLayer, m_mainLayout);
+#endif
+}
+
+Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
+{
+    auto info = static_cast<Elm_Gesture_Line_Info*>(event_info);
+    if (info->momentum.n == WebPageUI::SINGLE_FINGER) {
+        if (info->momentum.my < -WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {
+            auto self = static_cast<WebPageUI*>(data);
+            self->geastureUp();
+        } else if (info->momentum.my > WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {
+            auto self = static_cast<WebPageUI*>(data);
+            self->geastureDown();
+        }
+    }
+
+    return EVAS_EVENT_FLAG_NONE;
+}
+
+void WebPageUI::geastureUp()
+{
+    if (!m_uriBarHidden) {
+        m_uriBarHidden = true;
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        elm_object_signal_emit(m_mainLayout, "enlarge_webview", "ui");
+        if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
+            setWebViewTouchEvents(false);
+        }
+    }
+}
+
+void WebPageUI::geastureDown()
+{
+    if (m_uriBarHidden) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
+            setWebViewTouchEvents(false);
+        }
+        elm_object_signal_emit(m_mainLayout, "show_uri_bar", "ui");
+        m_uriBarHidden = false;
+    }
+}
+
+void WebPageUI::_geasture_finished(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = reinterpret_cast<WebPageUI*>(data);
+    if (self->m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
+        self->setWebViewTouchEvents(true);
+    }
 }
 
 void WebPageUI::createErrorLayout()

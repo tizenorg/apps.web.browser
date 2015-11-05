@@ -839,6 +839,10 @@ void WebView::scrollView(const int& dx, const int& dy)
     ewk_view_scroll_by(m_ewkView, dx, dy);
 }
 
+void WebView::setTouchEvents(bool enabled) {
+    ewk_view_touch_events_enabled_set(m_ewkView, enabled);
+}
+
 const TabId& WebView::getTabId() {
     return m_tabId;
 }

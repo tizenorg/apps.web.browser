@@ -308,6 +308,13 @@ public:
     virtual void scrollView(const int& dx, const int& dy) = 0;
 
     /**
+     * @brief Enable or disable touch events for current web view
+     *
+     * @param enabled True if touch event have to be enabled, false else.
+     */
+    virtual void setTouchEvents(bool enabled) = 0;
+
+    /**
      * FavIcon of current page changed
      */
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;

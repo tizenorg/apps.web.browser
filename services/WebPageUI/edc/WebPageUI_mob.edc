@@ -3,12 +3,29 @@
 #define URI_WIDTH 64
 #define URI_BG_HEIGHT 108
 #define URI_BG_WIDTH 720
+#define WEB_VIEW_HEIGHT 1160        // FIXME: set propper size when top bar will be available
+#define WEB_VIEW_FULL_HEIGHT 1268   // FIXME: set propper size when top bar will be available
 #include "Spacer.edc"
 
 collections {
     group {
         name: "main_layout";
         parts {
+            part {
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
             part {
                 name: "uri_bar_bg";
                 type : RECT;
@@ -21,11 +38,20 @@ collections {
                     min: URI_BG_WIDTH URI_BG_HEIGHT;
                     max: URI_BG_WIDTH URI_BG_HEIGHT;
                     color: 255 255 255 255;
-                    rel1 { relative: 0.0 0.0; }
-                    rel2 { relative: 1.0 0.0; }
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 0 0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    rel1.offset: 0 -2*URI_BG_HEIGHT;
                 }
             }
-            ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 32, URI_BG_HEIGHT)
             part {
                 name: "uri_bar_buttons_left";
                 type : SWALLOW;
@@ -37,8 +63,15 @@ collections {
                     min: 196 64;
                     max: 196 64;
                     fixed: 1 1;
-                    rel1 { relative: 1.0 1.0; to: "left_spacer"; }
-                    rel2 { relative: 0.0 0.0; to: "left_spacer"; }
+                    rel1 {
+                        to: "uri_bar_bg";
+                        relative: 0.0 0.0;
+                        offset: 16 0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "uri_bar_bg";
+                    }
                 }
                 description {
                     state: "hidden" 0.0;
@@ -51,7 +84,6 @@ collections {
                     visible: 1;
                 }
             }
-            ADD_SPACER("left_buttons_spacer", "uri_bar_buttons_left", 0.5, 102)
             part {
                 name: "uri_entry";
                 type : SWALLOW;
@@ -63,8 +95,15 @@ collections {
                     min: URI_LENGTH URI_WIDTH;
                     max: URI_LENGTH URI_WIDTH;
                     fixed: 1 1;
-                    rel1 { relative: 1.0 0.5; to: "left_spacer"; }
-                    rel2 { relative: 1.0 0.5; to: "left_spacer"; }
+                    rel1 {
+                        to: "uri_bar_bg";
+                        relative: 0.0 0.0;
+                        offset: 32 0;
+                    }
+                    rel2 {
+                        to: "uri_bar_bg";
+                        relative: 1.0 1.0;
+                    }
                 }
                 description {
                     state: "moveright" 0.0;
@@ -72,8 +111,7 @@ collections {
                     visible: 1;
                     min: URI_LENGTH_SHORT URI_WIDTH;
                     max: URI_LENGTH_SHORT URI_WIDTH;
-                    rel1 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
-                    rel2 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                    rel1.offset: 455 0;
                 }
                 description {
                     state: "hidden" 0.0;
@@ -86,7 +124,6 @@ collections {
                     visible: 1;
                 }
             }
-            ADD_SPACER("right_buttons_spacer", "uri_entry", 24, URI_BG_HEIGHT)
             part {
                 name: "uri_bar_buttons_right";
                 type : SWALLOW;
@@ -94,12 +131,19 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    align: 0.0 0.5;
+                    align: 0.0 0.0;
                     min: 130 64;
                     max: 130 64;
                     fixed: 1 1;
-                    rel1 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
-                    rel2 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                    rel1 {
+                        to: "uri_entry";
+                        relative: 1.0 0.0;
+                        offset: 18 0;
+                    }
+                    rel2 {
+                        to: "uri_bar_bg";
+                        relative: 1.0 1.0;
+                    }
                 }
                 description {
                     state: "hidden" 0.0;
@@ -110,20 +154,6 @@ collections {
                     state: "visible" 0.0;
                     inherit: "default" 0.0;
                     visible: 1;
-                }
-            }
-            part {
-                name: "TEST_web_view";
-                type : RECT;
-                scale: 1;
-                description {
-                color: 0 255 0 255;
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    fixed: 1 1;
-                    rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
-                    rel2 { relative: 1.0 1.0; }
                 }
             }
             part {
@@ -135,8 +165,16 @@ collections {
                     visible: 1;
                     align: 0.0 0.0;
                     fixed: 1 1;
+                    min: URI_BG_WIDTH WEB_VIEW_HEIGHT;
+                    max: URI_BG_WIDTH WEB_VIEW_HEIGHT;
                     rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
-                    rel2 { relative: 1.0 1.0; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+                description {
+                    state: "uri_bar_hidden" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_BG_WIDTH WEB_VIEW_FULL_HEIGHT;
+                    max: URI_BG_WIDTH WEB_VIEW_FULL_HEIGHT;
                 }
             }
             part {
@@ -161,6 +199,7 @@ collections {
             part {
                 name: "progress_bar_light_bg";
                 type: RECT;
+                scale: 1;
                 repeat_events: 1;
                 description {
                     state: "default" 0.0;
@@ -209,6 +248,53 @@ collections {
                 source: "ui";
                 action: STATE_SET "visible" 0.0;
                 target: "progress_bar_light_bg";
+            }
+            program {
+                name: "hide_uri_bar_finished";
+                signal: "hide_uri_bar_finished";
+                source: "ui";
+                action: SIGNAL_EMIT "animation_finished" "ui";
+            }
+            program {
+                name: "hide_uri_bar";
+                signal: "hide_uri_bar";
+                source: "ui";
+                in: 0.01 0.0;
+                action: STATE_SET "hidden" 0.0;
+                target: "uri_bar_bg";
+                transition: LINEAR 0.15;
+                after: "hide_uri_bar_finished";
+            }
+            program {
+                name: "show_uri_bar_finished";
+                signal: "show_uri_bar_finished";
+                source: "ui";
+                action: SIGNAL_EMIT "animation_finished" "ui";
+            }
+            program {
+                name: "show_uri_bar";
+                signal: "show_uri_bar";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "uri_bar_bg";
+                transition: LINEAR 0.15;
+                after: "show_uri_bar_finished";
+                after: "decrease_webview";
+            }
+            program {
+                name: "enlarge_webview";
+                signal: "enlarge_webview";
+                source: "ui";
+                action: STATE_SET "uri_bar_hidden" 0.0;
+                target: "web_view";
+                after: "hide_uri_bar";
+            }
+            program {
+                name: "decrease_webview";
+                signal: "decrease_webview";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "web_view";
             }
         }
     }

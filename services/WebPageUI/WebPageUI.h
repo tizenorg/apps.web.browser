@@ -91,11 +91,15 @@ public:
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> showZoomNavigation;
-
-    static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
-    static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
+    boost::signals2::signal<void (bool enabled)> setWebViewTouchEvents;
 
 private:
+    static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
+    static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
+    static Evas_Event_Flags _gesture_move(void *data, void *event_info);
+    static void _geasture_finished(void *data, Evas_Object *obj, const char *emission, const char *source);
+    static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
+
     void createLayout();
     void createErrorLayout();
     void createPrivateLayout();
@@ -110,8 +114,8 @@ private:
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
     void refreshFocusChain();
-
-    static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
+    void geastureUp();
+    void geastureDown();
 
     // wrappers to call singal as a reaction to other signal
     void backPageConnect() { backPage(); }
@@ -127,6 +131,8 @@ private:
     Evas_Object* m_privateLayout;
     Evas_Object* m_progressBar;
     Evas_Object* m_bookmarkManagerButton;
+    Evas_Object* m_geastureLayer;
+
     std::unique_ptr<ButtonBar> m_leftButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
     std::unique_ptr<URIEntry> m_URIEntry;
@@ -134,6 +140,7 @@ private:
     UrlHistoryPtr m_urlHistoryList;
     bool m_webviewLocked;
     bool m_WebPageUIvisible;
+    bool m_uriBarHidden;
 
     sharedAction m_back;
     sharedAction m_forward;
@@ -141,6 +148,9 @@ private:
     sharedAction m_reload;
     sharedAction m_tab;
     sharedAction m_showMoreMenu;
+
+    static const int SINGLE_FINGER = 1;
+    static const int SWIPE_MOMENTUM_TRESHOLD = 500;
 };
 
 

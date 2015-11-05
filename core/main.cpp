@@ -16,6 +16,7 @@
 #include "browser_config.h"
 
 #include "BrowserLogger.h"
+#include "Config/Config.h"
 #include <Ecore.h>
 #include <Edje.h>
 #include <Elementary.h>
@@ -38,6 +39,12 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
+#if PROFILE_MOBILE
+    tizen_browser::config::DefaultConfig config;
+    config.load("");
+    elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
+#endif
+
 // MERGE_ME not sure which should be chosen
 //  elm_config_accel_preference_set("opengl");
     elm_config_accel_preference_set("3d");

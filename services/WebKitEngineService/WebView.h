@@ -150,6 +150,13 @@ public:
      */
     void scrollView(const int& dx, const int& dy);
 
+    /**
+     * @brief Enable or disable touch events
+     *
+     * @param enabled True if touch event have to be enabled, false else.
+     */
+    void setTouchEvents(bool enabled);
+
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
     boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
