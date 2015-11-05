@@ -549,6 +549,14 @@ void WebKitEngineService::scrollView(const int& dx, const int& dy)
     m_currentWebView->scrollView(dx, dy);
 }
 
+#if PROFILE_MOBILE
+void WebKitEngineService::setTouchEvents(bool enabled)
+{
+    M_ASSERT(m_currentWebView);
+    m_currentWebView->setTouchEvents(enabled);
+}
+#endif
+
 } /* end of webkitengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */

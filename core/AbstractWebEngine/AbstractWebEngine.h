@@ -307,6 +307,15 @@ public:
      */
     virtual void scrollView(const int& dx, const int& dy) = 0;
 
+#if PROFILE_MOBILE
+    /**
+     * @brief Enable or disable touch events for current web view
+     *
+     * @param enabled True if touch event have to be enabled, false else.
+     */
+    virtual void setTouchEvents(bool enabled) = 0;
+#endif
+
     /**
      * FavIcon of current page changed
      */
