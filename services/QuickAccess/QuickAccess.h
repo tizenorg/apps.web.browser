@@ -31,8 +31,6 @@
 namespace tizen_browser{
 namespace base_ui{
 
-//TODO: This class name is not revelant to what this class actually does.
-//Rename this class and file to "QuickAccessUI".
 class BROWSER_EXPORT QuickAccess
         : public tizen_browser::core::AbstractService
 {
@@ -117,6 +115,12 @@ private:
     static const int TOP_RIGHT_TILE_INDEX;
     static const int BOTTOM_RIGHT_TILE_INDEX;
     static const std::vector<std::string> TILES_NAMES;
+
+#if PROFILE_MOBILE
+    Evas_Object *m_scroller;
+    Evas_Object *m_centerLayout;
+    static const int FIXED_SIZE_TILES_NUMBER = 3;
+#endif
 };
 
 }

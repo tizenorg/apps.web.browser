@@ -73,6 +73,10 @@ QuickAccess::QuickAccess()
     , m_parentFocusChain(nullptr)
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
+#if PROFILE_MOBILE
+    , m_scroller(nullptr)
+    , m_centerLayout(nullptr)
+#endif
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     edjFilePath = EDJE_DIR;
@@ -146,7 +150,7 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
     return layout;
 }
 
-Evas_Object* QuickAccess::createMostVisitedView (Evas_Object * parent)
+Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 
@@ -157,6 +161,23 @@ Evas_Object* QuickAccess::createMostVisitedView (Evas_Object * parent)
 
     Evas_Object* topButtons = createTopButtons(mostVisitedLayout);
     elm_object_part_content_set(mostVisitedLayout, "elm.swallow.layoutTop", topButtons);
+
+#if PROFILE_MOBILE
+    m_scroller = elm_scroller_add(mostVisitedLayout);
+    evas_object_size_hint_weight_set(m_scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (m_scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_scroller_policy_set(m_scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_bounce_set(m_scroller, EINA_FALSE, EINA_FALSE);
+    elm_object_part_content_set(mostVisitedLayout, "center_swallow", m_scroller);
+    evas_object_show(m_scroller);
+
+    m_centerLayout = elm_layout_add(m_scroller);
+    elm_layout_file_set(m_centerLayout, edjFilePath.c_str(), "center_layout");
+    evas_object_size_hint_weight_set(m_centerLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (m_centerLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_content_set(m_scroller, m_centerLayout);
+    evas_object_show(m_centerLayout);
+#endif
 
     return mostVisitedLayout;
 }
@@ -280,7 +301,11 @@ void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     itemData->item = hi;
     itemData->quickAccess = std::shared_ptr<QuickAccess>(this);
 
+#if PROFILE_MOBILE
+    Evas_Object* tile = elm_button_add(m_centerLayout);
+#else
     Evas_Object* tile = elm_button_add(m_mostVisitedView);
+#endif
     if (tileNumber == BIG_TILE_INDEX)
         elm_object_style_set(tile, "big_tile");
     else
@@ -288,7 +313,11 @@ void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     evas_object_size_hint_weight_set(tile, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (tile, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(tile);
+#if PROFILE_MOBILE
+    elm_object_part_content_set(m_centerLayout, TILES_NAMES[tileNumber].c_str(), tile);
+#else
     elm_object_part_content_set(m_mostVisitedView, TILES_NAMES[tileNumber].c_str(), tile);
+#endif
     m_tiles.push_back(tile);
 
     elm_layout_text_set(tile, "page_title", hi->getTitle().c_str());
@@ -313,6 +342,14 @@ void QuickAccess::addHistoryItems(std::shared_ptr<services::HistoryItemVector> i
     }
     if (i>0)
         setEmptyView(false);
+
+#if PROFILE_MOBILE
+    if (items->size() > FIXED_SIZE_TILES_NUMBER) {
+        elm_object_signal_emit(m_centerLayout, "set_fixed_size", "ui");
+    } else {
+        elm_object_signal_emit(m_centerLayout, "set_dynamic_size", "ui");
+    }
+#endif
 }
 
 void QuickAccess::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
