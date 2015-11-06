@@ -16,7 +16,7 @@
 
 #include "browser_config.h"
 #include "Config.h"
-#include <tzplatform_config.h>
+#include <app_common.h>
 
 namespace tizen_browser
 {
@@ -25,9 +25,6 @@ namespace config
 
 void DefaultConfig::load(const std::string &)
 {
-    const char *db_path = NULL;
-    db_path = tzplatform_getenv(TZ_USER_APP);
-
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
     m_data["favorite_service_name"] = std::string("org.tizen.browser.favoriteservice");
@@ -43,7 +40,7 @@ void DefaultConfig::load(const std::string &)
 
 #   include "ConfigValues.h"
 
-    m_data["resourcedb/dir"] = std::string(db_path)+"/"+std::string("org.tizen.browser/data/");
+    m_data["resourcedb/dir"] = std::string(app_get_data_path());
 
     m_data["mobile_scale"] = 1.98;
 
