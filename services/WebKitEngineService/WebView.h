@@ -173,7 +173,7 @@ public:
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
 
-    boost::signals2::signal<void (WebConfirmationPtr)> cofirmationRequest;
+    boost::signals2::signal<void (WebConfirmationPtr)> confirmationRequest;
 
     boost::signals2::signal<void ()> ewkViewClicked;
 
@@ -215,7 +215,7 @@ private:
     static void __geolocationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __usermediaPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __notificationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
-    static void __authenticationRequest(void * data, Evas_Object * obj, void * event_info);
+    static void __authenticationChallenge(void * data, Evas_Object * obj, void * event_info);
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
@@ -243,7 +243,7 @@ private:
     std::map<WebConfirmationPtr, Ewk_User_Media_Permission_Request *> m_confirmationUserMediaMap;
     std::map<WebConfirmationPtr, Ewk_Notification_Permission_Request *> m_confirmationNotificationMap;
     std::map<CertificateConfirmationPtr, Ewk_Certificate_Policy_Decision *> m_confirmationCertificatenMap;
-    std::map<AuthenticationConfirmationPtr, Ewk_Auth_Request *> m_confirmationAuthenticationMap;
+    std::map<AuthenticationConfirmationPtr, Ewk_Auth_Challenge *> m_confirmationAuthenticationMap;
 #endif
 #endif
 

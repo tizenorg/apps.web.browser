@@ -83,7 +83,7 @@ void WebKitEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->loadError.connect(boost::bind(&WebKitEngineService::_loadError, this));
     webView->forwardEnableChanged.connect(boost::bind(&WebKitEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.connect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
-    webView->cofirmationRequest.connect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
+    webView->confirmationRequest.connect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.connect(boost::bind(&WebKitEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
 }
@@ -101,7 +101,7 @@ void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->loadError.disconnect(boost::bind(&WebKitEngineService::_loadError, this));
     webView->forwardEnableChanged.disconnect(boost::bind(&WebKitEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.disconnect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
-    webView->cofirmationRequest.disconnect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
+    webView->confirmationRequest.disconnect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.disconnect(boost::bind(&WebKitEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
 }

@@ -9,16 +9,18 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    align: 0.0 0.0;
+                    color: 80 80 80 255;
+                    align: 0.1 0.3;
                     rel1 { relative: 0.0 0.0;}
                     rel2 { relative: 1.0 1.0;}
-                    min: 200 60;
-                    max: 200 60;
+                    min: 200 50;
+                    max: 200 50;
                     text {
-                        text: "Label";
+                        text: "Login";
                         min: 0 1;
                         max: 1 1;
-                        size: 20;
+                        font: "Tizen:style=Bold";
+                        size: 22;
                     }
                 }
             }
@@ -30,8 +32,8 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: 200 60;
-                    max: 200 60;
+                    min: 550 50;
+                    max: 550 50;
                     rel1 { relative: 0.0 1.0; to: "login_label"; }
                     rel2 { relative: 1.0 1.0; }
                 }
@@ -53,16 +55,18 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
+                    color: 80 80 80 255;
                     align: 0.0 0.0;
-                    min: 200 60;
-                    max: 200 60;
+                    min: 200 50;
+                    max: 200 50;
                     rel1 { relative: 0.0 1.0; to: "login"; }
                     rel2 { relative: 1.0 1.0;}
                     text {
                         text: "Password";
                         min: 0 1;
                         max: 1 1;
-                        size: 20;;
+                        font: "Tizen:style=Bold";
+                        size: 22;
                     }
                 }
             }
@@ -74,8 +78,8 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: 200 60;
-                    max: 200 60;
+                    min: 550 50;
+                    max: 550 50;
                     rel1 { relative: 0.0 1.0; to: "password_label"; }
                     rel2 { relative: 1.0 1.0; }
                 }

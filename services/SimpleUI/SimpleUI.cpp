@@ -837,6 +837,8 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
     {
         case basic_webengine::WebConfirmation::ConfirmationType::Authentication:
         {
+        if (m_webPageUI->stateEquals(WPUState::MAIN_WEB_PAGE))
+        {
         basic_webengine::AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<basic_webengine::AuthenticationConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
 
         Evas_Object *popup_content = elm_layout_add(m_webPageUI->getContent());
@@ -854,10 +856,13 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         elm_object_part_text_set(popup_content, "password_label", "Password");
     #endif
 
+        std::string entryTextStyle = "DEFAULT='font=Sans:style=Regular font_size=20 ellipsis=0.0'";
         Evas_Object *loginEntry = elm_entry_add(popup_content);
+        elm_entry_text_style_user_push(loginEntry, entryTextStyle.c_str());
         elm_object_part_content_set(popup_content, "login", loginEntry);
 
         Evas_Object *passwordEntry = elm_entry_add(popup_content);
+        elm_entry_password_set(passwordEntry, EINA_TRUE);
         elm_object_part_content_set(popup_content, "password", passwordEntry);
 
         SimplePopup *popup = SimplePopup::createPopup();
@@ -873,6 +878,7 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         popup->buttonClicked.connect(boost::bind(&SimpleUI::authPopupButtonClicked, this, _1, _2));
         popup->show();
         break;
+        }
         }
         case basic_webengine::WebConfirmation::ConfirmationType::CertificateConfirmation:
         case basic_webengine::WebConfirmation::ConfirmationType::Geolocation:

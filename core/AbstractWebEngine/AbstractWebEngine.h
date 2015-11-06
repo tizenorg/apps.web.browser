@@ -394,7 +394,7 @@ public:
     boost::signals2::signal<void (TabId)> tabClosed;
 
     /**
-     * Confirmation Reuest
+     * Confirmation Request
      */
     boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;
 

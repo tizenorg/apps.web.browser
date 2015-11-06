@@ -149,7 +149,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
-    evas_object_smart_callback_add(m_ewkView, "authentication,request", __authenticationRequest, this);
+    evas_object_smart_callback_add(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
@@ -180,7 +180,7 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
-    evas_object_smart_callback_del_full(m_ewkView, "authentication,request", __authenticationRequest, this);
+    evas_object_smart_callback_del_full(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
     evas_object_smart_callback_del_full(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
@@ -409,17 +409,13 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
         break;
     }
     case WebConfirmation::ConfirmationType::Authentication: {
-        //FIXME: https://bugs.tizen.org/jira/browse/TT-229
         AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<AuthenticationConfirmation, WebConfirmation>(confirmation);
-
-        // The below line doesn't serve any purpose now, but it may become
-        // relevant when implementing https://bugs.tizen.org/jira/browse/TT-229
-        // Ewk_Auth_Request *request = m_confirmationAuthenticationMap[auth];
+        Ewk_Auth_Challenge *request = m_confirmationAuthenticationMap[auth];
 
         if (auth->getResult() == WebConfirmation::ConfirmationResult::Confirmed) {
-            BROWSER_LOGE("NOT IMPLEMENTED: Autenthication Request Confirmation handling!");
+            ewk_auth_challenge_credential_use(request, auth->getLogin().c_str(), auth->getPassword().c_str());
         } else if (auth->getResult() == WebConfirmation::ConfirmationResult::Rejected) {
-            BROWSER_LOGE("NOT IMPLEMENTED: Autenthication Request Rejection handling!");
+            ewk_auth_challenge_credential_cancel(request);
         } else {
             BROWSER_LOGE("Wrong ConfirmationResult");
             break;
@@ -690,7 +686,7 @@ void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj *
     // store
     self->m_confirmationGeolocationMap[c] = request;
 
-    self->cofirmationRequest(c);
+    self->confirmationRequest(c);
 #endif
 }
 
@@ -715,7 +711,7 @@ void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */,
     // store
     self->m_confirmationUserMediaMap[c] = request;
 
-    self->cofirmationRequest(c);
+    self->confirmationRequest(c);
 #endif
 }
 
@@ -740,18 +736,24 @@ void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj 
     // store
     self->m_confirmationNotificationMap[c] = request;
 
-    self->cofirmationRequest(c);
+    self->confirmationRequest(c);
 #endif
 }
 
-void WebView::__authenticationRequest(void * data, Evas_Object * /* obj */, void * event_info)
+void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
-    Ewk_Auth_Request *request = reinterpret_cast<Ewk_Auth_Request *>(event_info);
+    Ewk_Auth_Challenge *request = reinterpret_cast<Ewk_Auth_Challenge *>(event_info);
     EINA_SAFETY_ON_NULL_RETURN(request);
+
+    const char* realm = ewk_auth_challenge_realm_get(request);
+    const char* auth_url = ewk_auth_challenge_url_get(request);
+    if (!realm || !auth_url)
+        BROWSER_LOGE("realm or url NULL");
+    ewk_auth_challenge_suspend(request);
 
     std::string url = self->getURI();
     std::string message = (boost::format("A username and password are being requested by %1%.") % url).str();
@@ -760,7 +762,7 @@ void WebView::__authenticationRequest(void * data, Evas_Object * /* obj */, void
 
     self->m_confirmationAuthenticationMap[c] = request;
 
-    self->cofirmationRequest(c);
+    self->confirmationRequest(c);
 #endif
 }
 
@@ -789,7 +791,7 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
     // store
     self->m_confirmationCertificatenMap[c] = request;
 
-    self->cofirmationRequest(c);
+    self->confirmationRequest(c);
 #endif
 }
 #endif
