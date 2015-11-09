@@ -59,6 +59,9 @@ public:
     boost::signals2::signal<void ()> greenPressed;
     boost::signals2::signal<void ()> yellowPressed;
     boost::signals2::signal<void ()> bluePressed;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> menuButtonPressed;
+#endif
     boost::signals2::signal<void ()> mouseClicked;
 
     /**

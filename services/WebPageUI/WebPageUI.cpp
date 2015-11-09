@@ -128,6 +128,7 @@ void WebPageUI::hideUI()
 #if PROFILE_MOBILE
     elm_gesture_layer_cb_del(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
     elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _geasture_finished);
+    hideMoreMenu();
 #endif
 }
 
@@ -550,7 +551,9 @@ void WebPageUI::showTabUIConnect()
 }
 void WebPageUI::showMoreMenuConnect()
 {
+#if !PROFILE_MOBILE
     hideUI();
+#endif
     showMoreMenu();
 }
 
@@ -587,6 +590,7 @@ Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
 
 void WebPageUI::geastureUp()
 {
+    hideMoreMenu();
     if (!m_uriBarHidden) {
         m_uriBarHidden = true;
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
