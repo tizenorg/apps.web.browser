@@ -550,7 +550,9 @@ void WebPageUI::showTabUIConnect()
 }
 void WebPageUI::showMoreMenuConnect()
 {
+#if !PROFILE_MOBILE
     hideUI();
+#endif
     showMoreMenu();
 }
 
@@ -587,6 +589,7 @@ Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
 
 void WebPageUI::geastureUp()
 {
+    hideMoreMenu();
     if (!m_uriBarHidden) {
         m_uriBarHidden = true;
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
