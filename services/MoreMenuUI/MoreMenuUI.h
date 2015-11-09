@@ -31,11 +31,21 @@
 #include "services/HistoryService/HistoryItem.h"
 #include "FocusManager.h"
 
+#include <Ecore_Wayland.h>
+
 namespace tizen_browser{
 namespace base_ui{
 
 class SimpleUI;
 enum ItemType {
+#if PROFILE_MOBILE
+    ADD_TO_BOOKMARK,
+    READER_MODE,
+    SHARE,
+    HISTORY,
+    BOOKMARK_MANAGER,
+    SETTINGS
+#else
 #ifdef READER_MODE_ENABLED
     READER_MODE,
 #endif
@@ -50,6 +60,7 @@ enum ItemType {
     SHARE,
     SETTINGS,
     EXIT_BROWSER
+#endif
 } item;
 
 class BROWSER_EXPORT MoreMenuUI
@@ -81,6 +92,7 @@ public:
     void setFocus(Eina_Bool focusable);
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;
+    boost::signals2::signal<void ()> editBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
     boost::signals2::signal<void ()> settingsClicked;
@@ -93,6 +105,7 @@ public:
 private:
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();
+    void deleteMoreMenuLayout();
     void createGengrid();
     void addItems();
     void clearItems();
@@ -106,12 +119,15 @@ private:
 
     static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
+
     static void _timeout(void *data, Evas_Object *obj, void *event_info);
 
     static void __cb_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info);
     static void __cb_mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info);
-
     Evas_Object *m_current_tab_bar;
+#if PROFILE_MOBILE
+    Evas_Object *m_buttons_layout;
+#endif
     Evas_Object *m_mm_layout;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;

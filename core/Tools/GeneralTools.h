@@ -20,6 +20,8 @@
 #ifndef __GENERALTOOLS_H__
 #define __GENERALTOOLS_H__
 
+#define M_UNUSED(x) (void)(x)
+
 namespace tizen_browser
 {
 namespace tools

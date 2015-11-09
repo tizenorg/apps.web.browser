@@ -550,7 +550,9 @@ void WebPageUI::showTabUIConnect()
 }
 void WebPageUI::showMoreMenuConnect()
 {
+#if !PROFILE_MOBILE
     hideUI();
+#endif
     showMoreMenu();
 }
 
