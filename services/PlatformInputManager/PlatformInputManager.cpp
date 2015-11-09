@@ -95,6 +95,10 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->yellowPressed();
         else if(!keyName.compare("XF86Blue"))   // F7 - Blue
             self->bluePressed();
+#if PROFILE_MOBILE
+        else if(!keyName.compare("XF86Menu"))
+            self->menuButtonPressed();
+#endif
 
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);

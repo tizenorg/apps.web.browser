@@ -23,6 +23,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "BrowserAssert.h"
+#include "Tools/GeneralTools.h"
 #include "Lifecycle.h"
 #include "../ServiceManager/AbstractService.h"
 

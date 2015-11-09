@@ -86,6 +86,9 @@ public:
     boost::signals2::signal<void ()> stopLoadingPage;
     boost::signals2::signal<void ()> reloadPage;
     boost::signals2::signal<void ()> showTabUI;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> hideMoreMenu;
+#endif
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
