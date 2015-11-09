@@ -17,12 +17,20 @@ IF(EDJE_CC_EXECUTABLE)
              ENDFOREACH(tmp_arg)
          ENDIF()
 
-         SET(BROWSER_RESOLUTION "1920x1080")
+         IF(${PROFILE} MATCHES "mobile")
+            #SET(IMAGES_URL "images_mob") FIXME BUG TM-72
+            SET(IMAGES_URL "images")
+            SET(BROWSER_RESOLUTION "720x1280")
+         ELSE(${PROFILE} MATCHES "mobile")
+            SET(IMAGES_URL "images")
+            SET(BROWSER_RESOLUTION "1920x1080")
+         ENDIF()
+
          FOREACH(resolution ${BROWSER_RESOLUTION})
              SET(tmp_output ${Edj_Output}/${resolution}_${Name})
              ADD_CUSTOM_COMMAND(OUTPUT ${tmp_output}
                                 COMMAND ${EDJE_CC_EXECUTABLE}
-                                ARGS -id ${CMAKE_CURRENT_SOURCE_DIR}/images/
+                                ARGS -id ${CMAKE_CURRENT_SOURCE_DIR}/${IMAGES_URL}/
                                 -DBROWSER_RESOLUTION_${resolution}=1
                                 ${Edc_Input} ${tmp_output}
                                 MAIN_DEPENDENCY ${Edc_Input}
