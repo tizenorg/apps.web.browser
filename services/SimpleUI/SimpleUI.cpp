@@ -368,7 +368,11 @@ void SimpleUI::initUIServices()
     m_historyUI->init(m_viewManager->getContent());
 
     M_ASSERT(m_moreMenuUI.get());
+#if PROFILE_MOBILE
+    m_moreMenuUI->init(m_webPageUI->getContent());
+#else
     m_moreMenuUI->init(m_viewManager->getContent());
+#endif
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->init(m_viewManager->getContent());
@@ -429,7 +433,9 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->mouseClicked.connect(
             boost::bind(&SimpleUI::onMouseClick, this));
     m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
-
+#if PROFILE_MOBILE
+    m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
+#endif
 }
 
 void SimpleUI::switchViewToWebPage()
@@ -639,6 +645,14 @@ void SimpleUI::onEscapePressed()
     BROWSER_LOGD("[%s]", __func__);
     m_zoomUI->escapeZoom();
 }
+
+#if PROFILE_MOBILE
+void SimpleUI::onMenuButtonPressed()
+{
+    BROWSER_LOGD("[%s]", __func__);
+    showMoreMenu();
+}
+#endif
 
 void SimpleUI::reloadEnable(bool enable)
 {
@@ -954,6 +968,14 @@ void SimpleUI::closeSettingsUI()
 void SimpleUI::showMoreMenu()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+#if PROFILE_MOBILE
+    M_ASSERT(m_webPageUI);
+    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+        m_moreMenuUI->hideUI();
+    else
+        m_moreMenuUI->showUI();
+#else
     M_ASSERT(m_viewManager);
 
     bool desktopMode = m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) ? m_quickAccess->isDesktopMode() : m_webEngine->isDesktopMode();
@@ -969,6 +991,7 @@ void SimpleUI::showMoreMenu()
     else {
         m_moreMenuUI->setHomePageInfo();
     }
+#endif
 }
 
 void SimpleUI::closeMoreMenu()

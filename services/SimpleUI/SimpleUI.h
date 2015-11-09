@@ -146,6 +146,9 @@ private:
     void onActionTriggered(const Action& action);
     void onMouseClick();
     void onRedKeyPressed();
+#if PROFILE_MOBILE
+    void onMenuButtonPressed();
+#endif
     void setwvIMEStatus(bool status);
 
     sharedAction m_showBookmarkManagerUI;

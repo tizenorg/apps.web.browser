@@ -23,16 +23,22 @@ install(TARGETS ${PROJECT_NAME}
             LIBRARY DESTINATION services
             ARCHIVE DESTINATION services/static)
 
-include(EDCCompile)
 #please do not add edc/ directory
-set(edcFiles
-    MoreMenu.edc
-    )
+if (${PROFILE} MATCHES "mobile")    # mobile profile
+    include(EDCCompile_mob)
+    set(edcFiles
+        MoreMenu_mob.edc
+        )
+else (${PROFILE} MATCHES "mobile")  # tv profile
+    include(EDCCompile)
+    set(edcFiles
+        MoreMenu.edc
+        )
+endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REPLACE ".edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
-               ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
-               ${CMAKE_CURRENT_BINARY_DIR})
+        ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
+        ${CMAKE_CURRENT_BINARY_DIR})
 endforeach(edec)
-

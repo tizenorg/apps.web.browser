@@ -20,6 +20,7 @@ install(TARGETS ${PROJECT_NAME}
             LIBRARY DESTINATION services
             ARCHIVE DESTINATION services/static)
 
+include(EDCCompile)
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
