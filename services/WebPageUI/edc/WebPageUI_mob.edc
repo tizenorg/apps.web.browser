@@ -5,6 +5,8 @@
 #define URI_BG_WIDTH 720
 #define WEB_VIEW_HEIGHT 1160        // FIXME: set propper size when top bar will be available
 #define WEB_VIEW_FULL_HEIGHT 1268   // FIXME: set propper size when top bar will be available
+#define MOREMENU_HEIGHT 588
+#define MOREMENU_WIDTH 720
 #include "Spacer.edc"
 
 collections {
@@ -219,6 +221,84 @@ collections {
                     visible: 1;
                 }
             }
+            part {
+                name: "moremenu_dimmed_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    color: 0 0 0 102.4; //szary
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "web_view";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "web_view";
+                    }
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "moremenu_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    color: 244 244 244 255;
+                    min: MOREMENU_WIDTH MOREMENU_HEIGHT;
+                    max: MOREMENU_WIDTH MOREMENU_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "web_view";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "moremenu";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: MOREMENU_WIDTH MOREMENU_HEIGHT;
+                    max: MOREMENU_WIDTH MOREMENU_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "moremenu_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "moremenu_bg";
+                    }
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
         }
         programs {
             program {
@@ -295,6 +375,24 @@ collections {
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "web_view";
+            }
+            program {
+                name: "hide_moremenu";
+                signal: "hide_moremenu";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "moremenu";
+                target: "moremenu_bg";
+                target: "moremenu_dimmed_bg";
+            }
+            program {
+                name: "show_moremenu";
+                signal: "show_moremenu";
+                source: "ui";
+                action: STATE_SET "visible" 0.0;
+                target: "moremenu";
+                target: "moremenu_bg";
+                target: "moremenu_dimmed_bg";
             }
         }
     }
