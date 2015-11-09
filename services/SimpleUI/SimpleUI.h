@@ -154,6 +154,9 @@ private:
     void onMouseClick();
     void onRedKeyPressed();
     void onYellowKeyPressed();
+#if PROFILE_MOBILE
+    void onMenuButtonPressed();
+#endif
     void setwvIMEStatus(bool status);
 
     sharedAction m_showBookmarkManagerUI;
