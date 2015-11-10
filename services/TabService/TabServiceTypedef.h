@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-/*
- * BrowserConstans.h
- *
- *  Created on: May 28, 2014
- *      Author: pchmielewski
- */
+#ifndef TABSERVICETYPEDEF_H_
+#define TABSERVICETYPEDEF_H_
 
-#ifndef BROWSERCONSTANS_H_
-#define BROWSERCONSTANS_H_
+#include <memory>
 
-namespace tizen_browser{
-namespace config{
+namespace tizen_browser {
+namespace services {
 
-extern const int THUMB_WIDTH;
-extern const int THUMB_HEIGHT;
+class TabService;
+typedef std::shared_ptr<TabService> TabServicePtr;
+typedef std::shared_ptr<const TabService> TabServicePtrConst;
 
 }
 }
 
-#endif /* BROWSERCONSTANS_H_ */
+#endif /* TABSERVICETYPEDEF_H_ */

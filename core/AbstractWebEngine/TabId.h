@@ -22,7 +22,8 @@
 
 #include <boost/uuid/uuid_io.hpp>
 
-#include "BrowserImage.h"
+#include "BrowserImageTypedef.h"
+#include "TabIdTypedef.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -63,16 +64,22 @@ private:
     boost::uuids::uuid m_id;
 };
 
-class TabContent{
+class TabContent
+{
 public:
-    TabContent(TabId id,const std::string& title, std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
+    TabContent(TabId id, const std::string& title,
+            tools::BrowserImagePtr thumbnail);
+    TabContent(TabId id, const std::string& title);
     TabId getId() const;
     std::string getTitle() const;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const;
+    void setThumbnail(tools::BrowserImagePtr thumbnail);
+    tools::BrowserImagePtr getThumbnail() const;
+
 private:
     TabId m_id;
     std::string m_title;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
+    tools::BrowserImagePtr m_thumbnail;
+
 };
 } /* end of basic_webengine */
 } /* end of tizen_browser */

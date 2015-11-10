@@ -22,6 +22,8 @@
  */
 
 #include "browser_config.h"
+
+#include "BrowserImage.h"
 #include "TabId.h"
 
 #include <boost/uuid/uuid_generators.hpp>
@@ -52,24 +54,38 @@ std::string TabId::toString() const {
     return ss.str();
 }
 
-TabContent::TabContent(TabId id,const std::string& title, std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail){
+TabContent::TabContent(TabId id, const std::string& title,
+        tools::BrowserImagePtr thumbnail)
+{
     this->m_id = id;
     this->m_title = title;
     this->m_thumbnail = thumbnail;
 }
 
-TabId TabContent::getId() const {
+TabContent::TabContent(TabId id, const std::string& title) :
+        TabContent(id, title, std::make_shared<tools::BrowserImage>())
+{
+}
+
+TabId TabContent::getId() const
+{
     return m_id;
 }
 
-std::string TabContent::getTitle() const {
+std::string TabContent::getTitle() const
+{
     return m_title;
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> TabContent::getThumbnail() const{
-    return m_thumbnail;
+void TabContent::setThumbnail(tools::BrowserImagePtr thumbnail)
+{
+    m_thumbnail = thumbnail;
 }
 
+tools::BrowserImagePtr TabContent::getThumbnail() const
+{
+    return m_thumbnail;
+}
 
 } /* end of basic_webengine */
 } /* end of tizen_browser */

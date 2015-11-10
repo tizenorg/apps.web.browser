@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-#include "browser_config.h"
-#include "BrowserConstants.h"
+#ifndef BROWSERIMAGETYPEDEF_H_
+#define BROWSERIMAGETYPEDEF_H_
 
-const int tizen_browser::config::THUMB_WIDTH = 79;
-const int tizen_browser::config::THUMB_HEIGHT = 79;
+#include <memory>
+
+namespace tizen_browser
+{
+namespace tools
+{
+
+struct BrowserImage;
+typedef std::shared_ptr<BrowserImage> BrowserImagePtr;
+typedef std::shared_ptr<const BrowserImage> BrowserImagePtrConst;
+
+}
+}
+
+#endif /* BROWSERIMAGETYPEDEF_H_ */

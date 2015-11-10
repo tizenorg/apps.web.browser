@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef CONFIGKEY_H_
-#define CONFIGKEY_H_
+#ifndef TABIDTYPEDEF_H_
+#define TABIDTYPEDEF_H_
 
-enum class CONFIG_KEY
-{
-    KEY_ERROR,
-    TABSERVICE_THUMB_WIDTH,
-    TABSERVICE_THUMB_HEIGHT,
-    URLHISTORYLIST_ITEMS_NUMBER_MAX,
-    URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX,
-    URLHISTORYLIST_KEYWORD_LENGTH_MIN,
-    URLHISTORYLIST_ITEM_HEIGHT,
-    URLHISTORYLIST_SHOW_SCROLLBAR
-};
+#include <memory>
 
-#endif /* CONFIGKEY_H_ */
+namespace tizen_browser {
+namespace basic_webengine {
+
+class TabId;
+typedef std::shared_ptr<TabId> TabIdPtr;
+typedef std::shared_ptr<const TabId> TabIdPtrConst;
+
+class TabContent;
+typedef std::shared_ptr<TabContent> TabContentPtr;
+typedef std::shared_ptr<const TabContent> TabContentPtrConst;
+
+}
+}
+
+#endif /* TABIDTYPEDEF_H_ */

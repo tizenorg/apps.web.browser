@@ -21,6 +21,7 @@
 #include <string.h>
 #include <AbstractMainWindow.h>
 
+#include "TabId.h"
 #include "TabUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -35,7 +36,7 @@ EXPORT_SERVICE(TabUI, "org.tizen.browser.tabui")
 
 typedef struct _TabItemData
 {
-    std::shared_ptr<tizen_browser::basic_webengine::TabContent> item;
+    basic_webengine::TabContentPtr item;
     std::shared_ptr<tizen_browser::base_ui::TabUI> tabUI;
 } TabItemData;
 
@@ -311,7 +312,7 @@ void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
 
 }
 
-void TabUI::addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabContent> hi)
+void TabUI::addTabItem(basic_webengine::TabContentPtr hi)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     TabItemData *itemData = new TabItemData();
@@ -325,7 +326,7 @@ void TabUI::addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabConten
     setEmptyGengrid(false);
 }
 
-void TabUI::addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>>items)
+void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
