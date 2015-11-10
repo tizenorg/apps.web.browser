@@ -49,6 +49,11 @@ public:
     // uri edition change (by a user)
     boost::signals2::signal<void (const std::shared_ptr<std::string>)> uriEntryEditingChangedByUser;
 
+#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> mobileEntryFocused;
+    boost::signals2::signal<void ()> mobileEntryUnfocused;
+#endif
+
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setCurrentFavIcon();
     void setSearchIcon();
@@ -108,6 +113,7 @@ private:
     static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_cancel_icon_clicked(void* data, Evas_Object*, const char*, const char*);
 
     static void focusedBtn(void* data, Evas_Object* obj, void* event_info);
     static void unfocusedBtn(void* data, Evas_Object* obj, void* event_info);

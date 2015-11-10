@@ -80,6 +80,10 @@ public:
     void unlockUrlHistoryList();
     void onRedKeyPressed();
     void onYellowKeyPressed();
+#if PROFILE_MOBILE
+    void mobileEntryFocused();
+    void mobileEntryUnfocused();
+#endif
 
     boost::signals2::signal<void ()> backPage;
     boost::signals2::signal<void ()> forwardPage;
