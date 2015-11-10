@@ -15,8 +15,8 @@ collections {
                     visible: 1;
                     fixed: 1 1;
                 align: 0.0 0.0;
-                min: 70 70;
-                max: 70 70;
+                min: 64 64;
+                max: 64 64;
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 0.0 0.0; }
             }
@@ -41,8 +41,8 @@ collections {
                 visible: 1;
                 fixed: 1 1;
                 align: 0.0 0.0;
-                min: 70 70;
-                max: 70 70;
+                min: 64 64;
+                max: 64 64;
                 color: 86 86 86 255;
                 rel1 { relative: 0.0 0.0; to: "tab_button"; }
                 rel2 { relative: 1.0 1.0; to: "tab_button"; }
@@ -54,8 +54,10 @@ collections {
                 }
             }
         }
-        ADD_SPACER("spacer_1", "tab_button", 10, 70)
-            part {
+
+        ADD_SPACER("spacer_1", "tab_button", 2, 64)
+
+        part {
                 name: "setting_button";
                 type : SWALLOW;
                 scale: 1;
@@ -64,8 +66,8 @@ collections {
                     visible: 1;
                     fixed: 1 1;
                 align: 0.0 0.0;
-                min: 70 70;
-                max: 70 70;
+                min: 64 64;
+                max: 64 64;
                 fixed: 1 1;
                 rel1 { relative: 1.0 0.0; to: "spacer_1"; }
                 rel2 { relative: 0.0 0.0; }

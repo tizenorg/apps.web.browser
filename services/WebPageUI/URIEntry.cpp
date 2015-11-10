@@ -74,6 +74,9 @@ Evas_Object* URIEntry::getContent()
         elm_entry_single_line_set(m_entry, EINA_TRUE);
         elm_entry_scrollable_set(m_entry, EINA_TRUE);
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
+#if PROFILE_MOBILE
+        elm_object_signal_callback_add(m_entry_layout,  "cancel_icon_clicked", "ui", _uri_cancel_icon_clicked, this);
+#endif
 
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
 
@@ -257,6 +260,9 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
     self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
+#if PROFILE_MOBILE
+    self->mobileEntryUnfocused();
+#endif
 }
 
 void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info */)
@@ -265,6 +271,9 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
     self->setUrlGuideText(GUIDE_TEXT_FOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
+#if PROFILE_MOBILE
+    self->mobileEntryFocused();
+#endif
     BROWSER_LOGD("%s, URI: %s", __func__, self->m_URI.c_str());
 }
 
@@ -383,6 +392,15 @@ void URIEntry::setDisabled(bool disabled)
     }
     elm_object_disabled_set(getContent(), disabled ? EINA_TRUE : EINA_FALSE);
 }
+
+#if PROFILE_MOBILE
+void URIEntry::_uri_cancel_icon_clicked(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    URIEntry* self = static_cast<URIEntry*>(data);
+    elm_entry_entry_set(self->m_entry, "");
+}
+#endif
 
 }
 }

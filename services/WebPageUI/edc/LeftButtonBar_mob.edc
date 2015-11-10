@@ -42,9 +42,9 @@ collections {
             }
         }
 
-        ADD_SPACER("spacer_1", "prev_button", 10, 64)
+        ADD_SPACER("spacer_1", "prev_button", 2, 64)
 
-            part {
+        part {
                 name: "next_button";
                 type : SWALLOW;
                 scale: 1;
@@ -70,9 +70,9 @@ collections {
             }
         }
 
-        ADD_SPACER("spacer_2", "next_button", 10, 64)
+        ADD_SPACER("spacer_2", "next_button", 2, 64)
 
-            part {
+        part {
                 name: "refresh_stop_button";
                 type : SWALLOW;
                 scale: 1;

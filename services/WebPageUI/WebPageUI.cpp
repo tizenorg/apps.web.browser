@@ -617,6 +617,25 @@ void WebPageUI::_geasture_finished(void* data, Evas_Object* /*obj*/, const char*
         self->setWebViewTouchEvents(true);
     }
 }
+
+void WebPageUI::mobileEntryFocused()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(m_mainLayout, "enlarge_focused_uri", "ui");
+    elm_object_signal_emit(m_URIEntry->getContent(), "enlarge_focused_uribg", "ui");
+}
+
+void WebPageUI::mobileEntryUnfocused()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+        elm_object_signal_emit(m_URIEntry->getContent(), "decrease_unfocused_qa_uri", "ui");
+        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri", "ui");
+    } else {
+        elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
+        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
+    }
+}
 #endif
 
 }   // namespace tizen_browser
