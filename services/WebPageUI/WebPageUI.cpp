@@ -176,6 +176,7 @@ void WebPageUI::loadStopped()
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     m_URIEntry->setPageTitleFromURI();
     m_URIEntry->showPageTitle();
+    hideProgressBar();
 }
 
 void WebPageUI::setPageTitle(const std::string& title)
