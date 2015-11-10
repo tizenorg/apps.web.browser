@@ -30,7 +30,6 @@ set(browserCore_SRCS
     ServiceManager/ServiceLoader.cpp
     ServiceManager/ServiceManager.cpp
     AbstractWebEngine/TabId.cpp
-    AbstractWebEngine/TabThumbCache.cpp
     AbstractWebEngine/WebConfirmation.cpp
     Tools/EflTools.cpp
     Tools/BrowserImage.cpp
@@ -40,7 +39,6 @@ set(browserCore_SRCS
     Tools/FeedChannel.cpp
     Tools/FocusManager.cpp
     Tools/StringTools.cpp
-    BrowserConstants.cpp
     )
 
 if(TIZEN_BUILD)

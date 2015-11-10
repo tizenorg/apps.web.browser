@@ -16,6 +16,7 @@
 
 #include "browser_config.h"
 #include "Config.h"
+#include "BrowserLogger.h"
 #include <app_common.h>
 
 namespace tizen_browser
@@ -44,6 +45,9 @@ void DefaultConfig::load(const std::string &)
 
     m_data["mobile_scale"] = 1.98;
 
+    m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
+    m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
+
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_NUMBER_MAX] = 12;
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX] = 5;
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_KEYWORD_LENGTH_MIN] = 3;
@@ -62,7 +66,7 @@ boost::any DefaultConfig::get(const std::string & key)
 
 const boost::any& DefaultConfig::get(const CONFIG_KEY& key) const
 {
-    return m_keysValues.at(key);
+    return m_keysValues.find(key)->second;
 }
 
 void DefaultConfig::set(const std::string & key, const boost::any & value)

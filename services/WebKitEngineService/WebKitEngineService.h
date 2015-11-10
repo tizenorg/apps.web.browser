@@ -26,7 +26,7 @@
 #include "service_macros.h"
 
 #include "AbstractWebEngine/AbstractWebEngine.h"
-#include "AbstractWebEngine/TabId.h"
+#include "AbstractWebEngine/TabIdTypedef.h"
 #include "AbstractWebEngine/WebConfirmation.h"
 #include "BrowserImage.h"
 
@@ -73,7 +73,12 @@ public:
     int tabsCount() const;
     TabId currentTabId() const;
     std::list<TabId> listTabs() const;
-    std::vector<std::shared_ptr<TabContent> > getTabContents() const;
+
+    /**
+     * Get TabContent collection filled with TabID and titles.
+     * Without thumbnails.
+     */
+    std::vector<TabContentPtr> getTabContents() const;
 
     /**
      * Adds new tab. If uri is specified setURI(uri).

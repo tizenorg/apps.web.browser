@@ -30,6 +30,7 @@
 #include <Evas.h>
 #include "Config.h"
 
+#include "TabService.h"
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
 #include "AbstractWebEngine.h"
@@ -61,6 +62,7 @@ const int ROOT_FOLDER = 0;
 
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
+    , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
     , m_popup(nullptr)
     , m_webPageUI()
     , m_moreMenuUI()
@@ -75,6 +77,7 @@ SimpleUI::SimpleUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
+    m_config->load("");
 
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
@@ -129,10 +132,8 @@ int SimpleUI::exec(const std::string& _url)
 
     if(!m_initialised){
         if (m_window.get()) {
-            config::DefaultConfig config;
-            config.load("");
-            m_tabLimit = boost::any_cast <int> (config.get("TAB_LIMIT"));
-            m_favoritesLimit = boost::any_cast <int> (config.get("FAVORITES_LIMIT"));
+            m_tabLimit = boost::any_cast <int> (m_config->get("TAB_LIMIT"));
+            m_favoritesLimit = boost::any_cast <int> (m_config->get("FAVORITES_LIMIT"));
 
 
             loadUIServices();
@@ -330,6 +331,12 @@ void SimpleUI::loadModelServices()
         <tizen_browser::services::HistoryService,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
 
+    m_tabService = std::dynamic_pointer_cast<
+            tizen_browser::services::TabService,
+            tizen_browser::core::AbstractService>(
+            tizen_browser::core::ServiceManager::getInstance().getService(
+                    "org.tizen.browser.tabservice"));
+
     m_platformInputManager =
         std::dynamic_pointer_cast
         <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
@@ -413,6 +420,8 @@ void SimpleUI::connectModelSignals()
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
 
     m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
+
+    m_tabService->generateThumb.connect(boost::bind(&SimpleUI::onGenerateThumb, this, _1));
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
@@ -588,6 +597,17 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     }
 }
 
+void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
+{
+    const int THUMB_WIDTH = boost::any_cast<int>(
+            m_config->get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
+    const int THUMB_HEIGHT = boost::any_cast<int>(
+            m_config->get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
+    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId,
+            THUMB_WIDTH, THUMB_HEIGHT);
+    m_tabService->onThumbGenerated(tabId, snapshotImage);
+}
+
 void SimpleUI::onHistoryRemoved(const std::string& uri)
 {
     BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
@@ -646,6 +666,7 @@ void SimpleUI::loadStarted()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
+    m_tabService->clearThumb(m_webEngine->currentTabId());
     m_webPageUI->loadStarted();
 }
 
@@ -666,6 +687,7 @@ void SimpleUI::loadFinished()
                                          m_webEngine->getSnapshotData(
                                              QuickAccess::MAX_THUMBNAIL_WIDTH,
                                              QuickAccess::MAX_THUMBNAIL_HEIGHT));
+    m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
 }
 
@@ -790,7 +812,11 @@ void SimpleUI::showTabUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
     m_viewManager->pushViewToStack(m_tabUI.get());
-    m_tabUI->addTabItems(m_webEngine->getTabContents());
+
+    std::vector<basic_webengine::TabContentPtr> tabsContents =
+            m_webEngine->getTabContents();
+    m_tabService->fillThumbs(tabsContents);
+    m_tabUI->addTabItems(tabsContents);
 }
 
 void SimpleUI::closeTabUI()

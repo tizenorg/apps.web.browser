@@ -42,6 +42,7 @@
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
+#include "TabServiceTypedef.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
@@ -52,7 +53,7 @@
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
 #include "BookmarksManager.h"
-#include "Config.h"
+#include "ConfigTypedef.h"
 #include "ViewManager.h"
 
 namespace tizen_browser{
@@ -139,6 +140,11 @@ private:
 
     void onMostVisitedClicked();
     void onBookmarkButtonClicked();
+
+    /**
+     * @brief Handles 'generateThumb' signals.
+     */
+    void onGenerateThumb(basic_webengine::TabId tabId);
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
@@ -235,12 +241,14 @@ private:
 
     std::string edjePath(const std::string &);
 
+    config::DefaultConfigUniquePtr m_config;
     Evas_Object *m_popup;
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
     std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<services::HistoryService> m_historyService;
+    services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;

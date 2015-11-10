@@ -25,7 +25,8 @@
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
-#include "TabId.h"
+#include "TabIdTypedef.h"
+
 namespace tizen_browser{
 namespace base_ui{
 
@@ -44,7 +45,7 @@ public:
 
     virtual std::string getName();
 
-    void addTabItems(std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent> > items);
+    void addTabItems(std::vector<basic_webengine::TabContentPtr> items);
     bool isEditMode();
     void onBackKey();
 
@@ -82,7 +83,7 @@ private:
     Evas_Object* createNoHistoryLabel();
     void createTabItemClass();
     void closeAllTabs();
-    void addTabItem(std::shared_ptr<tizen_browser::basic_webengine::TabContent>);
+    void addTabItem(basic_webengine::TabContentPtr);
 
     Evas_Object *m_tab_layout;
     Evas_Object *m_gengrid;

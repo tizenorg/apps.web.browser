@@ -36,7 +36,6 @@
 #include <Evas.h>
 
 #include "AbstractWebEngine/AbstractWebEngine.h"
-#include "AbstractWebEngine/TabThumbCache.h"
 #include "app_common.h"
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
@@ -533,8 +532,6 @@ void WebView::__loadStarted(void * data, Evas_Object * /* obj */, void * /* even
 
     self->m_isLoading = true;
     self->loadStarted();
-    tizen_browser::services::TabThumbCache* cache = tizen_browser::services::TabThumbCache::getInstance();
-    cache->clearThumb(self->m_tabId);
 }
 
 void WebView::__loadStop(void * data, Evas_Object * /* obj */, void * /* event_info */)
@@ -558,8 +555,6 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
 
     self->loadFinished();
     self->loadProgress(self->m_loadProgress);
-    tizen_browser::services::TabThumbCache* cache = tizen_browser::services::TabThumbCache::getInstance();
-    cache->updateThumb(self->m_tabId);
 }
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)

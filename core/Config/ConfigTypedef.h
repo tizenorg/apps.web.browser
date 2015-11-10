@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#ifndef CONFIGKEY_H_
-#define CONFIGKEY_H_
+#ifndef CONFIGTYPEDEF_H_
+#define CONFIGTYPEDEF_H_
 
-enum class CONFIG_KEY
-{
-    TABSERVICE_THUMB_WIDTH,
-    TABSERVICE_THUMB_HEIGHT,
-    URLHISTORYLIST_ITEMS_NUMBER_MAX,
-    URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX,
-    URLHISTORYLIST_KEYWORD_LENGTH_MIN,
-    URLHISTORYLIST_ITEM_HEIGHT,
-    URLHISTORYLIST_SHOW_SCROLLBAR
-};
+#include <memory>
 
-#endif /* CONFIGKEY_H_ */
+namespace tizen_browser {
+namespace config {
+
+typedef std::shared_ptr<DefaultConfig> DefaultConfigPtr;
+typedef std::unique_ptr<DefaultConfig> DefaultConfigUniquePtr;
+
+}
+}
+
+#endif /* CONFIGTYPEDEF_H_ */
