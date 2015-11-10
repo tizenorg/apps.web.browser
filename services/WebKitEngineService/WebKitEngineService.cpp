@@ -23,13 +23,13 @@
 
 #include "browser_config.h"
 #include "WebKitEngineService.h"
-#include "AbstractWebEngine/TabThumbCache.h"
 
 #include <Evas.h>
 #include <memory>
 #include <BrowserImage.h>
 #include <app.h>
 
+#include "AbstractWebEngine/TabId.h"
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
 #include "WebView.h"
@@ -288,15 +288,11 @@ std::list<TabId> WebKitEngineService::listTabs() const
     return m_mostRecentTab;
 }
 
-std::vector<std::shared_ptr<TabContent> > WebKitEngineService::getTabContents() const {
-    std::vector<std::shared_ptr<TabContent>> result;
+std::vector<TabContentPtr> WebKitEngineService::getTabContents() const {
+    std::vector<TabContentPtr> result;
     for(std::list<TabId>::const_iterator it = m_chronoTabs.begin(); it != m_chronoTabs.end(); it++){
         WebViewPtr item = m_tabs.find(*it)->second;
-
-        tizen_browser::services::TabThumbCache* thumbCache = tizen_browser::services::TabThumbCache::getInstance();
-        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail = thumbCache->getThumb(*it);
-
-        auto tabContent = std::make_shared<TabContent>(*it, item->getTitle(), thumbnail);
+        auto tabContent = std::make_shared<TabContent>(*it, item->getTitle());
         result.push_back(tabContent);
     }
     return result;

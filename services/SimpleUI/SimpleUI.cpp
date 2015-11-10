@@ -30,6 +30,8 @@
 #include <Evas.h>
 #include "Config.h"
 
+#include "TabService.h"
+
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
 #include "AbstractWebEngine.h"
@@ -330,6 +332,12 @@ void SimpleUI::loadModelServices()
         <tizen_browser::services::HistoryService,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
 
+    m_tabService = std::dynamic_pointer_cast<
+            tizen_browser::services::TabService,
+            tizen_browser::core::AbstractService>(
+            tizen_browser::core::ServiceManager::getInstance().getService(
+                    "org.tizen.browser.tabservice"));
+
     m_platformInputManager =
         std::dynamic_pointer_cast
         <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
@@ -413,6 +421,8 @@ void SimpleUI::connectModelSignals()
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
 
     m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
+
+    m_tabService->generateThumb.connect(boost::bind(&SimpleUI::onGenerateThumb, this, _1));
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
@@ -588,6 +598,13 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     }
 }
 
+void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
+{
+    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId,
+            m_tabService->getThumbWidth(), m_tabService->getThumbHeight());
+    m_tabService->onThumbGenerated(tabId, snapshotImage);
+}
+
 void SimpleUI::onHistoryRemoved(const std::string& uri)
 {
     BROWSER_LOGD("[%s] deleted %s", __func__, uri.c_str());
@@ -646,6 +663,7 @@ void SimpleUI::loadStarted()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
+    m_tabService->clearThumb(m_webEngine->currentTabId());
     m_webPageUI->loadStarted();
 }
 
@@ -666,6 +684,7 @@ void SimpleUI::loadFinished()
                                          m_webEngine->getSnapshotData(
                                              QuickAccess::MAX_THUMBNAIL_WIDTH,
                                              QuickAccess::MAX_THUMBNAIL_HEIGHT));
+    m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
 }
 
@@ -790,7 +809,11 @@ void SimpleUI::showTabUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
     m_viewManager->pushViewToStack(m_tabUI.get());
-    m_tabUI->addTabItems(m_webEngine->getTabContents());
+
+    std::vector<basic_webengine::TabContentPtr> tabsContents =
+            m_webEngine->getTabContents();
+    m_tabService->fillThumbs(tabsContents);
+    m_tabUI->addTabItems(tabsContents);
 }
 
 void SimpleUI::closeTabUI()
