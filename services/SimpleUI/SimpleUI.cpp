@@ -1072,6 +1072,7 @@ void SimpleUI::showBookmarkManagerUI()
     M_ASSERT(m_viewManager);
     m_viewManager->pushViewToStack(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->addBookmarkItems(getBookmarks(ROOT_FOLDER));
+	m_bookmarkManagerUI->showUI();
 }
 
 void SimpleUI::closeBookmarkManagerUI()
