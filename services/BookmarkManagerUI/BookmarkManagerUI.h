@@ -47,6 +47,11 @@ public:
     virtual std::string getName();
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+#if PROFILE_MOBILE
+	void addNewFolderItem();
+	void addAllItem();
+	void addMobileItem();
+#endif
     void hide();
     void clearItems();
     Evas_Object* createNoHistoryLabel();
@@ -68,6 +73,11 @@ private:
 
     static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
+#if PROFILE_MOBILE
+	static void _bookmarkNewFolderItemClicked(void * data, Evas_Object *, void *);
+	static void _bookmarkAllItemClicked(void * data, Evas_Object *, void *);
+	static void _bookmarkMobileFolderItemClicked(void * data, Evas_Object *, void *);
+#endif
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
     static char*        listItemTextGet(void *data, Evas_Object *, const char *part);
@@ -83,6 +93,11 @@ private:
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
+#if PROFILE_MOBILE
+    Elm_Gengrid_Item_Class * m_bookmark_new_folder_item_class;
+	Elm_Gengrid_Item_Class * m_bookmark_all_item_class;
+	Elm_Gengrid_Item_Class * m_bookmark_mobile_folder_item_class;
+#endif
     std::map<std::string,Elm_Object_Item*> m_map_bookmark;
     std::string edjFilePath;
     bool m_gengridSetup;
