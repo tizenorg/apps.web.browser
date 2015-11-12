@@ -1068,7 +1068,12 @@ void SimpleUI::showBookmarkManagerUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
     m_viewManager->pushViewToStack(m_bookmarkManagerUI.get());
-    m_bookmarkManagerUI->addBookmarkItems(getBookmarks(ROOT_FOLDER));
+#if PROFILE_MOBILE
+	m_bookmarkManagerUI->addBookmarkFolders(getBookmarks(ROOT_FOLDER));
+	m_bookmarkManagerUI->showUI();
+#else
+	m_bookmarkManagerUI->addBookmarkItems(getBookmarks(ROOT_FOLDER));
+#endif
 }
 
 void SimpleUI::closeBookmarkManagerUI()
