@@ -143,6 +143,9 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(address, tittle, note, dirId, id);
     bookmark->setThumbnail(thumbnail);
     bookmark->setFavicon(favicon);
+#if PROFILE_MOBILE
+    bookmark->set_folder_flag(EINA_FALSE);
+#endif
     m_bookmarks.push_back(bookmark);
     bookmarkAdded(bookmark);
     return bookmark;
@@ -198,8 +201,13 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
     BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);
     int *ids = nullptr;
     int ids_count = 0;
+#if PROFILE_MOBILE
+    if (bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id,
+            ALL_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0) < 0) {
+#else
     if (bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id,
             BOOKMARK_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0) < 0) {
+#endif
         errorPrint("bp_bookmark_adaptor_get_ids_p");
         return std::vector<std::shared_ptr<BookmarkItem>>();
     }
@@ -241,6 +249,10 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
             } else {
                 BROWSER_LOGD("bookmark favicon size is -1");
             }
+#if PROFILE_MOBILE
+            bool is_folder = (bookmark_info.type > 0 ? EINA_TRUE : EINA_FALSE);
+            bookmark->set_folder_flag(is_folder);
+#endif
             m_bookmarks.push_back(bookmark);
         } else {
             BROWSER_LOGD("bp_bookmark_adaptor_get_easy_all error");
