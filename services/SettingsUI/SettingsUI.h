@@ -42,6 +42,7 @@ public:
     void show(Evas_Object *main_layout);
     virtual std::string getName();
     Evas_Object* createActionBar(Evas_Object* settings_layout);
+    Evas_Object* createSettingsMobilePage(Evas_Object* settings_layout);
     Evas_Object* createSettingsPage(Evas_Object* settings_layout);
 
     boost::signals2::signal<void ()> resetBrowserClicked;
@@ -61,8 +62,16 @@ private:
     static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+    static void _del_selected_data_clicked_cb2(void * data, Evas_Object * obj, void * event_info); //change view to del_sel_data
+
+    static void _show_web_data_clicked_cb(void *data, Evas_Object*, void*);
+
     static void _reset_mv_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+    static void _reset_mv_clicked_cb2(void * data, Evas_Object * obj, void * event_info);
+
     static void _reset_browser_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+    static void _reset_browser_clicked_cb2(void * data, Evas_Object * obj, void * event_info);
+
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
 
