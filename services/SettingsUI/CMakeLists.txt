@@ -22,6 +22,19 @@ install(TARGETS ${PROJECT_NAME}
             ARCHIVE DESTINATION services/static)
 
 include(EDCCompile)
-EDJ_TARGET(SettingsUI.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/Settings.edc
+
+EDJ_TARGET(SettingsMobileUI.edj
+    ${CMAKE_CURRENT_SOURCE_DIR}/edc/SettingsMobile.edc
     ${CMAKE_CURRENT_BINARY_DIR})
+
+#EDJ_TARGET(ResetBrowserMobileUI.edj
+#    ${CMAKE_CURRENT_SOURCE_DIR}/edc/ResetBrowserMobile.edc
+#    ${CMAKE_CURRENT_BINARY_DIR})
+
+#EDJ_TARGET(ResetMostVisitedMobileUI.edj
+#    ${CMAKE_CURRENT_SOURCE_DIR}/edc/ResetMostVisitedMobile.edc
+#    ${CMAKE_CURRENT_BINARY_DIR})
+
+#EDJ_TARGET(DeleteBrowsingDataMobileUI.edj
+#    ${CMAKE_CURRENT_SOURCE_DIR}/edc/DeleteBrowsingDataMobile.edc
+#    ${CMAKE_CURRENT_BINARY_DIR})
