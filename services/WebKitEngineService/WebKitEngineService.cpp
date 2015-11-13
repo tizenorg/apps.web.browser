@@ -324,7 +324,6 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
         p->setURI(uri);
     }
 
-    switchToTab(newTabId);
     AbstractWebEngine::tabCreated();
     m_chronoTabs.push_front(newTabId);
 
