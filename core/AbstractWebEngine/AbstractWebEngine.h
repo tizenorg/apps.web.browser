@@ -418,6 +418,11 @@ public:
      * Switch view to actual web page
      */
     boost::signals2::signal<void ()> switchToWebPage;
+
+    /**
+     * Signal to switch to window after it is created
+     */
+    boost::signals2::signal<void ()> windowCreated;
 };
 
 } /* end of basic_webengine */
