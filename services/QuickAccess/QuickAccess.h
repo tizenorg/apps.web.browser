@@ -39,8 +39,8 @@ public:
     ~QuickAccess();
     void init(Evas_Object *main_layout);
     Evas_Object* getContent();
-    void showMostVisited(std::shared_ptr<services::HistoryItemVector> vec);
-    void showBookmarks(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > vec);
+    void setMostVisitedItems(std::shared_ptr<services::HistoryItemVector> vec);
+    void setBookmarksItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > vec);
     void hideUI();
     void showUI();
     virtual std::string getName();
@@ -54,8 +54,8 @@ public:
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
-    boost::signals2::signal<void ()> mostVisitedClicked;
-    boost::signals2::signal<void ()> bookmarkClicked;
+    boost::signals2::signal<void ()> getMostVisitedItems;
+    boost::signals2::signal<void ()> getBookmarksItems;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> switchViewToWebPage;
 
@@ -64,14 +64,12 @@ public:
 
 private:
     void createItemClasses();
-    void addHistoryItem(std::shared_ptr<services::HistoryItem>);
-    void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
+    void addMostVisitedItem(std::shared_ptr<services::HistoryItem>);
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
-    void clearHistoryGenlist();
+    void clearMostVisitedGenlist();
     void clearBookmarkGengrid();
     Evas_Object* createBookmarkGengrid(Evas_Object *parent);
-    void showHistory();
+    void showMostVisited();
     void showBookmarks();
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
@@ -85,14 +83,17 @@ private:
     static void _thumbBookmarkClicked(void * data, Evas_Object * obj, void * event_info);
     static void _thumbMostVisitedClicked(void * data, Evas_Object * obj, void * event_info);
     void setEmptyView(bool empty);
-    void showNoHistoryLabel();
+    void showNoMostVisitedLabel();
 
     static void _mostVisited_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object * obj, void * event_info);
+    static void _horizontalScroller_scroll(void* data, Evas_Object* scroller, void* event_info);
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
+    Evas_Object* m_horizontalScroller;
+    Evas_Object *m_box;
     Evas_Object *m_bookmarksView;
     Evas_Object *m_mostVisitedView;
     Evas_Object *m_bookmarksButton;
@@ -103,6 +104,7 @@ private:
     std::vector<Evas_Object *> m_tiles;
     Eina_List* m_parentFocusChain;
 
+    int m_currPage;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     DetailPopup m_detailPopup;
     services::HistoryItemVector m_historyItems;
@@ -115,10 +117,12 @@ private:
     static const int TOP_RIGHT_TILE_INDEX;
     static const int BOTTOM_RIGHT_TILE_INDEX;
     static const std::vector<std::string> TILES_NAMES;
+    static const int MOST_VISITED_PAGE = 0;
+    static const int BOOKMARK_PAGE = 1;
 
 #if PROFILE_MOBILE
-    Evas_Object *m_scroller;
-    Evas_Object *m_centerLayout;
+    Evas_Object* m_verticalScroller;
+    Evas_Object* m_centerLayout;
     static const int FIXED_SIZE_TILES_NUMBER = 3;
 #endif
 };

@@ -265,8 +265,8 @@ void SimpleUI::connectUISignals()
     m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
     m_quickAccess->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
-    m_quickAccess->mostVisitedClicked.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
-    m_quickAccess->bookmarkClicked.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this));
+    m_quickAccess->getMostVisitedItems.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
+    m_quickAccess->getBookmarksItems.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this));
     m_quickAccess->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_quickAccess->switchViewToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
 
@@ -462,7 +462,6 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
 void SimpleUI::showQuickAccess()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_quickAccess->showMostVisited(getMostVisitedItems());
     m_quickAccess->showUI();
 }
 
@@ -570,13 +569,13 @@ void SimpleUI::onClearHistoryClicked()
 void SimpleUI::onMostVisitedClicked()
 {
    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-   m_quickAccess->showMostVisited(getMostVisitedItems());
+   m_quickAccess->setMostVisitedItems(getMostVisitedItems());
 }
 
 void SimpleUI::onBookmarkButtonClicked()
 {
    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-   m_quickAccess->showBookmarks(getBookmarks());
+   m_quickAccess->setBookmarksItems(getBookmarks());
 }
 
 void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
