@@ -63,6 +63,8 @@ typedef struct _BookmarkItemData
 QuickAccess::QuickAccess()
     : m_parent(nullptr)
     , m_layout(nullptr)
+    , m_horizontalScroller(nullptr)
+    , m_box(nullptr)
     , m_bookmarksView(nullptr)
     , m_mostVisitedView(nullptr)
     , m_bookmarksButton(nullptr)
@@ -74,11 +76,11 @@ QuickAccess::QuickAccess()
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
 #if PROFILE_MOBILE
-    , m_scroller(nullptr)
+    , m_verticalScroller(nullptr)
     , m_centerLayout(nullptr)
 #endif
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     edjFilePath = EDJE_DIR;
     edjFilePath.append("QuickAccess/QuickAccess.edj");
     elm_theme_extension_add(nullptr, edjFilePath.c_str());
@@ -87,7 +89,7 @@ QuickAccess::QuickAccess()
 
 QuickAccess::~QuickAccess()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_item_class_free(m_bookmark_item_class);
     eina_list_free(m_parentFocusChain);
 }
@@ -108,21 +110,9 @@ Evas_Object* QuickAccess::getContent()
     return m_layout;
 }
 
-void QuickAccess::showMostVisited(std::shared_ptr< services::HistoryItemVector > vec)
-{
-    addHistoryItems(vec);
-    showHistory();
-}
-
-void QuickAccess::showBookmarks(std::vector< std::shared_ptr< tizen_browser::services::BookmarkItem > > vec)
-{
-    addBookmarkItems(vec);
-    showBookmarks();
-}
-
 void QuickAccess::createItemClasses()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_bookmark_item_class) {
         m_bookmark_item_class = elm_gengrid_item_class_new();
         m_bookmark_item_class->item_style = "grid_item";
@@ -136,46 +126,67 @@ void QuickAccess::createItemClasses()
 
 Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_desktopMode = true;
 
     Evas_Object* layout = elm_layout_add(parent);
     elm_layout_file_set(layout, edjFilePath.c_str(), "main_layout");
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(layout);
 
-    m_mostVisitedView = createMostVisitedView(layout);
-    m_bookmarksView   = createBookmarksView  (layout);
+    Evas_Object* topButtons = createTopButtons(layout);
+    elm_object_part_content_set(layout, "buttons", topButtons);
 
+    m_horizontalScroller = elm_scroller_add(layout);
+    elm_scroller_loop_set(m_horizontalScroller, EINA_FALSE, EINA_FALSE);
+    evas_object_size_hint_weight_set(m_horizontalScroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_horizontalScroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_scroller_page_relative_set(m_horizontalScroller, 1.0, 0.0);
+    elm_scroller_policy_set(m_horizontalScroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_page_scroll_limit_set(m_horizontalScroller, 1, 0);
+    elm_scroller_bounce_set(m_horizontalScroller, EINA_TRUE, EINA_FALSE);
+    elm_object_scroll_lock_y_set(m_horizontalScroller, EINA_TRUE);
+    elm_object_part_content_set(layout, "view", m_horizontalScroller);
+    evas_object_smart_callback_add(m_horizontalScroller, "scroll", _horizontalScroller_scroll, this);
+
+    m_box = elm_box_add(m_horizontalScroller);
+    elm_box_horizontal_set(m_box, EINA_TRUE);
+    elm_object_content_set(m_horizontalScroller, m_box);
+    evas_object_show(m_box);
+
+    m_mostVisitedView = createMostVisitedView(m_box);
+    elm_box_pack_end(m_box, m_mostVisitedView);
+    m_bookmarksView   = createBookmarksView  (m_box);
+    elm_box_pack_end(m_box, m_bookmarksView);
+    
     return layout;
 }
 
 Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object* mostVisitedLayout = elm_layout_add(parent);
-    elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "mv_bookmarks");
+    elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "page_layout");
     evas_object_size_hint_weight_set(mostVisitedLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (mostVisitedLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-    Evas_Object* topButtons = createTopButtons(mostVisitedLayout);
-    elm_object_part_content_set(mostVisitedLayout, "elm.swallow.layoutTop", topButtons);
+    evas_object_show(mostVisitedLayout);
 
 #if PROFILE_MOBILE
-    m_scroller = elm_scroller_add(mostVisitedLayout);
-    evas_object_size_hint_weight_set(m_scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set (m_scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_scroller_policy_set(m_scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(m_scroller, EINA_FALSE, EINA_FALSE);
-    elm_object_part_content_set(mostVisitedLayout, "center_swallow", m_scroller);
-    evas_object_show(m_scroller);
+    m_verticalScroller = elm_scroller_add(mostVisitedLayout);
+    evas_object_size_hint_weight_set(m_verticalScroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (m_verticalScroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_scroller_policy_set(m_verticalScroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_bounce_set(m_verticalScroller, EINA_FALSE, EINA_FALSE);
+    elm_object_part_content_set(mostVisitedLayout, "center_swallow", m_verticalScroller);
+    evas_object_show(m_verticalScroller);
 
-    m_centerLayout = elm_layout_add(m_scroller);
+    m_centerLayout = elm_layout_add(m_verticalScroller);
     elm_layout_file_set(m_centerLayout, edjFilePath.c_str(), "center_layout");
     evas_object_size_hint_weight_set(m_centerLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (m_centerLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_object_content_set(m_scroller, m_centerLayout);
+    elm_object_content_set(m_verticalScroller, m_centerLayout);
     evas_object_show(m_centerLayout);
 #endif
 
@@ -184,21 +195,21 @@ Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
 
 Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *bookmarkViewLayout = elm_layout_add(parent);
-    elm_layout_file_set(bookmarkViewLayout, edjFilePath.c_str(), "mv_bookmarks");
+    elm_layout_file_set(bookmarkViewLayout, edjFilePath.c_str(), "page_layout");
     evas_object_size_hint_weight_set(bookmarkViewLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkViewLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(bookmarkViewLayout);
 
     m_bookmarkGengrid = createBookmarkGengrid(bookmarkViewLayout);
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", m_bookmarkGengrid);
-
-    Evas_Object* topButtons = createTopButtons(bookmarkViewLayout);
-    elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutTop", topButtons);
+    evas_object_show(m_bookmarkGengrid);
 
     Evas_Object* bottomButton = createBottomButton(bookmarkViewLayout);
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutBottom", bottomButton);
+    evas_object_show(bottomButton);
 
     return bookmarkViewLayout;
 }
@@ -207,23 +218,28 @@ Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
 {
     Evas_Object *bookmarkGengrid = elm_gengrid_add(parent);
 
-    elm_gengrid_align_set(bookmarkGengrid, 0, 0);
+    elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
     elm_gengrid_select_mode_set(bookmarkGengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(bookmarkGengrid, EINA_FALSE);
     elm_gengrid_horizontal_set(bookmarkGengrid, EINA_FALSE);
 
+#if !PROFILE_MOBILE
     elm_scroller_policy_set(bookmarkGengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
     evas_object_size_hint_weight_set(bookmarkGengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkGengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
+#else
+    elm_scroller_bounce_set(bookmarkGengrid, EINA_FALSE, EINA_TRUE);
+    elm_object_scroll_lock_y_set(bookmarkGengrid, EINA_FALSE);
+#endif
 
     return bookmarkGengrid;
 }
 
 Evas_Object* QuickAccess::createTopButtons (Evas_Object *parent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *layoutTop = elm_layout_add(parent);
     elm_layout_file_set(layoutTop, edjFilePath.c_str(), "top_button_item");
@@ -250,7 +266,7 @@ Evas_Object* QuickAccess::createTopButtons (Evas_Object *parent)
 
 Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *layoutBottom = elm_layout_add(parent);
     elm_layout_file_set(layoutBottom, edjFilePath.c_str(), "bottom_button_item");
@@ -272,28 +288,60 @@ Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 
 void QuickAccess::_mostVisited_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    QuickAccess* quickAccess = reinterpret_cast<QuickAccess *>(data);
-    quickAccess->mostVisitedClicked();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = reinterpret_cast<QuickAccess *>(data);
+    self->showMostVisited();
+    elm_scroller_page_show(self->m_horizontalScroller, 0, 0);
 }
 
 void QuickAccess::_bookmark_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    QuickAccess* quickAccess = reinterpret_cast<QuickAccess *>(data);
-    quickAccess->bookmarkClicked();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = reinterpret_cast<QuickAccess *>(data);
+    self->showBookmarks();
+    elm_scroller_page_show(self->m_horizontalScroller, 1, 0);
 }
 
 void QuickAccess::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     QuickAccess*  quickAccess = static_cast<QuickAccess *>(data);
     quickAccess->bookmarkManagerClicked();
 }
 
-void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
+void QuickAccess::_horizontalScroller_scroll(void* data, Evas_Object* /*scroller*/, void* /*event_info*/)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    auto self = static_cast<QuickAccess*>(data);
+    int page_no;
+
+    elm_scroller_current_page_get(self->m_horizontalScroller, &page_no, NULL);
+    if (self->m_currPage != page_no) {
+        self->m_currPage = page_no;
+
+        switch (page_no) {
+            case MOST_VISITED_PAGE:
+                self->showMostVisited();
+                break;
+            case BOOKMARK_PAGE:
+                self->showBookmarks();
+                break;
+            default:
+                BROWSER_LOGD("[%s:%d] Warning: unknown page value!", __PRETTY_FUNCTION__, __LINE__);
+        }
+
+        /* synchronize index */
+//         it = elm_index_item_find(pd->index, (void *)pd->current_page);
+//         if (it != NULL) {
+//             elm_index_item_selected_set(it, EINA_TRUE);
+//             pd->last_it = it;
+//             pd->new_it = it;
+//         }
+    }
+}
+
+void QuickAccess::addMostVisitedItem(std::shared_ptr<services::HistoryItem> hi)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_historyItems.size() < MAX_TILES_NUMBER);
 
     int tileNumber = m_historyItems.size();
@@ -329,16 +377,16 @@ void QuickAccess::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     m_historyItems.push_back(hi);
 }
 
-void QuickAccess::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
+void QuickAccess::setMostVisitedItems(std::shared_ptr<services::HistoryItemVector> items)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    clearHistoryGenlist();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    clearMostVisitedGenlist();
     int i = 0;
     for (auto it = items->begin(); it != items->end(); ++it) {
         i++;
         if (i > MAX_TILES_NUMBER)
             break;
-        addHistoryItem(*it);
+        addMostVisitedItem(*it);
     }
     if (i>0)
         setEmptyView(false);
@@ -354,14 +402,14 @@ void QuickAccess::addHistoryItems(std::shared_ptr<services::HistoryItemVector> i
 
 void QuickAccess::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = bi;
     itemData->quickAccess = std::shared_ptr<tizen_browser::base_ui::QuickAccess>(this);
     elm_gengrid_item_append(m_bookmarkGengrid, m_bookmark_item_class, itemData, _thumbBookmarkClicked, itemData);
 }
 
-void QuickAccess::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
+void QuickAccess::setBookmarksItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
     clearBookmarkGengrid();
     for (auto it = items.begin(); it != items.end(); ++it) {
@@ -402,7 +450,7 @@ Evas_Object * QuickAccess::_grid_bookmark_content_get(void *data, Evas_Object*, 
 
 void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
     itemData->quickAccess->openURLInNewTab(itemData->item, itemData->quickAccess->isDesktopMode());
     itemData->quickAccess->m_after_history_thumb = false;
@@ -410,7 +458,7 @@ void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 
 void QuickAccess::_thumbMostVisitedClicked(void* data, Evas_Object*, void*)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
 #if PROFILE_MOBILE
     itemData->quickAccess->openURLInNewTab(itemData->item, false);
@@ -420,9 +468,9 @@ void QuickAccess::_thumbMostVisitedClicked(void* data, Evas_Object*, void*)
 #endif
 }
 
-void QuickAccess::clearHistoryGenlist()
+void QuickAccess::clearMostVisitedGenlist()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it) {
         evas_object_smart_callback_del(*it, "clicked", _thumbMostVisitedClicked);
@@ -433,70 +481,51 @@ void QuickAccess::clearHistoryGenlist()
     m_historyItems.clear();
 }
 
-void QuickAccess::showHistory()
+void QuickAccess::showMostVisited()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
-    if (elm_layout_content_get(m_layout, "view") == m_mostVisitedView)
-        return;
-
-    evas_object_hide(m_bookmarksView);
-    elm_layout_content_unset(m_layout, "view");
-    elm_layout_content_set(m_layout, "view", m_mostVisitedView);
-    evas_object_show(m_mostVisitedView);
-
-
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    
     if (m_historyItems.empty()) {
         setEmptyView(true);
         return;
     }
     setEmptyView(false);
-    evas_object_show(m_layout);
+#if !PROFILE_MOBILE
     refreshFocusChain();
     elm_object_focus_set(m_mostVisitedButton, true);
+#endif
 }
 
 void QuickAccess::clearBookmarkGengrid()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_clear(m_bookmarkGengrid);
 }
 
 void QuickAccess::showBookmarks()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-
-    if (elm_layout_content_get(m_layout, "view") == m_bookmarksView && m_bookmarksView != nullptr)
-        return;
-
-    evas_object_hide(m_mostVisitedView);
-    elm_layout_content_unset(m_layout, "view");
-    elm_layout_content_set(m_layout, "view", m_bookmarksView);
-    evas_object_show(m_bookmarksView);
-
-    evas_object_show(m_layout);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if !PROFILE_MOBILE
     refreshFocusChain();
     elm_object_focus_set(m_bookmarksButton, true);
+#endif
 }
 
 void QuickAccess::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     evas_object_show(m_layout);
-    if (elm_layout_content_get(m_layout, "view") == m_bookmarksView) {
-        evas_object_show(m_bookmarksView);
-    } else {
-        evas_object_show(m_mostVisitedView);
-    }
+    getMostVisitedItems();
+    getBookmarksItems();
+    _horizontalScroller_scroll(this, NULL, NULL);
 }
 
 void QuickAccess::hideUI()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_hide(m_layout);
-    evas_object_hide(m_mostVisitedView);
-    evas_object_hide(m_bookmarksView);
-    clearHistoryGenlist();
+    clearMostVisitedGenlist();
     clearBookmarkGengrid();
 }
 
@@ -505,7 +534,7 @@ void QuickAccess::openDetailPopup(std::shared_ptr<services::HistoryItem> currIte
     m_detailPopup.show(m_layout, m_parent, currItem, prevItems);
 }
 
-void QuickAccess::showNoHistoryLabel()
+void QuickAccess::showNoMostVisitedLabel()
 {
     elm_layout_text_set(m_mostVisitedView, "elm.text.empty", "No visited site");
     elm_layout_signal_emit(m_mostVisitedView, "empty,view", "quickaccess");
@@ -515,7 +544,7 @@ void QuickAccess::setEmptyView(bool empty)
 {
     BROWSER_LOGD("%s:%d %s, empty: %d", __FILE__, __LINE__, __func__, empty);
     if(empty) {
-        showNoHistoryLabel();
+        showNoMostVisitedLabel();
     } else {
         elm_layout_signal_emit(m_mostVisitedView, "not,empty,view", "quickaccess");
     }
@@ -548,7 +577,7 @@ void QuickAccess::backButtonClicked()
 
 bool QuickAccess::isMostVisitedActive() const
 {
-    return evas_object_visible_get(m_mostVisitedView);
+    return m_currPage == MOST_VISITED_PAGE;
 }
 
 void QuickAccess::refreshFocusChain()

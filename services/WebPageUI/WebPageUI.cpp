@@ -99,6 +99,8 @@ void WebPageUI::showUI()
     elm_object_event_callback_add(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE
     elm_gesture_layer_cb_add(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
+    elm_gesture_layer_line_min_length_set(m_geastureLayer, SWIPE_MOMENTUM_TRESHOLD);
+    elm_gesture_layer_line_distance_tolerance_set(m_geastureLayer, SWIPE_MOMENTUM_TRESHOLD);
     elm_object_signal_callback_add(m_mainLayout,  "animation_finished", "ui", _geasture_finished, this);
 #endif
 }
@@ -573,10 +575,10 @@ Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
 {
     auto info = static_cast<Elm_Gesture_Line_Info*>(event_info);
     if (info->momentum.n == WebPageUI::SINGLE_FINGER) {
-        if (info->momentum.my < -WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {
+        if ((info->angle > 330 || info->angle < 30) && info->momentum.my < -WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {    // top direction
             auto self = static_cast<WebPageUI*>(data);
             self->geastureUp();
-        } else if (info->momentum.my > WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {
+        } else if (info->angle > 150 && info->angle < 210 && info->momentum.my > WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {    // bottom direction
             auto self = static_cast<WebPageUI*>(data);
             self->geastureDown();
         }
