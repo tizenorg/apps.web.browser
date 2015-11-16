@@ -20,8 +20,6 @@
 #include <string>
 #include <memory>
 
-#include <boost/uuid/uuid_io.hpp>
-
 #include "BrowserImageTypedef.h"
 #include "TabIdTypedef.h"
 
@@ -35,11 +33,7 @@ namespace basic_webengine {
 class TabId
 {
 public:
-    /**
-     * @brief Default constructor - generates random initial UUID
-     */
-    TabId();
-    /// Copy constructor
+    TabId(int id);
     TabId(const TabId & n);
     virtual ~TabId();
 
@@ -58,10 +52,14 @@ public:
 
     static TabId NONE;
 
+    int get() const {
+        return m_id;
+    };
+
     /// to string conversation - required only for DEBUG
     virtual std::string toString() const;
 private:
-    boost::uuids::uuid m_id;
+    int m_id;
 };
 
 class TabContent

@@ -27,6 +27,7 @@ endif(TIZEN_BUILD)
 SET(bp_pkgs_list
         capi-web-bookmark
         capi-web-history
+        capi-web-tab
     )
 
 pkg_check_modules(browser-provider REQUIRED "${bp_pkgs_list}")

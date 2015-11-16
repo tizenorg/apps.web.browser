@@ -113,6 +113,11 @@ public:
     bool get_memory_full(void) { return m_memory_full; }
 
 private:
+    /**
+     * Help method printing last bp_bookmark_error_defs error.
+     */
+    void errorPrint(std::string method) const;
+
     enum ItemType{
           BOOKMARK_TYPE = 0
         , ALL_TYPE = -1
