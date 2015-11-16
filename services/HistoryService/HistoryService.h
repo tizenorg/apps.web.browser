@@ -92,6 +92,11 @@ private:
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
 
     /**
+     * Help method printing last bp_history_error_defs error.
+     */
+    void errorPrint(std::string method) const;
+
+    /**
      * @throws StorageExceptionInitialization on error
      */
     void initDatabaseBookmark(const std::string & db_str);

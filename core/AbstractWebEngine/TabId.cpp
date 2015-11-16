@@ -22,20 +22,17 @@
  */
 
 #include "browser_config.h"
-
 #include "BrowserImage.h"
 #include "TabId.h"
-
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/lexical_cast.hpp>
+#include "CapiWebErrorCodes.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
 
-TabId TabId::NONE;
+TabId TabId::NONE(-1);
 
-TabId::TabId()
-    : m_id(boost::uuids::random_generator()())
+TabId::TabId(int id)
+    : m_id(id)
 {
 }
 
@@ -49,17 +46,15 @@ TabId::~TabId()
 }
 
 std::string TabId::toString() const {
-    std::stringstream ss;
-    ss << m_id;
-    return ss.str();
+    return std::to_string(m_id);
 }
 
 TabContent::TabContent(TabId id, const std::string& title,
         tools::BrowserImagePtr thumbnail)
+    : m_id(id)
+    , m_title(title)
+    , m_thumbnail(thumbnail)
 {
-    this->m_id = id;
-    this->m_title = title;
-    this->m_thumbnail = thumbnail;
 }
 
 TabContent::TabContent(TabId id, const std::string& title) :

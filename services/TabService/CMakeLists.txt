@@ -5,6 +5,7 @@ set(TabService_SOURCES
 )
 
 include(Coreheaders)
+include(EFLHelpers)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 

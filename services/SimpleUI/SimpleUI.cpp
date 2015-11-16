@@ -179,12 +179,15 @@ void SimpleUI::restoreLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_sessionService);
-    Session::Session lastSession = std::move(m_sessionService->getStorage()->getLastSession());
-    if(lastSession.items().size() >= 1)
-    {
-        for(auto iter=lastSession.items().begin(), end=lastSession.items().end(); iter != end; ++iter)
-        {
-            openNewTab(iter->second.first, lastSession.getUrlTitle(iter->second.first));
+    Session::Session lastSession = std::move(
+            m_sessionService->getStorage()->getLastSession());
+
+    if (lastSession.items().size() >= 1) {
+        for (auto iter = lastSession.items().begin(), end =
+                lastSession.items().end(); iter != end; ++iter) {
+            auto newTabId = m_tabService->convertTabId(iter->first);
+            openNewTab(iter->second.first,
+                    lastSession.getUrlTitle(iter->second.first), newTabId);
         }
         m_sessionService->getStorage()->deleteSession(lastSession);
     }
@@ -278,7 +281,7 @@ void SimpleUI::connectUISignals()
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", false, true));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", boost::none, false, true));
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
@@ -423,6 +426,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
+    m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -495,10 +499,13 @@ void SimpleUI::switchViewToIncognitoPage()
     m_viewManager->popStackTo(m_webPageUI.get());
 }
 
-void SimpleUI::openNewTab(const std::string &uri, const std::string& title, bool desktopMode, bool incognitoMode)
+void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
+        const boost::optional<int> adaptorId, bool desktopMode,
+        bool incognitoMode)
 {
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
-    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri, nullptr, title, desktopMode, incognitoMode);
+    tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri,
+            nullptr, adaptorId, title, desktopMode, incognitoMode);
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
     incognitoMode ? switchViewToIncognitoPage() : m_currentSession.updateItem(tab.toString(), uri, title);
@@ -515,6 +522,7 @@ void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_currentSession.removeItem(id.toString());
+    m_tabService->clearThumb(id);
     m_webEngine->closeTab(id);
     updateView();
 }
@@ -557,7 +565,7 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     m_viewManager->popStackTo(m_webPageUI.get());
     std::string historyAddress = historyItem->getUrl();
-    openNewTab(historyAddress, historyItem->getTitle(), desktopMode);
+    openNewTab(historyAddress, historyItem->getTitle(), boost::none, desktopMode);
 }
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
@@ -616,6 +624,12 @@ void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
     tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId,
             THUMB_WIDTH, THUMB_HEIGHT);
     m_tabService->onThumbGenerated(tabId, snapshotImage);
+}
+
+void SimpleUI::onCreateTabId()
+{
+    int id = m_tabService->createTabId();
+    m_webEngine->onTabIdCreated(id);
 }
 
 void SimpleUI::onHistoryRemoved(const std::string& uri)
@@ -1149,6 +1163,7 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
         for (auto it = openedTabs.begin(); it < openedTabs.end(); ++it) {
             tizen_browser::basic_webengine::TabId id = it->get()->getId();
             m_currentSession.removeItem(id.toString());
+            m_tabService->clearThumb(id);
             m_webEngine->closeTab(id);
         }
         //TODO: add here any missing functionality that should be cleaned.
@@ -1207,6 +1222,7 @@ void SimpleUI::windowCreated()
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
     m_currentSession.removeItem(id.toString());
+    m_tabService->clearThumb(id);
     updateView();
 }
 

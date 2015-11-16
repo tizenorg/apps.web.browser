@@ -505,7 +505,7 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
     M_ASSERT(m_webEngine);
 
     /// \todo: Choose newly created tab.
-    TabId id;
+    TabId id(TabId::NONE);
     if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(), &self->getTabId()))) {
         BROWSER_LOGD("Created tab: %s", id.toString().c_str());
         Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);

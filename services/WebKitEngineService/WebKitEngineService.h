@@ -81,14 +81,13 @@ public:
     std::vector<TabContentPtr> getTabContents() const;
 
     /**
-     * Adds new tab. If uri is specified setURI(uri).
-     * If it first tab in WebEngine switch to this tab.
-     * @param uri
-     * @return TabId of created tab
+     * See AbstractWebEngine@addTab(const std::string&, const TabId*,
+     * const boost::optional<int>, const std::string&, bool, bool)
      */
     TabId addTab(
             const std::string & uri = std::string(),
-            const TabId* openerId = NULL,
+            const TabId* tabInitId = NULL,
+            const boost::optional<int> tabId = boost::none,
             const std::string& title = std::string(),
             bool desktopMode = true,
             bool incognitoMode = false);
@@ -187,6 +186,8 @@ public:
 
     void scrollView(const int& dx, const int& dy);
 
+    void onTabIdCreated(int tabId) override;
+
 #if PROFILE_MOBILE
     /**
      * @brief Enable or disable touch events for current web view
@@ -225,6 +226,8 @@ private:
      */
     void connectSignals(WebViewPtr);
 
+    int createTabId();
+
 private:
     bool m_initialised;
     void* m_guiParent;
@@ -241,6 +244,7 @@ private:
     std::list<TabId> m_mostRecentTab;
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
+    int m_tabIdCreated;
 };
 
 } /* end of webkitengine_service */
