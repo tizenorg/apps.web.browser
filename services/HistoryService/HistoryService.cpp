@@ -25,10 +25,13 @@
 #include "HistoryService.h"
 #include "HistoryItem.h"
 #include "AbstractWebEngine.h"
+
 #include "EflTools.h"
+
 #include "Tools/GeneralTools.h"
 #include "Tools/StringTools.h"
 #include "HistoryServiceTools.h"
+#include "Tools/CapiWebErrorCodes.h"
 
 namespace tizen_browser
 {
@@ -68,6 +71,13 @@ void HistoryService::setStorageServiceTestMode(bool testmode) {
 	m_testDbMod = testmode;
 }
 
+void HistoryService::errorPrint(std::string method) const
+{
+    int error_code = bp_history_adaptor_get_errorcode();
+    BROWSER_LOGE("%s error: %d (%s)", method.c_str(), error_code,
+            tools::capiWebError::historyErrorToString(error_code).c_str());
+}
+
 int HistoryService::getHistoryItemsCount(){
     int *ids = nullptr;
     int count=0;
@@ -78,9 +88,9 @@ int HistoryService::getHistoryItemsCount(){
     conds.ordering = 1; //way of ordering 0 asc 1 desc
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
     conds.period_type = BP_HISTORY_DATE_TODAY;
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGD("Error! Could not get ids!");
+    if (bp_history_adaptor_get_cond_ids_p(&ids, &count, &conds, 0, nullptr, 0)
+            < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     BROWSER_LOGD("[%s:%d] History Count %d", __PRETTY_FUNCTION__, __LINE__, count);
@@ -99,9 +109,8 @@ bool HistoryService::isDuplicate(const char* url) const
     conds.ordering = 1; //way of ordering 0 asc 1 desc
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
     conds.period_type = BP_HISTORY_DATE_TODAY;
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0 ) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_DATE_CREATED);
@@ -166,9 +175,8 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
     //TODO: consider to change below line to BP_HISTORY_DATE_LAST_MONTH
     conds.period_type = BP_HISTORY_DATE_ALL; // set from which period most visited sites are generated
 
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0 ) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FREQUENCY | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED | BP_HISTORY_O_THUMBNAIL);
@@ -248,9 +256,8 @@ void HistoryService::cleanMostVisitedHistoryItems()
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
     conds.period_type = BP_HISTORY_DATE_ALL; // set from which period most visited sites are generated
 
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0 ) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
         return;
     }
 
@@ -276,9 +283,8 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
     conds.period_offset = BP_HISTORY_O_DATE_VISITED;
     conds.period_type = BP_HISTORY_DATE_ALL;
 
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, BP_HISTORY_O_URL, search.c_str(), SEARCH_LIKE);
-    if (ret < 0) {
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, BP_HISTORY_O_URL, search.c_str(), SEARCH_LIKE) < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
         return items;
     }
 
@@ -306,9 +312,8 @@ void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared
         return;
 
     int id = -1;
-    int ret = bp_history_adaptor_create(&id);
-    if (ret<0){
-        BROWSER_LOGE("Error! Could not create new bookmark!");
+    if(bp_history_adaptor_create(&id) < 0) {
+        errorPrint("bp_history_adaptor_create");
     }
 
     int *ids=nullptr;
@@ -321,9 +326,8 @@ void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
     conds.period_type = BP_HISTORY_DATE_TODAY;
 
-    ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGE("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     bp_history_adaptor_set_url(id, (his->getUrl()).c_str());
@@ -366,9 +370,8 @@ int HistoryService::getHistoryId(const std::string & url)
     conds.period_type = BP_HISTORY_DATE_ALL;
     int *ids = nullptr;
     int ids_count = 0;
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&ids_count, &conds, BP_HISTORY_O_URL, url.c_str(), 0);
-    if (ret < 0) {
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&ids_count, &conds, BP_HISTORY_O_URL, url.c_str(), 0) < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     } else if (ids_count != 0) {
         int i = *ids;
         free(ids);
@@ -441,9 +444,8 @@ std::shared_ptr<HistoryItem> HistoryService::getCurrentTab()
     conds.period_offset = BP_HISTORY_O_DATE_VISITED;
     conds.period_type = BP_HISTORY_DATE_TODAY;
 
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids , &count, &conds, 0, nullptr, 0);
-    if (ret<0){
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids , &count, &conds, 0, nullptr, 0) < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     return getHistoryItem(ids);
@@ -463,9 +465,8 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     conds.period_offset = BP_HISTORY_O_DATE_VISITED;
     conds.period_type = period;
 
-    int ret = bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0);
-    if (ret<0) {
-        BROWSER_LOGD("Error! Could not get ids!");
+    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0) {
+        errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
 
     for(int i = 0; i< count; i++) {
