@@ -71,6 +71,7 @@ SimpleUI::SimpleUI()
     , m_historyUI()
     , m_settingsUI()
     , m_tabUI()
+    , m_findOnPageUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
     , m_ewkContext(ewk_context_new())
@@ -221,6 +222,11 @@ void SimpleUI::loadUIServices()
         <tizen_browser::base_ui::SettingsUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
 
+    m_findOnPageUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::FindOnPageUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.findonpageui"));
+
     m_moreMenuUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
@@ -294,6 +300,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this));
     m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this));
+    m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
@@ -301,6 +308,9 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
+
+    M_ASSERT(m_findOnPageUI.get());
+    m_findOnPageUI->closeFindOnPageUIClicked.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
@@ -370,6 +380,9 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->init(m_viewManager->getContent());
+
+    M_ASSERT(m_findOnPageUI.get());
+    m_findOnPageUI->init(m_viewManager->getContent());
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager->getContent());
@@ -804,6 +817,21 @@ int SimpleUI::getZoomFactor()
 void SimpleUI::scrollView(const int& dx, const int& dy)
 {
     m_webEngine->scrollView(dx, dy);
+}
+
+void SimpleUI::showFindOnPageUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    m_viewManager->pushViewToStack(m_findOnPageUI.get());
+}
+
+void SimpleUI::closeFindOnPageUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    if (m_viewManager->topOfStack() == m_findOnPageUI.get())
+        m_viewManager->popTheStack();
 }
 
 void SimpleUI::showTabUI()

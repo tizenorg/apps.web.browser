@@ -395,6 +395,9 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             case SETTINGS:
                 item_name = "Settings";
                 break;
+            case FIND_ON_PAGE:
+                item_name = "Find on page";
+                break;
             case EXIT_BROWSER:
                 item_name = "Exit Browser";
                 break;
@@ -441,6 +444,9 @@ static const char* getImageFileNameForType(ItemType type, bool focused)
         break;
     case SETTINGS:
         file_name = focused ? "ic_more_setting_foc.png" : "ic_more_setting_nor.png";
+        break;
+    case FIND_ON_PAGE:
+        file_name = focused ? "ic_more_zoom_foc.png" : "ic_more_zoom_nor.png";
         break;
     case EXIT_BROWSER:
         file_name = focused ? "ic_more_exit_foc.png" : "ic_more_exit_nor.png";
@@ -519,6 +525,10 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             break;
         case SETTINGS:
             itemData->moreMenuUI->settingsClicked();
+            break;
+        case FIND_ON_PAGE:
+            itemData->moreMenuUI->closeMoreMenuClicked();
+            itemData->moreMenuUI->findOnPageClicked();
             break;
         case BOOKMARK_MANAGER:
             itemData->moreMenuUI->bookmarkManagerClicked();
