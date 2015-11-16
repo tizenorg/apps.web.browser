@@ -51,7 +51,11 @@ void DefaultConfig::load(const std::string &)
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_NUMBER_MAX] = 12;
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX] = 5;
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_KEYWORD_LENGTH_MIN] = 3;
+#if PROFILE_MOBILE
+    m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT] = 74;
+#else
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT] = 82;
+#endif
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR] = false;
 }
 
