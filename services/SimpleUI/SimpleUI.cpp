@@ -646,12 +646,10 @@ void SimpleUI::onBackPressed()
         m_tabUI->onBackKey();
     } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
         m_quickAccess->backButtonClicked();
-    } else if (!m_webPageUI->getURIEntry().hasFocus() && !m_wvIMEStatus) {
-        if ((m_viewManager->topOfStack() == m_webPageUI.get())) {
-            m_webEngine->backButtonClicked();
-        } else {
-            m_viewManager->popTheStack();
-        }
+    } else if ((m_viewManager->topOfStack() == m_webPageUI.get())) {
+        m_webEngine->backButtonClicked();
+    } else {
+        m_viewManager->popTheStack();
     }
 }
 
