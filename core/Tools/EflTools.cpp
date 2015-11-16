@@ -34,6 +34,35 @@ namespace tools
 
 namespace EflTools{
 
+/**
+ * Generates random colors.
+ */
+struct RGBColor {
+    RGBColor() {
+        srand (time(NULL));
+        r = rand() % 256;
+        g = rand() % 256;
+        b = rand() % 256;
+    }
+    char r, g, b;
+};
+
+/**
+ * Fill given image with a random color.
+ */
+void randomFill(std::shared_ptr<tizen_browser::tools::BrowserImage> image) {
+    int pixelsNum = image->dataSize / sizeof(uint32_t);
+    char* pixels = (char*)image->imageData;
+    RGBColor color;
+    for(int i = 0; i < pixelsNum; ++i) {
+        int pixPos = i * sizeof(uint32_t);
+        pixels[pixPos] = 150;
+        pixels[pixPos + 1] = color.g; // G
+        pixels[pixPos + 2] = color.r; // R
+        pixels[pixPos + 3] = color.b; // B
+    }
+}
+
 std::shared_ptr<tizen_browser::tools::BrowserImage> getBrowserImage(Evas_Object * eo_image)
 {
     if(eo_image){
@@ -52,6 +81,11 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> getBrowserImage(Evas_Object 
         image->imageType = BrowserImage::ImageTypeEvasObject;
         BROWSER_LOGD("[%s]: Info about image: w:%d h:%d, type: %s, dataSize: %d"
             , __func__, image->width, image->height,evas_object_type_get(eo_image), image->dataSize);
+
+        // uncomment to fill image with a random color (right now screenshots
+        // taken by ewk_view_screenshot_contents_get are empty)
+        //        randomFill(image);
+
         return image;
     }
     return std::make_shared<tizen_browser::tools::BrowserImage>();

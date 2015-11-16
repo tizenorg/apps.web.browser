@@ -24,6 +24,7 @@
 #include <memory>
 #include <map>
 #include <boost/signals2/signal.hpp>
+#include <boost/optional.hpp>
 #include <web/web_tab.h>
 #include "TabIdTypedef.h"
 #include "BrowserImageTypedef.h"
@@ -42,39 +43,106 @@ public:
     virtual std::string getName();
 
     /**
-     * Get image thumb for given id. Create one, if it does not exist.
+     * Overwrite image thumb for given id with new screenshot (in cache and
+     * in database).
      */
-    tools::BrowserImagePtr getThumb(basic_webengine::TabId id);
+    void updateThumb(const basic_webengine::TabId& tabId);
 
     /**
-     * Overwrite image thumb for given id with new screenshot.
+     * Remove image thumb for given id from the cache and database.
      */
-    void updateThumb(basic_webengine::TabId id);
+    void clearThumb(const basic_webengine::TabId& tabId);
 
     /**
-     * Remove image thumb for given id from the map.
-     */
-    void clearThumb(basic_webengine::TabId id);
-
-    /**
-     * Set thumb images for given TabContent objects.
+     * Set thumb images for given TabContent objects: get them from
+     * cache or database or generate them by taking screenshots.
      */
     void fillThumbs(
             const std::vector<basic_webengine::TabContentPtr>& tabsContents);
 
     /**
+     * Invoke bp_tab_adaptor_create.
+     *
+     * @param tabId If -1, new id will be created. Otherwise entry in database
+     * will have given id.
+     * @return id The id created by bp_tab_adaptor_create.
+     */
+    int createTabId(int tabId = -1) const;
+
+    /**
+     * Convert tab id (string) to int.
+     *
+     * @return boost::none if string cannot be converted
+     */
+    boost::optional<int> convertTabId(std::string tabId) const;
+
+    /**
      * Slot to which generated image is passed.
      */
-    void onThumbGenerated(basic_webengine::TabId tabId,
+    void onThumbGenerated(const basic_webengine::TabId& tabId,
             tools::BrowserImagePtr imagePtr);
     boost::signals2::signal<void(basic_webengine::TabId)> generateThumb;
 
 private:
     /**
-     * Check if thumb for given id is already generated (ready to use).
+     * Help method printing last bp_tab_error_defs error.
      */
-    bool thumbExists(const basic_webengine::TabId& id) const;
-    std::map<std::string, tools::BrowserImagePtr> m_thumbMap;
+    void errorPrint(std::string method) const;
+
+    /**
+     * Get image thumb for given id (from cache or database).
+     * Create one, if it does not exist.
+     */
+    tools::BrowserImagePtr getThumb(const basic_webengine::TabId& tabId);
+
+    /**
+     * Get cached thumb for given tab id.
+     *
+     * @return Image or boost::none.
+     */
+    boost::optional<tools::BrowserImagePtr> getThumbCache(
+            const basic_webengine::TabId& tabId);
+    /**
+     * Cache given thumb image with given tab id.
+     */
+    void saveThumbCache(const basic_webengine::TabId& tabId,
+            tools::BrowserImagePtr imagePtr);
+    /**
+     * Check if thumb for given id is in a map.
+     */
+    bool thumbCached(const basic_webengine::TabId& tabId) const;
+    /**
+     * Remove image from cache for given tab id.
+     */
+    void clearFromCache(const basic_webengine::TabId& tabId);
+
+    /**
+     * Get thumb from database for given tab id.
+     *
+     * @return Image or boost::none.
+     */
+    boost::optional<tools::BrowserImagePtr> getThumbDatabase(
+            const basic_webengine::TabId& tabId);
+    /**
+     * Save given thumb image with given tab id in a database.
+     */
+    void saveThumbDatabase(const basic_webengine::TabId& tabId,
+            tools::BrowserImagePtr imagePtr);
+    /**
+     * Check if thumb for given id is in a database.
+     */
+    bool thumbInDatabase(const basic_webengine::TabId& tabId) const;
+    /**
+     * Remove image from a database for given tab id.
+     *
+     * @param ID created earlier by bp_tab_adaptor_create()
+     */
+    void clearFromDatabase(const basic_webengine::TabId& tabId);
+
+    /**
+     * Map caching images. Keys: tab ids, values: thumb images.
+     */
+    std::map<int, tools::BrowserImagePtr> m_thumbMap;
 };
 
 } /* namespace base_ui */

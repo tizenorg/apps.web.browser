@@ -111,7 +111,9 @@ private:
     void updateView();
     void windowCreated();
 
-    void openNewTab(const std::string &uri, const std::string& title = std::string(), bool desktopMode = true, bool incognitoMode = false);
+    void openNewTab(const std::string &uri, const std::string& title =
+            std::string(), const boost::optional<int> adaptorId = boost::none,
+            bool desktopMode = true, bool incognitoMode = false);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);
@@ -146,6 +148,7 @@ private:
      * @brief Handles 'generateThumb' signals.
      */
     void onGenerateThumb(basic_webengine::TabId tabId);
+    void onCreateTabId();
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
