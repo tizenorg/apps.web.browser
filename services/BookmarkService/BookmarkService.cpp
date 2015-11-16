@@ -36,8 +36,7 @@
 #include "GeneralTools.h"
 
 #include <web/web_bookmark.h>
-
-
+#include "Tools/CapiWebErrorCodes.h"
 
 namespace tizen_browser{
 namespace services{
@@ -46,9 +45,8 @@ EXPORT_SERVICE(BookmarkService, "org.tizen.browser.favoriteservice")
 
 BookmarkService::BookmarkService()
 {
-    int ret = bp_bookmark_adaptor_initialize();
-    if (ret<0){
-        BROWSER_LOGE("Error! Could not initialize bookmark service!");
+    if(bp_bookmark_adaptor_initialize() < 0) {
+        errorPrint("bp_bookmark_adaptor_initialize");
         return;
     }
 }
@@ -56,6 +54,13 @@ BookmarkService::BookmarkService()
 BookmarkService::~BookmarkService()
 {
     bp_bookmark_adaptor_deinitialize();
+}
+
+void BookmarkService::errorPrint(std::string method) const
+{
+    int error_code = bp_bookmark_adaptor_get_errorcode();
+    BROWSER_LOGE("%s error: %d (%s)", method.c_str(), error_code,
+            tools::capiWebError::bookmarkErrorToString(error_code).c_str());
 }
 
 /*private*/ std::shared_ptr<tizen_browser::services::StorageService> BookmarkService::getStorageManager() {
@@ -115,9 +120,8 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     if (!tittle.empty())
         info.title = (char*) tittle.c_str();
 
-    ret = bp_bookmark_adaptor_easy_create(&id, &info);
-    if (ret < 0){
-        BROWSER_LOGE("Error! Could not create new bookmark!");
+    if (bp_bookmark_adaptor_easy_create(&id, &info) < 0) {
+        errorPrint("bp_bookmark_adaptor_easy_create");
         return std::make_shared<BookmarkItem>();
     }
 
@@ -194,9 +198,9 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
     BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);
     int *ids = nullptr;
     int ids_count = 0;
-    int ret = bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id, BOOKMARK_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0);
-    if (ret<0){
-        BROWSER_LOGE("Error! Could not get ids!");
+    if (bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id,
+            BOOKMARK_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0) < 0) {
+        errorPrint("bp_bookmark_adaptor_get_ids_p");
         return std::vector<std::shared_ptr<BookmarkItem>>();
     }
 
@@ -336,8 +340,10 @@ int BookmarkService::update_bookmark(int id, const char *title, const char *uri,
         if (is_URI_exist && is_URI_check_needed) {
             ret = bp_bookmark_adaptor_get_cond_ids_p(&ids, &ids_count, &properties, &conds, BP_BOOKMARK_O_URL, uri, 0);
             free(ids);
-            if (ret < 0)
+            if (ret < 0) {
+                errorPrint("bp_bookmark_adaptor_get_cond_ids_p");
                 return -1;
+            }
         }
 
         if (ids_count > 0) {

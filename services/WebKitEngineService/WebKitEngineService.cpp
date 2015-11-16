@@ -112,6 +112,21 @@ void WebKitEngineService::disconnectCurrentWebViewSignals()
         disconnectSignals(m_currentWebView);
 }
 
+int WebKitEngineService::createTabId()
+{
+    m_tabIdCreated = -1;
+    AbstractWebEngine::createTabId();
+    if(m_tabIdCreated == -1) {
+        BROWSER_LOGE("%s generated tab id == -1", __PRETTY_FUNCTION__);
+    }
+    return m_tabIdCreated;
+}
+
+void WebKitEngineService::onTabIdCreated(int tabId)
+{
+    m_tabIdCreated= tabId;
+}
+
 void WebKitEngineService::setURI(const std::string & uri)
 {
     BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, uri.c_str());
@@ -298,7 +313,9 @@ std::vector<TabContentPtr> WebKitEngineService::getTabContents() const {
     return result;
 }
 
-TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerId, const std::string& title, bool desktopMode, bool incognitoMode)
+TabId WebKitEngineService::addTab(const std::string & uri,
+        const TabId * tabInitId, const boost::optional<int> tabId,
+        const std::string& title, bool desktopMode, bool incognitoMode)
 {
     AbstractWebEngine::checkIfCreate();
 
@@ -310,11 +327,18 @@ TabId WebKitEngineService::addTab(const std::string & uri, const TabId * openerI
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    // searching for next available tabId
-    TabId newTabId;
+    int newAdaptorId = -1;
+    if(tabId) {
+        newAdaptorId = *tabId;
+    } else {
+        // searching for next available tabId
+        newAdaptorId = createTabId();
+    }
+    TabId newTabId(newAdaptorId);
+
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, title, incognitoMode);
-    if (openerId)
-        p->init(desktopMode, getTabView(*openerId));
+    if (tabInitId)
+        p->init(desktopMode, getTabView(*tabInitId));
     else
         p->init(desktopMode);
 

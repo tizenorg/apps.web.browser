@@ -18,6 +18,7 @@
 #define __ABSTRACT_WEBENGINE_H__ 1
 
 #include <boost/signals2/signal.hpp>
+#include <boost/optional.hpp>
 #include <memory>
 #include <Evas.h>
 
@@ -145,9 +146,12 @@ public:
     virtual std::vector<std::shared_ptr<TabContent>> getTabContents() const = 0;
 
     /**
-     * Adds new tab
+     * Adds new tab. If it first tab in WebEngine switch to this tab.
      * @param uri if not empty opens specified uri
-     * @param openerId
+     * @param openerId id of the tab which content (Evas_Object) should be set
+     * for the created tab
+     * @param tabId Tab id of the new tab. If boost::none, tab's id will be
+     * generated
      * @param desktopMode true if desktop mode, false if mobile mode
      * @param incognitoMode true if incognito mode, false if not
      * @return TabId of created tab
@@ -155,6 +159,7 @@ public:
     virtual TabId addTab(
             const std::string& uri = std::string(),
             const TabId* openerId = NULL,
+            const boost::optional<int> tabId = boost::none,
             const std::string& title = std::string(),
             bool desktopMode = true,
             bool incognitoMode = false) = 0;
@@ -307,6 +312,11 @@ public:
      */
     virtual void scrollView(const int& dx, const int& dy) = 0;
 
+    /**
+     * Slot to which generated tab's id is passed.
+     */
+    virtual void onTabIdCreated(int tabId) = 0;
+
 #if PROFILE_MOBILE
     /**
      * @brief Enable or disable touch events for current web view
@@ -423,6 +433,11 @@ public:
      * Signal to switch to window after it is created
      */
     boost::signals2::signal<void ()> windowCreated;
+
+    /**
+     * Generate id for the new tab.
+     */
+    boost::signals2::signal<void()> createTabId;
 };
 
 } /* end of basic_webengine */
