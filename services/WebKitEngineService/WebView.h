@@ -151,6 +151,7 @@ public:
     void scrollView(const int& dx, const int& dy);
 
 #if PROFILE_MOBILE
+    void findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data);
     /**
      * @brief Enable or disable touch events
      *
