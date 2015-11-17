@@ -24,16 +24,20 @@
 namespace tizen_browser {
 namespace base_ui {
 
+#if !PROFILE_MOBILE
 double ButtonBar::tooltipHideTimeout = 0.;
 double ButtonBar::tooltipShowDelay = 0.;
 Ecore_Timer* ButtonBar::m_tooltipHideTimer = NULL;
 Ecore_Timer* ButtonBar::m_tooltipShowTimer = NULL;
+#endif
 
 ButtonBar::ButtonBar(Evas_Object* parent, const std::string& edjFile, const std::string& groupName)
 {
     config::DefaultConfig config;
     config.load("");
+#if !PROFILE_MOBILE
     ButtonBar::tooltipHideTimeout =  boost::any_cast <double> (config.get("TOOLTIP_HIDE_TIMEOUT"));
+#endif
 
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append(edjFile);
@@ -48,7 +52,7 @@ ButtonBar::ButtonBar(Evas_Object* parent, const std::string& edjFile, const std:
 }
 ButtonBar::~ButtonBar()
 {
-
+#if !PROFILE_MOBILE
     if (ButtonBar::m_tooltipShowTimer) {
         ecore_timer_del(ButtonBar::m_tooltipShowTimer);
         ButtonBar::m_tooltipShowTimer = NULL;
@@ -57,6 +61,7 @@ ButtonBar::~ButtonBar()
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
     }
+#endif
 }
 
 void ButtonBar::addAction(sharedAction action, const std::string& buttonName)
@@ -68,19 +73,23 @@ void ButtonBar::addAction(sharedAction action, const std::string& buttonName)
 
     evas_object_event_callback_add(button, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, NULL);
     evas_object_event_callback_add(button, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out, NULL);
+#if !PROFILE_MOBILE
     evas_object_smart_callback_add(button, "focused", __cb_focus_in, NULL);
     evas_object_smart_callback_add(button, "unfocused", __cb_focus_out, NULL);
+#endif
 
 
     elm_object_style_set(button, action->getIcon().c_str());
     elm_object_disabled_set(button, action->isEnabled() ? EINA_FALSE : EINA_TRUE);
     evas_object_smart_callback_add(button, "clicked", EAction::callbackFunction, eAction.get());
     evas_object_show(button);
+#if !PROFILE_MOBILE
     if (action->isEnabled()) {
         elm_object_tooltip_text_set(button, eAction->getAction()->getToolTip().c_str());
         elm_object_tooltip_orient_set(button, ELM_TOOLTIP_ORIENT_BOTTOM);
         elm_object_tooltip_style_set(button, "browserTip");
     }
+#endif
 
     elm_object_part_content_set(m_layout, buttonName.c_str(), button);
 
@@ -132,12 +141,16 @@ void ButtonBar::refreshButton(const std::string& buttonName)
     Evas_Object* button = m_buttonsMap[buttonName].button;
     if (m_actionsMap[buttonName]->isEnabled()) {
         elm_object_disabled_set(button, EINA_FALSE);
+#if !PROFILE_MOBILE
         elm_object_tooltip_text_set(button, m_actionsMap[buttonName]->getToolTip().c_str());
         elm_object_tooltip_orient_set(button, ELM_TOOLTIP_ORIENT_BOTTOM);
         elm_object_tooltip_style_set(button, "browserTip");
+#endif
     } else {
         elm_object_disabled_set(button, EINA_TRUE);
+#if !PROFILE_MOBILE
         elm_object_tooltip_unset(button);
+#endif
     }
 }
 
@@ -166,9 +179,11 @@ void ButtonBar::setDisabled(bool disabled)
     elm_object_disabled_set(getContent(), disabled ? EINA_TRUE : EINA_FALSE);
 }
 
+#if !PROFILE_MOBILE
 void ButtonBar::__cb_focus_in(void*, Evas_Object* obj, void*)
 {
     //BROWSER_LOGD("[%s:%d] %d", __PRETTY_FUNCTION__, __LINE__, reinterpret_cast<int>(obj));
+
     if (ButtonBar::m_tooltipHideTimer) {
         ecore_timer_del(ButtonBar::m_tooltipHideTimer);
         ButtonBar::m_tooltipHideTimer = NULL;
@@ -196,6 +211,7 @@ void ButtonBar::__cb_focus_out(void*, Evas_Object* obj, void*)
     }
     elm_object_tooltip_hide(obj);
 }
+#endif
 
 void ButtonBar::__cb_mouse_in(void* /*data*/, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/)
 {
@@ -208,6 +224,7 @@ void ButtonBar::__cb_mouse_out(void* /*data*/, Evas* /*e*/, Evas_Object* obj, vo
     elm_object_focus_set(obj, EINA_FALSE);
 }
 
+#if !PROFILE_MOBILE
 Eina_Bool ButtonBar::__cb_tooltip_hide_timeout(void* data)
 {
     Evas_Object* button = static_cast<Evas_Object*>(data);
@@ -221,6 +238,7 @@ Eina_Bool ButtonBar::__cb_tooltip_hide_timeout(void* data)
     return ECORE_CALLBACK_CANCEL;
 }
 
+
 Eina_Bool ButtonBar::__cb_tooltip_show_delay(void* data)
 {
     Evas_Object* button = static_cast<Evas_Object*>(data);
@@ -233,6 +251,7 @@ Eina_Bool ButtonBar::__cb_tooltip_show_delay(void* data)
     elm_object_tooltip_show(button);
     return ECORE_CALLBACK_CANCEL;
 }
+#endif
 
 }
 }
