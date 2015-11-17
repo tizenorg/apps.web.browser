@@ -24,12 +24,10 @@ include(EDCCompile)
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
-        InvisibleButton.edc
         QuickAccess_mob.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles
-        InvisibleButton.edc
         QuickAccess.edc
         DetailPopup.edc
         )

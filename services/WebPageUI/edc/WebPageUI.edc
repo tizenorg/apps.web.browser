@@ -1,7 +1,7 @@
 #define URI_LENGTH 1720
 #define URI_LENGTH_SHORT 1460
 #define URI_WIDTH 82
-#include "Spacer.edc"
+#include "../../../core/Tools/edc/Spacer.edc"
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
     part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
                                                                     \

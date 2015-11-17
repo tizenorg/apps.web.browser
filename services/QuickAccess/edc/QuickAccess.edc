@@ -1,4 +1,4 @@
-#include "InvisibleButton.edc"
+#include "../../../core/Tools/edc/InvisibleButton.edc"
 
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
     part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
