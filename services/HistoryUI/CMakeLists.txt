@@ -24,6 +24,19 @@ install(TARGETS ${PROJECT_NAME}
             ARCHIVE DESTINATION services/static)
 
 include(EDCCompile)
-EDJ_TARGET(History.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/History.edc
-    ${CMAKE_CURRENT_BINARY_DIR})
+if (${PROFILE} MATCHES "mobile")    # mobile profile
+    set(edcFiles
+        History_mob.edc
+        )
+else (${PROFILE} MATCHES "mobile")  # tv profile
+    set(edcFiles
+        History.edc
+        )
+endif (${PROFILE} MATCHES "mobile")
+
+foreach(edec ${edcFiles})
+    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    EDJ_TARGET(${target_name}
+        ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
+        ${CMAKE_CURRENT_BINARY_DIR})
+endforeach(edec)
