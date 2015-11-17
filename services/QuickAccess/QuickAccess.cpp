@@ -127,7 +127,11 @@ void QuickAccess::createItemClasses()
 Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
+    m_desktopMode = false;
+#else
     m_desktopMode = true;
+#endif
 
     Evas_Object* layout = elm_layout_add(parent);
     elm_layout_file_set(layout, edjFilePath.c_str(), "main_layout");
