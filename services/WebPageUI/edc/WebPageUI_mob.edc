@@ -8,7 +8,7 @@
 #define WEB_VIEW_FULL_HEIGHT 1268   // FIXME: set propper size when top bar will be available
 #define MOREMENU_HEIGHT 588
 #define MOREMENU_WIDTH 720
-#include "Spacer.edc"
+#include "../../../core/Tools/edc/Spacer.edc"
 
 collections {
     group {

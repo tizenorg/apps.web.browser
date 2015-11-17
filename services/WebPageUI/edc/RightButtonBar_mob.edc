@@ -1,5 +1,5 @@
 #include "ImageButton.edc"
-#include "Spacer.edc"
+#include "../../../core/Tools/edc/Spacer.edc"
 collections {
     FOUR_STATE_IMAGE_BUTTON("browser/toolbar_tab", 64, 64, "btn_bar_manager_nor_mob.png")
     FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 64, 64, "btn_bar_more_nor_mob.png")

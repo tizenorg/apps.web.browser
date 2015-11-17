@@ -3,7 +3,6 @@
 #define LIST_OFFSET_Y 104
 #define URI_INPUTBOX_LENGTH_QUICKACCESS 1720
 #define URI_INPUTBOX_LENGTH_WEBPAGE 1460
-#define HISTORY_ITEM_W URI_INPUTBOX_LENGTH
 #define HISTORY_ITEM_H 82
 
 collections {
@@ -72,7 +71,7 @@ collections {
                 mouse_events: 1;
                 description {
                     state: "default" 0.0;
-                    min: URI_INPUTBOX_LENGTH HISTORY_ITEM_H;
+                    min: URI_INPUTBOX_LENGTH_QUICKACCESS HISTORY_ITEM_H;
                     max: -1 -1;
                     visible: 1;
                     color: 255 255 255 255;
@@ -134,7 +133,7 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 0;
-                    min: URI_INPUTBOX_LENGTH HISTORY_ITEM_H;
+                    min: URI_INPUTBOX_LENGTH_QUICKACCESS HISTORY_ITEM_H;
                     max: -1 -1;
                     visible: 1;
                     color: 255 255 255 0;
