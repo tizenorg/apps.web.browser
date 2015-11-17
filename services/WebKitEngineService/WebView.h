@@ -31,6 +31,31 @@
 #include "BrowserImage.h"
 #include "AbstractWebEngine/TabId.h"
 #include "AbstractWebEngine/WebConfirmation.h"
+#if PROFILE_MOBILE
+typedef enum _context_menu_type {
+    TEXT_ONLY = 0,
+    INPUT_FIELD,
+    TEXT_LINK,
+    IMAGE_ONLY,
+    IMAGE_LINK,
+    EMAIL_SCHEME,
+    TEL_SCHEME,
+    TEXT_IMAGE_LINK,
+    UNKNOWN_MENU
+} context_menu_type;
+
+typedef enum _custom_context_menu_item_tag {
+    CUSTOM_CONTEXT_MENU_ITEM_BASE_TAG = EWK_CONTEXT_MENU_ITEM_BASE_APPLICATION_TAG,
+    CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_PAGE,
+    CUSTOM_CONTEXT_MENU_ITEM_SHARE,
+    CUSTOM_CONTEXT_MENU_ITEM_SEARCH,
+    CUSTOM_CONTEXT_MENU_ITEM_SAVE_TO_KEEPIT,
+    CUSTOM_CONTEXT_MENU_ITEM_CALL,
+    CUSTOM_CONTEXT_MENU_ITEM_SEND_MESSAGE,
+    CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL,
+    CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT,
+} custom_context_menu_item_tag;
+#endif
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -185,12 +210,23 @@ private:
     void registerCallbacks();
     void unregisterCallbacks();
     void setupEwkSettings();
+#if  PROFILE_MOBILE
+    context_menu_type _get_menu_type(Ewk_Context_Menu *menu);
+    void _customize_context_menu(Ewk_Context_Menu *menu);
+    void _show_context_menu_text_link(Ewk_Context_Menu *menu);
+    void _show_context_menu_image_only(Ewk_Context_Menu *menu);
+    void _show_context_menu_image_link(Ewk_Context_Menu *menu);
+    void _show_context_menu_text_only(Ewk_Context_Menu *menu);
+#endif
 
 #if defined(USE_EWEBKIT)
     static std::string securityOriginToUri(const Ewk_Security_Origin *);
     static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
     static void __newWindowRequest(void * data, Evas_Object *, void *out);
     static void __closeWindowRequest(void * data, Evas_Object *, void *);
+#endif
+#if  PROFILE_MOBILE
+    static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
 #endif
 
     // Load
