@@ -450,27 +450,30 @@ void WebPageUI::createActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_back = sharedAction(new Action("Back"));
-    m_back->setToolTip("Previous");
     m_back->setIcon("browser/toolbar_prev");
 
     m_forward = sharedAction(new Action("Next"));
-    m_forward->setToolTip("Next");
     m_forward->setIcon("browser/toolbar_next");
 
     m_stopLoading = sharedAction(new Action("Stop"));
-    m_stopLoading->setToolTip("Stop");
     m_stopLoading->setIcon("browser/toolbar_stop");
 
     m_reload = sharedAction(new Action("Reload"));
-    m_reload->setToolTip("Reload");
     m_reload->setIcon("browser/toolbar_reload");
     m_tab = sharedAction(new Action("Tabs"));
-    m_tab->setToolTip("Tab Manager");
     m_tab->setIcon("browser/toolbar_tab");
 
     m_showMoreMenu = sharedAction(new Action("More_Menu"));
-    m_showMoreMenu->setToolTip("More Menu");
     m_showMoreMenu->setIcon("browser/toolbar_setting");
+
+#if !PROFILE_MOBILE
+    m_back->setToolTip("Previous");
+    m_forward->setToolTip("Next");
+    m_stopLoading->setToolTip("Stop");
+    m_reload->setToolTip("Reload");
+    m_tab->setToolTip("Tab Manager");
+    m_showMoreMenu->setToolTip("More Menu");
+#endif
 }
 
 void WebPageUI::connectActions()
