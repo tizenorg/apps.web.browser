@@ -46,6 +46,7 @@ enum ItemType {
     SHARE,
     HISTORY,
     BOOKMARK_MANAGER,
+    FIND_ON_PAGE,
     SETTINGS
 #else
 #ifdef READER_MODE_ENABLED
@@ -93,6 +94,7 @@ public:
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
 #if PROFILE_MOBILE
+    void shouldShowFindOnPage(bool show);
     void blockThumbnails(bool blockThumbnails);
 #endif
 
@@ -101,6 +103,7 @@ public:
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
     boost::signals2::signal<void ()> settingsClicked;
+    boost::signals2::signal<void ()> findOnPageClicked;
     boost::signals2::signal<void ()> closeMoreMenuClicked;
     boost::signals2::signal<void ()> zoomUIClicked;
     boost::signals2::signal<void ()> switchToMobileMode;
@@ -148,6 +151,7 @@ private:
     Eina_Bool m_isBookmark;
     FocusManager m_focusManager;
 #if PROFILE_MOBILE
+    bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
 #endif
 };

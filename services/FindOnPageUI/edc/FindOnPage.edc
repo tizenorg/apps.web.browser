@@ -1,0 +1,756 @@
+
+collections {
+
+      group{
+        name: "elm/button/base/basic_button";
+        parts{
+            part{
+                name: "button";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 0 0 0 0;
+                }
+            }
+            part{
+                name: "over";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;to: "button";}
+                    rel2 { relative: 1.0 1.0;to: "button";}
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs{
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+
+
+  group {
+        name: "elm/entry/selection/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                }
+            }
+        }
+    }
+    group {
+        name: "elm/entry/cursor/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 22 120 237 255;
+                    min: 2 36;
+                    max: 2 36;
+                    visible: 0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focused";
+                signal: "elm,action,focus";
+                source: "elm";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "unfocused";
+                signal: "elm,action,unfocus";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+        }
+    }
+
+  group {
+        name: "elm/entry/base-single/fop_entry";
+        styles {
+            style {
+                name: "browser-entry-uri-style-unselected";
+                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#969696";
+            }
+            style {
+                name: "browser-entry-uri-style-selected";
+                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" color=#4088d3";
+            }
+            style {
+                name: "browser-entry-uri-style-selected-incognito";
+                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" right_margin="60" color=#4088d3";
+            }
+        }
+        data {
+            item: focus_highlight "off";
+        }
+        parts {
+
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                }
+            }
+
+            part {
+                name: "elm.guide";
+                scale:1;
+                type: TEXTBLOCK;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    text {
+                        style: "browser-entry-uri-style-unselected";
+                        min: 0 1;
+                    }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part {
+                name: "label.text.clip";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                }
+            }
+            part {
+                name: "elm.text";
+                scale:1;
+                multiline: 0;
+                entry_mode: EDITABLE;
+                select_mode: DEFAULT;
+                cursor_mode: BEFORE;
+                type: TEXTBLOCK;
+                clip_to: "label.text.clip";
+                source: "elm/entry/selection/browser_entry";
+                source4: "elm/entry/cursor/browser_entry";
+                description {
+                    state: "default" 0.0;
+                    //max: -1 82;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    text {
+                        style: "browser-entry-uri-style-selected";
+                        min: 0 1;
+                    }
+                }
+                description {
+                    state: "incognito" 0.0;
+                    max: -1 82;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    text {
+                        style: "browser-entry-uri-style-selected-incognito";
+                        min: 0 1;
+                    }
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focus";
+                signal: "load";
+                source: "";
+                action: FOCUS_SET;
+                target: "elm.text";
+            }
+            program {
+                name: "gdisabled";
+                signal: "elm,guide,disabled";
+                source: "elm";
+                action: STATE_SET "hidden" 0.0;
+                target: "elm.guide";
+            }
+            program {
+                name: "genabled";
+                signal: "elm,guide,enabled";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "elm.guide";
+            }
+            program {
+                name: "normal_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_normal";
+                action: STATE_SET "default" 0.0;
+                target: "elm.text";
+            }
+            program {
+                name: "incognito_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_incognito";
+                action: STATE_SET "incognito" 0.0;
+                target: "elm.text";
+            }
+        }
+    }
+
+  group { name: "find-on-page-layout";
+    data {
+        item: "focus_highlight" "off";
+    }
+        images {
+                image: "btn_bar_stop_nor.png" COMP;
+                image: "find_on_page_prev.png" COMP;
+                image: "find_on_page_next.png" COMP;
+        }
+        color_classes{
+            color_class{
+                name: "defaultBgColor";
+                color: 18 22 34 255;
+            }
+            color_class{
+                name: "focusBgColor";
+                color: 69 143 255 255;
+            }
+            color_class{
+                name: "highlightBgColor";
+                color: 69 143 255 102;
+            }
+            color_class{
+                name: "imageHighlight";
+                color: 255 255 255 102;
+            }
+            color_class{
+                name: "focusbtBgColor";
+                color: 22 120 224 255;
+            }
+            color_class{
+                name: "subTitleTextColor";
+                color: 128 128 128 255;
+            }
+            color_class{
+                name: "focusTextColor";
+                color: 255 255 255 255;
+            }
+            color_class{
+                name: "highlightTextColor";
+                color: 255 255 255 51;
+            }
+            color_class{
+                name: "urlTextColor";
+                color: 116 116 116 204;
+            }
+            color_class{
+                name: "transparent";
+                color: 0 0 0 0;
+            }
+        }
+	images {
+            image: "web_shadow.png" COMP;
+        }
+        min: 1920 104;
+        max: 1920 104;
+        //data.item: "texts" "settings_title";
+        //data.item: "contents" "close_click";
+	images {
+               }
+        parts{
+            part {
+                name: "bg_clipper";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    color: 247 247 247 255;
+                    align: 0 0;
+                    min: 1440 104;
+                    max: 1440 104;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                            }
+                 }
+	part { name: "elm.swallow.entry";
+                                type: SWALLOW;
+                                scale: 1;
+                                description {
+                                        state: "default" 0.0;
+                    			min: 400 98;
+			                max: 400 98;
+                                        align: 0.0 0.5;
+                                        fixed: 1 1;
+                                        rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 10 0;}
+                                        rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                    }
+             }
+
+	part { name: "elm.text.count";
+                                type: TEXT;
+                                scale: 1;
+                                description {
+                                        state: "default" 0.0;
+                                        min: 56 56;
+                                        max: 56 56;
+                                        fixed: 1 0;
+			                align: 0 0.5;
+                                        color: 128 128 128 255;
+                                        rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 850 0;}
+                                        rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                                        text {
+                                                text: "0/0";
+			                        font: "Sans";
+                        			size: 30;
+			                        align: 0 0.5;
+                                        }
+                                }
+                                description {
+                                        state: "digit_2" 0.0;
+                                        inherit: "default" 0.0;
+                                        min: 56 56;
+                                        max: 56 56;
+                                }
+                                description {
+                                        state: "digit_3" 0.0;
+                                        inherit: "default" 0.0;
+                                        min: 56 56;
+                                        max: 56 56;
+                                }
+                                description {
+                                        state: "digit_4" 0.0;
+                                        inherit: "default" 0.0;
+                                        min: 56 56;
+                                        max: 56 56;
+                                }
+                        }
+
+	part {
+                name: "up_button_bg";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0.5;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 1000 0;}
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                    color_class: transparent;
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusBgColor;
+                    visible: 1;
+                }
+                  description {
+                    state: "focus" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusDelBgColor;
+                    visible: 1;
+                }
+            }
+	    part {
+                name: "up_button_icon";
+                type: IMAGE;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "up_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "up_button_bg";}
+                    image.normal: "find_on_page_prev.png";
+                }
+                description { state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+                description { state: "focus" 0.0;
+                    inherit: "highlight" 0.0;
+                }
+            }
+	    part {
+                name: "up_button_over";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "up_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "up_button_bg";}
+                    color_class: transparent;
+                }
+            }
+            part {
+                name: "up_button_click";
+                scale:1;
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "up_button_over";}
+                    rel2 { relative: 1.0 1.0; to: "up_button_over";}
+                    color_class: transparent;
+                }
+            }
+
+		part {
+                name: "down_button_bg";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0.5;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 1125 0;}
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                    color_class: transparent;
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusBgColor;
+                    visible: 1;
+                }
+                  description {
+                    state: "focus" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusDelBgColor;
+                    visible: 1;
+                }
+            }
+	    part {
+                name: "down_button_icon";
+                type: IMAGE;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "down_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "down_button_bg";}
+                    image.normal: "find_on_page_next.png";
+                }
+                description { state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+                description { state: "focus" 0.0;
+                    inherit: "highlight" 0.0;
+                }
+            }
+	    part {
+                name: "down_button_over";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "down_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "down_button_bg";}
+                    color_class: transparent;
+                }
+            }
+            part {
+                name: "down_button_click";
+                scale:1;
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 56;
+                    max: 56 56;
+                    rel1 { relative: 0.0 0.0; to: "down_button_over";}
+                    rel2 { relative: 1.0 1.0; to: "down_button_over";}
+                    color_class: transparent;
+                }
+            }
+
+	part {
+                name: "close_bg";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0.5;
+                    min: 56 60;
+                    max: 56 60;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 1300 0;}
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                    color_class: transparent;
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusBgColor;
+                    visible: 1;
+                }
+                  description {
+                    state: "focus" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusDelBgColor;
+                    visible: 1;
+                }
+            }
+	    part {
+                name: "close_icon";
+                type: IMAGE;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    min: 56 60;
+                    max: 56 60;
+                    rel1 { relative: 0.0 0.0; to: "close_bg";}
+                    rel2 { relative: 1.0 1.0; to: "close_bg";}
+                    image.normal: "btn_bar_stop_nor.png";
+                }
+                description { state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+                description { state: "focus" 0.0;
+                    inherit: "highlight" 0.0;
+                }
+            }
+	    part {
+                name: "close_over";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 60;
+                    max: 56 60;
+                    rel1 { relative: 0.0 0.0; to: "close_bg";}
+                    rel2 { relative: 1.0 1.0; to: "close_bg";}
+                    color_class: transparent;
+                }
+            }
+            part {
+                name: "close_click";
+                scale:1;
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 56 60;
+                    max: 56 60;
+                    rel1 { relative: 0.0 0.0; to: "close_over";}
+                    rel2 { relative: 1.0 1.0; to: "close_over";}
+                    color_class: transparent;
+                }
+            }
+	part { name: "uri_bar_shadow";
+                type: IMAGE;
+                scale: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: 1920 14;
+                    max: 1920 14;
+                    image.normal: "web_shadow.png";
+                    rel1 { relative: 0.0 1.0; to: "bg_clipper"; /*offset: 0 208;*/ }
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
+                }
+             }
+
+       } 
+        programs{
+
+	    program {
+                name: "mouse_in_close_click";
+                signal: "mouse,in";
+                source: "close_click";
+                script {
+                    emit("mouse_in_close_click", "");
+                }
+            }
+            program {
+                name: "mouse_out_close_click";
+                signal: "mouse,out";
+                source: "close_click";
+                script {
+                    emit("mouse_out_close_click", "");
+                }
+            }
+            program {
+                name: "mouse_in_close";
+                signal: "mouse_in_close_click";
+                source: "";
+                action: STATE_SET "highlight" 0.0;
+                target: "close_over";
+                target: "close_bg";
+                target: "close_icon";
+            }
+            program {
+                name: "mouse_out_close";
+                signal: "mouse_out_close_click";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "close_over";
+                target: "close_bg";
+                target: "close_icon";
+            }
+	    program {
+                name: "mouse_in_up_click";
+                signal: "mouse,in";
+                source: "up_button_click";
+                script {
+                    emit("mouse_in_up_click", "");
+                }
+            }
+            program {
+                name: "mouse_out_up_click";
+                signal: "mouse,out";
+                source: "up_button_click";
+                script {
+                    emit("mouse_out_up_click", "");
+                }
+            }
+            program {
+                name: "mouse_in_up";
+                signal: "mouse_in_up_click";
+                source: "";
+                action: STATE_SET "highlight" 0.0;
+                target: "up_button_over";
+                target: "up_button_bg";
+                target: "up_button_icon";
+            }
+            program {
+                name: "mouse_out_up";
+                signal: "mouse_out_up_click";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "up_button_over";
+                target: "up_button_bg";
+                target: "up_button_icon";
+            }
+	    program {
+                name: "mouse_in_down_click";
+                signal: "mouse,in";
+                source: "down_button_click";
+                script {
+                    emit("mouse_in_down_click", "");
+                }
+            }
+            program {
+                name: "mouse_out_down_click";
+                signal: "mouse,out";
+                source: "down_button_click";
+                script {
+                    emit("mouse_out_down_click", "");
+                }
+            }
+            program {
+                name: "mouse_in_down";
+                signal: "mouse_in_down_click";
+                source: "";
+                action: STATE_SET "highlight" 0.0;
+                target: "down_button_over";
+                target: "down_button_bg";
+                target: "down_button_icon";
+            }
+	    program {
+                name: "mouse_out_down";
+                signal: "mouse_out_down_click";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "down_button_over";
+                target: "down_button_bg";
+                target: "down_button_icon";
+            }
+	   program { name: "digit_1";
+                                signal: "digit_1,signal";
+                                action: STATE_SET "default" 0.0;
+                                target: "elm.text.count";
+                        }
+                        program { name: "digit_2";
+                                signal: "digit_2,signal";
+                                action: STATE_SET "digit_2" 0.0;
+                                target: "elm.text.count";
+                        }
+                        program { name: "digit_3";
+                                signal: "digit_3,signal";
+                                action: STATE_SET "digit_3" 0.0;
+                                target: "elm.text.count";
+                        }
+                        program { name: "digit_4";
+                                signal: "digit_4,signal";
+                                action: STATE_SET "digit_4" 0.0;
+                                target: "elm.text.count";
+                        }
+	}
+    }           
+}
