@@ -1,0 +1,133 @@
+collections {
+    group { name: "elm/check/base/custom_check";
+            images {
+                image: "check_box_off.png" COMP;
+                image: "check_box_on.png" COMP;
+            }
+            parts {
+                    part {
+                            name: "base";
+                            mouse_events: 0;
+                            scale: 1;
+                            description {
+                                    state: "default" 0.0;
+                                    fixed: 1 1;
+                                    align: 0 0;
+                                    min: 48 48;
+                                    max: 48 48;
+                                    image.normal: "check_box_on.png";
+                                    fill.smooth : 0;
+                            }
+                    }
+                    part {
+                            name: "unchecked";
+                            mouse_events: 0;
+                            scale: 1;
+                            description {
+                                    state: "default" 0.0;
+                                    min: 48 48;
+                                    max: 48 48;
+                                    fixed: 1 1;
+                                    align: 0 0;
+                                    rel1 { to:"base"; relative: 0 0;}
+                                    rel2 { to:"base"; relative: 1 1;}
+                                    image.normal: "check_box_off.png";
+                            }
+                            description {
+                                    state: "disabled" 0.0;
+                                    inherit: "default" 0.0;
+                                    color: 255 255 255 128;
+                            }
+                    }
+                    part {
+                            name: "check";
+                            mouse_events: 0;
+                            scale: 1;
+                            description {
+                                    state: "default" 0.0;
+                                    min: 48 48;
+                                    max: 48 48;
+                                    fixed: 1 1;
+                                    align: 0 0;
+                                    visible: 0;
+                                    rel1 { relative: 0 0; to: "base";}
+                                    rel2 { relative: 1 1; to: "base";}
+                                    image.normal: "check_box_on.png";
+                            }
+                            description {
+                                    state: "visible" 0.0;
+                                    inherit: "default" 0.0;
+                                    visible: 1;
+                            }
+                    }
+                    part {
+                            name: "elm.swallow.content";
+                            type: SWALLOW;
+                            scale: 1;
+                            description {
+                                    state: "default" 0.0;
+                                    fixed: 1 1;
+                                    visible: 0;
+                                    align: 0.5 0.5;
+                            }
+                            description {
+                                    state: "visible" 0.0;
+                                    inherit: "default" 0.0;
+                                    fixed: 1 1;
+                                    visible: 1;
+                                    aspect: 1 1;
+                            }
+                            description {
+                                    state: "disabled" 0.0;
+                                    inherit: "default" 0.0;
+                                    color: 128 128 128 128;
+                            }
+                            description {
+                                    state: "disabled_visible" 0.0;
+                                    inherit: "default" 0.0;
+                                    color: 128 128 128 128;
+                                    fixed: 1 1;
+                                    visible: 1;
+                                    aspect: 1 1;
+                            }
+                    }
+            }
+            programs {
+                    program {
+                            name: "click";
+                            signal: "mouse,clicked,1";
+                            source: "events";
+                            action: SIGNAL_EMIT "elm,action,check,toggle" "";
+                    }
+                    program {
+                            name: "check_on";
+                            signal: "elm,state,check,on";
+                            source: "elm";
+                            action:  STATE_SET "visible" 0.0;
+                            target: "check";
+                    }
+                    program {
+                            name: "check_off";
+                            signal: "elm,state,check,off";
+                            source: "elm";
+                            action:  STATE_SET "default" 0.0;
+                            target: "check";
+                    }
+
+                    program {
+                            name: "disable";
+                            signal: "elm,state,disabled";
+                            source: "elm";
+                            action: STATE_SET "disabled" 0.0;
+                            target: "unchecked";
+                    }
+                    program {
+                            name: "enable";
+                            signal: "elm,state,enabled";
+                            source: "elm";
+                            action: STATE_SET "default" 0.0;
+                            target: "unchecked";
+                    }
+            }
+    }
+}
