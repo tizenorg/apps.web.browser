@@ -52,6 +52,9 @@ HistoryUI::HistoryUI()
     , m_genListToday(nullptr)
     , m_itemClassToday(nullptr)
     , m_gengrid(nullptr)
+#if PROFILE_MOBILE
+    , m_dayGenlist(nullptr)
+#endif
     , m_parent(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -107,14 +110,20 @@ Evas_Object* HistoryUI::getContent()
 void HistoryUI::createHistoryUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     m_history_layout = elm_layout_add(parent);
+
     elm_layout_file_set(m_history_layout, m_edjFilePath.c_str(), "history-layout");
     evas_object_size_hint_weight_set(m_history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     m_actionBar = createActionBar(m_history_layout);
+#if !PROFILE_MOBILE
     m_gengrid = createGengrid(m_history_layout);
+#else
+    m_dayGenlist = createDayGenlist(m_history_layout);
+#endif
     clearItems();
 }
 
@@ -160,6 +169,22 @@ Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
     m_itemClassToday->func.del = nullptr;
 
     return gengrid;
+}
+
+Evas_Object *HistoryUI::createDayGenlist(Evas_Object *history_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(history_layout);
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+    Evas_Object* genlist = elm_genlist_add(history_layout);
+    elm_object_part_content_set(history_layout, "history_genlist", genlist);
+
+    evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    //TODO: implement missing history list
+
+    return genlist;
 }
 
 Elm_Gengrid_Item_Class* HistoryUI::crateItemClass()

@@ -41,6 +41,7 @@ public:
     void showUI();
     void hideUI();
     Evas_Object* createGengrid(Evas_Object* history_layout);
+    Evas_Object* createDayGenlist(Evas_Object* history_layout);
     virtual std::string getName();
     void addHistoryItem(std::shared_ptr<services::HistoryItem>);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>);
@@ -69,6 +70,9 @@ private:
     Evas_Object *m_genListToday;
     Elm_Genlist_Item_Class *m_itemClassToday;
     Evas_Object *m_gengrid;
+#if PROFILE_MOBILE
+    Evas_Object *m_dayGenlist;
+#endif
     Evas_Object *m_parent;
     Elm_Gengrid_Item_Class * m_item_class;
     std::map<std::string,Elm_Object_Item*> m_map_history_views;
