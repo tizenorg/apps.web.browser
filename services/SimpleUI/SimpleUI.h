@@ -40,6 +40,7 @@
 #include "SettingsUI.h"
 #include "QuickAccess.h"
 #include "TabUI.h"
+#include "FindOnPageUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
@@ -213,6 +214,8 @@ private:
 
     void showTabUI();
     void closeTabUI();
+    void showFindOnPageUI();
+    void closeFindOnPageUI();
     void showMoreMenu();
     void closeMoreMenu();
     void switchToMobileMode();
@@ -259,6 +262,7 @@ private:
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
+    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
     Session::Session m_currentSession;
