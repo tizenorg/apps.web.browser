@@ -318,6 +318,7 @@ public:
     virtual void onTabIdCreated(int tabId) = 0;
 
 #if PROFILE_MOBILE
+    virtual void findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data) = 0;
     /**
      * @brief Enable or disable touch events for current web view
      *
