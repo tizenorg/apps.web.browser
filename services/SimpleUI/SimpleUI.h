@@ -111,7 +111,11 @@ private:
     void updateView();
     void windowCreated();
 
+#if PROFILE_MOBILE
+    void openNewTab(const std::string &uri, const std::string& title = std::string(), bool desktopMode = false, bool incognitoMode = false);
+#else
     void openNewTab(const std::string &uri, const std::string& title = std::string(), bool desktopMode = true, bool incognitoMode = false);
+#endif
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);

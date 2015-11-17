@@ -284,8 +284,13 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_historyUI.get());
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    // desktop mode as default
-    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, true));
+
+#if PROFILE_MOBILE
+    bool desktop_ua = false;
+#else
+    bool desktop_ua = true;
+#endif
+    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
