@@ -89,6 +89,11 @@ private:
 typedef std::shared_ptr<BookmarkItem> SharedBookmarkItem;
 typedef std::vector<SharedBookmarkItem> SharedBookmarkItemList;
 
+enum FolderIDType{
+      ROOT_FOLDER_ID = 0
+    , ALL_BOOKMARKS_ID = -1
+};
+
 }
 }
 

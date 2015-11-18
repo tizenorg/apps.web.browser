@@ -47,6 +47,12 @@ public:
     virtual std::string getName();
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+#if PROFILE_MOBILE
+    Evas_Object* getDetailsContent();
+    void addFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+    void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string folder_name, int count);
+    void showDetailsUI();
+#endif
     void hide();
     void clearItems();
     Evas_Object* createNoHistoryLabel();
@@ -54,6 +60,11 @@ public:
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> customFolderClicked;
+    boost::signals2::signal<void ()> mobileFolderClicked;
+    boost::signals2::signal<void ()> allFolderClicked;
+#endif
 
 private:
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
@@ -68,6 +79,26 @@ private:
 
     static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
+#if PROFILE_MOBILE
+    void addDetailsItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
+    void addNewFolderItem();
+    void addAllItem();
+    void addMobileItem();
+    void addBookmarkFolder(std::shared_ptr<tizen_browser::services::BookmarkItem>);
+    void createFolderDetailsGenGrid();
+    void createFolderDetailsTopContent();
+    Evas_Object* createFolderDetailsLayout(Evas_Object* parent);
+    void hideFolderDetailsUI();
+    void setDetailsEmptyGengrid(bool);
+    static char* _grid_title_text_get(void *data, Evas_Object *obj, const char *part);
+    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
+    static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkNewFolderItemClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkAllItemClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkMobileFolderItemClicked(void * data, Evas_Object *, void *);
+    static void back_details_clicked_cb(void *data, Evas_Object *, void *);
+    static void more_details_clicked_cb(void *data, Evas_Object *, void *);
+#endif
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
     static char*        listItemTextGet(void *data, Evas_Object *, const char *part);
@@ -87,6 +118,16 @@ private:
     std::string edjFilePath;
     bool m_gengridSetup;
     FocusManager m_focusManager;
+#if PROFILE_MOBILE
+    Elm_Gengrid_Item_Class * m_details_item_class;
+    Elm_Gengrid_Item_Class * m_folder_new_item_class;
+    Elm_Gengrid_Item_Class * m_folder_all_item_class;
+    Elm_Gengrid_Item_Class * m_folder_mobile_item_class;
+    Elm_Gengrid_Item_Class * m_folder_custom_item_class;
+    Evas_Object *m_details_topContent;
+    Evas_Object *b_details_layout;
+    Evas_Object *m_details_gengrid;
+#endif
 };
 
 }
