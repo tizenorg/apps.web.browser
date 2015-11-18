@@ -82,6 +82,13 @@ public:
     std::vector<std::shared_ptr<BookmarkItem> > getBookmarks(int folder_id = -1);
 
    /**
+    * @brief Get folder name of the folder
+    *
+    * @return folder name
+    */
+   std::string getBookmarkFolderName(int folder_id = -1);
+
+   /**
      * @brief Delete all bookmarks
      *
      * @return true if success, false on error
