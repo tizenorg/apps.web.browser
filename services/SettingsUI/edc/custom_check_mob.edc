@@ -4,6 +4,8 @@ collections {
                 image: "check_box_off.png" COMP;
                 image: "check_box_on.png" COMP;
             }
+            min: 48 48;
+            max: 48 48;
             parts {
                     part {
                             name: "base";
@@ -11,12 +13,9 @@ collections {
                             scale: 1;
                             description {
                                     state: "default" 0.0;
-                                    fixed: 1 1;
-                                    align: 0 0;
-                                    min: 48 48;
-                                    max: 48 48;
+                                    align: 0 0.0;
                                     image.normal: "check_box_on.png";
-                                    fill.smooth : 0;
+                                    fill.smooth : 1;
                             }
                     }
                     part {
@@ -25,9 +24,6 @@ collections {
                             scale: 1;
                             description {
                                     state: "default" 0.0;
-                                    min: 48 48;
-                                    max: 48 48;
-                                    fixed: 1 1;
                                     align: 0 0;
                                     rel1 { to:"base"; relative: 0 0;}
                                     rel2 { to:"base"; relative: 1 1;}
@@ -45,9 +41,6 @@ collections {
                             scale: 1;
                             description {
                                     state: "default" 0.0;
-                                    min: 48 48;
-                                    max: 48 48;
-                                    fixed: 1 1;
                                     align: 0 0;
                                     visible: 0;
                                     rel1 { relative: 0 0; to: "base";}
@@ -73,9 +66,7 @@ collections {
                             description {
                                     state: "visible" 0.0;
                                     inherit: "default" 0.0;
-                                    fixed: 1 1;
                                     visible: 1;
-                                    aspect: 1 1;
                             }
                             description {
                                     state: "disabled" 0.0;
@@ -86,9 +77,7 @@ collections {
                                     state: "disabled_visible" 0.0;
                                     inherit: "default" 0.0;
                                     color: 128 128 128 128;
-                                    fixed: 1 1;
                                     visible: 1;
-                                    aspect: 1 1;
                             }
                     }
             }

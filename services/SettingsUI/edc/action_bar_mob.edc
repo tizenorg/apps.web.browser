@@ -13,7 +13,8 @@ group
             type: RECT;
             description {
                 state: "default" 0.0;
-                color: 255 255 255 255;
+                visible: 1;
+                color: 244 244 244 255;
                 align: 0 0;
                 min: 720 108;
                 max: 720 108;

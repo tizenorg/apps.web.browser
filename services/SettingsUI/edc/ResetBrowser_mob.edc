@@ -40,6 +40,7 @@ group {
                 min: 720 1228;
                 max: 720 1228;
                 visible: 1;
+                color: 244 244 244 255;
             }
         }
         part {
@@ -80,6 +81,8 @@ group {
                     to: "reset_browser_text_spacer";
                     relative: 1  1;
                 }
+                visible: 1;
+                color: 244 244 244 255;
             }
         }
         part {

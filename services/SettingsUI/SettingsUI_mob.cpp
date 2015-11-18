@@ -185,23 +185,25 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
     elm_object_signal_emit(m_actionBar,"switch,delete,web,data", "del_but");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
-    Evas_Object *cache_checkbox = elm_check_add(layout);
+    Evas_Object* edje = elm_layout_edje_get(layout);
+    Evas_Object* cache_checkbox = elm_check_add(layout);
+    Evas_Object* cookies_checkbox = elm_check_add(layout);
+    Evas_Object* history_checkbox = elm_check_add(layout);
+
     elm_object_style_set(cache_checkbox, "custom_check");
     elm_layout_content_set(layout, "cache_cb", cache_checkbox);
     elm_check_state_set(cache_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "cache_cb_text", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cache_cb_text_bg", __checkbox_label_click_cb, (void*)id);
 
-    Evas_Object *cookies_checkbox = elm_check_add(layout);
     elm_object_style_set(cookies_checkbox, "custom_check");
     elm_layout_content_set(layout, "cookies_cb", cookies_checkbox);
     elm_check_state_set(cookies_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "cookies_cb_text", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cookies_cb_text_bg", __checkbox_label_click_cb, (void*)id);
 
-    Evas_Object *history_checkbox = elm_check_add(layout);
     elm_object_style_set(history_checkbox, "custom_check");
     elm_layout_content_set(layout, "history_cb", history_checkbox);
     elm_check_state_set(history_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "history_cb_text", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "history_cb_text_bg", __checkbox_label_click_cb, (void*)id);
 
     Evas_Object *del_selected_data_button = elm_button_add(layout);
     elm_object_style_set(del_selected_data_button, "basic_button");
@@ -265,15 +267,15 @@ void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*
     if (data) {
         ItemData *id = static_cast<ItemData*>(data);
 
-        if(strcmp(source, "cache_cb_text") == 0 ){
+        if(strcmp(source, "cache_cb_text_bg") == 0 ){
             Evas_Object *cache_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cache_cb");
             elm_check_state_set(cache_check, !elm_check_state_get(cache_check));
         }
-        else if (strcmp(source, "cookies_cb_text") == 0 ){
+        else if (strcmp(source, "cookies_cb_text_bg") == 0 ){
             Evas_Object *cookies_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cookies_cb");
             elm_check_state_set(cookies_check, !elm_check_state_get(cookies_check));
         }
-        else if (strcmp(source, "history_cb_text") == 0 ){
+        else if (strcmp(source, "history_cb_text_bg") == 0 ){
             Evas_Object *history_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "history_cb");
             elm_check_state_set(history_check, !elm_check_state_get(history_check));
         }

@@ -64,6 +64,7 @@ group {
                 min: 720 1228;
                 max: 720 1228;
                 visible: 1;
+                color: 244 244 244 255;
             }
         }
 
@@ -572,8 +573,8 @@ group {
                     state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    min: 720 1;
-                    max: 720 1;
+                    min: 720 2;
+                    max: 720 2;
                     rel1 { relative: 0.0 1.0; to: "settings_sub_bg";}
                     rel2 { relative: 1.0 1.0; to: "settings_sub_bg";}
                     color: 0 0 0 13;
@@ -587,8 +588,8 @@ group {
                     state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    min: 720 1;
-                    max: 720 1;
+                    min: 720 2;
+                    max: 720 2;
                     align: 0 0;
                     rel1 { relative: 0.0 1.0; to: "del_web_bro_spacer";}
                     rel2 { relative: 1.0 1.0;}
@@ -603,8 +604,8 @@ group {
                     state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    min: 720 1;
-                    max: 720 1;
+                    min: 720 2;
+                    max: 720 2;
                     align: 0 0;
                     rel1 { relative: 0.0 1.0; to: "reset_most_visited_spacer";}
                     rel2 { relative: 1.0 1.0;}
@@ -619,8 +620,8 @@ group {
                     state: "default" 0.0;
                     visible: 1;
                     fixed: 1 1;
-                    min: 720 1;
-                    max: 720 1;
+                    min: 720 2;
+                    max: 720 2;
                     align: 0 0;
                     rel1 { relative: 0.0 1.0; to: "reset_browser_spacer";}
                     rel2 { relative: 1.0 1.0;}
