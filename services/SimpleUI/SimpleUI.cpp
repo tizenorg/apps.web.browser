@@ -150,17 +150,20 @@ int SimpleUI::exec(const std::string& _url)
             //Push first view to stack.
             m_viewManager->pushViewToStack(m_webPageUI.get());
         }
+        m_currentSession = std::move(m_sessionService->getStorage()->createSession());
+
+        if (url.empty())
+        {
+            BROWSER_LOGD("[%s]: restore last session", __func__);
+            switchViewToQuickAccess();
+            restoreLastSession();
+        }
         m_initialised = true;
     }
 
-    m_currentSession = std::move(m_sessionService->getStorage()->createSession());
-
-    if (url.empty())
+    if (!url.empty())
     {
-        BROWSER_LOGD("[%s]: changing to homeUrl", __func__);
-        switchViewToQuickAccess();
-        restoreLastSession();
-    } else {
+        BROWSER_LOGD("[%s]: open new tab", __func__);
         openNewTab(url);
     }
 
