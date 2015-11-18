@@ -53,7 +53,7 @@ public:
     std::string getNote() const { return m_note;};
 
     void setId(int id) { m_saved_id = id; };
-    int getId() const { return m_saved_id; };
+    unsigned int getId() const { return m_saved_id; };
 
     void setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
     std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const ;

@@ -48,11 +48,13 @@ public:
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 #if PROFILE_MOBILE
-    void addBookmarkFolder(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addBookmarkFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
-    void addNewFolderItem();
-    void addAllItem();
-    void addMobileItem();
+    Evas_Object* getDetailsContent();
+    void addNewFolder();
+    void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    void addMobileFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+    void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    void showDetailsUI();
 #endif
     void hide();
     void clearItems();
@@ -61,8 +63,21 @@ public:
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void (int)> customFolderClicked;
+    boost::signals2::signal<void ()> mobileFolderClicked;
+    boost::signals2::signal<void ()> allFolderClicked;
+#endif
 
 private:
+    typedef struct
+    {
+        std::string name;
+        int count;
+        int folder_id;
+        std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> bookmarkManagerUI;
+    } FolderData;
+
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
     void createGenGrid();
     void showTopContent();
@@ -76,11 +91,21 @@ private:
     static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
 #if PROFILE_MOBILE
-    static char* _grid_folder_text_get(void *data, Evas_Object *obj, const char *part);
+    void addDetailsItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
+    void addCustomFolder(FolderData*);
+    void createFolderDetailsGenGrid();
+    void createFolderDetailsTopContent();
+    Evas_Object* createFolderDetailsLayout(Evas_Object* parent);
+    void hideFolderDetailsUI();
+    void setDetailsEmptyGengrid(bool);
+    static char* _grid_title_text_get(void *data, Evas_Object *obj, const char *part);
+    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
     static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkNewFolderItemClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkAllItemClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkMobileFolderItemClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkNewFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkMobileFolderClicked(void * data, Evas_Object *, void *);
+    static void back_details_clicked_cb(void *data, Evas_Object *, void *);
+    static void more_details_clicked_cb(void *data, Evas_Object *, void *);
 #endif
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
