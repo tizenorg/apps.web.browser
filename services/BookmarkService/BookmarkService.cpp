@@ -196,6 +196,36 @@ int BookmarkService::getBookmarkId(const std::string & url)
     return i;
 }
 
+std::string BookmarkService::getBookmarkFolderName(int folder_id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    char* folder_name;
+    switch(folder_id){
+     case ALL_BOOKMARKS_ID: return "All";
+     case ROOT_FOLDER_ID: return "Mobile";
+    }
+
+    if( bp_bookmark_adaptor_get_title(folder_id, &folder_name) < 0){
+        errorPrint("bp_bookmark_adaptor_get_title");
+        return("Mobile");
+    }
+    return folder_name;
+}
+
+int BookmarkService::getBookmarkFolderCount(int folder_id)
+{
+    int *ids = nullptr;
+    int ids_count = 0;
+
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (bp_bookmark_adaptor_get_ids_p(&ids, &ids_count, -1, 0, folder_id,
+            BOOKMARK_TYPE, -1, -1, BP_BOOKMARK_O_SEQUENCE, 0) < 0) {
+        errorPrint("bp_bookmark_adaptor_get_ids_p");
+        return 0;
+    }
+    return ids_count;
+}
+
 std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int folder_id)
 {
     BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);

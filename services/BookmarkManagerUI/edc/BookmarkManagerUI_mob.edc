@@ -13,7 +13,7 @@ collections {
         min: LAYOUT_WIDTH LAYOUT_HEIGHT;
         max: LAYOUT_WIDTH LAYOUT_HEIGHT;
         images {
-            image: "btn_bar_stop_nor.png" COMP;
+            image: "navi_ic_stop.png" COMP;
         }
         data.item: "texts" "webpage_title";
         data.item: "contents" "favicon close_click";
@@ -93,9 +93,9 @@ collections {
                   visible: 1;
                   fixed: 1 1;
                   align: 0 0.5;
-                  min: 82 102;
-                  max: 82 102;
-                  rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 32 0;}
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 16 0;}
                   rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
                   color_class: transparent;
               }
@@ -120,11 +120,11 @@ collections {
                   visible: 1;
                   fixed: 1 1;
                   align: 0 0;
-                  min: 82 102;
-                  max: 82 102;
+                  min: 64 64;
+                  max: 64 64;
                   rel1 { relative: 0.0 0.0; to: "close_bg";}
                   rel2 { relative: 1.0 1.0; to: "close_bg";}
-                  image.normal: "btn_bar_stop_nor.png";
+                  image.normal: "navi_ic_stop.png";
               }
               description { state: "highlight" 0.0;
                   inherit: "default" 0.0;
@@ -144,8 +144,8 @@ collections {
                   visible: 1;
                   align: 0 0;
                   fixed: 1 1;
-                  min: 82 102;
-                  max: 82 102;
+                  min: 64 64;
+                  max: 64 64;
                   rel1 { relative: 0.0 0.0; to: "close_bg";}
                   rel2 { relative: 1.0 1.0; to: "close_bg";}
                   color_class: transparent;
@@ -161,8 +161,8 @@ collections {
                   visible: 1;
                   align: 0 0;
                   fixed: 1 1;
-                  min: 82 102;
-                  max: 82 102;
+                  min: 64 64;
+                  max: 64 64;
                   rel1 { relative: 0.0 0.0; to: "close_over";}
                   rel2 { relative: 1.0 1.0; to: "close_over";}
                   color_class: transparent;
@@ -207,6 +207,130 @@ collections {
       }
     }
 
+    group{
+        name: "topDetailContent";
+        min: LAYOUT_WIDTH LAYOUT_HEIGHT;
+        max: LAYOUT_WIDTH LAYOUT_HEIGHT;
+        images {
+            image: "navi_ic_back_nor.png" COMP;
+            image: "navi_ic_more_nor.png" COMP;
+        }
+        data.item: "texts" "title_text";
+        parts {
+            part {
+                name: "bg_rect";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    color: 231 231 231 255;
+                    align: 0 0;
+                    min: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
+                    max: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
+                    rel1 { relative: 0.0 0.0; offset: 0 0; }
+                }
+            }
+            part {
+                name: "action_bar_bg";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    min: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
+                    max: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0;to: "bg_rect"; offset: 0 0;}
+                    rel2 { relative: 1.0 1.0;to: "bg_rect";}
+                    color : 255 255 255 255;
+                }
+            }
+            part {
+                name: "title_text";
+                scale: 1;
+                type: TEXT;
+                description { state: "default" 0.0;
+                  visible: 1;
+                  fixed: 1 1;
+                  rel1 { relative: 0.0 0.0;to: "action_bar_bg";}
+                  rel2 { relative: 1.0 1.0;to: "action_bar_bg";}
+                  color: 51 51 51 255;
+                  text {
+                      text: "FolderName (10)";
+                      font: "Sans";
+                      size: 42;
+                      align: 0.5 0.5;
+                     }
+                  }
+            }
+            part {
+              name: "back_icon";
+              type: IMAGE;
+              scale: 1;
+              description { state: "default" 0.0;
+                  visible: 1;
+                  fixed: 1 1;
+                  align: 0 0.5;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "action_bar_bg"; offset: 32 0;}
+                  rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
+                  image.normal: "navi_ic_back_nor.png";
+              }
+            }
+            part {
+              name: "back_click";
+              scale:1;
+              mouse_events: 1;
+              type: SWALLOW;
+              description {
+                  state: "default" 0.0;
+                  visible: 1;
+                  align: 0 0;
+                  fixed: 1 1;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "back_icon";}
+                  rel2 { relative: 1.0 1.0; to: "back_icon";}
+                  color_class: transparent;
+              }
+            }
+            part {
+              name: "more_icon";
+              type: IMAGE;
+              scale: 1;
+              description { state: "default" 0.0;
+                  visible: 1;
+                  fixed: 1 1;
+                  align: 0 0.5;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 1.0 0.0; to: "action_bar_bg"; offset: -160 0;}
+                  rel2 { relative: 1.0 1.0; to: "action_bar_bg";}
+                  image.normal: "navi_ic_more_nor.png";
+              }
+            }
+            part {
+              name: "more_click";
+              scale:1;
+              mouse_events: 1;
+              type: SWALLOW;
+              description {
+                  state: "default" 0.0;
+                  visible: 1;
+                  align: 0 0;
+                  fixed: 1 1;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "more_icon";}
+                  rel2 { relative: 1.0 1.0; to: "more_icon";}
+                  color_class: transparent;
+              }
+            }            
+        }
+    }
+    
     group{
         name: "elm/button/base/hidden_button";
         parts{

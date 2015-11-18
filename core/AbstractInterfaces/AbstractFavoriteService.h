@@ -80,6 +80,20 @@ public:
     virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1)= 0;
 
     /**
+     * @brief Get folder name of the folder
+     *
+     * @return folder name
+     */
+    virtual std::string getBookmarkFolderName(int folder_id= -1) = 0;
+
+    /**
+     * @brief Get all bookmarks count in the folder
+     *
+     * @return number of bookmark count in the folder
+     */
+    virtual int getBookmarkFolderCount(int folder_id = -1) = 0;
+
+    /**
      * @brief Delete all bookmarks
      *
      * @return true if success, false on error
