@@ -136,6 +136,7 @@ private:
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
+    const std::string getBookmarkFolderName(int folder_id);
     std::shared_ptr<services::HistoryItemVector> getHistory();
     std::shared_ptr<services::HistoryItemVector> getMostVisitedItems();
 
@@ -252,6 +253,11 @@ private:
 #endif
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
+#if PROFILE_MOBILE
+    void onBookmarkCustomFolderClicked(int);
+    void onBookmarkMobileClicked();
+    void onBookmarkAllFolderClicked();
+#endif
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
 
     void closeTab();
