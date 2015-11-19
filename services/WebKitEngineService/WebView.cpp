@@ -866,6 +866,36 @@ std::shared_ptr<BrowserImage> WebView::getFavicon()
     return std::make_shared<BrowserImage>();
 }
 
+void WebView::clearCache()
+{
+    BROWSER_LOGD("Clearing cache");
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_cache_clear(context);
+        }
+    }
+#endif
+}
+
+void WebView::clearCookies()
+{
+    BROWSER_LOGD("Clearing cookies");
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
+        }
+    }
+#endif
+}
+
 void WebView::clearPrivateData()
 {
     BROWSER_LOGD("Clearing private data");
@@ -875,6 +905,7 @@ void WebView::clearPrivateData()
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
         if (context)
         {
+            ewk_context_cache_clear(context);
             ewk_context_web_storage_delete_all(context);
             ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
         }

@@ -68,6 +68,8 @@ public:
 
     bool isLoading() const;
 
+    void clearCache();
+    void clearCookies();
     void clearPrivateData();
 
     int tabsCount() const;
