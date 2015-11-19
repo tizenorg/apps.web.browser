@@ -53,6 +53,10 @@
 #include "SessionStorage.h"
 #include "SqlStorage.h"
 
+#if PROFILE_MOBILE
+#include "FindOnPageUI.h"
+#endif
+
 // other
 #include "Action.h"
 #include "SimplePopup.h"
@@ -260,6 +264,12 @@ private:
 #endif
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
 
+#if PROFILE_MOBILE
+    void showFindOnPageUI();
+    void findWord(const struct FindData& fdata);
+    void closeFindOnPageUI();
+#endif
+
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
@@ -295,6 +305,9 @@ private:
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
+#if PROFILE_MOBILE
+    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
+#endif
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
     Session::Session m_currentSession;

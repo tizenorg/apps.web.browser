@@ -25,6 +25,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_03.png")
 RESOURCE_IMAGE_LOSSY("moremenu_ic_04.png")
 RESOURCE_IMAGE_LOSSY("moremenu_ic_05.png")
 RESOURCE_IMAGE_LOSSY("moremenu_ic_06.png")
+RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
 
 #define DEVELOPMENT 0
 
