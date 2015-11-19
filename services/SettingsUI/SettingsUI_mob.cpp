@@ -205,6 +205,20 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
     elm_check_state_set(history_checkbox, EINA_TRUE);
     edje_object_signal_callback_add(edje, "mouse,clicked,1", "history_cb_text_bg", __checkbox_label_click_cb, (void*)id);
 
+#if WCS_TESTCODE
+    Evas_Object* password_checkbox = elm_check_add(layout);
+    elm_object_style_set(password_checkbox, "custom_check");
+    elm_layout_content_set(layout, "password_cb", password_checkbox);
+    elm_check_state_set(password_checkbox, EINA_TRUE);
+    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "password_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+
+    Evas_Object* formdata_checkbox = elm_check_add(layout);
+    elm_object_style_set(formdata_checkbox, "custom_check");
+    elm_layout_content_set(layout, "formdata_cb", formdata_checkbox);
+    elm_check_state_set(formdata_checkbox, EINA_TRUE);
+    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "formdata_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+#endif
+
     Evas_Object *del_selected_data_button = elm_button_add(layout);
     elm_object_style_set(del_selected_data_button, "basic_button");
     evas_object_smart_callback_add(del_selected_data_button, "clicked", _del_selected_data_clicked_cb, (void*)id);
@@ -279,6 +293,16 @@ void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*
             Evas_Object *history_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "history_cb");
             elm_check_state_set(history_check, !elm_check_state_get(history_check));
         }
+#if WCS_TESTCODE
+        else if (strcmp(source, "password_cb_text_bg") == 0 ){
+            Evas_Object *password_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "password_cb");
+            elm_check_state_set(password_check, !elm_check_state_get(password_check));
+        }
+        else if (strcmp(source, "formdata_cb_text_bg") == 0 ){
+            Evas_Object *formdata_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "formdata_cb");
+            elm_check_state_set(formdata_check, !elm_check_state_get(formdata_check));
+        }
+#endif
         else{
             BROWSER_LOGD("[%s:%d] - no matched source", __PRETTY_FUNCTION__, __LINE__);
         }
@@ -313,10 +337,18 @@ void SettingsUI::_del_selected_data_clicked_cb(void *data, Evas_Object*, void*)
         Evas_Object *cache_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cache_cb");
         Evas_Object *cookies_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cookies_cb");
         Evas_Object *history_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "history_cb");
+#if WCS_TESTCODE
+        Evas_Object *password_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "password_cb");
+        Evas_Object *formdata_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "formdata_cb");
+#endif
         std::string type;
         elm_check_state_get(cache_check) ? type += "_CACHE" : "";
         elm_check_state_get(cookies_check) ? type += "_COOKIES" : "";
         elm_check_state_get(history_check) ? type += "_HISTORY" : "";
+#if WCS_TESTCODE
+        elm_check_state_get(password_check) ? type += "_PASSWORD" : "";
+        elm_check_state_get(formdata_check) ? type += "_FORMDATA" : "";
+#endif
         id->settingsUI->deleteSelectedDataClicked(type);
     }
 }
