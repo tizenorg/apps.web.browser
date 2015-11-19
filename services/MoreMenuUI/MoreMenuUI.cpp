@@ -637,14 +637,7 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
 #if PROFILE_MOBILE
             case ADD_TO_BOOKMARK:
                 if (!itemData->moreMenuUI->m_blockThumbnails) {
-                    if (itemData->moreMenuUI->m_isBookmark == EINA_FALSE) {
-                        itemData->moreMenuUI->addToBookmarkClicked(0);
-                    }
-                    else {
-                        itemData->moreMenuUI->m_isBookmark = EINA_FALSE;
-                        itemData->moreMenuUI->editBookmarkClicked();
-                        itemData->moreMenuUI->deleteBookmark();
-                    }
+                    itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_FALSE);
                 }
                 break;
             case READER_MODE:
