@@ -97,7 +97,6 @@ public:
 #endif
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;
-    boost::signals2::signal<void ()> editBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
     boost::signals2::signal<void ()> settingsClicked;
@@ -107,6 +106,9 @@ public:
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
     boost::signals2::signal<void ()> deleteBookmark;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void (bool)> bookmarkFlowClicked;
+#endif
 private:
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();
