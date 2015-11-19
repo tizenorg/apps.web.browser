@@ -881,6 +881,36 @@ void WebView::clearPrivateData()
     }
 #endif
 }
+#if WCS_TESTCODE
+void WebView::clearPasswordData()
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_form_password_data_delete_all(context);
+        }
+    }
+#endif
+}
+void WebView::clearFormData()
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_form_candidate_data_delete_all(context);
+        }
+    }
+#endif
+}
+#endif
 
 void WebView::searchOnWebsite(const std::string & searchString, int flags)
 {
