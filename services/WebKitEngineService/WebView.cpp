@@ -903,7 +903,7 @@ void WebView::clearCookies()
 
 void WebView::clearPrivateData()
 {
-    BROWSER_LOGD("Clearing private data");
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if defined(USE_EWEBKIT)
     if (m_ewkView)
     {
@@ -913,6 +913,34 @@ void WebView::clearPrivateData()
             ewk_context_cache_clear(context);
             ewk_context_web_storage_delete_all(context);
             ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
+        }
+    }
+#endif
+}
+void WebView::clearPasswordData()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_form_password_data_delete_all(context);
+        }
+    }
+#endif
+}
+void WebView::clearFormData()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if defined(USE_EWEBKIT)
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_form_candidate_data_delete_all(context);
         }
     }
 #endif
