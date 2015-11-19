@@ -120,9 +120,6 @@ group { name: "page_layout";
     data {
         item: "focus_highlight" "off";
     }
-    images {
-        image: "web_shadow.png" COMP;
-    }
     color_classes{
         color_class{
             name: "focusBgColor";
