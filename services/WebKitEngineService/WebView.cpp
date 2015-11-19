@@ -54,6 +54,10 @@
 //TODO: temporary user agent for mobile display, change to proper one
 #define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 3.0; SAMSUNG SM-Z130H) AppleWebKit/538.1 (KHTML, like Gecko) SamsungBrowser/1.0 Mobile Safari/538.1"
 
+#if PROFILE_MOBILE
+#define FIND_WORD_MAX_COUNT 1000
+#endif
+
 using namespace tizen_browser::tools;
 
 namespace tizen_browser {
@@ -842,6 +846,20 @@ void WebView::scrollView(const int& dx, const int& dy)
 }
 
 #if PROFILE_MOBILE
+void WebView::findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data)
+{
+    evas_object_smart_callback_del(m_ewkView, "text,found", found_cb);
+    evas_object_smart_callback_add(m_ewkView, "text,found", found_cb, data);
+
+    Ewk_Find_Options find_option = (Ewk_Find_Options)(EWK_FIND_OPTIONS_CASE_INSENSITIVE | EWK_FIND_OPTIONS_WRAP_AROUND
+                    | EWK_FIND_OPTIONS_SHOW_FIND_INDICATOR | EWK_FIND_OPTIONS_SHOW_HIGHLIGHT);
+
+    if (!forward)
+        find_option = (Ewk_Find_Options)(find_option | EWK_FIND_OPTIONS_BACKWARDS);
+
+    ewk_view_text_find(m_ewkView, word, find_option, FIND_WORD_MAX_COUNT);
+}
+
 void WebView::setTouchEvents(bool enabled) {
     ewk_view_touch_events_enabled_set(m_ewkView, enabled);
 }
