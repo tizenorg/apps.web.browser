@@ -66,6 +66,7 @@ SimpleUI::SimpleUI()
     , m_popup(nullptr)
     , m_webPageUI()
     , m_moreMenuUI()
+    , m_bookmarkFlowUI()
     , m_bookmarkManagerUI()
     , m_quickAccess()
     , m_historyUI()
@@ -226,6 +227,12 @@ void SimpleUI::loadUIServices()
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
 
+    BROWSER_LOGD("!!!!!KAWA TUTAJ!!!!!");
+    m_bookmarkFlowUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::BookmarkFlowUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkflowui"));
+    BROWSER_LOGD("!!!!!KAWA TUTAJ!!!!!");
     m_bookmarkManagerUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
@@ -303,7 +310,12 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
-    m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
+    m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));   
+#if PROFILE_MOBILE
+    m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
+#endif
+
+    M_ASSERT(m_bookmarkFlowUI.get());
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
@@ -377,6 +389,9 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->init(m_viewManager->getContent());
+
+    M_ASSERT(m_bookmarkFlowUI.get());
+    m_bookmarkFlowUI->init(m_viewManager->getContent());
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager->getContent());
@@ -1066,6 +1081,18 @@ void SimpleUI::switchToDesktopMode()
         m_quickAccess->setDesktopMode(true);
     }
 }
+
+#if PROFILE_MOBILE
+void SimpleUI::showBookmarkFlowUI(bool state)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    m_bookmarkFlowUI->setState(state);
+    m_viewManager->pushViewToStack(m_bookmarkFlowUI.get());
+    m_bookmarkFlowUI->setURL(m_webEngine->getURI());
+    m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
+}
+#endif
 
 void SimpleUI::showBookmarkManagerUI()
 {
