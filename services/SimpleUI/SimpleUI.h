@@ -43,6 +43,7 @@
 #include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
+#include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
@@ -231,6 +232,9 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
+#if PROFILE_MOBILE
+    void showBookmarkFlowUI(bool state);
+#endif
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
     void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
@@ -264,6 +268,7 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+    std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
