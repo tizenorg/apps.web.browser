@@ -103,6 +103,8 @@ public:
 
 
     void clearPrivateData();
+    void clearPasswordData();
+    void clearFormData();
 
     /**
      * @return tab id

@@ -1119,6 +1119,10 @@ void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
 		m_webEngine->clearPrivateData();
 	if (dataText.find("HISTORY") != std::string::npos)
 		m_historyService->clearAllHistory();
+        if (dataText.find("PASSWORD") != std::string::npos)
+                m_webEngine->clearPasswordData();
+        if (dataText.find("FORMDATA") != std::string::npos)
+                m_webEngine->clearFormData();
 }
 
 void SimpleUI::settingsResetMostVisited()
@@ -1162,6 +1166,8 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
         m_webEngine->clearPrivateData();
         m_historyService->clearAllHistory();
         m_favoriteService->deleteAllBookmarks();
+        m_webEngine->clearPasswordData();
+        m_webEngine->clearFormData();
 
         // Close all openend tabs
         std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>> openedTabs = m_webEngine->getTabContents();

@@ -69,6 +69,8 @@ public:
     bool isLoading() const;
 
     void clearPrivateData();
+    void clearPasswordData();
+    void clearFormData();
 
     int tabsCount() const;
     TabId currentTabId() const;
