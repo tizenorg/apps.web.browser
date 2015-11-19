@@ -69,6 +69,11 @@ public:
     bool isLoading() const;
 
     void clearPrivateData();
+    
+#if WCS_TESTCODE
+    void clearPasswordData();
+    void clearFormData();
+#endif
 
     int tabsCount() const;
     TabId currentTabId() const;

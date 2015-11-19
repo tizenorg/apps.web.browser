@@ -521,6 +521,21 @@ void WebKitEngineService::clearPrivateData()
             it->second->clearPrivateData();
         }
 }
+#if WCS_TESTCODE	
+void WebKitEngineService::clearPasswordData()
+{
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+            it->second->clearPasswordData();
+        }
+}
+
+void WebKitEngineService::clearFormData()
+{
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+            it->second->clearFormData();
+        }
+}
+#endif
 
 void WebKitEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
