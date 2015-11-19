@@ -56,6 +56,7 @@ MoreMenuUI::MoreMenuUI()
     , m_desktopMode(true)
     , m_isBookmark(EINA_FALSE)
 #if PROFILE_MOBILE
+    , m_shouldShowFindOnPage(false)
     , m_blockThumbnails(false)
 #endif
 {
@@ -364,6 +365,8 @@ void MoreMenuUI::addItems()
 #if PROFILE_MOBILE
      for (int i = 0; i <= SETTINGS; i++) {
          ItemType type = static_cast<ItemType>(i);
+         if (type == ItemType::FIND_ON_PAGE && !m_shouldShowFindOnPage)
+             continue;
          addItem(type);
      }
 #else
@@ -434,6 +437,9 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             case SHARE:
                 item_name = "Share<br>";
                 break;
+            case FIND_ON_PAGE:
+                item_name = "Find on page";
+                break;
             case SETTINGS:
                 item_name = "Settings<br>";
                 break;
@@ -503,6 +509,9 @@ static const char* getImageFileNameForType(ItemType type, bool focused, Eina_Boo
             break;
         case SETTINGS:
             file_name = "moremenu_ic_06.png";
+            break;
+        case FIND_ON_PAGE:
+            file_name = "moremenu_ic_07.png";
             break;
 #else
     #ifdef READER_MODE_ENABLED
@@ -635,6 +644,10 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
                 itemData->moreMenuUI->bookmarkManagerClicked();
                 break;
 #if PROFILE_MOBILE
+            case FIND_ON_PAGE:
+                itemData->moreMenuUI->closeMoreMenuClicked();
+                itemData->moreMenuUI->findOnPageClicked();
+                break;
             case ADD_TO_BOOKMARK:
                 if (!itemData->moreMenuUI->m_blockThumbnails) {
                     itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_FALSE);
@@ -693,6 +706,11 @@ void MoreMenuUI::setFocus(Eina_Bool focusable)
 }
 
 #if PROFILE_MOBILE
+void MoreMenuUI::shouldShowFindOnPage(bool show)
+{
+    m_shouldShowFindOnPage = show;
+}
+
 void MoreMenuUI::blockThumbnails(bool blockThumbnails)
 {
     m_blockThumbnails = blockThumbnails;
