@@ -103,6 +103,10 @@ public:
 
 
     void clearPrivateData();
+#if WCS_TESTCODE
+    void clearPasswordData();
+    void clearFormData();
+#endif
 
     /**
      * @return tab id
