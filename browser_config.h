@@ -23,5 +23,4 @@
 
 // Remove this define when merging from new ui implementation is finished
 #define MERGE_ME 0
-
 #endif

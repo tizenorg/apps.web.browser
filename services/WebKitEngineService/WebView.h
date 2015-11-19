@@ -104,6 +104,8 @@ public:
     void clearCache();
     void clearCookies();
     void clearPrivateData();
+    void clearPasswordData();
+    void clearFormData();
 
     /**
      * @return tab id

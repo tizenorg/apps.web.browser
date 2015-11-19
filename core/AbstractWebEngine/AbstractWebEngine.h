@@ -274,6 +274,15 @@ public:
      * @brief Clear private data of WebView
      */
     virtual void clearPrivateData() = 0;
+    /**
+     * @brief Clear saved Password of WebView
+     */
+    virtual void clearPasswordData() = 0;
+
+    /**
+    * @brief Clear Form Data of WebView
+    */
+    virtual void clearFormData() = 0;
 
     virtual void disconnectCurrentWebViewSignals() = 0;
 
