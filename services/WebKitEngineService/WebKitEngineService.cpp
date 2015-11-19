@@ -515,6 +515,20 @@ void WebKitEngineService::setZoomFactor(int zoomFactor)
 
 }
 
+void WebKitEngineService::clearCache()
+{
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+            it->second->clearCache();
+        }
+}
+
+void WebKitEngineService::clearCookies()
+{
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+            it->second->clearCookies();
+        }
+}
+
 void WebKitEngineService::clearPrivateData()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){

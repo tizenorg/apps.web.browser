@@ -101,7 +101,8 @@ public:
      */
     void setZoomFactor(double zoomFactor);
 
-
+    void clearCache();
+    void clearCookies();
     void clearPrivateData();
 
     /**
