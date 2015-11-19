@@ -71,6 +71,8 @@ public:
     void clearCache();
     void clearCookies();
     void clearPrivateData();
+    void clearPasswordData();
+    void clearFormData();
 
     int tabsCount() const;
     TabId currentTabId() const;
