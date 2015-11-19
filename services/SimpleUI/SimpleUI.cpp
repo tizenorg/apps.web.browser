@@ -1114,9 +1114,9 @@ void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
 {
 	BROWSER_LOGD("[%s]: TYPE : %s", __func__, dataText.c_str());
 	if (dataText.find("CACHE") != std::string::npos)
-		m_webEngine->clearPrivateData();
+        m_webEngine->clearCache();
 	if (dataText.find("COOKIES") != std::string::npos)
-		m_webEngine->clearPrivateData();
+        m_webEngine->clearCookies();
 	if (dataText.find("HISTORY") != std::string::npos)
 		m_historyService->clearAllHistory();
 }

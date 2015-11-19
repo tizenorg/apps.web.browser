@@ -260,6 +260,17 @@ public:
     virtual void setZoomFactor(int zoomFactor) = 0;
 
     /**
+     * @brief Clear cache of WebView
+     */
+
+    virtual void clearCache() = 0;
+
+    /**
+     * @brief Clear cookies of WebView
+     */
+    virtual void clearCookies() = 0;
+
+    /**
      * @brief Clear private data of WebView
      */
     virtual void clearPrivateData() = 0;
