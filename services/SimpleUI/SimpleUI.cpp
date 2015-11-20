@@ -289,18 +289,17 @@ void SimpleUI::connectUISignals()
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", boost::none, false, true));
-    m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
-
-    M_ASSERT(m_historyUI.get());
-    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
-    m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-
 #if PROFILE_MOBILE
     bool desktop_ua = false;
 #else
     bool desktop_ua = true;
 #endif
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", boost::none, desktop_ua, true));
+    m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
+
+    M_ASSERT(m_historyUI.get());
+    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
+    m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
     m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
