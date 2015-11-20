@@ -418,7 +418,7 @@ char* QuickAccess::_grid_bookmark_text_get(void *data, Evas_Object *, const char
 {
         BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
         if (!strcmp(part, "page_title")) {
-                return strdup(itemData->item->getTittle().c_str());
+                return strdup(itemData->item->getTitle().c_str());
         }
         if (!strcmp(part, "page_url")) {
                 return strdup(itemData->item->getAddress().c_str());
