@@ -41,6 +41,11 @@
 namespace tizen_browser{
 namespace base_ui{
 
+struct BookmarkUpdate {
+    int folder_id;
+    std::string title;
+};
+
 class BROWSER_EXPORT BookmarkFlowUI
         : public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
@@ -60,6 +65,10 @@ public:
     virtual std::string getName();
     void hide();
 
+    boost::signals2::signal<void ()> closeBookmarkFlowClicked;
+    boost::signals2::signal<void (BookmarkUpdate)> saveBookmark;
+    boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
+    boost::signals2::signal<void ()> removeBookmark;
 private:
     Evas_Object* createBookmarkFlowLayout(Evas_Object* parent);
     void createTitleArea();
@@ -70,6 +79,7 @@ private:
     static void _cancel_clicked(void * data, Evas_Object *, void *);
     static void _entry_focused(void * data, Evas_Object *, void *);
     static void _entry_unfocused(void * data, Evas_Object *, void *);
+    static void _entry_changed(void * data, Evas_Object *, void *);
     static void _inputCancel_clicked(void * data, Evas_Object *, void *);
     static void _folder_clicked(void * data, Evas_Object *, void *);
     static void _remove_clicked(void * data, Evas_Object *, void *);

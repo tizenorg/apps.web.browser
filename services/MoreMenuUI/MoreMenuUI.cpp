@@ -637,7 +637,8 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
 #if PROFILE_MOBILE
             case ADD_TO_BOOKMARK:
                 if (!itemData->moreMenuUI->m_blockThumbnails) {
-                    itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_FALSE);
+                    elm_object_focus_allow_set(itemData->moreMenuUI->m_gengrid, EINA_FALSE);
+                    itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_TRUE);
                 }
                 break;
             case READER_MODE:
@@ -696,6 +697,11 @@ void MoreMenuUI::setFocus(Eina_Bool focusable)
 void MoreMenuUI::blockThumbnails(bool blockThumbnails)
 {
     m_blockThumbnails = blockThumbnails;
+}
+
+void MoreMenuUI::setIsBookmark(bool isBookmark)
+{
+    m_isBookmark = isBookmark ? EINA_TRUE : EINA_FALSE;
 }
 #endif
 

@@ -303,7 +303,7 @@ void BookmarkManagerUI::addBookmarkFolders(std::vector<std::shared_ptr<tizen_bro
     addMobileItem();
 
     for (auto it = items.begin(); it != items.end(); ++it) {
-        BROWSER_LOGD("%d %s %s",(*it)->is_folder(),(*it)->getTittle().c_str(), (*it)->getAddress().c_str());
+        BROWSER_LOGD("%d %s %s",(*it)->is_folder(),(*it)->getTitle().c_str(), (*it)->getAddress().c_str());
         if ((*it)->is_folder()) {
             addBookmarkFolder(*it);
         }
@@ -322,7 +322,7 @@ char* BookmarkManagerUI::_grid_folder_text_get(void *data, Evas_Object *, const 
         static const int part_name1_len = strlen(part_name1);
         if (!strncmp(part_name1, part, part_name1_len))
         {
-            return strdup(itemData->item->getTittle().c_str());
+            return strdup(itemData->item->getTitle().c_str());
         }
     }
     return strdup("");
@@ -353,7 +353,7 @@ char* BookmarkManagerUI::_grid_bookmark_text_get(void *data, Evas_Object *, cons
         static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name1, part, part_name1_len))
         {
-            return strdup(itemData->item->getTittle().c_str());
+            return strdup(itemData->item->getTitle().c_str());
         }
         else if (!strncmp(part_name2, part, part_name2_len))
         {
