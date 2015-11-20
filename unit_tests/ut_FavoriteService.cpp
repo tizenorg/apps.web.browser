@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> bookmarks_list = fs->getBookmarks();
     while(!bookmarks_list.empty()) {
 	bitem = bookmarks_list.back();
-        BROWSER_LOGI(TAG "Element from cached bookmark list: id: %d, tittle: %s, URL: %s", bitem->getId(),
-			    bitem->getTittle().c_str(), bitem->getAddress().c_str());
+        BROWSER_LOGI(TAG "Element from cached bookmark list: id: %d, title: %s, URL: %s", bitem->getId(),
+			    bitem->getTitle().c_str(), bitem->getAddress().c_str());
 	bookmarks_list.pop_back();
     }
 
@@ -82,10 +82,10 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
     BROWSER_LOGI(TAG "Add empty bookmark test summary - number of bookmarks before: %d, after: %d", bookcount ,bookcount2);
     fs->getBookmarks();
 
-//  Add bookmark with the same tittle
-    BOOST_CHECK(!item_is_empty(fs->addToBookmarks("www.thisis.url1","Tittle")));
-    BOOST_CHECK(!item_is_empty(fs->addToBookmarks("www.thisis.url4","Tittle")));
-    std::shared_ptr<tizen_browser::services::BookmarkItem> item_to_delete = fs->addToBookmarks("www.thisis.url5","Tittle");
+//  Add bookmark with the same title
+    BOOST_CHECK(!item_is_empty(fs->addToBookmarks("www.thisis.url1","Title")));
+    BOOST_CHECK(!item_is_empty(fs->addToBookmarks("www.thisis.url4","Title")));
+    std::shared_ptr<tizen_browser::services::BookmarkItem> item_to_delete = fs->addToBookmarks("www.thisis.url5","Title");
     BOOST_CHECK(!item_is_empty(item_to_delete));
     fs->getBookmarks();
     BROWSER_LOGI(TAG "Before delete last bookmark (%s)", item_to_delete->getAddress().c_str());
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(bookmark_add_remove)
 
 //  Add duplicated url
     BROWSER_LOGI(TAG "Add duplicated url");
-    BOOST_CHECK(item_is_empty(fs->addToBookmarks("www.thisis.url4","Not duplicateTittle")));
+    BOOST_CHECK(item_is_empty(fs->addToBookmarks("www.thisis.url4","Not duplicateTitle")));
     fs->getBookmarks();
 
 //  check existing url
