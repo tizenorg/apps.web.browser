@@ -72,10 +72,15 @@ private:
     void showMostVisited();
     void showBookmarks();
 
+#if PROFILE_MOBILE
+    void addBookmarkManagerTile();
+#else
+    Evas_Object* createBottomButton(Evas_Object *parent);
+#endif
+
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);
     Evas_Object* createBookmarksView(Evas_Object *parent);
-    Evas_Object* createBottomButton(Evas_Object *parent);
     Evas_Object* createTopButtons(Evas_Object *parent);
 
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
@@ -123,6 +128,7 @@ private:
 #if PROFILE_MOBILE
     Evas_Object* m_verticalScroller;
     Evas_Object* m_centerLayout;
+    Elm_Gengrid_Item_Class * m_bookmarkManagerTileclass;
     static const int FIXED_SIZE_TILES_NUMBER = 3;
 #endif
 };

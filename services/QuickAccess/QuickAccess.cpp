@@ -78,6 +78,7 @@ QuickAccess::QuickAccess()
 #if PROFILE_MOBILE
     , m_verticalScroller(nullptr)
     , m_centerLayout(nullptr)
+    , m_bookmarkManagerTileclass(nullptr)
 #endif
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -121,6 +122,16 @@ void QuickAccess::createItemClasses()
         m_bookmark_item_class->func.state_get = nullptr;
         m_bookmark_item_class->func.del = nullptr;
     }
+#if PROFILE_MOBILE
+    if (!m_bookmarkManagerTileclass) {
+        m_bookmarkManagerTileclass = elm_gengrid_item_class_new();
+        m_bookmarkManagerTileclass->item_style = "bookmark_manager";
+        m_bookmarkManagerTileclass->func.text_get = nullptr;
+        m_bookmarkManagerTileclass->func.content_get = nullptr;
+        m_bookmarkManagerTileclass->func.state_get = nullptr;
+        m_bookmarkManagerTileclass->func.del = nullptr;
+    }
+#endif
 }
 
 
@@ -211,31 +222,35 @@ Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", m_bookmarkGengrid);
     evas_object_show(m_bookmarkGengrid);
 
+#if !PROFILE_MOBILE
     Evas_Object* bottomButton = createBottomButton(bookmarkViewLayout);
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.layoutBottom", bottomButton);
     evas_object_show(bottomButton);
+#endif
 
     return bookmarkViewLayout;
 }
 
 Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Object *bookmarkGengrid = elm_gengrid_add(parent);
 
-    elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
     elm_gengrid_select_mode_set(bookmarkGengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(bookmarkGengrid, EINA_FALSE);
-    elm_gengrid_horizontal_set(bookmarkGengrid, EINA_FALSE);
-
-#if !PROFILE_MOBILE
     elm_scroller_policy_set(bookmarkGengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
     evas_object_size_hint_weight_set(bookmarkGengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkGengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+#if !PROFILE_MOBILE
+    elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
     elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
 #else
-    elm_scroller_bounce_set(bookmarkGengrid, EINA_FALSE, EINA_TRUE);
-    elm_object_scroll_lock_y_set(bookmarkGengrid, EINA_FALSE);
+    elm_scroller_page_size_set(bookmarkGengrid, 0, 1100);
+    elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.0);
+    elm_gengrid_item_size_set(bookmarkGengrid, 337 * efl_scale, 379 * efl_scale);
+    elm_scroller_bounce_set(bookmarkGengrid, EINA_FALSE, EINA_FALSE);
 #endif
 
     return bookmarkGengrid;
@@ -268,6 +283,7 @@ Evas_Object* QuickAccess::createTopButtons (Evas_Object *parent)
     return layoutTop;
 }
 
+#if !PROFILE_MOBILE
 Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -288,7 +304,7 @@ Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 
     return layoutBottom;
 }
-
+#endif
 
 void QuickAccess::_mostVisited_clicked(void * data, Evas_Object *, void *)
 {
@@ -408,11 +424,20 @@ void QuickAccess::addBookmarkItem(std::shared_ptr<tizen_browser::services::Bookm
 void QuickAccess::setBookmarksItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
     clearBookmarkGengrid();
+#if PROFILE_MOBILE
+    addBookmarkManagerTile();
+#endif
     for (auto it = items.begin(); it != items.end(); ++it) {
          addBookmarkItem(*it);
     }
 }
 
+#if PROFILE_MOBILE
+void QuickAccess::addBookmarkManagerTile()
+{
+    elm_gengrid_item_append(m_bookmarkGengrid, m_bookmarkManagerTileclass, this, _bookmark_manager_clicked, this);
+}
+#endif
 
 char* QuickAccess::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
