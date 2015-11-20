@@ -77,7 +77,7 @@ void DetailPopup::createLayout()
 
     edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click, this);
     elm_layout_text_set(m_layout, "history_title", "History");
-    elm_layout_text_set(m_layout, "url", tools::clearURL(m_item->getUrl()));
+    elm_layout_text_set(m_layout, "url", tools::clearURL(m_item->getUrl()).c_str());
 
     m_historyList = elm_genlist_add(m_layout);
     evas_object_size_hint_weight_set(m_historyList, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
