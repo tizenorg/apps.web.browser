@@ -82,11 +82,31 @@ void BookmarkFlowUI::setState(bool state)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_state = state;
+    if (m_state) {
+        elm_object_signal_emit(m_contentsArea, "show_remove", "ui");
+        elm_object_signal_emit(m_titleArea, "title_text_edit", "ui");
+        evas_object_show(m_removeButton);
+    }
+    else {
+        elm_object_signal_emit(m_contentsArea, "hide_remove", "ui");
+        elm_object_signal_emit(m_titleArea, "title_text_add", "ui");
+        evas_object_hide(m_removeButton);
+    }
 }
 
 void BookmarkFlowUI::setTitle(const std::string& title)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, title.c_str());
+    elm_object_part_text_set(m_entry, "elm.text", title.c_str());
+
+    if (title.empty()) {
+        elm_object_disabled_set(m_saveButton, EINA_TRUE);
+        elm_object_signal_emit(m_titleArea, "save_dissabled", "ui");
+    }
+    else {
+        elm_object_disabled_set(m_saveButton, EINA_FALSE);
+        elm_object_signal_emit(m_titleArea, "save_enabled", "ui");
+    }
 }
 
 void BookmarkFlowUI::setURL(const std::string& url)
@@ -103,7 +123,6 @@ Evas_Object* BookmarkFlowUI::createBookmarkFlowLayout(Evas_Object* parent)
     evas_object_size_hint_align_set(m_bf_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(m_bf_layout);
 
-    //createGenGrid();
     createTitleArea();
     createContentsArea();
 
@@ -136,20 +155,32 @@ void BookmarkFlowUI::createTitleArea()
     evas_object_show(m_cancelButton);
 
     elm_object_part_content_set(m_titleArea, "cancel_click", m_cancelButton);
-
-    //elm_object_signal_emit(m_titleArea, "change_title_text", "ui");
 }
 
 void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
     M_UNUSED(data);
+    if (data != nullptr) {
+        BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        BookmarkUpdate update;
+        update.folder_id = 0;
+        update.title = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
+        if (!bookmarkFlowUI->m_state)
+            bookmarkFlowUI->saveBookmark(update);
+        else
+            bookmarkFlowUI->editBookmark(update);
+        bookmarkFlowUI->closeBookmarkFlowClicked();
+    }
 }
 
 void BookmarkFlowUI::_cancel_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    M_UNUSED(data);
+    if (data != nullptr) {
+        BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        bookmarkFlowUI->closeBookmarkFlowClicked();
+    }
 }
 
 void BookmarkFlowUI::createContentsArea()
@@ -175,6 +206,7 @@ void BookmarkFlowUI::createContentsArea()
 
     evas_object_smart_callback_add(m_entry, "focused", _entry_focused, this);
     evas_object_smart_callback_add(m_entry, "unfocused", _entry_unfocused, this);
+    evas_object_smart_callback_add(m_entry, "changed,user",_entry_changed, this);
 
     m_inputCancelButton = elm_button_add(m_contentsArea);
     elm_object_style_set(m_inputCancelButton, "invisible_button");
@@ -193,7 +225,7 @@ void BookmarkFlowUI::createContentsArea()
     m_removeButton = elm_button_add(m_contentsArea);
     elm_object_style_set(m_removeButton, "invisible_button");
     evas_object_smart_callback_add(m_removeButton, "clicked", _remove_clicked, this);
-    evas_object_show(m_inputCancelButton);
+    evas_object_show(m_removeButton);
 
     elm_object_part_content_set(m_contentsArea, "remove_click", m_removeButton);
 }
@@ -201,25 +233,50 @@ void BookmarkFlowUI::createContentsArea()
 void BookmarkFlowUI::_entry_focused(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-    elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_TRUE);
-    elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_focused", "ui");
-    elm_object_signal_emit(bookmarkFlowUI->m_entry, "focused", "ui");
+    if (data != nullptr) {
+        BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_TRUE);
+        elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_focused", "ui");
+        elm_object_signal_emit(bookmarkFlowUI->m_entry, "focused", "ui");
+    }
 }
 
 void BookmarkFlowUI::_entry_unfocused(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-    elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_FALSE);
-    elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_unfocused", "ui");
-    elm_object_signal_emit(bookmarkFlowUI->m_entry, "unfocused", "ui");
+    if (data != nullptr) {
+        BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_FALSE);
+        elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_unfocused", "ui");
+        elm_object_signal_emit(bookmarkFlowUI->m_entry, "unfocused", "ui");
+    }
+}
+
+void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    if (data != nullptr) {
+        BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        std::string text = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
+        if (text.empty()) {
+            elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_TRUE);
+            elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_dissabled", "ui");
+        } else {
+            elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_FALSE);
+            elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_enabled", "ui");
+        }
+    }
 }
 
 void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    M_UNUSED(data);
+    if (data != nullptr) {
+        BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        elm_object_part_text_set(bookmarkFlowUI->m_entry, "elm.text", "");
+        elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_TRUE);
+        elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_dissabled", "ui");
+    }
 }
 
 void BookmarkFlowUI::_folder_clicked(void * data, Evas_Object *, void *)
@@ -231,7 +288,11 @@ void BookmarkFlowUI::_folder_clicked(void * data, Evas_Object *, void *)
 void BookmarkFlowUI::_remove_clicked(void *data, Evas_Object *, void *)
 {
     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
-    M_UNUSED(data);
+    if (data != nullptr) {
+        BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        bookmarkFlowUI->removeBookmark();
+        bookmarkFlowUI->closeBookmarkFlowClicked();
+    }
 }
 
 }

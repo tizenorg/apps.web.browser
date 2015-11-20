@@ -292,7 +292,7 @@ void BookmarksSQLite::addBookmarkItem(SharedBookmarkItem bookmark)
             if(checkIfExistQuery.hasNext()){//item exists updating
                 storage::SQLQuery updateQuery(db->prepare(updateQueryString.str()));
                 updateQuery.bindText(1, bookmark->getAddress());
-                updateQuery.bindText(2, bookmark->getTittle());
+                updateQuery.bindText(2, bookmark->getTitle());
 
                 std::shared_ptr<tizen_browser::tools::BrowserImage> thumb = bookmark->getThumbnail();
                 if(!bookmark->getThumbnail()){
@@ -315,7 +315,7 @@ void BookmarksSQLite::addBookmarkItem(SharedBookmarkItem bookmark)
             //inserting new bookmark
             storage::SQLQuery insertQuery(db->prepare(insertQueryString.str()));
             insertQuery.bindText(1, bookmark->getAddress());
-            insertQuery.bindText(2, bookmark->getTittle());
+            insertQuery.bindText(2, bookmark->getTitle());
 
             std::shared_ptr<tizen_browser::tools::BrowserImage> thumb = bookmark->getThumbnail();
             if(!bookmark->getThumbnail()){

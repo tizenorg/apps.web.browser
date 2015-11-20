@@ -46,8 +46,8 @@ public:
     void setAddress(const std::string & url) { m_url = url; };
     std::string getAddress() const { return m_url; };
 
-    void setTittle(const std::string & tittle) { m_title = tittle; };
-    std::string getTittle() const { return m_title; };
+    void setTitle(const std::string & title) { m_title = title; };
+    std::string getTitle() const { return m_title; };
 
     void setNote(const std::string& note){m_note = note;};
     std::string getNote() const { return m_note;};
