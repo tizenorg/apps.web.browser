@@ -30,15 +30,15 @@ namespace tools
 
     // declaration using 'unused' attribute because in some modules not all functions are used
     static std::string fromChar(const char* c) __attribute__ ((unused));
-    static char * clearURL(const std::string & url) __attribute__ ((unused));
+    static std::string clearURL(const std::string & url) __attribute__ ((unused));
     static std::string extractDomain(const std::string & url) __attribute__ ((unused));
 
     static std::string fromChar(const char* c) { return c ? std::string(c) : std::string(); }
 
-    static char * clearURL(const std::string & url) {
+    static std::string clearURL(const std::string & url) {
         size_t beg = url.find(PROTCOL_BEGIN);
         beg += strlen(PROTCOL_BEGIN);
-        return strdup(url.substr(beg, url.size() - beg - SUFIX_CHAR_DEL).c_str());
+        return url.substr(beg, url.size() - beg - SUFIX_CHAR_DEL);
     }
 
     static std::string extractDomain(const std::string & url) {
