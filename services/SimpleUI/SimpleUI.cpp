@@ -292,6 +292,7 @@ void SimpleUI::connectUISignals()
     m_tabUI->newTabClicked.connect(boost::bind(&SimpleUI::newTabClicked, this));
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
+    m_tabUI->isIncognito.connect(boost::bind(&SimpleUI::isIncognito, this, _1));
 #if PROFILE_MOBILE
     bool desktop_ua = false;
 #else
@@ -896,6 +897,12 @@ void SimpleUI::tabClicked(const tizen_browser::basic_webengine::TabId& tabId)
     m_viewManager->popStackTo(m_webPageUI.get());
     m_webPageUI->toIncognito(m_webEngine->isPrivateMode(tabId));
     switchToTab(tabId);
+}
+
+bool SimpleUI::isIncognito(const tizen_browser::basic_webengine::TabId& tabId)
+{
+    BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__, __func__);
+    return m_webEngine->isPrivateMode(tabId);
 }
 
 void SimpleUI::closeTabsClicked(const tizen_browser::basic_webengine::TabId& tabId)

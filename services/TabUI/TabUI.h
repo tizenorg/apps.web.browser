@@ -57,11 +57,13 @@ public:
     boost::signals2::signal<void (const std::string & )> onOtherDevicesClicked;
     boost::signals2::signal<void ()> closeTabUIClicked;
     boost::signals2::signal<int () > tabsCount;
+    boost::signals2::signal<bool (const tizen_browser::basic_webengine::TabId& )> isIncognito;
 
 private:
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
+    static void _del_item(void* /*data*/, Evas_Object* obj);
     static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
     static void _item_deleted(void *data, Evas_Object *obj);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
@@ -73,6 +75,7 @@ private:
     static void _newtab_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _newincognitotab_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
+    static void _close_tab_clicked(void *data, Evas_Object*, void*);
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _focus_in(void * data, Evas*, Evas_Object * obj, void * event_info);
 
@@ -80,6 +83,7 @@ private:
     Evas_Object* createActionBar(Evas_Object* parent);
     Evas_Object* createGengrid(Evas_Object* parent);
     Evas_Object* createTopButtons(Evas_Object* parent);
+    Evas_Object* createBottomBar(Evas_Object* parent);
     Evas_Object* createNoHistoryLabel();
     void createTabItemClass();
     void closeAllTabs();
