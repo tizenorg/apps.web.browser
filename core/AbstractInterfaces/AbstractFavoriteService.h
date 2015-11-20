@@ -44,7 +44,7 @@ public:
      * @brief Add page to bookmarks
      *
      * @param address Webpage url.
-     * @param tittle Title of bookmark.
+     * @param title Title of bookmark.
      * @param note Bookmark note, default is empty .
      * @param dirId Directory numeric ID, default is 0.
      * @param thumbnail Page thumbnail, default is empty image.
@@ -52,8 +52,8 @@ public:
      *
      * @return BookmarkItem class
      */
-    virtual std::shared_ptr<tizen_browser::services::BookmarkItem> addToBookmarks(const std::string & address,
-                                                 const std::string & tittle,
+    virtual std::shared_ptr<tizen_browser::services::BookmarkItem> addBookmark(const std::string & address,
+                                                 const std::string & title,
                                                  const std::string & note = std::string(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
@@ -77,7 +77,7 @@ public:
      *
      * @return list of bookmark items in folder with id, folder_id
      */
-    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1)= 0;
+    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1) = 0;
 
     /**
      * @brief Delete all bookmarks
@@ -87,6 +87,13 @@ public:
     virtual bool deleteAllBookmarks() = 0;
 
     /**
+      * @brief Edit bookmark title and folder by given url
+      *
+      * @return true if success, false on error
+      */
+    virtual bool editBookmark(const std::string & url, const std::string & title, unsigned int folder_id = 0) = 0;
+
+    /**
      * @brief Delete bookmark by given url
      *
      * @param url of bookmark to delete
@@ -94,6 +101,13 @@ public:
      */
     virtual bool deleteBookmark(const std::string & url) = 0;
 
+    /**
+     * @brief Gets bookmark item
+     *
+     * @param url of bookmark, pointer to item
+     * @return true if success, false on error of not found bookmark
+     */
+    virtual bool getItem(const std::string & url, tizen_browser::services::BookmarkItem *item) = 0;
 
     virtual void synchronizeBookmarks() = 0;
 

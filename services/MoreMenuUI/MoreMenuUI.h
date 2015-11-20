@@ -94,6 +94,7 @@ public:
     void setFocus(Eina_Bool focusable);
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
+    void setIsBookmark(bool isBookmark);
 #endif
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;

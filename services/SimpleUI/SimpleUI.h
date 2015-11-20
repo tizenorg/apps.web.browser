@@ -204,7 +204,16 @@ private:
      * @brief Adds current page to bookmarks.
      *
      */
-    void addToBookmarks(int);
+#if PROFILE_MOBILE
+    void addBookmark(BookmarkUpdate bookmark_update);
+#else
+    void addBookmark(int);
+#endif
+    /**
+     * @brief Edits currents page bookmark
+     *
+     */
+    void editBookmark(BookmarkUpdate bookmark_update);
     /**
      * @brief Remove current page from bookmarks
      *
@@ -234,6 +243,7 @@ private:
     void closeSettingsUI();
 #if PROFILE_MOBILE
     void showBookmarkFlowUI(bool state);
+    void closeBookmarkFlowUI();
 #endif
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();

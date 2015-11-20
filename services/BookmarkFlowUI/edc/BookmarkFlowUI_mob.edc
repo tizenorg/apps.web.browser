@@ -305,7 +305,6 @@ collections {
 
     group {
         name: "title_area-layout";
-        //data.item: "contents" "save_click";
         styles {
             style {
                 name: "title_area_text";
@@ -318,6 +317,10 @@ collections {
             style {
                 name: "title_area_save";
                 base: "font=Tizen:style=Regular font_size=24 color=#0e2a47 align=1.0 valign=1.0"; //30
+            }
+            style {
+                name: "title_area_save_dissabled";
+                base: "font=Tizen:style=Regular font_size=24 color=#969696 align=1.0 valign=1.0"; //30
             }
         }
         parts {
@@ -640,6 +643,11 @@ collections {
                         text: "SAVE  ";
                     }
                 }
+                description {
+                    state: "dissabled" 0.0;
+                    inherit: "default";
+                    text.style: "title_area_save_dissabled";
+                }
             }
             part {
                 name: "save_click";
@@ -668,10 +676,17 @@ collections {
         }
         programs {
             program {
-                name: "change_title_text";
+                name: "title_text_edit";
                 source: "ui";
-                signal: "change_title_text";
+                signal: "title_text_edit";
                 action: STATE_SET "edit" 0.0;
+                target: "title_area_text";
+            }
+            program {
+                name: "title_text_add";
+                source: "ui";
+                signal: "title_text_add";
+                action: STATE_SET "default" 0.0;
                 target: "title_area_text";
             }
             program {
@@ -717,6 +732,20 @@ collections {
                 signal: "mouse,up,*";
                 action: STATE_SET "default" 0.0;
                 target: "save_click_bg";
+            }
+            program {
+                name: "save_dissabled";
+                source: "ui";
+                signal: "save_dissabled";
+                action: STATE_SET "dissabled" 0.0;
+                target: "save_text";
+            }
+            program {
+                name: "save_enabled";
+                source: "ui";
+                signal: "save_enabled";
+                action: STATE_SET "default" 0.0;
+                target: "save_text";
             }
         }
     }
@@ -1440,6 +1469,11 @@ collections {
                     rel2.relative: 1.0 1.0;
                 }
                 description {
+                    state: "invisible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
                     state: "focused" 0.0;
                     inherit: "default";
                     color: 47 146 225 255;
@@ -1469,6 +1503,11 @@ collections {
                         text: "Remove from bookmark";
                     }
                 }
+                description {
+                    state: "invisible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
             }
             part {
                 name: "remove_click";
@@ -1491,6 +1530,11 @@ collections {
                         relative: 1.0 1.0;
                         to: "remove_bg";
                     }
+                }
+                description {
+                    state: "invisible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
                 }
             }
         }
@@ -1593,6 +1637,24 @@ collections {
                 signal: "mouse,up,*";
                 action: STATE_SET "default" 0.0;
                 target: "remove_bg";
+            }
+            program {
+                name: "hide_remove";
+                source: "ui";
+                signal: "hide_remove";
+                action: STATE_SET "invisible" 0.0;
+                target: "remove_bg";
+                target: "remove_click";
+                target: "remove_text";
+            }
+            program {
+                name: "show_remove";
+                source: "ui";
+                signal: "show_remove";
+                action: STATE_SET "default" 0.0;
+                target: "remove_bg";
+                target: "remove_click";
+                target: "remove_text";
             }
         }
     }
