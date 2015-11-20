@@ -37,16 +37,16 @@ BOOST_AUTO_TEST_CASE(bookm_item_set_get)
     bitem->setAddress("");
     retstr= bitem->getAddress();
     BOOST_CHECK_EQUAL("",retstr);
-    bitem->setTittle("");
-    retstr= bitem->getTittle();
+    bitem->setTitle("");
+    retstr= bitem->getTitle();
     BOOST_CHECK_EQUAL("",retstr);
 
     //Check non empty address and title
     bitem->setAddress("www.address.com");
     retstr= bitem->getAddress();
     BOOST_CHECK_EQUAL("www.address.com",retstr);
-    bitem->setTittle("Page Title");
-    retstr= bitem->getTittle();
+    bitem->setTitle("Page Title");
+    retstr= bitem->getTitle();
     BOOST_CHECK_EQUAL("Page Title",retstr);
 
     //Check set/get id

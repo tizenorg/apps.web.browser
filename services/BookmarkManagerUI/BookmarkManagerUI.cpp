@@ -237,7 +237,7 @@ char* BookmarkManagerUI::_grid_bookmark_text_get(void *data, Evas_Object *, cons
         static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name1, part, part_name1_len))
         {
-            return strdup(itemData->item->getTittle().c_str());
+            return strdup(itemData->item->getTitle().c_str());
         }
         else if (!strncmp(part_name2, part, part_name2_len))
         {

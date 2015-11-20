@@ -83,7 +83,11 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
             // MERGE_ME dont know if should be commented out
+#if PROFILE_MOBILE
+        else if(!keyName.compare("XF86Back"))
+#else
         else if(!keyName.compare("BackSpace") || !keyName.compare("XF86Back"))
+#endif
             self->backPressed();
         else if(!keyName.compare("Escape"))
             self->escapePressed();

@@ -306,15 +306,20 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
-    m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addToBookmarks, this, _1));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
-#if PROFILE_MOBILE
+#if !PROFILE_MOBILE
+    m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
+#else
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
-#endif
 
     M_ASSERT(m_bookmarkFlowUI.get());
+    m_bookmarkFlowUI->closeBookmarkFlowClicked.connect(boost::bind(&SimpleUI::closeBookmarkFlowUI, this));
+    m_bookmarkFlowUI->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
+    m_bookmarkFlowUI->editBookmark.connect(boost::bind(&SimpleUI::editBookmark, this, _1));
+    m_bookmarkFlowUI->removeBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
+#endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
@@ -612,7 +617,7 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         openNewTab(bookmarkAddress);
     else {
-        std::string bookmarkTitle = bookmarkItem->getTittle();
+        std::string bookmarkTitle = bookmarkItem->getTitle();
         m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), bookmarkAddress, bookmarkTitle);
         m_webEngine->setURI(bookmarkAddress);
         m_webPageUI->setPageTitle(bookmarkTitle);
@@ -1020,6 +1025,7 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->hideUI();
     else {
         m_moreMenuUI->blockThumbnails(m_webPageUI->stateEquals(WPUState::QUICK_ACCESS));
+        m_moreMenuUI->setIsBookmark(checkBookmark());
         m_moreMenuUI->showUI();
     }
 #else
@@ -1086,10 +1092,24 @@ void SimpleUI::showBookmarkFlowUI(bool state)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_viewManager);
-    m_bookmarkFlowUI->setState(state);
+    std::string uri = m_webEngine->getURI();
     m_viewManager->pushViewToStack(m_bookmarkFlowUI.get());
-    m_bookmarkFlowUI->setURL(m_webEngine->getURI());
-    m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
+    m_bookmarkFlowUI->setURL(uri);
+    m_bookmarkFlowUI->setState(state);
+
+    if(m_favoriteService->bookmarkExists(uri)) {
+        tizen_browser::services::BookmarkItem item;
+        m_bookmarkFlowUI->setTitle(item.getTitle());
+    } else
+        m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
+}
+
+void SimpleUI::closeBookmarkFlowUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    if (m_viewManager->topOfStack() == m_bookmarkFlowUI.get())
+        m_viewManager->popTheStack();
 }
 #endif
 
@@ -1099,6 +1119,7 @@ void SimpleUI::showBookmarkManagerUI()
     M_ASSERT(m_viewManager);
     m_viewManager->pushViewToStack(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->addBookmarkItems(getBookmarks(ROOT_FOLDER));
+
 }
 
 void SimpleUI::closeBookmarkManagerUI()
@@ -1243,19 +1264,41 @@ void SimpleUI::searchWebPage(std::string &text, int flags)
     m_webEngine->searchOnWebsite(text, flags);
 }
 
-void SimpleUI::addToBookmarks(int folder_id)
+#if PROFILE_MOBILE
+void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
 {
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
-    if (m_favoriteService)
-    {
-        if (m_webEngine && !m_webEngine->getURI().empty())
-         {
-               m_favoriteService->addToBookmarks(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
-                                                 m_webEngine->getSnapshotData(373, 240),
-                                                 m_webEngine->getFavicon(),(unsigned int)folder_id);
-         }
+    if (m_favoriteService) {
+        if (m_webEngine && !m_webEngine->getURI().empty()) {
+            m_favoriteService->addBookmark(m_webEngine->getURI(), bookmark_update.title, std::string(),
+                                              m_webEngine->getSnapshotData(373, 240),
+                                              m_webEngine->getFavicon(),(unsigned int)bookmark_update.folder_id);
+        }
     }
 }
+
+void SimpleUI::editBookmark(BookmarkUpdate bookmark_update)
+{
+    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+    if (m_favoriteService) {
+        if (m_webEngine && !m_webEngine->getURI().empty()) {
+               m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, (unsigned int)bookmark_update.folder_id);
+        }
+    }
+}
+#else
+void SimpleUI::addBookmark(int folder_id)
+{
+    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+    if (m_favoriteService) {
+        if (m_webEngine && !m_webEngine->getURI().empty()) {
+            m_favoriteService->addBookmark(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
+                                              m_webEngine->getSnapshotData(373, 240),
+                                              m_webEngine->getFavicon(),(unsigned int)folder_id);
+        }
+    }
+}
+#endif
 
 //TODO: Replace by direct call.
 void SimpleUI::deleteBookmark()

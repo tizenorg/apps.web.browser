@@ -50,7 +50,7 @@ public:
      * @brief Add page to bookmarks
      *
      * @param address Webpage url.
-     * @param tittle Title of bookmark.
+     * @param title Title of bookmark.
      * @param note Bookmark note, default is empty .
      * @param dirId Directory numeric ID, default is 0.
      * @param thumbnail Page thumbnail, default is empty image.
@@ -58,8 +58,8 @@ public:
      *
      * @return BookmarkItem class
      */
-    std::shared_ptr<BookmarkItem> addToBookmarks(const std::string & address,
-                                                 const std::string & tittle,
+    std::shared_ptr<BookmarkItem> addBookmark(const std::string & address,
+                                                 const std::string & title,
                                                  const std::string & note = std::string(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
@@ -89,12 +89,27 @@ public:
     bool deleteAllBookmarks();
 
     /**
+      * @brief Edit bookmark title and folder by given url
+      *
+      * @return true if success, false on error
+      */
+    bool editBookmark(const std::string & url, const std::string & title, unsigned int folder_id = 0);
+
+    /**
      * @brief Delete bookmark by given url
      *
      * @param url of bookmark to delete
      * @return true if success, false on error of not found bookmark
      */
     bool deleteBookmark(const std::string & url);
+
+    /**
+     * @brief Gets bookmark item
+     *
+     * @param url of bookmark, pointer to item
+     * @return true if success, false on error of not found bookmark
+     */
+    bool getItem(const std::string & url, BookmarkItem *item);
 
     void synchronizeBookmarks();
 

@@ -67,9 +67,9 @@ void BookmarkService::synchronizeBookmarks()
     m_bookmarks.clear();
 }
 
-std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
+std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
                                                 const std::string & address,
-                                                const std::string & tittle,
+                                                const std::string & title,
                                                 const std::string & note,
                                                 std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail,
                                                 std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
@@ -112,8 +112,8 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     if (!address.empty()) {
         info.url = (char*) address.c_str();
     }
-    if (!tittle.empty())
-        info.title = (char*) tittle.c_str();
+    if (!title.empty())
+        info.title = (char*) title.c_str();
 
     ret = bp_bookmark_adaptor_easy_create(&id, &info);
     if (ret < 0){
@@ -136,7 +136,7 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
         unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
         bp_bookmark_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength());
     }
-    std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(address, tittle, note, dirId, id);
+    std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(address, title, note, dirId, id);
     bookmark->setThumbnail(thumbnail);
     bookmark->setFavicon(favicon);
     m_bookmarks.push_back(bookmark);
@@ -144,12 +144,39 @@ std::shared_ptr<BookmarkItem> BookmarkService::addToBookmarks(
     return bookmark;
 }
 
+bool BookmarkService::editBookmark(const std::string & url, const std::string & title, unsigned int folder_id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BookmarkItem bookmarkItem;
+    if (!getItem(url, &bookmarkItem))
+        return false;
+    BROWSER_LOGD("have item");
+    if (!deleteBookmark(url))
+        return false;
+    BROWSER_LOGD("deleted");
+    if (!addBookmark(url, title, bookmarkItem.getNote(), bookmarkItem.getThumbnail(), bookmarkItem.getFavicon(), folder_id))
+        return false;
+    BROWSER_LOGD("added");
+    return true;
+}
+
 bool BookmarkService::deleteBookmark(const std::string & url)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     int id = getBookmarkId(url);
     if (id!=0)
         bp_bookmark_adaptor_delete(id);
     bookmarkDeleted(url);
+    return true;
+}
+
+bool BookmarkService::getItem(const std::string &url, BookmarkItem *item)
+{
+    int id;
+    if ((id = getBookmarkId(url)) == 0)
+        return false;
+    if (!get_item_by_id(id, item))
+        return false;
     return true;
 }
 
@@ -424,7 +451,7 @@ bool BookmarkService::get_item_by_id(int id, BookmarkItem *item)
     }
 
     if (id == 0) {
-        item->setTittle("Bookmarks");
+        item->setTitle("Bookmarks");
         item->setAddress("");
         item->setId(id);
         item->setDir(-1);
@@ -440,7 +467,7 @@ bool BookmarkService::get_item_by_id(int id, BookmarkItem *item)
             item->setAddress(info.url);
 
         if (info.title != nullptr && strlen(info.title) > 0)
-            item->setTittle(info.title);
+            item->setTitle(info.title);
 
         bp_bookmark_adaptor_easy_free(&info);
         return true;
