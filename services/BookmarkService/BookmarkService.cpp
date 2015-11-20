@@ -424,11 +424,11 @@ bool BookmarkService::get_id(const char *uri, int *bookmark_id)
     int *ids = nullptr;
     int ids_count = -1;
     int ret = bp_bookmark_adaptor_get_cond_ids_p(&ids, &ids_count, &properties, &conds, BP_BOOKMARK_O_URL, uri, 0);
-    free(ids);
     bool result = ((ret >= 0) && (ids_count > 0));
     if (result) {
         *bookmark_id = ids[0];
     }
+    free(ids);
     return result;
 }
 
