@@ -24,6 +24,25 @@ install(TARGETS ${PROJECT_NAME}
             ARCHIVE DESTINATION services/static)
 
 include(EDCCompile)
-EDJ_TARGET(TabUI.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/TabUI.edc
-    ${CMAKE_CURRENT_BINARY_DIR})
+
+#please do not add edc/ directory
+if (${PROFILE} MATCHES "mobile")    # mobile profile
+    set(edcFiles
+        TabUI_mob.edc
+        )
+else (${PROFILE} MATCHES "mobile")  # tv profile
+    set(edcFiles
+        TabUI.edc
+        )
+endif (${PROFILE} MATCHES "mobile")
+
+foreach(edec ${edcFiles})
+    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    EDJ_TARGET(${target_name}
+        ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
+        ${CMAKE_CURRENT_BINARY_DIR})
+endforeach(edec)
+
+#EDJ_TARGET(TabUI.edj
+#    ${CMAKE_CURRENT_SOURCE_DIR}/edc/TabUI.edc
+#    ${CMAKE_CURRENT_BINARY_DIR})
