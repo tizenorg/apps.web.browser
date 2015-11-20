@@ -43,10 +43,22 @@ class ViewManager
 public:
 /**
  * @brief constructor.
+ */
+    ViewManager();
+
+/**
+ * @brief initialization method
  *
  * @param A window which will contatin ViewManager's main layout.
  */
-    ViewManager(Evas_Object* parentWindow);
+    void init(Evas_Object* parentWindow);
+
+/**
+ * @brief destructor
+ *
+ * @param A window which will contatin ViewManager's main layout.
+ */
+    ~ViewManager();
 
 /**
  * @brief Pops stack to specified view. Hides actual view (if there is any) and
