@@ -33,9 +33,14 @@
 namespace tizen_browser{
 namespace base_ui{
 
-ViewManager::ViewManager(Evas_Object* parentWindow)
+ViewManager::ViewManager()
    : m_mainLayout(nullptr)
-   , m_parentWindow(parentWindow)
+   , m_parentWindow(nullptr)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void ViewManager::init(Evas_Object* parentWindow)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parentWindow);
@@ -52,6 +57,13 @@ ViewManager::ViewManager(Evas_Object* parentWindow)
 
     elm_win_resize_object_add(parentWindow, m_mainLayout);
     evas_object_show(m_mainLayout);
+}
+
+ViewManager::~ViewManager()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    evas_object_del(m_mainLayout);
 }
 
 void ViewManager::popStackTo(interfaces::AbstractUIComponent* view)
