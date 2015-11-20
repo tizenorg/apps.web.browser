@@ -172,7 +172,9 @@ void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
 {
     m_moreMenuUI->setWebTitle(title);
     m_webPageUI->setPageTitle(title);
-    m_currentSession.updateItem(tabId, m_webEngine->getURI(), title);
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
+        m_currentSession.updateItem(tabId, m_webEngine->getURI(), title);
+    }
 }
 
 void SimpleUI::restoreLastSession()
