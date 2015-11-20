@@ -48,8 +48,10 @@ std::string make_message(const char *fmt, ...)
 		va_end(ap);
 
 		/* Check error code */
-		if (n < 0)
+		if (n < 0) {
+			delete [] p;
 			return std::string();
+        }
 
 		/* If that worked, return the string */
 		if (n < size) {
