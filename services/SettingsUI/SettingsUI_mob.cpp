@@ -96,7 +96,7 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 
     m_actionBar = createActionBar(settings_layout);
     m_items_layout = createSettingsMobilePage(settings_layout);
-    elm_object_focus_set(elm_object_part_content_get(settings_layout, "settings_swallow"), EINA_TRUE);
+    elm_object_tree_focus_allow_set(settings_layout, EINA_FALSE);
 
     return settings_layout;
 }
