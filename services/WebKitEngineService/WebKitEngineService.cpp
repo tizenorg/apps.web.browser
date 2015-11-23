@@ -63,7 +63,7 @@ Evas_Object * WebKitEngineService::getLayout()
 
 void WebKitEngineService::init(void * guiParent)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_initialised) {
         m_guiParent = guiParent;
         m_initialised = true;
@@ -129,7 +129,7 @@ void WebKitEngineService::onTabIdCreated(int tabId)
 
 void WebKitEngineService::setURI(const std::string & uri)
 {
-    BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, uri.c_str());
+    BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->setURI(uri);
@@ -284,7 +284,7 @@ void WebKitEngineService::_loadProgress(double d)
 
 void WebKitEngineService::_confirmationRequest(WebConfirmationPtr c)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     confirmationRequest(c);
 }
 
@@ -388,14 +388,14 @@ bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newT
 
 bool WebKitEngineService::closeTab()
 {
-    BROWSER_LOGD("%s:%d %s closing tab=%s", __FILE__, __LINE__, __func__, m_currentTabId.toString().c_str());
+    BROWSER_LOGD("[%s:%d] closing tab=%s", __PRETTY_FUNCTION__, __LINE__, m_currentTabId.toString().c_str());
     bool res = closeTab(m_currentTabId);
     return res;
 }
 
 bool WebKitEngineService::closeTab(TabId id) {
-    BROWSER_LOGD("%s:%d %s closing tab=%s", __FILE__, __LINE__, __func__, id.toString().c_str());
-    BROWSER_LOGD("%s:%d %s NONE tab=%s", __FILE__, __LINE__, __func__, TabId::NONE.toString().c_str());
+    BROWSER_LOGD("[%s:%d] closing tab=%s", __PRETTY_FUNCTION__, __LINE__, id.toString().c_str());
+    BROWSER_LOGD("[%s:%d] NONE tab=%s", __PRETTY_FUNCTION__, __LINE__, TabId::NONE.toString().c_str());
 
     TabId closingTabId = id;
     bool res = true;
@@ -431,7 +431,7 @@ bool WebKitEngineService::prevTab()
 
 void WebKitEngineService::confirmationResult(WebConfirmationPtr c)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     // tabId MUST be set
     M_ASSERT(c && c->getTabId() != TabId());
 
@@ -445,7 +445,7 @@ void WebKitEngineService::confirmationResult(WebConfirmationPtr c)
 
 bool WebKitEngineService::isPrivateMode(const TabId& id)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return m_tabs[id]->isPrivateMode();
 }
 

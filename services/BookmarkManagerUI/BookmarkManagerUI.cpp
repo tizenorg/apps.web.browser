@@ -221,7 +221,7 @@ void BookmarkManagerUI::close_clicked_cb(void* data, Evas_Object*, void*)
 
 Evas_Object * BookmarkManagerUI::getGenGrid()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return m_gengrid;
 }
 
@@ -248,7 +248,7 @@ Evas_Object* BookmarkManagerUI::createNoHistoryLabel()
 
 void BookmarkManagerUI::addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem> hi)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkManagerUI.reset(this);
@@ -332,7 +332,7 @@ char* BookmarkManagerUI::_grid_folder_text_get(void *data, Evas_Object *, const 
 
 void BookmarkManagerUI::addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
 {
-     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
      for (auto it = items.begin(); it != items.end(); ++it)
      {
          addBookmarkItem(*it);
@@ -345,7 +345,7 @@ char* BookmarkManagerUI::_grid_bookmark_text_get(void *data, Evas_Object *, cons
 {
     if ((data != nullptr) && (part != nullptr))
     {
-        BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+        BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
         BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
         const char *part_name1 = "page_title";
         const char *part_name2 = "page_url";
@@ -367,7 +367,7 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
 {
     if ((data != nullptr) && (obj != nullptr) && (part != nullptr))
     {
-        BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+        BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
         BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
         const char *part_name1 = "elm.thumbnail";
         const char *part_name2 = "elm.thumbButton";
@@ -400,7 +400,7 @@ Evas_Object * BookmarkManagerUI::_grid_bookmark_content_get(void *data, Evas_Obj
 
 void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr)
     {
         BookmarkItemData * itemData = static_cast<BookmarkItemData*>(data);

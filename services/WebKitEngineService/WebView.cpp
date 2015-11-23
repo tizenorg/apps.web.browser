@@ -78,7 +78,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
 
 WebView::~WebView()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (m_ewkView) {
         unregisterCallbacks();
@@ -99,7 +99,7 @@ void WebView::init(bool desktopMode, Evas_Object*)
                     ewk_cookie_manager_accept_policy_set(ewk_context_cookie_manager_get(m_ewkContext), EWK_COOKIE_ACCEPT_POLICY_ALWAYS);
 
     evas_object_data_set(m_ewkView, "_container", this);
-    BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, this);
+    BROWSER_LOGD("[%s:%d] self=%p", __PRETTY_FUNCTION__, __LINE__, this);
 
     evas_object_color_set(m_ewkView, 255, 255, 255, 255);
     evas_object_size_hint_weight_set(m_ewkView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -207,7 +207,7 @@ Evas_Object * WebView::getLayout()
 
 void WebView::setURI(const std::string & uri)
 {
-    BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, uri.c_str());
+    BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
 #if defined(USE_EWEBKIT)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ewk_view_url_set(m_ewkView, uri.c_str());
@@ -218,7 +218,7 @@ void WebView::setURI(const std::string & uri)
 std::string WebView::getURI(void)
 {
 #if defined(USE_EWEBKIT)
-    BROWSER_LOGD("%s:%d %s uri=%s", __FILE__, __LINE__, __func__, ewk_view_url_get(m_ewkView));
+    BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, ewk_view_url_get(m_ewkView));
     return fromChar(ewk_view_url_get(m_ewkView));
 #else
     return std::string();
@@ -232,7 +232,7 @@ std::string WebView::getTitle(void)
 
 void WebView::suspend()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
 
     ewk_view_suspend(m_ewkView);
@@ -241,7 +241,7 @@ void WebView::suspend()
 
 void WebView::resume()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
 
     ewk_view_resume(m_ewkView);
@@ -317,7 +317,7 @@ bool WebView::isLoadError() const
 
 void WebView::confirmationResult(WebConfirmationPtr confirmation)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
 #if defined(USE_EWEBKIT)
 #if PLATFORM(TIZEN)
@@ -435,7 +435,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
 std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
     M_ASSERT(targetWidth);
     M_ASSERT(targetHeight);
@@ -481,7 +481,7 @@ std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targ
 #if defined(USE_EWEBKIT)
 void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -491,10 +491,10 @@ void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* 
 
 void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
-    BROWSER_LOGD("%s:%d %s self=%p", __FILE__, __LINE__, __func__, self);
+    BROWSER_LOGD("[%s:%d] self=%p", __PRETTY_FUNCTION__, __LINE__, self);
     BROWSER_LOGD("Window creating in tab: %s", self->getTabId().toString().c_str());
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
     m_webEngine = std::dynamic_pointer_cast
@@ -519,7 +519,7 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
 
 void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebView * self = reinterpret_cast<WebView *>(data);
     std::shared_ptr<AbstractWebEngine<Evas_Object>> m_webEngine =
                 std::dynamic_pointer_cast
@@ -540,7 +540,7 @@ void WebView::__loadStarted(void * data, Evas_Object * /* obj */, void * /* even
 
 void WebView::__loadStop(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_isLoading = false;
@@ -550,7 +550,7 @@ void WebView::__loadStop(void * data, Evas_Object * /* obj */, void * /* event_i
 
 void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -563,7 +563,7 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     if (!self->isLoading())
@@ -600,7 +600,7 @@ void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)
 
 void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_title = fromChar(ewk_view_title_get(obj));
@@ -609,7 +609,7 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
 
 void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     BROWSER_LOGD("URL changed for tab: %s", self->getTabId().toString().c_str());
@@ -618,7 +618,7 @@ void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event
 
 void WebView::__backForwardListChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->backwardEnableChanged(self->isBackEnabled());
@@ -664,7 +664,7 @@ std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
 
 void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -691,7 +691,7 @@ void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj *
 
 void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -716,7 +716,7 @@ void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */,
 
 void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -741,7 +741,7 @@ void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj 
 
 void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -767,7 +767,7 @@ void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, vo
 
 void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PLATFORM(TIZEN)
     WebView * self = reinterpret_cast<WebView *>(data);
 
@@ -921,13 +921,13 @@ void WebView::searchOnWebsite(const std::string & searchString, int flags)
 }
 
 void WebView::switchToDesktopMode() {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT);
     m_desktopMode = true;
 }
 
 void WebView::switchToMobileMode() {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ewk_view_user_agent_set(m_ewkView, APPLICATION_NAME_FOR_USER_AGENT_MOBILE);
     m_desktopMode = false;
 }

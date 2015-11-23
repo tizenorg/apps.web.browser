@@ -453,7 +453,7 @@ char* QuickAccess::_grid_bookmark_text_get(void *data, Evas_Object *, const char
 
 Evas_Object * QuickAccess::_grid_bookmark_content_get(void *data, Evas_Object*, const char *part)
 {
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+    BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
     BookmarkItemData *itemData = reinterpret_cast<BookmarkItemData*>(data);
 
     if (!strcmp(part, "elm.thumbnail")) {
@@ -563,7 +563,7 @@ void QuickAccess::showNoMostVisitedLabel()
 
 void QuickAccess::setEmptyView(bool empty)
 {
-    BROWSER_LOGD("%s:%d %s, empty: %d", __FILE__, __LINE__, __func__, empty);
+    BROWSER_LOGD("[%s:%d], empty: %d", __PRETTY_FUNCTION__, __LINE__, empty);
     if(empty) {
         showNoMostVisitedLabel();
     } else {
