@@ -687,8 +687,12 @@ void SimpleUI::onBackPressed()
         m_zoomUI->escapeZoom();
     } else if ((m_viewManager->topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
         m_tabUI->onBackKey();
-    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
+    } else if (m_viewManager->topOfStack() == m_bookmarkManagerUI.get()) {
+        m_viewManager->popTheStack();
+    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) && m_webEngine->tabsCount() != 0) {
         m_quickAccess->backButtonClicked();
+    } else if (m_viewManager->topOfStack() == nullptr) {
+        switchViewToQuickAccess();
     } else if ((m_viewManager->topOfStack() == m_webPageUI.get())) {
         m_webEngine->backButtonClicked();
     } else {
