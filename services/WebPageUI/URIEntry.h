@@ -110,15 +110,18 @@ private:
     std::string rewriteURI(const std::string& url);
 
     static void _fixed_entry_key_down_handler(void* data, Evas* e, Evas_Object* obj, void* event_info);
-    static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
 #if PROFILE_MOBILE
     static void _uri_cancel_icon_clicked(void* data, Evas_Object*, const char*, const char*);
+    static void _uri_entry_double_clicked(void* data, Evas_Object* obj, void* event_info);
 #endif
 
+#if !PROFILE_MOBILE
     static void focusedBtn(void* data, Evas_Object* obj, void* event_info);
     static void unfocusedBtn(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
+#endif
 
 private:
     Evas_Object* m_parent;
@@ -127,12 +130,15 @@ private:
     Evas_Object* m_entry;
     Evas_Object* m_favicon;
     Evas_Object* m_entry_layout;
-    Evas_Object* m_entryBtn;
     bool m_entrySelectedAllFirst;
     std::string m_oryginalEntryText;
     std::string m_pageTitle;
     std::string m_URI;
     bool m_searchTextEntered;
+    
+#if !PROFILE_MOBILE
+    Evas_Object* m_entryBtn;
+#endif
 };
 
 
