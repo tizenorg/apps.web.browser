@@ -79,7 +79,7 @@ static void app_terminate(void */*app_data*/)
     mainUi->destroyUI();
 }
 
-static void app_service(service_h service, void */*app_data*/){
+static void app_control(app_control_h app_control, void */*app_data*/){
     /* to test this functionality please use aul_test command on target:
      *  $aul_test org.tizen.browser __APP_SVC_URI__ <http://full.url.com/>
      */
@@ -89,16 +89,16 @@ static void app_service(service_h service, void */*app_data*/){
     char *request_uri = NULL;
     char *request_mime_type = NULL;
 
-    if (service_get_operation(service, &operation) != SERVICE_ERROR_NONE) {
-        BROWSER_LOGD("get service operation failed");
+    if (app_control_get_operation(app_control, &operation) != APP_CONTROL_ERROR_NONE) {
+        BROWSER_LOGD("get app_control operation failed");
         return;
     }
 
-    if (service_get_uri(service, &request_uri) != SERVICE_ERROR_NONE)
-        BROWSER_LOGD("get service uri failed");
+    if (app_control_get_uri(app_control, &request_uri) != APP_CONTROL_ERROR_NONE)
+        BROWSER_LOGD("get app_control uri failed");
 
-    if (service_get_mime(service, &request_mime_type) != SERVICE_ERROR_NONE)
-        BROWSER_LOGD("get service mime failed");
+    if (app_control_get_mime(app_control, &request_mime_type) != APP_CONTROL_ERROR_NONE)
+        BROWSER_LOGD("get app_control mime failed");
 
 
     BROWSER_LOGD("operation = [%s], request_uri = [%s], request_mime_type = [%s]"
@@ -167,17 +167,17 @@ int main(int argc, char* argv[])try
 	BROWSER_LOGD("BROWSER TAG: %s",tizen_browser::logger::Logger::getInstance().getLogTag().c_str());
 	BROWSER_LOGD("BROWSER REGISTERED LOGGERS COUNT: %d",tizen_browser::logger::Logger::getInstance().getLoggersCount());
 
-    app_event_callback_s ops;
-    memset(&ops, 0x00, sizeof(app_event_callback_s));
+    ui_app_lifecycle_callback_s ops;
+    memset(&ops, 0x00, sizeof(ui_app_lifecycle_callback_s));
 
     ops.create = app_create;
     ops.terminate = app_terminate;
-    ops.service = app_service;
+    ops.app_control = app_control;
 
     ops.pause = app_pause;
     ops.resume = app_resume;
 
-    app_efl_main(&argc, &argv, &ops, NULL);
+    ui_app_main(argc, argv, &ops, NULL);
 
     ewk_shutdown();
     END()

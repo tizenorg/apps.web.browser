@@ -555,7 +555,7 @@ void WebKitEngineService::backButtonClicked()
         closeTab();
         switchToWebPage();
     } else {
-        app_efl_exit();
+        ui_app_exit();
     }
 }
 
