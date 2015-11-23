@@ -89,6 +89,15 @@ install(TARGETS ${PROJECT_NAME}
 include(EDCCompile)
 
 #please do not add edc/ directory
+if (${PROFILE} MATCHES "mobile")
+set(edcFiles
+    AuthenticationPopup.edc
+    BookmarksManager.edc
+    NotificationPopup_mob.edc
+    Tooltip.edc
+    ViewManager.edc
+    )
+else (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
     BookmarksManager.edc
@@ -96,9 +105,10 @@ set(edcFiles
     Tooltip.edc
     ViewManager.edc
     )
+endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REPLACE ".edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
                ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
                ${CMAKE_CURRENT_BINARY_DIR})
