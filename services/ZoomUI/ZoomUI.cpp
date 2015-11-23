@@ -92,7 +92,7 @@ void ZoomUI::show(Evas_Object* parent)
 bool ZoomUI::isVisible()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (evas_object_visible_get(m_layout) || (*(getZoom()) != ZOOM_DEFAULT))
+    if (evas_object_visible_get(m_layout) || (*getZoom() != ZOOM_DEFAULT && *getZoom() != 0))
         return true;
     else
         return false;
