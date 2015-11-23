@@ -1165,10 +1165,14 @@ void SimpleUI::settingsDeleteSelectedData(const std::string& str)
 {
     BROWSER_LOGD("[%s]: Deleting selected data", __func__);
     M_ASSERT(m_viewManager);
-    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager->getContent());
-    popup->show("Delete Web Browsing Data");
-    onDeleteSelectedDataButton(str);
-    popup->dismiss();
+    if((str.find("CACHE") != std::string::npos)   ||
+       (str.find("COOKIES") != std::string::npos) ||
+       (str.find("HISTORY") != std::string::npos)) {
+        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager->getContent());
+        popup->show("Delete Web Browsing Data");
+        onDeleteSelectedDataButton(str);
+        popup->dismiss();
+    }
 }
 
 void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
