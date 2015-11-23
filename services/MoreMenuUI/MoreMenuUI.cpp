@@ -150,6 +150,7 @@ void MoreMenuUI::createMoreMenuLayout()
 
 #if PROFILE_MOBILE
     elm_object_part_content_set(m_parent, "moremenu", m_mm_layout);
+    elm_object_tree_focus_allow_set(m_mm_layout, EINA_FALSE);
 #endif
 }
 
@@ -161,7 +162,6 @@ void MoreMenuUI::deleteMoreMenuLayout()
     M_ASSERT(m_parent);
     M_ASSERT(m_mm_layout);
 
-    clearItems();
     evas_object_del(m_gengrid);
     evas_object_hide(m_mm_layout);
     elm_object_signal_emit(m_parent, "hide_moremenu", "ui");
