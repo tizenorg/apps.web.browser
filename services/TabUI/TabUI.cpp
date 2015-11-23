@@ -447,9 +447,16 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         if (!strncmp(part_name3, part, part_name3_len)) {
             boost::optional<bool> isIncognito = itemData->tabUI->isIncognito(itemData->item->getId());
             if (isIncognito && *isIncognito) {
+#if PROFILE_MOBILE
                 Evas_Object* button = elm_button_add(obj);
                 elm_object_style_set(button, "tab_incognitoButton");
                 return button;
+#else
+                Evas_Object *incognitoImage = elm_image_add(obj);
+                if (elm_image_file_set(incognitoImage,itemData->tabUI->m_edjFilePath.c_str() , "incognito_icon")) {
+                    return incognitoImage;
+                }
+#endif
             }
         }
         if (!strncmp(part_name4, part, part_name4_len)) {
