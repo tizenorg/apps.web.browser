@@ -586,6 +586,14 @@ DetailPopup& QuickAccess::getDetailPopup()
     return m_detailPopup;
 }
 
+bool QuickAccess::canBeBacked(int tabCount)
+{
+    if (m_detailPopup.isVisible())
+        return true;
+    else
+        return (tabCount != 0);
+}
+
 void QuickAccess::backButtonClicked()
 {
     if (m_detailPopup.isVisible()) {
