@@ -48,6 +48,7 @@ public:
     bool isDesktopMode() const;
     void setDesktopMode(bool mode);
     DetailPopup & getDetailPopup();
+    bool canBeBacked(int tabCount);
     void backButtonClicked();
     inline bool isMostVisitedActive() const;
     void refreshFocusChain();

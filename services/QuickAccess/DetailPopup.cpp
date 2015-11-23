@@ -117,6 +117,7 @@ void DetailPopup::hide()
     elm_genlist_clear(m_historyList);
     evas_object_hide(m_layout);
     evas_object_del(m_layout);
+    m_layout = nullptr;
     m_quickAccess->refreshFocusChain();
 }
 

@@ -683,12 +683,19 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
+#if !PROFILE_MOBILE
     if (m_zoomUI->isVisible()) {
         m_zoomUI->escapeZoom();
-    } else if ((m_viewManager->topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
+    } else
+#endif
+    if ((m_viewManager->topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
         m_tabUI->onBackKey();
-    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
+    } else if (m_viewManager->topOfStack() == m_bookmarkManagerUI.get()) {
+        m_viewManager->popTheStack();
+    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) && m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
         m_quickAccess->backButtonClicked();
+    } else if (m_viewManager->topOfStack() == nullptr) {
+        switchViewToQuickAccess();
     } else if ((m_viewManager->topOfStack() == m_webPageUI.get())) {
         m_webEngine->backButtonClicked();
     } else {
