@@ -1,4 +1,4 @@
-#include "ImageButton.edc"
+#include "ImageButton_mob.edc"
 #include "../../../core/Tools/edc/Spacer.edc"
 
 collections {
