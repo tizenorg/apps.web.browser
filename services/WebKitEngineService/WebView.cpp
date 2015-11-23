@@ -506,7 +506,12 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
 
     /// \todo: Choose newly created tab.
     TabId id(TabId::NONE);
-    if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(), &self->getTabId()))) {
+    if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(),
+                                                                 &self->getTabId(),
+                                                                 boost::none,
+                                                                 std::string(),
+                                                                 self->isDesktopMode(),
+                                                                 self->isPrivateMode()))) {
         BROWSER_LOGD("Created tab: %s", id.toString().c_str());
         Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
         *static_cast<Evas_Object**>(out) = tab_ewk_view;
