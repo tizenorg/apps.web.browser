@@ -3,6 +3,7 @@
 #define URI_INPUTBOX_LENGTH_SMALL 320
 #define URI_INPUTBOX_WIDTH 64
 #define CANCEL_ICON_FIELD_SIZE 64
+#define BORDER_WIDTH 5
 
 #define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
    group { \
@@ -24,43 +25,6 @@ collections {
 RESOURCE_IMAGE_LOSSY("input_ic_incognito.png")
 RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
     group {
-        name: "elm/button/base/hidden_button";
-        parts{
-            part{
-                name: "button";
-                type: RECT;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    color: 0 0 0 0;
-                }
-            }
-            part{
-                name: "over";
-                type: RECT;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    rel1 { relative: 0.0 0.0;to: "button";}
-                    rel2 { relative: 1.0 1.0;to: "button";}
-                    color: 0 0 0 0;
-                }
-            }
-        }
-        programs{
-            program {
-                name: "mouse_click";
-                signal: "mouse,clicked,1";
-                source: "*";
-                script {
-                    emit("elm,action,click", "");
-                }
-            }
-        }
-    }
-    group {
         name: "elm/entry/selection/browser_entry";
         parts {
             part {
@@ -70,7 +34,7 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    color: 255 255 255 255;
+                    color: 224 237 251 255;
                 }
             }
         }
@@ -85,9 +49,9 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    color: 22 120 237 255;
-                    min: 2 36;
-                    max: 2 36;
+                    color: 10 132 229 255;
+                    min: 3 38;
+                    max: 3 38;
                     visible: 0;
                 }
                 description {
@@ -125,15 +89,15 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
         styles {
             style {
                 name: "browser-entry-uri-style-unselected";
-                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#969696";
+                base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#969696";
             }
             style {
                 name: "browser-entry-uri-style-selected";
-                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" color=#4088d3";
+                base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#4088d3";
             }
             style {
                 name: "browser-entry-uri-style-selected-incognito";
-                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" right_margin="60" color=#4088d3";
+                base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#4088d3";
             }
         }
         data {
@@ -151,7 +115,9 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    color: 255 255 255 255;
+                    color: 244 244 244 255;
+                    max: -1 URI_INPUTBOX_WIDTH;
+                    align: 0.0 0.0;
                 }
             }
             part {
@@ -175,23 +141,19 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 source4: "elm/entry/cursor/browser_entry";
                 description {
                     state: "default" 0.0;
-                    min: (URI_INPUTBOX_LENGTH_ENLARGED-CANCEL_ICON_FIELD_SIZE) URI_INPUTBOX_WIDTH;
-                    max: (URI_INPUTBOX_LENGTH_ENLARGED-CANCEL_ICON_FIELD_SIZE) URI_INPUTBOX_WIDTH;
+                    rel1.to: "bg";
                     rel1.relative: 0.0 0.0;
+                    rel2.to: "bg";
                     rel2.relative: 1.0 1.0;
                     align: 0.0 0.0;
+                    fixed: 0 1;
                     text {
                         style: "browser-entry-uri-style-selected";
-                        min: 0 1;
+                        min: 1 1;
                     }
                 }
                 description {
                     state: "incognito" 0.0;
-                    min: (URI_INPUTBOX_LENGTH_ENLARGED-CANCEL_ICON_FIELD_SIZE-46) URI_INPUTBOX_WIDTH;
-                    max: (URI_INPUTBOX_LENGTH_ENLARGED-CANCEL_ICON_FIELD_SIZE-46) URI_INPUTBOX_WIDTH;
-                    rel1.to: "over_icon";
-                    rel1.relative: 1.0 0.0;
-                    rel2.relative: 1.0 1.0;
                     align: 0.0 0.0;
                     text {
                         style: "browser-entry-uri-style-selected-incognito";
@@ -200,65 +162,16 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 }
             }
             part {
-                name: "over_icon";
-                scale:1;
-                type: RECT;
-                mouse_events: 0;
-                description {
-                    state: "default" 0.0;
-                    min: 0 0;
-                    max: 0 0;
-                    rel1.to: "bg";
-                    rel1.relative: 0.0 0.0;
-                    rel2.relative: 1.0 1.0;
-                    align: 0 0;
-                }
-                description {
-                    state: "incognito" 0.0;
-                    min: 38 URI_INPUTBOX_WIDTH;
-                    max: 38 URI_INPUTBOX_WIDTH;
-                    rel1.relative: 0.0 0.0;
-                    rel2.relative: 1.0 1.0;
-                    align: 0 0;
-                }
-            }
-            part {
-                name: "incognito_icon";
-                type: IMAGE;
-                scale: 1;
-                clip_to: "label.text.clip";
-                description {
-                    state: "default" 0.0;
-                    visible: 0;
-                    min: 0 0;
-                    max: 0 0;
-                    rel1 {
-                        to: "over_icon";
-                        relative: 0.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                    }
-                    image.normal: "input_ic_incognito.png";
-                    align: 0 0.5;
-                }
-                description {
-                    state: "incognito" 0.0;
-                    inherit: "default" 0.0;
-                    min: 38 38;
-                    max: 38 38;
-                    visible: 1;
-                }
-            }
-            part {
                 name: "elm.guide";
                 scale:1;
                 type: TEXTBLOCK;
                 mouse_events: 0;
+                clip_to: "label.text.clip";
+                source4: "elm/entry/cursor/browser_entry";
                 description {
                     state: "default" 0.0;
-                    rel1.to: "over_icon";
-                    rel1.relative: 1.0 0.0;
+                    rel1.to: "bg";
+                    rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
                     max: -1 URI_INPUTBOX_WIDTH;
                     text {
@@ -270,13 +183,6 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                     state: "hidden" 0.0;
                     inherit: "default" 0.0;
                     visible: 0;
-                }
-                description {
-                    state: "incognito" 0.0;
-                    rel1.to: "over_icon";
-                    rel1.relative: 1.0 0.0;
-                    rel2.relative: 1.0 1.0;
-                    max: -1 URI_INPUTBOX_WIDTH;
                 }
             }
         }
@@ -306,10 +212,6 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 name: "normal_mode_uri_entry";
                 source: "ui";
                 signal: "uri_entry_normal";
-                action: STATE_SET "default" 0.0;
-                target: "elm.text";
-                target: "incognito_icon";
-                target: "over_icon";
             }
             program {
                 name: "incognito_mode_uri_entry";
@@ -317,55 +219,28 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 signal: "uri_entry_incognito";
                 action: STATE_SET "incognito" 0.0;
                 target: "elm.text";
-                target: "incognito_icon";
-                target: "over_icon";
             }
         }
     }//group
 
     group {
-        name: "elm/button/base/entry_btn";
-        parts {
-            part {
-                name: "bg";
-                type: RECT;
-                description {
-                    state: "default" 0.0;
-                    color: 0 0 0 0;
-                    visible: 1;
-                }
-            }
-        }
-        programs {
-            program {
-                name: "mouse_click";
-                signal: "mouse,clicked,1";
-                source: "bg";
-                script {
-                    emit("elm,action,click", "");
-                }
-            }
-        }
-    }
-
-
-    group {
         name: "uri_entry_layout";
         parts {
             part {
-                name: "uri_entry_swallow";
-                type : SWALLOW;
+                name: "uri_entry_space";
+                type : RECT;
+                repeat_events: 1;
                 scale: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    color: 255 255 255 255;
                     align: 0.0 0.0;
                     min: URI_INPUTBOX_LENGTH URI_INPUTBOX_WIDTH;
                     max: URI_INPUTBOX_LENGTH URI_INPUTBOX_WIDTH;
                     fixed: 1 1;
-                    rel1 { relative: 0 0; }
-                    rel2 { relative: 1 1; }
+                    color: 244 244 244 255;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
                 }
                 description {
                     state: "moveright" 0.0;
@@ -393,6 +268,91 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 }
             }
             part {
+                name: "over_icon";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    min: 0 0;
+                    max: 0 0;
+                    rel1.to: "uri_entry_space";
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0 0;
+                    color: 244 244 244 255;
+                }
+                description {
+                    state: "incognito" 0.0;
+                    inherit: "default" 0.0;
+                    min: 38 URI_INPUTBOX_WIDTH;
+                    max: 38 URI_INPUTBOX_WIDTH;
+                }
+            }
+            part {
+                name: "incognito_icon";
+                type: IMAGE;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    min: 0 0;
+                    max: 0 0;
+                    rel1 {
+                        to: "over_icon";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                    image.normal: "input_ic_incognito.png";
+                    align: 0 0.5;
+                }
+                description {
+                    state: "incognito" 0.0;
+                    inherit: "default" 0.0;
+                    min: 38 38;
+                    max: 38 38;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "uri_entry_swallow";
+                type : SWALLOW;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.0; to: "over_icon"; }
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_space"; }
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+                description {
+                    state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    rel1 { relative: 1.0 0.0; to: "over_icon"; }
+                    rel2 { relative: 0.0 1.0; to: "cancel_icon_bg"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part {
                 name: "over";
                 type: RECT;
                 mouse_events: 1;
@@ -404,18 +364,114 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                     rel2 { relative: 1 1; }
                 }
             }
+
+/*
+ * This is workaround. Platform border of the entry should not be visible.
+ * These rectangles coveres the border. Remove them when border is thrown by the platform.
+ */
             part {
-                name: "uri_entry_btn";
-                type: SWALLOW;
-                mouse_events: 1;
+                name: "top_border";
+                type: RECT;
+                scale: 1;
                 repeat_events: 1;
-                description {
-                    state: "default" 0.0;
+                description { state: "default" 0.0;
                     visible: 1;
-                    rel1.to: "uri_entry_swallow";
-                    rel2.to: "uri_entry_swallow";
+                    min: URI_INPUTBOX_LENGTH BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH BORDER_WIDTH;
+                    rel1 { relative: 0.0 0.0; to: "uri_entry_space";}
+                    rel2 { relative: 1.0 0.0; to: "uri_entry_space";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    rel2 { relative: 1.0 0.0;}
                 }
             }
+            part {
+                name: "bottom_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: URI_INPUTBOX_LENGTH BORDER_WIDTH*2;
+                    max: -1 BORDER_WIDTH*2;
+                    rel1 { relative: 0.0 (1.0-(BORDER_WIDTH/2)/URI_INPUTBOX_WIDTH); to: "uri_entry_space"; offset: -3 0;}
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_space"; offset: 0 4;}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                    max: -1 BORDER_WIDTH;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    max: -1 BORDER_WIDTH;
+                    rel2 { relative: 1.0 0.0;}
+                }
+            }
+            part {
+                name: "left_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    max: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    rel1 { relative: 0.0 0.0; to: "uri_entry_swallow"; offset: -3 0;}
+                    rel2 { relative: 0.0 1.0; to: "uri_entry_swallow";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                }
+            }
+            part {
+                name: "right_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    max: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    rel1 { relative: (1.0-BORDER_WIDTH/URI_INPUTBOX_LENGTH_ENLARGED) 0.0; to: "uri_entry_swallow";}
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_swallow";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                }
+            }
+
+/* 
+ *The end of the workaround.
+*/
+
             part {
                 name: "cancel_icon_bg";
                 scale:1;
@@ -423,32 +479,39 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 mouse_events: 1;
                 description {
                     state: "default" 0.0;
-                    min: 64 64;
-                    max: 64 64;
-                    visible: 1;
+                    min: 0 0;
+                    max: 0 0;
+                    visible: 0;
                     color: 0 0 0 0;
+                    fixed: 0 1;
+                    align: 1 0;
                 }
                 description {
-                    state: "entry_enlarged" 0.0;
+                    state: "visible" 0.0;
                     min: 64 64;
                     max: 64 64;
-                    fixed: 1 1;
+                    fixed: 0 1;
                     rel1 {
-                        to: "uri_entry_swallow";
+                        to: "uri_entry_space";
                         relative: (1.0-CANCEL_ICON_FIELD_SIZE/URI_INPUTBOX_LENGTH_ENLARGED) 0.0;
                     }
                     rel2 {
-                        to: "uri_entry_swallow";
+                        to: "uri_entry_space";
                         relative: 1.0 1.0;
                     }
                     visible: 1;
-                    color: 0 0 0 0;
+                    color: 244 244 244 255;
                 }
                 description {
                     state: "focused" 0.0;
-                    inherit: "entry_enlarged" 0.0;
+                    inherit: "visible" 0.0;
                     visible: 1;
                     color: 224 237 251 255;
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
                 }
             }
             part {
@@ -461,18 +524,20 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                     min: 0 0;
                     max: 0 0;
                     rel1 {
-                        to: "uri_entry_swallow";
-                        relative: (1.0-CANCEL_ICON_FIELD_SIZE/URI_INPUTBOX_LENGTH_ENLARGED) 0.0;
+                        to: "cancel_icon_bg";
+                        relative: 0.0 0.0;
                     }
                     rel2 {
-                        to: "uri_entry_swallow";
+                        to: "cancel_icon_bg";
                         relative: 1.0 1.0;
                     }
                     image.normal: "input_ic_cancel.png";
+                    image.border: 8 8 8 8;
+                    image.border_scale: 1;
                     align: 0.5 0.5;
                 }
                 description {
-                    state: "entry_enlarged" 0.0;
+                    state: "visible" 0.0;
                     inherit: "default" 0.0;
                     min: 38 38;
                     max: 38 38;
@@ -493,16 +558,26 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                     state: "default" 0.0;
                     min: 64 64;
                     max: 64 64;
-                    visible: 1;
+                    visible: 0;
                     rel1 {
-                        to: "uri_entry_swallow";
-                        relative: (1.0-CANCEL_ICON_FIELD_SIZE/URI_INPUTBOX_LENGTH_ENLARGED) 0.0;
+                        to: "cancel_icon_bg";
+                        relative: 0.0 0.0;
                     }
                     rel2 {
-                        to: "uri_entry_swallow";
+                        to: "cancel_icon_bg";
                         relative: 1.0 1.0;
                     }
                     color: 0 0 0 0;
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
                 }
             }
             part {
@@ -530,8 +605,15 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 signal: "shiftright_uribg";
                 source: "ui";
                 action: STATE_SET "moveright" 0.0;
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
                 target: "uri_entry_swallow";
                 target: "cancel_icon";
+                target: "cancel_over";
+                target: "cancel_icon_bg";
+                target: "uri_entry_space";
             }
             program {
                 name: "shiftback_uribarbg";
@@ -540,6 +622,12 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 action: STATE_SET "default" 0.0;
                 target: "uri_entry_swallow";
                 target: "cancel_icon";
+                target: "cancel_over";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
             }
             program {
                 name: "decrease_unfocused_qa_uribar";
@@ -547,8 +635,11 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "uri_entry_swallow";
-                target: "cancel_icon";
-                target: "cancel_icon_bg";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
             }
             program {
                 name: "enlarge_focused_uribar";
@@ -556,8 +647,11 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 source: "ui";
                 action: STATE_SET "entry_enlarged" 0.0;
                 target: "uri_entry_swallow";
-                target: "cancel_icon";
-                target: "cancel_icon_bg";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
             }
             program {
                 name: "mouse_in_cancel_icon";
@@ -570,8 +664,13 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 name: "mouse_out_cancel_icon";
                 signal: "mouse,up,*";
                 source: "cancel_over";
-                action: STATE_SET "entry_enlarged" 0.0;
+                action: STATE_SET "visible" 0.0;
                 target: "cancel_icon_bg";
+            }
+            program {
+                name: "mouse_clicked_cancel_icon";
+                signal: "mouse,clicked,*";
+                source: "cancel_over";
                 after: "call_on_cancel_icon_clicked_cb";
             }
             program {
@@ -579,6 +678,40 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                 signal: "call_on_cancel_icon_clicked_cb";
                 source: "ui";
                 action: SIGNAL_EMIT "cancel_icon_clicked" "ui";
+            }
+            program {
+                name: "normal_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_normal";
+                action: STATE_SET "default" 0.0;
+                target: "incognito_icon";
+                target: "over_icon";
+            }
+            program {
+                name: "incognito_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_incognito";
+                action: STATE_SET "incognito" 0.0;
+                target: "incognito_icon";
+                target: "over_icon";
+            }
+            program {
+                name: "show_cancel_icon";
+                source: "ui";
+                signal: "show_cancel_icon";
+                action: STATE_SET "visible" 0.0;
+                target: "cancel_icon";
+                target: "cancel_icon_bg";
+                target: "cancel_over";
+            }
+            program {
+                name: "hide_cancel_icon";
+                source: "ui";
+                signal: "hide_cancel_icon";
+                action: STATE_SET "default" 0.0;
+                target: "cancel_icon";
+                target: "cancel_icon_bg";
+                target: "cancel_over";
             }
         }
     }
