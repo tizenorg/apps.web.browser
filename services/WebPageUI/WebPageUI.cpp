@@ -145,7 +145,6 @@ void WebPageUI::loadStarted()
 
 void WebPageUI::progressChanged(double progress)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (progress == 1.0) {
         hideProgressBar();
     } else {
@@ -441,7 +440,7 @@ void WebPageUI::createPrivateLayout()
 
 void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
     webpageUI->bookmarkManagerClicked();
 }

@@ -159,7 +159,7 @@ void BookmarkFlowUI::createTitleArea()
 
 void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_UNUSED(data);
     if (data != nullptr) {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
@@ -176,7 +176,7 @@ void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
 
 void BookmarkFlowUI::_cancel_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         bookmarkFlowUI->closeBookmarkFlowClicked();
@@ -232,7 +232,7 @@ void BookmarkFlowUI::createContentsArea()
 
 void BookmarkFlowUI::_entry_focused(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_TRUE);
@@ -243,7 +243,7 @@ void BookmarkFlowUI::_entry_focused(void * data, Evas_Object *, void *)
 
 void BookmarkFlowUI::_entry_unfocused(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_FALSE);
@@ -254,7 +254,7 @@ void BookmarkFlowUI::_entry_unfocused(void * data, Evas_Object *, void *)
 
 void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         std::string text = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
@@ -270,7 +270,7 @@ void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
 
 void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_part_text_set(bookmarkFlowUI->m_entry, "elm.text", "");
@@ -281,13 +281,13 @@ void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
 
 void BookmarkFlowUI::_folder_clicked(void * data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_UNUSED(data);
 }
 
 void BookmarkFlowUI::_remove_clicked(void *data, Evas_Object *, void *)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         bookmarkFlowUI->removeBookmark();

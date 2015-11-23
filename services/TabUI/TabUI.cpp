@@ -378,7 +378,7 @@ void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
 
 void TabUI::addTabItem(basic_webengine::TabContentPtr hi)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     TabItemData *itemData = new TabItemData();
     itemData->item = hi;
     itemData->tabUI = std::shared_ptr<tizen_browser::base_ui::TabUI>(this);
@@ -391,7 +391,7 @@ void TabUI::addTabItem(basic_webengine::TabContentPtr hi)
 
 void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
     editMode = false;
     for (auto it = items.begin(); it < items.end(); it++) {
@@ -401,7 +401,7 @@ void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
 
 char* TabUI::_grid_text_get(void *data, Evas_Object*, const char *part)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data && part) {
         TabItemData *itemData = static_cast<TabItemData*>(data);
         const char *part_name1 = "tab_title";
@@ -422,7 +422,7 @@ char* TabUI::_grid_text_get(void *data, Evas_Object*, const char *part)
 
 Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const char *part)
 {
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+    BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
     if (data && obj && part) {
         TabItemData *itemData = static_cast<TabItemData*>(data);
         const char *part_name1 = "tab_thumbnail";
@@ -471,7 +471,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
 
 void TabUI::_del_item(void* /*data*/, Evas_Object* obj)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_del(elm_object_part_content_get(obj, "tab_thumbnail"));
     evas_object_smart_callback_del(elm_object_part_content_get(obj, "tab_thumbButton"), "clicked", _close_tab_clicked);
     evas_object_smart_callback_del(elm_object_part_content_get(obj, "tab_selectedButton"), "clicked", _itemSelected);
@@ -479,7 +479,7 @@ void TabUI::_del_item(void* /*data*/, Evas_Object* obj)
 
 void TabUI::_itemSelected(void* data, Evas_Object*, void*)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     TabItemData *itemData = static_cast<TabItemData*>(data);
     itemData->tabUI->tabClicked(itemData->item->getId());
@@ -487,7 +487,7 @@ void TabUI::_itemSelected(void* data, Evas_Object*, void*)
 
 void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
 #if !PROFILE_MOBILE
         TabItemData *itemData = static_cast<TabItemData*>(data);
@@ -502,7 +502,7 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
 
 void TabUI::_close_tab_clicked(void *data, Evas_Object*, void*)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         TabItemData *itemData = static_cast<TabItemData*>(data);
 
@@ -513,7 +513,7 @@ void TabUI::_close_tab_clicked(void *data, Evas_Object*, void*)
 
         itemData->tabUI->closeTabsClicked(itemData->item->getId());
         int tabsNumber = *(itemData->tabUI->tabsCount());
-        BROWSER_LOGD("%s:%d %s, items: %d", __FILE__, __LINE__, __func__, tabsNumber);
+        BROWSER_LOGD("[%s:%d] items: %d", __PRETTY_FUNCTION__, __LINE__, tabsNumber);
     }
 }
 

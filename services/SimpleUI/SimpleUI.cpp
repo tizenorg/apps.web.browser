@@ -591,7 +591,7 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager->popStackTo(m_webPageUI.get());
     std::string historyAddress = historyItem->getUrl();
     openNewTab(historyAddress, historyItem->getTitle(), boost::none, desktopMode);
@@ -604,25 +604,25 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
 
 void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_quickAccess->openDetailPopup(historyItem, m_historyService->getHistoryItemsByURL(historyItem->getUrl(), itemsNumber));
 }
 
 void SimpleUI::onClearHistoryClicked()
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_historyService->clearAllHistory();
 }
 
 void SimpleUI::onMostVisitedClicked()
 {
-   BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+   BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
    m_quickAccess->setMostVisitedItems(getMostVisitedItems());
 }
 
 void SimpleUI::onBookmarkButtonClicked()
 {
-   BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+   BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
    m_quickAccess->setBookmarksItems(getBookmarks());
 }
 

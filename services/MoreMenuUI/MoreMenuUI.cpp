@@ -360,7 +360,7 @@ void MoreMenuUI::_close_clicked(void* data, Evas_Object*, void*)
 
 void MoreMenuUI::addItems()
 {
-     BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
      for (int i = 0; i <= SETTINGS; i++) {
          ItemType type = static_cast<ItemType>(i);
@@ -405,7 +405,7 @@ void MoreMenuUI::clearItems()
 
 char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
 {
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+    BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
     if (data && part) {
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
 #if PROFILE_MOBILE
@@ -548,7 +548,7 @@ static const char* getImageFileNameForType(ItemType type, bool focused, Eina_Boo
 
 Evas_Object * MoreMenuUI::_grid_content_get(void *data, Evas_Object *obj, const char *part)
 {
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+    BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
     if (data && obj && part) {
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
 #if PROFILE_MOBILE

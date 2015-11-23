@@ -238,7 +238,7 @@ void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
 
 void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     for (auto it : _history_item_data) {
         if (it->item->getTitle() == hi->getTitle())
             return;
@@ -253,7 +253,7 @@ void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
 
 void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
 {
-    BROWSER_LOGD("%s:%d %s", __FILE__, __LINE__, __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     _history_item_data.clear();
     for (auto it = items->begin(); it != items->end(); ++it)
         addHistoryItem(*it);
@@ -261,7 +261,7 @@ void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> ite
 
 char* HistoryUI::_grid_text_get(void*, Evas_Object*, const char *part)
 {
-    BROWSER_LOGD("%s:%d %s part=%s", __FILE__, __LINE__, __func__, part);
+    BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
     const char* part_name = "menu_label";
     static const int part_name_len = strlen(part_name);
 
