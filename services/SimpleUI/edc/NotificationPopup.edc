@@ -1,7 +1,7 @@
 collections {
 
-#define WIDTH 1920
-#define HEIGHT 976
+#define WIDTH 720
+#define HEIGHT 1280
 
    styles {
       style {
@@ -14,32 +14,37 @@ collections {
       name: "notification_popup_layout";
       parts {
 
-            part { name: "bg";
+            part {
+                name: "bg";
                 type: RECT;
                 mouse_events: 1;
-                description { state: "default" 0.0;
-                    color: 0 0 0 120;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 102;
                     visible: 1;
                     min: WIDTH HEIGHT;
                     max: WIDTH HEIGHT;
                     align: 0.0 0.0;
-                    rel1 {relative: 0.0 0.0; offset: 0 104;}
+                    rel1 {relative: 0.0 0.0;}
                     rel2 {relative: 1.0 1.0;}
                 }
             }
 
-            part { name: "popup_rect";
+            part {
+                name: "popup_rect";
                 type: RECT;
                 mouse_events: 1;
-                description { state: "default" 0.0;
-                    color: 230 230 230 255;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
                     min: 600 150;
                     max: 600 150;
                     visible: 1;
                     align: 0.5 0.5;
                     rel1 {
                         to: "bg";
-                        offset: 0 0;
                         relative: 0.0 0.0;
                     }
                     rel2 {
@@ -49,8 +54,10 @@ collections {
                 }
             }
 
-            part { name: "progress_swallow";
+            part {
+                name: "progress_swallow";
                 type: SWALLOW;
+                scale: 1;
                 description {
                     min: 150 150;
                     max: 150 150;
@@ -59,7 +66,6 @@ collections {
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0.0 0.0;
-                        offset: 20 0;
                         to: "popup_rect";
                     }
                     rel2 {
@@ -69,8 +75,10 @@ collections {
                 }
             }
 
-            part { name: "popup_text";
+            part {
+                name: "popup_text";
                 type: TEXTBLOCK;
+                scale: 1;
                 description {
                     visible: 1;
                     min: 400 190;
@@ -80,7 +88,6 @@ collections {
                     rel1 {
                         to: "popup_rect";
                         relative: 0.0 0.0;
-                        offset: 0 0;
                     }
                     rel2 {
                         to: "popup_rect";
