@@ -59,28 +59,17 @@ public:
 
     void showWidget(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    /**
-     * Hide widget by scrolling out.
-     */
-    void hideWidgetPretty();
-    /**
-     * Hide widget by evas_object_hide.
-     */
-    void setWidgetPreviouslyHidden(bool previouslyHidden);
-    bool getWidgetPreviouslyHidden();
+    void hideWidget();
+
     void onMouseClick();
 
-    /**
-     * Add empty list elements to allow scroll in effect.
-     */
-    void addSpaces();
-    void removeSpaces();
     /**
      * Clear all elements from a genlist.
      */
     void clearWidget();
     /**
-     * When set to true, the next hide attempt will be blocked.
+     * When set to true, the next hide attempt will be blocked. E.g. widget
+     * should not be hidden on a mouse click, when cursor is inside widget.
      */
     void setSingleBlockHide(bool block);
     bool getSingleBlockHide();
@@ -95,6 +84,9 @@ public:
      */
     string getItemUrl(std::initializer_list<GenlistItemType> types) const;
 
+    void clearTimerMouseClickHandle();
+    bool isMouseInsideWidget();
+
 private:
     static Evas_Object* m_itemClassContentGet(void *data, Evas_Object *obj,
             const char *part);
@@ -104,14 +96,18 @@ private:
     void prepareUrlsVector(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
 
+    /**
+     * Cursor focus change. Needed to indicate, if widget should be hidden on
+     * a mouse click.
+     */
     void onMouseFocusChange(bool mouseInsideWidget);
 
     /**
      * Adjust widget's height to item's number.
      */
     void adjustWidgetHeight();
-    void startScrollIn();
-    void startScrollOut();
+
+    static Eina_Bool timerMouseClickHandle(void *data);
 
     Evas_Object* m_parentLayout = nullptr;
     Evas_Object* m_genlist = nullptr;
@@ -124,23 +120,20 @@ private:
     int m_historyItemsVisibleCurrent;
 
     /**
-     * Set to true, whenever hide request occurs. Set to false, whenever show
-     * request occurs. Needed to indicate when genlist should slide in.
+     * Used  insetSingleBlockHide().
      */
-    bool m_widgetPreviouslyHidden = true;
     bool m_singleHideBlock = false;
     /**
-     * If mouse click received and mouse is outside widget, hide it.
+     * Used in onMouseFocusChange().
      */
-    bool m_mouseInsideWidget = true;
+    bool m_mouseInsideWidget = false;
 
     Elm_Gengrid_Item_Class* m_historyItemClass;
-    Elm_Gengrid_Item_Class* m_historyItemSpaceClass;
 
     GenlistItemsManagerPtr m_itemsManager;
 
     /*
-     * keeps shared pointers to strings, that are ready to be displayed, so they can be
+     * keeps shared pointers to strings, which are ready to be displayed, so they can be
      * passed through EFL, until they're not needed. IMPORTANT: it has to be
      * assured, that list is not cleared until all EFL items has created their
      * labels from these pointers in m_contentGet(). in case of segfaults, delete copy of pointers
@@ -148,6 +141,11 @@ private:
      */
     vector<shared_ptr<UrlPair>> m_readyUrlPairs;
     UrlMatchesStylerPtr m_urlMatchesStyler;
+
+    /**
+     * Used to invoke timerMouseClickHandle()
+     */
+    Ecore_Timer* m_timerMouseClickHandle = nullptr;
 
 };
 

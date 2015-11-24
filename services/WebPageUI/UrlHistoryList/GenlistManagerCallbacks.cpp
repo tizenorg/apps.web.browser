@@ -32,24 +32,6 @@ GenlistManagerCallbacks::~GenlistManagerCallbacks()
 {
 }
 
-void GenlistManagerCallbacks::_genlist_edge_top(void* data,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    auto manager = static_cast<GenlistManager*>(data);
-    // spaces added for 'slide in' effect are not longer needed
-    manager->removeSpaces();
-}
-
-void GenlistManagerCallbacks::_genlist_edge_bottom(void* data,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    auto manager = static_cast<GenlistManager*>(data);
-    if (manager->getWidgetPreviouslyHidden()) {
-        manager->clearWidget();
-        evas_object_hide(manager->getWidget());
-    }
-}
-
 void GenlistManagerCallbacks::_genlist_mouse_in(void* data, Evas* /*e*/,
         Evas_Object* /*obj*/, void* /*event_info*/)
 {
@@ -71,7 +53,7 @@ void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
     if (item) {
         if (genlistManager) {
             genlistManager->signalItemSelected(item->urlOriginal);
-            genlistManager->hideWidgetPretty();
+            genlistManager->hideWidget();
         }
     }
 }
@@ -89,9 +71,8 @@ Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
     Ecore_Event_Key *ev = static_cast<Ecore_Event_Key *>(event_info);
     const std::string keyName = ev->keyname;
     if (keyName.compare("Down") == 0 || keyName.compare("Up") == 0) {
-        genlistManager->removeSpaces();
-        genlistManager->setWidgetPreviouslyHidden(false);
         GenlistItemsManagerPtr itemsManager = genlistManager->getItemsManager();
+        // if there is no current item, set it to first item
         if (!itemsManager->getItem(GenlistItemType::ITEM_CURRENT)) {
             itemsManager->assignItem(GenlistItemType::ITEM_CURRENT,
                     GenlistItemType::ITEM_FIRST);

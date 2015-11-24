@@ -71,7 +71,7 @@ void UrlHistoryList::createLayout(Evas_Object* parentLayout)
     m_layout = elm_layout_add(parentLayout);
     elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
     Evas_Object* widgetList = m_genlistManager->createWidget(m_layout);
-    m_genlistManager->hideWidgetPretty();
+    m_genlistManager->hideWidget();
     elm_object_part_content_set(m_layout, "list_swallow", widgetList);
     evas_object_hide(widgetList);
     evas_object_hide(m_layout);
@@ -105,9 +105,9 @@ Evas_Object* UrlHistoryList::getGenlist()
     return m_genlistManager->getWidget();
 }
 
-void UrlHistoryList::hideWidgetPretty()
+void UrlHistoryList::hideWidget()
 {
-    m_genlistManager->hideWidgetPretty();
+    m_genlistManager->hideWidget();
 }
 
 bool UrlHistoryList::widgetFocused() const
@@ -119,7 +119,8 @@ void UrlHistoryList::onURLEntryEditedByUser(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
     if (matchedEntries->size() == 0) {
-        m_genlistManager->hideWidgetPretty();
+        m_genlistManager->setSingleBlockHide(false);
+        m_genlistManager->hideWidget();
     } else {
         Evas_Object* widgetList = m_genlistManager->getWidget();
         m_genlistManager->showWidget(editedUrl, matchedEntries);
@@ -146,7 +147,6 @@ void UrlHistoryList::onItemSelect(std::string content)
     } else {
         uriChanged(content);
     }
-    hideWidgetPretty();
 }
 
 void UrlHistoryList::onListWidgetFocusChange(bool focused)
@@ -193,7 +193,7 @@ void UrlHistoryList::_uri_entry_unfocused(void* data, Evas_Object* /* obj */,
         void* /* event_info */)
 {
     UrlHistoryList* self = reinterpret_cast<UrlHistoryList*>(data);
-    self->hideWidgetPretty();
+    self->hideWidget();
 }
 
 }/* namespace base_ui */
