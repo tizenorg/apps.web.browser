@@ -57,24 +57,102 @@
 		<label xml:lang="tr-tr">İnternet</label>
 		<label xml:lang="uk-ua">Браузер</label>
 		<label xml:lang="uz-uz">Интернет</label>
-		<application-service>
-			<operation name="http://tizen.org/appcontrol/operation/view" />
-			<uri name="http" />
-			<uri name="https" />
-			<uri name="file" />
-		</application-service>
-		<application-service>
-			<operation name="http://tizen.org/appcontrol/operation/view" />
-			<mime name="application/x-shockwave-flash" />
-			<mime name="image/svg+xml" />
-			<mime name="text/html" />
-			<mime name="http.uri" />
-			<mime name="file.uri" />
-			<mime name="application/xml" />
-		</application-service>
-    </ui-application>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+         <mime name="application/x-shockwave-flash" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+		  <mime name="image/svg+xml" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+		  <mime name="text/html" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+		  <mime name="http.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+		  <mime name="file.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="http" />
+		  <mime name="application/xml" />
+  		</app-control>  		
+  		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+         <mime name="application/x-shockwave-flash" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+		  <mime name="image/svg+xml" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+		  <mime name="text/html" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+		  <mime name="http.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+		  <mime name="file.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="https" />
+		  <mime name="application/xml" />
+  		</app-control>  				
+  		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+         <mime name="application/x-shockwave-flash" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+		  <mime name="image/svg+xml" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+		  <mime name="text/html" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+		  <mime name="http.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+		  <mime name="file.uri" />
+  		</app-control>
+		<app-control>
+         <operation name="http://tizen.org/appcontrol/operation/view" />
+         <uri name="file" />
+		  <mime name="application/xml" />
+  		</app-control>
+	</ui-application>
     <privileges>
        <privilege>http://tizen.org/privilege/bookmark.admin</privilege>
        <privilege>http://tizen.org/privilege/web-history.admin</privilege>
+       <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
+       <privilege>http://tizen.org/privilege/content.write</privilege>
+       <privilege>http://tizen.org/privilege/notification</privilege>
     </privileges>
 </manifest>

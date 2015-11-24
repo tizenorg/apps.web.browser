@@ -44,6 +44,10 @@
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
 
+#include "DownloadControl/DownloadControl.h" 
+#include <app_control.h>
+#include <app.h>
+
 #define certificate_crt_path CERTS_DIR
 #if MERGE_ME
 #define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
@@ -122,6 +126,9 @@ void WebView::init(bool desktopMode, Evas_Object*)
 
     setupEwkSettings();
     registerCallbacks();
+
+    ewk_context_did_start_download_callback_set(ewk_view_context_get(m_ewkView), __download_request_cb, this);
+
     resume();
 #else
     m_ewkView = evas_object_rectangle_add(evas_object_evas_get(m_parent));
@@ -144,6 +151,7 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_add(m_ewkView, "close,window", __closeWindowRequest, this);
+    evas_object_smart_callback_add(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);  
 
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -156,6 +164,10 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
+
+#if PROFILE_MOBILE
+    evas_object_smart_callback_add(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb, this);
+#endif
 #endif
 }
 
@@ -175,6 +187,7 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "close,window", __closeWindowRequest, this);
+    evas_object_smart_callback_del_full(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -187,6 +200,10 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
+
+#if PROFILE_MOBILE
+    evas_object_smart_callback_del_full(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb,this);
+#endif
 #endif
 }
 
@@ -793,6 +810,366 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
     self->confirmationRequest(c);
 #endif
 }
+#if PROFILE_MOBILE
+context_menu_type WebView::_get_menu_type(Ewk_Context_Menu *menu)
+{
+	unsigned short count = ewk_context_menu_item_count(menu);
+	Eina_Bool text = EINA_FALSE;
+	Eina_Bool link = EINA_FALSE;
+	Eina_Bool image = EINA_FALSE;
+	Eina_Bool email_address = EINA_FALSE;
+	Eina_Bool call_number = EINA_FALSE;
+	Eina_Bool selection_mode = EINA_FALSE;
+	for (unsigned short i = 0 ; i < count ; i++) {
+		Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, i);
+		Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+		//const char *link_url = ewk_context_menu_item_link_url_get(item); //whktest
+		BROWSER_LOGD("tag=%d", tag);
+
+		/*if (link_url && !strncmp(mailto_scheme, link_url, strlen(mailto_scheme)))
+			email_address = EINA_TRUE;
+		if (link_url && !strncmp(tel_scheme, link_url, strlen(tel_scheme)))
+			call_number = EINA_TRUE;*/  //whktest
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_TEXT_SELECTION_MODE)
+			selection_mode = EINA_TRUE;
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_CLIPBOARD)
+			return INPUT_FIELD;
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_SEARCH_WEB)
+			text = EINA_TRUE;
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW || tag == EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD)
+			link = EINA_TRUE;
+		if (tag == EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD)
+			image = EINA_TRUE;
+	}
+
+	if (email_address && selection_mode)
+		return EMAIL_SCHEME;
+	if (call_number && selection_mode)
+		return TEL_SCHEME;
+	if (text && !link)
+		return TEXT_ONLY;
+	if (link && !image)
+		return TEXT_LINK;
+	if (image && !link)
+		return IMAGE_ONLY;
+	 if(selection_mode && image && link)
+		return TEXT_IMAGE_LINK;
+	if (image && link)
+		return IMAGE_LINK;
+
+	return UNKNOWN_MENU;
+}
+
+void WebView::_show_context_menu_text_link(Ewk_Context_Menu *menu)
+{
+	BROWSER_LOGD("");
+
+	unsigned short count = ewk_context_menu_item_count(menu);
+
+         Ewk_Context_Menu_Item_Tag *original_ctx_item = NULL;
+         original_ctx_item = (Ewk_Context_Menu_Item_Tag *)malloc(sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	memset(original_ctx_item, 0x00, sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	for (unsigned short i = 0 ; i < count ; i++) {
+		Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, 0);
+		Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+
+		original_ctx_item[i] = tag;
+		ewk_context_menu_item_remove(menu, item);
+	}
+
+	/* Open */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open", true);
+			break;
+		}
+	}
+	/* Open in new window */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in new tab", true);
+			break;
+		}
+	}	
+	/* Copy link text */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link text", true);
+			break;
+		}
+	}
+	/* Copy link address */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link address", true);
+			break;
+		}
+	}
+	/* Share Link */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, "Share", true);
+			break;
+		}
+	}
+	/* Download link */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, "Download Link", true);
+			break;
+		}
+	}
+
+	free(original_ctx_item);
+}
+
+void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
+{
+	BROWSER_LOGD("");
+
+	unsigned short count = ewk_context_menu_item_count(menu);
+
+	const char *selected_text = ewk_view_text_selection_text_get(m_ewkView);
+	Eina_Bool text_selected = EINA_FALSE;
+	if (selected_text && strlen(selected_text) > 0)
+		text_selected = EINA_TRUE;
+
+	Ewk_Context_Menu_Item_Tag *original_ctx_item = NULL;
+	original_ctx_item = (Ewk_Context_Menu_Item_Tag *)malloc(sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	memset(original_ctx_item, 0x00, sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	for (unsigned short i = 0 ; i < count ; i++) {
+		Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, 0);
+		Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+
+		original_ctx_item[i] = tag;
+		ewk_context_menu_item_remove(menu, item);
+	}
+
+	/* Select all */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL, "Select all", true);
+			break;
+		}
+	}
+
+	/* Copy */
+	if (text_selected == EINA_TRUE) {
+		for (unsigned short i = 0 ; i < count ; i++) {
+			if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY) {
+				ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY, "Copy", true);
+				break;
+			}
+		}
+	}
+
+	/* Share*/
+	if (text_selected == EINA_TRUE) {
+		for (unsigned short i = 0 ; i < count ; i++) {
+			if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS) {
+				ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, "Share", true);
+				break;
+			}
+		}
+	}
+
+	free(original_ctx_item);
+}
+
+
+void WebView::_show_context_menu_image_only(Ewk_Context_Menu *menu)
+{
+	BROWSER_LOGD("");
+
+	unsigned short count = ewk_context_menu_item_count(menu);
+
+	Ewk_Context_Menu_Item_Tag *original_ctx_item = NULL;
+	original_ctx_item = (Ewk_Context_Menu_Item_Tag *)malloc(sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	memset(original_ctx_item, 0x00, sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	for (unsigned short i = 0 ; i < count ; i++) {
+		Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, 0);
+		Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+
+		original_ctx_item[i] = tag;
+		ewk_context_menu_item_remove(menu, item);
+	}
+
+	/* Open in current Tab */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, "Open", true);
+			break;
+		}
+	}
+
+	/* Open in New Tab */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_NEW_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, "Open in new tab", true);
+			break;
+		}
+	}
+
+	/* Copy image */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, "Copy image", true);
+			break;
+		}
+	}
+	/* Save image */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Save image", true);
+			break;
+		}
+	}
+
+	free(original_ctx_item);
+}
+
+void WebView::_show_context_menu_image_link(Ewk_Context_Menu *menu)
+{
+	BROWSER_LOGD("");
+
+	unsigned short count = ewk_context_menu_item_count(menu);
+
+	Ewk_Context_Menu_Item_Tag *original_ctx_item = NULL;
+	original_ctx_item = (Ewk_Context_Menu_Item_Tag *)malloc(sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	memset(original_ctx_item, 0x00, sizeof(Ewk_Context_Menu_Item_Tag) * count);
+
+	for (unsigned short i = 0 ; i < count ; i++) {
+		Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, 0);
+		Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+
+		original_ctx_item[i] = tag;
+		ewk_context_menu_item_remove(menu, item);
+	}
+
+	/* Open in current window */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open", true);
+			break;
+		}
+	}
+
+	/* Open in new window */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in new tab", true);
+			break;
+		}
+	}
+
+	/* Save link */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, "Save link", true);
+			break;
+		}
+	}
+
+	/* Copy link */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link", true);
+			break;
+		}
+	}
+
+        /* Save image */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Save image", true);
+			break;
+		}
+	}
+
+	/* copy image */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, "Copy image", true);
+			break;
+		}
+	}
+
+	/* View image */
+	for (unsigned short i = 0 ; i < count ; i++) {
+		if (original_ctx_item[i] == EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW) {
+			ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, "View image", true);
+			break;
+		}
+	}
+
+	free(original_ctx_item);
+}
+
+void WebView::_customize_context_menu(Ewk_Context_Menu *menu)
+{
+	context_menu_type menu_type = _get_menu_type(menu);
+	BROWSER_LOGD("menu_type=%d", menu_type);
+
+	if (menu_type == UNKNOWN_MENU || menu_type == INPUT_FIELD)
+		return;
+
+	//if (menu_type != TEXT_ONLY)  //whktest
+	//	give_focus(EINA_FALSE);
+
+	switch (menu_type) {
+		case TEXT_ONLY:
+			_show_context_menu_text_only(menu);
+		break;
+
+		case TEXT_LINK:
+			_show_context_menu_text_link(menu);
+		break;
+
+		case IMAGE_ONLY:
+			_show_context_menu_image_only(menu);
+		break;
+
+		case IMAGE_LINK:
+			_show_context_menu_image_link(menu);
+		break;
+/*	//whktest temp need to implement
+		case EMAIL_SCHEME:
+			_show_context_menu_email_address(menu);
+		break;
+
+		case TEL_SCHEME:
+			_show_context_menu_call_number(menu);
+		break;
+
+		case TEXT_IMAGE_LINK:
+			_show_context_menu_text_image_link(menu);
+		break;
+*/
+		default:
+			return;
+		break;
+	}
+}
+
+
+void WebView::__contextmenu_customize_cb(void *data, Evas_Object * /* obj */, void *event_info)
+{
+	BROWSER_LOGD("");
+
+	Ewk_Context_Menu *menu = reinterpret_cast<Ewk_Context_Menu*>(event_info);
+	WebView * self = reinterpret_cast<WebView *>(data);
+
+	self->_customize_context_menu(menu);
+}
+#endif
+
 #endif
 
 void WebView::setFocus()
@@ -934,6 +1311,123 @@ void WebView::switchToMobileMode() {
 
 bool WebView::isDesktopMode() const {
     return m_desktopMode;
+}
+
+download_control dc;
+
+void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, void *event_info)
+{
+	BROWSER_LOGD("");
+	WebView *wv = (WebView *)data;
+
+	Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
+	Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
+
+	wv->m_status_code = ewk_policy_decision_response_status_code_get(policy_decision);
+
+	const char *uri = ewk_policy_decision_url_get(policy_decision);
+//	const char *cookie = ewk_policy_decision_cookie_get(policy_decision);
+	const char *content_type = ewk_policy_decision_response_mime_get(policy_decision);
+	const Eina_Hash *headers = ewk_policy_decision_response_headers_get(policy_decision);
+
+	wv->m_is_error_page = EINA_FALSE;
+
+	switch (policy_type) {
+	case EWK_POLICY_DECISION_USE:
+		BROWSER_LOGD("policy_use");
+		ewk_policy_decision_use(policy_decision);
+		break;
+
+	case EWK_POLICY_DECISION_DOWNLOAD: {
+		BROWSER_LOGD("policy_download");
+		app_control_h app_control = NULL;
+		if (app_control_create(&app_control) < 0) {
+			BROWSER_LOGE("Fail to app_control_create");
+			return;
+		}
+
+	   if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_VIEW) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_operation");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		BROWSER_LOGD("uri: %s", uri);
+		if (app_control_set_uri(app_control, uri) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_uri");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		BROWSER_LOGD("content_type: %s", content_type);
+		if (app_control_set_mime(app_control, content_type) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_mime");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		const char *content_dispotision = (const char *)eina_hash_find(headers, "Content-Disposition");
+		BROWSER_LOGD("Content-disposition: %s", content_dispotision);
+		if (content_dispotision && (strstr(content_dispotision, "attachment") != NULL)){
+			dc.handle_download_request(uri, content_type);
+			app_control_destroy(app_control);
+			ewk_policy_decision_ignore(policy_decision);
+			break;
+		}
+
+		if (!strcmp(content_type, "application/sdp")) {
+			BROWSER_LOGD("sdp : download uri: %s", uri);
+			//m_browser->get_browser_view()->launch_sdp_svc(uri);
+			app_control_destroy(app_control);
+			ewk_policy_decision_ignore(policy_decision);
+			break;
+		}
+
+		if (app_control_send_launch_request(app_control, NULL, NULL) == APP_CONTROL_ERROR_APP_NOT_FOUND) {
+			BROWSER_LOGD("app_control_send_launch_request returns APP_CONTROL_ERROR_APP_NOT_FOUND");
+			dc.handle_download_request(uri, content_type);
+		}
+		app_control_destroy(app_control);
+		ewk_policy_decision_ignore(policy_decision);
+		break;
+	}
+	case EWK_POLICY_DECISION_IGNORE:
+	default:
+		BROWSER_LOGD("policy_ignore");
+		ewk_policy_decision_ignore(policy_decision);
+		break;
+	}
+
+/*	if (wv->m_navigation_count == 1 && policy_type == EWK_POLICY_DECISION_DOWNLOAD) {
+		wv->m_is_download_url = EINA_TRUE;
+		ecore_idler_add(__close_window_idler_cb, data);
+	}*/
+}
+
+void WebView::__download_request_cb(const char *download_uri, void *data)
+{
+	BROWSER_LOGD("download_uri = [%s]", download_uri);
+	BROWSER_LOGD("data=%p", data);
+
+	if (!strncmp(download_uri, "data:", strlen("data:"))){
+		//m_browser->get_browser_view()->show_noti_popup(BR_STRING_DOWNLOADING_ING);
+		BROWSER_LOGD("popup noti 1");
+		if (dc.handle_data_scheme(download_uri) == EINA_TRUE){
+			//m_browser->get_browser_view()->show_noti_popup(BR_STRING_SAVED);
+			BROWSER_LOGD("popup noti 2");
+		}
+		else{
+			BROWSER_LOGD("popup noti 3");
+			//m_browser->get_browser_view()->show_noti_popup(BR_STRING_FAILED);
+		}
+	} else if (strncmp(download_uri, "http://", strlen("http://")) && strncmp(download_uri, "http://", strlen("http://"))) {
+		BROWSER_LOGE("Only http or https URLs can be downloaded");
+		//m_browser->get_browser_view()->show_noti_popup(BR_STRING_HTTP_URL_CAN_BE_DOWNLOADED);
+		BROWSER_LOGD("popup noti 4");
+		return;
+	} else {
+		dc.launch_download_app(download_uri);
+	}
 }
 
 } /* namespace webkitengine_service */
