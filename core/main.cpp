@@ -37,7 +37,11 @@
 #if PLATFORM(TIZEN)
 const std::string DEFAULT_URL = "";
 
-static bool app_create(void * /*app_data*/)
+struct browser_data {
+    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> browser_instance;
+};
+
+static bool app_create(void *app_data)
 {
 #if PROFILE_MOBILE
     tizen_browser::config::DefaultConfig config;
@@ -58,7 +62,8 @@ static bool app_create(void * /*app_data*/)
 #endif
 
     /// \todo: clean casts, depends on ServiceManager
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
+    struct browser_data *ad = (struct browser_data *)app_data;
+    ad->browser_instance =
     std::dynamic_pointer_cast
     <
         tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
@@ -70,20 +75,14 @@ static bool app_create(void * /*app_data*/)
     return true;
 }
 
-static void app_terminate(void */*app_data*/)
+static void app_terminate(void *app_data)
 {
     BROWSER_LOGD("%s\n", __func__);
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->destroyUI();
+    struct browser_data *ad = (struct browser_data *)app_data;
+    ad->browser_instance->destroyUI();
 }
 
-static void app_control(app_control_h app_control, void */*app_data*/){
+static void app_control(app_control_h app_control, void *app_data){
     /* to test this functionality please use aul_test command on target:
      *  $aul_test org.tizen.browser __APP_SVC_URI__ <http://full.url.com/>
      */
@@ -115,44 +114,25 @@ static void app_control(app_control_h app_control, void */*app_data*/){
     free(request_mime_type);
     free(operation);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
+    struct browser_data *ad = (struct browser_data *)app_data;
+    ad->browser_instance->exec(uri);
 
-    mainUi->exec(uri);
-
-    evas_object_show(mainUi->getMainWindow().get());
-    elm_win_activate(mainUi->getMainWindow().get());
+    evas_object_show(ad->browser_instance->getMainWindow().get());
+    elm_win_activate(ad->browser_instance->getMainWindow().get());
 }
 
-static void app_pause(void *){
+static void app_pause(void *app_data){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->suspend();
+    struct browser_data *ad = (struct browser_data *)app_data;
+    ad->browser_instance->suspend();
 }
 
-static void app_resume(void *){
+static void app_resume(void *app_data){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->resume();
+    struct browser_data *ad = (struct browser_data *)app_data;
+    ad->browser_instance->resume();
 }
 
 int main(int argc, char* argv[])try
@@ -181,7 +161,10 @@ int main(int argc, char* argv[])try
     ops.pause = app_pause;
     ops.resume = app_resume;
 
-    ui_app_main(argc, argv, &ops, NULL);
+    struct browser_data ad;
+    memset(&ad, 0x00, sizeof(struct browser_data));
+
+    ui_app_main(argc, argv, &ops, &ad);
 
     ewk_shutdown();
     END()
