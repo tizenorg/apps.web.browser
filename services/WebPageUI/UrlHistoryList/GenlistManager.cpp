@@ -36,13 +36,6 @@ GenlistManager::GenlistManager()
     m_historyItemClass->func.state_get = nullptr;
     m_historyItemClass->func.del = nullptr;
 
-    m_historyItemSpaceClass = elm_genlist_item_class_new();
-    m_historyItemSpaceClass->item_style = "url_historylist_grid_item_space";
-    m_historyItemSpaceClass->func.text_get = nullptr;
-    m_historyItemSpaceClass->func.content_get = nullptr;
-    m_historyItemSpaceClass->func.state_get = nullptr;
-    m_historyItemSpaceClass->func.del = nullptr;
-
     GenlistManagerCallbacks::setGenlistManager(this);
 
     config::DefaultConfig config;
@@ -80,6 +73,11 @@ void GenlistManager::onMouseFocusChange(bool mouseInsideWidget)
     this->m_mouseInsideWidget = mouseInsideWidget;
 }
 
+bool GenlistManager::isMouseInsideWidget()
+{
+    return this->m_mouseInsideWidget;
+}
+
 void GenlistManager::setSingleBlockHide(bool block)
 {
     m_singleHideBlock = block;
@@ -99,16 +97,16 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
         EVAS_HINT_EXPAND);
         evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL,
         EVAS_HINT_FILL);
+        elm_scroller_bounce_set(m_genlist, EINA_FALSE, EINA_FALSE);
+        elm_scroller_movement_block_set(m_genlist,
+                ELM_SCROLLER_MOVEMENT_BLOCK_HORIZONTAL);
+
         if (!GENLIST_SHOW_SCROLLBAR) {
             elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF,
                     ELM_SCROLLER_POLICY_OFF);
         }
         elm_object_event_callback_add(m_genlist,
                 GenlistManagerCallbacks::_object_event, this);
-        evas_object_smart_callback_add(m_genlist, "edge,top",
-                GenlistManagerCallbacks::_genlist_edge_top, this);
-        evas_object_smart_callback_add(m_genlist, "edge,bottom",
-                GenlistManagerCallbacks::_genlist_edge_bottom, this);
 
         evas_object_event_callback_add(m_genlist, EVAS_CALLBACK_MOUSE_IN,
                 GenlistManagerCallbacks::_genlist_mouse_in, this);
@@ -149,11 +147,6 @@ void GenlistManager::showWidget(const string& editedUrl,
     m_itemsManager->setItems( { GenlistItemType::ITEM_LAST }, itemAppended);
 
     adjustWidgetHeight();
-
-    if (getWidgetPreviouslyHidden()) {
-        setWidgetPreviouslyHidden(false);
-        startScrollIn();
-    }
 }
 
 string GenlistManager::getItemUrl(std::initializer_list<GenlistItemType> types) const
@@ -172,37 +165,45 @@ string GenlistManager::getItemUrl(std::initializer_list<GenlistItemType> types) 
     return "";
 }
 
-void GenlistManager::hideWidgetPretty()
+void GenlistManager::hideWidget()
 {
-    if (getSingleBlockHide()) {
+    if(getSingleBlockHide()) {
         setSingleBlockHide(false);
         return;
     }
-
-    if (getWidgetPreviouslyHidden()) {
-        return;
-    }
-
-    m_itemsManager->setItems( { GenlistItemType::ITEM_CURRENT }, nullptr);
-    startScrollOut();
-    setWidgetPreviouslyHidden(true);
-}
-
-bool GenlistManager::getWidgetPreviouslyHidden()
-{
-    return m_widgetPreviouslyHidden;
-}
-
-void GenlistManager::setWidgetPreviouslyHidden(bool previouslyHidden)
-{
-    this->m_widgetPreviouslyHidden = previouslyHidden;
+    clearWidget();
+    evas_object_hide(getWidget());
 }
 
 void GenlistManager::onMouseClick()
 {
-    if (!m_mouseInsideWidget) {
-        hideWidgetPretty();
+    // Handle mouse click in the end, to indicate if the cursor is inside
+    // widget. Callback for the mouse focus comes after onMouseClick()).
+    // Hence a timer is needed.
+    m_timerMouseClickHandle = ecore_timer_add(0.0,
+            GenlistManager::timerMouseClickHandle, this);
+}
+
+void GenlistManager::clearTimerMouseClickHandle()
+{
+    ecore_timer_del(m_timerMouseClickHandle);
+    m_timerMouseClickHandle = nullptr;
+}
+
+Eina_Bool GenlistManager::timerMouseClickHandle(void* data)
+{
+    auto self = reinterpret_cast<GenlistManager*>(data);
+    if(!self) return EINA_FALSE;
+
+    self->clearTimerMouseClickHandle();
+
+    if (!self->isMouseInsideWidget()) {
+        self->hideWidget();
+    } else {
+        // don't hide widget, when curosr is inside
+        self->setSingleBlockHide(true);
     }
+    return EINA_FALSE;
 }
 
 void GenlistManager::adjustWidgetHeight()
@@ -220,62 +221,6 @@ void GenlistManager::adjustWidgetHeight()
     h = ITEM_H * m_historyItemsVisibleCurrent;
 
     evas_object_resize(m_genlist, w, h);
-}
-
-void GenlistManager::startScrollIn()
-{
-    if (m_itemsManager->getItem(GenlistItemType::ITEM_FIRST)) {
-        addSpaces();
-        elm_genlist_item_show(
-                m_itemsManager->getItem(GenlistItemType::ITEM_SPACE_LAST),
-                ELM_GENLIST_ITEM_SCROLLTO_TOP);
-        elm_genlist_item_bring_in(
-                m_itemsManager->getItem(GenlistItemType::ITEM_FIRST),
-                ELM_GENLIST_ITEM_SCROLLTO_TOP);
-    }
-}
-
-void GenlistManager::startScrollOut()
-{
-    addSpaces();
-    Elm_Object_Item* first = m_itemsManager->getItem(
-            GenlistItemType::ITEM_SPACE_FIRST);
-    if (first) {
-        elm_genlist_item_bring_in(first, ELM_GENLIST_ITEM_SCROLLTO_TOP);
-    }
-}
-
-void GenlistManager::addSpaces()
-{
-    if (m_itemsManager->getItem(GenlistItemType::ITEM_LAST)) {
-
-        m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
-                GenlistItemType::ITEM_SPACE_LAST }, nullptr);
-
-        Elm_Object_Item* itemAppended = nullptr;
-        for (auto i = 0; i < m_historyItemsVisibleCurrent; ++i) {
-            // append spaces to the last url item, so they can be easily cleared
-            itemAppended = elm_genlist_item_append(m_genlist,
-                    m_historyItemSpaceClass, nullptr,
-                    m_itemsManager->getItem(GenlistItemType::ITEM_LAST),
-                    ELM_GENLIST_ITEM_NONE, nullptr, nullptr);
-            m_itemsManager->setItemsIfNullptr( {
-                    GenlistItemType::ITEM_SPACE_FIRST }, itemAppended);
-        }
-
-        m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_LAST },
-                itemAppended);
-    }
-}
-
-void GenlistManager::removeSpaces()
-{
-    if (m_itemsManager->getItem(GenlistItemType::ITEM_LAST)) {
-        elm_genlist_item_subitems_clear(
-                m_itemsManager->getItem(GenlistItemType::ITEM_LAST));
-    }
-    m_itemsManager->setItems( { GenlistItemType::ITEM_SPACE_FIRST,
-            GenlistItemType::ITEM_SPACE_LAST }, nullptr);
 }
 
 Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,

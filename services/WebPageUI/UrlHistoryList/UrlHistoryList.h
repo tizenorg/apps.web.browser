@@ -62,10 +62,7 @@ public:
     void onItemFocusChange();
     void onMouseClick();
 
-    /**
-     * Hide widget by sliding out.
-     */
-    void hideWidgetPretty();
+    void hideWidget();
 
     /**
      * @return True if widget is focused.
