@@ -39,6 +39,8 @@ public:
     Evas_Object* getContent();
     void showUI();
     void hideUI();
+    void onBackKey();
+    bool isSubpage();
     virtual std::string getName();
     Evas_Object* createActionBar(Evas_Object* settings_layout);
     Evas_Object* createBackActionBar(Evas_Object* settings_layout);
@@ -55,7 +57,8 @@ public:
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
     void resetItemsLayoutContent();
-
+//    void onBackKey();
+//    bool isSubpage();
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void back_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
