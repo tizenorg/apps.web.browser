@@ -43,6 +43,8 @@ const char *engineCommandLineFlags[] = {
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
 
+using BrowserDataPtr = std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>>;
+
 static void set_arguments(int argc, char **argv)
 {
     std::vector<char*> browser_argv;
@@ -54,7 +56,7 @@ static void set_arguments(int argc, char **argv)
     ewk_set_arguments(browser_argv.size(), browser_argv.data());
 }
 
-static bool app_create(void * /*app_data*/)
+static bool app_create(void* app_data)
 {
     elm_config_accel_preference_set("opengl:depth24:stencil8");
 
@@ -71,32 +73,25 @@ static bool app_create(void * /*app_data*/)
     elm_config_cache_font_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
     elm_config_cache_image_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_IMAGE_VALUE)));
 
-    /// \todo: clean casts, depends on ServiceManager
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
+    auto bd = static_cast<BrowserDataPtr*>(app_data);
+    *bd = std::dynamic_pointer_cast
+        <
+            tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
+            tizen_browser::core::AbstractService
+        >
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
     elm_app_base_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
     return true;
 }
 
-static void app_terminate(void */*app_data*/)
+static void app_terminate(void* app_data)
 {
     BROWSER_LOGD("%s\n", __func__);
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->destroyUI();
+    auto bd = static_cast<BrowserDataPtr*>(app_data);
+    (*bd)->destroyUI();
 }
 
-static void app_control(app_control_h app_control, void */*app_data*/){
+static void app_control(app_control_h app_control, void* app_data){
     /* to test this functionality please use aul_test command on target:
      *  $aul_test org.tizen.browser __APP_SVC_URI__ <http://full.url.com/>
      */
@@ -128,44 +123,24 @@ static void app_control(app_control_h app_control, void */*app_data*/){
     free(request_mime_type);
     free(operation);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-
-    mainUi->exec(uri);
-
-    evas_object_show(mainUi->getMainWindow().get());
-    elm_win_activate(mainUi->getMainWindow().get());
+    auto bd = static_cast<BrowserDataPtr*>(app_data);
+    (*bd)->exec(uri);
+    evas_object_show((*bd)->getMainWindow().get());
+    elm_win_activate((*bd)->getMainWindow().get());
 }
 
-static void app_pause(void *){
+static void app_pause(void* app_data){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->suspend();
+    auto bd = static_cast<BrowserDataPtr*>(app_data);
+    (*bd)->suspend();
 }
 
-static void app_resume(void *){
+static void app_resume(void* app_data){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->resume();
+    auto bd = static_cast<BrowserDataPtr*>(app_data);
+    (*bd)->resume();
 }
 
 #if PROFILE_MOBILE
@@ -214,12 +189,14 @@ int main(int argc, char* argv[])try
     ops.pause = app_pause;
     ops.resume = app_resume;
 
+    BrowserDataPtr bd;
+
 #if PROFILE_MOBILE
     app_event_handler_h lang_changed_handler;
     ui_app_add_event_handler(&lang_changed_handler, APP_EVENT_LANGUAGE_CHANGED, app_language_changed, NULL);
 #endif
 
-    ui_app_main(argc, argv, &ops, NULL);
+    ui_app_main(argc, argv, &ops, &bd);
 
     ewk_shutdown();
     END()
