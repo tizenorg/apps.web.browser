@@ -693,6 +693,10 @@ void SimpleUI::onBackPressed()
         switchViewToQuickAccess();
     } else if ((m_viewManager.topOfStack() == m_webPageUI.get())) {
         m_webEngine->backButtonClicked();
+#if PROFILE_MOBILE
+    } else if ((m_viewManager.topOfStack() == m_settingsUI.get()) && m_settingsUI->isSubpage()) {
+        m_settingsUI->onBackKey();
+#endif
     } else {
         m_viewManager.popTheStack();
     }
