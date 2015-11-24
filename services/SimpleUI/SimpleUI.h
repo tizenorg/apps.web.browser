@@ -37,7 +37,11 @@
 #include "AbstractWebEngine.h"
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
+#if PROFILE_MOBILE
+#include "SettingsUI_mob.h"
+#else
 #include "SettingsUI.h"
+#endif
 #include "QuickAccess.h"
 #include "TabUI.h"
 #include "ZoomUI.h"

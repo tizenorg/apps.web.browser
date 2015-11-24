@@ -299,9 +299,7 @@ void SettingsUI::back_clicked_cb(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         SettingsUI * s_ui = static_cast<SettingsUI*>(data);
-        s_ui->resetItemsLayoutContent();
-        s_ui->m_actionBar = s_ui->createActionBar(s_ui->m_settings_layout);
-        s_ui->m_items_layout = s_ui->createSettingsMobilePage(s_ui->m_settings_layout);
+        s_ui->onBackKey();
     }
 }
 
@@ -378,7 +376,17 @@ void SettingsUI::resetItemsLayoutContent(){
     evas_object_del(this->m_actionBar);
     evas_object_del(this->m_items_layout);
     evas_object_del(this->m_subpage_layout);
+    this->m_subpage_layout = nullptr;
 }
 
+bool SettingsUI::isSubpage() {
+    return (m_subpage_layout != nullptr);
+}
+
+void SettingsUI::onBackKey() {
+    resetItemsLayoutContent();
+    m_actionBar = createActionBar(m_settings_layout);
+    m_items_layout = createSettingsMobilePage(m_settings_layout);
+}
 }
 }
