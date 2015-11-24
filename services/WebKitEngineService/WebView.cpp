@@ -402,6 +402,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
         // set certificate confirmation
         BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+        ewk_view_resume(m_ewkView);
 
         // remove from map
         m_confirmationCertificatenMap.erase(cert);
