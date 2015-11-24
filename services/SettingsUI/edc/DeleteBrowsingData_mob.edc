@@ -468,8 +468,8 @@ group {
             }
             program {
                 name: "mouse_in_del_selected_data_click";
-                signal: "mouse,in";
-                source: "del_selected_data_*";
+                signal: "mouse,down,1";
+                source: "del_selected_data_click";
                 action: STATE_SET "highlight" 0.0;
                 target: "del_selected_data_button";
                 target: "del_selected_data_over";
@@ -477,8 +477,8 @@ group {
          }
             program {
                 name: "mouse_out_del_selected_data_click";
-                signal: "mouse,out";
-                source: "del_selected_data_*";
+                signal: "mouse,up,1";
+                source: "del_selected_data_click";
                 action: STATE_SET "default" 0.0;
                 target: "del_selected_data_button";
                 target: "del_selected_data_over";
