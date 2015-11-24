@@ -222,16 +222,16 @@ group {
             }
            program {
                 name: "mouse_in_reset_most_visited_click";
-                signal: "mouse,in";
-                source: "reset_most_visited_*";
+                signal: "mouse,down,1";
+                source: "reset_most_visited_click";
                 action: STATE_SET "highlight" 0.0;
                 target: "reset_most_visited_button";
                 target: "reset_most_visited_over";
              }
             program {
                 name: "mouse_out_reset_most_visited_click";
-                signal: "mouse,out";
-                source: "reset_most_visited_*";
+                signal: "mouse,up,1";
+                source: "reset_most_visited_click";
                 action: STATE_SET "default" 0.0;
                 target: "reset_most_visited_button";
                 target: "reset_most_visited_over";
