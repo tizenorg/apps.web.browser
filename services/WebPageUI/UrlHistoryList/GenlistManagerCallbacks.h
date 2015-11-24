@@ -30,16 +30,14 @@ public:
     GenlistManagerCallbacks();
     virtual ~GenlistManagerCallbacks();
 
-    static void _genlist_edge_top(void* data, Evas_Object* obj,
-            void* event_info);
-    static void _genlist_edge_bottom(void* data, Evas_Object* obj,
-            void* event_info);
-
     static void _genlist_mouse_in(void* data, Evas* e, Evas_Object* obj,
             void* event_info);
     static void _genlist_mouse_out(void* data, Evas* e, Evas_Object* obj,
             void* event_info);
 
+    /**
+     * Handles keyboard events: up and down keys.
+     */
     static Eina_Bool _object_event(void* data, Evas_Object* obj,
             Evas_Object* src, Evas_Callback_Type type, void* event_info);
 

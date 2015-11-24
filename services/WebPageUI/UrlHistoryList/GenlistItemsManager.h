@@ -29,7 +29,7 @@ namespace base_ui {
 
 enum class GenlistItemType
 {
-    ITEM_CURRENT, ITEM_FIRST, ITEM_LAST, ITEM_SPACE_FIRST, ITEM_SPACE_LAST
+    ITEM_CURRENT, ITEM_FIRST, ITEM_LAST
 };
 
 /**

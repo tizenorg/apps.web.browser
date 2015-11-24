@@ -28,18 +28,12 @@ GenlistItemsManager::GenlistItemsManager()
         {   GenlistItemType::ITEM_FIRST,
             make_shared<Elm_Object_Item*>()},
         {   GenlistItemType::ITEM_LAST,
-            make_shared<Elm_Object_Item*>()},
-        {   GenlistItemType::ITEM_SPACE_FIRST,
-            make_shared<Elm_Object_Item*>()},
-        {   GenlistItemType::ITEM_SPACE_LAST,
             make_shared<Elm_Object_Item*>()}
     };
     namesMap = {
             { GenlistItemType::ITEM_CURRENT, "ITEM_CURRENT" },
             { GenlistItemType::ITEM_FIRST, "ITEM_FIRST" },
-            { GenlistItemType::ITEM_LAST, "ITEM_LAST" },
-            { GenlistItemType::ITEM_SPACE_FIRST, "ITEM_SPACE_FIRST" },
-            { GenlistItemType::ITEM_SPACE_LAST, "ITEM_SPACE_LAST" }
+            { GenlistItemType::ITEM_LAST, "ITEM_LAST" }
     };
 }
 
