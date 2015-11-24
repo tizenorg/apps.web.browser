@@ -569,9 +569,15 @@ Evas_Object * MoreMenuUI::_grid_content_get(void *data, Evas_Object *obj, const 
 
         if (!strncmp(part_name2, part, part_name2_len)) {
             Evas_Object *thumbButton = elm_button_add(obj);
+#if PROFILE_MOBILE
+            elm_object_style_set(thumbButton, "invisible_button");
+            evas_object_smart_callback_add(thumbButton, "clicked", _thumbSelected, data);
+            elm_object_part_content_set(obj, "thumbnail_click", thumbButton);
+#else
             elm_object_style_set(thumbButton, "clickButton");
             evas_object_event_callback_add(thumbButton, EVAS_CALLBACK_MOUSE_IN, __cb_mouse_in, data);
             evas_object_event_callback_add(thumbButton, EVAS_CALLBACK_MOUSE_OUT, __cb_mouse_out, data);
+#endif
             return thumbButton;
         }
     }
@@ -581,6 +587,7 @@ Evas_Object * MoreMenuUI::_grid_content_get(void *data, Evas_Object *obj, const 
 void MoreMenuUI::__cb_mouse_in(void * data, Evas *, Evas_Object *obj, void *)
 {
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+
 #if PROFILE_MOBILE
     M_UNUSED(data);
     M_UNUSED(obj);

@@ -1,3 +1,5 @@
+#include "../../../core/Tools/edc/InvisibleButton.edc"
+
 #define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
    group { \
       name: FILE_NAME; \
@@ -561,7 +563,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_06.png")
                     color: 244 244 244 255;
                 }
                 description {
-                    state: "selected";
+                    state: "selected" 0.0;
                     inherit: "default" 0.0;
                     color: 224 237 251 255;
                 }
@@ -692,6 +694,24 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_06.png")
                 }
             }
             part {
+                name: "thumbnail_click";
+                type: SWALLOW;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "thumbnail_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "thumbnail_bg";
+                    }
+                }
+            }
+            part {
                 name: "thumbnail_over";
                 type: RECT;
                 mouse_events: 1;
@@ -712,15 +732,30 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_06.png")
         }
         programs {
             program {
-                name: "mouse,down";
+                name: "thumbnail_down";
+                source: "thumbnail_click";
                 signal: "mouse,down,*";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "thumbnail_up";
+                signal: "mouse,up,*";
+                source: "thumbnail_click";
+                action: STATE_SET "default" 0.0;
+                target: "thumbnail_bg";
+            }
+            program {
+                name: "mouse_in";
+                signal: "mouse,in";
                 source: "thumbnail_over";
                 action: STATE_SET "selected" 0.0;
                 target: "thumbnail_bg";
             }
             program {
-                name: "mouse,up";
-                signal: "mouse,up,*";
+                name: "mouse_out";
+                signal: "mouse,out";
                 source: "thumbnail_over";
                 action: STATE_SET "default" 0.0;
                 target: "thumbnail_bg";
