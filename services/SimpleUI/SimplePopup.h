@@ -24,12 +24,12 @@
 #include <memory>
 #include <boost/signals2/signal.hpp>
 
+#include "AbstractPopup.h"
 #include "PopupButtons.h"
 #include "WebConfirmation.h"
 
 namespace tizen_browser
 {
-
 namespace base_ui
 {
 
@@ -48,13 +48,16 @@ struct EntryPopupData : public PopupData {
     Evas_Object * entry;
 };
 
-class SimplePopup
+class SimplePopup : public interfaces::AbstractPopup
 {
 public:
     static SimplePopup* createPopup();
     static SimplePopup* createPopup(const std::string &title, const std::string &message);
 
     void show();
+    void dismiss();
+    void onBackPressed();
+
     void setTitle(const std::string &title);
     void setMessage(const std::string &message);
     void setContent(Evas_Object *content);
@@ -62,6 +65,8 @@ public:
     void addButton(PopupButtons buttonId);
 
     boost::signals2::signal<void (PopupButtons, std::shared_ptr<PopupData>)> buttonClicked;
+    boost::signals2::signal<void (interfaces::AbstractPopup*)> popupShown;
+    boost::signals2::signal<void (interfaces::AbstractPopup*)> popupDismissed;
 
     ~SimplePopup();
 

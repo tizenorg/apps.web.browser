@@ -252,7 +252,9 @@ private:
 #endif
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
-    void showPopup(Evas_Object *content, char* btn1_text, char* btn2_text);
+
+    void showPopup(interfaces::AbstractPopup* popup);
+    void dismissPopup(interfaces::AbstractPopup* popup);
 
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
@@ -275,7 +277,8 @@ private:
     std::string edjePath(const std::string &);
 
     config::DefaultConfigUniquePtr m_config;
-    Evas_Object *m_popup;
+
+    std::vector<interfaces::AbstractPopup*> m_popupVector;
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;

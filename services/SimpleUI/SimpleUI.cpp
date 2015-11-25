@@ -63,7 +63,6 @@ const int ROOT_FOLDER = 0;
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
-    , m_popup(nullptr)
     , m_webPageUI()
     , m_moreMenuUI()
     , m_bookmarkFlowUI()
@@ -683,7 +682,9 @@ void SimpleUI::onBackPressed()
         m_zoomUI->escapeZoom();
     } else
 #endif
-    if ((m_viewManager.topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
+    if (m_popupVector.size() > 0) {
+        m_popupVector.back()->onBackPressed();
+    } else if ((m_viewManager.topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
         m_tabUI->onBackKey();
     } else if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
         m_viewManager.popTheStack();
@@ -699,6 +700,26 @@ void SimpleUI::onBackPressed()
 #endif
     } else {
         m_viewManager.popTheStack();
+    }
+}
+
+void SimpleUI::showPopup(interfaces::AbstractPopup* popup)
+{
+    BROWSER_LOGD("[%s]", __func__);
+    m_popupVector.push_back(popup);
+}
+
+void SimpleUI::dismissPopup(interfaces::AbstractPopup* popup)
+{
+    BROWSER_LOGD("[%s]", __func__);
+    std::vector<interfaces::AbstractPopup*>::reverse_iterator it = m_popupVector.rbegin();
+    for (; it != m_popupVector.rend(); ++it)
+    {
+        if (popup == *it){
+            delete *it;
+            m_popupVector.erase(--it.base());
+            break;
+        }
     }
 }
 
@@ -970,6 +991,8 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         popupData->auth = auth;
         popup->setData(popupData);
         popup->buttonClicked.connect(boost::bind(&SimpleUI::authPopupButtonClicked, this, _1, _2));
+        popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+        popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
         popup->show();
         break;
         }
@@ -1203,6 +1226,8 @@ void SimpleUI::settingsResetBrowser()
     popup->addButton(CANCEL);
     popup->setMessage("Are you sure you want to reset browser?");
     popup->buttonClicked.connect(boost::bind(&SimpleUI::onResetBrowserButton, this, _1, _2));
+    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     popup->show();
 }
 
@@ -1257,6 +1282,8 @@ bool SimpleUI::checkIfCreate()
         popup->addButton(OK);
         popup->setMessage("Close other tabs to open another new tab");
         popup->buttonClicked.connect(boost::bind(&SimpleUI::tabLimitPopupButtonClicked, this, _1, _2));
+        popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+        popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
         popup->show();
         return false;
     }
