@@ -205,6 +205,15 @@ Evas_Object * WebView::getLayout()
     return m_ewkView;
 }
 
+void WebView::deleteWebView()
+{
+    if (m_ewkView) {
+        unregisterCallbacks();
+        evas_object_del(m_ewkView);
+        m_ewkView = nullptr;
+    }
+}
+
 void WebView::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());

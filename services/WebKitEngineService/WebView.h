@@ -66,6 +66,8 @@ public:
 
     Evas_Object * getLayout();
 
+    void deleteWebView();
+
     void confirmationResult(WebConfirmationPtr);
 
     /**

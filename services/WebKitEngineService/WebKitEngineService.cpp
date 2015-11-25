@@ -405,6 +405,10 @@ bool WebKitEngineService::closeTab(TabId id) {
     m_tabs.erase(closingTabId);
     m_chronoTabs.remove(closingTabId);
     m_mostRecentTab.remove(closingTabId);
+    if (m_currentWebView) {
+        disconnectSignals(m_currentWebView);
+        m_currentWebView->deleteWebView();
+    }
     if (m_tabs.size() == 0) {
         m_currentTabId = TabId::NONE;
     }
