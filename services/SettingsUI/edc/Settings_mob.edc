@@ -26,6 +26,7 @@ scale:1;                                                            \
 #include "DeleteBrowsingData_mob.edc"
 #include "ResetBrowser_mob.edc"
 #include "ResetMostVisited_mob.edc"
+#include "BandwidthManagement_mob.edc"
 
 collections
 {
@@ -565,6 +566,126 @@ group {
                 color_class: defaultListColor;
             }
         }
+        part{
+            name: "bandwidth_management_spacer";
+            type: SPACER;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                fixed: 1 1;
+                min: 32 120;
+                max: 32 120;
+                align: 0 0;
+                rel1 { relative: 0.0 1.0;to: "reset_browser_spacer";}
+                rel2 { relative: 1.0 1.0;}
+            }
+        }
+        part{
+                name: "bandwidth_management_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    min: 600 120;
+                    max: 600 120;
+                    align: 0 0;
+                    rel1 { relative: 1.0 0.0;to: "bandwidth_management_spacer";}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        min: 0 1;
+                        max: 1 1;
+                        text: "Bandwidth Management";
+                        style: "check_box_text";
+                    }
+                }
+        }
+        part{
+                    name: "bandwidth_management_arrow_spacer";
+                    type: SPACER;
+                    scale: 1;
+                    description {
+                        state: "default" 0.0;
+                        fixed: 1 1;
+                        min: 28 120;
+                        max: 28 120;
+                        align: 0 0;
+                        rel1 { relative: 1.0 0.0;to: "bandwidth_management_text";}
+                        rel2 { relative: 1.0 1.0;}
+                    }
+                }
+        part{
+                    name: "bandwidth_management_arrow";
+                    type: IMAGE;
+                    scale: 1;
+                    description {
+                        state: "default" 0.0;
+                        visible: 1;
+                        fixed: 1 1;
+                        min: 38 38;
+                        max: 38 38;
+                        align: 0 0.5;
+                        image.normal: "list_ic_arrow.png";
+                        rel1 { relative: 1.0 0.0;to: "bandwidth_management_arrow_spacer";}
+                        rel2 { relative: 1.0 1.0;to: "bandwidth_management_arrow_spacer";}
+                    }
+        }
+        part{
+            name: "bandwidth_management_button";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                align: 0 0;
+                visible: 0;
+                rel1 { relative: 0.0 1.0;to: "reset_browser_button";}
+                rel2 { relative: 1.0 1.0;}
+                color_class: defaultListColor;
+            }
+            description {
+                state: "highlight" 0.0;
+                inherit: "default" 0.0;
+                color_class: pressListColor;
+                visible: 1;
+            }
+        }
+        part {
+            name: "bandwidth_management_over";
+            scale:1;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                rel1 { relative: 0.0 0.0; to: "bandwidth_management_button";}
+                rel2 { relative: 1.0 1.0; to: "bandwidth_management_button";}
+                color_class: defaultListColor;
+            }
+        }
+
+        part {
+            name: "bandwidth_management_click";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                rel1 { relative: 0.0 0.0; to: "bandwidth_management_over";}
+                rel2 { relative: 1.0 1.0; to: "bandwidth_management_over";}
+                color_class: defaultListColor;
+            }
+        }
         part {
                 name: "line1";
                 scale:1;
@@ -624,6 +745,22 @@ group {
                     max: 720 2;
                     align: 0 0;
                     rel1 { relative: 0.0 1.0; to: "reset_browser_spacer";}
+                    rel2 { relative: 1.0 1.0;}
+                    color: 0 0 0 13;
+                }
+            }
+         part {
+                name: "line5";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    min: 720 2;
+                    max: 720 2;
+                    align: 0 0;
+                    rel1 { relative: 0.0 1.0; to: "bandwidth_management_spacer";}
                     rel2 { relative: 1.0 1.0;}
                     color: 0 0 0 13;
                 }
@@ -737,6 +874,31 @@ group {
                 target: "reset_browser_button";
                 target: "reset_browser_over";
                 target: "reset_browser_text";
+            }
+           //Bandwidth Management
+            program {
+                name: "mouse_click_bandwidth_management";
+                signal: "mouse,clicked,1";
+                source: "bandwidth_management_over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "mouse_in_bandwidth_management_click";
+                signal: "mouse,in";
+                source: "bandwidth_management_*";
+                action: STATE_SET "highlight" 0.0;
+                target: "bandwidth_management_button";
+            }
+            program {
+                name: "mouse_out_bandwidth_management_click";
+                signal: "mouse,out";
+                source: "bandwidth_management_*";
+                action: STATE_SET "default" 0.0;
+                target: "bandwidth_management_button";
+                target: "bandwidth_management_over";
+                target: "bandwidth_management_text";
             }
         }
     }

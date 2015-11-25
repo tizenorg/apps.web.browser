@@ -165,6 +165,10 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_menu_clicked_cb, (void*)id);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
 
+    Evas_Object *bandwidth_management_button = elm_button_add(layout);
+    elm_object_style_set(bandwidth_management_button, "basic_button");
+    evas_object_smart_callback_add(bandwidth_management_button, "clicked", _bandwidth_mgt_menu_clicked_cb, (void*)id);
+    elm_layout_content_set(layout, "bandwidth_management_click", bandwidth_management_button);
 
     return layout;
 }
@@ -257,6 +261,30 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     elm_object_style_set(reset_browser_button, "basic_button");
     evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_clicked_cb, (void*)id);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
+
+    return layout;
+}
+
+Evas_Object* SettingsUI::createBandwidthMgtMobilePage(Evas_Object* settings_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    ItemData *id = new ItemData;
+    id->settingsUI = this;
+
+    Evas_Object* layout = elm_layout_add(settings_layout);
+    elm_layout_file_set(layout, m_edjFilePath.c_str(), "bandwidth_management");
+    elm_object_part_content_set(settings_layout, "settings_subpage_swallow", layout);
+    evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    elm_object_signal_emit(m_actionBar,"switch,bandwidth,browser", "del_but");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+
+    Evas_Object* overview_checkbox = elm_check_add(layout);
+    elm_object_style_set(overview_checkbox, "custom_check");
+    elm_check_state_set(overview_checkbox, EINA_TRUE);
+    elm_layout_content_set(layout, "overview_cb", overview_checkbox);
 
     return layout;
 }
@@ -369,6 +397,17 @@ void SettingsUI::_reset_browser_menu_clicked_cb(void *data, Evas_Object*, void*)
         id->settingsUI->resetItemsLayoutContent();
         id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
         id->settingsUI->m_subpage_layout = id->settingsUI->createRemoveBrowserDataMobilePage(id->settingsUI->m_settings_layout);
+    }
+}
+
+void SettingsUI::_bandwidth_mgt_menu_clicked_cb(void *data, Evas_Object*, void*)
+{
+     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        ItemData* id = static_cast<ItemData*>(data);
+        id->settingsUI->resetItemsLayoutContent();
+        id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
+        id->settingsUI->m_subpage_layout = id->settingsUI->createBandwidthMgtMobilePage(id->settingsUI->m_settings_layout);
     }
 }
 

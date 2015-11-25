@@ -115,6 +115,19 @@ group
                 }
             }
             description {
+                state: "bandwidthMgt" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                text {
+                    min: 0 1;
+                    max: 1 1;
+                    text: "Bandwidth Management";
+                    font: "Sans";
+                    size: 54;
+                    align: 0.5 0.5;
+                }
+            }
+            description {
                 state: "highlight" 0.0;
                 inherit: "default" 0.0;
                 color_class: focusBgColor1;
@@ -275,6 +288,14 @@ group
                 signal: "switch,reset,browser";
                 source: "del_but";
                 action: STATE_SET "resBrowser" 0.0;
+                target: "settings_title";
+                after: "backIconChange";
+            }
+            program {
+                name: "toBandwidthMgt";
+                signal: "switch,bandwidth,browser";
+                source: "del_but";
+                action: STATE_SET "bandwidthMgt" 0.0;
                 target: "settings_title";
                 after: "backIconChange";
             }

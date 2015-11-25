@@ -46,6 +46,7 @@ public:
     Evas_Object* createDelDataMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveMostVisitedMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveBrowserDataMobilePage(Evas_Object* settings_layout);
+    Evas_Object* createBandwidthMgtMobilePage(Evas_Object* settings_layout);
 
     boost::signals2::signal<void ()> resetBrowserClicked;
     boost::signals2::signal<void ()> resetMostVisitedClicked;
@@ -68,6 +69,7 @@ private:
 
     static void _reset_browser_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _reset_browser_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+    static void _bandwidth_mgt_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
     Evas_Object *m_settings_layout;
     Evas_Object *m_actionBar;
