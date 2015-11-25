@@ -27,7 +27,11 @@ namespace tizen_browser {
 namespace base_ui {
 
 #define GUIDE_TEXT_FOCUSED "Search or URL"
+#if PROFILE_MOBILE
+#define GUIDE_TEXT_UNFOCUSED "Search or URL"
+#else
 #define GUIDE_TEXT_UNFOCUSED "Search or URL - Press [A] to enter"
+#endif
 
 const std::string keynameSelect = "Select";
 const std::string keynameClear = "Clear";
