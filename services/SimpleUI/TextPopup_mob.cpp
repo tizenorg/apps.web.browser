@@ -51,6 +51,15 @@ TextPopup::TextPopup(Evas_Object* parent,
 void TextPopup::show()
 {
     createLayout();
+    popupShown(this);
+}
+
+void TextPopup::dismiss(){
+    popupDismissed(this);
+}
+
+void TextPopup::onBackPressed(){
+    dismiss();
 }
 
 void TextPopup::_left_response_cb(void* data,
@@ -60,7 +69,7 @@ void TextPopup::_left_response_cb(void* data,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     TextPopup *self = static_cast<TextPopup*>(data);
     self->buttonClicked(PopupButtons::CANCEL);
-    delete self;
+    self->dismiss();
 }
 
 void TextPopup::_right_response_cb(void* data,
@@ -70,7 +79,7 @@ void TextPopup::_right_response_cb(void* data,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     TextPopup *self = static_cast<TextPopup*>(data);
     self->buttonClicked(PopupButtons::OK);
-    delete self;
+    self->dismiss();
 }
 
 void TextPopup::setTitle(const std::string& title)

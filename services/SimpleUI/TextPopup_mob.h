@@ -22,8 +22,8 @@
 #include <string>
 #include <list>
 #include <memory>
-#include <boost/signals2/signal.hpp>
 
+#include "AbstractPopup.h"
 #include "PopupButtons.h"
 #include "WebConfirmation.h"
 
@@ -33,13 +33,16 @@ namespace tizen_browser
 namespace base_ui
 {
 
-class TextPopup
+class TextPopup : public interfaces::AbstractPopup
 {
 public:
     static TextPopup* createPopup(Evas_Object* parent);
     static TextPopup* createPopup(Evas_Object* parent, const std::string& title, const std::string& message);
 
     void show();
+    void dismiss();
+    void onBackPressed();
+
     void setTitle(const std::string& title);
     void setMessage(const std::string& message);
     void setLeftButton(const PopupButtons& button);

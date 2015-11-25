@@ -34,6 +34,7 @@ namespace base_ui
        ,CONNECT = 1 << 6
        ,CONTINUE= 1 << 7
        ,CLOSE_TAB = 1 << 8
+       ,RESET   = 1 << 9
     };
 
     static std::map<PopupButtons, std::string> createTranslations()
@@ -47,6 +48,7 @@ namespace base_ui
         m[CONNECT] = "Connect";
         m[CONTINUE] = "Continue";
         m[CLOSE_TAB] = "Close tab";
+        m[RESET] = "Reset";
 
         return m;
     }
