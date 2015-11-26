@@ -9,13 +9,26 @@
 #define MOREMENU_HEIGHT 588
 #define MOREMENU_WIDTH 720
 #include "../../../core/Tools/edc/Spacer.edc"
+#include "ReaderMode_mob.edc"
 
 collections {
     group {
         name: "main_layout";
         images {
             image: "btn_bar_incognito.png" COMP;
+            image: "reader_mode_icon.png" COMP;
         }
+        color_classes{
+            color_class{
+                name: "focusBgColor";
+                color: 69 143 255 255;
+            }
+            color_class{
+                name: "transparent";
+                color: 0 0 0 0;
+            }
+        }
+
         parts {
             part {
                 name: "bg";
@@ -238,6 +251,7 @@ collections {
                 visible: 1;
             }
         }
+            READER_MODE_EDC()
             part {
                 name: "web_view";
                 type : SWALLOW;
@@ -250,6 +264,14 @@ collections {
                     min: URI_BG_WIDTH WEB_VIEW_HEIGHT;
                     max: URI_BG_WIDTH WEB_VIEW_HEIGHT;
                     rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+                description {
+                    state: "reader_mode_shown" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_BG_WIDTH WEB_VIEW_HEIGHT - URI_BG_HEIGHT;
+                    max: URI_BG_WIDTH WEB_VIEW_HEIGHT - URI_BG_HEIGHT;
+                    rel1 { relative: 0.0 1.0; to: "reader_bar_bg"; }
                     rel2 { relative: 1.0 1.0; to: "bg"; }
                 }
                 description {
@@ -452,6 +474,7 @@ collections {
                 in: 0.01 0.0;
                 action: STATE_SET "hidden" 0.0;
                 target: "uri_bar_bg";
+                target: "reader_bar_bg";
                 transition: LINEAR 0.15;
                 after: "hide_uri_bar_finished";
             }
@@ -467,6 +490,7 @@ collections {
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "uri_bar_bg";
+                target: "reader_bar_bg";
                 transition: LINEAR 0.15;
                 after: "show_uri_bar_finished";
                 after: "decrease_webview";

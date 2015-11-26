@@ -1,0 +1,176 @@
+#define READER_MODE_EDC() \
+part { \
+        name: "reader_bar_bg"; \
+        type : RECT; \
+        scale: 1; \
+        description { \
+            state: "default" 0.0; \
+            visible: 1; \
+            fixed: 1 1; \
+            align: 0 0; \
+            min: URI_BG_WIDTH URI_BG_HEIGHT; \
+            max: URI_BG_WIDTH URI_BG_HEIGHT; \
+            color: 247 247 247 255; \
+            rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; } \
+            rel2 { relative: 1.0 1.0; to: "bg"; } \
+        } \
+        description { \
+            state: "hidden" 0.0; \
+            inherit: "default" 0.0; \
+            rel1.offset: 0 -2*URI_BG_HEIGHT; \
+        } \
+ } \
+part { \
+    name: "reader_icon"; \
+    type: IMAGE; \
+    scale: 1; \
+    description { state: "default" 0.0; \
+        visible: 1; \
+        fixed: 1 1; \
+        align: 0 0.5; \
+        min: 64 64; \
+        max: 64 64; \
+        rel1 { relative: 0.1 0.0; to: "reader_bar_bg";} \
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";} \
+        image.normal: "reader_mode_icon.png"; \
+    } \
+} \
+part { name: "reader_text"; \
+        type: TEXT; \
+        scale: 1; \
+        description { \
+            state: "default" 0.0; \
+            min: 56 0; \
+            fixed: 1 0; \
+            align: 0 0.5; \
+            color: 128 128 128 255; \
+            rel1 { relative: 0.0 0.0; to: "reader_bar_bg"; offset: 300 0;} \
+            rel2 { relative: 1.0 1.0; to: "reader_bar_bg";} \
+            text { \
+                text: "Reader Mode"; \
+                font: "Sans"; \
+                size: 30; \
+                align: 0 0.5; \
+            } \
+        } \
+} \
+  part { \
+    name: "font_down_button_bg"; \
+    scale:1; \
+    mouse_events: 1; \
+    type: RECT; \
+    description { \
+        state: "default" 0.0; \
+        visible: 1; \
+        fixed: 1 1; \
+        align: 0 0.5; \
+        min: 64 64; \
+        max: 64 64; \
+        rel1 { relative: 0.72 0.0; to: "reader_bar_bg";} \
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";} \
+        color_class: transparent; \
+    } \
+    description { \
+        state: "highlight" 0.0; \
+        inherit: "default" 0.0; \
+        color_class: focusBgColor; \
+        visible: 1; \
+    } \
+} \
+part { \
+    name: "font_down_button_text"; \
+    type: TEXT; \
+    scale: 1; \
+    description { state: "default" 0.0; \
+        visible: 1; \
+        fixed: 1 1; \
+        align: 0 0; \
+        min: 64 64; \
+        max: 64 64; \
+        color: 64 64 64 255; \
+        rel1 { relative: 0.0 0.0; to: "font_down_button_bg";} \
+        rel2 { relative: 1.0 1.0; to: "font_down_button_bg";} \
+text { \
+                text: "A"; \
+                font: "Sans"; \
+                size: 35; \
+                align: 0 1; \
+            } \
+    } \
+} \
+part { \
+    name: "font_down_button_click"; \
+    scale:1; \
+    type: SWALLOW; \
+    description { \
+        state: "default" 0.0; \
+        visible: 1; \
+        align: 0 0; \
+        fixed: 1 1; \
+        min: 64 64; \
+        max: 64 64; \
+        rel1 { relative: 0.0 0.0; to: "font_down_button_bg";} \
+        rel2 { relative: 1.0 1.0; to: "font_down_button_bg";} \
+        color_class: transparent; \
+    } \
+} \
+  part { \
+    name: "font_up_button_bg"; \
+    scale:1; \
+    mouse_events: 1; \
+    type: RECT; \
+    description { \
+        state: "default" 0.0; \
+        visible: 1; \
+        fixed: 1 1; \
+        align: 0 0.65; \
+        min: 64 64; \
+        max: 64 64; \
+        rel1 { relative: 0.8 0.0; to: "reader_bar_bg";} \
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";} \
+        color_class: transparent; \
+    } \
+    description { \
+        state: "highlight" 0.0; \
+        inherit: "default" 0.0; \
+        color_class: focusBgColor; \
+        visible: 1; \
+    } \
+} \
+part { \
+    name: "font_up_button_text"; \
+    type: TEXT; \
+    scale: 1; \
+    description { state: "default" 0.0; \
+        visible: 1; \
+        fixed: 1 1; \
+        align: 0 0; \
+        min: 64 64; \
+        max: 64 64; \
+        color: 64 64 64 255; \
+        rel1 { relative: 0.0 0.0; to: "font_up_button_bg";} \
+        rel2 { relative: 1.0 1.0; to: "font_up_button_bg";} \
+        text { \
+                text: "A"; \
+                font: "Sans"; \
+                size: 50; \
+                align: 0 1; \
+            } \
+    } \
+} \
+part { \
+    name: "font_up_button_click"; \
+    scale:1; \
+    type: SWALLOW; \
+    description { \
+        state: "default" 0.0; \
+        visible: 1; \
+        align: 0 0; \
+        fixed: 1 1; \
+        min: 64 64; \
+        max: 64 64; \
+        rel1 { relative: 0.0 0.0; to: "font_up_button_bg";} \
+        rel2 { relative: 1.0 1.0; to: "font_up_button_bg";} \
+        color_class: transparent; \
+    } \
+}
