@@ -1,5 +1,24 @@
 project(SimpleUI)
 
+if (${PROFILE} MATCHES "mobile")
+set(SimpleUI_SRCS
+    SimpleUI.cpp
+    SimplePopup.cpp
+    TextPopup_mob.cpp
+    NotificationPopup.cpp
+    BookmarksManager.cpp
+    ViewManager.cpp
+    )
+
+set(SimpleUI_HEADERS
+    SimpleUI.h
+    SimplePopup.h
+    TextPopup_mob.h
+    NotificationPopup.h
+    BookmarksManager.h
+    ViewManager.h
+    )
+else (${PROFILE} MATCHES "mobile")
 set(SimpleUI_SRCS
     SimpleUI.cpp
     SimplePopup.cpp
@@ -15,6 +34,7 @@ set(SimpleUI_HEADERS
     BookmarksManager.h
     ViewManager.h
     )
+endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)
 include(EFLHelpers)
@@ -96,6 +116,7 @@ set(edcFiles
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
+    TextPopup_mob.edc
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
