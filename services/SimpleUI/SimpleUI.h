@@ -46,6 +46,7 @@
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
+#include "ReaderUI.h"
 #include "TabServiceTypedef.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
@@ -113,7 +114,9 @@ private:
     void switchViewToQuickAccess();
     void switchViewToIncognitoPage();
     void switchViewToWebPage();
+    void switchViewToReaderMode();
     void updateView();
+    void updateReaderView();
     void windowCreated();
 
 #if PROFILE_MOBILE
@@ -245,6 +248,9 @@ private:
     void showHistoryUI();
     void closeHistoryUI();
     void showSettingsUI();
+    void showReaderUI();
+    void showReaderContents(const std::string& str);
+    void getReaderContent();
     void closeSettingsUI();
 #if PROFILE_MOBILE
     void showBookmarkFlowUI(bool state);
@@ -276,6 +282,8 @@ private:
 
     config::DefaultConfigUniquePtr m_config;
     Evas_Object *m_popup;
+    Evas_Object *m_webPage;
+
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
@@ -288,6 +296,7 @@ private:
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
+    std::shared_ptr<ReaderUI> m_readerUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
@@ -298,6 +307,8 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    bool m_readerMode;
+    int m_readerTabId;
 
     //helper object used to view management
     ViewManager m_viewManager;

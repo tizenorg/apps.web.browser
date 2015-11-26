@@ -65,6 +65,8 @@ public:
     void toIncognito(bool);
     void switchViewToErrorPage();
     void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
+    void switchViewToReaderMode(Evas_Object* content, const std::string uri, const std::string title);
+    void switchOffReaderMode();
     void switchViewToIncognitoPage();
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }
