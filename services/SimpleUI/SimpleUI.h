@@ -46,6 +46,7 @@
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
+#include "ReaderUI.h"
 #include "TabServiceTypedef.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
@@ -245,6 +246,9 @@ private:
     void showHistoryUI();
     void closeHistoryUI();
     void showSettingsUI();
+    void showReaderUI();
+    void showReaderContents(const std::string& str);
+    void getReaderContent();
     void closeSettingsUI();
 #if PROFILE_MOBILE
     void showBookmarkFlowUI(bool state);
@@ -288,6 +292,7 @@ private:
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
+    std::shared_ptr<ReaderUI> m_readerUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
