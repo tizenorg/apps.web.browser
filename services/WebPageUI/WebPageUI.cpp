@@ -37,6 +37,7 @@ WebPageUI::WebPageUI()
     , m_progressBar(nullptr)
     , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
+    , m_readerLayout(new ReaderMode())
     , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
     , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
@@ -84,6 +85,7 @@ void WebPageUI::showUI()
 
     evas_object_show(elm_object_part_content_get(m_mainLayout, "web_view"));
     evas_object_show(m_URIEntry->getContent());
+    evas_object_show(m_readerLayout->getContent());
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
@@ -119,6 +121,7 @@ void WebPageUI::hideUI()
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
     m_URIEntry->editingCanceled();
     evas_object_hide(m_URIEntry->getContent());
+    evas_object_hide(m_readerLayout->getContent());
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
@@ -206,6 +209,7 @@ void WebPageUI::setMainContent(Evas_Object* content)
     M_ASSERT(content);
     hideWebView();
     elm_object_part_content_set(m_mainLayout, "web_view", content);
+    elm_object_signal_emit(m_mainLayout, "show_reader_mode", "ui");
     evas_object_show(content);
 }
 
@@ -406,6 +410,10 @@ void WebPageUI::createLayout()
 
     elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
     m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
+
+    m_readerLayout->init(m_mainLayout);
+    elm_object_part_content_set(m_mainLayout, "reader_bar_swallow", m_readerLayout->getContent());
+    elm_object_signal_emit(m_readerLayout->getContent(), "show_reader_mode", "ui");
 
     connectActions();
 

@@ -649,7 +649,8 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
                 }
                 break;
             case READER_MODE:
-                //TODO: Implement reader mode
+                itemData->moreMenuUI->closeMoreMenuClicked();
+                itemData->moreMenuUI->readerUIClicked();
                 break;
 #else
 #ifdef READER_MODE_ENABLED

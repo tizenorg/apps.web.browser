@@ -5,6 +5,7 @@ set(WebPageUI_SRCS
     WebPageUIStatesManager.cpp
     ButtonBar.cpp
     URIEntry.cpp
+    ReaderMode.cpp
     UrlHistoryList/UrlHistoryList.cpp
     UrlHistoryList/GenlistManager.cpp
     UrlHistoryList/GenlistManagerCallbacks.cpp
@@ -59,6 +60,7 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
         LeftButtonBar_mob.edc
         RightButtonBar_mob.edc
         URIEntry_mob.edc
+        ReaderMode_mob.edc
         PrivateMode.edc
         UrlHistoryList_mob.edc
         )

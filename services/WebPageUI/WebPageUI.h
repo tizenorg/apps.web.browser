@@ -25,6 +25,7 @@
 #include "service_macros.h"
 #include "ButtonBar.h"
 #include "URIEntry.h"
+#include "ReaderMode.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -145,6 +146,7 @@ private:
 
     std::unique_ptr<ButtonBar> m_leftButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
+    std::unique_ptr<ReaderMode> m_readerLayout;
     std::unique_ptr<URIEntry> m_URIEntry;
     WPUStatesManagerPtr m_statesMgr;
     UrlHistoryPtr m_urlHistoryList;
