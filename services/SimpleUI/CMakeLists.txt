@@ -15,6 +15,10 @@ set(SimpleUI_HEADERS
     BookmarksManager.h
     ViewManager.h
     )
+if (${PROFILE} MATCHES "mobile")
+set(SimpleUI_SRCS ${SimpleUI_SRCS} TextPopup_mob.cpp)
+set(SimpleUI_HEADERS ${SimpleUI_HEADERS} TextPopup_mob.h)
+endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)
 include(EFLHelpers)
@@ -96,6 +100,7 @@ set(edcFiles
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
+    TextPopup_mob.edc
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles

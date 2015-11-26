@@ -39,6 +39,7 @@
 #include "HistoryUI.h"
 #if PROFILE_MOBILE
 #include "SettingsUI_mob.h"
+#include "TextPopup_mob.h"
 #else
 #include "SettingsUI.h"
 #endif
