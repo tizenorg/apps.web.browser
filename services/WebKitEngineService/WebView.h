@@ -220,6 +220,10 @@ private:
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
+
+    // download min7choi
+	static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
+	static void __download_request_cb(const char *download_uri, void *data);
 private:
     Evas_Object * m_parent;
     TabId m_tabId;
@@ -249,6 +253,9 @@ private:
 #endif
 
     static const std::string COOKIES_PATH;
+
+    int m_status_code;
+    Eina_Bool m_is_error_page;
 };
 
 } /* namespace webkitengine_service */

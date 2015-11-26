@@ -33,11 +33,14 @@ BuildRequires:  pkgconfig(chromium-efl)
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(capi-network-connection)
+BuildRequires:  pkgconfig(capi-content-media-content)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
+BuildRequires:  pkgconfig(notification)
+BuildRequires:  pkgconfig(appsvc)
+BuildRequires:  pkgconfig(capi-appfw-app-manager)
 BuildRequires:  browser-provider-devel
-
 BuildRequires:  cmake
 BuildRequires:  edje-tools
 BuildRequires:  boost-devel
@@ -45,6 +48,7 @@ BuildRequires:  boost-thread
 #BuildRequires:  boost-date_time
 BuildRequires:  boost-filesystem
 BuildRequires:  boost-system
+
 
 %define BUILD_UT  %{?build_ut:ON}%{!?build_ut:OFF}
 %if %BUILD_UT == "ON"
