@@ -3,6 +3,7 @@ project(SimpleUI)
 set(SimpleUI_SRCS
     SimpleUI.cpp
     SimplePopup.cpp
+    TextPopup_mob.cpp
     NotificationPopup.cpp
     BookmarksManager.cpp
     ViewManager.cpp
@@ -11,6 +12,7 @@ set(SimpleUI_SRCS
 set(SimpleUI_HEADERS
     SimpleUI.h
     SimplePopup.h
+    TextPopup_mob.h
     NotificationPopup.h
     BookmarksManager.h
     ViewManager.h
@@ -96,6 +98,7 @@ set(edcFiles
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
+    TextPopup_mob.edc
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
