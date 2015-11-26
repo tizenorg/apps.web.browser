@@ -51,7 +51,11 @@ static bool app_create(void * /*app_data*/)
 
     elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
     // Enabling focus
+#if PROFILE_MOBILE
+    elm_config_focus_highlight_enabled_set(EINA_FALSE);
+#else
     elm_config_focus_highlight_enabled_set(EINA_TRUE);
+#endif
 
     /// \todo: clean casts, depends on ServiceManager
     std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
@@ -198,7 +202,11 @@ int main(int argc, char* argv[]) try
 #if PLATFORM(TIZEN)
     elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
     // Enabling focus
+#if PROFILE_MOBILE
+    elm_config_focus_highlight_enabled_set(EINA_FALSE);
+#else
     elm_config_focus_highlight_enabled_set(EINA_TRUE);
+#endif
 #endif
 
     tizen_browser::logger::Logger::getInstance().init();
