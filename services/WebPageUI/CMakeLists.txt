@@ -59,7 +59,7 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
         LeftButtonBar_mob.edc
         RightButtonBar_mob.edc
         URIEntry_mob.edc
-        PrivateMode.edc
+        PrivateMode_mob.edc
         UrlHistoryList_mob.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile

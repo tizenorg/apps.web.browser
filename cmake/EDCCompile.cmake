@@ -18,8 +18,8 @@ IF(EDJE_CC_EXECUTABLE)
          ENDIF()
 
          IF(${PROFILE} MATCHES "mobile")
-            #SET(IMAGES_URL "images_mob") FIXME BUG TM-72
-            SET(IMAGES_URL "images")
+            SET(IMAGES_URL "images_mob")# FIXME BUG TM-72
+            #SET(IMAGES_URL "images")
             SET(BROWSER_RESOLUTION "720x1280")
          ELSE(${PROFILE} MATCHES "mobile")
             SET(IMAGES_URL "images")

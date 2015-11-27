@@ -3,13 +3,13 @@
 
 collections {
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 64, 64, "btn_bar_back_nor_mob.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 64, 64, "btn_bar_back_nor.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", 64, 64, "btn_bar_forward_nor_mob.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", 64, 64, "btn_bar_forward_nor.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_reload", 64, 64, "btn_bar_reload_nor_mob.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_reload", 64, 64, "btn_bar_reload_nor.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_stop", 64, 64, "btn_bar_stop_nor_mob.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_stop", 64, 64, "btn_bar_stop_nor.png", 224, 237, 251)
 
     group {
         name: "left_button_bar";
