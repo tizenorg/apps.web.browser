@@ -56,6 +56,7 @@
 
 // other
 #include "Action.h"
+#include "InputPopup.h"
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
 #include "ConfigTypedef.h"
@@ -137,6 +138,8 @@ private:
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
+    services::SharedBookmarkFolderList getBookmarkFolders();
+
     const std::string getBookmarkFolderName(int folder_id);
     std::shared_ptr<services::HistoryItemVector> getHistory();
     std::shared_ptr<services::HistoryItemVector> getMostVisitedItems();
@@ -145,6 +148,10 @@ private:
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
+#if PROFILE_MOBILE
+    void onNewFolderClicked();
+    void onInputPopupClick(const std::string& folder_name);
+#endif
     void onBookmarkRemoved(const std::string& uri);
 
     void onHistoryRemoved(const std::string& uri);
