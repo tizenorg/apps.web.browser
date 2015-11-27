@@ -49,6 +49,7 @@ public:
     Evas_Object* createRemoveMostVisitedMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveBrowserDataMobilePage(Evas_Object* settings_layout);
 
+    boost::signals2::signal<void ()> autofillDataClicked;
     boost::signals2::signal<void ()> resetBrowserClicked;
     boost::signals2::signal<void ()> resetMostVisitedClicked;
     boost::signals2::signal<void (std::string&)> deleteSelectedDataClicked;
@@ -60,6 +61,8 @@ private:
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void back_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
+
+    static void _auto_fill_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _del_selected_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
