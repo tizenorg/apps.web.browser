@@ -3,9 +3,21 @@ project(SettingsUI)
 if (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS
     SettingsUI_mob.cpp
+    AutoFillForm/AutoFillFormComposeView.cpp
+    AutoFillForm/AutoFillFormManager.cpp
+    AutoFillForm/AutoFillFormItem.cpp
+    AutoFillForm/AutoFillFormListView.cpp
+    AutoFillForm/AutoProfileDeleteView.cpp
+    #AutoFillForm/ListViewItemClickedPopup.cpp
     )
 set(SettingsUI_HEADERS
     SettingsUI_mob.h
+    AutoFillForm/AutoFillFormComposeView.h
+    AutoFillForm/AutoFillFormManager.h
+    AutoFillForm/AutoFillFormItem.h
+    AutoFillForm/AutoFillFormListView.h
+    AutoFillForm/AutoProfileDeleteView.h
+    #AutoFillForm/ListViewItemClickedPopup.h
     )
 else (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS
@@ -18,6 +30,7 @@ endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)
 include(EFLHelpers)
+include(EWebKitHelpers)
 
 add_library(${PROJECT_NAME} SHARED ${SettingsUI_SRCS})
 
