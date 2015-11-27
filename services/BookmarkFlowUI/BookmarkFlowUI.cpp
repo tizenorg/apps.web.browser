@@ -282,7 +282,11 @@ void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
 void BookmarkFlowUI::_folder_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_UNUSED(data);
+    if (data != nullptr)
+    {
+        BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        bookmarkFlowUI->addFolder();
+    }
 }
 
 void BookmarkFlowUI::_remove_clicked(void *data, Evas_Object *, void *)
