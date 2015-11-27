@@ -165,6 +165,10 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_menu_clicked_cb, (void*)id);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
 
+    Evas_Object *content_settings_button = elm_button_add(layout);
+    elm_object_style_set(content_settings_button, "basic_button");
+    evas_object_smart_callback_add(content_settings_button, "clicked", _content_settings_menu_clicked_cb, this);
+    elm_layout_content_set(layout, "content_settings_click", content_settings_button);
 
     return layout;
 }
@@ -261,6 +265,16 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     return layout;
 }
 
+Evas_Object* SettingsUI::createCheckBox(Evas_Object* layout, const std::string name, Edje_Signal_Cb func, void* data)
+{
+    Evas_Object* edje = elm_layout_edje_get(layout);
+    Evas_Object* checkbox = elm_check_add(layout);
+    elm_object_style_set(checkbox, "custom_check");
+    elm_layout_content_set(layout, (name + "_cb").c_str(), checkbox);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", (name + "_cb_text_bg").c_str(), func, data);
+    return checkbox;
+}
+
 void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*, const char *source)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -282,6 +296,64 @@ void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*
         else{
             BROWSER_LOGD("[%s:%d] - no matched source", __PRETTY_FUNCTION__, __LINE__);
         }
+    }
+}
+
+Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    Evas_Object* layout = elm_layout_add(settings_layout);
+    elm_layout_file_set(layout, m_edjFilePath.c_str(), "content_settings_mobile");
+    elm_object_part_content_set(settings_layout, "settings_subpage_swallow", layout);
+    evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    elm_object_signal_emit(m_actionBar,"switch,content,Settings", "del_but");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+
+    boost::optional<bool> sig = getWebEngineSettingsParam(WebEngineSettings::PAGE_OVERVIEW);
+    Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
+    Evas_Object* overview_checkbox = createCheckBox(layout, "overview", __checkbox_content_settings_label_click_cb, this);
+    elm_check_state_set(overview_checkbox, flag);
+
+    sig = getWebEngineSettingsParam(WebEngineSettings::LOAD_IMAGES);
+    flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
+    Evas_Object* images_checkbox = createCheckBox(layout, "images", __checkbox_content_settings_label_click_cb, this);
+    elm_check_state_set(images_checkbox, flag);
+
+    sig = getWebEngineSettingsParam(WebEngineSettings::ENABLE_JAVASCRIPT);
+    flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
+    Evas_Object* javascript_checkbox = createCheckBox(layout, "javascript", __checkbox_content_settings_label_click_cb, this);
+    elm_check_state_set(javascript_checkbox, flag);
+    return layout;
+}
+
+void SettingsUI::__checkbox_content_settings_label_click_cb(void* data, Evas_Object*, const char*, const char* source)
+{
+    if (data) {
+        auto self = static_cast<SettingsUI*>(data);
+
+        if(strcmp(source, "overview_cb_text_bg") == 0 ) {
+            Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "overview_cb");
+            Eina_Bool value = !elm_check_state_get(checkbox);
+            elm_check_state_set(checkbox, value);
+            self->setWebEngineSettingsParam(WebEngineSettings::PAGE_OVERVIEW, static_cast<bool>(value));
+        } else if (strcmp(source, "images_cb_text_bg") == 0 ) {
+            Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "images_cb");
+            Eina_Bool value = !elm_check_state_get(checkbox);
+            elm_check_state_set(checkbox, value);
+            self->setWebEngineSettingsParam(WebEngineSettings::LOAD_IMAGES, static_cast<bool>(value));
+        } else if (strcmp(source, "javascript_cb_text_bg") == 0 ) {
+            Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "javascript_cb");
+            Eina_Bool value = !elm_check_state_get(checkbox);
+            elm_check_state_set(checkbox, value);
+            self->setWebEngineSettingsParam(WebEngineSettings::ENABLE_JAVASCRIPT, static_cast<bool>(value));
+        } else {
+            BROWSER_LOGD("[%s:%d] - no matched source", __PRETTY_FUNCTION__, __LINE__);
+        }
+    } else {
+        BROWSER_LOGD("[%s:%d] Warning no data specified!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -368,6 +440,15 @@ void SettingsUI::_reset_browser_menu_clicked_cb(void *data, Evas_Object*, void*)
         id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
         id->settingsUI->m_subpage_layout = id->settingsUI->createRemoveBrowserDataMobilePage(id->settingsUI->m_settings_layout);
     }
+}
+
+void SettingsUI::_content_settings_menu_clicked_cb(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = static_cast<SettingsUI*>(data);
+    self->resetItemsLayoutContent();
+    self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+    self->m_subpage_layout = self->createContentSettingsPage(self->m_settings_layout);
 }
 
 void SettingsUI::resetItemsLayoutContent()

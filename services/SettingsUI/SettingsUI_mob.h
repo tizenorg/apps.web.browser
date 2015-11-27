@@ -24,6 +24,7 @@
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
+#include "../../core/AbstractWebEngine/WebEngineSettings.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -48,18 +49,23 @@ public:
     Evas_Object* createDelDataMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveMostVisitedMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveBrowserDataMobilePage(Evas_Object* settings_layout);
+    Evas_Object* createContentSettingsPage(Evas_Object* settings_layout);
 
     boost::signals2::signal<void ()> resetBrowserClicked;
     boost::signals2::signal<void ()> resetMostVisitedClicked;
     boost::signals2::signal<void (std::string&)> deleteSelectedDataClicked;
     boost::signals2::signal<void ()> closeSettingsUIClicked;
+    boost::signals2::signal<bool (WebEngineSettings)> getWebEngineSettingsParam;
+    boost::signals2::signal<void (WebEngineSettings, bool)> setWebEngineSettingsParam;
 
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
     void resetItemsLayoutContent();
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void back_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+    static Evas_Object* createCheckBox(Evas_Object* layout, const std::string name, Edje_Signal_Cb func, void* data);
     static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
+    static void __checkbox_content_settings_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _del_selected_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
@@ -69,6 +75,8 @@ private:
 
     static void _reset_browser_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _reset_browser_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+
+    static void _content_settings_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
     Evas_Object *m_settings_layout;
     Evas_Object *m_actionBar;

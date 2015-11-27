@@ -49,6 +49,13 @@ WebKitEngineService::WebKitEngineService()
     m_mostRecentTab.clear();
     m_tabs.clear();
     m_chronoTabs.clear();
+
+#if PROFILE_MOBILE
+    // init settings
+    m_settings[WebEngineSettings::PAGE_OVERVIEW] = false;
+    m_settings[WebEngineSettings::LOAD_IMAGES] = true;
+    m_settings[WebEngineSettings::ENABLE_JAVASCRIPT] = true;
+#endif
 }
 
 WebKitEngineService::~WebKitEngineService()
@@ -344,6 +351,10 @@ TabId WebKitEngineService::addTab(const std::string & uri,
 
     m_tabs[newTabId] = p;
 
+#if PROFILE_MOBILE
+    setWebViewSettings(p->getLayout());
+#endif
+
     if (!uri.empty()) {
         p->setURI(uri);
     }
@@ -499,6 +510,14 @@ void WebKitEngineService::webViewClicked()
     AbstractWebEngine::webViewClicked();
 }
 
+#if PROFILE_MOBILE
+void WebKitEngineService::setWebViewSettings(Evas_Object* ewkView) {
+    Ewk_Settings* settings = ewk_view_settings_get(ewkView);
+    ewk_settings_auto_fitting_set(settings, m_settings[WebEngineSettings::PAGE_OVERVIEW]);
+    ewk_settings_loads_images_automatically_set(settings, m_settings[WebEngineSettings::LOAD_IMAGES]);
+    ewk_settings_javascript_enabled_set(settings, m_settings[WebEngineSettings::ENABLE_JAVASCRIPT]);
+}
+#endif
 
 int WebKitEngineService::getZoomFactor() const
 {
@@ -588,6 +607,32 @@ void WebKitEngineService::setTouchEvents(bool enabled)
     M_ASSERT(m_currentWebView);
     m_currentWebView->setTouchEvents(enabled);
 }
+
+bool WebKitEngineService::getSettingsParam(WebEngineSettings param) {
+    return m_settings.at(param);
+}
+
+void WebKitEngineService::setSettingsParam(WebEngineSettings param, bool value) {
+    m_settings[param] = value;
+    for(auto it = m_tabs.cbegin(); it != m_tabs.cend(); ++it) {
+        Evas_Object* ewkView = it->second->getLayout();
+        Ewk_Settings* settings = ewk_view_settings_get(ewkView);
+        switch (param) {
+        case WebEngineSettings::PAGE_OVERVIEW:
+            ewk_settings_auto_fitting_set(settings, value);
+            break;
+        case WebEngineSettings::LOAD_IMAGES:
+            ewk_settings_loads_images_automatically_set(settings, value);
+            break;
+        case WebEngineSettings::ENABLE_JAVASCRIPT:
+            ewk_settings_javascript_enabled_set(settings, value);
+            break;
+        default:
+            BROWSER_LOGD("[%s:%d] Warning unknown param value!", __PRETTY_FUNCTION__, __LINE__);
+        }
+    }
+}
+
 #endif
 
 } /* end of webkitengine_service */
