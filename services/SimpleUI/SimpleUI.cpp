@@ -314,6 +314,10 @@ void SimpleUI::connectUISignals()
     m_settingsUI->deleteSelectedDataClicked.connect(boost::bind(&SimpleUI::settingsDeleteSelectedData, this,_1));
     m_settingsUI->resetMostVisitedClicked.connect(boost::bind(&SimpleUI::settingsResetMostVisited, this));
     m_settingsUI->resetBrowserClicked.connect(boost::bind(&SimpleUI::settingsResetBrowser, this));
+#if PROFILE_MOBILE
+    m_settingsUI->getWebEngineSettingsParam.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
+    m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
+#endif
 
     M_ASSERT(m_moreMenuUI.get());
     m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
