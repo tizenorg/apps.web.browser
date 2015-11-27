@@ -58,9 +58,9 @@
 #include "Action.h"
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
-#include "BookmarksManager.h"
 #include "ConfigTypedef.h"
 #include "ViewManager.h"
+#include "MenuButton.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -303,7 +303,6 @@ private:
     std::shared_ptr<services::SessionStorage> m_sessionService;
     Session::Session m_currentSession;
     std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
-    std::shared_ptr<BookmarksManager> m_bookmarks_manager;
     bool m_initialised;
     int m_tabLimit;
     int m_favoritesLimit;

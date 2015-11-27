@@ -4,7 +4,6 @@ set(SimpleUI_SRCS
     SimpleUI.cpp
     SimplePopup.cpp
     NotificationPopup.cpp
-    BookmarksManager.cpp
     ViewManager.cpp
     )
 
@@ -12,7 +11,6 @@ set(SimpleUI_HEADERS
     SimpleUI.h
     SimplePopup.h
     NotificationPopup.h
-    BookmarksManager.h
     ViewManager.h
     )
 if (${PROFILE} MATCHES "mobile")
@@ -96,7 +94,6 @@ include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
-    BookmarksManager.edc
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
@@ -105,7 +102,6 @@ set(edcFiles
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
-    BookmarksManager.edc
     NotificationPopup.edc
     Tooltip.edc
     ViewManager.edc

@@ -23,7 +23,7 @@
 
 collections {
 RESOURCE_IMAGE_LOSSY("input_ic_incognito.png")
-RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
+RESOURCE_IMAGE_LOSSY("navi_input_ic_cancel.png")
     group {
         name: "elm/entry/selection/browser_entry";
         parts {
@@ -562,7 +562,7 @@ RESOURCE_IMAGE_LOSSY("input_ic_cancel.png")
                         to: "cancel_icon_bg";
                         relative: 1.0 1.0;
                     }
-                    image.normal: "input_ic_cancel.png";
+                    image.normal: "navi_input_ic_cancel.png";
                     image.border: 8 8 8 8;
                     image.border_scale: 1;
                     align: 0.5 0.5;
