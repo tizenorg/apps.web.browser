@@ -1,0 +1,605 @@
+#include "basic_button_mob.edc"
+collections {
+
+group {
+        name: "affcv-layout";
+images {
+   image: "navi_ic_back_nor.png" COMP;
+}
+parts {
+part {
+        name: "bg_clipper";
+        type : RECT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 720 1268;
+            max: 720 1268;
+            visible: 1;
+            fixed: 1 1;
+            align: 0 0;
+            color: 255 255 255 255;
+            rel1 { relative: 0.0 0.0; }
+            rel2 { relative: 1.0 1.0; }
+        }
+ }
+part {
+    name: "title_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 720 104;
+        max: 720 104;
+        color: 255 255 255 255;
+        rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+        rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+    }
+}
+part { name: "title_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "title_bg";}
+            rel2 { relative: 1.0 1.0; to: "title_bg";}
+            text {
+                text: "Auto Fill Compose";
+                font: "Sans";
+                size: 40;
+                align: 0.5 0.5;
+            }
+         }
+      }
+ part {
+    name: "cancel_bg";
+    type: RECT;
+    mouse_events: 1;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.5;
+        min: 128 64;
+        max: 128 64;
+        rel1 { relative: 0.01 0.0; to: "title_bg";}
+        rel2 { relative: 1.0 1.0; to: "title_bg";}
+    }
+}
+part { name: "cancel_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 128 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+            rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+            text {
+                text: "Cancel";
+                font: "Sans";
+                size: 30;
+                align: 0.5 0.5;
+            }
+        }
+}
+ part {
+    name: "cancel_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+        rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+        color_class: transparent;
+    }
+}
+
+ part {
+    name: "done_bg";
+    type: RECT;
+    mouse_events: 1;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.5;
+        min: 96 64;
+        max: 96 64;
+        rel1 { relative: 0.85 0.0; to: "title_bg";}
+        rel2 { relative: 1.0 1.0; to: "title_bg";}
+    }
+}
+part { name: "done_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 96 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "done_bg";}
+            rel2 { relative: 1.0 1.0; to: "done_bg";}
+            text {
+                text: "Done";
+                font: "Sans";
+                size: 30;
+                align: 0.5 0.5;
+            }
+        }
+}
+
+ part {
+    name: "done_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        rel1 { relative: 0.0 0.0; to: "done_bg";}
+        rel2 { relative: 1.0 1.0; to: "done_bg";}
+    }
+}
+
+ part {
+    name: "affcv_genlist";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        min: 720 0;
+        max: 720 1164;
+        rel1 { relative: 0.0 1.0; to: "title_bg";}
+        rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+        //color_class: transparent;
+    }
+   }
+}
+
+}
+
+group { name : "elm/genlist/item/affcv_item/default";
+                    min: 700 150;
+                    max: 700 150;
+	data.item: "texts" "field_name";
+        data.item: "contents" "entry_swallow entry_clear_button";
+        images {
+             image: "btn_bar_stop_nor.png" COMP;
+        }
+	parts {
+	  part {
+	        name: "bg";
+	        scale : 1;
+	        type : RECT;
+	        description {
+	                state: "default" 0.0;
+                       min: 700 150;
+                    max: 700 150;
+	                visible: 1;
+	                align: 0.0 0.0;
+	                color: 255 255 255 255;
+	                rel1 { relative: 0.0 0.0; }
+	                rel2 { relative: 1.0 1.0; }
+	        }
+          }
+          part { name: "field_name";
+                type: TEXT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 700 50;
+                    max: 700 50;
+                    fixed: 1 0;
+                    align: 0 0.0;
+                    color: 64 64 64 255;
+                    rel1 { relative: 0.0 0.0; to: "bg"; offset: 10 15;}
+                    rel2 { relative: 1.0 1.0; to: "bg";}
+                    text {
+                        text: "Full name";
+                        font: "Sans";
+                        size: 30;
+                        align: 0 0.0;
+                    }
+                }
+             }
+        part { name: "entry_swallow";
+                scale : 1;
+                type : SWALLOW;
+                description {
+                        state: "default" 0.0;
+    				min: 700 80;
+	                    max: 700 80;
+                        visible: 1;
+                        align: 0.0 0.8;
+                        rel1 { relative: 0.0 0.0; to:"bg"; }
+                        rel2 { relative: 1.0 1.0; to:"bg"; }
+                }
+        }
+	part {
+              name: "clear_icon";
+              type: IMAGE;
+              //type: RECT;
+              mouse_events: 1;
+              scale: 1;
+              description { state: "default" 0.0;
+                  visible: 1;
+                  fixed: 1 1;
+                  align: 0 0.5;
+                  min: 56 56;
+                  max: 56 56;
+                  rel1 { relative: 0.9 0.0; to: "entry_swallow";}
+                  rel2 { relative: 1.0 1.0; to: "entry_swallow";}
+                  image.normal: "btn_bar_stop_nor.png";
+                  //color: 255 255 255 255;
+              }
+              description { state: "hide" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+              }
+          }
+
+	part { name: "entry_clear_button";
+                scale : 1;
+                type : SWALLOW;
+                description {
+                        state: "default" 0.0;
+                                min: 56 56;
+                            max: 56 56;
+                        visible: 1;
+                        align: 0.0 0.0;
+                        rel1 { relative: 0.0 0.0; to:"clear_icon"; }
+                        rel2 { relative: 1.0 1.0; to:"clear_icon"; }
+                }
+	 	description { state: "hide" 0.0;
+		  inherit: "default" 0.0;
+		  visible: 0;
+	      }
+        }
+	part {
+                name: "line";
+                scale : 1;
+                type : RECT;
+                description {
+                        state: "default" 0.0;
+                                min: 700 1;
+                            max: 700 1;
+                        visible: 1;
+                        align: 0.0 0.0;
+                        color: 0 0 0 255;
+                        rel1 { relative: 0.0 1.0; to: "bg"; offset: 0 -1;}
+                        rel2 { relative: 1.0 1.0; to: "bg";}
+                }
+        }
+	}
+	programs {
+	   program {
+                name: "show_clear_button";
+                signal: "show,clear,button,signal";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "clear_icon";
+                target: "entry_clear_button";
+            }
+            program {
+                name: "hide_clear_button";
+                signal: "hide,clear,button,signal";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "clear_icon";
+                target: "entry_clear_button";
+            }
+	}
+}
+
+
+
+
+group {
+        name: "afflv-layout";
+images {
+   image: "navi_ic_back_nor.png" COMP;
+}
+parts {
+part {
+        name: "bg_clipper";
+        type : RECT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 720 1268;
+            max: 720 1268;
+            visible: 1;
+            fixed: 1 1;
+            align: 0 0;
+            color: 239 239 239 255;
+            rel1 { relative: 0.0 0.0; }
+            rel2 { relative: 1.0 1.0; }
+        }
+ }
+part {
+    name: "title_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 720 104;
+        max: 720 104;
+        color: 255 255 255 255;
+        rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+        rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+    }
+}
+part { name: "title_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "title_bg";}
+            rel2 { relative: 1.0 1.0; to: "title_bg";}
+            text {
+                text: "Auto Fill Forms";
+                font: "Sans";
+                size: 40;
+                align: 0.5 0.5;
+            }
+        }
+}
+part {
+    name: "back_bg";
+    type: IMAGE;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.5;
+        min: 64 64;
+        max: 64 64;
+        rel1 { relative: 0.02 0.0; to: "title_bg";}
+        rel2 { relative: 1.0 1.0; to: "title_bg";}
+        image.normal: "navi_ic_back_nor.png";
+    }
+}
+ part {
+    name: "back_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        //min: 64 64;
+        //max: 64 64;
+        rel1 { relative: 0.0 0.0; to: "back_bg";}
+        rel2 { relative: 1.0 1.0; to: "back_bg";}
+        color_class: transparent;
+    }
+}
+
+part {
+    name: "profile_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 720 56;
+        max: 720 56;
+        color: 239 239 239 255;
+        rel1 { relative: 0.0 1.0; to: "title_bg";}
+        rel2 { relative: 1.0 1.0; }
+    }
+}
+
+part { name: "profile_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 128 128 128 255;
+            rel1 { relative: 0.0 0.0; to: "profile_bg";}
+            rel2 { relative: 1.0 1.0; to: "profile_bg";}
+            text {
+                text: "Profiles";
+                font: "Sans";
+                size: 30;
+                align: 0.02 0.5;
+            }
+        }
+}
+
+part {
+    name: "afflv_genlist";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        min: 720 0;
+        //max: 64 64;
+        rel1 { relative: 0.0 1.0; to: "profile_bg";}
+        rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+        //color_class: transparent;
+    }
+}
+
+part {
+    name: "bottom_bar_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 1;
+        min: 720 100;
+        max: 720 100;
+        color: 255 255 255 255;
+        rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+        rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+    }
+}
+
+part {
+    name: "add_profile_bg";
+    type: RECT;
+    mouse_events: 1;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0.5 0.5;
+        min: 360 100;
+        max: 360 100;
+        color: 255 255 255 255;
+        rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+        rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+    }
+}
+part { name: "add_profile_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "add_profile_bg";}
+            rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
+            text {
+                text: "Add Profile";
+                font: "Sans";
+                size: 40;
+                align: 0.5 0.5;
+            }
+        }
+}
+
+ part {
+    name: "add_profile_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        min: 360 100;
+        max: 360 100;
+        rel1 { relative: 0.0 0.0; to: "add_profile_bg";}
+        rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
+        color_class: transparent;
+    }
+}
+
+}
+}
+
+group {
+        name: "elm/genlist/item/afflv_item/default";
+        data.item: "texts" "item_title";
+   parts {
+   part {
+    name: "item_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 720 100;
+        max: 720 100;
+        color: 247 247 247 255;
+        rel1 { relative: 0.0 0.0; }
+        rel2 { relative: 1.0 1.0; }
+    }
+}
+
+part { name: "item_title";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 64 64 64 255;
+            rel1 { relative: 0.0 0.0; to: "item_bg";}
+            rel2 { relative: 1.0 1.0; to: "item_bg";}
+            text {
+                text: "First name";
+                font: "Sans";
+                size: 36;
+                align: 0.02 0.5;
+            }
+        }
+}
+
+part {
+    name: "item_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        //min: 64 64;
+        //max: 64 64;
+        rel1 { relative: 1.0 0.0; to: "item_bg";}
+        rel2 { relative: 1.0 1.0; to: "item_bg";}
+        color_class: transparent;
+    }
+}
+}
+}
+
+group {
+        name: "elm/entry/base-single/aff_entry";
+        data {
+            item: focus_highlight "off";
+        }
+        parts {
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                }
+            }
+       }
+    }
+
+}
