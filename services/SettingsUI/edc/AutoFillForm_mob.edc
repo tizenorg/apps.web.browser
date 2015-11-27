@@ -1,0 +1,175 @@
+
+//#define WIDTH HEIGHT 1440
+
+collections {
+group {
+        min: 1440 2560;
+        max: 1440 2560;
+        name: "afflv_layout";
+parts {
+part {
+        name: "bg";
+        type : RECT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+        min: 1440 2560;
+        max: 1440 2560;
+            visible: 1;
+            fixed: 1 1;
+            align: 0 0;
+            //min: URI_BG_WIDTH URI_BG_HEIGHT;
+            //max: URI_BG_WIDTH URI_BG_HEIGHT;
+            color: 255 255 255 255;
+            rel1 { relative: 0.0 0.0; }
+            rel2 { relative: 1.0 1.0; }
+        }
+ }
+part {
+    name: "title_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        //min: 64 64;
+        //max: 64 64;
+        color: 64 64 255 255;
+        rel1 { relative: 0.0 0.0; to: "bg";}
+        rel2 { relative: 0.1 1.0; to: "bg";}
+    }
+}
+part { name: "title_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 128 128 128 255;
+            rel1 { relative: 0.0 0.0; to: "title_bg"; /*offset: 300 0;*/}
+            rel2 { relative: 1.0 1.0; to: "title_bg";}
+            text {
+                text: "Auto Fill Forms";
+                font: "Sans";
+                size: 60;
+                align: 0.5 0.5;
+            }
+        }
+}
+part {
+    name: "profile_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        //min: 64 64;
+        //max: 64 64;
+        color: 64 64 255 255;
+        rel1 { relative: 1.0 0.0; to: "title_bg";}
+        rel2 { relative: 0.1 1.0; to: "bg";}
+    }
+}
+
+part { name: "profile_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 128 128 128 255;
+            rel1 { relative: 0.0 0.0; to: "profile_bg"; /*offset: 300 0;*/}
+            rel2 { relative: 1.0 1.0; to: "profile_bg";}
+            text {
+                text: "Profiles";
+                font: "Sans";
+                size: 60;
+                align: 0 0.5;
+            }
+        }
+}
+
+part {
+    name: "afflv_genlist";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        //min: 64 64;
+        //max: 64 64;
+        rel1 { relative: 1.0 0.0; to: "profile_bg";}
+        rel2 { relative: 1.0 1.0; to: "bg";}
+        //color_class: transparent;
+    }
+}
+}
+}
+
+group {
+        name: "elm/genlist/item/afflv_item/default";
+        data.item: "text" "item_title";
+   parts {
+   part {
+    name: "item_bg";
+    type: RECT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 1440 100;
+        max: 1440 100;
+        color: 64 64 255 255;
+        rel1 { relative: 0.0 0.0; }
+        rel2 { relative: 1.0 1.0; }
+    }
+}
+
+part { name: "item_title";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0;
+            color: 128 128 128 255;
+            rel1 { relative: 0.0 0.0; to: "item_bg"; /*offset: 300 0;*/}
+            rel2 { relative: 1.0 1.0; to: "item_bg";}
+            text {
+                text: "First name";
+                font: "Sans";
+                size: 60;
+                align: 0 0.5;
+            }
+        }
+}
+
+part {
+    name: "item_button";
+    scale:1;
+    type: SWALLOW;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        //min: 64 64;
+        //max: 64 64;
+        rel1 { relative: 1.0 0.0; to: "item_bg";}
+        rel2 { relative: 1.0 1.0; to: "item_bg";}
+        color_class: transparent;
+    }
+}
+}
+}
+}

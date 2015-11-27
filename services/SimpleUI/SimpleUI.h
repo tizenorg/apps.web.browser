@@ -61,6 +61,8 @@
 #include "BookmarksManager.h"
 #include "ConfigTypedef.h"
 #include "ViewManager.h"
+#include "AutoFillForm/AutoFillForm.h"
+#include "AutoFillForm/AutoFillFormListView.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -305,6 +307,8 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    auto_fill_form_manager* m_manager;
+    auto_fill_form_list_view* m_afflv;
 
     //helper object used to view management
     ViewManager m_viewManager;
