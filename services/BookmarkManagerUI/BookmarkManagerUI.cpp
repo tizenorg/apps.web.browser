@@ -488,7 +488,7 @@ void BookmarkManagerUI::addNewFolder()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_new_item_class,
-                                                            NULL, _bookmarkNewFolderClicked, NULL);
+                                                            NULL, _bookmarkNewFolderClicked, this);
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
     setEmptyGengrid(false);
 }
@@ -529,6 +529,22 @@ void BookmarkManagerUI::addMobileFolder(std::vector<std::shared_ptr<tizen_browse
                                                             folderData, _bookmarkMobileFolderClicked, folderData);
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
     setEmptyGengrid(false);
+}
+
+void BookmarkManagerUI::addCustomFolders(services::SharedBookmarkFolderList folders)
+{
+    elm_gengrid_clear(m_details_gengrid);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    for (auto it = folders.begin(); it != folders.end(); ++it) {
+        FolderData *folderData = new FolderData();
+        folderData->name = (*it)->getName();
+        folderData->folder_id = (*it)->getId();
+        folderData->count = (*it)->getCount();
+        folderData->bookmarkManagerUI.reset(this);
+        addCustomFolder(folderData);
+    }
+    elm_object_part_content_set(b_mm_layout, "elm.swallow.grid", getGenGrid());
+    evas_object_show(getGenGrid());
 }
 
 void BookmarkManagerUI::addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items)
@@ -628,10 +644,14 @@ void BookmarkManagerUI::_bookmarkCustomFolderClicked(void * data , Evas_Object *
     }
 }
 
-void BookmarkManagerUI::_bookmarkNewFolderClicked(void * , Evas_Object *, void *)
+void BookmarkManagerUI::_bookmarkNewFolderClicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    //TODO: New Folder
+    if (data != nullptr)
+    {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        bookmarkManagerUI->newFolderItemClicked();
+    }
 }
 
 void BookmarkManagerUI::_bookmarkAllFolderClicked(void * data , Evas_Object *, void *)
