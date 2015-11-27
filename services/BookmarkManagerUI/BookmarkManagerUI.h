@@ -26,6 +26,7 @@
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
+#include "BookmarkFolder.h"
 #include "FocusManager.h"
 
 namespace tizen_browser{
@@ -52,6 +53,7 @@ public:
     void addNewFolder();
     void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void addMobileFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    void addCustomFolders(services::SharedBookmarkFolderList folders);
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
     void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void showDetailsUI();
@@ -67,6 +69,7 @@ public:
     boost::signals2::signal<void (int)> customFolderClicked;
     boost::signals2::signal<void ()> mobileFolderClicked;
     boost::signals2::signal<void ()> allFolderClicked;
+    boost::signals2::signal<void ()> newFolderItemClicked;
 #endif
 
 private:

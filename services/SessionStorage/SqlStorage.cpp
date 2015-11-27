@@ -65,6 +65,19 @@ namespace{
                             + "     ON DELETE CASCADE "
                             + " ); ";
 
+    const std::string TABLE_FOLDER = "FOLDER_TABLE";
+    const std::string COL_FOLDER_ID = "folder_id";
+    const std::string COL_FOLDER_NAME = "name";
+    const std::string CONSTRAINT_TABLE_PK = TABLE_FOLDER + "_PK";
+    const std::string DDL_CREATE_TABLE_FOLDER
+                            = " CREATE TABLE " + TABLE_FOLDER
+                            + " ( " + COL_FOLDER_ID + " INTEGER, "
+                            + "   " + COL_FOLDER_NAME + " TEXT,"
+                            + " CONSTRAINT " + CONSTRAINT_TABLE_PK
+                            + "      PRIMARY KEY ( " + COL_FOLDER_ID + " ) "
+                            + "      ON CONFLICT REPLACE "
+                            + " ); ";
+
 }
 
 namespace tizen_browser
@@ -117,16 +130,19 @@ bool SqlStorage::initSessionDatabase()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
-    try{
-        tizen_browser::services::StorageService::checkAndCreateTable(&scope
-                                                                     ,TABLE_SESSION
-                                                                     ,DDL_CREATE_TABLE_SESSION);
+    try {
+        tizen_browser::services::StorageService::checkAndCreateTable(&scope,
+                                                                     TABLE_SESSION,
+                                                                     DDL_CREATE_TABLE_SESSION);
         tizen_browser::services::StorageService::checkAndCreateTable(&scope
                                                                      ,TABLE_URL
                                                                      ,DDL_CREATE_TABLE_URL);
+        tizen_browser::services::StorageService::checkAndCreateTable(&scope,
+                                                                     TABLE_FOLDER,
+                                                                     DDL_CREATE_TABLE_FOLDER);
         scope.database()->exec(DDL_CREATE_INDEX_SESSION_DATE);
         return true;
-    }catch (storage::StorageException &e){
+    } catch (storage::StorageException &e) {
         BROWSER_LOGE("[ERROR] Session Storage initalization Error code: %d: %s"
                     , __PRETTY_FUNCTION__
                     , __LINE__
@@ -215,7 +231,6 @@ void SqlStorage::updateSession(tizen_browser::Session::Session& session, const s
         updateSessionTimeStamp(session, currentTime, connection);
         session.m_lastModificationTime = currentTime;
     }
-
 }
 
 void SqlStorage::updateSession(Session& session,
@@ -341,6 +356,168 @@ std::string SqlStorage::getUrlTitle(const std::string& url)
         return getTitleQuery.getString(0);
 
     } catch(storage::StorageException& e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return std::string();
+}
+
+services::SharedBookmarkFolder SqlStorage::getFolder(unsigned int id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::string name = getFolderName(id);
+    services::SharedBookmarkFolder folder;
+    if (name != "")
+        folder = std::make_shared<services::BookmarkFolder>(id, name, 0);
+    return folder;
+}
+
+services::SharedBookmarkFolderList SqlStorage::getFolders()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    services::SharedBookmarkFolderList folders;
+    int foldersCount = getFoldersCount();
+    if (foldersCount != 0) {
+        boost::format getFoldersString("SELECT %1%, %2% FROM %3% ;");
+        getFoldersString % COL_FOLDER_ID % COL_FOLDER_NAME % TABLE_FOLDER;
+        try {
+            storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+            std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+            storage::SQLQuery getFoldersQuery(connection->prepare(getFoldersString.str()));
+            getFoldersQuery.exec();
+            for (int i = 0; i < foldersCount; ++i) {
+                //todo: bookmark count
+                services::SharedBookmarkFolder bookmark = std::make_shared<services::BookmarkFolder>(getFoldersQuery.getInt(0), getFoldersQuery.getString(1), 0);
+                folders.push_back(bookmark);
+                getFoldersQuery.next();
+            }
+        } catch (storage::StorageException& e) {
+            BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+        }
+    }
+    return folders;
+}
+
+unsigned int SqlStorage::getFoldersCount()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getCountString("SELECT COUNT (*) FROM %1% ;");
+    getCountString % TABLE_FOLDER;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+        storage::SQLQuery getCountQuery(connection->prepare(getCountString.str()));
+        getCountQuery.exec();
+        return getCountQuery.getInt(0);
+    } catch (storage::StorageException& e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return 0;
+}
+
+unsigned int SqlStorage::addFolder(const std::string& name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format addFolderQueryString("INSERT OR REPLACE INTO %1% ( %2% ) VALUES ( ? );");
+    addFolderQueryString % TABLE_FOLDER % COL_FOLDER_NAME;
+    boost::posix_time::ptime currentTime(boost::posix_time::second_clock::local_time());
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> db = scope.database();
+        storage::SQLQuery addFolderQuery(db->prepare(addFolderQueryString.str()));
+        addFolderQuery.bindText(1, name);
+        addFolderQuery.exec();
+        return db->lastInsertId();
+    } catch (storage::StorageException &e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return 0;
+}
+
+void SqlStorage::updateFolderName(unsigned int id, const std::string& newName)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format updateFolderNameString("UPDATE %1%  SET %2% = ? WHERE %3% = ?" );
+    updateFolderNameString % TABLE_FOLDER % COL_FOLDER_NAME % COL_FOLDER_ID;
+    storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+    std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+    try {
+        storage::SQLQuery updateFolderNameQuery(connection->prepare(updateFolderNameString.str()));
+        updateFolderNameQuery.bindText(1, newName);
+        updateFolderNameQuery.bindInt(2, id);
+        updateFolderNameQuery.exec();
+    } catch (storage::StorageException &e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+}
+
+void SqlStorage::removeFolder(unsigned int id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format deleteFolderString("DELETE FROM %1% WHERE %2% = ?;");
+    deleteFolderString % TABLE_FOLDER % COL_FOLDER_ID;
+
+    storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+    std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+    try {
+        storage::SQLQuery deleteFolderQurey(connection->prepare(deleteFolderString.str()));
+        deleteFolderQurey.bindInt(1, id);
+        deleteFolderQurey.exec();
+    } catch (storage::StorageException &e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+}
+
+bool SqlStorage::ifFolderExists(const std::string& name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getCountString("SELECT COUNT (*) FROM %1% WHERE %2% = ?;");
+    getCountString % TABLE_FOLDER % COL_FOLDER_NAME;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+        storage::SQLQuery getCountQuery(connection->prepare(getCountString.str()));
+        getCountQuery.bindText(1, name);
+        getCountQuery.exec();
+        int number = getCountQuery.getInt(0);
+        return number != 0;
+    } catch (storage::StorageException& e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return true;
+}
+
+unsigned int SqlStorage::getFolderId(const std::string& name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getIdString("SELECT %1% FROM %2% WHERE %3% = ?;");
+    getIdString % COL_FOLDER_ID % TABLE_FOLDER % COL_FOLDER_NAME;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+        storage::SQLQuery getIdQuery(connection->prepare(getIdString.str()));
+        getIdQuery.bindText(1, name);
+        getIdQuery.exec();
+        return getIdQuery.getInt(0);
+    } catch (storage::StorageException& e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+    return 0;
+}
+
+std::string SqlStorage::getFolderName(unsigned int id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format getNameString("SELECT %1% FROM %2% WHERE %3% = ?;");
+    getNameString % COL_FOLDER_NAME % TABLE_FOLDER % COL_FOLDER_ID;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+        storage::SQLQuery getNameQuery(connection->prepare(getNameString.str()));
+        getNameQuery.bindInt(1, id);
+        getNameQuery.exec();
+
+        return getNameQuery.getString(0);
+    } catch (storage::StorageException& e) {
         BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
     }
     return std::string();
