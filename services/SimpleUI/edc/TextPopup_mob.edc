@@ -6,7 +6,7 @@ collections {
    styles {
       style {
          name: "text_style";
-         base: "font=Sans font_size=38 color=#333333 wrap=word align=0.5";
+         base: "font=Sans font_size=38 color=#333333 wrap=word align=0.0 valign=1.0";
       }
       style {
          name: "title_style";
@@ -102,13 +102,13 @@ collections {
                 }
             }
             part {
-                name: "popup_text_bg";
+                name: "popup_text_spacer";
                 type: RECT;
                 scale: 1;
                 description {
                     visible: 1;
-                    min: 720 219;
-                    max: 720 219;
+                    min: 720 26;
+                    max: 720 26;
                     align: 0.0 0.0;
                     fixed: 1 1;
                     color: 255 255 255 255;
@@ -123,6 +123,27 @@ collections {
                 }
             }
             part {
+                name: "popup_text_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 720 219;
+                    max: 720 219;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    color: 255 255 255 255;
+                    rel1 {
+                        to: "popup_text_spacer";
+                        relative: 0.0 1.0;
+                    }
+                    rel2 {
+                        to: "popup_text_spacer";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
                 name: "popup_text";
                 type: TEXTBLOCK;
                 scale: 1;
@@ -131,7 +152,7 @@ collections {
                     visible: 1;
                     min: 632 219;
                     max: 632 219;
-                    align: 0.5 0.5;
+                    align: 0.5 0.0;
                     fixed: 1 1;
                     rel1 {
                         to: "popup_text_bg";
@@ -295,6 +316,7 @@ collections {
                 type: SWALLOW;
                 scale:1;
                 mouse_events: 1;
+                repeat_events: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
@@ -309,6 +331,7 @@ collections {
                 type: SWALLOW;
                 scale: 1;
                 mouse_events: 1;
+                repeat_events: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;

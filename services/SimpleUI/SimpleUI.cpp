@@ -57,7 +57,9 @@ namespace base_ui{
 EXPORT_SERVICE(SimpleUI, "org.tizen.browser.simpleui")
 
 const std::string HomePageURL = "about:home";
-
+const std::string ResetBrowserPopupMsg = "Do you really want to reset browser?" \
+                                         " If you press reset, delete all data" \
+                                         " and return to initial setting.";
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
@@ -1274,7 +1276,7 @@ void SimpleUI::settingsResetBrowser()
     popup->buttonClicked.connect(boost::bind(&SimpleUI::onResetBrowserButton, this, _1, _2));
 #endif
     popup->setTitle("Reset browser");
-    popup->setMessage("Are you sure you want to reset browser?");
+    popup->setMessage(ResetBrowserPopupMsg);
     popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     popup->show();
