@@ -1240,6 +1240,11 @@ void SimpleUI::onDeleteMostVisitedButton(std::shared_ptr< PopupData > /*popupDat
 void SimpleUI::settingsResetBrowser()
 {
     BROWSER_LOGD("[%s]: Resetting browser", __func__);
+    auto_fill_form_manager* m_manager = new auto_fill_form_manager();
+    m_manager->init(m_viewManager.getContent());
+    m_manager->show_list_view();
+    //m_manager->show_composer();
+/*
 #if PROFILE_MOBILE
     TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
     popup->setRightButton(OK);
@@ -1253,7 +1258,7 @@ void SimpleUI::settingsResetBrowser()
 #endif
     popup->setTitle("Reset browser");
     popup->setMessage("Are you sure you want to reset browser?");
-    popup->show();
+    popup->show();*/
 }
 
 void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/)
