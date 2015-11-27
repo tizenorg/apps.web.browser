@@ -636,6 +636,7 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
                 itemData->moreMenuUI->historyUIClicked();
                 break;
             case SETTINGS:
+                //itemData->moreMenuUI->closeMoreMenuClicked();
                 itemData->moreMenuUI->settingsClicked();
                 break;
             case BOOKMARK_MANAGER:
