@@ -131,7 +131,7 @@ public:
 	 * \pre Query object must not be executed.
      * \throws StorageException on error
 	 */
-	void bindNull(int paramNo);
+    void bindNull(int paramNo);
 
 	/*! \brief Receive textual data from query result.
 	 *

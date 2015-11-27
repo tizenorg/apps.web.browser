@@ -69,6 +69,7 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> saveBookmark;
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
+    boost::signals2::signal<void ()> addFolder;
 private:
     Evas_Object* createBookmarkFlowLayout(Evas_Object* parent);
     void createTitleArea();

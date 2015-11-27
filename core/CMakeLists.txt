@@ -35,6 +35,7 @@ set(browserCore_SRCS
     Tools/BrowserImage.cpp
     Tools/Blob.cpp
     Tools/BookmarkItem.cpp
+    Tools/BookmarkFolder.cpp
     Tools/CapiWebErrorCodes.cpp
     Tools/FeedItem.cpp
     Tools/FeedChannel.cpp
@@ -73,6 +74,7 @@ set(browserCore_HDRS
     Tools/EflTools.h
     Tools/Blob.h
     Tools/BookmarkItem.h
+    Tools/BookmarkFolder.h
     Tools/CapiWebErrorCodes.h
     Tools/GeneralTools.h
     Tools/FeedItem.h
