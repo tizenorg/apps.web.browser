@@ -6,7 +6,7 @@ collections {
    styles {
       style {
          name: "text_style";
-         base: "font=Sans font_size=38 color=#333333 wrap=word align=0.5";
+         base: "font=Sans font_size=38 color=#333333 wrap=word align=0.0 valign=1.0";
       }
       style {
          name: "title_style";
@@ -126,12 +126,11 @@ collections {
                 name: "popup_text";
                 type: TEXTBLOCK;
                 scale: 1;
-                multiline: 1;
                 description {
                     visible: 1;
-                    min: 632 219;
-                    max: 632 219;
-                    align: 0.5 0.5;
+                    min: 632 170;
+                    max: 632 170;
+                    align: 0.5 0.0;
                     fixed: 1 1;
                     rel1 {
                         to: "popup_text_bg";
@@ -139,7 +138,6 @@ collections {
                     }
                     rel2 {
                         to: "popup_text_bg";
-                        relative: 1.0 1.0;
                     }
                     text {
                         style: "text_style";
@@ -295,6 +293,7 @@ collections {
                 type: SWALLOW;
                 scale:1;
                 mouse_events: 1;
+                repeat_events: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
@@ -309,6 +308,7 @@ collections {
                 type: SWALLOW;
                 scale: 1;
                 mouse_events: 1;
+                repeat_events: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
