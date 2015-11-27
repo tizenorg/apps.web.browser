@@ -46,6 +46,13 @@ BuildRequires:  boost-thread
 BuildRequires:  boost-filesystem
 BuildRequires:  boost-system
 
+#if PROFILE_MOBILE
+BuildRequires:  pkgconfig(notification)
+BuildRequires:  pkgconfig(appsvc)
+BuildRequires:  pkgconfig(capi-appfw-app-manager)
+BuildRequires:  pkgconfig(capi-content-media-content)
+#endif
+
 %define BUILD_UT  %{?build_ut:ON}%{!?build_ut:OFF}
 %if %BUILD_UT == "ON"
 BuildRequires:  boost-test

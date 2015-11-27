@@ -44,6 +44,12 @@
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
 
+#if PROFILE_MOBILE
+#include "DownloadControl/DownloadControl.h"
+#include <app_control.h>
+#include <app.h>
+#endif
+
 #define certificate_crt_path CERTS_DIR
 #if MERGE_ME
 #define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
@@ -121,6 +127,9 @@ void WebView::init(bool desktopMode, Evas_Object*)
 
     setupEwkSettings();
     registerCallbacks();
+#if PROFILE_MOBILE
+    ewk_context_did_start_download_callback_set(ewk_view_context_get(m_ewkView), __download_request_cb, this);
+#endif
     resume();
 #else
     m_ewkView = evas_object_rectangle_add(evas_object_evas_get(m_parent));
@@ -143,7 +152,9 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_add(m_ewkView, "close,window", __closeWindowRequest, this);
-
+#if PROFILE_MOBILE
+    evas_object_smart_callback_add(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+#endif
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
@@ -174,7 +185,9 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "close,window", __closeWindowRequest, this);
-
+#if PROFILE_MOBILE
+    evas_object_smart_callback_del_full(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+#endif
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
@@ -941,6 +954,125 @@ bool WebView::isDesktopMode() const {
     return m_desktopMode;
 }
 
+#if PROFILE_MOBILE
+
+download_control dc;
+
+void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, void *event_info)
+{
+	BROWSER_LOGD("");
+	WebView *wv = (WebView *)data;
+
+	Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
+	Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
+
+	wv->m_status_code = ewk_policy_decision_response_status_code_get(policy_decision);
+
+	const char *uri = ewk_policy_decision_url_get(policy_decision);
+//	const char *cookie = ewk_policy_decision_cookie_get(policy_decision);
+	const char *content_type = ewk_policy_decision_response_mime_get(policy_decision);
+	const Eina_Hash *headers = ewk_policy_decision_response_headers_get(policy_decision);
+
+	wv->m_is_error_page = EINA_FALSE;
+
+	switch (policy_type) {
+	case EWK_POLICY_DECISION_USE:
+		BROWSER_LOGD("policy_use");
+		ewk_policy_decision_use(policy_decision);
+		break;
+
+	case EWK_POLICY_DECISION_DOWNLOAD: {
+		BROWSER_LOGD("policy_download");
+		app_control_h app_control = NULL;
+		if (app_control_create(&app_control) < 0) {
+			BROWSER_LOGE("Fail to app_control_create");
+			return;
+		}
+
+	   if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_VIEW) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_operation");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		BROWSER_LOGD("uri: %s", uri);
+		if (app_control_set_uri(app_control, uri) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_uri");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		BROWSER_LOGD("content_type: %s", content_type);
+		if (app_control_set_mime(app_control, content_type) < 0) {
+			BROWSER_LOGE("Fail to app_control_set_mime");
+			app_control_destroy(app_control);
+			return;
+		}
+
+		const char *content_dispotision = (const char *)eina_hash_find(headers, "Content-Disposition");
+		BROWSER_LOGD("Content-disposition: %s", content_dispotision);
+		if (content_dispotision && (strstr(content_dispotision, "attachment") != NULL)){
+			dc.handle_download_request(uri, content_type);
+			app_control_destroy(app_control);
+			ewk_policy_decision_ignore(policy_decision);
+			break;
+		}
+
+		if (!strcmp(content_type, "application/sdp")) {
+			BROWSER_LOGD("sdp : download uri: %s", uri);
+			//m_browser->get_browser_view()->launch_sdp_svc(uri);
+			app_control_destroy(app_control);
+			ewk_policy_decision_ignore(policy_decision);
+			break;
+		}
+
+		if (app_control_send_launch_request(app_control, NULL, NULL) == APP_CONTROL_ERROR_APP_NOT_FOUND) {
+			BROWSER_LOGD("app_control_send_launch_request returns APP_CONTROL_ERROR_APP_NOT_FOUND");
+			dc.handle_download_request(uri, content_type);
+		}
+		app_control_destroy(app_control);
+		ewk_policy_decision_ignore(policy_decision);
+		break;
+	}
+	case EWK_POLICY_DECISION_IGNORE:
+	default:
+		BROWSER_LOGD("policy_ignore");
+		ewk_policy_decision_ignore(policy_decision);
+		break;
+	}
+
+/*	if (wv->m_navigation_count == 1 && policy_type == EWK_POLICY_DECISION_DOWNLOAD) {
+		wv->m_is_download_url = EINA_TRUE;
+		ecore_idler_add(__close_window_idler_cb, data);
+	}*/
+}
+
+void WebView::__download_request_cb(const char *download_uri, void *data)
+{
+	BROWSER_LOGD("download_uri = [%s]", download_uri);
+	BROWSER_LOGD("data=%p", data);
+
+	if (!strncmp(download_uri, "data:", strlen("data:"))){
+		//m_browser->get_browser_view()->show_noti_popup(BR_STRING_DOWNLOADING_ING);
+		BROWSER_LOGD("popup noti 1");
+		if (dc.handle_data_scheme(download_uri) == EINA_TRUE){
+			//m_browser->get_browser_view()->show_noti_popup(BR_STRING_SAVED);
+			BROWSER_LOGD("popup noti 2");
+		}
+		else{
+			BROWSER_LOGD("popup noti 3");
+			//m_browser->get_browser_view()->show_noti_popup(BR_STRING_FAILED);
+		}
+	} else if (strncmp(download_uri, "http://", strlen("http://")) && strncmp(download_uri, "http://", strlen("http://"))) {
+		BROWSER_LOGE("Only http or https URLs can be downloaded");
+		//m_browser->get_browser_view()->show_noti_popup(BR_STRING_HTTP_URL_CAN_BE_DOWNLOADED);
+		BROWSER_LOGD("popup noti 4");
+		return;
+	} else {
+		dc.launch_download_app(download_uri);
+	}
+}
+#endif
 } /* namespace webkitengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */

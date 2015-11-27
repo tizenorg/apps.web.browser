@@ -75,6 +75,12 @@ if(TIZEN_BUILD)
         dlog
         capi-appfw-application
         libpng
+     #if PROFILE_MOBILE
+        capi-content-media-content
+        capi-appfw-app-manager
+        notification
+        appsvc
+     #endif
     )
 
     pkg_check_modules(tizen_pkgs REQUIRED "${tizen_pkgs_list}")

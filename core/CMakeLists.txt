@@ -40,6 +40,9 @@ set(browserCore_SRCS
     Tools/FeedChannel.cpp
     Tools/FocusManager.cpp
     Tools/StringTools.cpp
+#if PROFILE_MOBILE
+    DownloadControl/DownloadControl.cpp
+#endif
     )
 
 if(TIZEN_BUILD)
@@ -79,6 +82,9 @@ set(browserCore_HDRS
     Tools/FeedChannel.h
     Tools/FocusManager.h
     Tools/StringTools.h
+#if PROFILE_MOBILE
+    DownloadControl/DownloadControl.h
+#endif
     )
 
 if(TIZEN_BUILD)
