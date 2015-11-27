@@ -207,7 +207,7 @@ group {
             }
         }
         part{
-                    name: "del_web_bro_spacer";
+                    name: "auto_fill_data_spacer";
                     type: SPACER;
                     scale: 1;
                     description {
@@ -217,6 +217,126 @@ group {
                         max: 32 120;
                         align: 0 0;
                         rel1 { relative: 0.0 1.0;to: "settings_sub_bg";}
+                        rel2 { relative: 1.0 1.0;}
+                    }
+                }
+        part{
+                    name: "auto_fill_data_text";
+                    type: TEXTBLOCK;
+                    scale: 1;
+                    description {
+                        state: "default" 0.0;
+                        visible: 1;
+                        fixed: 1 1;
+                        min: 600 120;
+                        max: 600 120;
+                        align: 0 0;
+                        rel1 { relative: 1.0 0.0;to: "auto_fill_data_spacer";}
+                        rel2 { relative: 1.0 1.0;}
+                        text {
+                            min: 0 1;
+                            max: 1 1;
+                            text: "Auto Fill data";
+                            style: "check_box_text";
+                        }
+                    }
+                }
+        part{
+                        name: "auto_fill_data_arrow_spacer";
+                        type: SPACER;
+                        scale: 1;
+                        description {
+                            state: "default" 0.0;
+                            fixed: 1 1;
+                            min: 28 120;
+                            max: 28 120;
+                            align: 0 0;
+                            rel1 { relative: 1.0 0.0;to: "auto_fill_data_text";}
+                            rel2 { relative: 1.0 1.0;}
+                        }
+                    }
+        part{
+                        name: "auto_fill_data_arrow";
+                        type: IMAGE;
+                        scale: 1;
+                        description {
+                            state: "default" 0.0;
+                            visible: 1;
+                            fixed: 1 1;
+                            min: 38 38;
+                            max: 38 38;
+                            align: 0 0.5;
+                            image.normal: "list_ic_arrow.png";
+                            rel1 { relative: 1.0 0.0;to: "auto_fill_data_arrow_spacer";}
+                            rel2 { relative: 1.0 1.0;to: "auto_fill_data_arrow_spacer";}
+                        }
+        }
+        part{
+            name: "auto_fill_data_button";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                align: 0 0;
+                visible: 0;
+                rel1 { relative: 0.0 1.0;to: "settings_sub_bg";}
+                rel2 { relative: 1.0 1.0;}
+                color_class: defaultListColor;
+            }
+            description {
+                state: "highlight" 0.0;
+                inherit: "default" 0.0;
+                color_class: pressListColor;
+                visible: 1;
+            }
+        }
+        part {
+            name: "auto_fill_data_over";
+            scale:1;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                rel1 { relative: 0.0 0.0; to: "auto_fill_data_button";}
+                rel2 { relative: 1.0 1.0; to: "auto_fill_data_button";}
+                color_class: defaultListColor;
+            }
+        }
+
+        part {
+            name: "auto_fill_data_click";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 120;
+                max: 720 120;
+                rel1 { relative: 0.0 0.0; to: "auto_fill_data_over";}
+                rel2 { relative: 1.0 1.0; to: "auto_fill_data_over";}
+                color_class: defaultListColor;
+            }
+        }
+        part{
+                    name: "del_web_bro_spacer";
+                    type: SPACER;
+                    scale: 1;
+                    description {
+                        state: "default" 0.0;
+                        fixed: 1 1;
+                        min: 32 120;
+                        max: 32 120;
+                        align: 0 0;
+                        rel1 { relative: 0.0 1.0;to: "auto_fill_data_spacer";}
                         rel2 { relative: 1.0 1.0;}
                     }
                 }
@@ -282,7 +402,7 @@ group {
                 max: 720 120;
                 align: 0 0;
                 visible: 0;
-                rel1 { relative: 0.0 1.0;to: "settings_sub_bg";}
+                rel1 { relative: 0.0 1.0;to: "auto_fill_data_spacer";}
                 rel2 { relative: 1.0 1.0;}
                 color_class: defaultListColor;
             }
@@ -591,7 +711,7 @@ group {
                     min: 720 2;
                     max: 720 2;
                     align: 0 0;
-                    rel1 { relative: 0.0 1.0; to: "del_web_bro_spacer";}
+                    rel1 { relative: 0.0 1.0; to: "auto_fill_data_spacer";}
                     rel2 { relative: 1.0 1.0;}
                     color: 0 0 0 13;
                 }
@@ -607,13 +727,29 @@ group {
                     min: 720 2;
                     max: 720 2;
                     align: 0 0;
-                    rel1 { relative: 0.0 1.0; to: "reset_most_visited_spacer";}
+                    rel1 { relative: 0.0 1.0; to: "del_web_bro_spacer";}
                     rel2 { relative: 1.0 1.0;}
                     color: 0 0 0 13;
                 }
             }
         part {
                 name: "line4";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    min: 720 2;
+                    max: 720 2;
+                    align: 0 0;
+                    rel1 { relative: 0.0 1.0; to: "reset_most_visited_spacer";}
+                    rel2 { relative: 1.0 1.0;}
+                    color: 0 0 0 13;
+                }
+            }
+        part {
+                name: "line5";
                 scale:1;
                 type: RECT;
                 description {
@@ -656,6 +792,33 @@ group {
                 target: "sign_in_button";
                 target: "sign_in_over";
                 target: "sign_in_text";
+            }
+            //Auto Fill Data
+            program {
+                name: "mouse_click_auto_fill_data";
+                signal: "mouse,clicked,1";
+                source: "auto_fill_data_over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "mouse_in_auto_fill_data_click";
+                signal: "mouse,in";
+                source: "auto_fill_data_*";
+                action: STATE_SET "highlight" 0.0;
+                target: "auto_fill_data_button";
+                //target: "auto_fill_data_over";
+                //target: "auto_fill_data_text";
+            }
+            program {
+                name: "mouse_out_auto_fill_data_click";
+                signal: "mouse,out";
+                source: "auto_fill_data_*";
+                action: STATE_SET "default" 0.0;
+                target: "auto_fill_data_button";
+                target: "auto_fill_data_over";
+                target: "auto_fill_data_text";
             }
             //Delete Web Browsing Data
             program {
