@@ -87,7 +87,9 @@ Evas_Object* URIEntry::getContent()
         evas_object_smart_callback_add(m_entry, "focused", URIEntry::focused, this);
         evas_object_smart_callback_add(m_entry, "unfocused", URIEntry::unfocused, this);
         evas_object_smart_callback_add(m_entry, "clicked", _uri_entry_clicked, this);
+#if PROFILE_MOBILE
         evas_object_smart_callback_add(m_entry, "clicked,double", _uri_entry_double_clicked, this);
+#endif
         evas_object_event_callback_priority_add(m_entry, EVAS_CALLBACK_KEY_DOWN, 2 * EVAS_CALLBACK_PRIORITY_BEFORE, URIEntry::_fixed_entry_key_down_handler, this);
 
         elm_object_part_content_set(m_entry_layout, "uri_entry_swallow", m_entry);
@@ -258,7 +260,9 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
     } else {//if(entry.find(" ") != std::string::npos){
         self->setSearchIcon();
     }
+#if PROFILE_MOBILE
     self->showCancelIcon();
+#endif
     self->uriEntryEditingChangedByUser(std::make_shared<std::string>(entry));
 }
 
