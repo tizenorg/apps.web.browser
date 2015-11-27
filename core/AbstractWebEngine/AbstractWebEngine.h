@@ -28,6 +28,7 @@
 
 #include "TabId.h"
 #include "WebConfirmation.h"
+#include "WebEngineSettings.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -335,6 +336,16 @@ public:
      * @param enabled True if touch event have to be enabled, false else.
      */
     virtual void setTouchEvents(bool enabled) = 0;
+
+    /**
+     * @brief Get settings param.
+     */
+    virtual bool getSettingsParam(WebEngineSettings param) = 0;
+
+    /**
+     * @brief Set bool settings param value.
+     */
+    virtual void setSettingsParam(WebEngineSettings param, bool value) = 0;
 #endif
 
     /**
