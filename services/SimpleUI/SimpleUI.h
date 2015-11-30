@@ -150,7 +150,11 @@ private:
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 #if PROFILE_MOBILE
     void onNewFolderClicked();
-    void onInputPopupClick(const std::string& folder_name);
+    void onEditFolderClicked(const std::string& folder_name);
+    void onDeleteFolderClicked(const std::string& folder_name);
+    void onNewFolderPopupClick(const std::string& folder_name);
+    void onEditFolderPopupClicked(const std::string& newName);
+    void onDeleteFolderPopupClicked(PopupButtons button);
 #endif
     void onBookmarkRemoved(const std::string& uri);
 
@@ -314,6 +318,10 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+
+#if PROFILE_MOBILE
+    std::string m_folder_name;
+#endif
 
     //helper object used to view management
     ViewManager m_viewManager;
