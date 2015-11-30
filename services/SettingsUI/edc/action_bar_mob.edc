@@ -115,6 +115,14 @@ group
                 }
             }
             description {
+                state: "contentSettings" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                text {
+                    text: "Content Settings";
+                }
+            }
+            description {
                 state: "highlight" 0.0;
                 inherit: "default" 0.0;
                 color_class: focusBgColor1;
@@ -275,6 +283,14 @@ group
                 signal: "switch,reset,browser";
                 source: "del_but";
                 action: STATE_SET "resBrowser" 0.0;
+                target: "settings_title";
+                after: "backIconChange";
+            }
+            program {
+                name: "toContentSettings";
+                signal: "switch,content,Settings";
+                source: "del_but";
+                action: STATE_SET "contentSettings" 0.0;
                 target: "settings_title";
                 after: "backIconChange";
             }

@@ -849,6 +849,36 @@ void WebView::scrollView(const int& dx, const int& dy)
 void WebView::setTouchEvents(bool enabled) {
     ewk_view_touch_events_enabled_set(m_ewkView, enabled);
 }
+
+void WebView::ewkSettingsAutoFittingSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_auto_fitting_set(settings, value);
+}
+
+void WebView::ewkSettingsLoadsImagesSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_loads_images_automatically_set(settings, value);
+}
+
+void WebView::ewkSettingsJavascriptEnabledSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_javascript_enabled_set(settings, value);
+}
+
+void WebView::ewkSettingsFormCandidateDataEnabledSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_form_candidate_data_enabled_set(settings, value);
+}
+
+void WebView::ewkSettingsAutofillPasswordFormEnabledSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_autofill_password_form_enabled_set(settings, value);
+}
 #endif
 
 const TabId& WebView::getTabId() {
