@@ -356,6 +356,8 @@ void SimpleUI::connectUISignals()
     m_bookmarkManagerUI->mobileFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkMobileClicked, this));
     m_bookmarkManagerUI->allFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkAllFolderClicked, this));
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+    m_bookmarkManagerUI->editFolderButtonClicked.connect(boost::bind(&SimpleUI::onEditFolderClicked, this, _1));
+    m_bookmarkManagerUI->deleteFolderButtonClicked.connect(boost::bind(&SimpleUI::onDeleteFolderClicked, this, _1));
 #endif
 
     M_ASSERT(m_zoomUI.get());
@@ -667,13 +669,40 @@ void SimpleUI::onNewFolderClicked()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = InputPopup::createInputPopup(m_viewManager.getContent(), "New Folder", "Add New Folder?",
                                                           "New Folder #", "Add", "Cancel");
-    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onInputPopupClick, this, _1));
+    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));
     inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     inputPopup->show();
 }
 
-void SimpleUI::onInputPopupClick(const std::string& folder_name)
+void SimpleUI::onEditFolderClicked(const std::string& folder_name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    InputPopup *inputPopup = InputPopup::createInputPopup(m_viewManager.getContent(), "Edit Folder name", "Edit folder name?",
+                                                          folder_name, "Done", "Cancel");
+    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onEditFolderPopupClicked, this, _1));
+    inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    m_folder_name = folder_name;
+    inputPopup->show();
+}
+
+void SimpleUI::onDeleteFolderClicked(const std::string& folder_name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
+    popup->setRightButton(DELETE);
+    popup->setLeftButton(CANCEL);
+    popup->setTitle("Delete");
+    popup->setMessage("<b>Delete '" + folder_name + "'?</b><br>If you delete this Folder, All Bookmarks in the folder will also be deleted.");
+    popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteFolderPopupClicked, this, _1));
+    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    m_folder_name = folder_name;
+    popup->show();
+}
+
+void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_sessionService->getStorage()->ifFolderExists(folder_name)) {
@@ -688,6 +717,29 @@ void SimpleUI::onInputPopupClick(const std::string& folder_name)
         m_bookmarkManagerUI->addCustomFolders(list);
     }
 }
+
+void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_sessionService->getStorage()->ifFolderExists(m_folder_name)) {
+        unsigned int id = m_sessionService->getStorage()->getFolderId(m_folder_name);
+        m_sessionService->getStorage()->updateFolderName(id, newName);
+        m_bookmarkManagerUI->hideUI();
+        showBookmarkManagerUI();
+    }
+}
+
+void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (button == DELETE && m_sessionService->getStorage()->ifFolderExists(m_folder_name)) {
+        unsigned int id = m_sessionService->getStorage()->getFolderId(m_folder_name);
+        m_sessionService->getStorage()->deleteFolder(id);
+        m_bookmarkManagerUI->hideUI();
+        showBookmarkManagerUI();
+    }
+}
+>>>>>>> Stashed changes
 #endif
 
 void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
@@ -1345,6 +1397,7 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
             m_tabService->clearThumb(id);
             m_webEngine->closeTab(id);
         }
+        m_sessionService->getStorage()->deleteAllFolders();
         //TODO: add here any missing functionality that should be cleaned.
 
         popup->dismiss();

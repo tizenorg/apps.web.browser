@@ -70,6 +70,8 @@ public:
     boost::signals2::signal<void ()> mobileFolderClicked;
     boost::signals2::signal<void ()> allFolderClicked;
     boost::signals2::signal<void ()> newFolderItemClicked;
+    boost::signals2::signal<void (std::string)> editFolderButtonClicked;
+    boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
 #endif
 
 private:
@@ -85,6 +87,7 @@ private:
     void createGenGrid();
     void showTopContent();
     void createGengridItemClasses();
+    void createMenuDetails();
     Evas_Object *getGenList();
     Evas_Object *getGenGrid();
 
@@ -101,6 +104,7 @@ private:
     Evas_Object* createFolderDetailsLayout(Evas_Object* parent);
     void hideFolderDetailsUI();
     void setDetailsEmptyGengrid(bool);
+    std::string getDetailFolderName();
     static char* _grid_title_text_get(void *data, Evas_Object *obj, const char *part);
     static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
     static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
@@ -109,6 +113,9 @@ private:
     static void _bookmarkMobileFolderClicked(void * data, Evas_Object *, void *);
     static void _back_details_clicked_cb(void *data, Evas_Object *, void *);
     static void _more_details_clicked_cb(void *data, Evas_Object *, void *);
+    static void _editButton_clicked(void *data, Evas_Object *, void *);
+    static void _deleteButton_clicked(void *data, Evas_Object *, void *);
+    static void _removeButton_clicked(void *data, Evas_Object *, void *);
 #endif
 
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
@@ -138,6 +145,10 @@ private:
     Evas_Object *m_details_topContent;
     Evas_Object *b_details_layout;
     Evas_Object *m_details_gengrid;
+    Evas_Object *m_menu_details;
+    Evas_Object *m_editButton;
+    Evas_Object *m_deleteButton;
+    Evas_Object *m_removeButton;
 #endif
 };
 

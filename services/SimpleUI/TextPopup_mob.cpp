@@ -68,7 +68,7 @@ void TextPopup::_left_response_cb(void* data,
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     TextPopup *self = static_cast<TextPopup*>(data);
-    self->buttonClicked(PopupButtons::CANCEL);
+    self->buttonClicked(self->m_left_button_type);
     self->dismiss();
 }
 
@@ -78,7 +78,7 @@ void TextPopup::_right_response_cb(void* data,
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     TextPopup *self = static_cast<TextPopup*>(data);
-    self->buttonClicked(PopupButtons::OK);
+    self->buttonClicked(self->m_right_button_type);
     self->dismiss();
 }
 
@@ -94,12 +94,12 @@ void TextPopup::setMessage(const std::string& message)
 
 void TextPopup::setLeftButton(const PopupButtons& button)
 {
-    this->m_left_button_text = button;
+    this->m_left_button_type = button;
 }
 
 void TextPopup::setRightButton(const PopupButtons& button)
 {
-    this->m_right_button_text = button;
+    this->m_right_button_type = button;
 }
 
 void TextPopup::createLayout()
@@ -117,10 +117,10 @@ void TextPopup::createLayout()
     elm_layout_text_set(m_layout, "popup_text", m_message.c_str());
     elm_layout_text_set(m_layout,
                         "ok_button_text",
-                        buttonsTranslations[m_right_button_text].c_str());
+                        buttonsTranslations[m_right_button_type].c_str());
     elm_layout_text_set(m_layout,
                         "cancel_button_text",
-                        buttonsTranslations[m_left_button_text].c_str());
+                        buttonsTranslations[m_left_button_type].c_str());
 
     m_right_button = elm_button_add(m_layout);
     elm_object_style_set(m_right_button, "invisible_button");
