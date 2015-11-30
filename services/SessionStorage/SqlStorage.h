@@ -94,9 +94,14 @@ public:
     void updateFolderName(unsigned int id, const std::string& newName);
 
     /**
-     * Remove folder with a specified id.
+     * Delete all folders.
      */
-    void removeFolder(unsigned int id);
+    void deleteAllFolders();
+
+    /**
+     * Delete folder with a specified id.
+     */
+    void deleteFolder(unsigned int id);
 
     /**
      * Answers if folder of a specified name exists.
