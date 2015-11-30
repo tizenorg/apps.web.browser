@@ -138,6 +138,52 @@ void BookmarkManagerUI::createGengridItemClasses()
     m_folder_custom_item_class->func.del = nullptr;
 #endif
 }
+#if PROFILE_MOBILE
+void BookmarkManagerUI::createMenuDetails()
+{
+    m_menu_details = elm_box_add(b_details_layout);
+    evas_object_size_hint_weight_set(m_menu_details, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_menu_details, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    m_editButton = elm_button_add(m_menu_details);
+    elm_object_style_set(m_editButton, "more-button");
+    evas_object_size_hint_weight_set(m_editButton, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_editButton, 0.5, 0.5);
+    elm_object_part_text_set(m_editButton, "elm.text", "Edit folder name");
+    elm_box_pack_end(m_menu_details, m_editButton);
+    evas_object_smart_callback_add(m_editButton, "clicked", _editButton_clicked, this);
+    elm_object_signal_emit(m_editButton, "visible", "ui");
+
+    evas_object_show(m_editButton);
+    elm_object_tree_focus_allow_set(m_editButton, EINA_FALSE);
+
+    m_deleteButton = elm_button_add(m_menu_details);
+    elm_object_style_set(m_deleteButton, "more-button");
+    evas_object_size_hint_weight_set(m_deleteButton, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_deleteButton, 0.5, 0.5);
+    elm_object_part_text_set(m_deleteButton, "elm.text", "Delete folder");
+    elm_box_pack_end(m_menu_details, m_deleteButton);
+    evas_object_smart_callback_add(m_deleteButton, "clicked", _deleteButton_clicked, this);
+    elm_object_signal_emit(m_deleteButton, "visible", "ui");
+
+    evas_object_show(m_deleteButton);
+    elm_object_tree_focus_allow_set(m_deleteButton, EINA_FALSE);
+
+    m_removeButton = elm_button_add(m_menu_details);
+    elm_object_style_set(m_removeButton, "more-button");
+    evas_object_size_hint_weight_set(m_removeButton, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_removeButton, 0.5, 0.5);
+    elm_object_part_text_set(m_removeButton, "elm.text", "Remove Bookmarks");
+    elm_box_pack_end(m_menu_details, m_removeButton);
+    evas_object_smart_callback_add(m_removeButton, "clicked", _removeButton_clicked, this);
+
+    evas_object_show(m_removeButton);
+    elm_object_tree_focus_allow_set(m_removeButton, EINA_FALSE);
+
+    elm_object_part_content_set(b_details_layout, "more_swallow", m_menu_details);
+    evas_object_show(m_menu_details);
+}
+#endif
 
 void BookmarkManagerUI::init(Evas_Object* parent)
 {
@@ -154,6 +200,9 @@ void BookmarkManagerUI::showUI()
 
 void BookmarkManagerUI::hideUI()
 {
+#if PROJECT_MOBILE
+    evas_object_hide(b_details_layout);
+#endif
     evas_object_hide(b_mm_layout);
     elm_gengrid_clear(m_gengrid);
     m_map_bookmark.clear();
@@ -386,10 +435,54 @@ void BookmarkManagerUI::_back_details_clicked_cb(void* data, Evas_Object*, void*
     }
 }
 
-void BookmarkManagerUI::_more_details_clicked_cb(void*, Evas_Object*, void*)
+void BookmarkManagerUI::_more_details_clicked_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    //TODO: more menu in folder details
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        if (evas_object_visible_get(bookmarkManagerUI->m_menu_details) == EINA_FALSE) {
+            elm_object_signal_emit(bookmarkManagerUI->b_details_layout, "show_menu", "ui");
+            evas_object_show(bookmarkManagerUI->m_menu_details);
+            evas_object_show(elm_object_part_content_get(bookmarkManagerUI->b_details_layout,"more_swallow"));
+        } else {
+            elm_object_signal_emit(bookmarkManagerUI->b_details_layout, "hide_menu", "ui");
+            evas_object_hide(bookmarkManagerUI->m_menu_details);
+            evas_object_hide(elm_object_part_content_get(bookmarkManagerUI->b_details_layout,"more_swallow"));
+        }
+    }
+}
+
+void BookmarkManagerUI::_editButton_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        bookmarkManagerUI->editFolderButtonClicked(bookmarkManagerUI->getDetailFolderName());
+    }
+}
+
+void BookmarkManagerUI::_deleteButton_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        bookmarkManagerUI->deleteFolderButtonClicked(bookmarkManagerUI->getDetailFolderName());
+    }
+}
+
+void BookmarkManagerUI::_removeButton_clicked(void*, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    //TODO: remove thumbnails: https://bugs.tizen.org/jira/browse/TM-122
+}
+
+std::string BookmarkManagerUI::getDetailFolderName()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::string title = elm_object_part_text_get(m_details_topContent, "title_text");
+    auto i = 0;
+    auto pos = title.find_last_of("(");
+    return title.substr(i, pos-i);
 }
 
 void BookmarkManagerUI::createFolderDetailsGenGrid()
@@ -442,6 +535,7 @@ Evas_Object* BookmarkManagerUI::createFolderDetailsLayout(Evas_Object* parent)
 
     createFolderDetailsGenGrid();
     createFolderDetailsTopContent();
+    createMenuDetails();
 
     return b_details_layout;
 }

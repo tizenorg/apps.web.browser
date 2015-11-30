@@ -60,8 +60,8 @@ private:
     Evas_Object* m_layout;
     Evas_Object* m_left_button;
     Evas_Object* m_right_button;
-    PopupButtons m_left_button_text;
-    PopupButtons m_right_button_text;
+    PopupButtons m_left_button_type;
+    PopupButtons m_right_button_type;
     std::string m_title;
     std::string m_message;
     static void _left_response_cb(void* data, Evas_Object* obj, void* event_info);
