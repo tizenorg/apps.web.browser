@@ -450,7 +450,23 @@ void SqlStorage::updateFolderName(unsigned int id, const std::string& newName)
     }
 }
 
-void SqlStorage::removeFolder(unsigned int id)
+void SqlStorage::deleteAllFolders()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::format deleteFoldersString("DELETE FROM %1%;");
+    deleteFoldersString % TABLE_FOLDER;
+    try {
+        storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
+        std::shared_ptr<storage::SQLDatabase> connection = scope.database();
+
+        storage::SQLQuery deleteFoldersQuery(connection->prepare(deleteFoldersString.str()));
+        deleteFoldersQuery.exec();
+    } catch( storage::StorageException &e) {
+        BROWSER_LOGD("[%s:%d] SQLException (%d): %s ", __PRETTY_FUNCTION__, __LINE__, e.getErrorCode(), e.getMessage());
+    }
+}
+
+void SqlStorage::deleteFolder(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format deleteFolderString("DELETE FROM %1% WHERE %2% = ?;");
