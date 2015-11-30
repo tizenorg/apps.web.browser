@@ -158,6 +158,31 @@ public:
      * @param enabled True if touch event have to be enabled, false else.
      */
     void setTouchEvents(bool enabled);
+
+    /**
+     * @brief Set auto fitting settings flag.
+     */
+    void ewkSettingsAutoFittingSet(bool value);
+
+    /**
+     * @brief Set load images settings flag.
+     */
+    void ewkSettingsLoadsImagesSet(bool value);
+
+    /**
+     * @brief Set javascript enabled settings flag.
+     */
+    void ewkSettingsJavascriptEnabledSet(bool value);
+
+    /**
+     * @brief Set form candidate data enabled settings flag.
+     */
+    void ewkSettingsFormCandidateDataEnabledSet(bool value);
+
+    /**
+     * @brief Set autofill password form enabled settings flag.
+     */
+    void ewkSettingsAutofillPasswordFormEnabledSet(bool value);
 #endif
 
 // signals
