@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef HISTORYMATCHFINDER_H_
-#define HISTORYMATCHFINDER_H_
+#ifndef HISTORYITEMTYPEDEF_H_
+#define HISTORYITEMTYPEDEF_H_
 
-#include <string>
+#include <memory>
 #include <vector>
-
-#include "HistoryItemTypedef.h"
-
-using namespace std;
 
 namespace tizen_browser {
 namespace services {
 
-/**
- * @brief removes history items not matching given keywords
- * @param historyItems vector from which mismatching items will be removed
- * @param keywords keywords (history item is a match, when all keywords are
- * matching)
- */
-void removeMismatches(const std::shared_ptr<HistoryItemVector>& historyItems,
-        const vector<string>& keywords);
+class HistoryItem;
 
-} /* namespace services */
-} /* namespace tizen_browser */
+typedef std::vector<std::shared_ptr<HistoryItem>> HistoryItemVector;
+typedef std::vector<std::shared_ptr<HistoryItem>>::iterator HistoryItemVectorIter;
+typedef std::vector<std::shared_ptr<HistoryItem>>::const_iterator HistoryItemVectorConstIter;
 
-#endif /* HISTORYMATCHFINDER_H_ */
+}
+}
+
+#endif /* HISTORYITEMTYPEDEF_H_ */

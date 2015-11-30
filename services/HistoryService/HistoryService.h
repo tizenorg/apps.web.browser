@@ -25,7 +25,7 @@
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "BrowserImage.h"
-#include "HistoryItem.h"
+#include "HistoryItemTypedef.h"
 #include "StorageService.h"
 #include <web/web_history.h>
 #define DOMAIN_HISTORY_SERVICE "org.tizen.browser.historyservice"

@@ -49,6 +49,8 @@ namespace EflTools
     void * getBlobPNG(int width, int height, void * image_data, int * length, int level = 9);
     Evas_Object * getEvasPNG(Evas_Object * parent, const void * buffer, int length);
 
+    void setExpandHints(Evas_Object* toSet);
+
 } /* end of namespace EflTools */
 } /* end of namespace tools */
 } /* end of namespace tizen_browser */

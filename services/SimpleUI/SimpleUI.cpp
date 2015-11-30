@@ -1093,7 +1093,12 @@ void SimpleUI::showHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_historyUI.get());
-    m_historyUI->addHistoryItems(getHistory());
+    m_historyUI->addHistoryItems(m_historyService->getHistoryToday(),
+            HistoryPeriod::HISTORY_TODAY);
+    m_historyUI->addHistoryItems(m_historyService->getHistoryYesterday(),
+            HistoryPeriod::HISTORY_YESTERDAY);
+    m_historyUI->addHistoryItems(m_historyService->getHistoryLastWeek(),
+            HistoryPeriod::HISTORY_LASTWEEK);
 }
 
 void SimpleUI::closeHistoryUI()
