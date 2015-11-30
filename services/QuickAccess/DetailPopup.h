@@ -21,7 +21,7 @@
 #include <string>
 #include <memory>
 #include <boost/signals2/signal.hpp>
-#include "services/HistoryService/HistoryItem.h"
+#include "services/HistoryService/HistoryItemTypedef.h"
 
 namespace tizen_browser{
 namespace base_ui{

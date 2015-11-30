@@ -15,6 +15,7 @@
  */
 
 #include "BrowserLogger.h"
+#include "services/HistoryService/HistoryItem.h"
 #include "GenlistManager.h"
 #include "GenlistManagerCallbacks.h"
 #include "UrlMatchesStyler.h"

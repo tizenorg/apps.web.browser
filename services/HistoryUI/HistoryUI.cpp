@@ -25,8 +25,9 @@
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
-#include "../Tools/BrowserImage.h"
-
+#include "Tools/GeneralTools.h"
+#include "HistoryDaysListManager/HistoryDaysListManager.h"
+#include "services/HistoryService/HistoryItem.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -53,9 +54,10 @@ HistoryUI::HistoryUI()
     , m_itemClassToday(nullptr)
     , m_gengrid(nullptr)
 #if PROFILE_MOBILE
-    , m_dayGenlist(nullptr)
+    , m_daysList(nullptr)
 #endif
     , m_parent(nullptr)
+    , m_historyDaysListManager(new HistoryDaysListManager())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -122,16 +124,28 @@ void HistoryUI::createHistoryUILayout(Evas_Object* parent)
 #if !PROFILE_MOBILE
     m_gengrid = createGengrid(m_history_layout);
 #else
-    m_dayGenlist = createDayGenlist(m_history_layout);
+    m_daysList = createDaysList(m_history_layout);
 #endif
     clearItems();
+}
+
+std::map<std::string, services::HistoryItemVector>
+HistoryUI::groupItemsByDomain(const services::HistoryItemVector& historyItems) {
+    std::map<std::string, services::HistoryItemVector> groupedMap;
+    for(auto& item : historyItems) {
+        std::string domain = tools::extractDomain(item->getUrl());
+        if(groupedMap.find(domain) == groupedMap.end()) {
+            groupedMap.insert(std::pair<std::string, services::HistoryItemVector>(domain, {}));
+        }
+        groupedMap.find(domain)->second.push_back(item);
+    }
+    return groupedMap;
 }
 
 Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(history_layout);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     Evas_Object* gengrid = elm_gengrid_add(history_layout);
     elm_object_part_content_set(history_layout, "history_gengird", gengrid);
 
@@ -171,20 +185,20 @@ Evas_Object* HistoryUI::createGengrid(Evas_Object* history_layout)
     return gengrid;
 }
 
-Evas_Object *HistoryUI::createDayGenlist(Evas_Object *history_layout)
+Evas_Object *HistoryUI::createDaysList(Evas_Object *history_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(history_layout);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    Evas_Object* genlist = elm_genlist_add(history_layout);
-    elm_object_part_content_set(history_layout, "history_genlist", genlist);
 
-    evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    Evas_Object* list = m_historyDaysListManager->createDayGenlist(
+            history_layout);
 
-    //TODO: implement missing history list
+    elm_object_part_content_set(history_layout, "history_list", list);
 
-    return genlist;
+    evas_object_size_hint_weight_set(list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(list, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    return list;
 }
 
 Elm_Gengrid_Item_Class* HistoryUI::crateItemClass()
@@ -261,7 +275,8 @@ void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
     historyUI->clearItems();
 }
 
-void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
+void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi,
+        HistoryPeriod /*period*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     for (auto it : _history_item_data) {
@@ -276,12 +291,19 @@ void HistoryUI::addHistoryItem(std::shared_ptr<services::HistoryItem> hi)
     itemData->historyUI->m_map_history_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getUrl(), historyView));
 }
 
-void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items)
+void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items,
+        HistoryPeriod period)
 {
+#if PROFILE_MOBILE
+    if(items->size() == 0) return;
+    auto grouped = groupItemsByDomain(*items);
+    m_historyDaysListManager->addHistoryItems(grouped, period);
+#else
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     _history_item_data.clear();
     for (auto it = items->begin(); it != items->end(); ++it)
-        addHistoryItem(*it);
+        addHistoryItem(*it, period);
+#endif
 }
 
 char* HistoryUI::_grid_text_get(void*, Evas_Object*, const char *part)
@@ -328,6 +350,7 @@ void HistoryUI::clearItems()
     elm_genlist_clear(m_genListToday);
     m_map_history_views.clear();
     _history_item_data.clear();
+    m_historyDaysListManager->clear();
 }
 
 void HistoryUI::_history_item_clicked_cb(void *data, Evas_Object*, void*)

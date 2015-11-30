@@ -18,6 +18,7 @@
 #include <Elementary.h>
 #include <vector>
 #include <algorithm>
+#include "services/HistoryService/HistoryItem.h"
 #include "BrowserAssert.h"
 #include "DetailPopup.h"
 #include "BrowserLogger.h"
