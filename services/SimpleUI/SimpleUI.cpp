@@ -667,7 +667,6 @@ void SimpleUI::onNewFolderClicked()
     inputPopup->show();
 }
 
-#endif
 void SimpleUI::onInputPopupClick(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -683,7 +682,7 @@ void SimpleUI::onInputPopupClick(const std::string& folder_name)
         m_bookmarkManagerUI->addCustomFolders(list);
     }
 }
-
+#endif
 
 void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
 {
