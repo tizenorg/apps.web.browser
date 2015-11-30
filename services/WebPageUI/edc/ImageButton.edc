@@ -149,6 +149,7 @@
                 script {                                            \
                     emit("elm,action,press", "");                   \
                 }                                                   \
+                after: "focused";                                   \
             }                                                       \
             program {                                               \
                 name: "mouse_up";                                   \
@@ -157,6 +158,7 @@
                 script {                                            \
                     emit("elm,action,unpress", "");                 \
                 }                                                   \
+                after: "unfocused";                                 \
             }                                                       \
             program {                                               \
                 name: "mouse_click";                                \
@@ -183,16 +185,12 @@
             }                                                       \
             program {                                               \
                 name: "focused";                                    \
-                signal: "elm,action,focus";                         \
-                source: "elm";                                      \
                 action: STATE_SET "highlight" 0.0;                  \
                 target: "high_layer";                               \
                 target: "bg";                                       \
             }                                                       \
             program {                                               \
                 name: "unfocused";                                  \
-                signal: "elm,action,unfocus";                       \
-                source: "elm";                                      \
                 action: STATE_SET "default" 0.0;                    \
                 target: "high_layer";                               \
                 target: "bg";                                       \
