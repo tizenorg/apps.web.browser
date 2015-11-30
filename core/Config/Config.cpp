@@ -57,6 +57,12 @@ void DefaultConfig::load(const std::string &)
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT] = 82;
 #endif
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR] = false;
+
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW] = false;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES] = true;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT] = true;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA] = true;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS] = true;
 }
 
 void DefaultConfig::store(const std::string & )

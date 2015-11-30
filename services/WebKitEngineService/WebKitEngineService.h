@@ -29,6 +29,7 @@
 #include "AbstractWebEngine/TabIdTypedef.h"
 #include "AbstractWebEngine/WebConfirmation.h"
 #include "BrowserImage.h"
+#include "Config/Config.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -196,7 +197,17 @@ public:
      *
      * @param enabled True if touch event have to be enabled, false else.
      */
-    void setTouchEvents(bool enabled);
+    void setTouchEvents(bool enabled) override;
+
+    /**
+     * @brief Get settings param.
+     */
+    bool getSettingsParam(WebEngineSettings param) override;
+
+    /**
+     * @brief Set bool settings param value.
+     */
+    void setSettingsParam(WebEngineSettings param, bool value) override;
 #endif
 private:
     // callbacks from WebView
@@ -213,6 +224,9 @@ private:
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void webViewClicked();
+#if PROFILE_MOBILE
+    void setWebViewSettings(Evas_Object* ewkView);
+#endif
 
     /**
      * disconnect signals from specified WebView
@@ -247,6 +261,10 @@ private:
     // recently added tabs first
     std::list<TabId> m_chronoTabs;
     int m_tabIdCreated;
+    config::DefaultConfig m_config;
+#if PROFILE_MOBILE
+    std::map<WebEngineSettings, bool>  m_settings;
+#endif
 };
 
 } /* end of webkitengine_service */
