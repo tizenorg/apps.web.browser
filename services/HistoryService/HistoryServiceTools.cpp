@@ -17,6 +17,7 @@
 #include <boost/algorithm/string.hpp>
 #include "Tools/StringTools.h"
 #include "HistoryServiceTools.h"
+#include "HistoryItem.h"
 
 namespace tizen_browser {
 namespace services {
