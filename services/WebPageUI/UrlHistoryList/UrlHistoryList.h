@@ -20,7 +20,7 @@
 #include <memory>
 #include <Evas.h>
 
-#include "services/HistoryService/HistoryItem.h"
+#include "services/HistoryService/HistoryItemTypedef.h"
 #include <boost/signals2/signal.hpp>
 
 using namespace std;

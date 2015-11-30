@@ -297,6 +297,14 @@ Evas_Object * getEvasPNG(Evas_Object * parent, const void * buffer, int length)
     return image;
 }
 
+void setExpandHints(Evas_Object* toSet) {
+    evas_object_size_hint_weight_set(toSet, EVAS_HINT_EXPAND,
+    EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(toSet, EVAS_HINT_FILL,
+    EVAS_HINT_FILL);
+}
+
+
 } /* end of EflTools */
 } /* end of namespace tools */
 } /* end of namespace tizen_browser */

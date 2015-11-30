@@ -87,10 +87,6 @@ private:
     std::string m_urifavicon;
     int m_visitCounter;
 };
-///\todo consider this
-typedef std::vector<std::shared_ptr<HistoryItem>> HistoryItemVector;
-typedef std::vector<std::shared_ptr<HistoryItem>>::iterator HistoryItemVectorIter;
-typedef std::vector<std::shared_ptr<HistoryItem>>::const_iterator HistoryItemVectorConstIter;
 
 }
 }

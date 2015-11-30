@@ -2,10 +2,19 @@ project(HistoryUI)
 
 set(HistoryUI_SRCS
     HistoryUI.cpp
+    HistoryDaysListManager/HistoryDaysListManager.cpp
+    HistoryDaysListManager/HistoryDayItem.cpp
+    HistoryDaysListManager/WebsiteHistoryItem.cpp
+    HistoryDaysListManager/WebsiteHistoryVisitItem.cpp
     )
 
 set(HistoryUI_HEADERS
     HistoryUI.h
+    HistoryDaysListManager/HistoryDaysListManager.cpp
+    HistoryDaysListManager/HistoryDayItemData.h
+    HistoryDaysListManager/HistoryDayItem.h
+    HistoryDaysListManager/WebsiteHistoryItem.h
+    HistoryDaysListManager/WebsiteHistoryVisitItem.h
     )
 
 include(Coreheaders)
@@ -27,6 +36,7 @@ include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
         History_mob.edc
+        HistoryDaysList_mob.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles

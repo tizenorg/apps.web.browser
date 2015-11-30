@@ -1,0 +1,155 @@
+collections {
+
+    group {
+        name: "historyDaysList";
+        parts {
+            part {
+                name: "main_box";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    max: -1 -1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0  1.0;
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "historyDaysList_DayItem";
+        parts {
+            part {
+                name: "background";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    max: -1 -1;
+                    visible: 1;
+                    color: 174 187 191 255;
+                    rel1 {
+                        to: "main_box";
+                        relative: 0.0 0.0;
+                    }
+                    rel2{
+                        to: "main_box";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "main_box";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    max: -1 -1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0  1.0;
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "historyDaysList_WebsiteHistoryItem";
+        parts {
+            part {
+                name: "background";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    max: -1 -1;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    rel1 {
+                        to: "main_box";
+                        relative: 0.0 0.0;
+                    }
+                    rel2{
+                        to: "main_box";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "main_box";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    max: -1 -1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 32 0;
+                    }
+                    rel2{
+                        relative: 1.0 1.0;
+                        offset: -32 0;
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "historyDaysList_WebsiteHistoryVisitItem";
+        parts {
+            part {
+                name: "background";
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 144 195 212 255;
+                    rel1 {
+                        to: "main_box";
+                        relative: 0.0 0.0;
+                    }
+                    rel2{
+                        to: "main_box";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "main_box";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: 652 120;
+                    max: 652 120;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 32 0;
+                    }
+                    rel2{
+                        relative: 1.0 1.0;
+                        offset: -32 0;
+                    }
+                }
+            }
+        }
+    }
+}
