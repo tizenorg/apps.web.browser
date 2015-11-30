@@ -21,6 +21,7 @@
 #include "BrowserLogger.h"
 #include "GenlistItemsManager.h"
 #include "WebPageUI/WebPageUIStatesManager.h"
+#include "services/HistoryService/HistoryItem.h"
 #include "Config.h"
 
 namespace tizen_browser {
