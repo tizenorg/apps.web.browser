@@ -227,7 +227,7 @@ private:
     void _IMEStateChanged(bool);
     void webViewClicked();
 #if PROFILE_MOBILE
-    void setWebViewSettings(Evas_Object* ewkView);
+    void setWebViewSettings(std::shared_ptr<WebView> webView);
 #endif
 
     /**
