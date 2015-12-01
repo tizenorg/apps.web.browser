@@ -130,6 +130,8 @@ void WebPageUI::hideUI()
 #if PROFILE_MOBILE && GESTURE
     elm_gesture_layer_cb_del(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
     elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _geasture_finished);
+#endif
+#if PROFILE_MOBILE
     hideMoreMenu();
 #endif
 }
