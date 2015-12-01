@@ -352,7 +352,7 @@ TabId WebKitEngineService::addTab(const std::string & uri,
     m_tabs[newTabId] = p;
 
 #if PROFILE_MOBILE
-    setWebViewSettings(p->getLayout());
+    setWebViewSettings(p);
 #endif
 
     if (!uri.empty()) {
@@ -511,11 +511,12 @@ void WebKitEngineService::webViewClicked()
 }
 
 #if PROFILE_MOBILE
-void WebKitEngineService::setWebViewSettings(Evas_Object* ewkView) {
-    Ewk_Settings* settings = ewk_view_settings_get(ewkView);
-    ewk_settings_auto_fitting_set(settings, m_settings[WebEngineSettings::PAGE_OVERVIEW]);
-    ewk_settings_loads_images_automatically_set(settings, m_settings[WebEngineSettings::LOAD_IMAGES]);
-    ewk_settings_javascript_enabled_set(settings, m_settings[WebEngineSettings::ENABLE_JAVASCRIPT]);
+void WebKitEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
+    webView->ewkSettingsAutoFittingSet(m_settings[WebEngineSettings::PAGE_OVERVIEW]);
+    webView->ewkSettingsLoadsImagesSet(m_settings[WebEngineSettings::LOAD_IMAGES]);
+    webView->ewkSettingsJavascriptEnabledSet(m_settings[WebEngineSettings::ENABLE_JAVASCRIPT]);
+    webView->ewkSettingsFormCandidateDataEnabledSet(m_settings[WebEngineSettings::REMEMBER_FROM_DATA]);
+    webView->ewkSettingsAutofillPasswordFormEnabledSet(m_settings[WebEngineSettings::REMEMBER_PASSWORDS]);
 }
 #endif
 
