@@ -27,6 +27,7 @@ InputPopup::~InputPopup()
     evas_object_del(m_button_ok);
     evas_object_del(m_button_cancel);
     evas_object_del(m_buttonsBox);
+    ecore_timer_del(m_timer);
     evas_object_del(m_layout);
     button_clicked.disconnect_all_slots();
     popupDismissed.disconnect_all_slots();
@@ -90,7 +91,12 @@ void InputPopup::show()
 void InputPopup::dismiss()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    popupDismissed(this);
+    elm_object_focus_allow_set(m_inputCancel, EINA_FALSE);
+    elm_object_signal_emit(m_inputArea, "entry_unfocused", "ui");
+    elm_object_signal_emit(m_entry, "unfocused", "ui");
+    // TODO Workaround for too fast deleted callbacks. If there will be a better solution
+    // timer should be removed.
+    m_timer = ecore_timer_add(0.2, dismissSlower, this);
 }
 
 void InputPopup::onBackPressed()
@@ -152,7 +158,6 @@ void InputPopup::createLayout()
     evas_object_smart_callback_add(m_button_cancel, "clicked", _cancelButton_clicked, (void*)this);
 
     evas_object_show(m_button_cancel);
-    elm_object_tree_focus_allow_set(m_button_cancel, EINA_FALSE);
 
     m_button_ok = elm_button_add(m_buttonsBox);
     elm_object_style_set(m_button_ok, "input-popup-button");
@@ -163,7 +168,6 @@ void InputPopup::createLayout()
     evas_object_smart_callback_add(m_button_ok, "clicked", _okButton_clicked, (void*)this);
 
     evas_object_show(m_button_ok);
-    elm_object_tree_focus_allow_set(m_button_ok, EINA_FALSE);
     elm_object_signal_emit(m_button_ok, "visible", "ui");
 
     evas_object_show(m_buttonsBox);
@@ -227,6 +231,13 @@ void InputPopup::_okButton_clicked(void *data, Evas_Object *, void*)
     InputPopup *inputPopup = static_cast<InputPopup*>(data);
     inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
     inputPopup->dismiss();
+}
+
+Eina_Bool InputPopup::dismissSlower(void* data) {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    InputPopup* ip = static_cast<InputPopup*>(data);
+    ip->popupDismissed(ip);
+    return EINA_TRUE;
 }
 
 void InputPopup::_cancelButton_clicked(void* data, Evas_Object *, void*)
