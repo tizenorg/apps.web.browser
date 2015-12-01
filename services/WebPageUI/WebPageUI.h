@@ -104,7 +104,7 @@ private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
     static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
-#if PROFILE_MOBILE
+#if 0 && PROFILE_MOBILE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
     static void _geasture_finished(void *data, Evas_Object *obj, const char *emission, const char *source);
 #endif
@@ -123,7 +123,7 @@ private:
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
     void refreshFocusChain();
-#if PROFILE_MOBILE
+#if 0 && PROFILE_MOBILE
     void geastureUp();
     void geastureDown();
 #endif
@@ -158,7 +158,7 @@ private:
     sharedAction m_tab;
     sharedAction m_showMoreMenu;
 
-#if PROFILE_MOBILE
+#if 0 && PROFILE_MOBILE
     Evas_Object* m_geastureLayer;
     bool m_uriBarHidden;
     static const int SINGLE_FINGER = 1;
