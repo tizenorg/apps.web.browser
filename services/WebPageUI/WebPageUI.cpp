@@ -255,6 +255,28 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri,
     elm_object_signal_emit(m_urlHistoryList->getContent(), "switch_view_webpage", "ui");
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 }
+void WebPageUI::switchViewToReaderMode(Evas_Object* content , const std::string uri, const std::string title)
+{
+   // setMainContent(content);
+    updateURIBar(uri);
+    m_URIEntry->setPageTitle(title);
+    m_URIEntry->showPageTitle();
+    refreshFocusChain();
+
+    hideWebView();
+
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
+    elm_object_part_content_unset(m_mainLayout, "web_view");
+    elm_object_part_content_set(m_mainLayout, "Reader_view", content);
+    evas_object_show(content);
+}
+
+void WebPageUI::switchOffReaderMode()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "Reader_view"));
+    elm_object_part_content_unset(m_mainLayout, "Reader_view");
+}
 
 void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
 {

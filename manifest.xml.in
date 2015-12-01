@@ -76,5 +76,7 @@
     <privileges>
        <privilege>http://tizen.org/privilege/bookmark.admin</privilege>
        <privilege>http://tizen.org/privilege/web-history.admin</privilege>
+       <privilege>http://tizen.org/privilege/filesystem.read</privilege>
+       <privilege>http://tizen.org/privilege/filesystem.write</privilege>
     </privileges>
 </manifest>

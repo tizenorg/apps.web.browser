@@ -47,6 +47,7 @@
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
+#include "ReaderUI.h"
 #include "TabServiceTypedef.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
@@ -114,8 +115,11 @@ private:
     void showQuickAccess();
     void switchViewToQuickAccess();
     void switchViewToIncognitoPage();
+    void switchView();
     void switchViewToWebPage();
+    void switchViewToReaderMode();
     void updateView();
+    void updateReaderView();
     void windowCreated();
 
 #if PROFILE_MOBILE
@@ -138,6 +142,7 @@ private:
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
     std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
+    std::vector<int> m_readerTabs;
     services::SharedBookmarkFolderList getBookmarkFolders();
 
     const std::string getBookmarkFolderName(int folder_id);
@@ -194,6 +199,8 @@ private:
      * filter forbidden addresses and to check set favorite icon.
      */
     void filterURL(const std::string& url);
+
+    void removeReaderTab(const std::string& url);
 
     // // on uri entry widget "changed,user" signal
     void onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr);
@@ -254,6 +261,9 @@ private:
     void showHistoryUI();
     void closeHistoryUI();
     void showSettingsUI();
+    void showReaderUI();
+    void showReaderContents(const std::string& str);
+    void getReaderContent();
     void closeSettingsUI();
 #if PROFILE_MOBILE
     void showBookmarkFlowUI(bool state);
@@ -293,6 +303,7 @@ private:
     config::DefaultConfigUniquePtr m_config;
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
+    Evas_Object *m_webPage;
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
@@ -305,6 +316,7 @@ private:
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
+    std::shared_ptr<ReaderUI> m_readerUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::SessionStorage> m_sessionService;
@@ -314,6 +326,8 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    bool m_readerMode;
+    int m_readerTabId;
 
     //helper object used to view management
     ViewManager m_viewManager;
