@@ -4,8 +4,8 @@
 #define URI_WIDTH 64
 #define URI_BG_HEIGHT 108
 #define URI_BG_WIDTH 720
-#define WEB_VIEW_HEIGHT 1160        // FIXME: set propper size when top bar will be available
-#define WEB_VIEW_FULL_HEIGHT 1268   // FIXME: set propper size when top bar will be available
+#define WEB_VIEW_HEIGHT 1172
+#define WEB_VIEW_FULL_HEIGHT 1280
 #define MOREMENU_HEIGHT 588
 #define MOREMENU_WIDTH 720
 #include "../../../core/Tools/edc/Spacer.edc"
