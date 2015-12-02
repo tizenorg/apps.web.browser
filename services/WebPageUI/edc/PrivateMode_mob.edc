@@ -4,11 +4,11 @@ collections {
     styles {
         style {
             name: "message_style";
-            base: "font=Sans font_size=36 color=#676767 wrap=word align=0.5";
+            base: "font=Sans font_size=38 color=#333333 wrap=word align=0.5";
         }
         style {
             name: "message_hint_style";
-            base: "font=Sans font_size=28 color=#676767 wrap=word align=0.0";
+            base: "font=Sans font_size=34 color=#747474 wrap=word align=0.0";
         }
     }
     group {
@@ -16,29 +16,34 @@ collections {
         parts {
             part {
                 name: "message_background";
+                scale: 1;
                 type: RECT;
                 mouse_events: 1;
                 description{
                     state: "default" 0.0;
                     visible: 1;
+                    color: 242 242 242 255;
                     rel1.relative: 0 0;
                     rel2.relative: 1 1;
                 }
             }
             part {
                 name: "inco_message_background";
+                scale: 1;
                 type:RECT;
                 description{
                     state: "default" 0.0;
                     visible: 1;
-                    min: 920 356;
-                    max: 920 356;
+                    color: 242 242 242 255;
+                    min: 580 660;
+                    max: 580 660;
                     fixed: 1 1;
                     align: 0.5 0.5;
             }
         }
         part {
             name: "inco_dot";
+            scale: 1;
             images {
                 image: "text_bullet.png" COMP;
             }
@@ -46,12 +51,12 @@ collections {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                min: 20 28;
-                max: 20 28;
+                min: 6 6;
+                max: 6 6;
                 align: 0 0;
                 image.normal: "text_bullet.png";
                 rel1 {
-                    offset:  0 100;
+                    offset:  0 185;
                     relative: 0 0;
                     to: "inco_message_background";
                 }
@@ -63,6 +68,7 @@ collections {
         }
         part {
             name: "inco_dot2";
+            scale: 1;
             images {
                 image: "text_bullet.png" COMP;
             }
@@ -70,12 +76,12 @@ collections {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                min: 20 28;
-                max: 20 28;
+                min: 6 6;
+                max: 6 6;
                 align: 0 0;
                 image.normal: "text_bullet.png";
                 rel1 {
-                    offset:  0 216;
+                    offset:  0 585;
                     relative: 0 0;
                     to: "inco_message_background";
                 }
@@ -87,6 +93,7 @@ collections {
         }
         part {
             name: "inco_dot3";
+            scale: 1;
             images {
                 image: "text_bullet.png" COMP;
             }
@@ -94,12 +101,12 @@ collections {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                min: 20 28;
-                max: 20 28;
+                min: 6 6;
+                max: 6 6;
                 align: 0 0;
                 image.normal: "text_bullet.png";
                 rel1 {
-                    offset:  0 298;
+                    offset:  0 840;
                     relative: 0 0;
                     to: "inco_message_background";
                 }
@@ -111,15 +118,15 @@ collections {
         }
         part {
             name: "inco_text";
+            scale: 1;
             type: TEXTBLOCK;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
-                min: 864 36;
-                max: 864 36;
+                min: 580 36;
+                max: 580 36;
                 align: 0.5 0;
-                color: 103 103 103 255;
                 rel1 {
                     relative: 0 0;
                     to: "inco_message_background";
@@ -132,24 +139,24 @@ collections {
                     min: 0 1;
                     max: 0 1;
                     style: "message_style";
-                    text: "Start Incognito Browsing";
+                    text: "You've gone incognito.";
                 }
             }
         }
         part {
             name: "inco_hint";
+            scale: 1;
             type: TEXTBLOCK;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 0 1;
-                min: 864 68;
-                max: 864 68;
-                color: 103 103 103 179;
+                min: 580 184;
+                max: 580 184;
                 align: 0 0;
                 rel1 {
                     relative: 0 0;
-                    offset:  28 90;
+                    offset:  28 130;
                     to_y: "inco_message_background";
                     to_x: "inco_dot";
                 }
@@ -167,18 +174,18 @@ collections {
         }
         part {
             name: "inco_hint2";
+            scale: 1;
             type: TEXTBLOCK;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
-                min: 864 28;
-                max: 864 28;
-                color: 103 103 103 179;
+                min: 580 184;
+                max: 580 184;
                 align: 0.0 0;
                 rel1 {
                     relative: 0 0;
-                    offset:  28 206;
+                    offset:  28 450;
                     to_y: "inco_message_background";
                     to_x: "inco_dot2";
                 }
@@ -196,18 +203,18 @@ collections {
         }
         part {
             name: "inco_hint3";
+            scale: 1;
             type: TEXTBLOCK;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
-                min: 864 68;
-                max: 864 68;
-                color: 103 103 103 179;
+                min: 580 184;
+                max: 580 184;
                 align: 0.0 0;
                 rel1 {
                     relative: 0 0;
-                    offset:  28 288;
+                    offset:  28 780;
                     to_y: "inco_message_background";
                     to_x: "inco_dot3";
                 }
@@ -223,114 +230,5 @@ collections {
                 }
             }
         }
-        part {
-            name: "bookmarkmanager_button";
-            scale:1;
-            mouse_events: 1;
-            type: RECT;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                fixed: 1 1;
-                align: 0.5 1.0;
-                min: 348 65;
-                max: 348 65;
-                color: 192 192 192 255;
-                rel1 { relative: 0.0 0.0; to: "message_background";}
-                rel2 { relative: 1.0 1.0; to: "message_background"; offset: 0 -60;}
-            }
-            description {
-                state: "highlight" 0.0;
-                inherit: "default" 0.0;
-                color_class: focusBgColor;
-                visible: 1;
-            }
-            description {
-                state: "focus" 0.0;
-                inherit: "default" 0.0;
-                color_class: focusbtBgColor;
-                visible: 1;
-            }
-        }
-        part {
-            name: "bookmarkmanager_text";
-            type: TEXT;
-            scale: 1;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                fixed: 1 1;
-                rel1 { relative: 0.0 0.0;to: "bookmarkmanager_button";}
-                rel2 { relative: 1.0 1.0;to: "bookmarkmanager_button";}
-                color: 0 0 0 255;
-                text {
-                    text: "Bookmark Manager";
-                    font: "Sans";
-                    size: 27;
-                    align: 0.5 0.5;
-                }
-            }
-        }
-        part {
-            name: "bookmarkmanager_over";
-            scale:1;
-            type: SWALLOW;
-            mouse_events: 1;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                align: 0 0;
-                fixed: 1 1;
-                min: 348 65;
-                max: 348 65;
-                rel1 { relative: 0.0 0.0; to: "bookmarkmanager_button";}
-                rel2 { relative: 1.0 1.0; to: "bookmarkmanager_button";}
-                color_class: transparent;
-            }
-        }
-        part {
-            name: "bookmarkmanager_click";
-            scale:1;
-            type: SWALLOW;
-            mouse_events: 1;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                align: 0 0;
-                fixed: 1 1;
-                min: 348 65;
-                max: 348 65;
-                rel1 { relative: 0.0 0.0; to: "bookmarkmanager_over";}
-                rel2 { relative: 1.0 1.0; to: "bookmarkmanager_over";}
-            }
-        }
     }//parts
-    programs{
-        program {
-            name: "mouse_click_bookmarkmanager";
-            signal: "mouse,clicked,1";
-            source: "bookmarkmanager_over";
-            script {
-              emit("elm,action,click", "");
-            }
-        }
-        program {
-            name: "mouse_in_bookmarkmanager_click";
-            signal: "mouse,in";
-            source: "bookmarkmanager_*";
-            action: STATE_SET "highlight" 0.0;
-            target: "bookmarkmanager_button";
-            target: "bookmarkmanager_over";
-            target: "bookmarkmanager_text";
-        }
-        program {
-            name: "mouse_out_bookmarkmanager_click";
-            signal: "mouse,out";
-            source: "bookmarkmanager_*";
-            action: STATE_SET "default" 0.0;
-            target: "bookmarkmanager_button";
-            target: "bookmarkmanager_over";
-            target: "bookmarkmanager_text";
-        }
-    }
 }
