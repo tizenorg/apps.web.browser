@@ -6,12 +6,6 @@ set(HistoryService_SOURCES
 	HistoryServiceTools.cpp
 )
 
-set(HistoryService_HEADERS
-	HistoryService.h
-	HistoryItem.h
-	HistoryServiceTools.h
-)
-
 include(Coreheaders)
 include(EFLHelpers)
 

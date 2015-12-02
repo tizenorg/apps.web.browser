@@ -4,10 +4,6 @@ set(HistoryUI_SRCS
     HistoryUI.cpp
     )
 
-set(HistoryUI_HEADERS
-    HistoryUI.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

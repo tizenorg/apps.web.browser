@@ -5,11 +5,6 @@ set(WebKitEngineService_SRCS
     WebView.cpp
     )
 
-set(WebKitEngineService_HEADERS
-    WebKitEngineService.h
-    WebView.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 include(EWebKitHelpers)

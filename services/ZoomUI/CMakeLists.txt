@@ -4,10 +4,6 @@ set(ZoomUI_SRCS
     ZoomUI.cpp
     )
 
-set(ZoomUI_HEADERS
-    ZoomUI.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

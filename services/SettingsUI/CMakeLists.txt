@@ -4,15 +4,9 @@ if (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS
     SettingsUI_mob.cpp
     )
-set(SettingsUI_HEADERS
-    SettingsUI_mob.h
-    )
 else (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS
     SettingsUI.cpp
-    )
-set(SettingsUI_HEADERS
-    SettingsUI.h
     )
 endif (${PROFILE} MATCHES "mobile")
 

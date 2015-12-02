@@ -45,7 +45,7 @@ void ServiceManagerPrivate::findServiceLibs()
         boost::filesystem::path servicesDir(boost::any_cast<std::string>(config.get("services/dir")));
         for( boost::filesystem::directory_iterator it(servicesDir);
                 it != boost::filesystem::directory_iterator();
-                it++){
+                ++it){
             boost::filesystem::path item(*it);
             if(boost::filesystem::is_regular_file(item)){
                 if( (item.extension().string() == ".so" )

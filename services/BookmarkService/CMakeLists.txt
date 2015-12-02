@@ -4,10 +4,6 @@ set(BookmarkService_SRCS
     BookmarkService.cpp
     )
 
-set(BookmarkService_HEADERS
-    BookmarkService.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 include(FindPkgConfig)

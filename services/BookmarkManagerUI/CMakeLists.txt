@@ -4,10 +4,6 @@ set(BookmarkManagerUI_SRCS
     BookmarkManagerUI.cpp
     )
 
-set(BookmarkManagerUI_HEADERS
-    BookmarkManagerUI.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

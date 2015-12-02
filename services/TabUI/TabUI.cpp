@@ -394,7 +394,7 @@ void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
     editMode = false;
-    for (auto it = items.begin(); it < items.end(); it++) {
+    for (auto it = items.begin(); it < items.end(); ++it) {
         addTabItem(*it);
     }
 }
