@@ -159,7 +159,7 @@ int main(int argc, char* argv[])try
 {
     BEGIN()
     ewk_init();
-    setenv("ELM_PROFILE", "tv", true);
+    setenv("ELM_PROFILE", "mobile", true);
 
 //#if !defined(NDEBUG)
     //Initialization of logger module
