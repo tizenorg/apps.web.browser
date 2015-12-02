@@ -40,8 +40,15 @@ set(browserCore_SRCS
     Tools/FeedItem.cpp
     Tools/FeedChannel.cpp
     Tools/FocusManager.cpp
-    Tools/StringTools.cpp
-    )
+    Tools/StringTools.cpp 
+	)
+
+if(${PROFILE} MATCHES "mobile")
+    set(browserCore_SRCS
+    	${browserCore_SRCS}
+    	DownloadControl/DownloadControl.cpp
+        )
+endif(${PROFILE} MATCHES "mobile")
 
 if(TIZEN_BUILD)
     set(browserCore_SRCS
@@ -82,6 +89,13 @@ set(browserCore_HDRS
     Tools/FocusManager.h
     Tools/StringTools.h
     )
+
+if (${PROFILE} MATCHES "mobile")
+	set(browserCore_HDRS
+		${browserCore_HDRS}
+		DownloadControl/DownloadControl.h
+	)
+endif (${PROFILE} MATCHES "mobile")
 
 if(TIZEN_BUILD)
     set(${browserCore_SRCS} ${browserCore_SRCS}
