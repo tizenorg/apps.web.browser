@@ -43,12 +43,22 @@
 #include "GeneralTools.h"
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
+#if PROFILE_MOBILE
+#include <device/haptic.h>
+#include <Ecore.h>
+#endif
 
 #define certificate_crt_path CERTS_DIR
 #if MERGE_ME
 #define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
 #else
 #define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1"
+#endif
+
+#if PROFILE_MOBILE
+Ecore_Timer* m_haptic_timer_id =NULL;
+haptic_device_h m_haptic_handle;
+haptic_effect_h m_haptic_effect;
 #endif
 
 //TODO: temporary user agent for mobile display, change to proper one
@@ -127,6 +137,58 @@ void WebView::init(bool desktopMode, Evas_Object*)
 #endif
 }
 
+#if PROFILE_MOBILE
+void cancel_vibration()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (m_haptic_timer_id) {
+        ecore_timer_del(m_haptic_timer_id);
+        m_haptic_timer_id = NULL;
+    }
+
+    if (m_haptic_handle) {
+        device_haptic_stop(m_haptic_handle, m_haptic_effect);
+        device_haptic_close(m_haptic_handle);
+        m_haptic_handle = NULL;
+    }
+}
+
+Eina_Bool __vibration_timeout_cb(void * /*data*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_haptic_timer_id = NULL;
+    cancel_vibration();
+
+    return ECORE_CALLBACK_CANCEL;
+}
+
+void __vibration_cb(uint64_t vibration_time, void * /*data*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    cancel_vibration();
+
+    if (device_haptic_open(0, &m_haptic_handle) != DEVICE_ERROR_NONE) {
+        return;
+    }
+
+    const uint64_t duration = vibration_time;
+    device_haptic_vibrate(m_haptic_handle, duration, 100, &m_haptic_effect);
+    double in = (double)((double)(duration) / (double)(1000));
+	
+    m_haptic_timer_id = ecore_timer_add(in, __vibration_timeout_cb, NULL);
+}
+
+void __vibration_cancel_cb(void * /*data*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    cancel_vibration();
+}
+#endif
+
 void WebView::registerCallbacks()
 {
 #if defined(USE_EWEBKIT)
@@ -155,6 +217,17 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
+
+#if PROFILE_MOBILE
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_vibration_client_callbacks_set(context, __vibration_cb, __vibration_cancel_cb, this);
+        }
+    }
+#endif
 #endif
 }
 
@@ -186,6 +259,17 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
+
+#if PROFILE_MOBILE
+    if (m_ewkView)
+    {
+        Ewk_Context *context = ewk_view_context_get(m_ewkView);
+        if (context)
+        {
+            ewk_context_vibration_client_callbacks_set(context, NULL, NULL, this);
+        }
+    }
+#endif
 #endif
 }
 
