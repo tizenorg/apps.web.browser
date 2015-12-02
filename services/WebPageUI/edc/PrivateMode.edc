@@ -132,7 +132,7 @@ collections {
                     min: 0 1;
                     max: 0 1;
                     style: "message_style";
-                    text: "Start Incognito Browsing";
+                    text: "You've gone incognito";
                 }
             }
         }

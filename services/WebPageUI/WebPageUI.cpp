@@ -234,7 +234,6 @@ void WebPageUI::switchViewToIncognitoPage()
     setPrivateButtons();
     refreshFocusChain();
     m_URIEntry->changeUri("");
-    m_URIEntry->setPageTitle("Start Incognito Browsing");
     m_URIEntry->setFocus();
 }
 
