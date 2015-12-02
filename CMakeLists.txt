@@ -75,6 +75,7 @@ if(TIZEN_BUILD)
         dlog
         capi-appfw-application
         libpng
+        capi-system-device
     )
 
     pkg_check_modules(tizen_pkgs REQUIRED "${tizen_pkgs_list}")

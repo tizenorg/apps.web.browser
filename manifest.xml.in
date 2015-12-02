@@ -76,5 +76,6 @@
     <privileges>
        <privilege>http://tizen.org/privilege/bookmark.admin</privilege>
        <privilege>http://tizen.org/privilege/web-history.admin</privilege>
+       <privilege>http://tizen.org/privilege/haptic</privilege>
     </privileges>
 </manifest>
