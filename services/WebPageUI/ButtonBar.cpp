@@ -166,7 +166,7 @@ Evas_Object* ButtonBar::getButton(const std::string& buttonName)
 
 void ButtonBar::clearFocus()
 {
-    for (auto it = m_buttonsMap.begin(); it != m_buttonsMap.end(); it++) {
+    for (auto it = m_buttonsMap.begin(); it != m_buttonsMap.end(); ++it) {
         elm_object_focus_set((*it).second.button, EINA_FALSE);
     }
 }

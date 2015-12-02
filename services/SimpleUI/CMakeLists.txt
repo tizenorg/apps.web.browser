@@ -8,16 +8,8 @@ set(SimpleUI_SRCS
     ViewManager.cpp
     )
 
-set(SimpleUI_HEADERS
-    SimpleUI.h
-    InputPopup.h
-    SimplePopup.h
-    NotificationPopup.h
-    ViewManager.h
-    )
 if (${PROFILE} MATCHES "mobile")
 set(SimpleUI_SRCS ${SimpleUI_SRCS} TextPopup_mob.cpp)
-set(SimpleUI_HEADERS ${SimpleUI_HEADERS} TextPopup_mob.h)
 endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)

@@ -11,18 +11,6 @@ set(StorageServiceSOURCES
 	src/StorageService.cpp
 )
 
-set(StorageService_HEADERS
-	Storage/include/StorageException.h
-	Storage/include/StorageExceptionInitialization.h
-	StorageService.h
-	BookmarksStorage.h
-	BookmarksSQLite.h
-	Storage/include/Field.h
-	Storage/include/DriverManager.h
-	Storage/include/SQLDatabase.h
-    Storage/include/SQLDatabaseImpl.h
-)
-
 include(Coreheaders)
 include(EFLHelpers)
 

@@ -4,10 +4,6 @@ set(TabUI_SRCS
     TabUI.cpp
     )
 
-set(TabUI_HEADERS
-    TabUI.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

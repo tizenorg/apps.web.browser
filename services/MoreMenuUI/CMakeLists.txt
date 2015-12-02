@@ -4,10 +4,6 @@ set(MoreMenuUI_SRCS
     MoreMenuUI.cpp
     )
 
-set(MoreMenuUI_HEADERS
-    MoreMenuUI.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

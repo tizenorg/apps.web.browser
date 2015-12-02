@@ -315,7 +315,7 @@ std::list<TabId> WebKitEngineService::listTabs() const
 
 std::vector<TabContentPtr> WebKitEngineService::getTabContents() const {
     std::vector<TabContentPtr> result;
-    for(std::list<TabId>::const_iterator it = m_chronoTabs.begin(); it != m_chronoTabs.end(); it++){
+    for(std::list<TabId>::const_iterator it = m_chronoTabs.begin(); it != m_chronoTabs.end(); ++it){
         WebViewPtr item = m_tabs.find(*it)->second;
         auto tabContent = std::make_shared<TabContent>(*it, item->getTitle());
         result.push_back(tabContent);
@@ -537,21 +537,21 @@ void WebKitEngineService::setZoomFactor(int zoomFactor)
 
 void WebKitEngineService::clearCache()
 {
-    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearCache();
         }
 }
 
 void WebKitEngineService::clearCookies()
 {
-    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearCookies();
         }
 }
 
 void WebKitEngineService::clearPrivateData()
 {
-    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); it++){
+    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearPrivateData();
         }
 }

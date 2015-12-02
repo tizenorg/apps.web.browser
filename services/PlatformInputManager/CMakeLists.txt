@@ -4,10 +4,6 @@ set(PlatformInputManager_SRCS
     PlatformInputManager.cpp
     )
 
-set(PlatformInputManager_HEADERS
-    PlatformInputManager.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 

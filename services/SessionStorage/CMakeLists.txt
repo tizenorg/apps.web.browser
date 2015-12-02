@@ -6,12 +6,6 @@ set(SessionStorage_SRCS
     Session.cpp
     )
 
-set(SessionStorage_HEADERS
-    SessionStorage.h
-    SqlStorage.h
-    Session.h
-    )
-
 include(Coreheaders)
 include(EFLHelpers)
 
