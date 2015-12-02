@@ -43,45 +43,19 @@ set(browserCore_SRCS
     Tools/StringTools.cpp
     )
 
+if(${PROFILE} MATCHES "mobile")
+    set(browserCore_SRCS
+        ${browserCore_SRCS}
+        DownloadControl/DownloadControl.cpp
+        )
+endif(${PROFILE} MATCHES "mobile")
+
 if(TIZEN_BUILD)
     set(browserCore_SRCS
         ${browserCore_SRCS}
         Logger/DLOGLogger.cpp
         )
 endif(TIZEN_BUILD)
-
-set(browserCore_HDRS
-    AbstractInterfaces/AbstractServiceDefinition.h
-    AbstractInterfaces/AbstractUIComponent.h
-    AbstractInterfaces/AbstractFavoriteService.h
-    AbstractWebengine/AbstractWebengine.h
-    BasicUI/AbstractMainWindow.h
-    BasicUI/MenuButton.h
-    Config/Config.h
-    Logger/AbstractLogger.h
-    Logger/Logger.h
-    Logger/TextLogger.h
-    ServiceManager/Debug/BrowserAssert.h
-    ServiceManager/Debug/Lifecycle.h
-    ServiceManager/Debug/Type.h
-    ServiceManager/ServiceLib.h
-    ServiceManager/ServiceLoader.h
-    ServiceManager/ServiceFactory.h
-    ServiceManager/AbstractService.h
-    ServiceManager/ServiceManager.h
-    ServiceManager/service_macros.h
-    Tools/BrowserImage.h
-    Tools/EflTools.h
-    Tools/Blob.h
-    Tools/BookmarkItem.h
-    Tools/BookmarkFolder.h
-    Tools/CapiWebErrorCodes.h
-    Tools/GeneralTools.h
-    Tools/FeedItem.h
-    Tools/FeedChannel.h
-    Tools/FocusManager.h
-    Tools/StringTools.h
-    )
 
 if(TIZEN_BUILD)
     set(${browserCore_SRCS} ${browserCore_SRCS}
