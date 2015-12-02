@@ -31,6 +31,13 @@
 #include "BrowserImage.h"
 #include "AbstractWebEngine/TabId.h"
 #include "AbstractWebEngine/WebConfirmation.h"
+
+#if PROFILE_MOBILE
+#include "DownloadControl/DownloadControl.h"
+#include <app_control.h>
+#include <app.h>
+#endif
+
 #if PROFILE_MOBILE
 typedef enum _context_menu_type {
     TEXT_ONLY = 0,
@@ -55,6 +62,7 @@ typedef enum _custom_context_menu_item_tag {
     CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL,
     CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT,
 } custom_context_menu_item_tag;
+
 #endif
 
 namespace tizen_browser {
@@ -283,6 +291,13 @@ private:
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
+
+#if PROFILE_MOBILE
+    // download
+    static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __download_request_cb(const char *download_uri, void *data);
+#endif
+
 private:
     Evas_Object * m_parent;
     TabId m_tabId;
@@ -298,6 +313,7 @@ private:
     bool m_desktopMode;
     bool m_suspended;
     bool m_private;
+    download_control *m_downloadControl;
 
     config::DefaultConfig config;
 
@@ -312,6 +328,11 @@ private:
 #endif
 
     static const std::string COOKIES_PATH;
+
+#if PROFILE_MOBILE
+    int m_status_code;
+    Eina_Bool m_is_error_page;
+#endif
 };
 
 } /* namespace webkitengine_service */
