@@ -17,13 +17,10 @@
  */
 
 #include "Session.h"
-#include "SqlStorage.h"
+#include "SessionStorage.h"
 
-namespace tizen_browser
-{
-
-namespace Session
-{
+namespace tizen_browser {
+namespace storage {
 
 
 Session::Session()
@@ -82,10 +79,8 @@ boost::posix_time::ptime Session::lastModificationTime() const
 void Session::setLastModificationTime(const boost::posix_time::ptime& modificationTime)
 {
     if( m_isValid & ( m_lastModificationTime != modificationTime )){
-        SqlStorage* storage = SqlStorage::getInstance();
-        if(storage){
-            storage->updateSessionTimeStamp(*this, modificationTime);
-        }
+        SessionStorage& storage = SessionStorage::getInstance();
+        storage.updateSessionTimeStamp(*this, modificationTime);
     }
 }
 
@@ -100,19 +95,16 @@ void Session::setSessionName(const std::string& newSessionName)
 {
     if(m_isValid && ( m_sessinName != newSessionName )){
         m_sessinName = newSessionName;
-        SqlStorage* instance = SqlStorage::getInstance();
-        if(instance){
-            instance->updateSessionName(*this, newSessionName);
-        }
+        SessionStorage& instance = SessionStorage::getInstance();
+        instance.updateSessionName(*this, newSessionName);
     }
 }
 
 std::string Session::getUrlTitle(const std::string& url)
 {
     if (m_isValid) {
-        SqlStorage* instance = SqlStorage::getInstance();
-        if (instance)
-            return instance->getUrlTitle(url);
+        SessionStorage& instance = SessionStorage::getInstance();
+        return instance.getUrlTitle(url);
     }
     return std::string();
 }
@@ -132,10 +124,8 @@ void Session::updateItem(const std::string& tabId, const std::string& url, const
     if(m_isValid){
         m_items[tabId].first = url;
         m_items[tabId].second = title;
-        SqlStorage* const storage = SqlStorage::getInstance();
-        if(storage){
-            storage->updateSession(*this);
-        }
+        SessionStorage& storage = SessionStorage::getInstance();
+        storage.updateSession(*this);
     }
 }
 
@@ -143,13 +133,11 @@ void Session::removeItem(const std::string& tabId)
 {
     if(m_isValid){
         m_items.erase(tabId);
-        SqlStorage* const storage = SqlStorage::getInstance();
-        if(storage){
-            storage->removeItem(*this, tabId);
-            storage->updateSession(*this);
-        }
+        SessionStorage& storage = SessionStorage::getInstance();
+        storage.removeItem(*this, tabId);
+        storage.updateSession(*this);
     }
 }
 
-}//end namespace Session
+}//end namespace storage
 }//end namespace tizen_browser

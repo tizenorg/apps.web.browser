@@ -19,8 +19,8 @@
 #include "Field.h"
 #include "Blob.h"
 
-namespace storage
-{
+namespace tizen_browser {
+namespace storage {
 
 Field::Field()
 {
@@ -88,4 +88,5 @@ int Field::getType() const
     return this->type;
 }
 
+}
 }

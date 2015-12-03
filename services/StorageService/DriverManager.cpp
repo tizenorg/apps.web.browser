@@ -20,8 +20,8 @@
 
 #include "DriverManager.h"
 
-namespace storage
-{
+namespace tizen_browser {
+namespace storage {
 
 class DriverManagerInstance
 {
@@ -58,4 +58,5 @@ std::shared_ptr<SQLDatabase> DriverManager::getDatabase(const std::string & aCon
 	return s_driverManager.getDatabase(aConn);
 }
 
+}
 }

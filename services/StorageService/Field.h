@@ -23,8 +23,8 @@
 
 #include "Blob.h"
 
-namespace storage
-{
+namespace tizen_browser {
+namespace storage {
 
 class Field;
 
@@ -61,6 +61,7 @@ private:
     std::shared_ptr<tizen_browser::tools::Blob> blob;
 };
 
+}
 }
 
 #endif

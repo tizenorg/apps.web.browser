@@ -51,22 +51,6 @@ HistoryService::~HistoryService()
 {
 }
 
-std::shared_ptr<tizen_browser::services::StorageService> HistoryService::getStorageManager()
-{
-    if (!m_storageManager) {
-        m_storageManager = std::dynamic_pointer_cast <
-                           tizen_browser::services::StorageService,
-                           tizen_browser::core::AbstractService > (
-                               tizen_browser::core::ServiceManager::getInstance().getService(
-                                   DOMAIN_STORAGE_SERVICE));
-    }
-
-    M_ASSERT(m_storageManager);
-    m_storageManager->init(m_testDbMod);
-
-    return m_storageManager;
-}
-
 void HistoryService::setStorageServiceTestMode(bool testmode) {
 	m_testDbMod = testmode;
 }

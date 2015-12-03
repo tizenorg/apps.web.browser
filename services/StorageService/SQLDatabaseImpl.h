@@ -14,24 +14,43 @@
  * limitations under the License.
  */
 
-#ifndef __DRIVERMANAGER_H__
-#define __DRIVERMANAGER_H__
+#ifndef SQLDATABASEIMPL_H_
+#define SQLDATABASEIMPL_H_
 
-#include <string>
-
+#include <sqlite3.h>
 #include "SQLDatabase.h"
 
-namespace storage
-{
+namespace tizen_browser {
+namespace storage {
 
-class DriverManager
+class SQLQueryPrivate
 {
 public:
-    DriverManager();
-    ~DriverManager();
-    static std::shared_ptr<SQLDatabase> getDatabase(const std::string & aConn);
+	std::weak_ptr<SQLDatabase> _db_ref;
+	sqlite3 * _db;
+	sqlite3_stmt * _stmt;
+	bool _hasNext;
+	std::string _query;
+
+	SQLQueryPrivate(std::shared_ptr<SQLDatabase> db_ref, sqlite3 * db, sqlite3_stmt * stmt, const std::string& query);
+	SQLQueryPrivate(const SQLQueryPrivate& other);
+	~SQLQueryPrivate();
+};
+
+class SQLDatabasePrivate
+{
+public:
+	SQLDatabasePrivate();
+	~SQLDatabasePrivate();
+
+	void close();
+
+	std::string _path;
+	sqlite3 * _db;
+	std::weak_ptr<SQLDatabase> _db_self_weak;
 };
 
 }
+}
 
-#endif
+#endif /* SQLDATABASEIMPL_H_ */

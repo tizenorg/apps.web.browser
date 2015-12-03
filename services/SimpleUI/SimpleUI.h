@@ -52,7 +52,7 @@
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
-#include "SqlStorage.h"
+#include "StorageService.h"
 
 // other
 #include "Action.h"
@@ -311,8 +311,8 @@ private:
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
-    std::shared_ptr<services::SessionStorage> m_sessionService;
-    Session::Session m_currentSession;
+    std::shared_ptr<services::StorageService> m_storageService;
+    storage::Session m_currentSession;
     std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     bool m_initialised;
     int m_tabLimit;

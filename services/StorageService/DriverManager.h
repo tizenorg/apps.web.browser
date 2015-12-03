@@ -12,36 +12,27 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- *
  */
-#include "ServiceManager/ServiceManager.h"
-#include "SessionStorage.h"
 
-namespace tizen_browser
+#ifndef __DRIVERMANAGER_H__
+#define __DRIVERMANAGER_H__
+
+#include <string>
+
+#include "SQLDatabase.h"
+
+namespace tizen_browser {
+namespace storage {
+
+class DriverManager
 {
-
-namespace services
-{
-
-EXPORT_SERVICE(SessionStorage, DOMAIN_SESSION_STORAE_SERVICE)
-
-SessionStorage::SessionStorage()
-{
+public:
+    DriverManager();
+    ~DriverManager();
+    static std::shared_ptr<SQLDatabase> getDatabase(const std::string & aConn);
+};
 
 }
-
-SessionStorage::~SessionStorage()
-{
-
 }
 
-Session::SqlStorage* SessionStorage::getStorage()
-{
-    return Session::SqlStorage::getInstance();
-}
-
-
-
-}//end namespace Session
-}//end namespace tizen_browser
+#endif

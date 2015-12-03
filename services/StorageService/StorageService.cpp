@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-#include "BookmarksStorage.h"
+
+#include "StorageService.h"
 
 namespace tizen_browser
 {
 namespace services
 {
 
-BookmarksStorage::BookmarksStorage()
+EXPORT_SERVICE(StorageService, DOMAIN_STORAGE_SERVICE)
+
+StorageService::StorageService()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-
-BookmarksStorage::~BookmarksStorage()
+StorageService::~StorageService()
 {
-}
 
+}
 
 }
 }

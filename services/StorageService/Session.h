@@ -25,13 +25,10 @@
 #include <string>
 
 
-namespace tizen_browser
-{
+namespace tizen_browser {
+namespace storage {
 
-namespace Session
-{
-
-class SqlStorage;
+class SessionStorage;
 
 /**
  * Stores sesion data in storage.
@@ -49,7 +46,7 @@ class Session
 private:
 
     /**
-     * This constructor is used by SqlStorage to create valid session.
+     * This constructor is used by SessionStorage to create valid session.
      */
     Session(unsigned int sessionId
            ,const boost::posix_time::ptime& lastModificationTime
@@ -104,12 +101,12 @@ private:
     std::map<std::string, std::pair<std::string,std::string>> m_items;
     bool m_isValid;
 
-    friend class SqlStorage;
+    friend class SessionStorage;
 };
 
 typedef std::vector<Session> SessionsVector;
 
-}//end namespace Session
+}//end namespace storage
 }//end namespace tizen_browser
 
 #endif // SESSION_H

@@ -151,7 +151,6 @@ private:
     std::vector<std::shared_ptr<BookmarkItem> > m_bookmarks;
 ///    \todo Need to change getBookmarkId function for finding stored bookmark - check getBookmarkExists function
     int getBookmarkId(const std::string & url);
-    std::shared_ptr<tizen_browser::services::StorageService> getStorageManager();
     config::DefaultConfig config;
 };
 

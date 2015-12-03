@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-#include "StorageExceptionInitialization.h"
 
-namespace storage
-{
+#include <string>
 
-StorageExceptionInitialization::StorageExceptionInitialization(const std::string & message, int code) :
-    StorageException(message, code)
-{
+namespace tizen_browser {
+namespace storage {
+class SQLTransactionScope;
 }
 
-StorageExceptionInitialization::~StorageExceptionInitialization() throw ()
-{
+namespace dbtools {
+
+
+void checkAndCreateTable(const std::string& db_str, const std::string& tablename, const std::string& ddl);
+void checkAndCreateTable(storage::SQLTransactionScope& transactionScope, const std::string& tablename, const std::string& ddl);
+
 
 }
-
-int StorageExceptionInitialization::getErrorCode() const
-{
-    return m_code;
-}
-
-const char * StorageExceptionInitialization::getMessage() const throw ()
-{
-    return m_message.c_str();
-}
-
 }

@@ -45,7 +45,7 @@
 #include "HistoryItem.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "SqlStorage.h"
+#include "SessionStorage.h"
 #include "DetailPopup.h"
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "NotificationPopup.h"
@@ -94,7 +94,7 @@ SimpleUI::SimpleUI()
 
 SimpleUI::~SimpleUI() {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_sessionService->getStorage()->deleteSession(m_currentSession);
+    m_storageService->getSessionStorage().deleteSession(m_currentSession);
     evas_object_del(m_window.get());
     ewk_context_delete(m_ewkContext);
 }
@@ -117,7 +117,7 @@ std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::g
 
 services::SharedBookmarkFolderList SimpleUI::getBookmarkFolders()
 {
-    return m_sessionService->getStorage()->getFolders();
+    return m_storageService->getSessionStorage().getFolders();
 }
 
 const std::string SimpleUI::getBookmarkFolderName(int folder_id)
@@ -160,7 +160,7 @@ int SimpleUI::exec(const std::string& _url)
             //Push first view to stack.
             m_viewManager.pushViewToStack(m_webPageUI.get());
         }
-        m_currentSession = std::move(m_sessionService->getStorage()->createSession());
+        m_currentSession = std::move(m_storageService->getSessionStorage().createSession());
 
         if (url.empty())
         {
@@ -193,9 +193,9 @@ void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
 void SimpleUI::restoreLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_sessionService);
-    Session::Session lastSession = std::move(
-            m_sessionService->getStorage()->getLastSession());
+    M_ASSERT(m_storageService);
+    storage::Session lastSession = std::move(
+            m_storageService->getSessionStorage().getLastSession());
 
     if (lastSession.items().size() >= 1) {
         for (auto iter = lastSession.items().begin(), end =
@@ -204,7 +204,7 @@ void SimpleUI::restoreLastSession()
             openNewTab(iter->second.first,
                     lastSession.getUrlTitle(iter->second.first), newTabId);
         }
-        m_sessionService->getStorage()->deleteSession(lastSession);
+        m_storageService->getSessionStorage().deleteSession(lastSession);
     }
 }
 
@@ -396,10 +396,10 @@ void SimpleUI::loadModelServices()
         <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
 
-    m_sessionService =
+    m_storageService =
         std::dynamic_pointer_cast
-        <tizen_browser::services::SessionStorage,tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.sessionStorageService"));
+        <tizen_browser::services::StorageService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.storageservice"));
 }
 
 void SimpleUI::initUIServices()
@@ -705,13 +705,13 @@ void SimpleUI::onDeleteFolderClicked(const std::string& folder_name)
 void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_sessionService->getStorage()->ifFolderExists(folder_name)) {
+    if (m_storageService->getSessionStorage().ifFolderExists(folder_name)) {
         BROWSER_LOGD("[%s:%d] Folder already exists.", __PRETTY_FUNCTION__, __LINE__);
         return;
     }
-    unsigned int id = m_sessionService->getStorage()->addFolder(folder_name);
+    unsigned int id = m_storageService->getSessionStorage().addFolder(folder_name);
     if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
-        SharedBookmarkFolder folder = m_sessionService->getStorage()->getFolder(id);
+        SharedBookmarkFolder folder = m_storageService->getSessionStorage().getFolder(id);
         SharedBookmarkFolderList list;
         list.push_back(folder);
         m_bookmarkManagerUI->addCustomFolders(list);
@@ -721,9 +721,9 @@ void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
 void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_sessionService->getStorage()->ifFolderExists(m_folder_name)) {
-        unsigned int id = m_sessionService->getStorage()->getFolderId(m_folder_name);
-        m_sessionService->getStorage()->updateFolderName(id, newName);
+    if (m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
+        unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
+        m_storageService->getSessionStorage().updateFolderName(id, newName);
         m_bookmarkManagerUI->hideUI();
         showBookmarkManagerUI();
     }
@@ -732,9 +732,9 @@ void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
 void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (button == DELETE && m_sessionService->getStorage()->ifFolderExists(m_folder_name)) {
-        unsigned int id = m_sessionService->getStorage()->getFolderId(m_folder_name);
-        m_sessionService->getStorage()->deleteFolder(id);
+    if (button == DELETE && m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
+        unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
+        m_storageService->getSessionStorage().deleteFolder(id);
         m_bookmarkManagerUI->hideUI();
         showBookmarkManagerUI();
     }
@@ -1306,7 +1306,7 @@ void SimpleUI::onBookmarkCustomFolderClicked(int folderId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_bookmarkManagerUI->getDetailsContent();
-    m_bookmarkManagerUI->addDetails(getBookmarks(folderId), m_sessionService->getStorage()->getFolderName(folderId));
+    m_bookmarkManagerUI->addDetails(getBookmarks(folderId), m_storageService->getSessionStorage().getFolderName(folderId));
     //m_bookmarkManagerUI->addDetails(getBookmarks(folderId), getBookmarkFolderName(folderId));
     m_bookmarkManagerUI->showDetailsUI();
 }
@@ -1407,7 +1407,7 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
             m_tabService->clearThumb(id);
             m_webEngine->closeTab(id);
         }
-        m_sessionService->getStorage()->deleteAllFolders();
+        m_storageService->getSessionStorage().deleteAllFolders();
         //TODO: add here any missing functionality that should be cleaned.
 
         popup->dismiss();

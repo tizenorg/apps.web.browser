@@ -23,27 +23,24 @@
 #include <string>
 
 #include <core/Config/Config.h>
-#include "StorageService.h"
+#include "SQLDatabase.h"
 #include "Session.h"
 #include "BookmarkFolder.h"
 #include <memory>
 
-namespace tizen_browser
-{
-
-namespace Session
-{
+namespace tizen_browser {
+namespace storage {
 
 
-class  SqlStorage
+class  SessionStorage
 {
     /**
      * Singleton, protect against being created in wrong place.
      */
-    SqlStorage();
+    SessionStorage();
 
     /**
-     * Initialise SqlStorage.
+     * Initialise SessionStorage.
      *
      * Checks if all needed tables are created and if not creates them.
      *
@@ -51,8 +48,8 @@ class  SqlStorage
      */
     bool init();
 public:
-    ~SqlStorage();
-    static SqlStorage* getInstance();
+    ~SessionStorage();
+    static SessionStorage& getInstance();
     Session createSession(const std::string& name = "");
     /**
      * Return newes session in storage.
@@ -120,27 +117,27 @@ public:
     /**
      * Store/update all items in storage
      */
-    void updateSession(tizen_browser::Session::Session& session);
+    void updateSession(Session& session);
 
     /**
      * Update ony one item form session.
      */
-    void updateSession(tizen_browser::Session::Session& session, const std::string& itemId);
+    void updateSession(Session& session, const std::string& itemId);
 
     /**
      * Updates session last update time.
      */
-    void updateSessionTimeStamp(tizen_browser::Session::Session& session, boost::posix_time::ptime accessTime = boost::posix_time::second_clock::local_time());
+    void updateSessionTimeStamp(Session& session, boost::posix_time::ptime accessTime = boost::posix_time::second_clock::local_time());
 
     /**
      * Change session name.
      */
-    void updateSessionName(tizen_browser::Session::Session& session, const std::string& newName);
+    void updateSessionName(Session& session, const std::string& newName);
 
     /**
      * Deletes item form session, and stores changes.
      */
-    void removeItem(tizen_browser::Session::Session& sessionToDelFrom, const std::string& itemId);
+    void removeItem(Session& sessionToDelFrom, const std::string& itemId);
 
     /**
      * \brief Delete session form storage.
@@ -153,11 +150,11 @@ public:
      void deleteAllSessions();
 private:
     bool initSessionDatabase();
-    void updateSessionTimeStamp(tizen_browser::Session::Session& session,
+    void updateSessionTimeStamp(Session& session,
                                 const boost::posix_time::ptime& accessTime,
                                 std::shared_ptr<storage::SQLDatabase> connection);
     void clearSession(const Session& session, std::shared_ptr<storage::SQLDatabase> connection);
-    void updateSession(tizen_browser::Session::Session& session,
+    void updateSession(Session& session,
                        const std::string& itemId,
                        std::shared_ptr<storage::SQLDatabase> connection);
     void readSession(Session& session, std::shared_ptr<storage::SQLDatabase> connection);
@@ -168,7 +165,7 @@ private:
 
 };
 
-}//end namespace Session
+}//end namespace storage
 }//end namespace tizen_browser
 
 #endif // SQLSTORAGE_H

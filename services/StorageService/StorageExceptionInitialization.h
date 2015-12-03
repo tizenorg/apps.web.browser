@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
+#ifndef __STORAGE_EXCEPTIONS_INITIALIZATION_H
+#define __STORAGE_EXCEPTIONS_INITIALIZATION_H
+
+#include <string>
+#include <sqlite3.h>
+
 #include "StorageException.h"
 
-namespace storage
-{
+#include "ServiceFactory.h"
+#include "service_macros.h"
 
-StorageException::StorageException(const std::string & message, int code) :
-    m_code(code), m_message(message)
-{
-}
+namespace tizen_browser {
+namespace storage {
 
-StorageException::~StorageException() throw ()
+class BROWSER_EXPORT StorageExceptionInitialization: public StorageException
 {
-
-}
-
-int StorageException::getErrorCode() const
-{
-    return m_code;
-}
-
-const char * StorageException::getMessage() const throw ()
-{
-    return m_message.c_str();
-}
+public:
+    explicit StorageExceptionInitialization(const std::string & message, int code = SQLITE_ERROR);
+    virtual ~StorageExceptionInitialization() throw ();
+    virtual int getErrorCode() const;
+    virtual const char * getMessage() const throw ();
+};
 
 }
+}
+
+#endif

@@ -18,13 +18,15 @@
 
 #include <boost/format.hpp>
 #include <string>
-#include "SqlStorage.h"
-#include <Field.h>
-#include <SQLDatabase.h>
-#include <SQLDatabaseImpl.h>
-#include <DriverManager.h>
-#include <StorageException.h>
-#include <StorageExceptionInitialization.h>
+#include "SessionStorage.h"
+#include "Field.h"
+#include "SQLTransactionScope.h"
+#include "DBTools.h"
+#include "SQLDatabase.h"
+#include "SQLDatabaseImpl.h"
+#include "DriverManager.h"
+#include "StorageException.h"
+#include "StorageExceptionInitialization.h"
 
 namespace{
     const std::string TABLE_SESSION = "SESSION_TABLE";
@@ -80,23 +82,20 @@ namespace{
 
 }
 
-namespace tizen_browser
-{
+namespace tizen_browser {
+namespace storage {
 
-namespace Session
-{
-
-SqlStorage::SqlStorage()
+SessionStorage::SessionStorage()
     : m_isInitialized(false)
 {
 
 }
-SqlStorage::~SqlStorage()
+SessionStorage::~SessionStorage()
 {
 }
 
 
-bool SqlStorage::init()
+bool SessionStorage::init()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_isInitialized){
@@ -116,30 +115,30 @@ bool SqlStorage::init()
     return false;
 }
 
-SqlStorage* SqlStorage::getInstance()
+SessionStorage& SessionStorage::getInstance()
 {
-    static SqlStorage instance;
-    if( instance.init() ){
-        return &instance;
+    static SessionStorage instance;
+    if(!instance.init() ){
+        BROWSER_LOGD("[%s:%d] Warning: session is not initialized!", __PRETTY_FUNCTION__, __LINE__);
     }
-    return 0;
+    return instance;
 }
 
 
-bool SqlStorage::initSessionDatabase()
+bool SessionStorage::initSessionDatabase()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
     try {
-        tizen_browser::services::StorageService::checkAndCreateTable(&scope,
-                                                                     TABLE_SESSION,
-                                                                     DDL_CREATE_TABLE_SESSION);
-        tizen_browser::services::StorageService::checkAndCreateTable(&scope
-                                                                     ,TABLE_URL
-                                                                     ,DDL_CREATE_TABLE_URL);
-        tizen_browser::services::StorageService::checkAndCreateTable(&scope,
-                                                                     TABLE_FOLDER,
-                                                                     DDL_CREATE_TABLE_FOLDER);
+        dbtools::checkAndCreateTable(scope,
+                                    TABLE_SESSION
+                                    ,DDL_CREATE_TABLE_SESSION);
+        dbtools::checkAndCreateTable(scope
+                                    ,TABLE_URL
+                                    ,DDL_CREATE_TABLE_URL);
+        dbtools::checkAndCreateTable(scope,
+                                    TABLE_FOLDER
+                                    ,DDL_CREATE_TABLE_FOLDER);
         scope.database()->exec(DDL_CREATE_INDEX_SESSION_DATE);
         return true;
     } catch (storage::StorageException &e) {
@@ -152,7 +151,7 @@ bool SqlStorage::initSessionDatabase()
     }
 }
 
-Session SqlStorage::createSession(const std::string& name)
+Session SessionStorage::createSession(const std::string& name)
 {
     boost::format addSessionQueryString("INSERT OR REPLACE INTO %1% ( %2%, %3% ) VALUES ( ? , ? );");
     addSessionQueryString % TABLE_SESSION % COL_SESSION_DATE % COL_SESSION_NAME;
@@ -177,7 +176,7 @@ Session SqlStorage::createSession(const std::string& name)
     return Session(sessionId, currentTime, sessionName);
 }
 
-Session SqlStorage::getLastSession()
+Session SessionStorage::getLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getLastSessionString("SELECT %1%, %2%, %3% FROM %4% ORDER BY %3% DESC LIMIT 1,1;");
@@ -206,7 +205,7 @@ Session SqlStorage::getLastSession()
     return Session();
 }
 
-void SqlStorage::updateSession(tizen_browser::Session::Session& session)
+void SessionStorage::updateSession(Session& session)
 {
     if (session.isValid()) {
         boost::posix_time::ptime currentTime(boost::posix_time::second_clock::local_time());
@@ -221,7 +220,7 @@ void SqlStorage::updateSession(tizen_browser::Session::Session& session)
     }
 }
 
-void SqlStorage::updateSession(tizen_browser::Session::Session& session, const std::string& itemId)
+void SessionStorage::updateSession(Session& session, const std::string& itemId)
 {
     if (session.isValid()) {
         boost::posix_time::ptime currentTime(boost::posix_time::second_clock::local_time());
@@ -233,7 +232,7 @@ void SqlStorage::updateSession(tizen_browser::Session::Session& session, const s
     }
 }
 
-void SqlStorage::updateSession(Session& session,
+void SessionStorage::updateSession(Session& session,
                                const std::string& itemId,
                                std::shared_ptr<storage::SQLDatabase> connection)
 {
@@ -252,7 +251,7 @@ void SqlStorage::updateSession(Session& session,
     }
 }
 
-void SqlStorage::updateSessionTimeStamp(Session& session
+void SessionStorage::updateSessionTimeStamp(Session& session
                                        ,boost::posix_time::ptime accessTime)
 {
     storage::SQLTransactionScope scope(storage::DriverManager::getDatabase(m_dbString));
@@ -260,7 +259,7 @@ void SqlStorage::updateSessionTimeStamp(Session& session
     updateSessionTimeStamp(session, accessTime, connection);
 }
 
-void SqlStorage::updateSessionTimeStamp(
+void SessionStorage::updateSessionTimeStamp(
             Session& session
             ,const boost::posix_time::ptime& accessTime
             ,std::shared_ptr< storage::SQLDatabase > connection
@@ -280,7 +279,7 @@ void SqlStorage::updateSessionTimeStamp(
 
 }
 
-void SqlStorage::removeItem(Session& sessionToDelFrom, const std::string& itemId)
+void SessionStorage::removeItem(Session& sessionToDelFrom, const std::string& itemId)
 {
     if(sessionToDelFrom.isValid()){
         boost::format deleteItemFromSessionString("DELETE FROM %1% WHERE %2% = ? AND %3% = ?;");
@@ -305,7 +304,7 @@ void SqlStorage::removeItem(Session& sessionToDelFrom, const std::string& itemId
     }
 }
 
-void SqlStorage::clearSession(const Session& session,
+void SessionStorage::clearSession(const Session& session,
                               std::shared_ptr< storage::SQLDatabase > connection)
 {
     boost::format clearSessionString("DELETE FROM %1% WHERE %2% = ?;");
@@ -320,7 +319,7 @@ void SqlStorage::clearSession(const Session& session,
     }
 }
 
-void SqlStorage::updateSessionName(Session& session, const std::string& newName)
+void SessionStorage::updateSessionName(Session& session, const std::string& newName)
 {
     if(session.isValid()){
         boost::format updateSessionNameString("UPDATE %1%  SET %2% = ?  WHERE %3% = ?" );
@@ -341,7 +340,7 @@ void SqlStorage::updateSessionName(Session& session, const std::string& newName)
     }
 }
 
-std::string SqlStorage::getUrlTitle(const std::string& url)
+std::string SessionStorage::getUrlTitle(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getTitleString("SELECT %1% FROM %2% WHERE %3% = ?;");
@@ -361,7 +360,7 @@ std::string SqlStorage::getUrlTitle(const std::string& url)
     return std::string();
 }
 
-services::SharedBookmarkFolder SqlStorage::getFolder(unsigned int id)
+services::SharedBookmarkFolder SessionStorage::getFolder(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     std::string name = getFolderName(id);
@@ -371,7 +370,7 @@ services::SharedBookmarkFolder SqlStorage::getFolder(unsigned int id)
     return folder;
 }
 
-services::SharedBookmarkFolderList SqlStorage::getFolders()
+services::SharedBookmarkFolderList SessionStorage::getFolders()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     services::SharedBookmarkFolderList folders;
@@ -397,7 +396,7 @@ services::SharedBookmarkFolderList SqlStorage::getFolders()
     return folders;
 }
 
-unsigned int SqlStorage::getFoldersCount()
+unsigned int SessionStorage::getFoldersCount()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getCountString("SELECT COUNT (*) FROM %1% ;");
@@ -414,7 +413,7 @@ unsigned int SqlStorage::getFoldersCount()
     return 0;
 }
 
-unsigned int SqlStorage::addFolder(const std::string& name)
+unsigned int SessionStorage::addFolder(const std::string& name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format addFolderQueryString("INSERT OR REPLACE INTO %1% ( %2% ) VALUES ( ? );");
@@ -433,7 +432,7 @@ unsigned int SqlStorage::addFolder(const std::string& name)
     return 0;
 }
 
-void SqlStorage::updateFolderName(unsigned int id, const std::string& newName)
+void SessionStorage::updateFolderName(unsigned int id, const std::string& newName)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format updateFolderNameString("UPDATE %1%  SET %2% = ? WHERE %3% = ?" );
@@ -450,7 +449,7 @@ void SqlStorage::updateFolderName(unsigned int id, const std::string& newName)
     }
 }
 
-void SqlStorage::deleteAllFolders()
+void SessionStorage::deleteAllFolders()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format deleteFoldersString("DELETE FROM %1%;");
@@ -466,7 +465,7 @@ void SqlStorage::deleteAllFolders()
     }
 }
 
-void SqlStorage::deleteFolder(unsigned int id)
+void SessionStorage::deleteFolder(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format deleteFolderString("DELETE FROM %1% WHERE %2% = ?;");
@@ -483,7 +482,7 @@ void SqlStorage::deleteFolder(unsigned int id)
     }
 }
 
-bool SqlStorage::ifFolderExists(const std::string& name)
+bool SessionStorage::ifFolderExists(const std::string& name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getCountString("SELECT COUNT (*) FROM %1% WHERE %2% = ?;");
@@ -502,7 +501,7 @@ bool SqlStorage::ifFolderExists(const std::string& name)
     return true;
 }
 
-unsigned int SqlStorage::getFolderId(const std::string& name)
+unsigned int SessionStorage::getFolderId(const std::string& name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getIdString("SELECT %1% FROM %2% WHERE %3% = ?;");
@@ -520,7 +519,7 @@ unsigned int SqlStorage::getFolderId(const std::string& name)
     return 0;
 }
 
-std::string SqlStorage::getFolderName(unsigned int id)
+std::string SessionStorage::getFolderName(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     boost::format getNameString("SELECT %1% FROM %2% WHERE %3% = ?;");
@@ -539,7 +538,7 @@ std::string SqlStorage::getFolderName(unsigned int id)
     return std::string();
 }
 
-void SqlStorage::readSession(Session& session, std::shared_ptr< storage::SQLDatabase > connection)
+void SessionStorage::readSession(Session& session, std::shared_ptr< storage::SQLDatabase > connection)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(session.isValid()){
@@ -555,10 +554,12 @@ void SqlStorage::readSession(Session& session, std::shared_ptr< storage::SQLData
             session.m_items[getSessionDataQuery.getString(0)].first = getSessionDataQuery.getString(1);
             getSessionDataQuery.next();
         }
+    } else {
+        BROWSER_LOGD("[%s:%d] Warning: invalid session!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
-SessionsVector SqlStorage::getAllSessions()
+SessionsVector SessionStorage::getAllSessions()
 {
     SessionsVector sessionContainer;
 
@@ -591,7 +592,7 @@ SessionsVector SqlStorage::getAllSessions()
     }
 }
 
-void SqlStorage::deleteSession(Session& session)
+void SessionStorage::deleteSession(Session& session)
 {
     if(session.isValid()){
         boost::format deleteSessionString("DELETE FROM %1% WHERE %2% = ?;");
@@ -610,7 +611,7 @@ void SqlStorage::deleteSession(Session& session)
     }
 }
 
-void SqlStorage::deleteAllSessions()
+void SessionStorage::deleteAllSessions()
 {
     boost::format deleteSessionString("DELETE FROM %1%;");
     deleteSessionString % TABLE_SESSION;
@@ -625,5 +626,5 @@ void SqlStorage::deleteAllSessions()
     }
 }
 
-}//end namespace Session
+}//end namespace storage
 }//end namespace tizen_browser

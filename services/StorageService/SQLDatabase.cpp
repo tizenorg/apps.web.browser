@@ -26,6 +26,7 @@
 
 #include <Eina.h>
 
+namespace tizen_browser {
 namespace storage {
 
 #define SQL_RETRY_TIME_US		50000
@@ -735,38 +736,5 @@ std::shared_ptr<SQLDatabase> SQLDatabase::cloneForThread(void)
     return result;
 }
 
-SQLTransactionScope::SQLTransactionScope(std::shared_ptr<SQLDatabase> db) :
-    _db(db),
-    _inTransaction(false)
-{
-    M_ASSERT(db);
-
-    db->begin();
-    _inTransaction = true;
-}
-
-SQLTransactionScope::~SQLTransactionScope()
-{
-    if(std::uncaught_exception()) {
-        if(_inTransaction)
-            _db->rollback();
-    } else {
-        if(_inTransaction)
-            _db->commit();
-    }
-}
-
-void SQLTransactionScope::commit()
-{
-    M_ASSERT(_inTransaction);
-    _inTransaction = false;
-    _db->commit();
-}
-
-void SQLTransactionScope::rollback()
-{
-    _inTransaction = false;
-    _db->rollback();
-}
-
 } /* namespace storage */
+} /* namespace tizen_browser */

@@ -21,11 +21,10 @@
 #include <vector>
 #include <string>
 
-#include <boost/noncopyable.hpp>
-
 #include "Blob.h"
 #include "Field.h"
 
+namespace tizen_browser {
 namespace storage {
 
 class SQLDatabase;
@@ -373,23 +372,6 @@ private:
 	SQLDatabasePrivate * d;
 };
 
-/*! \brief Holds SQL transaction.
- *
- * On exception rolls the transaction back. On normal destruction
- * commits the transaction
- */
-class SQLTransactionScope : boost::noncopyable
-{
-	std::shared_ptr<SQLDatabase> _db;
-	bool _inTransaction;
-public:
-	SQLTransactionScope(std::shared_ptr<SQLDatabase> db);
-	~SQLTransactionScope();
-	void commit();
-	void rollback();
-
-	inline std::shared_ptr<SQLDatabase> database() const { return _db; }
-};
-
 } /* namespace storage */
+} /* namespace tizen_browser */
 #endif /* SQLDATABASE_H_ */

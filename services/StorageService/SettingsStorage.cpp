@@ -26,9 +26,8 @@
 #include "StorageExceptionInitialization.h"
 #include "EflTools.h"
 #include "Config.h"
-#include "BookmarksStorage.h"
-#include "BookmarksSQLite.h"
-#include "StorageService.h"
+#include "SettingsStorage.h"
+#include "DBTools.h"
 
 namespace
 {
@@ -78,14 +77,10 @@ const std::string SQL_FIND_VALUE_TEXT_SETTINGS = "select " + COL_SETTINGS_VALUE_
 
 }
 
-namespace tizen_browser
-{
-namespace services
-{
+namespace tizen_browser {
+namespace storage {
 
-EXPORT_SERVICE(StorageService, DOMAIN_STORAGE_SERVICE)
-
-void StorageService::init(bool testmode)
+void SettingsStorage::init(bool testmode)
 {
     if (m_isInitialized) {
         return;
@@ -117,52 +112,27 @@ void StorageService::init(bool testmode)
     m_isInitialized = true;
 }
 
-StorageService::StorageService()
+SettingsStorage::SettingsStorage()
     : m_dbSettingsInitialised(false)
     , m_isInitialized(false)
 {
-    BROWSER_LOGD("StorageService");
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-StorageService::~StorageService()
+SettingsStorage::~SettingsStorage()
 {
-}
-
-void StorageService::checkAndCreateTable(const std::string & db_str, const std::string & tablename, const std::string & ddl)
-{
-    auto conCheckExistance = storage::DriverManager::getDatabase(db_str);
-
-    bool isTabPresent = conCheckExistance->tableExists(tablename);
-    if (!isTabPresent) {
-        BROWSER_LOGI("A table %s can't be found. It will be recreated.", tablename.c_str());
-
-        conCheckExistance->exec(ddl);
-    }
-}
-
-void StorageService::checkAndCreateTable(storage::SQLTransactionScope * transactionScope, const std::string & tablename, const std::string & ddl)
-{
-    auto conCheckExistance = transactionScope->database();
-
-    bool isTabPresent = conCheckExistance->tableExists(tablename);
-
-    if (!isTabPresent) {
-        BROWSER_LOGI("A table %s can't be found. It will be recreated.", tablename.c_str());
-
-        conCheckExistance->exec(ddl);
-    }
 }
 
 /**
  * @throws StorageExceptionInitialization on error
  */
-void StorageService::initDatabaseSettings(const std::string & db_str)
+void SettingsStorage::initDatabaseSettings(const std::string & db_str)
 {
-    BROWSER_LOGI("StorageService::initDatabaseSettings begin");
+    BROWSER_LOGI("SettingsStorage::initDatabaseSettings begin");
 
     if (!m_dbSettingsInitialised) {
         try {
-            checkAndCreateTable(db_str, TABLE_SETTINGS, DDL_CREATE_TABLE_SETTINGS);
+            dbtools::checkAndCreateTable(db_str, TABLE_SETTINGS, DDL_CREATE_TABLE_SETTINGS);
         } catch (storage::StorageException & e) {
             throw storage::StorageExceptionInitialization(e.getMessage(),
                                                           e.getErrorCode());
@@ -173,13 +143,13 @@ void StorageService::initDatabaseSettings(const std::string & db_str)
 
     M_ASSERT(m_dbSettingsInitialised);
 
-    BROWSER_LOGI("StorageService::initDatabaseSettings end");
+    BROWSER_LOGI("SettingsStorage::initDatabaseSettings end");
 }
 
 /**
  * @throws StorageException on error
  */
-int StorageService::getSettingsInt(const std::string & key, const int defaultValue) const
+int SettingsStorage::getSettingsInt(const std::string & key, const int defaultValue) const
 {
     auto con = storage::DriverManager::getDatabase(DB_SETTINGS);
 
@@ -197,7 +167,7 @@ int StorageService::getSettingsInt(const std::string & key, const int defaultVal
 /**
  * @throws StorageException on error
  */
-double StorageService::getSettingsDouble(const std::string & key, const double defaultValue) const
+double SettingsStorage::getSettingsDouble(const std::string & key, const double defaultValue) const
 {
     auto con = storage::DriverManager::getDatabase(DB_SETTINGS);
 
@@ -215,7 +185,7 @@ double StorageService::getSettingsDouble(const std::string & key, const double d
 /**
  * @throws StorageException on error
  */
-const std::string StorageService::getSettingsText(const std::string & key, const std::string & defaultValue) const
+const std::string SettingsStorage::getSettingsText(const std::string & key, const std::string & defaultValue) const
 {
     auto con = storage::DriverManager::getDatabase(DB_SETTINGS);
 
@@ -233,7 +203,7 @@ const std::string StorageService::getSettingsText(const std::string & key, const
 /**
  * @throws StorageException on error
  */
-void StorageService::setSettingsValue(const std::string & key, storage::FieldPtr field) const
+void SettingsStorage::setSettingsValue(const std::string & key, storage::FieldPtr field) const
 {
     auto con = storage::DriverManager::getDatabase(DB_SETTINGS);
 
@@ -264,7 +234,7 @@ void StorageService::setSettingsValue(const std::string & key, storage::FieldPtr
 /**
  * @throws StorageException on error
  */
-void StorageService::setSettingsInt(const std::string & key, int value) const
+void SettingsStorage::setSettingsInt(const std::string & key, int value) const
 {
     storage::FieldPtr field = std::make_shared<storage::Field>(value);
     setSettingsValue(key, field);
@@ -273,7 +243,7 @@ void StorageService::setSettingsInt(const std::string & key, int value) const
 /**
  * @throws StorageException on error
  */
-void StorageService::setSettingsDouble(const std::string & key, double value) const
+void SettingsStorage::setSettingsDouble(const std::string & key, double value) const
 {
     storage::FieldPtr field = std::make_shared<storage::Field>(value);
     setSettingsValue(key, field);
@@ -282,7 +252,7 @@ void StorageService::setSettingsDouble(const std::string & key, double value) co
 /**
  * @throws StorageException on error
  */
-void StorageService::setSettingsString(const std::string & key, std::string value) const
+void SettingsStorage::setSettingsString(const std::string & key, std::string value) const
 {
     storage::FieldPtr field = std::make_shared<storage::Field>(value);
     setSettingsValue(key, field);

@@ -63,10 +63,6 @@ void BookmarkService::errorPrint(std::string method) const
             tools::capiWebError::bookmarkErrorToString(error_code).c_str());
 }
 
-/*private*/ std::shared_ptr<tizen_browser::services::StorageService> BookmarkService::getStorageManager() {
-    return m_storageManager;
-}
-
 void BookmarkService::synchronizeBookmarks()
 {
     m_bookmarks.clear();

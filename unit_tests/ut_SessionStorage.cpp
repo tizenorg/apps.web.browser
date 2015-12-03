@@ -20,9 +20,8 @@
 #include <iterator>
 #include "core/ServiceManager/ServiceManager.h"
 #include "core/ServiceManager/AbstractService.h"
-#include "services/SessionStorage/SessionStorage.h"
-#include "services/SessionStorage/SqlStorage.h"
-#include "services/SessionStorage/Session.h"
+#include "services/StorageService/SessionStorage.h"
+#include "services/StorageService/Session.h"
 #include "AbstractWebEngine/TabId.h"
 #include <core/Config/Config.h>
 #include "BrowserLogger.h"
@@ -52,7 +51,7 @@ BOOST_AUTO_TEST_CASE(InitSession)
     BOOST_REQUIRE(sessionService);
     BOOST_CHECK_EQUAL(sessionService->getName(), DOMAIN_SESSION_STORAE_SERVICE);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
@@ -73,7 +72,7 @@ BOOST_AUTO_TEST_CASE(CreateAndPopulateSession)
 
     BOOST_REQUIRE(sessionService);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
@@ -126,7 +125,7 @@ BOOST_AUTO_TEST_CASE(getLastSession)
 
     BOOST_REQUIRE(sessionService);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
@@ -180,7 +179,7 @@ BOOST_AUTO_TEST_CASE(getAllSessions)
 
     BOOST_REQUIRE(sessionService);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
@@ -207,7 +206,7 @@ BOOST_AUTO_TEST_CASE(deleteSession)
 
     BOOST_REQUIRE(sessionService);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
@@ -238,7 +237,7 @@ BOOST_AUTO_TEST_CASE(deleteAllSessions)
 
     BOOST_REQUIRE(sessionService);
 
-    tizen_browser::Session::SqlStorage* storage=0;
+    tizen_browser::storage::SessionStorage* storage=0;
     storage = sessionService->getStorage();
 
     BOOST_REQUIRE(storage);
