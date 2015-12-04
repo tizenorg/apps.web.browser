@@ -1323,9 +1323,11 @@ void SimpleUI::settingsDeleteSelectedData(const std::string& str)
 {
     BROWSER_LOGD("[%s]: Deleting selected data", __func__);
     M_ASSERT(m_viewManager);
-    if((str.find("CACHE") != std::string::npos)   ||
-       (str.find("COOKIES") != std::string::npos) ||
-       (str.find("HISTORY") != std::string::npos)) {
+    if((str.find("CACHE")    != std::string::npos)  ||
+       (str.find("COOKIES")  != std::string::npos)  ||
+       (str.find("HISTORY")  != std::string::npos)  ||
+       (str.find("PASSWORD") != std::string::npos)  ||
+       (str.find("FORMDATA") != std::string::npos)) {
         NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
         popup->show("Delete Web Browsing Data");
         onDeleteSelectedDataButton(str);
@@ -1342,10 +1344,10 @@ void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
         m_webEngine->clearCookies();
 	if (dataText.find("HISTORY") != std::string::npos)
 		m_historyService->clearAllHistory();
-        if (dataText.find("PASSWORD") != std::string::npos)
-                m_webEngine->clearPasswordData();
-        if (dataText.find("FORMDATA") != std::string::npos)
-                m_webEngine->clearFormData();
+    if (dataText.find("PASSWORD") != std::string::npos)
+        m_webEngine->clearPasswordData();
+    if (dataText.find("FORMDATA") != std::string::npos)
+        m_webEngine->clearFormData();
 }
 
 void SimpleUI::settingsResetMostVisited()
