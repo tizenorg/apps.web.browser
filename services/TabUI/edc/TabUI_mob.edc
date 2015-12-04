@@ -167,7 +167,7 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    color: 0 128 255 32;
+                    color: 244 244 244 255;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
                 }
@@ -747,8 +747,8 @@ collections {
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    min: 720 850;
-                    max: 720 850;
+                    min: 720 902;   // TODO: change 902 to 850 when top toolbar will be available
+                    max: 720 902;
                     visible: 1;
                     color: 244 244 244 255;
                     align: 0.0 0.0;
@@ -778,8 +778,8 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: 656 846;
-                    max: 656 846;
+                    min: 656 902;   // TODO: change 902 to 846 when top toolbar will be available
+                    max: 656 902;
                     rel1 {
                         relative: 1.0 1.0;
                         to: "gengrid_spacer";
