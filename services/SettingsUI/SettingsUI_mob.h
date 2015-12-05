@@ -29,6 +29,7 @@
 namespace tizen_browser{
 namespace base_ui{
 
+class AutoFillFormManager;
 class BROWSER_EXPORT SettingsUI
         : public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
@@ -63,12 +64,16 @@ private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
     Evas_Object* createPageLayout(Evas_Object* parent, const std::string& layoutFile);
     void resetItemsLayoutContent();
+    void initializeAutoFillManager();
+    void destroyAutoFillManager();
     static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static void back_clicked_cb(void *data, Evas_Object *obj, void *event_info);
     static Evas_Object* createCheckBox(Evas_Object* layout, const std::string name, Edje_Signal_Cb func, void* data);
     static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
     static void __checkbox_content_settings_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
     static void __checkbox_privacy_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
+
+    static void _auto_fill_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _del_selected_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
@@ -83,6 +88,7 @@ private:
 
     static void _privacy_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
+    std::unique_ptr<AutoFillFormManager> m_autoFillManager;
     Evas_Object *m_settings_layout;
     Evas_Object *m_actionBar;
     Evas_Object* m_subpage_layout;

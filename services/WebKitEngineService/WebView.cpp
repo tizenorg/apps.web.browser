@@ -1068,6 +1068,12 @@ void WebView::ewkSettingsAutofillPasswordFormEnabledSet(bool value)
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_autofill_password_form_enabled_set(settings, value);
 }
+
+void WebView::ewkSettingsFormProfileDataEnabledSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_form_profile_data_enabled_set(settings, value);
+}
 #endif
 
 const TabId& WebView::getTabId() {
