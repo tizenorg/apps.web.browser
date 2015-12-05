@@ -42,7 +42,7 @@ SettingsUI::SettingsUI()
     , m_scroller(nullptr)
     , m_items_layout(nullptr)
     , m_parent(nullptr)
-    , m_item_class(nullptr)
+    , m_itemClass(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
