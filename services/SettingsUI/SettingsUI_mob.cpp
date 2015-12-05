@@ -25,6 +25,7 @@
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
+#include "AutoFillForm/AutoFillFormManager.h"
 
 #define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
 
@@ -163,6 +164,11 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+
+    Evas_Object *auto_fill_data_button = elm_button_add(layout);
+    elm_object_style_set(auto_fill_data_button, "basic_button");
+    evas_object_smart_callback_add(auto_fill_data_button, "clicked", _auto_fill_data_menu_clicked_cb, (void*)id);
+    elm_layout_content_set(layout, "auto_fill_data_click", auto_fill_data_button);
 
     Evas_Object *del_selected_data_button = elm_button_add(layout);
     elm_object_style_set(del_selected_data_button, "basic_button");
@@ -445,6 +451,17 @@ void SettingsUI::back_clicked_cb(void* data, Evas_Object*, void*)
     if (data) {
         SettingsUI * s_ui = static_cast<SettingsUI*>(data);
         s_ui->onBackKey();
+    }
+}
+
+void SettingsUI::_auto_fill_data_menu_clicked_cb(void *data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        ItemData *id = static_cast<ItemData*>(data);
+        AutoFillFormManager* affm = new AutoFillFormManager();
+        affm->init(id->settingsUI->m_parent);
+        affm->showListView();
     }
 }
 

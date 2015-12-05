@@ -210,6 +210,10 @@ public:
      * @brief Set autofill password form enabled settings flag.
      */
     void ewkSettingsAutofillPasswordFormEnabledSet(bool value);
+    /**
+     * @brief Set autofill profile data enabled settings flag.
+     */
+    void ewkSettingsFormProfileDataEnabledSet(bool value);
 #endif
 
 // signals

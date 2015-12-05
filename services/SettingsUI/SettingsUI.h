@@ -72,7 +72,7 @@ private:
     Evas_Object *m_items_layout;
     Evas_Object *m_parent;
 
-    Elm_Gengrid_Item_Class * m_item_class;
+    Elm_Gengrid_Item_Class * m_itemClass;
     std::string m_edjFilePath;
     enum SharingRequest {
         SR_DISABLE = 0,

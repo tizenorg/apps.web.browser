@@ -63,6 +63,7 @@ void DefaultConfig::load(const std::string &)
     m_keysValues[CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS] = true;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA] = true;
 }
 
 void DefaultConfig::store(const std::string & )
