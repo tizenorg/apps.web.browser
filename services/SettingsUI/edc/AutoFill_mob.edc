@@ -1,0 +1,1065 @@
+#include "basic_button_mob.edc"
+#include "custom_check_mob.edc"
+collections {
+
+group {
+    name: "affdv-layout";
+    images {
+        image: "navi_ic_back_nor.png" COMP;
+    }
+    parts {
+        part {
+            name: "bg_clipper";
+            type : RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 720 1268;
+                max: 720 1268;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                color: 243 243 243 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "title_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                min: 720 104;
+                max: 720 104;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+        }
+        part {
+            name: "title_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                text {
+                    text: "Auto Fill Delete";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "back_bg";
+            type: IMAGE;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.02 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                image.normal: "navi_ic_back_nor.png";
+            }
+        }
+        part {
+            name: "back_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                //min: 64 64;
+                //max: 64 64;
+                rel1 { relative: 0.0 0.0; to: "back_bg";}
+                rel2 { relative: 1.0 1.0; to: "back_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "profile_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                min: 720 56;
+                max: 720 56;
+                color: 231 231 231 255;
+                rel1 { relative: 0.0 1.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "profile_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "profile_bg";}
+                text {
+                    text: "Profiles";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.02 0.5;
+                }
+            }
+        }
+        part {
+            name: "bottom_bar_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 1;
+                min: 720 100;
+                max: 720 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+            }
+        }
+
+        part {
+            name: "del_sel_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 360 100;
+                max: 360 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
+            name: "del_sel_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "del_sel_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_sel_bg";}
+                text {
+                    text: "Delete selected";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "del_sel_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 360 100;
+                max: 360 100;
+                rel1 { relative: 0.0 0.0; to: "del_sel_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_sel_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "del_all_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 1 0.5;
+                min: 360 100;
+                max: 360 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
+            name: "del_all_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "del_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_all_bg";}
+                text {
+                    text: "Delete all";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "del_all_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 360 100;
+                max: 360 100;
+                rel1 { relative: 0.0 0.0; to: "del_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_all_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "affdv_genlist";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 1008;
+                max: 720 1008;
+                rel1 { relative: 0.0 1.0; to: "profile_bg";}
+                rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
+            }
+        }
+    }
+}
+
+group {
+    name: "elm/genlist/item/affdv_item/default";
+    min: 700 100;
+    max: 700 100;
+    data.item: "texts" "item_title";
+    data.item: "contents" "checkbox";
+    parts {
+        part {
+            name: "item_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                min: 700 100;
+                max: 700 100;
+                color: 247 247 247 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+
+        part {
+            name: "item_title";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 700 100;
+                max: 700 100;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+                text {
+                    text: "First name";
+                    font: "Sans";
+                    size: 36;
+                    align: 0.02 0.5;
+                }
+            }
+        }
+
+        part {
+            name: "checkbox";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0.5;
+                fixed: 1 1;
+                min: 48 48;
+                max: 48 48;
+                rel1 { relative: 0.9 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+            }
+        }
+    }
+}
+
+group {
+    name: "affcv-layout";
+    images {
+        image: "navi_ic_back_nor.png" COMP;
+    }
+    parts {
+        part {
+            name: "bg_clipper";
+            type : RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 720 1268;
+                max: 720 1268;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "title_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                min: 720 104;
+                max: 720 104;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+        }
+
+        part {
+            name: "title_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                text {
+                    text: "Auto Fill Compose";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "cancel_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 128 64;
+                max: 128 64;
+                rel1 { relative: 0.01 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+            }
+        }
+        part {
+            name: "cancel_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 128 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+                rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+                text {
+                    text: "Cancel";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "cancel_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+                rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+                color_class: transparent;
+            }
+        }
+
+        part {
+            name: "done_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 96 64;
+                max: 96 64;
+                rel1 { relative: 0.85 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+            }
+        }
+        part {
+            name: "done_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 96 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "done_bg";}
+                rel2 { relative: 1.0 1.0; to: "done_bg";}
+                text {
+                    text: "Done";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.5 0.5;
+                }
+            }
+            description {
+                state: "dim" 0.0;
+                inherit: "default" 0.0;
+                color: 207 207 207 255;
+            }
+        }
+        part {
+            name: "done_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "done_bg";}
+                rel2 { relative: 1.0 1.0; to: "done_bg";}
+            }
+        }
+        part {
+            name: "affcv_genlist";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 0;
+                max: 720 1164;
+                rel1 { relative: 0.0 1.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                //color_class: transparent;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "show_done_button";
+            signal: "show,done,button,signal";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            target: "done_text";
+        }
+        program {
+            name: "dim_done_button";
+            signal: "dim,done,button,signal";
+            source: "";
+            action: STATE_SET "dim" 0.0;
+            target: "done_text";
+        }
+    }
+}
+
+group {
+    name : "elm/genlist/item/affcv_item/default";
+    min: 700 150;
+    max: 700 150;
+    data.item: "texts" "field_name";
+    data.item: "contents" "entry_swallow entry_clear_button";
+    images {
+        image: "btn_bar_stop_nor.png" COMP;
+    }
+    parts {
+        part {
+            name: "bg";
+            scale : 1;
+            type : RECT;
+            description {
+                state: "default" 0.0;
+                min: 700 150;
+                max: 700 150;
+                visible: 1;
+                align: 0.0 0.0;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "field_name";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 700 50;
+                max: 700 50;
+                fixed: 1 0;
+                align: 0 0.0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "bg"; offset: 30 15;}
+                rel2 { relative: 1.0 1.0; to: "bg";}
+                text {
+                    text: "Full name";
+                    font: "Sans";
+                    size: 30;
+                    align: 0 0.0;
+                }
+            }
+        }
+        part {
+            name: "entry_swallow";
+            scale : 1;
+            type : SWALLOW;
+            description {
+                state: "default" 0.0;
+                min: 700 80;
+                max: 700 80;
+                visible: 1;
+                align: 0 0.8;
+                rel1 { relative: 0.0 0.0; to:"bg"; offset: 30 0;}
+                rel2 { relative: 1.0 1.0; to:"bg"; }
+            }
+        }
+        part {
+            name: "line";
+            scale : 1;
+            type : RECT;
+            description {
+                state: "default" 0.0;
+                min: 690 1;
+                max: 690 1;
+                visible: 1;
+                align: 0.0 0.0;
+                color: 0 0 0 255;
+                rel1 { relative: 0.0 1.0; to: "bg"; offset: 30 -1;}
+                rel2 { relative: 1.0 1.0; to: "bg";}
+            }
+        }
+    }
+}
+
+group {
+    name: "elm/entry/base-single/entry_style";
+    data {
+        item: focus_highlight "off";
+    }
+    styles {
+        style {
+            name: "entry-style";
+            base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#969696";
+        }
+    }
+    parts {
+        part {
+            name: "bg";
+            type : RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 700 80;
+                max: 700 80;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "elm.text";
+            scale:1;
+            multiline: 0;
+            entry_mode: EDITABLE;
+            select_mode: DEFAULT;
+            cursor_mode: BEFORE;
+            type: TEXTBLOCK;
+            description {
+                state: "default" 0.0;
+                max: -1 80;
+                visible: 1;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "bg";}
+                rel2 { relative: 1.0 1.0; to: "bg";}
+                align: 0.0 0.0;
+                text {
+                    style: "entry-style";
+                    min: 0 1;
+                }
+            }
+        }
+    }
+    programs {
+        program {
+            name: "focus";
+            signal: "load";
+            source: "";
+            action: FOCUS_SET;
+            target: "elm.text";
+        }
+    }
+}
+
+group {
+    name: "edit-field";
+    data {
+        item: focus_highlight "off";
+    }
+    parts {
+        part {
+            name: "editfield_entry";
+            scale : 1;
+            type : SWALLOW;
+            description {
+                state: "default" 0.0;
+                min: 700 80;
+                max: 700 80;
+                visible: 1;
+                align: 0.0 0.0;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "clear_icon";
+            type: IMAGE;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 56 56;
+                max: 56 56;
+                rel1 { relative: 0.9 0.0; to: "editfield_entry";}
+                rel2 { relative: 1.0 1.0; to: "editfield_entry";}
+                image.normal: "btn_bar_stop_nor.png";
+            }
+            description {
+                state: "show" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "entry_clear_button";
+            scale : 1;
+            type : SWALLOW;
+            description {
+                state: "default" 0.0;
+                min: 56 56;
+                max: 56 56;
+                visible: 0;
+                align: 0.0 0.0;
+                rel1 { relative: 0.0 0.0; to:"clear_icon"; }
+                rel2 { relative: 1.0 1.0; to:"clear_icon"; }
+            }
+            description {
+                state: "show" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "show_clear_button";
+            signal: "show,clear,button,signal";
+            source: "";
+            action: STATE_SET "show" 0.0;
+            target: "clear_icon";
+            target: "entry_clear_button";
+        }
+        program {
+            name: "hide_clear_button";
+            signal: "hide,clear,button,signal";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            target: "clear_icon";
+            target: "entry_clear_button";
+        }
+    }
+}
+
+group {
+    name: "afflv-layout";
+    images {
+        image: "navi_ic_back_nor.png" COMP;
+    }
+    parts {
+        part {
+            name: "bg_clipper";
+            type : RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 720 1268;
+                max: 720 1268;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                color: 243 243 243 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "title_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                min: 720 104;
+                max: 720 104;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+        }
+        part {
+            name: "title_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                text {
+                    text: "Auto Fill Forms";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "back_bg";
+            type: IMAGE;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.02 0.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                image.normal: "navi_ic_back_nor.png";
+            }
+        }
+        part {
+            name: "back_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "back_bg";}
+                rel2 { relative: 1.0 1.0; to: "back_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "profile_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0;
+                min: 720 56;
+                max: 720 56;
+                color: 231 231 231 255;
+                rel1 { relative: 0.0 1.0; to: "title_bg";}
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "profile_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "profile_bg";}
+                text {
+                    text: "Profiles";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.02 0.5;
+                }
+            }
+        }
+        part {
+            name: "bottom_bar_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 1;
+                min: 720 100;
+                max: 720 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+            }
+        }
+        part {
+            name: "add_profile_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 360 100;
+                max: 360 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
+            name: "add_profile_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "add_profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
+                text {
+                    text: "Add";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "add_profile_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 360 100;
+                max: 360 100;
+                rel1 { relative: 0.0 0.0; to: "add_profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "delete_profile_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 1 1;
+                align: 1 0.5;
+                min: 360 100;
+                max: 360 100;
+                color: 255 255 255 255;
+                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
+            name: "delete_profile_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 56 0;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "delete_profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "delete_profile_bg";}
+                text {
+                    text: "Delete";
+                    font: "Sans";
+                    size: 40;
+                    align: 0.5 0.5;
+                }
+            }
+        }
+        part {
+            name: "delete_profile_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 360 100;
+                max: 360 100;
+                rel1 { relative: 0.0 0.0; to: "delete_profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "delete_profile_bg";}
+                color_class: transparent;
+            }
+        }
+        part {
+            name: "afflv_genlist";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 720 1008;
+                max: 720 1008;
+                rel1 { relative: 0.0 1.0; to: "profile_bg";}
+                rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
+            }
+        }
+    }
+}
+
+group {
+    name: "elm/genlist/item/afflv_item/default";
+    min: 700 100;
+    max: 700 100;
+    data.item: "texts" "item_title";
+    parts {
+        part {
+            name: "item_bg";
+            type: RECT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                min: 700 100;
+                max: 700 100;
+                color: 247 247 247 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 1.0; }
+            }
+        }
+        part {
+            name: "item_title";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 700 100;
+                max: 700 100;
+                fixed: 1 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+                text {
+                    text: "First name";
+                    font: "Sans";
+                    size: 36;
+                    align: 0.02 0.5;
+                }
+            }
+        }
+    }
+}
+
+} // Collections
