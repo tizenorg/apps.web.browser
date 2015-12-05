@@ -43,6 +43,7 @@
 #include "Tools/EflTools.h"
 #include "BrowserImage.h"
 #include "HistoryItem.h"
+#include "AutoFillForm/AutoFillFormManager.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "SessionStorage.h"
@@ -317,6 +318,7 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
+    m_settingsUI->autofillDataClicked.connect(boost::bind(&SimpleUI::settingsAutoFillData, this));
     m_settingsUI->deleteSelectedDataClicked.connect(boost::bind(&SimpleUI::settingsDeleteSelectedData, this,_1));
     m_settingsUI->resetMostVisitedClicked.connect(boost::bind(&SimpleUI::settingsResetMostVisited, this));
     m_settingsUI->resetBrowserClicked.connect(boost::bind(&SimpleUI::settingsResetBrowser, this));
@@ -1317,6 +1319,15 @@ void SimpleUI::closeBookmarkManagerUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get())
     m_viewManager.popTheStack();
+}
+
+void SimpleUI::settingsAutoFillData()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_viewManager);
+    auto_fill_form_manager* affm = new auto_fill_form_manager();
+    affm->init(m_viewManager.getContent());
+    affm->show_list_view();
 }
 
 void SimpleUI::settingsDeleteSelectedData(const std::string& str)

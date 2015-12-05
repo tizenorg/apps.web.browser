@@ -277,6 +277,7 @@ private:
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
+    void settingsAutoFillData();
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
