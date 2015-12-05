@@ -51,14 +51,14 @@ public:
 
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
-    static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object* listSettingsGenlistContentGet(void *data, Evas_Object *obj, const char *part);
+    static Evas_Object* listActionBarContentGet(void* data, Evas_Object* obj, const char *part);
+    static Evas_Object* listSettingsGenlistContentGet(void* data, Evas_Object* obj, const char *part);
 
-    static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);
+    static char* _grid_text_get(void* data, Evas_Object* obj, const char *part);
+    static Evas_Object * _tab_grid_content_get(void* data, Evas_Object* obj, const char *part);
     static void _itemSelected(void * data, Evas_Object * obj, void * event_info);
-    static void close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-    static void __checkbox_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
+    static void close_clicked_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __checkbox_label_click_cb(void* data, Evas_Object* obj, const char *emission, const char *source);
 
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _reset_mv_clicked_cb(void * data, Evas_Object * obj, void * event_info);
@@ -72,7 +72,7 @@ private:
     Evas_Object *m_items_layout;
     Evas_Object *m_parent;
 
-    Elm_Gengrid_Item_Class * m_item_class;
+    Elm_Gengrid_Item_Class * m_itemClass;
     std::string m_edjFilePath;
     enum SharingRequest {
         SR_DISABLE = 0,
