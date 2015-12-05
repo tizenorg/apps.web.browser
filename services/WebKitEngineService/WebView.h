@@ -225,6 +225,11 @@ public:
      * @brief Exit full screen mode, return true if successful.
      */
     bool exitFullScreen() const;
+
+    /**
+     * @brief Set autofill profile data enabled settings flag.
+     */
+    void ewkSettingsFormProfileDataEnabledSet(bool value);
 #endif
 
 // signals

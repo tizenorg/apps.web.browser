@@ -58,6 +58,7 @@ WebKitEngineService::WebKitEngineService()
     m_settings[WebEngineSettings::ENABLE_JAVASCRIPT] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT));
     m_settings[WebEngineSettings::REMEMBER_FROM_DATA] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA));
     m_settings[WebEngineSettings::REMEMBER_PASSWORDS] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS));
+    m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA));
 #endif
 }
 
@@ -525,6 +526,7 @@ void WebKitEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
     webView->ewkSettingsJavascriptEnabledSet(m_settings[WebEngineSettings::ENABLE_JAVASCRIPT]);
     webView->ewkSettingsFormCandidateDataEnabledSet(m_settings[WebEngineSettings::REMEMBER_FROM_DATA]);
     webView->ewkSettingsAutofillPasswordFormEnabledSet(m_settings[WebEngineSettings::REMEMBER_PASSWORDS]);
+    webView->ewkSettingsFormProfileDataEnabledSet(m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA]);
 }
 #endif
 
@@ -663,6 +665,9 @@ void WebKitEngineService::setSettingsParam(WebEngineSettings param, bool value) 
             break;
         case WebEngineSettings::REMEMBER_PASSWORDS:
             it->second->ewkSettingsAutofillPasswordFormEnabledSet(value);
+            break;
+        case WebEngineSettings::AUTOFILL_PROFILE_DATA:
+            it->second->ewkSettingsFormProfileDataEnabledSet(value);
             break;
         default:
             BROWSER_LOGD("[%s:%d] Warning unknown param value!", __PRETTY_FUNCTION__, __LINE__);

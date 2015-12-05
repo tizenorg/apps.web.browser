@@ -1109,6 +1109,12 @@ bool WebView::clearTextSelection() const {
 bool WebView::exitFullScreen() const {
     return ewk_view_fullscreen_exit(m_ewkView);
 }
+
+void WebView::ewkSettingsFormProfileDataEnabledSet(bool value)
+{
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_form_profile_data_enabled_set(settings, value);
+}
 #endif
 
 const TabId& WebView::getTabId() {

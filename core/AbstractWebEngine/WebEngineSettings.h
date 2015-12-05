@@ -27,7 +27,8 @@ enum class WebEngineSettings {
     LOAD_IMAGES,
     ENABLE_JAVASCRIPT,
     REMEMBER_FROM_DATA,
-    REMEMBER_PASSWORDS
+    REMEMBER_PASSWORDS,
+    AUTOFILL_PROFILE_DATA
 };
 
 // string parameters mapping
