@@ -70,6 +70,8 @@ private:
     static void __checkbox_content_settings_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
     static void __checkbox_privacy_label_click_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 
+    static void _auto_fill_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+
     static void _del_selected_data_clicked_cb(void * data, Evas_Object * obj, void * event_info);
     static void _del_selected_data_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
