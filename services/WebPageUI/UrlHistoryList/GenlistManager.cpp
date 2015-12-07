@@ -227,18 +227,21 @@ void GenlistManager::adjustWidgetHeight()
 Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
         const char* part)
 {
-    Evas_Object* label = elm_label_add(obj);
+    Evas_Object* layout = elm_layout_add(obj);
     if (strcmp(part, "matched_url") == 0) {
         const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
         if (item) {
-            elm_object_text_set(label, item->urlHighlighted.c_str());
-            evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND,
+            string edjFilePath = EDJE_DIR;
+            edjFilePath.append("WebPageUI/UrlHistoryList.edj");
+            elm_layout_file_set(layout, edjFilePath.c_str(), "layoutMatchedUrl");
+            elm_object_text_set(layout, item->urlHighlighted.c_str());
+            evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND,
             EVAS_HINT_EXPAND);
-            evas_object_size_hint_align_set(label, EVAS_HINT_FILL,
+            evas_object_size_hint_align_set(layout, EVAS_HINT_FILL,
             EVAS_HINT_FILL);
         }
     }
-    return label;
+    return layout;
 }
 
 void GenlistManager::prepareUrlsVector(const string& editedUrl,

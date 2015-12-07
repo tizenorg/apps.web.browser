@@ -23,8 +23,8 @@ UrlMatchesStyler::UrlMatchesStyler() :
         TAG_WHOLE_URL(
                 "<align=left><color=" + FONT_COLOR_NORMAL + "><font_size="
                         + FONT_SIZE + ">"), TAG_WHOLE_URL_CLOSE(
-                "</color></font></align>"), TAG_HIGHLIGHT("<hilight>"), TAG_HIGHLIGHT_CLOSE(
-                closeTag(TAG_HIGHLIGHT)), TAG_COLOR(
+                "</color></font></align>"), TAG_HIGHLIGHT("<font_weight=bold>"),
+                TAG_HIGHLIGHT_CLOSE("</font_weight>"), TAG_COLOR(
                 "<color=" + FONT_COLOR_HIGHLIGHT + ">"), TAG_COLOR_CLOSE(
                 closeTag(TAG_COLOR)), TAG_COMPLETE(TAG_HIGHLIGHT + TAG_COLOR), TAG_COMPLETE_CLOSE(
                 TAG_HIGHLIGHT_CLOSE + TAG_COLOR_CLOSE), TAGS_COMPLETE_LEN(
