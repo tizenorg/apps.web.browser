@@ -65,7 +65,9 @@ SimpleUI::SimpleUI()
     , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
     , m_webPageUI()
     , m_moreMenuUI()
+#if PROBILE_MOBILE
     , m_bookmarkFlowUI()
+#endif
     , m_bookmarkManagerUI()
     , m_quickAccess()
     , m_historyUI()
@@ -242,12 +244,12 @@ void SimpleUI::loadUIServices()
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
-
+#if PROBILE_MOBILE
     m_bookmarkFlowUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkFlowUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkflowui"));
-
+#endif
     m_bookmarkManagerUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
@@ -335,26 +337,25 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
-#if !PROFILE_MOBILE
-    m_moreMenuUI->addToBookmarkClicked.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
-#else
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
+    //m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
 
+#if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
+    m_bookmarkFlowUI->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     m_bookmarkFlowUI->closeBookmarkFlowClicked.connect(boost::bind(&SimpleUI::closeBookmarkFlowUI, this));
     m_bookmarkFlowUI->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
     m_bookmarkFlowUI->editBookmark.connect(boost::bind(&SimpleUI::editBookmark, this, _1));
     m_bookmarkFlowUI->removeBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
-    m_bookmarkFlowUI->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
 #endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
     m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));
-#if PROFILE_MOBILE
     m_bookmarkManagerUI->customFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkCustomFolderClicked, this, _1));
-    m_bookmarkManagerUI->mobileFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkMobileClicked, this));
     m_bookmarkManagerUI->allFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkAllFolderClicked, this));
+#if PROFILE_MOBILE
+    m_bookmarkManagerUI->mobileFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkMobileClicked, this));
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     m_bookmarkManagerUI->editFolderButtonClicked.connect(boost::bind(&SimpleUI::onEditFolderClicked, this, _1));
     m_bookmarkManagerUI->deleteFolderButtonClicked.connect(boost::bind(&SimpleUI::onDeleteFolderClicked, this, _1));
@@ -428,8 +429,10 @@ void SimpleUI::initUIServices()
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->init(m_viewManager.getContent());
 
+#if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
+#endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager.getContent());
@@ -669,18 +672,46 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     }
 }
 
-#if PROFILE_MOBILE
 void SimpleUI::onNewFolderClicked()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    InputPopup *inputPopup = InputPopup::createInputPopup(m_viewManager.getContent(), "New Folder", "Add New Folder?",
-                                                          "New Folder #", "Add", "Cancel");
+#if PROFILE_MOBILE
+    InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add New Folder?",
+                                                          "New Folder #", "Add", "Cancel", true);
+#else
+    InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add new folder for adding to bookmark?",
+                                                          "Folder #", "Cancel", "Add to bookmark", false);
+#endif
     inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));
     inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     inputPopup->show();
 }
 
+void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_storageService->getSessionStorage().ifFolderExists(folder_name)) {
+        BROWSER_LOGD("[%s:%d] Folder already exists.", __PRETTY_FUNCTION__, __LINE__);
+        return;
+    }
+    unsigned int id = m_storageService->getSessionStorage().addFolder(folder_name);
+#if PROFILE_MOBILE
+    if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
+        SharedBookmarkFolder folder = m_storageService->getSessionStorage().getFolder(id);
+        SharedBookmarkFolderList list;
+        list.push_back(folder);
+        m_bookmarkManagerUI->addCustomFolders(list);
+    }
+#else
+    BookmarkUpdate update;
+    update.folder_id = 0;
+    //TODO: Change 0 to id
+    M_UNUSED(id);
+    addBookmark(update);
+#endif
+}
+#if PROFILE_MOBILE
 void SimpleUI::onEditFolderClicked(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -706,22 +737,6 @@ void SimpleUI::onDeleteFolderClicked(const std::string& folder_name)
     popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     m_folder_name = folder_name;
     popup->show();
-}
-
-void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_storageService->getSessionStorage().ifFolderExists(folder_name)) {
-        BROWSER_LOGD("[%s:%d] Folder already exists.", __PRETTY_FUNCTION__, __LINE__);
-        return;
-    }
-    unsigned int id = m_storageService->getSessionStorage().addFolder(folder_name);
-    if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
-        SharedBookmarkFolder folder = m_storageService->getSessionStorage().getFolder(id);
-        SharedBookmarkFolderList list;
-        list.push_back(folder);
-        m_bookmarkManagerUI->addCustomFolders(list);
-    }
 }
 
 void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
@@ -1188,11 +1203,9 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->hideUI();
     else {
         m_moreMenuUI->blockThumbnails(m_webPageUI->stateEquals(WPUState::QUICK_ACCESS));
-        m_moreMenuUI->setIsBookmark(checkBookmark());
         m_moreMenuUI->showUI();
     }
 #else
-
     bool desktopMode = m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) ? m_quickAccess->isDesktopMode() : m_webEngine->isDesktopMode();
     m_moreMenuUI->setDesktopMode(desktopMode);
     m_viewManager.pushViewToStack(m_moreMenuUI.get());
@@ -1207,6 +1220,7 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->setHomePageInfo();
     }
 #endif
+    m_moreMenuUI->setIsBookmark(checkBookmark());
 }
 
 void SimpleUI::closeMoreMenu()
@@ -1248,12 +1262,18 @@ void SimpleUI::switchToDesktopMode()
     }
 }
 
-#if PROFILE_MOBILE
 void SimpleUI::showBookmarkFlowUI(bool state)
 {
+#if !PROFILE_MOBILE
+    if (state) {
+        deleteBookmark();
+        return;
+    }
+#endif
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    std::string uri = m_webEngine->getURI();
+#if PROFILE_MOBILE
     m_viewManager.pushViewToStack(m_bookmarkFlowUI.get());
+    std::string uri = m_webEngine->getURI();
     m_bookmarkFlowUI->setURL(uri);
     m_bookmarkFlowUI->setState(state);
     tizen_browser::services::BookmarkItem item;
@@ -1261,8 +1281,18 @@ void SimpleUI::showBookmarkFlowUI(bool state)
         m_bookmarkFlowUI->setTitle(item.getTitle());
     else
         m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
+#else
+    BookmarkFlowUI *bookmarkFlow = BookmarkFlowUI::createPopup(m_viewManager.getContent());
+    bookmarkFlow->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    bookmarkFlow->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    bookmarkFlow->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+    bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
+    bookmarkFlow->show();
+    bookmarkFlow->gridAddNewFolder();
+    bookmarkFlow->gridAddCustomFolders(getBookmarkFolders());
+#endif
 }
-
+#if PROFILE_MOBILE
 void SimpleUI::closeBookmarkFlowUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1277,28 +1307,30 @@ void SimpleUI::showBookmarkManagerUI()
     m_viewManager.pushViewToStack(m_bookmarkManagerUI.get());
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->addNewFolder();
+    #endif
     m_bookmarkManagerUI->addAllFolder(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
                                       getBookmarkFolderName(tizen_browser::services::ALL_BOOKMARKS_ID));
+#if PROFILE_MOBILE
     m_bookmarkManagerUI->addMobileFolder(getBookmarks(tizen_browser::services::ROOT_FOLDER_ID),
                                          getBookmarkFolderName(tizen_browser::services::ROOT_FOLDER_ID));
-    //m_bookmarkManagerUI->addCustomFolders(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID));
+#endif
     m_bookmarkManagerUI->addCustomFolders(getBookmarkFolders());
     m_bookmarkManagerUI->showUI();
-#else
-    m_bookmarkManagerUI->addBookmarkItems(getBookmarks(tizen_browser::services::ROOT_FOLDER_ID));
-#endif
 }
 
-#if PROFILE_MOBILE
+
 void SimpleUI::onBookmarkAllFolderClicked()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
+        //TODO ON TV
     m_bookmarkManagerUI->getDetailsContent();
     m_bookmarkManagerUI->addDetails(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
                                     getBookmarkFolderName(tizen_browser::services::ALL_BOOKMARKS_ID));
     m_bookmarkManagerUI->showDetailsUI();
+#endif
 }
-
+#if PROFILE_MOBILE
 void SimpleUI::onBookmarkMobileClicked()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1307,16 +1339,20 @@ void SimpleUI::onBookmarkMobileClicked()
                                     getBookmarkFolderName(tizen_browser::services::ROOT_FOLDER_ID));
     m_bookmarkManagerUI->showDetailsUI();
 }
-
+#endif
 void SimpleUI::onBookmarkCustomFolderClicked(int folderId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
+    //TODO ON TV
     m_bookmarkManagerUI->getDetailsContent();
     m_bookmarkManagerUI->addDetails(getBookmarks(folderId), m_storageService->getSessionStorage().getFolderName(folderId));
     //m_bookmarkManagerUI->addDetails(getBookmarks(folderId), getBookmarkFolderName(folderId));
     m_bookmarkManagerUI->showDetailsUI();
-}
+#else
+    M_UNUSED(folderId);
 #endif
+}
 
 void SimpleUI::closeBookmarkManagerUI()
 {
@@ -1483,37 +1519,30 @@ void SimpleUI::searchWebPage(std::string &text, int flags)
     m_webEngine->searchOnWebsite(text, flags);
 }
 
-#if PROFILE_MOBILE
 void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
 {
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
-            m_favoriteService->addBookmark(m_webEngine->getURI(), bookmark_update.title, std::string(),
-                                              m_webEngine->getSnapshotData(373, 240),
-                                              m_webEngine->getFavicon(),(unsigned int)bookmark_update.folder_id);
+            m_favoriteService->addBookmark(m_webEngine->getURI(),
+#if PROFILE_MOBILE
+                                           bookmark_update.title,
+#else
+                                           m_webEngine->getTitle(),
+#endif
+                                           std::string(), m_webEngine->getSnapshotData(373, 240),
+                                           m_webEngine->getFavicon(), (unsigned int)bookmark_update.folder_id);
         }
     }
 }
 
+#if PROFILE_MOBILE
 void SimpleUI::editBookmark(BookmarkUpdate bookmark_update)
 {
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
                m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, (unsigned int)bookmark_update.folder_id);
-        }
-    }
-}
-#else
-void SimpleUI::addBookmark(int folder_id)
-{
-    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
-    if (m_favoriteService) {
-        if (m_webEngine && !m_webEngine->getURI().empty()) {
-            m_favoriteService->addBookmark(m_webEngine->getURI(), m_webEngine->getTitle(), std::string(),
-                                              m_webEngine->getSnapshotData(373, 240),
-                                              m_webEngine->getFavicon(),(unsigned int)folder_id);
         }
     }
 }

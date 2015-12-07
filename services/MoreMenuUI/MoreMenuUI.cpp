@@ -211,7 +211,7 @@ void MoreMenuUI::showCurrentTab()
     m_bookmarkButton = elm_button_add(m_mm_layout);
     elm_object_style_set(m_bookmarkButton, "hidden_button");
     evas_object_show(m_bookmarkButton);
-    evas_object_smart_callback_add(m_bookmarkButton, "clicked", _star_clicked, this);
+    evas_object_smart_callback_add(m_bookmarkButton, "clicked", _bookmarkButton_clicked, this);
 
     m_bookmarkIcon = elm_icon_add(m_mm_layout);
     elm_object_part_content_set(m_current_tab_bar, "bookmark_ico", m_bookmarkIcon);
@@ -333,19 +333,12 @@ void MoreMenuUI::_timeout(void *data, Evas_Object*, void*)
     evas_object_del(moreMenuUI->m_toastPopup);
 }
 
-void MoreMenuUI::_star_clicked(void* data, Evas_Object*, void*)
+void MoreMenuUI::_bookmarkButton_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(data) {
         MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
-
-        if (EINA_FALSE == moreMenuUI->m_isBookmark) {
-            moreMenuUI->addToBookmarkClicked(0);
-        }
-        else {
-            moreMenuUI->m_isBookmark = EINA_FALSE;
-            moreMenuUI->deleteBookmark();
-        }
+        moreMenuUI->bookmarkFlowClicked(moreMenuUI->m_isBookmark == EINA_TRUE);
     }
 }
 
@@ -705,12 +698,11 @@ void MoreMenuUI::blockThumbnails(bool blockThumbnails)
 {
     m_blockThumbnails = blockThumbnails;
 }
-
+#endif
 void MoreMenuUI::setIsBookmark(bool isBookmark)
 {
     m_isBookmark = isBookmark ? EINA_TRUE : EINA_FALSE;
 }
-#endif
 
 void MoreMenuUI::createFocusVector()
 {
