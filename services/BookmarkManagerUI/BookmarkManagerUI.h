@@ -48,15 +48,16 @@ public:
     virtual std::string getName();
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+    void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    void addCustomFolders(services::SharedBookmarkFolderList folders);
+    void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+
 #if PROFILE_MOBILE
     Evas_Object* getDetailsContent();
     void addNewFolder();
-    void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void addMobileFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
-    void addCustomFolders(services::SharedBookmarkFolderList folders);
-    void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
-    void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void showDetailsUI();
+    void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
 #endif
     void hide();
     void clearItems();
@@ -65,10 +66,10 @@ public:
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
-#if PROFILE_MOBILE
     boost::signals2::signal<void (int)> customFolderClicked;
-    boost::signals2::signal<void ()> mobileFolderClicked;
     boost::signals2::signal<void ()> allFolderClicked;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> mobileFolderClicked;
     boost::signals2::signal<void ()> newFolderItemClicked;
     boost::signals2::signal<void (std::string)> editFolderButtonClicked;
     boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
@@ -95,9 +96,13 @@ private:
 
     static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
+
+    void addCustomFolder(FolderData*);
+    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
+    static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
 #if PROFILE_MOBILE
     void addDetailsItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addCustomFolder(FolderData*);
     void createFolderDetailsGenGrid();
     void createFolderDetailsTopContent();
     Evas_Object* createFolderDetailsLayout(Evas_Object* parent);
@@ -106,10 +111,7 @@ private:
     void createMenuDetails();
     std::string getDetailFolderName();
     static char* _grid_title_text_get(void *data, Evas_Object *obj, const char *part);
-    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
-    static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
     static void _bookmarkNewFolderClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
     static void _bookmarkMobileFolderClicked(void * data, Evas_Object *, void *);
     static void _back_details_clicked_cb(void *data, Evas_Object *, void *);
     static void _more_details_clicked_cb(void *data, Evas_Object *, void *);
@@ -136,12 +138,14 @@ private:
     std::string edjFilePath;
     bool m_gengridSetup;
     FocusManager m_focusManager;
+
+    Elm_Gengrid_Item_Class * m_folder_all_item_class;
+    Elm_Gengrid_Item_Class * m_folder_custom_item_class;
 #if PROFILE_MOBILE
     Elm_Gengrid_Item_Class * m_details_item_class;
     Elm_Gengrid_Item_Class * m_folder_new_item_class;
-    Elm_Gengrid_Item_Class * m_folder_all_item_class;
     Elm_Gengrid_Item_Class * m_folder_mobile_item_class;
-    Elm_Gengrid_Item_Class * m_folder_custom_item_class;
+
     Evas_Object *m_details_topContent;
     Evas_Object *b_details_layout;
     Evas_Object *m_details_gengrid;
