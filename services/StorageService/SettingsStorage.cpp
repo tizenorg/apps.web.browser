@@ -73,6 +73,9 @@ const std::string SQL_FIND_VALUE_DOUBLE_SETTINGS = "select " + COL_SETTINGS_VALU
 const std::string SQL_FIND_VALUE_TEXT_SETTINGS = "select " + COL_SETTINGS_VALUE_TEXT + " from " + TABLE_SETTINGS
                                                  + " where " + COL_SETTINGS_KEY + "=?";
 
+const std::string SQL_CHECK_IF_PARAM_EXISTS = "select " + COL_SETTINGS_KEY + " from " + TABLE_SETTINGS
+                                                + " where " + COL_SETTINGS_KEY + "=?";
+
 // ------ (end) Database SETTINGS ------
 
 }
@@ -80,8 +83,20 @@ const std::string SQL_FIND_VALUE_TEXT_SETTINGS = "select " + COL_SETTINGS_VALUE_
 namespace tizen_browser {
 namespace storage {
 
+SettingsStorage::SettingsStorage()
+    : m_dbSettingsInitialised(false)
+    , m_isInitialized(false)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+}
+
+SettingsStorage::~SettingsStorage()
+{
+}
+
 void SettingsStorage::init(bool testmode)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_isInitialized) {
         return;
     }
@@ -101,26 +116,17 @@ void SettingsStorage::init(bool testmode)
 
     DB_SETTINGS = resourceDbDir + dbSettings;
 
-    BROWSER_LOGD("DB_SETTINGS=%s", DB_SETTINGS.c_str());
+    BROWSER_LOGD("[%s:%d] DB_SETTINGS=%s", __PRETTY_FUNCTION__, __LINE__, DB_SETTINGS.c_str());
 
     try {
         initDatabaseSettings(DB_SETTINGS);
     } catch (storage::StorageExceptionInitialization & e) {
-        BROWSER_LOGE("Cannot initialize database %s!", DB_SETTINGS.c_str());
+        BROWSER_LOGE("[%s:%d] Cannot initialize database %s!", __PRETTY_FUNCTION__, __LINE__, DB_SETTINGS.c_str());
     }
 
+    initWebEngineSettingsFromDB();
+
     m_isInitialized = true;
-}
-
-SettingsStorage::SettingsStorage()
-    : m_dbSettingsInitialised(false)
-    , m_isInitialized(false)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-}
-
-SettingsStorage::~SettingsStorage()
-{
 }
 
 /**
@@ -128,7 +134,7 @@ SettingsStorage::~SettingsStorage()
  */
 void SettingsStorage::initDatabaseSettings(const std::string & db_str)
 {
-    BROWSER_LOGI("SettingsStorage::initDatabaseSettings begin");
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (!m_dbSettingsInitialised) {
         try {
@@ -142,8 +148,38 @@ void SettingsStorage::initDatabaseSettings(const std::string & db_str)
     }
 
     M_ASSERT(m_dbSettingsInitialised);
+}
 
-    BROWSER_LOGI("SettingsStorage::initDatabaseSettings end");
+void SettingsStorage::initWebEngineSettingsFromDB()
+{
+    for (basic_webengine::WebEngineSettings s : basic_webengine::ALL_WEBENGINE_SETTINGS) {
+        if (isParamPresent(s))
+            setWebEngineSettingsParam(s, getParamVal(s));
+    }
+}
+
+void SettingsStorage::setParam(basic_webengine::WebEngineSettings param, bool value) const
+{
+    const std::string& paramName = basic_webengine::PARAMS_NAMES.at(param);
+    setSettingsInt(paramName, static_cast<int>(value));
+}
+
+bool SettingsStorage::isParamPresent(basic_webengine::WebEngineSettings param) const
+{
+    const std::string& paramName = basic_webengine::PARAMS_NAMES.at(param);
+    auto con = storage::DriverManager::getDatabase(DB_SETTINGS);
+
+    storage::SQLQuery select(con->prepare(SQL_CHECK_IF_PARAM_EXISTS));
+    select.bindText(1, paramName);
+    select.exec();
+    return select.hasNext();
+}
+
+bool SettingsStorage::getParamVal(basic_webengine::WebEngineSettings param) const
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    const std::string& paramName = basic_webengine::PARAMS_NAMES.at(param);
+    return static_cast<bool>(getSettingsInt(paramName, 0));
 }
 
 /**
@@ -158,7 +194,8 @@ int SettingsStorage::getSettingsInt(const std::string & key, const int defaultVa
     select.exec();
 
     if (select.hasNext()) {
-        return select.getInt(0);
+        int res = select.getInt(0);
+        return res;
     }
 
     return defaultValue;

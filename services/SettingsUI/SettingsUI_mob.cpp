@@ -343,17 +343,17 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
 
     Evas_Object* layout = createPageLayout(settings_layout, "content_settings_mobile");
 
-    boost::optional<bool> sig = getWebEngineSettingsParam(WebEngineSettings::PAGE_OVERVIEW);
+    boost::optional<bool> sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::PAGE_OVERVIEW);
     Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
     Evas_Object* overview_checkbox = createCheckBox(layout, "overview", __checkbox_content_settings_label_click_cb, this);
     elm_check_state_set(overview_checkbox, flag);
 
-    sig = getWebEngineSettingsParam(WebEngineSettings::LOAD_IMAGES);
+    sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::LOAD_IMAGES);
     flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
     Evas_Object* images_checkbox = createCheckBox(layout, "images", __checkbox_content_settings_label_click_cb, this);
     elm_check_state_set(images_checkbox, flag);
 
-    sig = getWebEngineSettingsParam(WebEngineSettings::ENABLE_JAVASCRIPT);
+    sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT);
     flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
     Evas_Object* javascript_checkbox = createCheckBox(layout, "javascript", __checkbox_content_settings_label_click_cb, this);
     elm_check_state_set(javascript_checkbox, flag);
@@ -366,12 +366,12 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
 
     Evas_Object* layout = createPageLayout(settings_layout, "privacy_mobile");
 
-    boost::optional<bool> sig = getWebEngineSettingsParam(WebEngineSettings::REMEMBER_FROM_DATA);
+    boost::optional<bool> sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::REMEMBER_FROM_DATA);
     Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
     Evas_Object* form_data_checkbox = createCheckBox(layout, "form_data", __checkbox_privacy_label_click_cb, this);
     elm_check_state_set(form_data_checkbox, flag);
 
-    sig = getWebEngineSettingsParam(WebEngineSettings::REMEMBER_PASSWORDS);
+    sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::REMEMBER_PASSWORDS);
     flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
     Evas_Object* passwd_checkbox = createCheckBox(layout, "passwords", __checkbox_privacy_label_click_cb, this);
     elm_check_state_set(passwd_checkbox, flag);
@@ -388,17 +388,17 @@ void SettingsUI::__checkbox_content_settings_label_click_cb(void* data, Evas_Obj
             Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "overview_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
-            self->setWebEngineSettingsParam(WebEngineSettings::PAGE_OVERVIEW, static_cast<bool>(value));
+            self->setWebEngineSettingsParam(basic_webengine::WebEngineSettings::PAGE_OVERVIEW, static_cast<bool>(value));
         } else if (strcmp(source, "images_cb_text_bg") == 0 ) {
             Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "images_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
-            self->setWebEngineSettingsParam(WebEngineSettings::LOAD_IMAGES, static_cast<bool>(value));
+            self->setWebEngineSettingsParam(basic_webengine::WebEngineSettings::LOAD_IMAGES, static_cast<bool>(value));
         } else if (strcmp(source, "javascript_cb_text_bg") == 0 ) {
             Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "javascript_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
-            self->setWebEngineSettingsParam(WebEngineSettings::ENABLE_JAVASCRIPT, static_cast<bool>(value));
+            self->setWebEngineSettingsParam(basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT, static_cast<bool>(value));
         } else {
             BROWSER_LOGD("[%s:%d] - no matched source", __PRETTY_FUNCTION__, __LINE__);
         }
@@ -416,12 +416,12 @@ void SettingsUI::__checkbox_privacy_label_click_cb(void* data, Evas_Object*, con
             Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "form_data_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
-            self->setWebEngineSettingsParam(WebEngineSettings::REMEMBER_FROM_DATA, static_cast<bool>(value));
+            self->setWebEngineSettingsParam(basic_webengine::WebEngineSettings::REMEMBER_FROM_DATA, static_cast<bool>(value));
         } else if (strcmp(source, "passwords_cb_text_bg") == 0 ) {
             Evas_Object *checkbox = elm_layout_content_get(self->m_subpage_layout, "passwords_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
-            self->setWebEngineSettingsParam(WebEngineSettings::REMEMBER_PASSWORDS, static_cast<bool>(value));
+            self->setWebEngineSettingsParam(basic_webengine::WebEngineSettings::REMEMBER_PASSWORDS, static_cast<bool>(value));
         } else {
             BROWSER_LOGD("[%s:%d] - no matched source", __PRETTY_FUNCTION__, __LINE__);
         }
