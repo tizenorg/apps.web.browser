@@ -93,6 +93,7 @@ set(edcFiles
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
+    InputPopup.edc
     NotificationPopup.edc
     Tooltip.edc
     ViewManager.edc
