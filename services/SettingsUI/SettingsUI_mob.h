@@ -56,8 +56,8 @@ public:
     boost::signals2::signal<void ()> resetMostVisitedClicked;
     boost::signals2::signal<void (std::string&)> deleteSelectedDataClicked;
     boost::signals2::signal<void ()> closeSettingsUIClicked;
-    boost::signals2::signal<bool (WebEngineSettings)> getWebEngineSettingsParam;
-    boost::signals2::signal<void (WebEngineSettings, bool)> setWebEngineSettingsParam;
+    boost::signals2::signal<bool (basic_webengine::WebEngineSettings)> getWebEngineSettingsParam;
+    boost::signals2::signal<void (basic_webengine::WebEngineSettings, bool)> setWebEngineSettingsParam;
 
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);

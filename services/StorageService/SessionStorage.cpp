@@ -142,7 +142,7 @@ bool SessionStorage::initSessionDatabase()
         scope.database()->exec(DDL_CREATE_INDEX_SESSION_DATE);
         return true;
     } catch (storage::StorageException &e) {
-        BROWSER_LOGE("[ERROR] Session Storage initalization Error code: %d: %s"
+        BROWSER_LOGE("[%s:%d] [ERROR] Session Storage initalization Error code: %d: %s"
                     , __PRETTY_FUNCTION__
                     , __LINE__
                     ,  e.getErrorCode()
