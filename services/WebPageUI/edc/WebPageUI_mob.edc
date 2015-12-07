@@ -271,9 +271,8 @@ collections {
                     min: URI_BG_WIDTH 2;
                     max: URI_BG_WIDTH 2;
                     rel1 {
-                        relative: 0.0 0.0;
-                        offset: 0 1;
-                        to: "web_view";
+                        relative: 0.0 0.8;
+                        to: "uri_bar_bg";
                     }
                     rel2 { relative: 1.0 1.0; }
                 }
@@ -287,13 +286,13 @@ collections {
                     state: "default" 0.0;
                     fixed: 1 1;
                     min: 0 8;
-                    max: URI_BG_WIDTH 8;
+                    max: URI_BG_WIDTH 2;
                     align: 0 0;
                     visible: 0;
                     rel1.to: "web_view";
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 0.0;
-                    color: 69 143 255 55;
+                    color: 255 255 255 0;
                 }
                 description {
                     state: "visible" 0.0;
