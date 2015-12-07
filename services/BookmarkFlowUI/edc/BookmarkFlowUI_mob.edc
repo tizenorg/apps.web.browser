@@ -304,7 +304,7 @@ collections {
     }
 
     group {
-        name: "title_area-layout";
+        name: "title-area-layout";
         styles {
             style {
                 name: "title_area_text";
