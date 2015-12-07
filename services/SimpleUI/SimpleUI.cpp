@@ -149,13 +149,12 @@ int SimpleUI::exec(const std::string& _url)
             loadUIServices();
             loadModelServices();
 
+            connectModelSignals();
+            connectUISignals();
+
             // initModelServices() needs to be called after initUIServices()
             initUIServices();
             initModelServices();
-
-
-            connectModelSignals();
-            connectUISignals();
 
             //Push first view to stack.
             m_viewManager.pushViewToStack(m_webPageUI.get());
@@ -321,8 +320,9 @@ void SimpleUI::connectUISignals()
     m_settingsUI->resetMostVisitedClicked.connect(boost::bind(&SimpleUI::settingsResetMostVisited, this));
     m_settingsUI->resetBrowserClicked.connect(boost::bind(&SimpleUI::settingsResetBrowser, this));
 #if PROFILE_MOBILE
-    m_settingsUI->getWebEngineSettingsParam.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
-    m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
+    m_settingsUI->getWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
+    m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
+    m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&storage::SettingsStorage::setParam, &m_storageService->getSettingsStorage(),  _1, _2));
 #endif
 
     M_ASSERT(m_moreMenuUI.get());
@@ -375,6 +375,11 @@ void SimpleUI::loadModelServices()
         <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
 
+    m_storageService =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::StorageService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.storageservice"));
+
     m_favoriteService =
         std::dynamic_pointer_cast
         <tizen_browser::interfaces::AbstractFavoriteService,tizen_browser::core::AbstractService>
@@ -395,11 +400,6 @@ void SimpleUI::loadModelServices()
         std::dynamic_pointer_cast
         <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
-
-    m_storageService =
-        std::dynamic_pointer_cast
-        <tizen_browser::services::StorageService,tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.storageservice"));
 }
 
 void SimpleUI::initUIServices()
@@ -408,7 +408,7 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->init(m_viewManager.getContent());
-
+  
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->init(m_webPageUI->getContent());
 
@@ -445,6 +445,9 @@ void SimpleUI::initModelServices()
     M_ASSERT(m_webEngine);
     M_ASSERT(m_webPageUI->getContent());
     m_webEngine->init(m_webPageUI->getContent());
+
+    M_ASSERT(m_storageService->getSettingsStorage());
+    m_storageService->getSettingsStorage().initWebEngineSettingsFromDB();
 
     M_ASSERT(m_favoriteService);
     m_favoriteService->synchronizeBookmarks();
@@ -494,6 +497,7 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->yellowPressed.connect(boost::bind(&SimpleUI::onYellowKeyPressed, this));
 
 #if PROFILE_MOBILE
+    m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
 #endif
 }

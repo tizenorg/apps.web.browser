@@ -18,11 +18,11 @@
 #define __STORAGESERVICE_H
 
 #include <memory>
-
+#include <boost/signals2/signal.hpp>
 
 #include "SQLDatabase.h"
 #include "Config.h"
-
+#include "../../core/AbstractWebEngine/WebEngineSettings.h"
 
 
 namespace tizen_browser {
@@ -33,6 +33,10 @@ class SettingsStorage
 public:
     SettingsStorage();
     virtual ~SettingsStorage();
+
+    void setParam(basic_webengine::WebEngineSettings param, bool value) const;
+    bool isParamPresent(basic_webengine::WebEngineSettings param) const;
+    bool getParamVal(basic_webengine::WebEngineSettings param) const;
 
     /**
      * @throws StorageException on error
@@ -66,6 +70,8 @@ public:
 
     void init(bool testmode = false);
 
+    void initWebEngineSettingsFromDB();
+    boost::signals2::signal<void (basic_webengine::WebEngineSettings, bool)> setWebEngineSettingsParam;
 private:
     /**
      * @throws StorageExceptionInitialization on error

@@ -19,6 +19,9 @@
 #ifndef WEB_ENGINE_SETTINGS_H
 #define WEB_ENGINE_SETTINGS_H
 
+namespace tizen_browser {
+namespace basic_webengine {
+
 enum class WebEngineSettings {
     PAGE_OVERVIEW,
     LOAD_IMAGES,
@@ -26,5 +29,26 @@ enum class WebEngineSettings {
     REMEMBER_FROM_DATA,
     REMEMBER_PASSWORDS
 };
+
+// string parameters mapping
+const std::map<WebEngineSettings, std::string> PARAMS_NAMES = {
+    {WebEngineSettings::PAGE_OVERVIEW, "page_overview"},
+    {WebEngineSettings::LOAD_IMAGES, "load_images"},
+    {WebEngineSettings::ENABLE_JAVASCRIPT, "enable_javascript"},
+    {WebEngineSettings::REMEMBER_FROM_DATA, "remember_form_data"},
+    {WebEngineSettings::REMEMBER_PASSWORDS, "remember_passwords"}
+};
+
+// array used to iterate over
+const std::array<WebEngineSettings, 5> ALL_WEBENGINE_SETTINGS = {
+    WebEngineSettings::PAGE_OVERVIEW,
+    WebEngineSettings::LOAD_IMAGES,
+    WebEngineSettings::ENABLE_JAVASCRIPT,
+    WebEngineSettings::REMEMBER_FROM_DATA,
+    WebEngineSettings::REMEMBER_PASSWORDS
+};
+
+}
+}
 
 #endif
