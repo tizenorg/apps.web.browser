@@ -94,8 +94,8 @@ public:
     void setFocus(Eina_Bool focusable);
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
-    void setIsBookmark(bool isBookmark);
 #endif
+    void setIsBookmark(bool isBookmark);
 
     boost::signals2::signal<void (int)> addToBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
@@ -107,9 +107,7 @@ public:
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
     boost::signals2::signal<void ()> deleteBookmark;
-#if PROFILE_MOBILE
     boost::signals2::signal<void (bool)> bookmarkFlowClicked;
-#endif
 private:
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();
@@ -128,7 +126,7 @@ private:
 
     void setDocIcon();
 
-    static void _star_clicked(void *data, Evas_Object *obj, void *event_info);
+    static void _bookmarkButton_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
 
     static void _timeout(void *data, Evas_Object *obj, void *event_info);
