@@ -148,11 +148,11 @@ private:
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
-#if PROFILE_MOBILE
     void onNewFolderClicked();
+    void onNewFolderPopupClick(const std::string& folder_name);
+#if PROFILE_MOBILE
     void onEditFolderClicked(const std::string& folder_name);
     void onDeleteFolderClicked(const std::string& folder_name);
-    void onNewFolderPopupClick(const std::string& folder_name);
     void onEditFolderPopupClicked(const std::string& newName);
     void onDeleteFolderPopupClicked(PopupButtons button);
 #endif
@@ -213,25 +213,25 @@ private:
     void webEngineURLChanged(const std::string url);
     void onmostHistoryvisitedClicked();
     void onBookmarkvisitedClicked();
+
     /**
      * @brief Check if the current page exists as a bookmark.
      *
      */
     bool checkBookmark();
+
     /**
      * @brief Adds current page to bookmarks.
      *
      */
-#if PROFILE_MOBILE
     void addBookmark(BookmarkUpdate bookmark_update);
-#else
-    void addBookmark(int);
-#endif
+
     /**
      * @brief Edits currents page bookmark
      *
      */
     void editBookmark(BookmarkUpdate bookmark_update);
+
     /**
      * @brief Remove current page from bookmarks
      *
@@ -259,8 +259,8 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
-#if PROFILE_MOBILE
     void showBookmarkFlowUI(bool state);
+#if PROFILE_MOBILE
     void closeBookmarkFlowUI();
 #endif
     void closeBookmarkManagerUI();
@@ -304,7 +304,9 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+#if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
+#endif
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
@@ -319,9 +321,9 @@ private:
     int m_favoritesLimit;
     bool m_wvIMEStatus;
 
-#if PROFILE_MOBILE
+//#if PROFILE_MOBILE
     std::string m_folder_name;
-#endif
+//#endif
 
     //helper object used to view management
     ViewManager m_viewManager;
