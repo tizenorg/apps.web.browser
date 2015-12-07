@@ -395,7 +395,8 @@ void WebPageUI::createLayout()
 
     // progress bar
     m_progressBar = elm_progressbar_add(m_mainLayout);
-    elm_object_style_set(m_progressBar, "play_buffer");
+    elm_object_style_set(m_progressBar, "default");
+    elm_progressbar_unit_format_set(m_progressBar, "");
 
     //URL bar (Evas Object is shipped by URIEntry object)
     m_URIEntry->init(m_mainLayout);
