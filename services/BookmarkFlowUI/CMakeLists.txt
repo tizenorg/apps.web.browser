@@ -23,6 +23,10 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
         BookmarkFlowUI_mob.edc
         )
+else (${PROFILE} MATCHES "mobile")  # tv profile
+    set(edcFiles
+        BookmarkFlowUI.edc
+        )
 endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
