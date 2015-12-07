@@ -18,15 +18,15 @@ InputPopup::~InputPopup()
     evas_object_smart_callback_del(m_entry, "focused", _entry_focused);
     evas_object_smart_callback_del(m_entry, "unfocused", _entry_unfocused);
     evas_object_smart_callback_del(m_entry, "changed,user", _entry_changed);
-    evas_object_smart_callback_del(m_inputCancel, "clicked", _inputCancel_clicked);
-    evas_object_smart_callback_del(m_button_ok, "clicked", _okButton_clicked);
-    evas_object_smart_callback_del(m_button_cancel, "clicked", _cancelButton_clicked);
-    evas_object_del(m_inputCancel);
+    evas_object_smart_callback_del(m_input_cancel, "clicked", _input_cancel_clicked);
+    evas_object_smart_callback_del(m_button_right, "clicked", _right_button_clicked);
+    evas_object_smart_callback_del(m_button_left, "clicked", _left_button_clicked);
+    evas_object_del(m_input_cancel);
     evas_object_del(m_entry);
-    evas_object_del(m_inputArea);
-    evas_object_del(m_button_ok);
-    evas_object_del(m_button_cancel);
-    evas_object_del(m_buttonsBox);
+    evas_object_del(m_input_area);
+    evas_object_del(m_button_right);
+    evas_object_del(m_button_left);
+    evas_object_del(m_buttons_box);
     ecore_timer_del(m_timer);
     evas_object_del(m_layout);
     button_clicked.disconnect_all_slots();
@@ -34,7 +34,7 @@ InputPopup::~InputPopup()
     popupShown.disconnect_all_slots();
 }
 
-InputPopup* InputPopup::createInputPopup(Evas_Object* parent)
+InputPopup* InputPopup::createPopup(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = new InputPopup();
@@ -42,8 +42,8 @@ InputPopup* InputPopup::createInputPopup(Evas_Object* parent)
     return inputPopup;
 }
 
-InputPopup* InputPopup::createInputPopup(Evas_Object *parent,const std::string& title,const std::string& message,const std::string& input,
-                                         const std::string& okButtonText, const std::string& cancelButtonText)
+InputPopup* InputPopup::createPopup(Evas_Object *parent, const std::string& title, const std::string& message, const std::string& input,
+                                         const std::string& rightButtonText, const std::string& leftButtonText, bool accept_right_left)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = new InputPopup();
@@ -51,8 +51,9 @@ InputPopup* InputPopup::createInputPopup(Evas_Object *parent,const std::string& 
     inputPopup->m_title = title;
     inputPopup->m_message = message;
     inputPopup->m_input = input;
-    inputPopup->m_okButtonText = okButtonText;
-    inputPopup->m_cancelButtonText = cancelButtonText;
+    inputPopup->m_ok_button_text = rightButtonText;
+    inputPopup->m_cancel_button_text = leftButtonText;
+    inputPopup->m_accept_right_left = accept_right_left;
     return inputPopup;
 }
 
@@ -73,12 +74,12 @@ void InputPopup::setMessage(const std::string& message)
 
 void InputPopup::setOkButtonText(const std::string& okButtonText)
 {
-    m_okButtonText = okButtonText;
+    m_ok_button_text = okButtonText;
 }
 
 void InputPopup::setCancelButtonText(const std::string& cancelButtonText)
 {
-    m_cancelButtonText = cancelButtonText;
+    m_cancel_button_text = cancelButtonText;
 }
 
 void InputPopup::show()
@@ -91,12 +92,19 @@ void InputPopup::show()
 void InputPopup::dismiss()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_focus_allow_set(m_inputCancel, EINA_FALSE);
-    elm_object_signal_emit(m_inputArea, "entry_unfocused", "ui");
+    elm_object_focus_allow_set(m_input_cancel, EINA_FALSE);
+    elm_object_signal_emit(m_input_area, "entry_unfocused", "ui");
     elm_object_signal_emit(m_entry, "unfocused", "ui");
     // TODO Workaround for too fast deleted callbacks. If there will be a better solution
     // timer should be removed.
     m_timer = ecore_timer_add(0.2, dismissSlower, this);
+}
+
+Eina_Bool InputPopup::dismissSlower(void* data) {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    InputPopup* ip = static_cast<InputPopup*>(data);
+    ip->popupDismissed(ip);
+    return EINA_TRUE;
 }
 
 void InputPopup::onBackPressed()
@@ -114,64 +122,64 @@ void InputPopup::createLayout()
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_object_part_text_set(m_layout, "title_text", m_title.c_str());
 
-    m_inputArea = elm_layout_add(m_layout);
-    elm_object_part_content_set(m_layout, "input_swallow", m_inputArea);
+    m_input_area = elm_layout_add(m_layout);
+    elm_object_part_content_set(m_layout, "input_swallow", m_input_area);
 
-    evas_object_size_hint_weight_set(m_inputArea, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_inputArea, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_inputArea);
+    evas_object_size_hint_weight_set(m_input_area, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_input_area, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_input_area);
 
-    elm_layout_file_set(m_inputArea, m_edjFilePath.c_str(), "input-area-layout");
-    elm_object_part_text_set(m_inputArea, "input_message_text", m_message.c_str());
+    elm_layout_file_set(m_input_area, m_edjFilePath.c_str(), "input-area-layout");
+    elm_object_part_text_set(m_input_area, "input_message_text", m_message.c_str());
 
-    m_entry = elm_entry_add(m_inputArea);
+    m_entry = elm_entry_add(m_input_area);
     elm_object_style_set(m_entry, "popup-input-entry");
 
     elm_entry_single_line_set(m_entry, EINA_TRUE);
     elm_entry_scrollable_set(m_entry, EINA_TRUE);
     elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
-    elm_object_part_content_set(m_inputArea, "input_text_swallow", m_entry);
+    elm_object_part_content_set(m_input_area, "input_text_swallow", m_entry);
     elm_object_part_text_set(m_entry, "elm.text", m_input.c_str());
 
     evas_object_smart_callback_add(m_entry, "focused", _entry_focused, (void*)this);
     evas_object_smart_callback_add(m_entry, "unfocused", _entry_unfocused, (void*)this);
     evas_object_smart_callback_add(m_entry, "changed,user", _entry_changed, (void*)this);
 
-    m_inputCancel = elm_button_add(m_inputArea);
-    elm_object_style_set(m_inputCancel, "invisible_button");
-    evas_object_smart_callback_add(m_inputCancel, "clicked", _inputCancel_clicked, this);
+    m_input_cancel = elm_button_add(m_input_area);
+    elm_object_style_set(m_input_cancel, "invisible_button");
+    evas_object_smart_callback_add(m_input_cancel, "clicked", _input_cancel_clicked, this);
 
-    evas_object_show(m_inputCancel);
-    elm_object_part_content_set(m_inputArea, "input_cancel_click", m_inputCancel);
+    evas_object_show(m_input_cancel);
+    elm_object_part_content_set(m_input_area, "input_cancel_click", m_input_cancel);
 
-    m_buttonsBox = elm_box_add(m_layout);
-    elm_box_horizontal_set(m_buttonsBox, EINA_TRUE);
-    evas_object_size_hint_weight_set(m_buttonsBox, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_buttonsBox, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    m_buttons_box = elm_box_add(m_layout);
+    elm_box_horizontal_set(m_buttons_box, EINA_TRUE);
+    evas_object_size_hint_weight_set(m_buttons_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_buttons_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    m_button_cancel = elm_button_add(m_buttonsBox);
-    elm_object_style_set(m_button_cancel, "input-popup-button");
-    evas_object_size_hint_weight_set(m_button_cancel, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_button_cancel, 0.5, 0.5);
-    elm_object_part_text_set(m_button_cancel, "elm.text", m_cancelButtonText.c_str());
-    elm_box_pack_end(m_buttonsBox, m_button_cancel);
-    evas_object_smart_callback_add(m_button_cancel, "clicked", _cancelButton_clicked, (void*)this);
+    m_button_left = elm_button_add(m_buttons_box);
+    elm_object_style_set(m_button_left, "input-popup-button");
+    evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_left, 0.5, 0.5);
+    elm_object_part_text_set(m_button_left, "elm.text", m_cancel_button_text.c_str());
+    elm_box_pack_end(m_buttons_box, m_button_left);
+    evas_object_smart_callback_add(m_button_left, "clicked", _left_button_clicked, (void*)this);
 
-    evas_object_show(m_button_cancel);
+    evas_object_show(m_button_left);
 
-    m_button_ok = elm_button_add(m_buttonsBox);
-    elm_object_style_set(m_button_ok, "input-popup-button");
-    evas_object_size_hint_weight_set(m_button_ok, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_button_ok, 0.5, 0.5);
-    elm_object_part_text_set(m_button_ok, "elm.text", m_okButtonText.c_str());
-    elm_box_pack_end(m_buttonsBox, m_button_ok);
-    evas_object_smart_callback_add(m_button_ok, "clicked", _okButton_clicked, (void*)this);
+    m_button_right = elm_button_add(m_buttons_box);
+    elm_object_style_set(m_button_right, "input-popup-button");
+    evas_object_size_hint_weight_set(m_button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_right, 0.5, 0.5);
+    elm_object_part_text_set(m_button_right, "elm.text", m_ok_button_text.c_str());
+    elm_box_pack_end(m_buttons_box, m_button_right);
+    evas_object_smart_callback_add(m_button_right, "clicked", _right_button_clicked, (void*)this);
 
-    evas_object_show(m_button_ok);
-    elm_object_signal_emit(m_button_ok, "visible", "ui");
+    evas_object_show(m_button_right);
+    elm_object_signal_emit(m_button_right, "visible", "ui");
 
-    evas_object_show(m_buttonsBox);
-    elm_object_part_content_set(m_layout, "buttons_swallow", m_buttonsBox);
+    evas_object_show(m_buttons_box);
+    elm_object_part_content_set(m_layout, "buttons_swallow", m_buttons_box);
 
     evas_object_show(m_layout);
 }
@@ -181,8 +189,8 @@ void InputPopup::_entry_focused(void* data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
-        elm_object_focus_allow_set(inputPopup->m_inputCancel, EINA_TRUE);
-        elm_object_signal_emit(inputPopup->m_inputArea, "entry_focused", "ui");
+        elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_TRUE);
+        elm_object_signal_emit(inputPopup->m_input_area, "entry_focused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "focused", "ui");
     }
 }
@@ -192,8 +200,8 @@ void InputPopup::_entry_unfocused(void* data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
-        elm_object_focus_allow_set(inputPopup->m_inputCancel, EINA_FALSE);
-        elm_object_signal_emit(inputPopup->m_inputArea, "entry_unfocused", "ui");
+        elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_FALSE);
+        elm_object_signal_emit(inputPopup->m_input_area, "entry_unfocused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "unfocused", "ui");
     }
 }
@@ -205,45 +213,47 @@ void InputPopup::_entry_changed(void* data, Evas_Object *, void *)
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         std::string text = elm_object_part_text_get(inputPopup->m_entry, "elm.text");
         if (text.empty()) {
-            elm_object_disabled_set(inputPopup->m_button_ok, EINA_TRUE);
-            elm_object_signal_emit(inputPopup->m_button_ok, "dissabled", "ui");
+            elm_object_disabled_set(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                          inputPopup->m_button_left, EINA_TRUE);
+            elm_object_signal_emit(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                         inputPopup->m_button_left, "dissabled", "ui");
         } else {
-            elm_object_disabled_set(inputPopup->m_button_ok, EINA_FALSE);
-            elm_object_signal_emit(inputPopup->m_button_ok, "enabled", "ui");
+            elm_object_disabled_set(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                          inputPopup->m_button_left, EINA_FALSE);
+            elm_object_signal_emit(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                         inputPopup->m_button_left, "enabled", "ui");
         }
     }
 }
 
-void InputPopup::_inputCancel_clicked(void * data, Evas_Object *, void *)
+void InputPopup::_input_cancel_clicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         elm_object_part_text_set(inputPopup->m_entry, "elm.text", "");
-        elm_object_disabled_set(inputPopup->m_button_ok, EINA_TRUE);
-        elm_object_signal_emit(inputPopup->m_button_ok, "dissabled", "ui");
+        elm_object_disabled_set(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                      inputPopup->m_button_left, EINA_TRUE);
+        elm_object_signal_emit(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
+                                                     inputPopup->m_button_left, "dissabled", "ui");
     }
 }
 
-void InputPopup::_okButton_clicked(void *data, Evas_Object *, void*)
+void InputPopup::_right_button_clicked(void *data, Evas_Object *, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = static_cast<InputPopup*>(data);
-    inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
+    if (inputPopup->m_accept_right_left)
+        inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
     inputPopup->dismiss();
 }
 
-Eina_Bool InputPopup::dismissSlower(void* data) {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    InputPopup* ip = static_cast<InputPopup*>(data);
-    ip->popupDismissed(ip);
-    return EINA_TRUE;
-}
-
-void InputPopup::_cancelButton_clicked(void* data, Evas_Object *, void*)
+void InputPopup::_left_button_clicked(void* data, Evas_Object *, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = static_cast<InputPopup*>(data);
+    if (!inputPopup->m_accept_right_left)
+        inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
     inputPopup->dismiss();
 }
 
