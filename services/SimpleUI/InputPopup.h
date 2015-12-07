@@ -39,9 +39,9 @@ class InputPopup : public interfaces::AbstractPopup
 {
 
 public:
-    static InputPopup* createInputPopup(Evas_Object *parent);
-    static InputPopup* createInputPopup(Evas_Object *parent,const std::string& title,const std::string& message,const std::string& input,
-                                        const std::string& okButtonText, const std::string& cancelButtonText);
+    static InputPopup* createPopup(Evas_Object *parent);
+    static InputPopup* createPopup(Evas_Object *parent,const std::string& title,const std::string& message,const std::string& input,
+                                        const std::string& rightButtonText, const std::string& leftButtonText, bool accept_right_left);
 
     void show();
     void dismiss();
@@ -53,6 +53,7 @@ public:
     void setMessage(const std::string &message);
     void setOkButtonText(const std::string &okButtonText);
     void setCancelButtonText(const std::string &cancelButtonText);
+    void setAcceptRightLeft(bool);
 
     boost::signals2::signal<void (const std::string&)> button_clicked;
 
@@ -62,27 +63,28 @@ private:
     void createLayout();
 
     std::string m_edjFilePath;
-    static void _okButton_clicked(void *data, Evas_Object *btn, void*);
-    static void _cancelButton_clicked(void *data, Evas_Object *btn, void*);
+    static void _right_button_clicked(void *data, Evas_Object *btn, void*);
+    static void _left_button_clicked(void *data, Evas_Object *btn, void*);
     static void _entry_changed(void * data, Evas_Object *, void*);
     static void _entry_unfocused(void * data, Evas_Object *, void*);
     static void _entry_focused(void * data, Evas_Object *, void*);
-    static void _inputCancel_clicked(void * data, Evas_Object *, void *);
+    static void _input_cancel_clicked(void * data, Evas_Object *, void *);
     static Eina_Bool dismissSlower(void* data);
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
-    Evas_Object *m_buttonsBox;
-    Evas_Object *m_button_cancel;
-    Evas_Object *m_button_ok;
-    Evas_Object *m_inputArea;
-    Evas_Object *m_inputCancel;
+    Evas_Object *m_buttons_box;
+    Evas_Object *m_button_left;
+    Evas_Object *m_button_right;
+    Evas_Object *m_input_area;
+    Evas_Object *m_input_cancel;
     Evas_Object *m_entry;
     std::string m_input;
     std::string m_title;
     std::string m_message;
-    std::string m_okButtonText;
-    std::string m_cancelButtonText;
+    std::string m_ok_button_text;
+    std::string m_cancel_button_text;
+    bool m_accept_right_left;
     Ecore_Timer *m_timer; // Workaround for too fast removal of callbacks
 };
 
