@@ -582,6 +582,14 @@ void WebKitEngineService::_IMEStateChanged(bool enable)
 void WebKitEngineService::backButtonClicked()
 {
     M_ASSERT(m_currentWebView);
+    if (m_currentWebView->clearTextSelection())
+        return;
+
+    if (m_currentWebView->isFullScreen()) {
+        m_currentWebView->exitFullScreen();
+        return;
+    }
+
     if (isBackEnabled()) {
         m_currentWebView->back();
     } else if (m_currentWebView->isPrivateMode()) {
