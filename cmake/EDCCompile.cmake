@@ -20,9 +20,11 @@ IF(EDJE_CC_EXECUTABLE)
          IF(${PROFILE} MATCHES "mobile")
             SET(IMAGES_URL "images_mob")
             SET(BROWSER_RESOLUTION "720x1280")
+            SET(IF_PROFILE_MOBILE 1)
          ELSE(${PROFILE} MATCHES "mobile")
             SET(IMAGES_URL "images")
             SET(BROWSER_RESOLUTION "1920x1080")
+            SET(IF_PROFILE_MOBILE 0)
          ENDIF()
 
          FOREACH(resolution ${BROWSER_RESOLUTION})
@@ -31,6 +33,7 @@ IF(EDJE_CC_EXECUTABLE)
                                 COMMAND ${EDJE_CC_EXECUTABLE}
                                 ARGS -id ${CMAKE_CURRENT_SOURCE_DIR}/${IMAGES_URL}/
                                 -DBROWSER_RESOLUTION_${resolution}=1
+                                -DPROFILE_MOBILE=${IF_PROFILE_MOBILE}
                                 ${Edc_Input} ${tmp_output}
                                 MAIN_DEPENDENCY ${Edc_Input}
                                 DEPENDS ${EDJE_TARGET_depends}
