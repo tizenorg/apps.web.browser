@@ -199,12 +199,21 @@ void WebView::unregisterCallbacks()
 
 void WebView::setupEwkSettings()
 {
+    /* FIXME: Temporarily disable setting uses_keypad_without_user_action to FALSE
+     untill the autofocus issue is fixed on the engine side.
+     This workarounds following bugs:
+        http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15129
+        http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15136
+        http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15138
+    */
+/*
 #if defined(USE_EWEBKIT)
 #if PLATFORM(TIZEN)
     Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_uses_keypad_without_user_action_set(settings, EINA_FALSE);
 #endif
 #endif
+*/
 }
 
 Evas_Object * WebView::getLayout()
