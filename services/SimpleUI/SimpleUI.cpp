@@ -791,7 +791,9 @@ void SimpleUI::onBackPressed()
         m_zoomUI->escapeZoom();
     } else
 #endif
-    if (m_popupVector.size() > 0) {
+    if (m_wvIMEStatus) {    // if IME opened
+        return;
+    }else if (m_popupVector.size() > 0) {
         m_popupVector.back()->onBackPressed();
     } else if ((m_viewManager.topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
         m_tabUI->onBackKey();
