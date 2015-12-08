@@ -79,6 +79,8 @@ public:
     TabId currentTabId() const;
     std::list<TabId> listTabs() const;
 
+    void destroyTabs();
+
     /**
      * Get TabContent collection filled with TabID and titles.
      * Without thumbnails.

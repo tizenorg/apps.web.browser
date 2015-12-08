@@ -94,15 +94,15 @@ SimpleUI::SimpleUI()
 
 SimpleUI::~SimpleUI() {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_storageService->getSessionStorage().deleteSession(m_currentSession);
     evas_object_del(m_window.get());
-    ewk_context_delete(m_ewkContext);
 }
 
 void SimpleUI::destroyUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_del(m_window.get());
+    m_webEngine->destroyTabs();
+    ewk_context_delete(m_ewkContext);
 }
 
 std::string SimpleUI::edjePath(const std::string &file)

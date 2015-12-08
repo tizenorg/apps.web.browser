@@ -63,6 +63,14 @@ WebKitEngineService::WebKitEngineService()
 
 WebKitEngineService::~WebKitEngineService()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void WebKitEngineService::destroyTabs()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_tabs.clear();
+    m_currentWebView.reset();
 }
 
 Evas_Object * WebKitEngineService::getLayout()

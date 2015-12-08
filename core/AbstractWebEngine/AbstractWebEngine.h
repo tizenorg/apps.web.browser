@@ -140,6 +140,10 @@ public:
      */
     virtual std::list<TabId> listTabs() const = 0;
 
+    /**
+     * Destroy active WebViews.
+     */
+    virtual void destroyTabs() = 0;
 
     /**
      *  @return vector of metadata for all opened tabs
