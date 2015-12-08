@@ -72,6 +72,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_loadError(false)
     , m_suspended(false)
     , m_private(incognitoMode)
+    , m_fullscreen(false)
 {
     config.load("whatever");
 }
@@ -158,6 +159,8 @@ void WebView::registerCallbacks()
 
 #if PROFILE_MOBILE
     evas_object_smart_callback_add(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb, this);
+    evas_object_smart_callback_add(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
+    evas_object_smart_callback_add(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
 #endif
 #endif
 }
@@ -193,6 +196,8 @@ void WebView::unregisterCallbacks()
 
 #if PROFILE_MOBILE
     evas_object_smart_callback_del_full(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb,this);
+    evas_object_smart_callback_del_full(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
+    evas_object_smart_callback_del_full(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
 #endif
 #endif
 }
@@ -987,6 +992,21 @@ void WebView::__contextmenu_customize_cb(void *data, Evas_Object * /* obj */, vo
 
     self->_customize_context_menu(menu);
 }
+
+void WebView::__fullscreen_enter_cb(void *data, Evas_Object*, void*) {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    auto self = static_cast<WebView*>(data);
+    self->m_fullscreen = true;
+}
+
+void WebView::__fullscreen_exit_cb(void *data, Evas_Object*, void*) {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    auto self = static_cast<WebView*>(data);
+    self->m_fullscreen = false;
+}
+
 #endif
 
 void WebView::setFocus()
@@ -1067,6 +1087,10 @@ void WebView::ewkSettingsAutofillPasswordFormEnabledSet(bool value)
 {
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_autofill_password_form_enabled_set(settings, value);
+}
+
+bool WebView::clearTextSelection() const {
+    return ewk_view_text_selection_clear(m_ewkView);
 }
 #endif
 
