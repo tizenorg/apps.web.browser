@@ -210,6 +210,21 @@ public:
      * @brief Set autofill password form enabled settings flag.
      */
     void ewkSettingsAutofillPasswordFormEnabledSet(bool value);
+
+    /**
+     * @brief Check if fullscreen mode is enabled.
+     */
+    bool isFullScreen() const { return m_fullscreen; };
+
+    /**
+     * @brief Clear text slection return true if some selection was cleared.
+     */
+    bool clearTextSelection() const;
+
+    /**
+     * @brief Exit full screen mode, return true if successful.
+     */
+    bool exitFullScreen() const;
 #endif
 
 // signals
@@ -255,6 +270,8 @@ private:
 #endif
 #if  PROFILE_MOBILE
     static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __fullscreen_enter_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __fullscreen_exit_cb(void *data, Evas_Object *obj, void *event_info);
 #endif
 
     // Load
@@ -298,6 +315,7 @@ private:
     bool m_desktopMode;
     bool m_suspended;
     bool m_private;
+    bool m_fullscreen;
 
     config::DefaultConfig config;
 
