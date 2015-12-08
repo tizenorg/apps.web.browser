@@ -84,6 +84,9 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
+    if (m_ewkContext) {
+        ewk_context_delete(m_ewkContext);
+    }
 }
 
 void WebView::init(bool desktopMode, Evas_Object*)
