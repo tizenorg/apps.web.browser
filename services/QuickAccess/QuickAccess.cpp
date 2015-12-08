@@ -150,8 +150,10 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
     evas_object_size_hint_align_set (layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(layout);
 
+#if !PROFILE_MOBILE
     Evas_Object* topButtons = createTopButtons(layout);
     elm_object_part_content_set(layout, "buttons", topButtons);
+#endif
 
     m_horizontalScroller = elm_scroller_add(layout);
     elm_scroller_loop_set(m_horizontalScroller, EINA_FALSE, EINA_FALSE);
@@ -511,7 +513,9 @@ void QuickAccess::showMostVisited()
         return;
     }
     setEmptyView(false);
-#if !PROFILE_MOBILE
+#if PROFILE_MOBILE
+    elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
+#else
     refreshFocusChain();
     elm_object_focus_set(m_mostVisitedButton, true);
 #endif
@@ -526,7 +530,9 @@ void QuickAccess::clearBookmarkGengrid()
 void QuickAccess::showBookmarks()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if !PROFILE_MOBILE
+#if PROFILE_MOBILE
+    elm_object_part_text_set(m_layout, "screen_title", "Bookmark");
+#else
     refreshFocusChain();
     elm_object_focus_set(m_bookmarksButton, true);
 #endif
