@@ -58,7 +58,7 @@ void DefaultConfig::load(const std::string &)
 #endif
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR] = false;
 
-    m_keysValues[CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW] = false;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA] = true;
