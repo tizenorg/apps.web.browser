@@ -88,6 +88,10 @@ SimpleUI::SimpleUI()
     evas_object_size_hint_weight_set(main_window, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (main_window, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+#if PROFILE_MOBILE
+    elm_win_conformant_set(main_window, EINA_TRUE);
+#endif
+
     elm_win_resize_object_add(main_window, m_viewManager.getContent());
     evas_object_show(main_window);
 }
