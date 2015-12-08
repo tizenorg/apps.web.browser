@@ -43,15 +43,15 @@ scale:1;                                                            \
         }                                                           \
     }                                                               \
     program {                                                       \
-        name: __CONCAT("mouse_in_", prog_name);                     \
-        signal: "mouse,in";                                         \
+        name: __CONCAT("mouse_down_", prog_name);                   \
+        signal: "mouse,down,*";                                     \
         source: __CONCAT(prog_name, "_*");                          \
         action: STATE_SET "highlight" 0.0;                          \
         target: __CONCAT(prog_name, "_button");                     \
     }                                                               \
     program {                                                       \
-        name: __CONCAT("mouse_out_", prog_name);                    \
-        signal: "mouse,out";                                        \
+        name: __CONCAT("mouse_up_", prog_name);                     \
+        signal: "mouse,up,*";                                       \
         source: __CONCAT(prog_name, "_*");                          \
         action: STATE_SET "default" 0.0;                            \
         target: __CONCAT(prog_name, "_button");                     \
