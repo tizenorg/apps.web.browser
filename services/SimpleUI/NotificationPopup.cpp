@@ -92,6 +92,8 @@ void NotificationPopup::createLayout()
 
     m_progress = elm_progressbar_add(m_layout);
     elm_object_part_content_set(m_layout, "progress_swallow", m_progress);
+    elm_object_style_set(m_progress, "wheel");
+    elm_progressbar_unit_format_set(m_progress, "");
     //TODO: set correct progressbar theme when it will be available.
     elm_progressbar_horizontal_set(m_progress, EINA_TRUE);
     elm_progressbar_pulse_set(m_progress, EINA_TRUE);
