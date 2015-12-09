@@ -104,6 +104,10 @@ void WebKitEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->confirmationRequest.connect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.connect(boost::bind(&WebKitEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
+#ifdef HW_BACK_KEY
+    webView->HWBackCalled.connect(boost::bind(&WebKitEngineService::_HWBackCalled, this));
+#endif
+
 }
 
 void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
@@ -122,6 +126,10 @@ void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->confirmationRequest.disconnect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.disconnect(boost::bind(&WebKitEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
+#ifdef HW_BACK_KEY
+    webView->HWBackCalled.disconnect(boost::bind(&WebKitEngineService::_HWBackCalled, this));
+#endif
+
 }
 
 void WebKitEngineService::disconnectCurrentWebViewSignals()
@@ -305,6 +313,13 @@ void WebKitEngineService::_confirmationRequest(WebConfirmationPtr c)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     confirmationRequest(c);
 }
+
+#ifdef HW_BACK_KEY
+void WebKitEngineService::_HWBackCalled()
+{
+    HWBackCalled();
+}
+#endif
 
 int WebKitEngineService::tabsCount() const
 {
