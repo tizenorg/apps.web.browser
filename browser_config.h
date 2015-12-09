@@ -23,4 +23,5 @@
 
 // Remove this define when merging from new ui implementation is finished
 #define MERGE_ME 0
+#define HW_BACK_KEY 1
 #endif
