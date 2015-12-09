@@ -213,8 +213,8 @@ group { name: "settings_items";
 		part { name: "del_web_browsing_text_bg";
                         type: RECT;
                         description { state: "default" 0.0;
-                                min: 460 152;
-                                max: 460 152;
+                                min: 470 152;
+                                max: 470 152;
                                 align: 0.0 0.0;
                                 color: 231 231 231 255;
                                 rel1 {
@@ -229,8 +229,8 @@ group { name: "settings_items";
                 part { name: "del_web_browsing_text";
                         type: TEXTBLOCK;
                         description { state: "default" 0.0;
-                                min: 460 46;
-                                max: 460 46;
+                                min: 470 46;
+                                max: 470 46;
                                 align: 0.0 0.0;
                                 rel1 {
                                         to: "del_web_browsing_text_bg";
@@ -1072,7 +1072,7 @@ group { name: "settings_items";
 
                     min: 1 626;
                     max: 1 626;
-                    rel1 { relative: 0.0 0.0; to: "bg"; offset: 518 0; }
+                    rel1 { relative: 0.0 0.0; to: "bg"; offset: 550 0; }
                     rel2 { relative: 1.0 1.0; }
                     color: 128 128 128 255;
                 }
@@ -1089,7 +1089,7 @@ group { name: "settings_items";
 
                     min: 1 626;
                     max: 1 626;
-                    rel1 { relative: 0.0 0.0; to: "bg"; offset: 1037 0; }
+                    rel1 { relative: 0.0 0.0; to: "bg"; offset: 1060 0; }
                     rel2 { relative: 1.0 1.0; }
                     color: 128 128 128 255;
                 }
