@@ -291,6 +291,12 @@ private:
     void onEscapePressed();
 
     void searchWebPage(std::string &text, int flags);
+#ifdef HW_BACK_KEY
+    void registerHWBackCallback();
+    void unregisterHWBackCallback();
+    void HWBackCalled();
+    static void onHWBack(void*, Evas_Object*, void*);
+#endif
 
     std::string edjePath(const std::string &);
 
@@ -318,6 +324,9 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+#ifdef HW_BACK_KEY
+    bool m_HWBackCallbackRegistered;
+#endif
 
 #if PROFILE_MOBILE
     std::string m_folder_name;

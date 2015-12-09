@@ -50,6 +50,9 @@
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "NotificationPopup.h"
 
+#ifdef HW_BACK_KEY
+#include <efl_extension.h>
+#endif
 
 namespace tizen_browser{
 namespace base_ui{
@@ -73,6 +76,9 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
+#ifdef HW_BACK_KEY
+     , m_HWBackCallbackRegistered(false)
+#endif
     , m_ewkContext(ewk_context_new())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -207,6 +213,29 @@ void SimpleUI::restoreLastSession()
     }
 }
 
+#ifdef HW_BACK_KEY 
+void SimpleUI::registerHWBackCallback()
+{
+    if (m_HWBackCallbackRegistered)
+        return;
+    eext_object_event_callback_add(m_viewManager.getContent(), EEXT_CALLBACK_BACK, onHWBack, this);
+    m_HWBackCallbackRegistered = true;
+}
+
+void SimpleUI::unregisterHWBackCallback()
+{
+    if (!m_HWBackCallbackRegistered)
+        return;
+    eext_object_event_callback_del(m_viewManager.getContent(), EEXT_CALLBACK_BACK, onHWBack);
+    m_HWBackCallbackRegistered = false;
+}
+
+void SimpleUI::onHWBack(void* data, Evas_Object*, void*)
+{
+    SimpleUI * self = reinterpret_cast<SimpleUI *>(data);
+    self->onBackPressed();
+}
+#endif
 
 //TODO: Move all service creation here:
 void SimpleUI::loadUIServices()
@@ -482,6 +511,9 @@ void SimpleUI::connectModelSignals()
     m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
+#ifdef HW_BACK_KEY
+    m_webEngine->HWBackCalled.connect(boost::bind(&SimpleUI::HWBackCalled, this));
+#endif
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -507,6 +539,9 @@ void SimpleUI::connectModelSignals()
 void SimpleUI::switchViewToWebPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#ifdef HW_BACK_KEY
+    unregisterHWBackCallback();
+#endif
     if(m_webEngine->isSuspended())
         m_webEngine->resume();
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI(), m_webEngine->getTitle());
@@ -538,7 +573,9 @@ void SimpleUI::showQuickAccess()
 void SimpleUI::switchViewToQuickAccess()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
+#ifdef HW_BACK_KEY
+    unregisterHWBackCallback();
+#endif
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
@@ -547,6 +584,9 @@ void SimpleUI::switchViewToQuickAccess()
 void SimpleUI::switchViewToIncognitoPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#ifdef HW_BACK_KEY
+    unregisterHWBackCallback();
+#endif
     m_webPageUI->toIncognito(true);
     m_webPageUI->switchViewToIncognitoPage();
     m_viewManager.popStackTo(m_webPageUI.get());
@@ -782,6 +822,13 @@ void SimpleUI::setwvIMEStatus(bool status)
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
 }
+
+#ifdef HW_BACK_KEY
+void SimpleUI::HWBackCalled()
+{
+    onBackPressed();
+}
+#endif
 
 void SimpleUI::onBackPressed()
 {
@@ -1151,6 +1198,9 @@ void SimpleUI::authPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
 void SimpleUI::showHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#ifdef HW_BACK_KEY
+    registerHWBackCallback();
+#endif
     m_viewManager.pushViewToStack(m_historyUI.get());
     m_historyUI->addHistoryItems(m_historyService->getHistoryToday(),
             HistoryPeriod::HISTORY_TODAY);
@@ -1170,6 +1220,9 @@ void SimpleUI::closeHistoryUI()
 void SimpleUI::showSettingsUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#ifdef HW_BACK_KEY
+    registerHWBackCallback();
+#endif
     m_viewManager.pushViewToStack(m_settingsUI.get());
 }
 
