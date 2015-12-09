@@ -804,7 +804,7 @@ void SimpleUI::onBackPressed()
     } else if (m_viewManager.topOfStack() == nullptr) {
         switchViewToQuickAccess();
     } else if ((m_viewManager.topOfStack() == m_webPageUI.get())) {
-        m_webEngine->backButtonClicked();
+        return;
 #if PROFILE_MOBILE
     } else if ((m_viewManager.topOfStack() == m_settingsUI.get()) && m_settingsUI->isSubpage()) {
         m_settingsUI->onBackKey();

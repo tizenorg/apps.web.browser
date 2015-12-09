@@ -270,6 +270,7 @@ private:
 #if defined(USE_EWEBKIT)
     static std::string securityOriginToUri(const Ewk_Security_Origin *);
     static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
+    static void __processBackKey(void * data, Evas * e, Evas_Object * obj, void * event_info);
     static void __newWindowRequest(void * data, Evas_Object *, void *out);
     static void __closeWindowRequest(void * data, Evas_Object *, void *);
 #endif

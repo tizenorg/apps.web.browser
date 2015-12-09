@@ -155,6 +155,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
+    evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_KEY_DOWN, __processBackKey, this);
     evas_object_smart_callback_add(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
@@ -192,6 +193,7 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
+    evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_KEY_DOWN, __processBackKey);
     evas_object_smart_callback_del_full(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
@@ -512,6 +514,25 @@ void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* 
 
     if(!self->hasFocus())
         self->ewkViewClicked();
+}
+
+void WebView::__processBackKey(void * /*data*/, Evas * /* e */, Evas_Object * /* obj */, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Event_Key_Down *key = reinterpret_cast<Evas_Event_Key_Down *>(event_info);
+    const std::string keyName = key->keyname;
+
+    if(!keyName.compare("XF86Back")) {
+        std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
+        m_webEngine = std::dynamic_pointer_cast
+        <
+            basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService
+        >
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+        M_ASSERT(m_webEngine);
+
+        m_webEngine->backButtonClicked();
+    }
 }
 
 void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
