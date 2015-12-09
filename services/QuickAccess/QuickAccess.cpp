@@ -508,14 +508,17 @@ void QuickAccess::showMostVisited()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+#if PROFILE_MOBILE
+    elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
+#endif
+
     if (m_historyItems.empty()) {
         setEmptyView(true);
         return;
     }
     setEmptyView(false);
-#if PROFILE_MOBILE
-    elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
-#else
+
+#if !PROFILE_MOBILE
     refreshFocusChain();
     elm_object_focus_set(m_mostVisitedButton, true);
 #endif

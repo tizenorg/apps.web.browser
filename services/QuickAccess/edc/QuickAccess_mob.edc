@@ -401,7 +401,7 @@ group { name: "page_layout";
             }
             description { state: "empty" 0.0;
                 inherit: "default" 0.0;
-                color: 229 229 229 255;
+                color: 244 244 244 255;
             }
         }
 
