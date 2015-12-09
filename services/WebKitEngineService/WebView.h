@@ -242,6 +242,9 @@ public:
     boost::signals2::signal<void ()> loadStop;
     boost::signals2::signal<void ()> loadError;
     boost::signals2::signal<void (double)> loadProgress;
+#ifdef HW_BACK_KEY
+    boost::signals2::signal<void ()> HWBackCalled;
+#endif
 
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
@@ -305,6 +308,10 @@ private:
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
+#ifdef HW_BACK_KEY
+    static void backCallbackCalled(void* , Evas_Object*, void*);
+#endif
+
 private:
     Evas_Object * m_parent;
     TabId m_tabId;

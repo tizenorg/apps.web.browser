@@ -416,6 +416,10 @@ public:
      */
     boost::signals2::signal<void ()> loadError;
 
+#ifdef HW_BACK_KEY
+    boost::signals2::signal<void ()> HWBackCalled;
+#endif
+
     /**
      * Current tab changed
      * \param TabId of new tab
