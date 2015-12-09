@@ -231,6 +231,9 @@ private:
 #if PROFILE_MOBILE
     void setWebViewSettings(std::shared_ptr<WebView> webView);
 #endif
+#ifdef HW_BACK_KEY
+    void _HWBackCalled();
+#endif
 
     /**
      * disconnect signals from specified WebView
