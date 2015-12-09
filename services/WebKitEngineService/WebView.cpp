@@ -43,6 +43,9 @@
 #include "GeneralTools.h"
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
+#ifdef HW_BACK_KEY
+#include <efl_extension.h>
+#endif
 
 #define certificate_crt_path CERTS_DIR
 #if MERGE_ME
@@ -165,6 +168,10 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
 #endif
+
+#ifdef HW_BACK_KEY
+    eext_object_event_callback_add(m_ewkView, EEXT_CALLBACK_BACK, __backCallbackCalled, this);
+#endif
 #endif
 }
 
@@ -202,8 +209,19 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
 #endif
+
+#ifdef HW_BACK_KEY
+    eext_object_event_callback_del(m_ewkView, EEXT_CALLBACK_BACK, __backCallbackCalled);
+#endif
 #endif
 }
+
+#ifdef HW_BACK_KEY
+void WebView::__backCallbackCalled(void* data, Evas_Object*, void*) {
+   WebView * self = reinterpret_cast<WebView *>(data);
+   self->HWBackCalled();
+}
+#endif
 
 void WebView::setupEwkSettings()
 {
