@@ -36,6 +36,7 @@ BuildRequires:  pkgconfig(capi-network-connection)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
+BuildRequires:  pkgconfig(efl-extension)
 BuildRequires:  browser-provider-devel
 
 BuildRequires:  cmake
