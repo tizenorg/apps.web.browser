@@ -21,6 +21,9 @@
 #include <vector>
 #include "HistoryDayItemDataTypedef.h"
 
+namespace tizen_browser{
+namespace base_ui{
+
 typedef struct WebsiteVisitItemData_
 {
     WebsiteVisitItemData_(const std::string& title, const std::string& link,
@@ -36,11 +39,14 @@ typedef struct WebsiteVisitItemData_
 typedef struct WebsiteHistoryItemData_
 {
     WebsiteHistoryItemData_(const std::string& websiteTitle,
+            const std::string& websiteDomain,
             const std::vector<WebsiteVisitItemDataPtr>& list) :
-            websiteTitle(websiteTitle), websiteVisitItems(list)
+            websiteTitle(websiteTitle), websiteDomain(websiteDomain),
+            websiteVisitItems(list)
     {
     }
     const std::string websiteTitle;
+    const std::string websiteDomain;
     const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems;
 } WebsiteHistoryItemData;
 
@@ -54,5 +60,8 @@ typedef struct HistoryDayItemData_
     const std::string day;
     const std::vector<WebsiteHistoryItemDataPtr> websiteHistoryItems;
 } HistoryDayItemData;
+
+}
+}
 
 #endif /* HISTORYDAYITEMDATA_H_ */

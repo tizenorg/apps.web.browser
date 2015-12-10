@@ -2,10 +2,16 @@ project(HistoryUI)
 
 set(HistoryUI_SRCS
     HistoryUI.cpp
-    HistoryDaysListManager/HistoryDaysListManager.cpp
-    HistoryDaysListManager/HistoryDayItem.cpp
-    HistoryDaysListManager/WebsiteHistoryItem.cpp
-    HistoryDaysListManager/WebsiteHistoryVisitItem.cpp
+    HistoryPeriod.cpp
+    HistoryDaysListManager/HistoryDaysListManagerMob.cpp
+    HistoryDaysListManager/mob/HistoryDayItemMob.cpp
+    HistoryDaysListManager/mob/WebsiteHistoryItemMob.cpp
+    HistoryDaysListManager/mob/WebsiteHistoryVisitItemMob.cpp
+    HistoryDaysListManager/HistoryDaysListManagerTv.cpp
+    HistoryDaysListManager/tv/HistoryDayItemTv.cpp
+    HistoryDaysListManager/tv/WebsiteHistoryItem/WebsiteHistoryItemTv.cpp
+    HistoryDaysListManager/tv/WebsiteHistoryItem/WebsiteHistoryItemTitleTv.cpp
+    HistoryDaysListManager/tv/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsTv.cpp
     )
 
 include(Coreheaders)
@@ -32,6 +38,10 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles
         History.edc
+        HistoryDaysList.edc
+        WebsiteHistoryItem.edc
+        WebsiteHistoryItemTitle.edc
+        WebsiteHistoryItemVisitItems.edc
         )
 endif (${PROFILE} MATCHES "mobile")
 

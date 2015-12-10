@@ -17,23 +17,23 @@
 #include <services/HistoryUI/HistoryUI.h>
 #include <services/HistoryService/HistoryItem.h>
 #include "BrowserLogger.h"
-#include "HistoryDaysListManager.h"
+#include "HistoryDaysListManagerMob.h"
 #include "HistoryDayItemData.h"
-#include "HistoryDayItem.h"
+#include "mob/HistoryDayItemMob.h"
 
 #include <EflTools.h>
 
 namespace tizen_browser {
 namespace base_ui {
 
-HistoryDaysListManager::HistoryDaysListManager()
+HistoryDaysListManagerMob::HistoryDaysListManagerMob()
 {
     m_daysListEdjFilePath = EDJE_DIR;
     m_daysListEdjFilePath.append("HistoryUI/HistoryDaysList.edj");
     elm_theme_extension_add(nullptr, m_daysListEdjFilePath.c_str());
 }
 
-HistoryDaysListManager::~HistoryDaysListManager()
+HistoryDaysListManagerMob::~HistoryDaysListManagerMob()
 {
     clear();
     elm_box_clear(m_boxMain);
@@ -42,7 +42,7 @@ HistoryDaysListManager::~HistoryDaysListManager()
     evas_object_del(m_layoutScroller);
 }
 
-Evas_Object* HistoryDaysListManager::createDayGenlist(
+Evas_Object* HistoryDaysListManagerMob::createDaysList(
         Evas_Object* parentLayout)
 {
     m_scrollerMain = elm_scroller_add(parentLayout);
@@ -65,7 +65,7 @@ Evas_Object* HistoryDaysListManager::createDayGenlist(
     return m_scrollerMain;
 }
 
-void HistoryDaysListManager::addHistoryItems(
+void HistoryDaysListManagerMob::addHistoryItems(
         const std::map<std::string, services::HistoryItemVector>& items,
         HistoryPeriod period)
 {
@@ -74,46 +74,29 @@ void HistoryDaysListManager::addHistoryItems(
         std::vector<WebsiteVisitItemDataPtr> pageViewItems;
         for(auto& hi : itemPair.second) {
             pageViewItems.push_back(std::make_shared<WebsiteVisitItemData>(
-                    hi->getTitle(), hi->getUrl(), "00:00 AM"));
+                            hi->getTitle(), hi->getUrl(), "00:00 AM"));
         }
-        historyItems.push_back(std::make_shared<WebsiteHistoryItemData>(itemPair.first, pageViewItems));
+        historyItems.push_back(std::make_shared<WebsiteHistoryItemData>(
+                "title", itemPair.first, pageViewItems));
     }
-    HistoryDayItemDataPtr dayItem = std::make_shared <HistoryDayItemData> (
+    HistoryDayItemDataPtr dayItem = std::make_shared<HistoryDayItemData>(
             toString(period), historyItems);
     appendDayItem(dayItem);
 }
 
-void HistoryDaysListManager::clear()
+void HistoryDaysListManagerMob::clear()
 {
     elm_box_clear(m_boxMain);
     m_dayItems.clear();
 }
 
-void HistoryDaysListManager::appendDayItem(HistoryDayItemDataPtr dayItemData)
+void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
 {
-    auto item = std::make_shared<HistoryDayItem>(dayItemData);
+    auto item = std::make_shared<HistoryDayItemMob>(dayItemData);
     m_dayItems.push_back(item);
 
     Evas_Object* boxDay = item->init(m_boxMain);
     elm_box_pack_end(m_boxMain, boxDay);
-}
-
-std::string HistoryDaysListManager::toString(HistoryPeriod period)
-{
-    switch (period) {
-    case HistoryPeriod::HISTORY_TODAY:
-        return "Today";
-    case HistoryPeriod::HISTORY_YESTERDAY:
-        return "Yesterday";
-    case HistoryPeriod::HISTORY_LASTWEEK:
-        return "Last Week";
-    case HistoryPeriod::HISTORY_LASTMONTH:
-        return "Last Month";
-    default:
-        BROWSER_LOGE("[%s:%d]not handled period ",
-                __PRETTY_FUNCTION__, __LINE__);
-        return "";
-    }
 }
 
 } /* namespace base_ui */
