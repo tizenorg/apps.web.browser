@@ -92,6 +92,8 @@ public:
     void enableAddToBookmarkButton(bool data);
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
+    void suspendFocus();
+    void resumeFocus();
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
 #endif

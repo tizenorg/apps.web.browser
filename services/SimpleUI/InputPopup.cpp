@@ -92,9 +92,9 @@ void InputPopup::show()
 void InputPopup::dismiss()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_focus_allow_set(m_input_cancel, EINA_FALSE);
     elm_object_signal_emit(m_input_area, "entry_unfocused", "ui");
     elm_object_signal_emit(m_entry, "unfocused", "ui");
+    setFocusOnMoreMenu();
     // TODO Workaround for too fast deleted callbacks. If there will be a better solution
     // timer should be removed.
     m_timer = ecore_timer_add(0.2, dismissSlower, this);
@@ -112,6 +112,12 @@ void InputPopup::onBackPressed()
     dismiss();
 }
 
+void InputPopup::setFocusOnEntry()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_focus_set(m_entry, EINA_TRUE);
+}
+
 void InputPopup::createLayout()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -121,6 +127,7 @@ void InputPopup::createLayout()
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_object_part_text_set(m_layout, "title_text", m_title.c_str());
+    elm_object_tree_focus_allow_set(m_layout, EINA_TRUE);
 
     m_input_area = elm_layout_add(m_layout);
     elm_object_part_content_set(m_layout, "input_swallow", m_input_area);
@@ -145,12 +152,14 @@ void InputPopup::createLayout()
     evas_object_smart_callback_add(m_entry, "unfocused", _entry_unfocused, (void*)this);
     evas_object_smart_callback_add(m_entry, "changed,user", _entry_changed, (void*)this);
 
+#if PROFILE_MOBILE
     m_input_cancel = elm_button_add(m_input_area);
     elm_object_style_set(m_input_cancel, "invisible_button");
     evas_object_smart_callback_add(m_input_cancel, "clicked", _input_cancel_clicked, this);
 
     evas_object_show(m_input_cancel);
     elm_object_part_content_set(m_input_area, "input_cancel_click", m_input_cancel);
+#endif
 
     m_buttons_box = elm_box_add(m_layout);
     elm_box_horizontal_set(m_buttons_box, EINA_TRUE);
@@ -175,6 +184,12 @@ void InputPopup::createLayout()
     elm_box_pack_end(m_buttons_box, m_button_right);
     evas_object_smart_callback_add(m_button_right, "clicked", _right_button_clicked, (void*)this);
 
+    elm_object_focus_custom_chain_unset(m_layout);
+    elm_object_focus_custom_chain_append(m_layout, m_entry, nullptr);
+    elm_object_focus_custom_chain_append(m_layout, m_buttons_box, nullptr);
+    elm_object_focus_custom_chain_append(m_layout, m_button_right, nullptr);
+    elm_object_focus_set(m_button_right, EINA_TRUE);
+
     evas_object_show(m_button_right);
     elm_object_signal_emit(m_button_right, "visible", "ui");
 
@@ -189,7 +204,6 @@ void InputPopup::_entry_focused(void* data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
-        elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_TRUE);
         elm_object_signal_emit(inputPopup->m_input_area, "entry_focused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "focused", "ui");
     }
@@ -200,7 +214,6 @@ void InputPopup::_entry_unfocused(void* data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
-        elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_FALSE);
         elm_object_signal_emit(inputPopup->m_input_area, "entry_unfocused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "unfocused", "ui");
     }

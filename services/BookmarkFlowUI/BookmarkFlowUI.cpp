@@ -402,8 +402,7 @@ void BookmarkFlowUI::_gridNewFolderClicked(void * data, Evas_Object *, void *)
     if (data != nullptr)
     {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        bookmarkFlowUI->addFolder();
-        bookmarkFlowUI->dismiss();
+        bookmarkFlowUI->addFolder(bookmarkFlowUI);
     }
 }
 
@@ -444,6 +443,8 @@ void BookmarkFlowUI::_gridCustomFolderClicked(void *data, Evas_Object *, void *)
         update.folder_id = 0; //folderData->folder_id;
         //TODO: UNCOMMENT WHEN BOOKMARKS IN FOLDER IS IMPLEMENTED
         folderData->bookmarkFlowUI->saveBookmark(update);
+        folderData->bookmarkFlowUI->m_focusManager.stopFocusManager();
+        folderData->bookmarkFlowUI->setFocusOnMoreMenu();
         folderData->bookmarkFlowUI->dismiss();
     }
 }
@@ -453,6 +454,7 @@ void BookmarkFlowUI::_bg_clicked(void *data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
+        bookmarkFlowUI->setFocusOnMoreMenu();
         bookmarkFlowUI->dismiss();
     }
 }
