@@ -820,10 +820,12 @@ void SimpleUI::setwvIMEStatus(bool status)
 {
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
+#if PROFILE_MOBILE
     if (status)
         m_webPageUI->decreaseWebview();
     else
         m_webPageUI->enlargeWebview();
+#endif
 }
 
 void SimpleUI::onBackPressed()
