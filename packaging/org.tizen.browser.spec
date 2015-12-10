@@ -36,6 +36,10 @@ BuildRequires:  pkgconfig(capi-network-connection)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
+%if "%{?profile}" == "mobile"
+BuildRequires:  pkgconfig(capi-system-device)
+BuildRequires:  pkgconfig(haptic)
+%endif
 BuildRequires:  browser-provider-devel
 BuildRequires:  pkgconfig(efl-extension)
 

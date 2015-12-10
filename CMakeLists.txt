@@ -78,6 +78,12 @@ if(TIZEN_BUILD)
         efl-extension
     )
 
+   if (${PROFILE} MATCHES "mobile")
+    SET(tizen_pkgs_list
+        ${tizen_pkgs_list}
+        capi-system-device )
+    endif (${PROFILE} MATCHES "mobile")
+
     pkg_check_modules(tizen_pkgs REQUIRED "${tizen_pkgs_list}")
 
     FOREACH(flag ${tizen_pkgs_CFLAGS})
