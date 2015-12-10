@@ -17,45 +17,29 @@
 #ifndef HISTORYDAYSLISTMANAGER_H_
 #define HISTORYDAYSLISTMANAGER_H_
 
-#include <memory>
+#include <services/HistoryService/HistoryItemTypedef.h>
 #include <Elementary.h>
+#include <map>
 #include <string>
-#include <vector>
-#include "HistoryDayItemDataTypedef.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
-class HistoryDayItem;
-typedef std::shared_ptr<HistoryDayItem> HistoryDayItemPtr;
 enum class HistoryPeriod;
 
 class HistoryDaysListManager
 {
 public:
-    HistoryDaysListManager();
-    virtual ~HistoryDaysListManager();
-    Evas_Object* createDayGenlist(Evas_Object* parentLayout);
-    void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
-            HistoryPeriod period);
-
+    virtual ~HistoryDaysListManager() {}
+    virtual Evas_Object* createDaysList(Evas_Object* parentLayout) = 0;
+    virtual void addHistoryItems(
+            const std::map<std::string, services::HistoryItemVector>&,
+            HistoryPeriod period) = 0;
     // clear everything including efl objects (result: empty list)
-    void clear();
-
-private:
-    void appendDayItem(HistoryDayItemDataPtr dayItemData);
-    std::string toString(HistoryPeriod period);
-
-    std::vector<HistoryDayItemPtr> m_dayItems;
-
-    Evas_Object* m_scrollerMain = nullptr;
-    Evas_Object* m_layoutScroller = nullptr;
-    Evas_Object* m_boxMain  = nullptr;
-
-    std::string m_daysListEdjFilePath;
+    virtual void clear() = 0;
 };
 
-} /* namespace base_ui */
-} /* namespace tizen_browser */
+}
+}
 
 #endif /* HISTORYDAYSLISTMANAGER_H_ */

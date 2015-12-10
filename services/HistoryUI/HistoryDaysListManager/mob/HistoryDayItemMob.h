@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef HISTORYDAYITEM_H_
-#define HISTORYDAYITEM_H_
+#ifndef HISTORYDAYITEMMOB_H_
+#define HISTORYDAYITEMMOB_H_
 
 #include <memory>
 #include <Elementary.h>
 #include <string>
 #include <vector>
-#include "HistoryDayItemDataTypedef.h"
+#include "../HistoryDayItemDataTypedef.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
-class WebsiteHistoryItem;
-typedef std::shared_ptr<WebsiteHistoryItem> WebsiteHistoryItemPtr;
+class WebsiteHistoryItemMob;
+typedef std::shared_ptr<WebsiteHistoryItemMob> WebsiteHistoryItemPtr;
 
 /**
  * Represents the day item: day header, plus boxes with website history items.
  */
-class HistoryDayItem
+class HistoryDayItemMob
 {
 public:
-    HistoryDayItem(HistoryDayItemDataPtr dayItemData);
-    virtual ~HistoryDayItem();
+    HistoryDayItemMob(HistoryDayItemDataPtr dayItemData);
+    virtual ~HistoryDayItemMob();
     Evas_Object* init(Evas_Object* parent);
 
 private:
@@ -60,4 +60,4 @@ private:
 } /* namespace base_ui */
 } /* namespace tizen_browser */
 
-#endif /* HISTORYDAYITEM_H_ */
+#endif /* HISTORYDAYITEMMOB_H_ */

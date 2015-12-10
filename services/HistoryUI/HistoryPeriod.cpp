@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef HISTORYDAYITEMDATATYPEDEF_H_
-#define HISTORYDAYITEMDATATYPEDEF_H_
-
-#include <memory>
-#include <Elementary.h>
+#include "HistoryPeriod.h"
+#include "BrowserLogger.h"
 
 namespace tizen_browser{
 namespace base_ui{
 
-typedef struct WebsiteVisitItemData_ WebsiteVisitItemData;
-typedef std::shared_ptr<WebsiteVisitItemData> WebsiteVisitItemDataPtr;
-
-typedef struct WebsiteHistoryItemData_ WebsiteHistoryItemData;
-typedef std::shared_ptr<WebsiteHistoryItemData> WebsiteHistoryItemDataPtr;
-
-typedef struct HistoryDayItemData_ HistoryDayItemData;
-typedef std::shared_ptr<HistoryDayItemData> HistoryDayItemDataPtr;
+std::string toString(HistoryPeriod period)
+{
+    switch (period) {
+    case HistoryPeriod::HISTORY_TODAY:
+        return "Today";
+    case HistoryPeriod::HISTORY_YESTERDAY:
+        return "Yesterday";
+    case HistoryPeriod::HISTORY_LASTWEEK:
+        return "Last Week";
+    case HistoryPeriod::HISTORY_LASTMONTH:
+        return "Last Month";
+    default:
+        BROWSER_LOGE("[%s:%d]not handled period ",
+                __PRETTY_FUNCTION__, __LINE__);
+        return "";
+    }
+}
 
 }
 }
-
-#endif /* HISTORYDAYITEMDATATYPEDEF_H_ */

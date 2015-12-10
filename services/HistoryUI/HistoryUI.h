@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <Elementary.h>
 #include <boost/signals2/signal.hpp>
 
+#include "HistoryPeriod.h"
 #include <services/HistoryService/HistoryItemTypedef.h>
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
@@ -29,14 +30,6 @@
 
 namespace tizen_browser{
 namespace base_ui{
-
-enum class HistoryPeriod
-{
-    HISTORY_TODAY,
-    HISTORY_YESTERDAY,
-    HISTORY_LASTWEEK,
-    HISTORY_LASTMONTH
-};
 
 class HistoryDaysListManager;
 typedef std::unique_ptr<HistoryDaysListManager> HistoryDaysListManagerPtrUnique;
@@ -52,11 +45,8 @@ public:
     Evas_Object* getContent();
     void showUI();
     void hideUI();
-    Evas_Object* createGengrid(Evas_Object* history_layout);
     Evas_Object* createDaysList(Evas_Object* history_layout);
     virtual std::string getName();
-    void addHistoryItem(std::shared_ptr<services::HistoryItem>,
-            HistoryPeriod period = HistoryPeriod::HISTORY_TODAY);
     void addHistoryItems(std::shared_ptr<services::HistoryItemVector>,
             HistoryPeriod period = HistoryPeriod::HISTORY_TODAY);
     void removeHistoryItem(const std::string& uri);
@@ -78,29 +68,15 @@ private:
     std::map<std::string, services::HistoryItemVector>
     groupItemsByDomain(const services::HistoryItemVector& historyItems);
 
-    Elm_Gengrid_Item_Class* crateItemClass();
-    static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _history_grid_content_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* _listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static void _clearHistory_clicked(void *data, Evas_Object *obj, void *event_info);
-    static char* _listTodayTextGet(void* data, Evas_Object* obj , const char* part);
     static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-    static void _history_item_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 
+    std::string m_edjFilePath;
+    Evas_Object *m_parent;
     Evas_Object *m_history_layout;
     Evas_Object *m_actionBar;
-    Evas_Object *m_genListToday;
-    Elm_Genlist_Item_Class *m_itemClassToday;
-    Evas_Object *m_gengrid;
-#if PROFILE_MOBILE
     Evas_Object *m_daysList;
-#endif
-    Evas_Object *m_parent;
-    Elm_Gengrid_Item_Class * m_item_class;
-    std::map<std::string,Elm_Object_Item*> m_map_history_views;
-    std::string m_edjFilePath;
-
     HistoryDaysListManagerPtrUnique m_historyDaysListManager;
 };
 

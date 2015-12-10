@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "HistoryDayItem.h"
-#include "WebsiteHistoryItem.h"
-#include "HistoryDayItemData.h"
+#include "HistoryDayItemMob.h"
+#include "WebsiteHistoryItemMob.h"
+#include "../HistoryDayItemData.h"
 
 #include <EflTools.h>
 #include "BrowserLogger.h"
@@ -24,25 +24,25 @@
 namespace tizen_browser {
 namespace base_ui {
 
-HistoryDayItem::HistoryDayItem(HistoryDayItemDataPtr dayItemData)
+HistoryDayItemMob::HistoryDayItemMob(HistoryDayItemDataPtr dayItemData)
     : m_dayItemData(dayItemData)
     , m_day(dayItemData->day)
 {
     m_day = "<font_size=30>" + m_day + "</font>";
 
     for(auto& websiteHistoryItemData : dayItemData->websiteHistoryItems) {
-        auto websiteHistoryItem = std::make_shared<WebsiteHistoryItem>(
+        auto websiteHistoryItem = std::make_shared<WebsiteHistoryItemMob>(
                 websiteHistoryItemData);
         m_websiteHistoryItems.push_back(websiteHistoryItem);
     }
 }
 
-HistoryDayItem::~HistoryDayItem()
+HistoryDayItemMob::~HistoryDayItemMob()
 {
     elm_box_clear(m_boxMain);
 }
 
-Evas_Object* HistoryDayItem::init(Evas_Object* parent)
+Evas_Object* HistoryDayItemMob::init(Evas_Object* parent)
 {
     std::string m_daysListEdjFilePath = EDJE_DIR;
     m_daysListEdjFilePath.append("HistoryUI/HistoryDaysList.edj");
