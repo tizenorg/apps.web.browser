@@ -21,11 +21,7 @@
 #include <Edje.h>
 #include <Elementary.h>
 #include <stdexcept>
-
-#if PLATFORM(TIZEN)
 #include <app.h>
-#endif
-
 #include <ewk_chromium.h>
 
 // for tests...
@@ -34,7 +30,6 @@
 #include "BasicUI/AbstractMainWindow.h"
 
 ///\note Odroid platform modification
-#if PLATFORM(TIZEN)
 const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
@@ -192,47 +187,3 @@ int main(int argc, char* argv[])try
 {
     std::cerr << "UNHANDLED EXCEPTION" << std::endl;
 }
-#else
-int main(int argc, char* argv[]) try
-{
-    BEGIN()
-    elm_init(argc, argv);
-
-#if PLATFORM(TIZEN)
-    elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
-    // Enabling focus
-#if PROFILE_MOBILE
-    elm_config_focus_highlight_enabled_set(EINA_FALSE);
-#else
-    elm_config_focus_highlight_enabled_set(EINA_TRUE);
-#endif
-#endif
-
-    tizen_browser::logger::Logger::getInstance().init();
-    tizen_browser::logger::Logger::getInstance().setLogTag("browser");
-
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-
-    if (mainUi) {
-        evas_object_show(mainUi->getMainWindow().get());
-        mainUi->exec("http://enlightenment.org");
-    }
-
-    elm_run();
-
-    elm_shutdown();
-    END()
-} catch (std::exception & e)
-{
-    std::cerr << "UNHANDLED EXCEPTION " << e.what() << std::endl;
-} catch (...)
-{
-    std::cerr << "UNHANDLED EXCEPTION" << std::endl;
-}
-#endif

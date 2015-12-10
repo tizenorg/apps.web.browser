@@ -16,10 +16,7 @@
 
 #include "browser_config.h"
 
-#if defined(USE_EWEBKIT)
 #include <ewk_chromium.h>
-#endif
-
 #include <boost/any.hpp>
 #include <memory>
 #include <algorithm>
@@ -381,7 +378,7 @@ void SimpleUI::loadModelServices()
     m_webEngine =
         std::dynamic_pointer_cast
         <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
 
     m_storageService =
         std::dynamic_pointer_cast
@@ -1116,13 +1113,8 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         if (!layoutSetResult)
             throw std::runtime_error("Layout file not found: " + edjFilePath);
 
-    #if PLATFORM(TIZEN)
         elm_object_translatable_part_text_set(popup_content, "login_label", "Login");
         elm_object_translatable_part_text_set(popup_content, "password_label", "Password");
-    #else
-        elm_object_part_text_set(popup_content, "login_label", "Login");
-        elm_object_part_text_set(popup_content, "password_label", "Password");
-    #endif
 
         std::string entryTextStyle = "DEFAULT='font=Sans:style=Regular font_size=20 ellipsis=0.0'";
         Evas_Object *loginEntry = elm_entry_add(popup_content);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-/*
- * WebKitEngineService.cpp
- *
- *  Created on: Apr 1, 2014
- *      Author: p.rafalski
- */
-
 #include "browser_config.h"
-#include "WebKitEngineService.h"
+#include "WebEngineService.h"
 
 #include <Evas.h>
 #include <memory>
@@ -36,11 +29,11 @@
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webkitengine_service {
+namespace webengine_service {
 
-EXPORT_SERVICE(WebKitEngineService, "org.tizen.browser.webkitengineservice")
+EXPORT_SERVICE(WebEngineService, "org.tizen.browser.webengineservice")
 
-WebKitEngineService::WebKitEngineService()
+WebEngineService::WebEngineService()
     : m_initialised(false)
     , m_guiParent(nullptr)
     , m_stopped(false)
@@ -62,25 +55,25 @@ WebKitEngineService::WebKitEngineService()
 #endif
 }
 
-WebKitEngineService::~WebKitEngineService()
+WebEngineService::~WebEngineService()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-void WebKitEngineService::destroyTabs()
+void WebEngineService::destroyTabs()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_tabs.clear();
     m_currentWebView.reset();
 }
 
-Evas_Object * WebKitEngineService::getLayout()
+Evas_Object * WebEngineService::getLayout()
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->getLayout();
 }
 
-void WebKitEngineService::init(void * guiParent)
+void WebEngineService::init(void * guiParent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_initialised) {
@@ -89,49 +82,49 @@ void WebKitEngineService::init(void * guiParent)
     }
 }
 
-void WebKitEngineService::connectSignals(std::shared_ptr<WebView> webView)
+void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
-    webView->favIconChanged.connect(boost::bind(&WebKitEngineService::_favIconChanged, this, _1));
-    webView->titleChanged.connect(boost::bind(&WebKitEngineService::_titleChanged, this, _1, _2));
-    webView->uriChanged.connect(boost::bind(&WebKitEngineService::_uriChanged, this, _1));
-    webView->loadFinished.connect(boost::bind(&WebKitEngineService::_loadFinished, this));
-    webView->loadStarted.connect(boost::bind(&WebKitEngineService::_loadStarted, this));
-    webView->loadStop.connect(boost::bind(&WebKitEngineService::_loadStop, this));
-    webView->loadProgress.connect(boost::bind(&WebKitEngineService::_loadProgress, this, _1));
-    webView->loadError.connect(boost::bind(&WebKitEngineService::_loadError, this));
-    webView->forwardEnableChanged.connect(boost::bind(&WebKitEngineService::_forwardEnableChanged, this, _1));
-    webView->backwardEnableChanged.connect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.connect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.connect(boost::bind(&WebKitEngineService::webViewClicked, this));
-    webView->IMEStateChanged.connect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
+    webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
+    webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+    webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
+    webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
+    webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
+    webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
+    webView->loadProgress.connect(boost::bind(&WebEngineService::_loadProgress, this, _1));
+    webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
+    webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
+    webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
+    webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+    webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
+    webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
 }
 
-void WebKitEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
+void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
-    webView->favIconChanged.disconnect(boost::bind(&WebKitEngineService::_favIconChanged, this));
-    webView->titleChanged.disconnect(boost::bind(&WebKitEngineService::_titleChanged, this, _1, _2));
-    webView->uriChanged.disconnect(boost::bind(&WebKitEngineService::_uriChanged, this, _1));
-    webView->loadFinished.disconnect(boost::bind(&WebKitEngineService::_loadFinished, this));
-    webView->loadStarted.disconnect(boost::bind(&WebKitEngineService::_loadStarted, this));
-    webView->loadStop.disconnect(boost::bind(&WebKitEngineService::_loadStop, this));
-    webView->loadProgress.disconnect(boost::bind(&WebKitEngineService::_loadProgress, this, _1));
-    webView->loadError.disconnect(boost::bind(&WebKitEngineService::_loadError, this));
-    webView->forwardEnableChanged.disconnect(boost::bind(&WebKitEngineService::_forwardEnableChanged, this, _1));
-    webView->backwardEnableChanged.disconnect(boost::bind(&WebKitEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.disconnect(boost::bind(&WebKitEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.disconnect(boost::bind(&WebKitEngineService::webViewClicked, this));
-    webView->IMEStateChanged.disconnect(boost::bind(&WebKitEngineService::_IMEStateChanged, this, _1));
+    webView->favIconChanged.disconnect(boost::bind(&WebEngineService::_favIconChanged, this));
+    webView->titleChanged.disconnect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+    webView->uriChanged.disconnect(boost::bind(&WebEngineService::_uriChanged, this, _1));
+    webView->loadFinished.disconnect(boost::bind(&WebEngineService::_loadFinished, this));
+    webView->loadStarted.disconnect(boost::bind(&WebEngineService::_loadStarted, this));
+    webView->loadStop.disconnect(boost::bind(&WebEngineService::_loadStop, this));
+    webView->loadProgress.disconnect(boost::bind(&WebEngineService::_loadProgress, this, _1));
+    webView->loadError.disconnect(boost::bind(&WebEngineService::_loadError, this));
+    webView->forwardEnableChanged.disconnect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
+    webView->backwardEnableChanged.disconnect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
+    webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+    webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
+    webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
 }
 
-void WebKitEngineService::disconnectCurrentWebViewSignals()
+void WebEngineService::disconnectCurrentWebViewSignals()
 {
     if(m_currentWebView.get())
         disconnectSignals(m_currentWebView);
 }
 
-int WebKitEngineService::createTabId()
+int WebEngineService::createTabId()
 {
     m_tabIdCreated = -1;
     AbstractWebEngine::createTabId();
@@ -141,12 +134,12 @@ int WebKitEngineService::createTabId()
     return m_tabIdCreated;
 }
 
-void WebKitEngineService::onTabIdCreated(int tabId)
+void WebEngineService::onTabIdCreated(int tabId)
 {
     m_tabIdCreated= tabId;
 }
 
-void WebKitEngineService::setURI(const std::string & uri)
+void WebEngineService::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     M_ASSERT(m_currentWebView);
@@ -154,7 +147,7 @@ void WebKitEngineService::setURI(const std::string & uri)
     m_currentWebView->setURI(uri);
 }
 
-std::string WebKitEngineService::getURI() const
+std::string WebEngineService::getURI() const
 {
     M_ASSERT(m_currentWebView);
     if(m_currentWebView)
@@ -163,13 +156,13 @@ std::string WebKitEngineService::getURI() const
         return std::string("");
 }
 
-bool WebKitEngineService::isLoadError() const
+bool WebEngineService::isLoadError() const
 {
     return m_currentWebView->isLoadError();
 }
 
 
-std::string WebKitEngineService::getTitle() const
+std::string WebEngineService::getTitle() const
 {
     M_ASSERT(m_currentWebView);
     if (m_currentWebView) {
@@ -181,7 +174,7 @@ std::string WebKitEngineService::getTitle() const
         return std::string("");
 }
 
-void WebKitEngineService::suspend()
+void WebEngineService::suspend()
 {
     if(tabsCount()>0) {
         M_ASSERT(m_currentWebView);
@@ -192,7 +185,7 @@ void WebKitEngineService::suspend()
     }
 }
 
-void WebKitEngineService::resume()
+void WebEngineService::resume()
 {
     if(tabsCount()>0) {
         M_ASSERT(m_currentWebView);
@@ -203,132 +196,132 @@ void WebKitEngineService::resume()
     }
 }
 
-bool WebKitEngineService::isSuspended() const
+bool WebEngineService::isSuspended() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->isSuspended();
 }
 
-void WebKitEngineService::stopLoading(void)
+void WebEngineService::stopLoading(void)
 {
     M_ASSERT(m_currentWebView);
     m_stopped = true;
     m_currentWebView->stopLoading();
 }
 
-void WebKitEngineService::reload(void)
+void WebEngineService::reload(void)
 {
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->reload();
 }
 
-void WebKitEngineService::back(void)
+void WebEngineService::back(void)
 {
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->back();
 }
 
-void WebKitEngineService::forward(void)
+void WebEngineService::forward(void)
 {
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->forward();
 }
 
-bool WebKitEngineService::isBackEnabled() const
+bool WebEngineService::isBackEnabled() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->isBackEnabled();
 }
 
-bool WebKitEngineService::isForwardEnabled() const
+bool WebEngineService::isForwardEnabled() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->isForwardEnabled();
 }
 
-bool WebKitEngineService::isLoading() const
+bool WebEngineService::isLoading() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->isBackEnabled();
 }
 
-void WebKitEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi)
+void WebEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     favIconChanged(bi);
 }
 
-void WebKitEngineService::_titleChanged(const std::string& title, const std::string& tabId)
+void WebEngineService::_titleChanged(const std::string& title, const std::string& tabId)
 {
     titleChanged(title, tabId);
 }
 
-void WebKitEngineService::_uriChanged(const std::string & uri)
+void WebEngineService::_uriChanged(const std::string & uri)
 {
     uriChanged(uri);
 }
 
-void WebKitEngineService::_loadFinished()
+void WebEngineService::_loadFinished()
 {
     loadFinished();
 }
 
-void WebKitEngineService::_loadStarted()
+void WebEngineService::_loadStarted()
 {
     loadStarted();
 }
 
-void WebKitEngineService::_loadStop()
+void WebEngineService::_loadStop()
 {
     loadStop();
 }
 
-void WebKitEngineService::_loadError()
+void WebEngineService::_loadError()
 {
     loadError();
 }
 
 
-void WebKitEngineService::_forwardEnableChanged(bool enable)
+void WebEngineService::_forwardEnableChanged(bool enable)
 {
     forwardEnableChanged(enable);
 }
 
-void WebKitEngineService::_backwardEnableChanged(bool enable)
+void WebEngineService::_backwardEnableChanged(bool enable)
 {
     backwardEnableChanged(enable);
 }
 
-void WebKitEngineService::_loadProgress(double d)
+void WebEngineService::_loadProgress(double d)
 {
     loadProgress(d);
 }
 
-void WebKitEngineService::_confirmationRequest(WebConfirmationPtr c)
+void WebEngineService::_confirmationRequest(WebConfirmationPtr c)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     confirmationRequest(c);
 }
 
-int WebKitEngineService::tabsCount() const
+int WebEngineService::tabsCount() const
 {
     return m_tabs.size();
 }
 
-TabId WebKitEngineService::currentTabId() const
+TabId WebEngineService::currentTabId() const
 {
     return m_currentTabId;
 }
 
-std::list<TabId> WebKitEngineService::listTabs() const
+std::list<TabId> WebEngineService::listTabs() const
 {
     return m_mostRecentTab;
 }
 
-std::vector<TabContentPtr> WebKitEngineService::getTabContents() const {
+std::vector<TabContentPtr> WebEngineService::getTabContents() const {
     std::vector<TabContentPtr> result;
     for(std::list<TabId>::const_iterator it = m_chronoTabs.begin(); it != m_chronoTabs.end(); ++it){
         WebViewPtr item = m_tabs.find(*it)->second;
@@ -338,7 +331,7 @@ std::vector<TabContentPtr> WebKitEngineService::getTabContents() const {
     return result;
 }
 
-TabId WebKitEngineService::addTab(const std::string & uri,
+TabId WebEngineService::addTab(const std::string & uri,
         const TabId * tabInitId, const boost::optional<int> tabId,
         const std::string& title, bool desktopMode, bool incognitoMode)
 {
@@ -380,11 +373,11 @@ TabId WebKitEngineService::addTab(const std::string & uri,
     return newTabId;
 }
 
-Evas_Object* WebKitEngineService::getTabView(TabId id){
+Evas_Object* WebEngineService::getTabView(TabId id){
     return m_tabs[id]->getLayout();
 }
 
-bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabId)
+bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabId)
 {
     BROWSER_LOGD("[%s:%d] newTabId=%s", __PRETTY_FUNCTION__, __LINE__, newTabId.toString().c_str());
 
@@ -412,16 +405,15 @@ bool WebKitEngineService::switchToTab(tizen_browser::basic_webengine::TabId newT
     return true;
 }
 
-bool WebKitEngineService::closeTab()
+bool WebEngineService::closeTab()
 {
     BROWSER_LOGD("[%s:%d] closing tab=%s", __PRETTY_FUNCTION__, __LINE__, m_currentTabId.toString().c_str());
     bool res = closeTab(m_currentTabId);
     return res;
 }
 
-bool WebKitEngineService::closeTab(TabId id) {
+bool WebEngineService::closeTab(TabId id) {
     BROWSER_LOGD("[%s:%d] closing tab=%s", __PRETTY_FUNCTION__, __LINE__, id.toString().c_str());
-    BROWSER_LOGD("[%s:%d] NONE tab=%s", __PRETTY_FUNCTION__, __LINE__, TabId::NONE.toString().c_str());
 
     TabId closingTabId = id;
     bool res = true;
@@ -443,19 +435,7 @@ bool WebKitEngineService::closeTab(TabId id) {
     return res;
 }
 
-bool WebKitEngineService::nextTab()
-{
-    // Empty implementation, with random UUID as ID we cannot distinguish between previous and next tab. Functionality not used.
-    return false;
-}
-
-bool WebKitEngineService::prevTab()
-{
-    // Empty implementation, with random UUID as ID we cannot distinguish between previous and next tab. Functionality not used.
-    return false;
-}
-
-void WebKitEngineService::confirmationResult(WebConfirmationPtr c)
+void WebEngineService::confirmationResult(WebConfirmationPtr c)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     // tabId MUST be set
@@ -469,13 +449,13 @@ void WebKitEngineService::confirmationResult(WebConfirmationPtr c)
     m_tabs[c->getTabId()]->confirmationResult(c);
 }
 
-bool WebKitEngineService::isPrivateMode(const TabId& id)
+bool WebEngineService::isPrivateMode(const TabId& id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return m_tabs[id]->isPrivateMode();
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnapshotData(int width, int height)
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(int width, int height)
 {
     M_ASSERT(m_currentWebView);
     if(m_currentWebView)
@@ -485,30 +465,30 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnap
 
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getSnapshotData(TabId id, int width, int height){
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height){
    return m_tabs[id]->captureSnapshot(width,height);
 }
 
-void WebKitEngineService::setFocus()
+void WebEngineService::setFocus()
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->setFocus();
 }
 
-void WebKitEngineService::clearFocus()
+void WebEngineService::clearFocus()
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->clearFocus();
 }
 
-bool WebKitEngineService::hasFocus() const
+bool WebEngineService::hasFocus() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->hasFocus();
 }
 
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getFavicon()
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getFavicon()
 {
     M_ASSERT(m_currentWebView);
     if (m_currentWebView) {
@@ -520,13 +500,13 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebKitEngineService::getFavi
         return std::make_shared<tizen_browser::tools::BrowserImage>();
 }
 
-void WebKitEngineService::webViewClicked()
+void WebEngineService::webViewClicked()
 {
     AbstractWebEngine::webViewClicked();
 }
 
 #if PROFILE_MOBILE
-void WebKitEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
+void WebEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
     webView->ewkSettingsAutoFittingSet(m_settings[WebEngineSettings::PAGE_OVERVIEW]);
     webView->ewkSettingsLoadsImagesSet(m_settings[WebEngineSettings::LOAD_IMAGES]);
     webView->ewkSettingsJavascriptEnabledSet(m_settings[WebEngineSettings::ENABLE_JAVASCRIPT]);
@@ -536,7 +516,7 @@ void WebKitEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
 }
 #endif
 
-int WebKitEngineService::getZoomFactor() const
+int WebEngineService::getZoomFactor() const
 {
     if(!m_currentWebView)
         return 0;
@@ -544,58 +524,58 @@ int WebKitEngineService::getZoomFactor() const
 
 }
 
-void WebKitEngineService::setZoomFactor(int zoomFactor)
+void WebEngineService::setZoomFactor(int zoomFactor)
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->setZoomFactor(0.01*zoomFactor);
 
 }
 
-void WebKitEngineService::clearCache()
+void WebEngineService::clearCache()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearCache();
         }
 }
 
-void WebKitEngineService::clearCookies()
+void WebEngineService::clearCookies()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearCookies();
         }
 }
 
-void WebKitEngineService::clearPrivateData()
+void WebEngineService::clearPrivateData()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearPrivateData();
         }
 }
-void WebKitEngineService::clearPasswordData()
+void WebEngineService::clearPasswordData()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearPasswordData();
         }
 }
 
-void WebKitEngineService::clearFormData()
+void WebEngineService::clearFormData()
 {
     for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
             it->second->clearFormData();
         }
 }
 
-void WebKitEngineService::searchOnWebsite(const std::string & searchString, int flags)
+void WebEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
     m_currentWebView->searchOnWebsite(searchString, flags);
 }
 
-void WebKitEngineService::_IMEStateChanged(bool enable)
+void WebEngineService::_IMEStateChanged(bool enable)
 {
     IMEStateChanged(enable);
 }
 
-void WebKitEngineService::backButtonClicked()
+void WebEngineService::backButtonClicked()
 {
     M_ASSERT(m_currentWebView);
 
@@ -619,41 +599,41 @@ void WebKitEngineService::backButtonClicked()
     }
 }
 
-void WebKitEngineService::switchToDesktopMode()
+void WebEngineService::switchToDesktopMode()
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->switchToDesktopMode();
 }
 
-void WebKitEngineService::switchToMobileMode()
+void WebEngineService::switchToMobileMode()
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->switchToMobileMode();
 }
 
-bool WebKitEngineService::isDesktopMode() const
+bool WebEngineService::isDesktopMode() const
 {
     M_ASSERT(m_currentWebView);
     return m_currentWebView->isDesktopMode();
 }
 
-void WebKitEngineService::scrollView(const int& dx, const int& dy)
+void WebEngineService::scrollView(const int& dx, const int& dy)
 {
     m_currentWebView->scrollView(dx, dy);
 }
 
 #if PROFILE_MOBILE
-void WebKitEngineService::setTouchEvents(bool enabled)
+void WebEngineService::setTouchEvents(bool enabled)
 {
     M_ASSERT(m_currentWebView);
     m_currentWebView->setTouchEvents(enabled);
 }
 
-bool WebKitEngineService::getSettingsParam(WebEngineSettings param) {
+bool WebEngineService::getSettingsParam(WebEngineSettings param) {
     return m_settings.at(param);
 }
 
-void WebKitEngineService::setSettingsParam(WebEngineSettings param, bool value) {
+void WebEngineService::setSettingsParam(WebEngineSettings param, bool value) {
     m_settings[param] = value;
     for(auto it = m_tabs.cbegin(); it != m_tabs.cend(); ++it) {
         switch (param) {
@@ -682,6 +662,6 @@ void WebKitEngineService::setSettingsParam(WebEngineSettings param, bool value) 
 }
 #endif
 
-} /* end of webkitengine_service */
+} /* end of webengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */
