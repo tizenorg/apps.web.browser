@@ -93,23 +93,24 @@ group {
             }
         }
         part {
-            name: "profile_bg";
+            name: "select_all_bg";
             type: RECT;
+            mouse_events: 1;
             scale: 1;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
                 align: 0 0;
-                min: 720 56;
-                max: 720 56;
+                min: 720 72;
+                max: 720 72;
                 color: 231 231 231 255;
                 rel1 { relative: 0.0 1.0; to: "title_bg";}
                 rel2 { relative: 1.0 1.0; }
             }
         }
         part {
-            name: "profile_text";
+            name: "select_all_text";
             type: TEXT;
             scale: 1;
             description {
@@ -118,14 +119,47 @@ group {
                 fixed: 1 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "profile_bg";}
-                rel2 { relative: 1.0 1.0; to: "profile_bg";}
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
                 text {
-                    text: "Profiles";
+                    text: "Select all";
                     font: "Sans";
                     size: 30;
                     align: 0.02 0.5;
                 }
+            }
+        }
+        part {
+            name: "select_all_checkbox";
+            scale:1;
+            mouse_events: 1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0.5;
+                fixed: 1 1;
+                min: 48 48;
+                max: 48 48;
+                rel1 { relative: 0.875 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+            }
+        }
+        part {
+            name: "select_all_checkbox_button";
+            scale:1;
+            mouse_events: 1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0.5;
+                fixed: 1 1;
+                min: 48 48;
+                max: 48 48;
+                rel1 { relative: 0.875 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+                color_class: transparent;
             }
         }
         part {
@@ -144,9 +178,8 @@ group {
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
             }
         }
-
         part {
-            name: "del_sel_bg";
+            name: "del_bg";
             type: RECT;
             mouse_events: 1;
             scale: 1;
@@ -155,15 +188,15 @@ group {
                 visible: 1;
                 fixed: 1 1;
                 align: 0 0.5;
-                min: 360 100;
-                max: 360 100;
+                min: 720 100;
+                max: 720 100;
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
                 rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
             }
         }
         part {
-            name: "del_sel_text";
+            name: "del_text";
             type: TEXT;
             scale: 1;
             description {
@@ -172,82 +205,34 @@ group {
                 fixed: 1 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "del_sel_bg";}
-                rel2 { relative: 1.0 1.0; to: "del_sel_bg";}
+                rel1 { relative: 0.0 0.0; to: "del_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_bg";}
                 text {
-                    text: "Delete selected";
+                    text: "Delete";
                     font: "Sans";
                     size: 40;
                     align: 0.5 0.5;
                 }
             }
+            description {
+                state: "dim" 0.0;
+                inherit: "default" 0.0;
+                color: 207 207 207 255;
+            }
         }
         part {
-            name: "del_sel_button";
+            name: "del_button";
             scale:1;
             type: SWALLOW;
             description {
                 state: "default" 0.0;
                 visible: 1;
-                align: 0 0;
+                align: 0.5 0.5;
                 fixed: 1 1;
                 min: 360 100;
                 max: 360 100;
-                rel1 { relative: 0.0 0.0; to: "del_sel_bg";}
-                rel2 { relative: 1.0 1.0; to: "del_sel_bg";}
-                color_class: transparent;
-            }
-        }
-        part {
-            name: "del_all_bg";
-            type: RECT;
-            mouse_events: 1;
-            scale: 1;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                fixed: 1 1;
-                align: 1 0.5;
-                min: 360 100;
-                max: 360 100;
-                color: 255 255 255 255;
-                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
-                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
-            }
-        }
-        part {
-            name: "del_all_text";
-            type: TEXT;
-            scale: 1;
-            description {
-                state: "default" 0.0;
-                min: 56 0;
-                fixed: 1 0;
-                align: 0 0;
-                color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "del_all_bg";}
-                rel2 { relative: 1.0 1.0; to: "del_all_bg";}
-                text {
-                    text: "Delete all";
-                    font: "Sans";
-                    size: 40;
-                    align: 0.5 0.5;
-                }
-            }
-        }
-        part {
-            name: "del_all_button";
-            scale:1;
-            type: SWALLOW;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                align: 0 0;
-                fixed: 1 1;
-                min: 360 100;
-                max: 360 100;
-                rel1 { relative: 0.0 0.0; to: "del_all_bg";}
-                rel2 { relative: 1.0 1.0; to: "del_all_bg";}
+                rel1 { relative: 0.0 0.0; to: "del_bg";}
+                rel2 { relative: 1.0 1.0; to: "del_bg";}
                 color_class: transparent;
             }
         }
@@ -262,9 +247,25 @@ group {
                 fixed: 1 1;
                 min: 720 1008;
                 max: 720 1008;
-                rel1 { relative: 0.0 1.0; to: "profile_bg";}
+                rel1 { relative: 0.0 1.0; to: "select_all_bg";}
                 rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
             }
+        }
+    }
+    programs {
+        program {
+            name: "show_del_button";
+            signal: "show,del,button,signal";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            target: "del_text";
+        }
+        program {
+            name: "dim_del_button";
+            signal: "dim,del,button,signal";
+            source: "";
+            action: STATE_SET "dim" 0.0;
+            target: "del_text";
         }
     }
 }
@@ -313,7 +314,6 @@ group {
                 }
             }
         }
-
         part {
             name: "checkbox";
             scale:1;
@@ -982,6 +982,11 @@ group {
                     align: 0.5 0.5;
                 }
             }
+            description {
+                state: "dim" 0.0;
+                inherit: "default" 0.0;
+                color: 207 207 207 255;
+            }
         }
         part {
             name: "delete_profile_button";
@@ -1013,6 +1018,22 @@ group {
                 rel1 { relative: 0.0 1.0; to: "profile_bg";}
                 rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
             }
+        }
+    }
+    programs {
+        program {
+            name: "show_del_button";
+            signal: "show,del,button,signal";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            target: "delete_profile_text";
+        }
+        program {
+            name: "dim_del_button";
+            signal: "dim,del,button,signal";
+            source: "";
+            action: STATE_SET "dim" 0.0;
+            target: "delete_profile_text";
         }
     }
 }

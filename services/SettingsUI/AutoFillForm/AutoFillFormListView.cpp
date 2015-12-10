@@ -161,6 +161,12 @@ Eina_Bool AutoFillFormListView::appendGenlist(Evas_Object *genlist)
             item_callback_data->it = elm_genlist_item_append(genlist, m_itemClass,
             item_callback_data, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, item_callback_data);
         }
+        elm_object_signal_emit(m_mainLayout, "show,del,button,signal", "");
+        elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), false);
+    }
+    else {
+        elm_object_signal_emit(m_mainLayout, "dim,del,button,signal", "");
+        elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), true);
     }
 
     return EINA_TRUE;

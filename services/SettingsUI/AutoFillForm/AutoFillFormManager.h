@@ -50,7 +50,7 @@ public:
     void refreshListView();
     Eina_Bool saveAutoFillFormItem(AutoFillFormItemData *item_data);
     Eina_Bool deleteAutoFillFormItem(AutoFillFormItem *item);
-    Eina_Bool deleteAllAutoFillFormItemss(void);
+    Eina_Bool deleteAllAutoFillFormItems(void);
     unsigned int getAutoFillFormItemCount(void);
     AutoFillFormItem *createNewAutoFillFormItem(Ewk_Autofill_Profile *profile = NULL);
     AutoFillFormListView *showListView(void);
