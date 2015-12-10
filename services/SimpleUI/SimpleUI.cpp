@@ -707,10 +707,28 @@ void SimpleUI::onNewFolderClicked()
                                                           "Folder #", "Cancel", "Add to bookmark", false);
 #endif
     inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));
+    inputPopup->setFocusOnMoreMenu.connect(boost::bind(&MoreMenuUI::resumeFocus, m_moreMenuUI));
     inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     inputPopup->show();
 }
+
+#if !PROFILE_MOBILE
+void SimpleUI::onNewFolderClicked(interfaces::AbstractPopup* popup)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    popup->dismiss();
+
+    InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add new folder for adding to bookmark?",
+                                                          "Folder #", "Cancel", "Add to bookmark", false);
+
+    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));
+    inputPopup->setFocusOnMoreMenu.connect(boost::bind(&MoreMenuUI::resumeFocus, m_moreMenuUI));
+    inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    inputPopup->show();
+}
+#endif
 
 void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
 {
@@ -1312,10 +1330,15 @@ void SimpleUI::showBookmarkFlowUI(bool state)
     else
         m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
 #else
+    m_moreMenuUI->suspendFocus();
     BookmarkFlowUI *bookmarkFlow = BookmarkFlowUI::createPopup(m_viewManager.getContent());
     bookmarkFlow->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     bookmarkFlow->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     bookmarkFlow->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+#if !PROFILE_MOBILE
+    bookmarkFlow->addFolderPopup.connect(boost::bind(&SimpleUI::onNewFolderClicked, this, _1));
+#endif
+    bookmarkFlow->setFocusOnMoreMenu.connect(boost::bind(&MoreMenuUI::resumeFocus, m_moreMenuUI));
     bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
     bookmarkFlow->show();
     bookmarkFlow->gridAddNewFolder();
