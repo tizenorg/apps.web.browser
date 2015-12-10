@@ -54,8 +54,10 @@ public:
     void setOkButtonText(const std::string &okButtonText);
     void setCancelButtonText(const std::string &cancelButtonText);
     void setAcceptRightLeft(bool);
+    void setFocusOnEntry();
 
     boost::signals2::signal<void (const std::string&)> button_clicked;
+    boost::signals2::signal<void ()> setFocusOnMoreMenu;
 
 private:
     InputPopup();

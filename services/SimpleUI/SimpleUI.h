@@ -148,14 +148,17 @@ private:
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
-    void onNewFolderClicked();
+
     void onNewFolderPopupClick(const std::string& folder_name);
 #if PROFILE_MOBILE
     void onEditFolderClicked(const std::string& folder_name);
     void onDeleteFolderClicked(const std::string& folder_name);
     void onEditFolderPopupClicked(const std::string& newName);
     void onDeleteFolderPopupClicked(PopupButtons button);
+#else
+    void onNewFolderClicked(interfaces::AbstractPopup* ap);
 #endif
+    void onNewFolderClicked();
     void onBookmarkRemoved(const std::string& uri);
 
     void onHistoryRemoved(const std::string& uri);

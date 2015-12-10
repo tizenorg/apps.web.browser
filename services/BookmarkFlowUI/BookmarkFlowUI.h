@@ -88,6 +88,10 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
     boost::signals2::signal<void ()> addFolder;
+#if !PROFILE_MOBILE
+    boost::signals2::signal<void (interfaces::AbstractPopup*)> addFolderPopup;
+#endif
+    boost::signals2::signal<void ()> setFocusOnMoreMenu;
 
 private:
     Evas_Object* createBookmarkFlowLayout();

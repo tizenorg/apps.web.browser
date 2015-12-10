@@ -98,15 +98,16 @@ void MoreMenuUI::showUI()
     M_ASSERT(m_mm_layout);
     createGengrid();    // recreate gengrid because icons could have changed
     addItems();
+
+    evas_object_show(m_mm_layout);
+    evas_object_show(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
+    evas_object_show(m_gengrid);
 #if PROFILE_MOBILE
     elm_object_signal_emit(m_parent, "show_moremenu", "ui");
 #else
     m_focusManager.startFocusManager(m_gengrid);
     setFocus(EINA_TRUE);
 #endif
-    evas_object_show(m_mm_layout);
-    evas_object_show(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
-    evas_object_show(m_gengrid);
 }
 
 void MoreMenuUI::hideUI()
@@ -711,6 +712,20 @@ void MoreMenuUI::createFocusVector()
     m_focusManager.addItem(m_bookmarkButton);
     m_focusManager.addItem(m_gengrid);
     m_focusManager.setIterator();
+}
+
+void MoreMenuUI::suspendFocus()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    setFocus(EINA_FALSE);
+    m_focusManager.stopFocusManager();
+}
+
+void MoreMenuUI::resumeFocus()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    m_focusManager.startFocusManager(m_gengrid);
+    setFocus(EINA_TRUE);
 }
 
 }
