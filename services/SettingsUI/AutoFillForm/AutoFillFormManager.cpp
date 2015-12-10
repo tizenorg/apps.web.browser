@@ -117,7 +117,7 @@ Eina_Bool AutoFillFormManager::deleteAutoFillFormItem(AutoFillFormItem *item)
     return EINA_TRUE;
 }
 
-Eina_Bool AutoFillFormManager::deleteAllAutoFillFormItemss(void)
+Eina_Bool AutoFillFormManager::deleteAllAutoFillFormItems(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_AutoFillFormItemList.clear();

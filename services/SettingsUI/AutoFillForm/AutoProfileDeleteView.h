@@ -46,9 +46,8 @@ private:
     static char *__text_get_cb(void* data, Evas_Object* obj, const char *part);
     static Evas_Object *__content_get_cb(void* data, Evas_Object* obj, const char *part);
     static void __genlist_item_selected_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __select_all_icon_clicked_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __delete_selected_button_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __delete_all_button_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __select_all_checkbox_changed_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __delete_button_cb(void* data, Evas_Object* obj, void* event_info);
     static void __back_button_cb(void* data, Evas_Object* obj, void* event_info);
     static void __checkbox_changed_cb(void* data, Evas_Object* obj, void* event_info);
 
@@ -56,6 +55,7 @@ private:
     Evas_Object *m_mainLayout;
     Evas_Object *m_genlist;
     Elm_Genlist_Item_Class *m_itemClass;
+    unsigned m_checked_count;
 
     std::string m_edjFilePath;
 };
