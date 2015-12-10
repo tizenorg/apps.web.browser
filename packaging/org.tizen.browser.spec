@@ -37,6 +37,7 @@ BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
 BuildRequires:  browser-provider-devel
+BuildRequires:  pkgconfig(efl-extension)
 
 BuildRequires:  cmake
 BuildRequires:  edje-tools

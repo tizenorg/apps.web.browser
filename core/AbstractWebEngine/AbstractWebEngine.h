@@ -473,6 +473,18 @@ public:
      * Generate id for the new tab.
      */
     boost::signals2::signal<void()> createTabId;
+
+#if PROFILE_MOBILE
+    /**
+     * Register H/W back key callback for the current webview
+     */
+    boost::signals2::signal<void()> registerHWBackCallback;
+
+    /**
+     * Unregister H/W back key callback for the current webview
+     */
+    boost::signals2::signal<void()> unregisterHWBackCallback;
+#endif
 };
 
 } /* end of basic_webengine */

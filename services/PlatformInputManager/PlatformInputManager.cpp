@@ -25,6 +25,10 @@
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
 
+#if PROFILE_MOBILE
+#include <efl_extension.h>
+#endif
+
 #define E_PROP_DEVICEMGR_INPUTWIN "DeviceMgr Input Window"
 #define E_PROP_NOT_CURSOR_HIDE "E_NOT_CURSOR_HIDE"
 
@@ -39,6 +43,10 @@ namespace services
 EXPORT_SERVICE(PlatformInputManager, "org.tizen.browser.platforminputmanager")
 
 PlatformInputManager::PlatformInputManager()
+#if PROFILE_MOBILE
+    : m_HWBackCallbackRegistered(false)
+#endif
+
 {
 
 }
@@ -50,6 +58,34 @@ void PlatformInputManager::init(Evas_Object* mainWindow)
     (void) mainWindow;
     ecore_event_filter_add(NULL, __filter, NULL, this);
 }
+
+#if PROFILE_MOBILE
+void PlatformInputManager::registerHWBackCallback(Evas_Object* view)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(view);
+    if (m_HWBackCallbackRegistered)
+        return;
+    eext_object_event_callback_add(view, EEXT_CALLBACK_BACK, onHWBack, this);
+    m_HWBackCallbackRegistered = true;
+}
+
+void PlatformInputManager::unregisterHWBackCallback(Evas_Object* view)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(view);
+    if (!m_HWBackCallbackRegistered)
+        return;
+    eext_object_event_callback_del(view, EEXT_CALLBACK_BACK, onHWBack);
+    m_HWBackCallbackRegistered = false;
+}
+
+void PlatformInputManager::onHWBack(void* data, Evas_Object*, void*)
+{
+    PlatformInputManager *self = static_cast<PlatformInputManager*>(data);
+    self->backPressed();
+}
+#endif
 
 Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int type, void *event)
 {
@@ -82,8 +118,10 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->rightPressed();
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
+#if !PROFILE_MOBILE
         else if(!keyName.compare("F11") || !keyName.compare("XF86Back"))
             self->backPressed();
+#endif
         else if(!keyName.compare("Escape"))
             self->escapePressed();
         else if(!keyName.compare("XF86Red"))    // F4 - Red

@@ -186,6 +186,9 @@ void WebKitEngineService::suspend()
     if(tabsCount()>0) {
         M_ASSERT(m_currentWebView);
         m_currentWebView->suspend();
+#if PROFILE_MOBILE
+        unregisterHWBackCallback();
+#endif
     }
 }
 
@@ -194,6 +197,9 @@ void WebKitEngineService::resume()
     if(tabsCount()>0) {
         M_ASSERT(m_currentWebView);
         m_currentWebView->resume();
+#if PROFILE_MOBILE
+        registerHWBackCallback();
+#endif
     }
 }
 

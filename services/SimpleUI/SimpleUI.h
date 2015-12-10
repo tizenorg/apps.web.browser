@@ -269,6 +269,8 @@ private:
     void onBookmarkCustomFolderClicked(int);
     void onBookmarkAllFolderClicked();
     void onBookmarkMobileClicked();
+    void registerHWBackCallback();
+    void unregisterHWBackCallback();
 #endif
 
     void showPopup(interfaces::AbstractPopup* popup);
