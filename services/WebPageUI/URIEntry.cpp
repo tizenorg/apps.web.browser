@@ -273,11 +273,7 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
 void URIEntry::setUrlGuideText(const char* txt) const
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
     elm_object_translatable_part_text_set(m_entry, "elm.guide", txt);
-#else
-    elm_object_part_text_set(m_entry, "elm.guide", txt);
-#endif
 }
 
 void URIEntry::unfocused(void* data, Evas_Object*, void*)

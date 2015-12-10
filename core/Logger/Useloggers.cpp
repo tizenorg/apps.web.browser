@@ -21,7 +21,5 @@
 #include "TextLogger.h"
 REGISTER_LOGGER(tizen_browser::logger::TextLogger());
 
-#if PLATFORM(TIZEN)
 #include "DLOGLogger.h"
 REGISTER_LOGGER(tizen_browser::logger::DLOGLogger());
-#endif
