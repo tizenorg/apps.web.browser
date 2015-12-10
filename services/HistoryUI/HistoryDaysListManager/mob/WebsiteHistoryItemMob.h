@@ -14,45 +14,48 @@
  * limitations under the License.
  */
 
-#ifndef WEBSITEHISTORYVISITITEM_H_
-#define WEBSITEHISTORYVISITITEM_H_
+#ifndef HISTORYWEBSITEHISTORYITEM_H_
+#define HISTORYWEBSITEHISTORYITEM_H_
 
 #include <string>
+#include <vector>
 #include <Elementary.h>
-#include "HistoryDayItemDataTypedef.h"
+#include "../HistoryDayItemDataTypedef.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
+class WebsiteHistoryVisitItemMob;
+typedef std::shared_ptr<WebsiteHistoryVisitItemMob> WebsiteHistoryVisitItemPtr;
+
 /**
- * Represtents the website visit item: website visit title, website url,
- * visite time.
+ * Represents the website item: header (image + website name), seperator,
+ * list of the website's visit items.
  */
-class WebsiteHistoryVisitItem
+class WebsiteHistoryItemMob
 {
 public:
-    WebsiteHistoryVisitItem(WebsiteVisitItemDataPtr visitItemData);
-    virtual ~WebsiteHistoryVisitItem();
+    WebsiteHistoryItemMob(WebsiteHistoryItemDataPtr websiteHistoryItemData);
+    virtual ~WebsiteHistoryItemMob();
     Evas_Object* init(Evas_Object* parent);
 
 private:
-    WebsiteVisitItemDataPtr m_websiteVisitItemData;
+    WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
+    std::vector<WebsiteHistoryVisitItemPtr> m_websiteHistoryVisitItems;
 
     std::string m_websiteTitle;
-    std::string m_websiteUrl;
-    std::string m_websiteTimestamp;
 
     Evas_Object* m_layout = nullptr;
     // box including website header, separator and list of the visits items
     Evas_Object* m_boxMain = nullptr;
-    Evas_Object* m_tableVisit = nullptr;
 
-    Evas_Object* m_labelTitle = nullptr;
-    Evas_Object* m_labelUrl = nullptr;
-    Evas_Object* m_labelTimestamp = nullptr;
+    Evas_Object* m_boxHeader = nullptr;
+    Evas_Object* m_labelWebsiteTitle = nullptr;
+
+    Evas_Object* m_boxVisitItems = nullptr;
 };
 
 } /* namespace base_ui */
 } /* namespace tizen_browser */
 
-#endif /* WEBSITEHISTORYVISITITEM_H_ */
+#endif /* HISTORYWEBSITEHISTORYITEM_H_ */

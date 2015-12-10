@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "WebsiteHistoryVisitItem.h"
-#include "HistoryDayItemData.h"
+#include "WebsiteHistoryVisitItemMob.h"
+#include "../HistoryDayItemData.h"
 
 #include <EflTools.h>
 
 namespace tizen_browser {
 namespace base_ui {
 
-WebsiteHistoryVisitItem::WebsiteHistoryVisitItem(
+WebsiteHistoryVisitItemMob::WebsiteHistoryVisitItemMob(
         WebsiteVisitItemDataPtr visitItemData)
     : m_websiteVisitItemData(visitItemData)
     , m_websiteTitle(visitItemData->title)
@@ -34,12 +34,12 @@ WebsiteHistoryVisitItem::WebsiteHistoryVisitItem(
     m_websiteTimestamp = "<font_size=30>" + m_websiteTimestamp + "</font>";
 }
 
-WebsiteHistoryVisitItem::~WebsiteHistoryVisitItem()
+WebsiteHistoryVisitItemMob::~WebsiteHistoryVisitItemMob()
 {
     elm_box_clear(m_boxMain);
 }
 
-Evas_Object* WebsiteHistoryVisitItem::init(Evas_Object* parent)
+Evas_Object* WebsiteHistoryVisitItemMob::init(Evas_Object* parent)
 {
     std::string m_daysListEdjFilePath = EDJE_DIR;
     m_daysListEdjFilePath.append("HistoryUI/HistoryDaysList.edj");

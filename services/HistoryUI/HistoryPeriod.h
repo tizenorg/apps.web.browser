@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-#ifndef HISTORYDAYITEMDATATYPEDEF_H_
-#define HISTORYDAYITEMDATATYPEDEF_H_
+#ifndef HISTORYPERIOD_H_
+#define HISTORYPERIOD_H_
 
-#include <memory>
-#include <Elementary.h>
+#include <string>
 
 namespace tizen_browser{
 namespace base_ui{
 
-typedef struct WebsiteVisitItemData_ WebsiteVisitItemData;
-typedef std::shared_ptr<WebsiteVisitItemData> WebsiteVisitItemDataPtr;
+enum class HistoryPeriod
+{
+    HISTORY_TODAY,
+    HISTORY_YESTERDAY,
+    HISTORY_LASTWEEK,
+    HISTORY_LASTMONTH
+};
 
-typedef struct WebsiteHistoryItemData_ WebsiteHistoryItemData;
-typedef std::shared_ptr<WebsiteHistoryItemData> WebsiteHistoryItemDataPtr;
-
-typedef struct HistoryDayItemData_ HistoryDayItemData;
-typedef std::shared_ptr<HistoryDayItemData> HistoryDayItemDataPtr;
+std::string toString(HistoryPeriod period);
 
 }
 }
 
-#endif /* HISTORYDAYITEMDATATYPEDEF_H_ */
+#endif /* HISTORYPERIOD_H_ */
