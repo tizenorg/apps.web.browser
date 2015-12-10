@@ -785,6 +785,10 @@ void SimpleUI::setwvIMEStatus(bool status)
 {
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
+    if (status)
+        m_webPageUI->decreaseWebview();
+    else
+        m_webPageUI->enlargeWebview();
 }
 
 void SimpleUI::onBackPressed()
