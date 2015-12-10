@@ -69,6 +69,11 @@ public:
      */
     virtual std::string getName();
 
+#if PROFILE_MOBILE
+    void unregisterHWBackCallback(Evas_Object* view);
+    void registerHWBackCallback(Evas_Object* view);
+#endif
+
 private:
     /**
      * @brief Struct holding parameters of mouse movement.
@@ -79,6 +84,11 @@ private:
         int xMod, yMod;
         int counter, speed;
     };
+
+#if PROFILE_MOBILE
+    bool m_HWBackCallbackRegistered;
+    static void onHWBack(void* data, Evas_Object*, void*);
+#endif
 
     /**
      * @brief It process every input event and handles it if necessary.
