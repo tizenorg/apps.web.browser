@@ -209,7 +209,7 @@ int BookmarkService::getBookmarkId(const std::string & url)
 
 std::string BookmarkService::getBookmarkFolderName(int folder_id)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] [%d]", __PRETTY_FUNCTION__, __LINE__);
     char* folder_name;
     switch(folder_id){
         case ALL_BOOKMARKS_ID:
@@ -218,7 +218,7 @@ std::string BookmarkService::getBookmarkFolderName(int folder_id)
 #if PROFILE_MOBILE
            return "Mobile";
 #else
-           return "Bookmark"; // default folder name of the TV profile is not defined yet
+           return "Bookmark Bar";
 #endif
     }
 
