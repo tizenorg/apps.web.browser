@@ -48,6 +48,7 @@
 #include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
+#include "BookmarkDetailsUI.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
@@ -263,15 +264,14 @@ private:
 #if PROFILE_MOBILE
     void closeBookmarkFlowUI();
 #endif
+    void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
-#if PROFILE_MOBILE
     void onBookmarkCustomFolderClicked(int);
     void onBookmarkAllFolderClicked();
     void onBookmarkMobileClicked();
     void registerHWBackCallback();
     void unregisterHWBackCallback();
-#endif
 
     void showPopup(interfaces::AbstractPopup* popup);
     void dismissPopup(interfaces::AbstractPopup* popup);
@@ -306,6 +306,7 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+    std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
 #endif
