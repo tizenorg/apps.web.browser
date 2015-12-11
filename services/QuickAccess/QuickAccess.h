@@ -75,6 +75,7 @@ private:
 
 #if PROFILE_MOBILE
     void addBookmarkManagerTile();
+    void setIndexPage(const int page) const;
 #else
     Evas_Object* createBottomButton(Evas_Object *parent);
 #endif
@@ -127,6 +128,7 @@ private:
     static const int BOOKMARK_PAGE = 1;
 
 #if PROFILE_MOBILE
+    Evas_Object* m_index;
     Evas_Object* m_verticalScroller;
     Evas_Object* m_centerLayout;
     Elm_Gengrid_Item_Class * m_bookmarkManagerTileclass;
