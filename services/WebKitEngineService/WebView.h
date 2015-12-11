@@ -180,6 +180,15 @@ public:
 
 #if PROFILE_MOBILE
     /**
+     * @brief Searches for word in the current page.
+     *
+     * @param enabled The input word entered by user in Find on page entry.
+     * @param forward If true, search forward, else search backward.
+     * @param found_cb Callback function invoked when "text,found" event is triggered.
+     * @param data User data.
+     */
+    void findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data);
+    /**
      * @brief Enable or disable touch events
      *
      * @param enabled True if touch event have to be enabled, false else.
