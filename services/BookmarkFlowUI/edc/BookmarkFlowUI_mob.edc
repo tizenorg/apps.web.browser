@@ -1595,7 +1595,6 @@ collections {
                 action: STATE_SET "default" 0.0;
                 target: "input_cancel_bg";
             }
-
             program {
                 name: "folder_button_down";
                 source: "folder_button_click";
