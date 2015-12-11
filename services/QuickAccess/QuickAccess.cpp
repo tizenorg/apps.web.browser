@@ -76,6 +76,7 @@ QuickAccess::QuickAccess()
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
 #if PROFILE_MOBILE
+    , m_index(nullptr)
     , m_verticalScroller(nullptr)
     , m_centerLayout(nullptr)
     , m_bookmarkManagerTileclass(nullptr)
@@ -153,6 +154,18 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
 #if !PROFILE_MOBILE
     Evas_Object* topButtons = createTopButtons(layout);
     elm_object_part_content_set(layout, "buttons", topButtons);
+#else
+    m_index = elm_index_add(layout);
+    evas_object_size_hint_weight_set(m_index, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_index, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_style_set(m_index, "browser_pagecontrol");
+    elm_index_horizontal_set(m_index, EINA_TRUE);
+    elm_index_autohide_disabled_set(m_index, EINA_TRUE);
+    elm_object_part_content_set(layout, "buttons", m_index);
+
+    elm_index_item_append(m_index, "1", NULL, (void *) QuickAccess::MOST_VISITED_PAGE);
+    elm_index_item_append(m_index, "2", NULL, (void *) QuickAccess::BOOKMARK_PAGE);
+    elm_index_level_go(m_index, 0);
 #endif
 
     m_horizontalScroller = elm_scroller_add(layout);
@@ -439,6 +452,14 @@ void QuickAccess::addBookmarkManagerTile()
 {
     elm_gengrid_item_append(m_bookmarkGengrid, m_bookmarkManagerTileclass, this, _bookmark_manager_clicked, this);
 }
+
+void QuickAccess::setIndexPage(const int page) const
+{
+    Elm_Object_Item* it = elm_index_item_find(m_index, (void *)page);
+    if (it != NULL) {
+        elm_index_item_selected_set(it, EINA_TRUE);
+    }
+}
 #endif
 
 char* QuickAccess::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
@@ -510,8 +531,8 @@ void QuickAccess::showMostVisited()
 
 #if PROFILE_MOBILE
     elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
+    setIndexPage(QuickAccess::MOST_VISITED_PAGE);
 #endif
-
     if (m_historyItems.empty()) {
         setEmptyView(true);
         return;
@@ -535,6 +556,7 @@ void QuickAccess::showBookmarks()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
     elm_object_part_text_set(m_layout, "screen_title", "Bookmark");
+    setIndexPage(QuickAccess::BOOKMARK_PAGE);
 #else
     refreshFocusChain();
     elm_object_focus_set(m_bookmarksButton, true);
