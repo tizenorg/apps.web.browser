@@ -182,7 +182,7 @@ collections {
         programs{
           program {
               name: "mouse_in_close_click";
-              signal: "mouse,in";
+              signal: "mouse,down,*";
               source: "close_click";
               script {
                   emit("mouse_in_close_click", "");
@@ -190,7 +190,7 @@ collections {
           }
           program {
               name: "mouse_out_close_click";
-              signal: "mouse,out";
+              signal: "mouse,up,*";
               source: "close_click";
               script {
                   emit("mouse_out_close_click", "");

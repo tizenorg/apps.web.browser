@@ -49,6 +49,7 @@
 #include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
+#include "BookmarkDetailsUI.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
@@ -263,19 +264,20 @@ private:
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
     void closeBookmarkFlowUI();
+
     void showFindOnPageUI();
     void findWord(const struct FindData& fdata);
     void closeFindOnPageUI();
-#endif
-    void closeBookmarkManagerUI();
-    void showBookmarkManagerUI();
-#if PROFILE_MOBILE
-    void onBookmarkCustomFolderClicked(int);
-    void onBookmarkAllFolderClicked();
-    void onBookmarkMobileClicked();
+
     void registerHWKeyCallback();
     void unregisterHWKeyCallback();
 #endif
+    void closeBookmarkDetailsUI();
+    void closeBookmarkManagerUI();
+    void showBookmarkManagerUI();
+    void onBookmarkCustomFolderClicked(int);
+    void onBookmarkAllFolderClicked();
+    void onBookmarkMobileClicked();
 
     void showPopup(interfaces::AbstractPopup* popup);
     void dismissPopup(interfaces::AbstractPopup* popup);
@@ -310,6 +312,7 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+    std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
