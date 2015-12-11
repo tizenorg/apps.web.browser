@@ -291,7 +291,6 @@ void WebKitEngineService::_loadError()
     loadError();
 }
 
-
 void WebKitEngineService::_forwardEnableChanged(bool enable)
 {
     forwardEnableChanged(enable);
@@ -643,6 +642,11 @@ void WebKitEngineService::scrollView(const int& dx, const int& dy)
 }
 
 #if PROFILE_MOBILE
+void WebKitEngineService::findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data)
+{
+    m_currentWebView->findWord(word, forward, found_cb, data);
+}
+
 void WebKitEngineService::setTouchEvents(bool enabled)
 {
     M_ASSERT(m_currentWebView);

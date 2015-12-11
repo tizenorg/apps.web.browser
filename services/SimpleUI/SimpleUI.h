@@ -38,6 +38,7 @@
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #if PROFILE_MOBILE
+#include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
 #include "TextPopup_mob.h"
 #else
@@ -262,6 +263,9 @@ private:
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
     void closeBookmarkFlowUI();
+    void showFindOnPageUI();
+    void findWord(const struct FindData& fdata);
+    void closeFindOnPageUI();
 #endif
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
@@ -308,6 +312,7 @@ private:
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
+    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
