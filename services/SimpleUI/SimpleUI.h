@@ -54,6 +54,10 @@
 #include "SessionStorage.h"
 #include "StorageService.h"
 
+#if PROFILE_MOBILE
+#include "FindOnPageUI.h"
+#endif
+
 // other
 #include "Action.h"
 #include "InputPopup.h"
@@ -276,6 +280,12 @@ private:
     void showPopup(interfaces::AbstractPopup* popup);
     void dismissPopup(interfaces::AbstractPopup* popup);
 
+#if PROFILE_MOBILE
+    void showFindOnPageUI();
+    void findWord(const struct FindData& fdata);
+    void closeFindOnPageUI();
+#endif
+
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
@@ -314,6 +324,9 @@ private:
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
+#if PROFILE_MOBILE
+    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
+#endif
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::StorageService> m_storageService;
     storage::Session m_currentSession;

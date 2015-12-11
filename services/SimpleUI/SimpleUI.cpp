@@ -73,6 +73,9 @@ SimpleUI::SimpleUI()
     , m_historyUI()
     , m_settingsUI()
     , m_tabUI()
+#if PROFILE_MOBILE
+    , m_findOnPageUI()
+#endif
     , m_initialised(false)
     , m_wvIMEStatus(false)
     , m_ewkContext(ewk_context_new())
@@ -249,6 +252,13 @@ void SimpleUI::loadUIServices()
         <tizen_browser::base_ui::SettingsUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
 
+#if PROFILE_MOBILE
+    m_findOnPageUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::FindOnPageUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.findonpageui"));
+#endif
+
     m_moreMenuUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
@@ -340,6 +350,9 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this));
     m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this));
+#if PROFILE_MOBILE
+    m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
+#endif
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
@@ -354,6 +367,12 @@ void SimpleUI::connectUISignals()
     m_bookmarkFlowUI->editBookmark.connect(boost::bind(&SimpleUI::editBookmark, this, _1));
     m_bookmarkFlowUI->removeBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_bookmarkFlowUI->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+#endif
+
+#if PROFILE_MOBILE
+    M_ASSERT(m_findOnPageUI.get());
+    m_findOnPageUI->closeFindOnPageUIClicked.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
+    m_findOnPageUI->startFindingWord.connect(boost::bind(&SimpleUI::findWord, this, _1));
 #endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
@@ -439,6 +458,11 @@ void SimpleUI::initUIServices()
 #if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
+#endif
+
+#if PROFILE_MOBILE
+    M_ASSERT(m_findOnPageUI.get());
+    m_findOnPageUI->init(m_webPageUI->getContent());
 #endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
@@ -1051,6 +1075,28 @@ void SimpleUI::scrollView(const int& dx, const int& dy)
     m_webEngine->scrollView(dx, dy);
 }
 
+#if PROFILE_MOBILE
+void SimpleUI::showFindOnPageUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_findOnPageUI);
+    m_findOnPageUI->show();
+}
+
+void SimpleUI::findWord(const struct FindData& fdata)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webEngine->findWord(fdata.input_str, fdata.forward, fdata.func, fdata.data);
+}
+
+void SimpleUI::closeFindOnPageUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_findOnPageUI);
+    m_findOnPageUI->hideUI();
+}
+#endif
+
 void SimpleUI::showTabUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1238,6 +1284,7 @@ void SimpleUI::showMoreMenu()
     if (evas_object_visible_get(m_moreMenuUI->getContent()))
         m_moreMenuUI->hideUI();
     else {
+        m_moreMenuUI->shouldShowFindOnPage(!m_webEngine->getURI().empty());
         m_moreMenuUI->blockThumbnails(m_webPageUI->stateEquals(WPUState::QUICK_ACCESS));
         m_moreMenuUI->showUI();
     }
