@@ -46,7 +46,8 @@ enum ItemType {
     SHARE,
     HISTORY,
     BOOKMARK_MANAGER,
-    SETTINGS
+    SETTINGS,
+    FIND_ON_PAGE
 #else
 #ifdef READER_MODE_ENABLED
     READER_MODE,
@@ -94,6 +95,8 @@ public:
     void setFocus(Eina_Bool focusable);
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
+    void shouldShowFindOnPage(bool show);
+    boost::signals2::signal<void ()> findOnPageClicked;
 #endif
     void setIsBookmark(bool isBookmark);
 
@@ -149,6 +152,7 @@ private:
     Eina_Bool m_isBookmark;
     FocusManager m_focusManager;
 #if PROFILE_MOBILE
+    bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
 #endif
 };
