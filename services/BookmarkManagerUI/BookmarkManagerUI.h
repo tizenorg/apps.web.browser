@@ -43,35 +43,25 @@ public:
     void init(Evas_Object *parent);
     void showUI();
     void hideUI();
+    void hide();
     Evas_Object *getContent();
-
     virtual std::string getName();
-    void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addBookmarkItems(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
+
 #if PROFILE_MOBILE
-    Evas_Object* getDetailsContent();
     void addNewFolder();
+#endif
     void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void addMobileFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void addCustomFolders(services::SharedBookmarkFolderList folders);
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
-    void addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
-    void showDetailsUI();
-#endif
-    void hide();
-    void clearItems();
-    Evas_Object* createNoHistoryLabel();
-    void setEmptyGengrid(bool setEmpty);
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
-#if PROFILE_MOBILE
     boost::signals2::signal<void (int)> customFolderClicked;
-    boost::signals2::signal<void ()> mobileFolderClicked;
     boost::signals2::signal<void ()> allFolderClicked;
+    boost::signals2::signal<void ()> mobileFolderClicked;
+#if PROFILE_MOBILE
     boost::signals2::signal<void ()> newFolderItemClicked;
-    boost::signals2::signal<void (std::string)> editFolderButtonClicked;
-    boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
 #endif
 
 private:
@@ -84,72 +74,42 @@ private:
     } FolderData;
 
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
-    void createGenGrid();
-    void showTopContent();
-    void createGengridItemClasses();
-    Evas_Object *getGenList();
-    Evas_Object *getGenGrid();
-
-    static char*         _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
-    static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
-
-    static void _bookmarkItemClicked(void * data, Evas_Object * obj, void * event_info);
-    static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
-#if PROFILE_MOBILE
-    void addDetailsItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void addCustomFolder(FolderData*);
-    void createFolderDetailsGenGrid();
-    void createFolderDetailsTopContent();
-    Evas_Object* createFolderDetailsLayout(Evas_Object* parent);
-    void hideFolderDetailsUI();
-    void setDetailsEmptyGengrid(bool);
-    void createMenuDetails();
-    std::string getDetailFolderName();
-    static char* _grid_title_text_get(void *data, Evas_Object *obj, const char *part);
-    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
-    static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkNewFolderClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
-    static void _bookmarkMobileFolderClicked(void * data, Evas_Object *, void *);
-    static void _back_details_clicked_cb(void *data, Evas_Object *, void *);
-    static void _more_details_clicked_cb(void *data, Evas_Object *, void *);
-    static void _editButton_clicked(void *data, Evas_Object *, void *);
-    static void _deleteButton_clicked(void *data, Evas_Object *, void *);
-    static void _removeButton_clicked(void *data, Evas_Object *, void *);
+    void createTopContent();
+    void createGengrid();
+#if !PROFILE_MOBILE
+    void createBottomContent();
 #endif
-
-    static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
-    static char*        listItemTextGet(void *data, Evas_Object *, const char *part);
-
-    static void close_clicked_cb(void *data, Evas_Object *, void *);
-
+    void createGengridItemClasses();
+    void addCustomFolder(FolderData*);
     void createFocusVector();
 
-private:
-    Evas_Object *m_topContent;
-    Evas_Object *b_mm_layout;
-    Elm_Genlist_Item_Class *m_itemClass;
-    Evas_Object *m_gengrid;
-    Evas_Object *m_parent;
-    Elm_Gengrid_Item_Class * m_bookmark_item_class;
-    std::map<std::string,Elm_Object_Item*> m_map_bookmark;
-    std::string edjFilePath;
-    bool m_gengridSetup;
-    FocusManager m_focusManager;
+    static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
+    static void _bookmarkMobileFolderClicked(void * data, Evas_Object *, void *);
+    static void _close_clicked_cb(void *data, Evas_Object *, void *);
 #if PROFILE_MOBILE
-    Elm_Gengrid_Item_Class * m_details_item_class;
+    void createMenuDetails();
+    static void _bookmarkNewFolderClicked(void * data, Evas_Object *, void *);
+#endif
+    static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
+    static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
+
+    std::map<std::string,Elm_Object_Item*> m_map_bookmark;
+    std::string m_edjFilePath;
+    FocusManager m_focusManager;
+
+    Evas_Object *m_parent;
+    Evas_Object *b_mm_layout;
+    Evas_Object *m_topContent;
+    Evas_Object *m_gengrid;
+#if !PROFILE_MOBILE
+    Evas_Object *m_bottom_content;
+#else
     Elm_Gengrid_Item_Class * m_folder_new_item_class;
+#endif
     Elm_Gengrid_Item_Class * m_folder_all_item_class;
     Elm_Gengrid_Item_Class * m_folder_mobile_item_class;
     Elm_Gengrid_Item_Class * m_folder_custom_item_class;
-    Evas_Object *m_details_topContent;
-    Evas_Object *b_details_layout;
-    Evas_Object *m_details_gengrid;
-    Evas_Object *m_menu_details;
-    Evas_Object *m_editButton;
-    Evas_Object *m_deleteButton;
-    Evas_Object *m_removeButton;
-#endif
 };
 
 }
