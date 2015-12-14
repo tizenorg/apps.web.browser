@@ -226,10 +226,11 @@ private:
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
-    void _confirmationRequest(WebConfirmationPtr) ;
+    void _confirmationRequest(WebConfirmationPtr, void* data);
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void webViewClicked();
+    void _setCertificateData(const char* certData);
 #if PROFILE_MOBILE
     void setWebViewSettings(std::shared_ptr<WebView> webView);
 #endif
