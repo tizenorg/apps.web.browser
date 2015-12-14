@@ -44,6 +44,7 @@ BuildRequires:  browser-provider-devel
 BuildRequires:  pkgconfig(efl-extension)
 
 BuildRequires:  cmake
+BuildRequires:  gettext
 BuildRequires:  edje-tools
 BuildRequires:  boost-devel
 BuildRequires:  boost-thread
@@ -126,6 +127,7 @@ chmod -R 660 /opt/usr/data/webkit
 #%{_appdir}/res/*.png
 #%{_appdir}/res/*.ico
 %{_appdir}/res/certs/*
+%{_appdir}/res/locale/*/*/browser.mo
 
 #-----------------------------------
 %if %BUILD_UT == "ON"

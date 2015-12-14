@@ -8,8 +8,10 @@ SET(RESDIR "${PREFIX}/res" CACHE STRING "The path of resources")
 SET(WEBKITDIR "/opt/usr/data/webkit" CACHE STRING "The path of web engine")
 SET(EDJE_DIR "${RESDIR}/edje/")
 SET(CERTS_DIR "${RESDIR}/certs/")
+SET(LOCALE_DIR "${RESDIR}/locale/")
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+set(BIN_NAME "browser")
 
 if(NOT DEFINED PACKAGE_NAME)
     SET(PACKAGE_NAME "org.tizen.browser")
@@ -117,6 +119,9 @@ ADD_DEFINITIONS(-DEDJE_DIR=\"${EDJE_DIR}\")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+#resources
+add_subdirectory(res)
 
 #services
 add_subdirectory(services)

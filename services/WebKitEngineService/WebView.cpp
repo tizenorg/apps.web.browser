@@ -35,6 +35,7 @@
 #include <Elementary.h>
 #include <Evas.h>
 
+#include "app_i18n.h"
 #include "AbstractWebEngine/AbstractWebEngine.h"
 #include "app_common.h"
 #include "BrowserAssert.h"
@@ -952,17 +953,17 @@ void WebView::_show_context_menu_text_link(Ewk_Context_Menu *menu)
     }
 
     /* Open */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK, "Open", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK, _("IDS_BR_OPT_OPEN"), true);
     /* Open in new window */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in New tab", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in New tab", true);   //TODO: missing translation
     /* Copy link text */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_DATA, "Copy link text", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_DATA, "Copy link text", true);             //TODO: missing translation
     /* Copy link address */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link Address", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link Address", true);  //TODO: missing translation
     /* Share Link */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);                     //TODO: missing translation
     /* Save link */
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, "Save Link", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, _("IDS_BR_OPT_SAVE_LINK"), true);
 }
 
 void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
@@ -982,14 +983,14 @@ void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
     }
 
     /* Select all */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL, "Select all", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SELECT_ALL, _("IDS_BR_OPT_SELECT_ALL"), true);
     /* Copy */
     if (text_selected == true) {
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY, "Copy", true);
+        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY, _("IDS_BR_OPT_COPY"), true);
     }
     /* Share*/
     if (text_selected == true) {
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, "Share", true);
+        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, _("IDS_BR_OPT_SHARE"), true);
     }
 }
 
@@ -1005,13 +1006,13 @@ void WebView::_show_context_menu_image_only(Ewk_Context_Menu *menu)
     }
 
     /* Open in current Tab */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, "Open image", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, "Open image", true);               //TODO: missing translation
     /* Open in New Tab */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_NEW_WINDOW, "Open image in the new tab", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_NEW_WINDOW, "Open image in the new tab", true);    //TODO: missing translation
     /* Copy image */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, "Copy image", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_IMAGE"), true);
     /* Downlad image */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Download image", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Download image", true);                 //TODO: missing translation
 }
 
 void WebView::_show_context_menu_image_link(Ewk_Context_Menu *menu)
@@ -1026,19 +1027,19 @@ void WebView::_show_context_menu_image_link(Ewk_Context_Menu *menu)
     }
 
     /* Open in current window */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK, "Open", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK, _("IDS_BR_OPT_OPEN"), true);
     /* Open in new window */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in New tab", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, "Open in New tab", true);               //TODO: missing translation
     /* copy image */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, "Copy Image", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_IMAGE"), true);
     /* Copy link */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link Address", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, "Copy link Address", true);              //TODO: missing translation
     /* Share Link */
-     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);
+     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);                                //TODO: missing translation
     /* Save link */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, "Save Link", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, _("IDS_BR_OPT_SAVE_LINK"), true);
     /* Save image */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Download Image", true);
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, "Download Image", true);                 //TODO: missing translation
 
 }
 
