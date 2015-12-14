@@ -98,6 +98,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
+    webView->setCertificateData.connect(boost::bind(&WebEngineService::_setCertificateData, this, _1));
 }
 
 void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
@@ -572,6 +573,11 @@ void WebEngineService::_IMEStateChanged(bool enable)
 void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> image)
 {
     snapshotCaptured(image);
+}
+
+void WebEngineService::_setCertificateData(const char* certData)
+{
+    setCertificateData(certData);
 }
 
 #if PROFILE_MOBILE

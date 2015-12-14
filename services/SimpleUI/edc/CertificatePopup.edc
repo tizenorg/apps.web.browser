@@ -1,0 +1,266 @@
+#include "../../SettingsUI/edc/basic_button_mob.edc"
+
+collections {
+    styles {
+        style {
+            name: "auth_text_style";
+            base: "font=Sans:style=Regular font_size=32 color=#333333 wrap=word align=0.0 valign=1.0";
+        }
+        style {
+            name: "field_text_style";
+            base: "font=Sans:style=Bold font_size=32 color=#333333 wrap=word align=0.0 valign=1.0";
+        }
+        style {
+            name: "title_text_style";
+            base: "font=Sans font_size=28 color=#333333 wrap=word align=0.0 valign=1.0";
+        }
+        style {
+            name: "value_text_style";
+            base: "font=Sans font_size=26 color=#333333 wrap=word align=0.0 valign=1.0";
+        }
+        style {
+            name: "text_style";
+            base: "font=Sans font_size=30 color=#333333 wrap=word align=0.0 valign=1.0";
+        }
+    }
+    group {
+        name: "popup_content";
+        parts {
+            part {
+                name: "content_swallow";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 200;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                }
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/cert_auth_text/default";
+        data.item: "texts" "auth_text";
+        parts {
+            part {
+                name: "auth_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 100;
+                    max: 632 100;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        style: "auth_text_style";
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/cert_field_text/default";
+        data.item: "texts" "field_text";
+        parts {
+            part {
+                name: "field_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 70;
+                    max: 632 70;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        style: "field_text_style";
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/cert_title_value_text/default";
+        data.item: "texts" "title_text value_text";
+        parts {
+            part {
+                name: "title_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 50;
+                    max: 632 50;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        style: "title_text_style";
+                    }
+                }
+            }
+            part {
+                name: "value_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 612 70;
+                    max: 612 70;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.02 1.0; to: "title_text";}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        style: "value_text_style";
+                    }
+                }
+            }
+        }
+    }
+
+    group {
+        name: "status_content";
+        parts {
+            part {
+                name: "bg";
+                type : RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 200;
+                    max: 632 200;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0 0;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "main_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 632 100;
+                    max: 632 100;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.0 0.0; to: "bg";}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        style: "text_style";
+                    }
+                }
+            }
+            part {
+                name: "view_cert_bg";
+                type : RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 320 60;
+                    max: 320 60;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0.5 1;
+                    color: 56 154 233 255;
+                    rel1 { relative: 0.0 1.0; to: "main_text";}
+                    rel2 { relative: 1.0 1.0; to: "bg";}
+                }
+                description {
+                    state: "hide" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part {
+                name: "view_cert_text";
+                type: TEXT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 320 60;
+                    max: 320 60;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0; to: "view_cert_bg";}
+                    rel2 { relative: 1.0 1.0; to: "view_cert_bg";}
+                    text {
+                        text: "View Certificate";
+                        font: "Sans";
+                        size: 30;
+                        align: 0.5 0.5;
+                    }
+                }
+                description {
+                    state: "hide" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part {
+                name: "view_cert_button";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 320 60;
+                    max: 320 60;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 0 0 0 0;
+                    rel1 { relative: 0.0 0.0; to: "view_cert_bg";}
+                    rel2 { relative: 1.0 1.0; to: "view_cert_bg";}
+                }
+                description {
+                    state: "hide" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "show_view_cert_button";
+                signal: "show,view,cert,signal";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "view_cert_button";
+                target: "view_cert_text";
+                target: "view_cert_bg";
+            }
+            program {
+                name: "hide_view_cert_button";
+                signal: "hide,view,cert,signal";
+                source: "";
+                action: STATE_SET "hide" 0.0;
+                target: "view_cert_button";
+                target: "view_cert_text";
+                target: "view_cert_bg";
+            }
+        }
+    }
+}
