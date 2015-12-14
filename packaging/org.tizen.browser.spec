@@ -20,6 +20,8 @@ BuildRequires:  pkgconfig(utilX)
 %endif
 
 BuildRequires:  pkgconfig(sqlite3)
+BuildRequires:  pkgconfig(db-util)
+BuildRequires:  pkgconfig(libssl)
 BuildRequires:  pkgconfig(ecore-evas)
 BuildRequires:  pkgconfig(ecore-imf)
 BuildRequires:  pkgconfig(ecore-input)
