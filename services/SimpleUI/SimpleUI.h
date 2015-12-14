@@ -41,6 +41,7 @@
 #include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
 #include "TextPopup_mob.h"
+#include "ContentPopup_mob.h"
 #else
 #include "SettingsUI.h"
 #endif
@@ -62,6 +63,7 @@
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
 #include "ViewManager.h"
+#include "CertificateContents.h"
 #include "MenuButton.h"
 
 namespace tizen_browser{
@@ -182,6 +184,7 @@ private:
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick();
@@ -263,6 +266,7 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
+    void showCertificatePopup();
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
     void closeBookmarkFlowUI();
@@ -305,6 +309,13 @@ private:
 
     void searchWebPage(std::string &text, int flags);
 
+    void setCertificatePem(const char* pem);
+    void loadHostCertInfo();
+    CertificateContents::HOST_TYPE isCertExistForHost(const char *host);
+    void saveCertificateInfo(const char *pem, const char *host, CertificateContents::HOST_TYPE type);
+    void deleteAllSavedCertificates(void);
+    void updateCertificateInfo(const char *pem, const char *host, CertificateContents::HOST_TYPE type);
+
     std::string edjePath(const std::string &);
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
@@ -320,6 +331,7 @@ private:
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
+    std::shared_ptr<CertificateContents> m_certificateContents;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
@@ -334,6 +346,8 @@ private:
     int m_favoritesLimit;
     bool m_wvIMEStatus;
     std::string m_folder_name;
+
+    std::map<std::string, CertificateContents::HOST_TYPE> m_host_cert_info;
 
     //helper object used to view management
     ViewManager m_viewManager;
