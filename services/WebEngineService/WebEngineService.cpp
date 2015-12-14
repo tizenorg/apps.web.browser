@@ -95,7 +95,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
     webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+    webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1, _2));
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
 }
@@ -113,7 +113,7 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->loadError.disconnect(boost::bind(&WebEngineService::_loadError, this));
     webView->forwardEnableChanged.disconnect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.disconnect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+    webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1, _2));
     webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
 }
@@ -299,10 +299,10 @@ void WebEngineService::_loadProgress(double d)
     loadProgress(d);
 }
 
-void WebEngineService::_confirmationRequest(WebConfirmationPtr c)
+void WebEngineService::_confirmationRequest(WebConfirmationPtr c, void* data)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    confirmationRequest(c);
+    confirmationRequest(c, data);
 }
 
 int WebEngineService::tabsCount() const

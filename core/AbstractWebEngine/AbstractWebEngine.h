@@ -445,7 +445,7 @@ public:
     /**
      * Confirmation Request
      */
-    boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;
+    boost::signals2::signal<void (basic_webengine::WebConfirmationPtr, void* data)> confirmationRequest;
 
     /**
      * Web Engine area clicked
