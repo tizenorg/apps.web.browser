@@ -130,9 +130,16 @@ public:
     std::string getPem() const {
     	return m_pem;
     }
+    void setData(void* data) {
+        m_data = data;
+    }
+    void* getData() const {
+        return m_data;
+    }
 
 private:
     std::string m_pem;
+    void* m_data;
 };
 
 class ScriptPrompt;
