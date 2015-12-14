@@ -440,7 +440,7 @@ public:
     /**
      * Confirmation Request
      */
-    boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;
+    boost::signals2::signal<void (basic_webengine::WebConfirmationPtr, void* data)> confirmationRequest;
 
     /**
      * Web Engine area clicked
@@ -472,6 +472,7 @@ public:
      * Generate id for the new tab.
      */
     boost::signals2::signal<void()> createTabId;
+    boost::signals2::signal<void (const char*)> setCertificateData;
 
     /**
      * Async signal to save snapshot after it is generated.

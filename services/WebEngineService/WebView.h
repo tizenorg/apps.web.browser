@@ -252,13 +252,14 @@ public:
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
 
-    boost::signals2::signal<void (WebConfirmationPtr)> confirmationRequest;
+    boost::signals2::signal<void (WebConfirmationPtr, void*)> confirmationRequest;
 
     boost::signals2::signal<void ()> ewkViewClicked;
 
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
     boost::signals2::signal<void ()> switchToWebPage;
+    boost::signals2::signal<void (const char*)> setCertificateData;
 
 private:
     void registerCallbacks();
@@ -307,6 +308,7 @@ private:
     static void __notificationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __authenticationChallenge(void * data, Evas_Object * obj, void * event_info);
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
+    static void __setCertificateData(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
 
