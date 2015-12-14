@@ -41,6 +41,7 @@
 #include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
 #include "TextPopup_mob.h"
+#include "ContentPopup_mob.h"
 #else
 #include "SettingsUI.h"
 #endif
@@ -63,6 +64,7 @@
 #include "WebConfirmation.h"
 #include "ConfigTypedef.h"
 #include "ViewManager.h"
+#include "CertificateContents.h"
 #include "MenuButton.h"
 
 namespace tizen_browser{
@@ -178,8 +180,10 @@ private:
     void onGenerateThumb(basic_webengine::TabId tabId);
     void onCreateTabId();
 
-    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
+    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation, void* data);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void setCertificateData(const char* certData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick();
@@ -316,6 +320,7 @@ private:
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
+    std::shared_ptr<CertificateContents> m_certificateContents;
 #endif
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
