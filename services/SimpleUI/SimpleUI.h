@@ -41,6 +41,7 @@
 #include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
 #include "TextPopup_mob.h"
+#include "ContentPopup_mob.h"
 #else
 #include "SettingsUI.h"
 #endif
@@ -62,6 +63,7 @@
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
 #include "ViewManager.h"
+#include "CertificateContents.h"
 #include "MenuButton.h"
 
 namespace tizen_browser{
@@ -105,6 +107,7 @@ private:
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();
+    void updateSecureIcon();
 
     void loadError();
     void setErrorButtons();
@@ -182,6 +185,7 @@ private:
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick();
@@ -263,6 +267,7 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
+    void showCertificatePopup();
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
     void closeBookmarkFlowUI();
@@ -306,6 +311,15 @@ private:
 
     void searchWebPage(std::string &text, int flags);
 
+    typedef CertificateContents::CurrentTabCertificateData TabCertificateData;
+    TabCertificateData* getCertificateDataForTab(const tizen_browser::basic_webengine::TabId& tabId);
+
+    void setCertificatePem(const char* pem);
+    void loadHostCertInfoFromDB();
+    void saveCertificateInfo(const std::string&, const std::string&, CertificateContents::HOST_TYPE type);
+    void deleteAllSavedCertificates(void);
+    void updateCertificateInfo(const std::string&, const std::string&, CertificateContents::HOST_TYPE type);
+
     std::string edjePath(const std::string &);
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
@@ -321,6 +335,7 @@ private:
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
+    std::shared_ptr<CertificateContents> m_certificateContents;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
@@ -335,6 +350,8 @@ private:
     int m_favoritesLimit;
     bool m_wvIMEStatus;
     std::string m_folder_name;
+
+    std::map<tizen_browser::basic_webengine::TabId, TabCertificateData> m_tabCertificateMap;
 
     //helper object used to view management
     ViewManager m_viewManager;
