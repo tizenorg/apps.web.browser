@@ -1,0 +1,377 @@
+#include "../../../core/Tools/edc/InvisibleButton.edc"
+#define WIDTH 720
+#define HEIGHT 1280
+
+collections {
+   styles {
+      style {
+         name: "text_style";
+         base: "font=Sans font_size=38 color=#333333 wrap=word align=0.0 valign=1.0";
+      }
+      style {
+         name: "title_style";
+         base: "font=Sans font_size=45 color=#389AE9 wrap=word align=0.5";
+      }
+      style {
+         name: "button_style";
+         base: "font=Sans font_size=40 color=#141414 wrap=word align=0.5";
+      }
+   }
+
+   group {
+      name: "content_popup_layout";
+      data.item: "contents" "ok_button_click cancel_button_click";
+      parts {
+
+            part {
+                name: "bg";
+                type: RECT;
+                mouse_events: 1;
+                scale: 1;
+                description { state: "default" 0.0;
+                    color: 0 0 0 120;
+                    visible: 1;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    align: 0.0 0.0;
+                    rel1 {relative: 0.0 0.0;}
+                    rel2 {relative: 1.0 1.0;}
+                }
+            }
+
+            part {
+                name: "popup_rect";
+                type: RECT;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 230 230 230 255;
+                    min: 720 440;
+                    max: 720 440;
+                    visible: 1;
+                    align: 0.5 1.0;
+                    rel2 {
+                        to: "bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "enlarge" 0.0;
+                    inherit: "default" 0.0;
+                    min: 720 640;
+                    max: 720 640;
+                }
+            }
+            part {
+                name: "popup_title_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 720 101;
+                    max: 720 101;
+                    align: 0 0;
+                    fixed: 1 1;
+                    color: 255 255 255 255;
+                    rel1 {
+                        to: "popup_rect";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "popup_rect";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "popup_title";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 520 101;
+                    max: 520 101;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    rel1 {
+                        to: "popup_title_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "popup_title_bg";
+                        relative: 1.0 1.0;
+                    }
+                    text {
+                        style: "title_style";
+                    }
+                }
+            }
+            part {
+                name: "popup_content_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 720 219;
+                    max: 720 219;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    color: 255 255 255 255;
+                    rel1 {
+                        to: "popup_title_bg";
+                        relative: 0.0 1.0;
+                    }
+                    rel2 {
+                        to: "popup_title_bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "enlarge" 0.0;
+                    inherit: "default" 0.0;
+                    min: 720 419;
+                    max: 720 419;
+                }
+            }
+            part {
+                name: "popup_content";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 632 200;
+                    max: 632 200;
+                    align: 0.5 0.0;
+                    fixed: 1 1;
+                    rel1 {
+                        to: "popup_content_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "popup_content_bg";
+                    }
+                }
+                description {
+                    state: "enlarge" 0.0;
+                    inherit: "default" 0.0;
+                    min: 632 400;
+                    max: 632 400;
+                }
+            }
+            part {
+                name: "cancel_button_bg";
+                type: RECT;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 360 120;
+                    max: 360 120;
+                    align: 0 0;
+                    fixed: 1 1;
+                    color: 0 0 0 38;
+                    rel1 {
+                        to: "popup_content_bg";
+                        relative: 0.0 1.0;
+                    }
+                    rel2 {
+                        to: "popup_content_bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "cancel_button_insider";
+                type: RECT;
+                repeat_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 358 118;
+                    max: 358 118;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    color: 244 244 244 255;
+                    rel1 {
+                        to: "cancel_button_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "cancel_button_bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color: 224 237 251 255;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "cancel_button_text";
+                type: TEXTBLOCK;
+                repeat_events: 1;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 360 120;
+                    max: 360 120;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    rel1 {
+                        to: "cancel_button_insider";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "cancel_button_insider";
+                        relative: 1.0 1.0;
+                    }
+                    text {
+                        style: "button_style";
+                    }
+                }
+            }
+            part {
+                name: "ok_button_bg";
+                type: RECT;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 360 120;
+                    max: 360 120;
+                    align: 0 0;
+                    fixed: 1 1;
+                    color: 0 0 0 38;
+                    rel1 { to: "cancel_button_bg"; relative: 1.0 0.0;}
+                    rel2 { to: "cancel_button_bg"; relative: 1.0 1.0;}
+                }
+            }
+            part {
+                name: "ok_button_insider";
+                type: RECT;
+                repeat_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: 358 118;
+                    max: 358 118;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    color: 244 244 244 255;
+                    rel1 {
+                        to: "ok_button_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "ok_button_bg";
+                        relative: 1.0 1.0;
+                    }
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color: 224 237 251 255;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "ok_button_text";
+                type: TEXTBLOCK;
+                repeat_events: 1;
+                scale: 1;
+                description {
+                    visible: 1;
+                    min: 360 120;
+                    max: 360 120;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    rel1 {
+                        to: "ok_button_insider";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "ok_button_insider";
+                        relative: 1.0 1.0;
+                    }
+                    text {
+                        style: "button_style";
+                    }
+                }
+            }
+            part {
+                name: "cancel_button_click";
+                type: SWALLOW;
+                scale:1;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "cancel_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "cancel_button_bg";}
+                }
+            }
+            part {
+                name: "ok_button_click";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "ok_button_bg";}
+                    rel2 { relative: 1.0 1.0; to: "ok_button_bg";}
+                }
+            }
+      }
+      programs{
+         program {
+              name: "mouse_down_ok_button_click";
+              signal: "mouse,down,1";
+              source: "ok_button_bg";
+              action: STATE_SET "highlight" 0.0;
+              target: "ok_button_insider";
+           }
+          program {
+              name: "mouse_up_ok_button_click";
+              signal: "mouse,up,1";
+              source: "ok_button_bg";
+              action: STATE_SET "default" 0.0;
+              target: "ok_button_insider";
+          }
+          program {
+               name: "mouse_down_cancel_button_click";
+               signal: "mouse,down,1";
+               source: "cancel_button_bg";
+               action: STATE_SET "highlight" 0.0;
+               target: "cancel_button_insider";
+            }
+           program {
+               name: "mouse_up_cancel_button_click";
+               signal: "mouse,up,1";
+               source: "cancel_button_bg";
+               action: STATE_SET "default" 0.0;
+               target: "cancel_button_insider";
+           }
+           program {
+               name: "enlarge_popup";
+               signal: "enlarge,popup";
+               source: "";
+               action: STATE_SET "enlarge" 0.0;
+               target: "popup_rect";
+               target: "popup_content_bg";
+               target: "popup_content";
+           }
+        }
+    }
+}

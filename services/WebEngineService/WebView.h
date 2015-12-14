@@ -251,7 +251,7 @@ public:
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
 
-    boost::signals2::signal<void (WebConfirmationPtr)> confirmationRequest;
+    boost::signals2::signal<void (WebConfirmationPtr, void*)> confirmationRequest;
 
     boost::signals2::signal<void ()> ewkViewClicked;
 
