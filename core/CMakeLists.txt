@@ -114,7 +114,6 @@ install(TARGETS browserCore
 
 
 ### browser binary
-set(BIN_NAME "browser")
 add_executable(${BIN_NAME} main.cpp)
 add_dependencies(${BIN_NAME} browserCore)
 target_link_libraries(${BIN_NAME} browserCore)
