@@ -218,9 +218,10 @@ void MoreMenuUI::createGengrid()
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
 }
 
-void MoreMenuUI::showCurrentTab()
+void MoreMenuUI::showCurrentTab(bool isHTTPS, bool isUnsecure)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[isHTPPS : %d, isUnsecure : %d] ", isHTTPS, isUnsecure);
     m_current_tab_bar = elm_layout_add(m_mm_layout);
     elm_layout_file_set(m_current_tab_bar, m_edjFilePath.c_str(), "current_tab_layout");
     evas_object_size_hint_weight_set(m_current_tab_bar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -232,6 +233,16 @@ void MoreMenuUI::showCurrentTab()
     elm_object_part_content_set(m_current_tab_bar, "close_click", button);
     evas_object_show(button);
     elm_object_focus_set(button, EINA_TRUE);
+
+    if (isHTTPS) {
+        m_certButton = elm_button_add(m_mm_layout);
+        elm_object_style_set(m_certButton, "hidden_button");
+        evas_object_smart_callback_add(m_certButton, "clicked", _viewCertButton_clicked, this);
+        elm_object_part_content_set(m_current_tab_bar, "view_cert_click", m_certButton);
+        elm_object_signal_emit(m_current_tab_bar, "show,view,cert,button", "");
+        if (isUnsecure)
+             elm_object_signal_emit(m_current_tab_bar, "show,unsecure,icon", "");
+    }
 
     m_bookmarkButton = elm_button_add(m_mm_layout);
     elm_object_style_set(m_bookmarkButton, "hidden_button");
@@ -356,6 +367,15 @@ void MoreMenuUI::_timeout(void *data, Evas_Object*, void*)
     MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
     elm_object_part_text_set(moreMenuUI->m_current_tab_bar, "toast_text", "");
     evas_object_del(moreMenuUI->m_toastPopup);
+}
+
+void MoreMenuUI::_viewCertButton_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(data) {
+        MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
+        moreMenuUI->viewCertificateClicked();
+    }
 }
 
 void MoreMenuUI::_bookmarkButton_clicked(void* data, Evas_Object*, void*)
@@ -741,6 +761,7 @@ void MoreMenuUI::blockThumbnails(bool blockThumbnails)
     m_blockThumbnails = blockThumbnails;
 }
 #endif
+
 void MoreMenuUI::setIsBookmark(bool isBookmark)
 {
     m_isBookmark = isBookmark ? EINA_TRUE : EINA_FALSE;
