@@ -226,7 +226,7 @@ private:
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
-    void _confirmationRequest(WebConfirmationPtr) ;
+    void _confirmationRequest(WebConfirmationPtr, void* data);
     void _IMEStateChanged(bool);
     void webViewClicked();
 #if PROFILE_MOBILE

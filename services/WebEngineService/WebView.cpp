@@ -423,21 +423,20 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
         // The below line doesn't serve any purpose now, but it may become
         // relevant when implementing https://bugs.tizen.org/jira/browse/TT-229
-        // Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
+        Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
+        Eina_Bool result;
 
         if (cert->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            //FIXME: do something
-            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+            result = EINA_TRUE;
         else if (cert->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            //FIXME: do something else
-            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+            result = EINA_FALSE;
         else {
             BROWSER_LOGE("Wrong ConfirmationResult");
             break;
         }
 
         // set certificate confirmation
-        BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+        ewk_certificate_policy_decision_allowed_set(request, result);
         ewk_view_resume(m_ewkView);
 
         // remove from map
@@ -719,7 +718,7 @@ void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj *
     // store
     self->m_confirmationGeolocationMap[c] = request;
 
-    self->confirmationRequest(c);
+    self->confirmationRequest(c, (void*)request);
 }
 
 void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
@@ -743,7 +742,7 @@ void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */,
     // store
     self->m_confirmationUserMediaMap[c] = request;
 
-    self->confirmationRequest(c);
+    self->confirmationRequest(c, (void*)request);
 }
 
 void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
@@ -767,7 +766,7 @@ void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj 
     // store
     self->m_confirmationNotificationMap[c] = request;
 
-    self->confirmationRequest(c);
+    self->confirmationRequest(c, (void*)request);
 }
 
 void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, void * event_info)
@@ -792,7 +791,7 @@ void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, vo
 
     self->m_confirmationAuthenticationMap[c] = request;
 
-    self->confirmationRequest(c);
+    self->confirmationRequest(c, (void*)request);
 }
 
 void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj */, void * event_info)
@@ -815,12 +814,12 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
 
     CertificateConfirmationPtr c = std::make_shared<CertificateConfirmation>(self->m_tabId, url, message);
 
-    c->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
+    //c->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
 
     // store
     self->m_confirmationCertificatenMap[c] = request;
 
-    self->confirmationRequest(c);
+    self->confirmationRequest(c, (void*)request);
 }
 
 #if PROFILE_MOBILE
