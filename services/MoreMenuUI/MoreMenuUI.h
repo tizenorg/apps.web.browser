@@ -98,8 +98,10 @@ public:
     void shouldShowFindOnPage(bool show);
     boost::signals2::signal<void ()> findOnPageClicked;
 #endif
+    void shouldShowViewCertificateButton(bool show);
     void setIsBookmark(bool isBookmark);
 
+    boost::signals2::signal<void ()> viewCertificateClicked;
     boost::signals2::signal<void (int)> addToBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
@@ -128,6 +130,7 @@ private:
 
     void setDocIcon();
 
+    static void _viewCertButton_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _bookmarkButton_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
 
@@ -141,6 +144,8 @@ private:
     Evas_Object *m_parent;
     Evas_Object *m_toastPopup;
     Evas_Object *m_icon;
+    Evas_Object *m_secureIcon;
+    Evas_Object *m_certButton;
     Evas_Object *m_bookmarkIcon;
     Evas_Object *m_bookmarkButton;
     Elm_Gengrid_Item_Class * m_item_class;
@@ -148,6 +153,7 @@ private:
     std::string m_edjFilePath;
     bool m_gengridSetup;
     bool m_desktopMode;
+    bool m_shouldShowViewCertificateButton;
     Eina_Bool m_isBookmark;
     FocusManager m_focusManager;
 #if PROFILE_MOBILE
