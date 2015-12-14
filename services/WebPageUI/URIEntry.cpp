@@ -81,6 +81,7 @@ Evas_Object* URIEntry::getContent()
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
 #if PROFILE_MOBILE
         elm_object_signal_callback_add(m_entry_layout,  "cancel_icon_clicked", "ui", _uri_cancel_icon_clicked, this);
+        elm_object_signal_callback_add(m_entry_layout,  "secure_icon_clicked", "ui", _uri_secure_icon_clicked, this);
 #endif
 
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
@@ -203,6 +204,7 @@ void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* e
     URIEntry* self = static_cast<URIEntry*>(data);
 #if PROFILE_MOBILE
     self->showCancelIcon();
+    self->showSecureIcon(false, false);
 #endif
     // TODO This line should be uncommented when input events will be fixed
 //    elm_entry_select_none(self->m_entry);
@@ -428,6 +430,13 @@ void URIEntry::_uri_cancel_icon_clicked(void* data, Evas_Object* /*obj*/, const 
     elm_object_signal_emit(self->m_entry_layout, "hide_cancel_icon", "ui");
 }
 
+void URIEntry::_uri_secure_icon_clicked(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    URIEntry* self = static_cast<URIEntry*>(data);
+    self->secureIconClicked();
+}
+
 void URIEntry::showCancelIcon()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -436,6 +445,21 @@ void URIEntry::showCancelIcon()
         elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
     else
         elm_object_signal_emit(m_entry_layout, "hide_cancel_icon", "ui");
+}
+
+void URIEntry::showSecureIcon(bool show, bool secure)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[ show : %d, secure : %d] ", show, secure);
+    if (show) {
+        if (secure)
+            elm_object_signal_emit(m_entry_layout, "show,secure,icon", "");
+        else
+            elm_object_signal_emit(m_entry_layout, "show,unsecure,icon", "");
+    }
+    else {
+        elm_object_signal_emit(m_entry_layout, "hide,secure,icon", "");
+    }
 }
 #endif
 
