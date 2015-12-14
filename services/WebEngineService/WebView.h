@@ -258,6 +258,7 @@ public:
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
     boost::signals2::signal<void ()> switchToWebPage;
+    boost::signals2::signal<void (const char*)> setCertificatePem;
 
 private:
     void registerCallbacks();
@@ -306,6 +307,7 @@ private:
     static void __notificationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __authenticationChallenge(void * data, Evas_Object * obj, void * event_info);
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
+    static void __setCertificatePem(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
 

@@ -66,6 +66,7 @@ SimpleUI::SimpleUI()
     , m_bookmarkFlowUI()
     , m_findOnPageUI()
 #endif
+    , m_certificateContents(make_shared<CertificateContents>())
     , m_bookmarkManagerUI()
     , m_quickAccess()
     , m_historyUI()
@@ -335,6 +336,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
+    m_moreMenuUI->viewCertificateClicked.connect(boost::bind(&SimpleUI::showCertificatePopup, this));
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
 #if PROFILE_MOBILE
     m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
@@ -449,6 +451,9 @@ void SimpleUI::initUIServices()
     m_findOnPageUI->init(m_webPageUI->getContent());
 #endif
 
+    M_ASSERT(m_certificateContents.get());
+    m_certificateContents->init(m_webPageUI->getContent());
+
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager.getContent());
     m_bookmarkManagerUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
@@ -503,6 +508,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
+    m_webEngine->setCertificatePem.connect(boost::bind(&SimpleUI::setCertificatePem, this, _1));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -1014,6 +1020,13 @@ void SimpleUI::loadFinished()
                                             QuickAccess::MAX_THUMBNAIL_HEIGHT));
     m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
+
+    CertificateContents::HOST_TYPE type = CertificateContents::isCertExistForHost(m_webEngine->getURI().c_str());
+    BROWSER_LOGD("Host type = %d", type);
+    if (type == CertificateContents::SECURE_HOST)
+        m_certificateContents->setCertType(CertificateContents::VALID);
+    else if (type == CertificateContents::UNSECURE_HOST_ALLOWED || type == CertificateContents::UNSECURE_HOST_UNKNOWN)
+        m_certificateContents->setCertType(CertificateContents::INVALID);
 }
 
 void SimpleUI::loadStopped()
@@ -1212,61 +1225,183 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
     {
         case basic_webengine::WebConfirmation::ConfirmationType::Authentication:
         {
-        if (m_webPageUI->stateEquals(WPUState::MAIN_WEB_PAGE))
-        {
-        basic_webengine::AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<basic_webengine::AuthenticationConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
+            if (m_webPageUI->stateEquals(WPUState::MAIN_WEB_PAGE)) {
+                basic_webengine::AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<basic_webengine::AuthenticationConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
 
-        Evas_Object *popup_content = elm_layout_add(m_webPageUI->getContent());
-        std::string edjFilePath = EDJE_DIR;
-        edjFilePath.append("SimpleUI/AuthenticationPopup.edj");
-        Eina_Bool layoutSetResult = elm_layout_file_set(popup_content, edjFilePath.c_str(), "authentication_popup");
-        if (!layoutSetResult)
-            throw std::runtime_error("Layout file not found: " + edjFilePath);
+                Evas_Object *popup_content = elm_layout_add(m_webPageUI->getContent());
+                std::string edjFilePath = EDJE_DIR;
+                edjFilePath.append("SimpleUI/AuthenticationPopup.edj");
+                Eina_Bool layoutSetResult = elm_layout_file_set(popup_content, edjFilePath.c_str(), "authentication_popup");
+                if (!layoutSetResult)
+                    throw std::runtime_error("Layout file not found: " + edjFilePath);
 
-        elm_object_translatable_part_text_set(popup_content, "login_label", "Login");
-        elm_object_translatable_part_text_set(popup_content, "password_label", "Password");
+#if PLATFORM(TIZEN)
+                elm_object_translatable_part_text_set(popup_content, "login_label", "Login");
+                elm_object_translatable_part_text_set(popup_content, "password_label", "Password");
+#else
+                elm_object_part_text_set(popup_content, "login_label", "Login");
+                elm_object_part_text_set(popup_content, "password_label", "Password");
+#endif
+                std::string entryTextStyle = "DEFAULT='font=Sans:style=Regular font_size=20 ellipsis=0.0'";
+                Evas_Object *loginEntry = elm_entry_add(popup_content);
+                elm_entry_text_style_user_push(loginEntry, entryTextStyle.c_str());
+                elm_object_part_content_set(popup_content, "login", loginEntry);
 
-        std::string entryTextStyle = "DEFAULT='font=Sans:style=Regular font_size=20 ellipsis=0.0'";
-        Evas_Object *loginEntry = elm_entry_add(popup_content);
-        elm_entry_text_style_user_push(loginEntry, entryTextStyle.c_str());
-        elm_object_part_content_set(popup_content, "login", loginEntry);
+                Evas_Object *passwordEntry = elm_entry_add(popup_content);
+                elm_entry_password_set(passwordEntry, EINA_TRUE);
+                elm_object_part_content_set(popup_content, "password", passwordEntry);
 
-        Evas_Object *passwordEntry = elm_entry_add(popup_content);
-        elm_entry_password_set(passwordEntry, EINA_TRUE);
-        elm_object_part_content_set(popup_content, "password", passwordEntry);
-
-        SimplePopup *popup = SimplePopup::createPopup(m_viewManager.getContent());
-        popup->setTitle("Authentication request");
-        popup->addButton(OK);
-        popup->addButton(CANCEL);
-        popup->setContent(popup_content);
-        std::shared_ptr<AuthenticationPopupData> popupData = std::make_shared<AuthenticationPopupData>();
-        popupData->loginEntry = loginEntry;
-        popupData->passwordEntry = passwordEntry;
-        popupData->auth = auth;
-        popup->setData(popupData);
-        popup->buttonClicked.connect(boost::bind(&SimpleUI::authPopupButtonClicked, this, _1, _2));
-        popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
-        popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
-        popup->show();
-        break;
-        }
+                SimplePopup *popup = SimplePopup::createPopup(m_viewManager.getContent());
+                popup->setTitle("Authentication request");
+                popup->addButton(OK);
+                popup->addButton(CANCEL);
+                popup->setContent(popup_content);
+                std::shared_ptr<AuthenticationPopupData> popupData = std::make_shared<AuthenticationPopupData>();
+                popupData->loginEntry = loginEntry;
+                popupData->passwordEntry = passwordEntry;
+                popupData->auth = auth;
+                popup->setData(popupData);
+                popup->buttonClicked.connect(boost::bind(&SimpleUI::authPopupButtonClicked, this, _1, _2));
+                popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+                popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+                popup->show();
+                break;
+            }
         }
         case basic_webengine::WebConfirmation::ConfirmationType::CertificateConfirmation:
+        {
+            if (m_webPageUI->stateEquals(WPUState::MAIN_WEB_PAGE)) {
+                basic_webengine::CertificateConfirmationPtr cert = std::dynamic_pointer_cast<basic_webengine::CertificateConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
+
+                CertificateContents::HOST_TYPE type = CertificateContents::isCertExistForHost(cert->getURI().c_str());
+                if (type == CertificateContents::UNSECURE_HOST_ALLOWED) {
+                    webConfirmation->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
+                    m_webEngine->confirmationResult(webConfirmation);
+                    break;
+                }
+                else if(type != CertificateContents::UNSECURE_HOST_ASK) {
+                    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+                    Ewk_Certificate_Policy_Decision* policy = reinterpret_cast<Ewk_Certificate_Policy_Decision*>(cert->getData());
+#if PROFILE_MOBILE
+                    ContentPopup* popup = ContentPopup::createPopup(m_viewManager.getContent());
+                    m_certificateContents->setOwnerPopup(popup);
+                    m_certificateContents->setCertPolicy(policy);
+                    popup->setButtonCount(3);
+                    popup->setRightButton(CONTINUE);
+                    popup->setLeftButton(BACK_TO_SAFETY);
+                    popup->setMiddleButton(VIEW_CERTIFICATE);
+                    std::shared_ptr<CertificatePopupData> popupData = std::make_shared<CertificatePopupData>();
+                    popupData->cert = cert;
+                    popup->buttonClicked.connect(boost::bind(&SimpleUI::certPopupButtonClicked, this, _1, popupData));
+                    popup->setTitle("Certificate confirmation");
+                    popup->setContent(m_certificateContents->getContent(true));
+                    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+                    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+                    popup->show();
+#else
+                    M_UNUSED(policy);
+#endif
+
+                }
+            }
+            break;
+        }
         case basic_webengine::WebConfirmation::ConfirmationType::Geolocation:
         case basic_webengine::WebConfirmation::ConfirmationType::UserMedia:
         case basic_webengine::WebConfirmation::ConfirmationType::Notification:
         {
-        // Implicitly accepted
-        BROWSER_LOGE("NOT IMPLEMENTED: popups to confirm Ceritificate, Geolocation, UserMedia, Notification");
-        webConfirmation->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
-        m_webEngine->confirmationResult(webConfirmation);
-        break;
+            // Implicitly accepted
+            BROWSER_LOGE("NOT IMPLEMENTED: popups to confirm Geolocation, UserMedia, Notification");
+            webConfirmation->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
+            m_webEngine->confirmationResult(webConfirmation);
+            break;
         }
 
-    default:
-        break;
+        default:
+            break;
     }
+}
+
+void SimpleUI::setCertificatePem(const char* pem)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_certificateContents->setCertificatePem(pem);
+    std::string uri = m_webEngine->getURI();
+    if (CertificateContents::isCertExistForHost(uri) == CertificateContents::HOST_ABSENT)
+        saveCertificateInfo(pem, uri, CertificateContents::SECURE_HOST);
+    else
+        updateCertificateInfo(pem, uri, CertificateContents::SECURE_HOST);
+
+    TabCertificateData data = { CertificateContents::VALID, pem, NULL };
+    m_tabCertificateMap[m_webEngine->currentTabId()] = data;
+}
+
+void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::shared_ptr<CertificatePopupData> certPopupData = std::dynamic_pointer_cast<CertificatePopupData, PopupData>(popupData);
+    switch(button) {
+        case OK:
+            m_certificateContents->getOwnerPopup()->dismiss();
+            break;
+        case CONTINUE:
+        {
+            certPopupData->cert->setResult(basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
+            m_webEngine->confirmationResult(certPopupData->cert);
+            std::string uri = m_webEngine->getURI();
+            std::string pem = certPopupData->cert->getPem();
+            if (CertificateContents::isCertExistForHost(uri) == CertificateContents::HOST_ABSENT)
+                saveCertificateInfo(pem, uri, CertificateContents::UNSECURE_HOST_ALLOWED);
+            else
+                updateCertificateInfo(pem, uri, CertificateContents::UNSECURE_HOST_ALLOWED);
+
+            TabCertificateData data = { CertificateContents::INVALID, pem, NULL };
+            m_tabCertificateMap[m_webEngine->currentTabId()] = data;
+            break;
+        }
+        case BACK_TO_SAFETY:
+            certPopupData->cert->setResult(basic_webengine::WebConfirmation::ConfirmationResult::Rejected);
+            m_webEngine->confirmationResult(certPopupData->cert);
+            break;
+        case VIEW_CERTIFICATE:
+            m_certificateContents->showViewCertificatePopup();
+            break;
+        default:
+            break;
+    }
+}
+
+SimpleUI::TabCertificateData* SimpleUI::getCertificateDataForTab(const tizen_browser::basic_webengine::TabId& tabId)
+{
+    tizen_browser::basic_webengine::TabId key(tabId);
+    std::map<tizen_browser::basic_webengine::TabId, TabCertificateData>::const_iterator iterator = m_tabCertificateMap.find(key);
+    if (iterator == m_tabCertificateMap.end())
+        return NULL;
+    else
+        return &m_tabCertificateMap[key];
+}
+
+void SimpleUI::loadHostCertInfoFromDB()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    tizen_browser::storage::HostCertList list = m_storageService->getCertificateStorage().getHostCertList();
+    for (tizen_browser::storage::HostCertList::iterator it = list.begin() ; it != list.end(); ++it) {
+        CertificateContents::addToHostCertList(it->first, static_cast<CertificateContents::HOST_TYPE>(it->second));
+    }
+}
+
+void SimpleUI::saveCertificateInfo(const std::string& pem, const std::string& host, CertificateContents::HOST_TYPE type)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    CertificateContents::addToHostCertList(host, type);
+    m_storageService->getCertificateStorage().addCertificateEntry(pem, host, static_cast<int>(type));
+}
+
+void SimpleUI::updateCertificateInfo(const std::string& pem, const std::string& host, CertificateContents::HOST_TYPE type)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    CertificateContents::addToHostCertList(host, type);
+    m_storageService->getCertificateStorage().updateCertificateEntry(pem, host, static_cast<int>(type));
 }
 
 void SimpleUI::authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData)
@@ -1345,6 +1480,7 @@ void SimpleUI::showMoreMenu()
     bool desktopMode = m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) ? m_quickAccess->isDesktopMode() : m_webEngine->isDesktopMode();
     m_moreMenuUI->setDesktopMode(desktopMode);
     m_viewManager.pushViewToStack(m_moreMenuUI.get());
+    m_moreMenuUI->shouldShowViewCertificateButton(m_webEngine->getURI().find("https://") == 0);
     m_moreMenuUI->showCurrentTab();
 
     if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
@@ -1396,6 +1532,32 @@ void SimpleUI::switchToDesktopMode()
     } else {
         m_quickAccess->setDesktopMode(true);
     }
+}
+
+void SimpleUI::showCertificatePopup()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
+    ContentPopup* popup = ContentPopup::createPopup(m_viewManager.getContent());
+    m_certificateContents->setOwnerPopup(popup);
+    TabCertificateData* data = getCertificateDataForTab(m_webEngine->currentTabId());
+    if (data) {
+        m_certificateContents->setCurrentTabCertData(*data);
+    }
+    else {
+        m_certificateContents->setCertificatePem("");
+    }
+    popup->setButtonCount(2);
+    popup->setRightButton(VIEW_CERTIFICATE);
+    popup->setLeftButton(OK);
+    std::shared_ptr<CertificatePopupData> popupData = std::make_shared<CertificatePopupData>();
+    popup->buttonClicked.connect(boost::bind(&SimpleUI::certPopupButtonClicked, this, _1, popupData));
+    popup->setTitle("Security Certificate");
+    popup->setContent(m_certificateContents->getContent(false));
+    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    popup->show();
+#endif
 }
 
 void SimpleUI::showBookmarkFlowUI(bool state)
