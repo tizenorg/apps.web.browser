@@ -41,6 +41,7 @@
 #include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
 #include "TextPopup_mob.h"
+#include "ContentPopup_mob.h"
 #else
 #include "SettingsUI.h"
 #endif
@@ -179,6 +180,7 @@ private:
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick();
