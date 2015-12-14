@@ -50,6 +50,7 @@ public:
     void loadStarted();
     void progressChanged(double progress);
     void loadFinished();
+    void showSecureIcon(bool show, bool secure);
     WPUStatesManagerPtrConst getStatesMgr() {return m_statesMgr;}
     /**
      * @param state The state to compare

@@ -181,6 +181,12 @@ void WebPageUI::loadStopped()
     hideProgressBar();
 }
 
+void WebPageUI::showSecureIcon(bool show, bool secure)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[ show : %d, secure : %d] ", show, secure);
+}
+
 void WebPageUI::setPageTitle(const std::string& title)
 {
      BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
