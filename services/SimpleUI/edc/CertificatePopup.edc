@@ -1,0 +1,65 @@
+collections {
+    group {
+        name: "certificate_popup";
+        parts {
+            part {
+                name: "main_text";
+                type: TEXT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 260 20;
+                    max: 260 20;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 80 80 80 255;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        text: "Site not trusted.";
+                        font: "Sans";
+                        size: 20;
+                        align: 0.2 0.5;
+                    }
+                }
+            }
+            part {
+                name: "view_cert_bg";
+                type : RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 140 30;
+                    max: 140 30;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0.5 0.5;
+                    color: 56 154 233 255;
+                    rel1 { relative: 0.0 1.0; to: "main_text";}
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "view_cert_text";
+                type: TEXT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 260 70;
+                    max: 260 70;
+                    fixed: 1 0;
+                    align: 0 0;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 1.0; to: "main_text";}
+                    rel2 { relative: 1.0 1.0;}
+                    text {
+                        text: "View Certificate";
+                        font: "Sans";
+                        size: 15;
+                        align: 0.5 0.5;
+                    }
+                }
+            }
+        }
+    }
+}

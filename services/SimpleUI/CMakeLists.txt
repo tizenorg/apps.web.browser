@@ -84,6 +84,7 @@ include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
+    CertificatePopup.edc
     InputPopup_mob.edc
     NotificationPopup_mob.edc
     Tooltip.edc
