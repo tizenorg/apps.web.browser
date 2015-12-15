@@ -531,13 +531,13 @@ collections {
                     }
                     text {
                         style: "title_area_text";
-                        text: "Add bookmark";
+                        text: "Add to Bookmark";
                     }
                 }
                 description {
                     state: "edit" 0.0;
                     inherit: "default";
-                    text.text: "Edit bookmark";
+                    text.text: "Edit Bookmark";
                 }
             }
             part {

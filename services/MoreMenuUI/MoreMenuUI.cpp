@@ -435,7 +435,7 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = _("IDS_BR_OPT_FIND_ON_PAGE");
                 break;
             case SETTINGS:
-                item_name = "Settings<br>";
+                item_name = "Setting<br>";
                 break;
 #else
 #ifdef READER_MODE_ENABLED
