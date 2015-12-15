@@ -453,7 +453,7 @@ void QuickAccess::addBookmarkManagerTile()
     elm_gengrid_item_append(m_bookmarkGengrid, m_bookmarkManagerTileclass, this, _bookmark_manager_clicked, this);
 }
 
-void QuickAccess::setIndexPage(const int page) const
+void QuickAccess::setIndexPage(const uintptr_t page) const
 {
     Elm_Object_Item* it = elm_index_item_find(m_index, (void *)page);
     if (it != NULL) {

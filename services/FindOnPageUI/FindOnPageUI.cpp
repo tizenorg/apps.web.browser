@@ -347,7 +347,7 @@ void FindOnPageUI::__entry_changed_cb(void *data, Evas_Object *obj, void* /*even
     std::string input_uri_str;
 
     input_uri_str = std::string(text);
-    unsigned int pos = input_uri_str.find("<preedit>");
+    std::size_t pos = input_uri_str.find("<preedit>");
     if (pos != std::string::npos)
         input_uri_str.erase(pos, strlen("<preedit>"));
     pos = input_uri_str.find("</preedit>");
