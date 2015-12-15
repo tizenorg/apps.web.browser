@@ -428,7 +428,7 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = "Share<br>";
                 break;
             case SETTINGS:
-                item_name = "Settings<br>";
+                item_name = "Setting<br>";
                 break;
 #else
 #ifdef READER_MODE_ENABLED

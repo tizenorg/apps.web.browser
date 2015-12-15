@@ -69,7 +69,7 @@ group
                 text {
                     min: 0 1;
                     max: 1 1;
-                    text: "Settings";
+                    text: "Setting";
                     font: "Sans";
                     size: 44;
                     align: 0.5 0.5;
@@ -82,7 +82,7 @@ group
                 text {
                     min: 0 1;
                     max: 1 1;
-                    text: "Delete browsing data";
+                    text: "Delete Web Browsing Data";
                     font: "Sans";
                     size: 44;
                     align: 0.5 0.5;
@@ -95,7 +95,7 @@ group
                 text {
                     min: 0 1;
                     max: 1 1;
-                    text: "Reset browser";
+                    text: "Reset Browser";
                     font: "Sans";
                     size: 44;
                     align: 0.5 0.5;

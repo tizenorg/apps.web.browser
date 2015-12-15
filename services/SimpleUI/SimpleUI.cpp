@@ -57,9 +57,9 @@ namespace base_ui{
 EXPORT_SERVICE(SimpleUI, "org.tizen.browser.simpleui")
 
 const std::string HomePageURL = "about:home";
-const std::string ResetBrowserPopupMsg = "Do you really want to reset browser?" \
-                                         " If you press reset, delete all data" \
-                                         " and return to initial setting.";
+const std::string ResetBrowserPopupMsg = "Do you really want to reset Browser?" \
+                                         " If you press Reset, delete all data" \
+                                         " and return  to initial setting.";
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
@@ -1396,7 +1396,7 @@ void SimpleUI::settingsDeleteSelectedData(const std::string& str)
        (str.find("PASSWORD") != std::string::npos)  ||
        (str.find("FORMDATA") != std::string::npos)) {
         NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-        popup->show("Delete Web Browsing Data");
+        popup->show("Deleting Web Browsing Data");
         onDeleteSelectedDataButton(str);
         popup->dismiss();
     }
@@ -1421,7 +1421,7 @@ void SimpleUI::settingsResetMostVisited()
 {
     BROWSER_LOGD("[%s]: Deleting most visited sites", __func__);
     NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-    popup->show("Delete Web Browsing Data");
+    popup->show("Resetting most visited sites.");
     onDeleteMostVisitedButton(nullptr);
     popup->dismiss();
 }
@@ -1446,7 +1446,7 @@ void SimpleUI::settingsResetBrowser()
     popup->addButton(CANCEL);
     popup->buttonClicked.connect(boost::bind(&SimpleUI::onResetBrowserButton, this, _1, _2));
 #endif
-    popup->setTitle("Reset browser");
+    popup->setTitle("Reset Browser");
     popup->setMessage(ResetBrowserPopupMsg);
     popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));

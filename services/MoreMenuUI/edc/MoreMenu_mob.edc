@@ -225,7 +225,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_06.png")
                     }
                     text {
                         style: "title_area_text_style";
-                        text: "More menu";
+                        text: "More Menu";
                     }
                 }
             }
