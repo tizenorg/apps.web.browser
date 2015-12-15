@@ -53,7 +53,8 @@ public:
     void setMessage(const std::string &message);
     void setOkButtonText(const std::string &okButtonText);
     void setCancelButtonText(const std::string &cancelButtonText);
-    void setAcceptRightLeft(bool);
+    void setAcceptRightLeft(bool right_left);
+    void addBadWord(const std::string &word);
 
     boost::signals2::signal<void (const std::string&)> button_clicked;
 
@@ -84,6 +85,7 @@ private:
     std::string m_message;
     std::string m_ok_button_text;
     std::string m_cancel_button_text;
+    std::vector<std::string> m_bad_words;
     bool m_accept_right_left;
     Ecore_Timer *m_timer; // Workaround for too fast removal of callbacks
 };
