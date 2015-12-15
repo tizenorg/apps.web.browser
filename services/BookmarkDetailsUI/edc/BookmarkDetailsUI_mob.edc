@@ -260,6 +260,33 @@ collections {
                 }
             }
             part {
+                name: "close_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    fixed: 1 1;
+                    align: 0 0.5;
+                    min: 64 64;
+                    max: 64 64;
+                    color: 224 237 251 255;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "back_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "action_bar_bg";
+                    }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
                 name: "back_icon";
                 type: IMAGE;
                 scale: 1;
@@ -299,6 +326,24 @@ collections {
               }
             }
             part {
+              name: "close_over";
+              scale: 1;
+              mouse_events: 1;
+              repeat_events: 1;
+              type: RECT;
+              description {
+                  state: "default" 0.0;
+                  visible: 1;
+                  align: 0 0;
+                  fixed: 1 1;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "back_icon";}
+                  rel2 { relative: 1.0 1.0; to: "back_icon";}
+                  color: 0 0 0 0;
+              }
+            }
+            part {
                 name: "more_spacer";
                 type: RECT;
                 scale: 1;
@@ -314,6 +359,33 @@ collections {
                         to: "action_bar_bg";
                     }
                     rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "more_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    fixed: 1 1;
+                    align: 0 0.5;
+                    min: 64 64;
+                    max: 64 64;
+                    color: 224 237 251 255;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "more_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "action_bar_bg";
+                    }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 1;
                 }
             }
             part {
@@ -361,6 +433,24 @@ collections {
               }
             }
             part {
+              name: "more_over";
+              scale: 1;
+              mouse_events: 1;
+              repeat_events: 1;
+              type: RECT;
+              description {
+                  state: "default" 0.0;
+                  visible: 1;
+                  align: 0 0;
+                  fixed: 1 1;
+                  min: 64 64;
+                  max: 64 64;
+                  rel1 { relative: 0.0 0.0; to: "more_icon";}
+                  rel2 { relative: 1.0 1.0; to: "more_icon";}
+                  color: 0 0 0 0;
+              }
+            }
+            part {
                 name: "title_text";
                 scale: 1;
                 type: TEXT;
@@ -385,6 +475,20 @@ collections {
             }
         }
         programs {
+            program {
+                name: "mouse_in_close";
+                signal: "mouse,down,*";
+                source: "close_over";
+                action: STATE_SET "focused" 0.0;
+                target: "close_bg";
+            }
+            program {
+                name: "mouse_out_close";
+                signal: "mouse,up,*";
+                source: "close_over";
+                action: STATE_SET "default" 0.0;
+                target: "close_bg";
+            }
             program {
                 name: "more_click";
                 source: "more_click";
@@ -414,6 +518,20 @@ collections {
                 script {
                     emit("elm,action,click", "");
                 }
+            }
+            program {
+                name: "mouse_in_more";
+                signal: "mouse,down,*";
+                source: "more_over";
+                action: STATE_SET "focused" 0.0;
+                target: "more_bg";
+            }
+            program {
+                name: "mouse_out_more";
+                signal: "mouse,up,*";
+                source: "more_over";
+                action: STATE_SET "default" 0.0;
+                target: "more_bg";
             }
         }
     }

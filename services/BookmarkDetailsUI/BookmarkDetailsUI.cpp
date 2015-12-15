@@ -471,7 +471,8 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
     }
     elm_box_pack_end(m_menu, m_remove_button);
 #else
-    elm_object_part_text_set(m_bottom_content, "text", (boost::format("%d %s") % elm_gengrid_items_count(m_gengrid) % "bookmarks").str().c_str());
+    elm_object_part_text_set(m_bottom_content, "text", (boost::format("%d %s") % elm_gengrid_items_count(m_gengrid) %
+                                                        (elm_gengrid_items_count(m_gengrid) == 1 ? "bookmark" : "bookmarks")).str().c_str());
 #endif
     if (items.size() != 0)
         setEmpty(false);
