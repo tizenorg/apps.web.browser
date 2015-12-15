@@ -197,18 +197,6 @@ public:
     virtual bool closeTab(TabId id) = 0;
 
     /**
-     * Go to next tab.
-     * @return true if tab changed successfully, false otherwise
-     */
-    virtual bool nextTab() = 0;
-
-    /**
-     * Go to prev tab.
-     * @return true if tab changed successfully, false otherwise
-     */
-    virtual bool prevTab() = 0;
-
-    /**
      * Process confirmation result
      * \param web confirmation with request and result value
      */

@@ -21,11 +21,7 @@
 #include <string>
 #include <Evas.h>
 
-#if defined(USE_EWEBKIT)
-//#include <EWebKit2.h>
 #include <ewk_chromium.h>
-#endif
-
 #include "browser_config.h"
 #include "Config/Config.h"
 #include "BrowserImage.h"
@@ -59,7 +55,7 @@ typedef enum _custom_context_menu_item_tag {
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webkitengine_service {
+namespace webengine_service {
 
 class WebView
 {
@@ -267,6 +263,12 @@ private:
     void registerCallbacks();
     void unregisterCallbacks();
     void setupEwkSettings();
+
+    static std::string securityOriginToUri(const Ewk_Security_Origin *);
+    static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
+    static void __newWindowRequest(void * data, Evas_Object *, void *out);
+    static void __closeWindowRequest(void * data, Evas_Object *, void *);
+
 #if  PROFILE_MOBILE
     context_menu_type _get_menu_type(Ewk_Context_Menu *menu);
     void _customize_context_menu(Ewk_Context_Menu *menu);
@@ -274,15 +276,7 @@ private:
     void _show_context_menu_image_only(Ewk_Context_Menu *menu);
     void _show_context_menu_image_link(Ewk_Context_Menu *menu);
     void _show_context_menu_text_only(Ewk_Context_Menu *menu);
-#endif
 
-#if defined(USE_EWEBKIT)
-    static std::string securityOriginToUri(const Ewk_Security_Origin *);
-    static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
-    static void __newWindowRequest(void * data, Evas_Object *, void *out);
-    static void __closeWindowRequest(void * data, Evas_Object *, void *);
-#endif
-#if  PROFILE_MOBILE
     static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_enter_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_exit_cb(void *data, Evas_Object *obj, void *event_info);
@@ -333,20 +327,16 @@ private:
 
     config::DefaultConfig config;
 
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
     std::map<WebConfirmationPtr, Ewk_Geolocation_Permission_Request *> m_confirmationGeolocationMap;
     std::map<WebConfirmationPtr, Ewk_User_Media_Permission_Request *> m_confirmationUserMediaMap;
     std::map<WebConfirmationPtr, Ewk_Notification_Permission_Request *> m_confirmationNotificationMap;
     std::map<CertificateConfirmationPtr, Ewk_Certificate_Policy_Decision *> m_confirmationCertificatenMap;
     std::map<AuthenticationConfirmationPtr, Ewk_Auth_Challenge *> m_confirmationAuthenticationMap;
-#endif
-#endif
 
     static const std::string COOKIES_PATH;
 };
 
-} /* namespace webkitengine_service */
+} /* namespace webengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */
 #endif /* WEBVIEW_H_ */
