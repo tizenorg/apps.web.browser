@@ -21,6 +21,7 @@
 #include "service_macros.h"
 #include "SettingsStorage.h"
 #include "SessionStorage.h"
+#include "FoldersStorage.h"
 
 #define DOMAIN_STORAGE_SERVICE "org.tizen.browser.storageservice"
 
@@ -36,9 +37,11 @@ public:
 
     storage::SettingsStorage& getSettingsStorage() { return m_settingsStorage; }
     storage::SessionStorage& getSessionStorage() { return storage::SessionStorage::getInstance(); }
+    storage::FoldersStorage& getFoldersStorage() { return m_foldersStorage; }
 
 private:
     storage::SettingsStorage m_settingsStorage;
+    storage::FoldersStorage m_foldersStorage;
 };
 
 
