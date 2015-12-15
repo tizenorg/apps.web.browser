@@ -239,6 +239,7 @@ group {
     images {
         image: "web_frame_selected.png" COMP;
         image: "ico_bg_round_shape_37x37.png" COMP;
+        image: "ic_add_bookmark.png" COMP;
     }
     parts {
         part {
@@ -301,6 +302,46 @@ group {
                 state: "focused";
                 inherit: "default" 0.0;
                 visible: 1;
+            }
+        }
+        part {
+            name: "round_icon";
+            type: IMAGE;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 58 58;
+                max: 58 58;
+                align: 1 0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0 1.0;
+                }
+                image.normal: "ico_bg_round_shape_37x37.png";
+            }
+        }
+        part {
+            name: "star_icon";
+            type: IMAGE;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 58 58;
+                max: 58 58;
+                align: 1 0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0 1.0;
+                }
+                image.normal: "ic_add_bookmark.png";
             }
         }
         part {

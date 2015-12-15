@@ -29,7 +29,7 @@ void DefaultConfig::load(const std::string &)
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
     m_data["favorite_service_name"] = std::string("org.tizen.browser.favoriteservice");
-    m_data["DB_BOOKMARK"] = std::string(".browser.bookmark.db");
+    m_data["DB_FOLDERS"] = std::string(".browser.bookmark.db");
     m_data["DB_SETTINGS"] = std::string(".browser.settings.db");
     m_data["DB_HISTORY"] = std::string(".browser.history.db");
     m_data["DB_SESSION"] = std::string(".browser.session.db");
