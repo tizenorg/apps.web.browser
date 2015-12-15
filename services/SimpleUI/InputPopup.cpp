@@ -10,6 +10,7 @@ InputPopup::InputPopup() :
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SimpleUI/InputPopup.edj");
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+    m_bad_words.push_back("");
 }
 
 InputPopup::~InputPopup()
@@ -32,6 +33,7 @@ InputPopup::~InputPopup()
     button_clicked.disconnect_all_slots();
     popupDismissed.disconnect_all_slots();
     popupShown.disconnect_all_slots();
+    m_bad_words.clear();
 }
 
 InputPopup* InputPopup::createPopup(Evas_Object* parent)
@@ -80,6 +82,16 @@ void InputPopup::setOkButtonText(const std::string& okButtonText)
 void InputPopup::setCancelButtonText(const std::string& cancelButtonText)
 {
     m_cancel_button_text = cancelButtonText;
+}
+
+void InputPopup::setAcceptRightLeft(bool right_left)
+{
+    m_accept_right_left = right_left;
+}
+
+void InputPopup::addBadWord(const std::string &word)
+{
+    m_bad_words.push_back(word);
 }
 
 void InputPopup::show()
@@ -182,6 +194,11 @@ void InputPopup::createLayout()
     elm_object_part_content_set(m_layout, "buttons_swallow", m_buttons_box);
 
     evas_object_show(m_layout);
+
+    if (std::find(m_bad_words.begin(), m_bad_words.end(), m_input) != m_bad_words.end()) {
+        elm_object_disabled_set(m_accept_right_left ? m_button_right : m_button_left, EINA_TRUE);
+        elm_object_signal_emit(m_accept_right_left ? m_button_right : m_button_left, "dissabled", "ui");
+    }
 }
 
 void InputPopup::_entry_focused(void* data, Evas_Object *, void *)
@@ -212,7 +229,14 @@ void InputPopup::_entry_changed(void* data, Evas_Object *, void *)
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         std::string text = elm_object_part_text_get(inputPopup->m_entry, "elm.text");
-        if (text.empty()) {
+        bool dissable = false;
+
+        if (std::find(inputPopup->m_bad_words.begin(), inputPopup->m_bad_words.end(), text)
+                != inputPopup->m_bad_words.end()) {
+            dissable = true;
+        }
+
+        if (dissable) {
             elm_object_disabled_set(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
                                                           inputPopup->m_button_left, EINA_TRUE);
             elm_object_signal_emit(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
