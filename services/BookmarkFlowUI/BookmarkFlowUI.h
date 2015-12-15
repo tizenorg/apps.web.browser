@@ -47,7 +47,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 struct BookmarkUpdate {
-    int folder_id;
+    unsigned int folder_id;
     std::string title;
 };
 

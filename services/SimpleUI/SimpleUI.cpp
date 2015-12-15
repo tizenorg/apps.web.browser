@@ -119,11 +119,6 @@ std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > SimpleUI::g
     return m_favoriteService->getBookmarks(folder_id);
 }
 
-services::SharedBookmarkFolderList SimpleUI::getBookmarkFolders()
-{
-    return m_storageService->getSessionStorage().getFolders();
-}
-
 const std::string SimpleUI::getBookmarkFolderName(int folder_id)
 {
     return m_favoriteService->getBookmarkFolderName(folder_id);
@@ -352,7 +347,6 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
-    m_moreMenuUI->deleteBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
     m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
 #if PROFILE_MOBILE
@@ -468,6 +462,7 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager.getContent());
+    m_bookmarkManagerUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
 
     M_ASSERT(m_zoomUI.get());
     m_zoomUI->init(m_viewManager.getContent());
@@ -483,6 +478,7 @@ void SimpleUI::initModelServices()
 
 #if PROFILE_MOBILE
     M_ASSERT(m_storageService->getSettingsStorage());
+    M_ASSERT(m_storageService->getFoldersStorage());
     m_storageService->getSettingsStorage().initWebEngineSettingsFromDB();
 #endif
 
@@ -731,6 +727,9 @@ void SimpleUI::onNewFolderClicked()
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add new folder for adding to bookmark?",
                                                           "Folder #", "Cancel", "Add to bookmark", false);
 #endif
+    services::SharedBookmarkFolderList badWords = m_storageService->getFoldersStorage().getFolders();
+    for (auto it = badWords.begin(); it != badWords.end(); ++it)
+        inputPopup->addBadWord((*it)->getName());
     inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));
     inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
@@ -740,22 +739,21 @@ void SimpleUI::onNewFolderClicked()
 void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_storageService->getSessionStorage().ifFolderExists(folder_name)) {
+    if (m_storageService->getFoldersStorage().ifFolderExists(folder_name)) {
         BROWSER_LOGD("[%s:%d] Folder already exists.", __PRETTY_FUNCTION__, __LINE__);
         return;
     }
-    unsigned int id = m_storageService->getSessionStorage().addFolder(folder_name);
+    unsigned int id = m_storageService->getFoldersStorage().addFolder(folder_name);
 #if PROFILE_MOBILE
     if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
-        SharedBookmarkFolder folder = m_storageService->getSessionStorage().getFolder(id);
+        SharedBookmarkFolder folder = m_storageService->getFoldersStorage().getFolder(id);
         SharedBookmarkFolderList list;
         list.push_back(folder);
         m_bookmarkManagerUI->addCustomFolders(list);
     }
 #else
     BookmarkUpdate update;
-    update.folder_id = 0;
-    //TODO: Change 0 to id
+    update.folder_id = id;
     M_UNUSED(id);
     addBookmark(update);
 #endif
@@ -766,6 +764,9 @@ void SimpleUI::onEditFolderClicked(const std::string& folder_name)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "Edit Folder name", "Edit folder name?",
                                                           folder_name, "Done", "Cancel", true);
+    services::SharedBookmarkFolderList badWords = m_storageService->getFoldersStorage().getFolders();
+    for (auto it = badWords.begin(); it != badWords.end(); ++it)
+        inputPopup->addBadWord((*it)->getName());
     inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onEditFolderPopupClicked, this, _1));
     inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
@@ -791,9 +792,9 @@ void SimpleUI::onDeleteFolderClicked(const std::string& folder_name)
 void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
-        unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
-        m_storageService->getSessionStorage().updateFolderName(id, newName);
+    if (m_storageService->getFoldersStorage().ifFolderExists(m_folder_name)) {
+        unsigned int id = m_storageService->getFoldersStorage().getFolderId(m_folder_name);
+        m_storageService->getFoldersStorage().updateFolderName(id, newName);
         m_bookmarkManagerUI->hideUI();
         showBookmarkManagerUI();
     }
@@ -802,9 +803,9 @@ void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
 void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (button == DELETE && m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
-        unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
-        m_storageService->getSessionStorage().deleteFolder(id);
+    if (button == DELETE && m_storageService->getFoldersStorage().ifFolderExists(m_folder_name)) {
+        unsigned int id = m_storageService->getFoldersStorage().getFolderId(m_folder_name);
+        m_storageService->getFoldersStorage().deleteFolder(id);
         m_bookmarkManagerUI->hideUI();
         showBookmarkManagerUI();
     }
@@ -1371,7 +1372,7 @@ void SimpleUI::showBookmarkFlowUI(bool state)
     bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
     bookmarkFlow->show();
     bookmarkFlow->gridAddNewFolder();
-    bookmarkFlow->gridAddCustomFolders(getBookmarkFolders());
+    bookmarkFlow->gridAddCustomFolders(m_storageService->getFoldersStorage().getFolders());
 #endif
 }
 #if PROFILE_MOBILE
@@ -1390,11 +1391,11 @@ void SimpleUI::showBookmarkManagerUI()
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->addNewFolder();
 #endif
-    m_bookmarkManagerUI->addAllFolder(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
-                                      getBookmarkFolderName(tizen_browser::services::ALL_BOOKMARKS_ID));
-    m_bookmarkManagerUI->addSpecialFolder(getBookmarks(tizen_browser::services::ROOT_FOLDER_ID),
-                                         getBookmarkFolderName(tizen_browser::services::ROOT_FOLDER_ID));
-    m_bookmarkManagerUI->addCustomFolders(getBookmarkFolders());
+//    m_bookmarkManagerUI->addAllFolder(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
+//                                      getBookmarkFolderName(tizen_browser::services::ALL_BOOKMARKS_ID));
+//    m_bookmarkManagerUI->addSpecialFolder(getBookmarks(tizen_browser::services::ROOT_FOLDER_ID),
+//                                         getBookmarkFolderName(tizen_browser::services::ROOT_FOLDER_ID));
+    m_bookmarkManagerUI->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
 
     m_bookmarkManagerUI->showUI();
 }
@@ -1422,7 +1423,7 @@ void SimpleUI::onBookmarkCustomFolderClicked(int folderId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_bookmarkDetailsUI.get());
-    m_bookmarkDetailsUI->addBookmarks(getBookmarks(folderId), m_storageService->getSessionStorage().getFolderName(folderId));
+    m_bookmarkDetailsUI->addBookmarks(getBookmarks(folderId), m_storageService->getFoldersStorage().getFolderName(folderId));
     m_bookmarkDetailsUI->showUI();
 }
 
@@ -1531,7 +1532,7 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
             m_tabService->clearThumb(id);
             m_webEngine->closeTab(id);
         }
-        m_storageService->getSessionStorage().deleteAllFolders();
+        m_storageService->getFoldersStorage().deleteAllFolders();
         //TODO: add here any missing functionality that should be cleaned.
 
         popup->dismiss();
@@ -1611,7 +1612,8 @@ void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
                                            m_webEngine->getTitle(),
 #endif
                                            std::string(), m_webEngine->getSnapshotData(373, 240),
-                                           m_webEngine->getFavicon(), (unsigned int)bookmark_update.folder_id);
+                                           m_webEngine->getFavicon(), bookmark_update.folder_id);
+            m_storageService->getFoldersStorage().addNumberInFolder(bookmark_update.folder_id);
         }
     }
 }
@@ -1622,7 +1624,7 @@ void SimpleUI::editBookmark(BookmarkUpdate bookmark_update)
     BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
-               m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, (unsigned int)bookmark_update.folder_id);
+               m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, bookmark_update.folder_id);
         }
     }
 }
@@ -1631,8 +1633,11 @@ void SimpleUI::editBookmark(BookmarkUpdate bookmark_update)
 //TODO: Replace by direct call.
 void SimpleUI::deleteBookmark()
 {
-	if (m_favoriteService)
-		m_favoriteService->deleteBookmark(m_webEngine->getURI());
+    std::string uri = m_webEngine->getURI();
+    tizen_browser::services::BookmarkItem item;
+    if (m_favoriteService->bookmarkExists(uri) && m_favoriteService->getItem(uri, &item))
+        m_storageService->getFoldersStorage().removeNumberInFolder(item.getDir());
+    m_favoriteService->deleteBookmark(uri);
 }
 }
 }
