@@ -1,6 +1,6 @@
 project(services)
 
-add_subdirectory(WebKitEngineService)
+add_subdirectory(WebEngineService)
 add_subdirectory(MoreMenuUI)
 add_subdirectory(QuickAccess)
 add_subdirectory(HistoryUI)

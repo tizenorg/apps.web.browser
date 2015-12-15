@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@
 
 #include "WebView.h"
 
-#if defined(USE_EWEBKIT)
 #include <ewk_chromium.h>
-#endif
 
 #include <boost/format.hpp>
 #include <boost/regex.hpp>
@@ -50,11 +48,7 @@
 #endif
 
 #define certificate_crt_path CERTS_DIR
-#if MERGE_ME
-#define APPLICATION_NAME_FOR_USER_AGENT "SamsungBrowser/1.0"
-#else
 #define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (X11; SMART-TV; Linux) AppleWebkit/538.1 (KHTML, like Gecko) Safari/538.1"
-#endif
 
 //TODO: temporary user agent for mobile display, change to proper one
 #define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 3.0; SAMSUNG SM-Z130H) AppleWebKit/538.1 (KHTML, like Gecko) SamsungBrowser/1.0 Mobile Safari/538.1"
@@ -71,7 +65,7 @@ using namespace tizen_browser::tools;
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webkitengine_service {
+namespace webengine_service {
 
 const std::string WebView::COOKIES_PATH = "cookies";
 
@@ -105,7 +99,6 @@ WebView::~WebView()
 
 void WebView::init(bool desktopMode, Evas_Object*)
 {
-#if defined(USE_EWEBKIT)
     m_ewkView = m_private ? ewk_view_add_in_incognito_mode(evas_object_evas_get(m_parent)) :
                             ewk_view_add_with_context(evas_object_evas_get(m_parent), ewk_context_new());
 
@@ -128,10 +121,7 @@ void WebView::init(bool desktopMode, Evas_Object*)
     //\todo: when value is other than 1.0, scroller is located improperly
 //    ewk_view_device_pixel_ratio_set(m_ewkView, 1.0f);
 
-#if PLATFORM(TIZEN)
     ewk_view_resume(m_ewkView);
-#endif
-
     ewk_context_cache_model_set(m_ewkContext, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
     std::string path = app_get_data_path() + COOKIES_PATH;
     ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(m_ewkContext),  path.c_str(), EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
@@ -139,9 +129,6 @@ void WebView::init(bool desktopMode, Evas_Object*)
     setupEwkSettings();
     registerCallbacks();
     resume();
-#else
-    m_ewkView = evas_object_rectangle_add(evas_object_evas_get(m_parent));
-#endif
 }
 
 #if PROFILE_MOBILE
@@ -197,7 +184,6 @@ void __vibration_cancel_cb(void * /*data*/)
 
 void WebView::registerCallbacks()
 {
-#if defined(USE_EWEBKIT)
     evas_object_smart_callback_add(m_ewkView, "load,started", __loadStarted, this);
     evas_object_smart_callback_add(m_ewkView, "load,stop", __loadStop, this);
     evas_object_smart_callback_add(m_ewkView, "load,finished", __loadFinished, this);
@@ -228,21 +214,13 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_vibration_client_callbacks_set(context, __vibration_cb, __vibration_cancel_cb, this);
-        }
-    }
+    ewk_context_vibration_client_callbacks_set(m_ewkContext, __vibration_cb, __vibration_cancel_cb, this);
 #endif
-#endif
+
 }
 
 void WebView::unregisterCallbacks()
 {
-#if defined(USE_EWEBKIT)
     evas_object_smart_callback_del_full(m_ewkView, "load,started", __loadStarted, this);
     evas_object_smart_callback_del_full(m_ewkView, "load,stop", __loadStop, this);
     evas_object_smart_callback_del_full(m_ewkView, "load,finished", __loadFinished, this);
@@ -273,15 +251,7 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb,this);
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_vibration_client_callbacks_set(context, NULL, NULL, this);
-        }
-    }
-#endif
+    ewk_context_vibration_client_callbacks_set(m_ewkContext, NULL, NULL, this);
 #endif
 }
 
@@ -293,15 +263,10 @@ void WebView::setupEwkSettings()
         http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15129
         http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15136
         http://web.sec.samsung.net/bugzilla/show_bug.cgi?id=15138
-    */
-/*
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
-    Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
-    ewk_settings_uses_keypad_without_user_action_set(settings, EINA_FALSE);
-#endif
-#endif
-*/
+
+        Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
+        ewk_settings_uses_keypad_without_user_action_set(settings, EINA_FALSE);
+     */
 }
 
 Evas_Object * WebView::getLayout()
@@ -312,21 +277,14 @@ Evas_Object * WebView::getLayout()
 void WebView::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
-#if defined(USE_EWEBKIT)
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     ewk_view_url_set(m_ewkView, uri.c_str());
     m_loadError = false;
-#endif
 }
 
 std::string WebView::getURI(void)
 {
-#if defined(USE_EWEBKIT)
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, ewk_view_url_get(m_ewkView));
     return fromChar(ewk_view_url_get(m_ewkView));
-#else
-    return std::string();
-#endif
 }
 
 std::string WebView::getTitle(void)
@@ -354,16 +312,13 @@ void WebView::resume()
 
 void WebView::stopLoading(void)
 {
-#if defined(USE_EWEBKIT)
     m_isLoading = false;
     ewk_view_stop(m_ewkView);
-#endif
     loadStop();
 }
 
 void WebView::reload(void)
 {
-#if defined(USE_EWEBKIT)
     m_isLoading = true;
     if(m_loadError)
     {
@@ -372,41 +327,28 @@ void WebView::reload(void)
     }
     else
         ewk_view_reload(m_ewkView);
-#endif
 }
 
 void WebView::back(void)
 {
-#if defined(USE_EWEBKIT)
     m_loadError = false;
     ewk_view_back(m_ewkView);
-#endif
 }
 
 void WebView::forward(void)
 {
-#if defined(USE_EWEBKIT)
     m_loadError = false;
     ewk_view_forward(m_ewkView);
-#endif
 }
 
 bool WebView::isBackEnabled(void)
 {
-#if defined(USE_EWEBKIT)
     return ewk_view_back_possible(m_ewkView);
-#else
-    return false;
-#endif
 }
 
 bool WebView::isForwardEnabled(void)
 {
-#if defined(USE_EWEBKIT)
     return ewk_view_forward_possible(m_ewkView);
-#else
-    return false;
-#endif
 }
 
 bool WebView::isLoading()
@@ -423,8 +365,6 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
     switch(confirmation->getConfirmationType()) {
     case WebConfirmation::ConfirmationType::Geolocation: {
         Ewk_Geolocation_Permission_Request *request = m_confirmationGeolocationMap[confirmation];
@@ -532,10 +472,6 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
     default:
         break;
     }
-#else
-   (void)confirmation;
-#endif
-#endif
 }
 
 std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
@@ -571,19 +507,15 @@ std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targ
 
 
     BROWSER_LOGD("[%s:%d] Before snapshot (screenshot) - look at the time of taking snapshot below",__func__, __LINE__);
-#if defined(USE_EWEBKIT)
-#if PLATFORM(TIZEN)
+
     Evas_Object *snapshot = ewk_view_screenshot_contents_get( m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
     BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
     if (snapshot)
         return EflTools::getBrowserImage(snapshot);
-#endif
-#endif
 
     return noImage;
 }
 
-#if defined(USE_EWEBKIT)
 void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -606,7 +538,7 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
     <
         basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService
     >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
     M_ASSERT(m_webEngine);
 
     /// \todo: Choose newly created tab.
@@ -634,7 +566,7 @@ void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
     std::shared_ptr<AbstractWebEngine<Evas_Object>> m_webEngine =
                 std::dynamic_pointer_cast
                 <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webkitengineservice"));
+                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
     m_webEngine->closeTab(self->getTabId());
 }
 
@@ -775,7 +707,7 @@ std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
 void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
+
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_Geolocation_Permission_Request *request = reinterpret_cast<Ewk_Geolocation_Permission_Request *>(event_info);
@@ -796,13 +728,12 @@ void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj *
     self->m_confirmationGeolocationMap[c] = request;
 
     self->confirmationRequest(c);
-#endif
 }
 
 void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
+
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_User_Media_Permission_Request *request = reinterpret_cast<Ewk_User_Media_Permission_Request *>(event_info);
@@ -821,13 +752,12 @@ void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */,
     self->m_confirmationUserMediaMap[c] = request;
 
     self->confirmationRequest(c);
-#endif
 }
 
 void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
+
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_Notification_Permission_Request *request = reinterpret_cast<Ewk_Notification_Permission_Request *>(event_info);
@@ -846,13 +776,12 @@ void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj 
     self->m_confirmationNotificationMap[c] = request;
 
     self->confirmationRequest(c);
-#endif
 }
 
 void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
+
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_Auth_Challenge *request = reinterpret_cast<Ewk_Auth_Challenge *>(event_info);
@@ -872,13 +801,12 @@ void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, vo
     self->m_confirmationAuthenticationMap[c] = request;
 
     self->confirmationRequest(c);
-#endif
 }
 
 void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj */, void * event_info)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PLATFORM(TIZEN)
+
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_Certificate_Policy_Decision *request = reinterpret_cast<Ewk_Certificate_Policy_Decision *>(event_info);
@@ -901,9 +829,7 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
     self->m_confirmationCertificatenMap[c] = request;
 
     self->confirmationRequest(c);
-#endif
 }
-#endif
 
 #if PROFILE_MOBILE
 context_menu_type WebView::_get_menu_type(Ewk_Context_Menu *menu)
@@ -1123,23 +1049,17 @@ double WebView::getZoomFactor() const
         return 1.0;
     }
 
-#if defined(USE_EWEBKIT)
     return ewk_view_page_zoom_get(m_ewkView);
-#else
-    return 1.0;
-#endif
 }
 
 void WebView::setZoomFactor(double zoomFactor)
 {
-#if defined(USE_EWEBKIT)
     if(m_ewkView) {
         //using zoomFactor = 0 sets zoom "fit to screen"
 
         if(zoomFactor != getZoomFactor()) 
             ewk_view_page_zoom_set(m_ewkView, zoomFactor);
     }
-#endif
 }
 
 void WebView::scrollView(const int& dx, const int& dy)
@@ -1240,7 +1160,7 @@ std::shared_ptr<BrowserImage> WebView::getFavicon()
 void WebView::clearCache()
 {
     BROWSER_LOGD("Clearing cache");
-#if defined(USE_EWEBKIT)
+
     if (m_ewkView)
     {
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -1249,13 +1169,12 @@ void WebView::clearCache()
             ewk_context_cache_clear(context);
         }
     }
-#endif
 }
 
 void WebView::clearCookies()
 {
     BROWSER_LOGD("Clearing cookies");
-#if defined(USE_EWEBKIT)
+
     if (m_ewkView)
     {
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -1264,13 +1183,12 @@ void WebView::clearCookies()
             ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
         }
     }
-#endif
 }
 
 void WebView::clearPrivateData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if defined(USE_EWEBKIT)
+
     if (m_ewkView)
     {
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -1281,12 +1199,11 @@ void WebView::clearPrivateData()
             ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
         }
     }
-#endif
 }
 void WebView::clearPasswordData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if defined(USE_EWEBKIT)
+
     if (m_ewkView)
     {
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -1303,12 +1220,11 @@ void WebView::clearPasswordData()
     {
         BROWSER_LOGD("[%s:%d] Warning: no m_ewkView", __PRETTY_FUNCTION__, __LINE__);
     }
-#endif
 }
 void WebView::clearFormData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if defined(USE_EWEBKIT)
+
     if (m_ewkView)
     {
         Ewk_Context *context = ewk_view_context_get(m_ewkView);
@@ -1325,7 +1241,6 @@ void WebView::clearFormData()
     {
         BROWSER_LOGD("[%s:%d] Warning: no m_ewkView", __PRETTY_FUNCTION__, __LINE__);
     }
-#endif
 }
 
 void WebView::searchOnWebsite(const std::string & searchString, int flags)
@@ -1351,7 +1266,7 @@ bool WebView::isDesktopMode() const {
     return m_desktopMode;
 }
 
-} /* namespace webkitengine_service */
+} /* namespace webengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */
 
