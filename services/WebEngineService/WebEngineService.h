@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef WEBKITENGINESERVICE_H_
-#define WEBKITENGINESERVICE_H_
+#ifndef WEBENGINESERVICE_H_
+#define WEBENGINESERVICE_H_
 
 #include <boost/noncopyable.hpp>
 #include <string>
@@ -33,17 +33,17 @@
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webkitengine_service {
+namespace webengine_service {
 
 class WebView;
 
 typedef std::shared_ptr<WebView> WebViewPtr;
 
-class BROWSER_EXPORT WebKitEngineService: public AbstractWebEngine<Evas_Object>, boost::noncopyable
+class BROWSER_EXPORT WebEngineService: public AbstractWebEngine<Evas_Object>, boost::noncopyable
 {
 public:
-    WebKitEngineService();
-    virtual ~WebKitEngineService();
+    WebEngineService();
+    virtual ~WebEngineService();
     virtual std::string getName();
 
     Evas_Object * getLayout();
@@ -102,18 +102,6 @@ public:
     bool switchToTab(TabId);
     bool closeTab();
     bool closeTab(TabId);
-
-    /**
-     * Change tab to next created, dummy implementation.
-     * @return true if changed successfully, false otherwise
-     */
-    bool nextTab();
-    /**
-     * Change tab to previous created, dummy implementation.
-     * @return true if changed successfully, false otherwise
-     */
-    bool prevTab();
-
     void confirmationResult(WebConfirmationPtr);
 
     /**
@@ -280,8 +268,8 @@ private:
 #endif
 };
 
-} /* end of webkitengine_service */
+} /* end of webengine_service */
 } /* end of basic_webengine */
 } /* end of tizen_browser */
 
-#endif /* WEBKITENGINESERVICE_H_ */
+#endif /* WEBENGINESERVICE_H_ */

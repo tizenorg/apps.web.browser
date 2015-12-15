@@ -331,13 +331,8 @@ void BookmarksManager::showInternalPopup(Elm_Object_Item* listItem)
                                         ELM_CTXPOPUP_DIRECTION_DOWN);
     Evas_Coord w,h,x,y;
 
-#if PLATFORM(TIZEN)
     evas_object_geometry_get(elm_object_item_track(m_trackedItem), &x, &y, &w, &h);
-
-    BROWSER_LOGD("[%s:%d] \n\tx:%d; y:%d; w:%d; h:%d  ", __PRETTY_FUNCTION__, __LINE__,
-                                 x,    y,    w,    h);
     evas_object_move(m_internalPopup, x + 354, y);//354 is proper value
-#endif
 
     elm_object_style_set(m_internalPopup, "bookmarks_manager_button");
     evas_object_show(m_internalPopup);
@@ -355,9 +350,7 @@ void BookmarksManager::dismissedCtxPopup(void* data, Evas_Object* obj, void* /*e
     elm_object_signal_emit(bookmarks_manager->m_genlist, "hide_popup", "BookmarksManagerModel");
     elm_object_item_signal_emit(bookmarks_manager->m_trackedItem, "unselected", "BookmarksManagerModel");
 
-#if PLATFORM(TIZEN)
     elm_object_item_untrack(bookmarks_manager->m_trackedItem);
-#endif
     bookmarks_manager->m_internalPopupVisible = false;
 }
 

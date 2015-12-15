@@ -11,7 +11,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/services/SimpleUI)
 include_directories( ${CMAKE_SOURCE_DIR}/services/BookmarkService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/HistoryService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/WebPageUI)
-include_directories( ${CMAKE_SOURCE_DIR}/services/WebKitEngineService)
+include_directories( ${CMAKE_SOURCE_DIR}/services/WebEngineService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService/Storage/include)
 include_directories( ${CMAKE_SOURCE_DIR}/services/StorageService/src)
@@ -30,7 +30,7 @@ set(UNIT_TESTS_SRCS
     ut_StorageService.cpp
     ut_coreService.cpp
     ut_SessionStorage.cpp
-#    ut_WebKitEngineService.cpp
+#    ut_WebEngineService.cpp
     )
 
 if(TIZEN_BUILD)
@@ -53,7 +53,7 @@ if(TIZEN_BUILD)
         SimpleUI
         WebPageUI
         StorageService
-        WebKitEngineService
+        WebEngineService
         SessionStorage
     )
 endif(TIZEN_BUILD)
