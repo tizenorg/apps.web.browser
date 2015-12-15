@@ -65,56 +65,6 @@ public:
     std::string getUrlTitle(const std::string& url);
 
     /**
-     * Returns created custom folder.
-     */
-    services::SharedBookmarkFolder getFolder(unsigned int id);
-
-    /**
-     * Returns all created custom folders.
-     */
-    services::SharedBookmarkFolderList getFolders();
-
-    /**
-     * Returns all created custom folders.
-     */
-    unsigned int getFoldersCount();
-
-    /**
-     * Adds folder with a specified name.
-     * Returns created folder id.
-     */
-    unsigned int addFolder(const std::string& name);
-
-    /**
-     * Updates folder with a specified name.
-     */
-    void updateFolderName(unsigned int id, const std::string& newName);
-
-    /**
-     * Delete all folders.
-     */
-    void deleteAllFolders();
-
-    /**
-     * Delete folder with a specified id.
-     */
-    void deleteFolder(unsigned int id);
-
-    /**
-     * Answers if folder of a specified name exists.
-     */
-    bool ifFolderExists(const std::string& name);
-    /**
-     * Get id of a folder.
-     */
-    unsigned int getFolderId(const std::string &name);
-
-    /**
-     * Get name of a folder.
-     */
-    std::string getFolderName(unsigned int id);
-
-    /**
      * Store/update all items in storage
      */
     void updateSession(Session& session);

@@ -70,7 +70,7 @@ private:
     {
         std::string name;
         int count;
-        int folder_id;
+        unsigned int folder_id;
         std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkManagerUI;
     } FolderData;
 

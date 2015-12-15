@@ -265,9 +265,23 @@ void BookmarkManagerUI::createFocusVector()
 void BookmarkManagerUI::addCustomFolder(FolderData* item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_custom_item_class,
+    Elm_Object_Item* BookmarkView;
+    if (item->folder_id == m_all_folder_id)
+        BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_all_item_class,
+                                                            item, _bookmarkAllFolderClicked, item);
+    else if (item->folder_id == m_special_folder_id)
+        BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_mobile_item_class,
+                                                            item, _bookmarkMobileFolderClicked, item);
+    else
+        BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_custom_item_class,
                                                             item, _bookmarkCustomFolderClicked, item);
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
+}
+
+void BookmarkManagerUI::setFoldersId(unsigned int all, unsigned int special)
+{
+    m_all_folder_id = all;
+    m_special_folder_id = special;
 }
 
 #if PROFILE_MOBILE
@@ -280,29 +294,29 @@ void BookmarkManagerUI::addNewFolder()
 }
 #endif
 
-void BookmarkManagerUI::addAllFolder(std::vector<std::shared_ptr<services::BookmarkItem> > items, std::string folder_name)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    FolderData *folderData = new FolderData();
-    folderData->name = folder_name;
-    folderData->count = items.size();
-    folderData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_all_item_class,
-                                                            folderData, _bookmarkAllFolderClicked, folderData);
-    elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
-}
+//void BookmarkManagerUI::addAllFolder(std::vector<std::shared_ptr<services::BookmarkItem> > items, std::string folder_name)
+//{
+//    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+//    FolderData *folderData = new FolderData();
+//    folderData->name = folder_name;
+//    folderData->count = items.size();
+//    folderData->bookmarkManagerUI.reset(this);
+//    Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_all_item_class,
+//                                                            folderData, _bookmarkAllFolderClicked, folderData);
+//    elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
+//}
 
-void BookmarkManagerUI::addSpecialFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items, std::string folder_name)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    FolderData *folderData = new FolderData();
-    folderData->name = folder_name;
-    folderData->count = items.size();
-    folderData->bookmarkManagerUI.reset(this);
-    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_mobile_item_class,
-                                                            folderData, _bookmarkMobileFolderClicked, folderData);
-    elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
-}
+//void BookmarkManagerUI::addSpecialFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items, std::string folder_name)
+//{
+//    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+//    FolderData *folderData = new FolderData();
+//    folderData->name = folder_name;
+//    folderData->count = items.size();
+//    folderData->bookmarkManagerUI.reset(this);
+//    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_mobile_item_class,
+//                                                            folderData, _bookmarkMobileFolderClicked, folderData);
+//    elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
+//}
 
 void BookmarkManagerUI::addCustomFolders(services::SharedBookmarkFolderList folders)
 {

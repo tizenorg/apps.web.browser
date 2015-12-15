@@ -47,11 +47,12 @@ public:
     Evas_Object *getContent();
     virtual std::string getName();
 
+    void setFoldersId(unsigned int all, unsigned int special);
 #if PROFILE_MOBILE
     void addNewFolder();
 #endif
-    void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
-    void addSpecialFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    //void addAllFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
+    //void addSpecialFolder(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >,  std::string);
     void addCustomFolders(services::SharedBookmarkFolderList folders);
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
@@ -70,7 +71,7 @@ private:
     {
         std::string name;
         int count;
-        int folder_id;
+        unsigned int folder_id;
         std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> bookmarkManagerUI;
     } FolderData;
 
@@ -111,6 +112,9 @@ private:
     Elm_Gengrid_Item_Class * m_folder_all_item_class;
     Elm_Gengrid_Item_Class * m_folder_mobile_item_class;
     Elm_Gengrid_Item_Class * m_folder_custom_item_class;
+
+    unsigned int m_all_folder_id;
+    unsigned int m_special_folder_id;
 };
 
 }
