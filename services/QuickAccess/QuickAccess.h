@@ -19,6 +19,7 @@
 
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
+#include <cstdint>
 
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
@@ -75,7 +76,7 @@ private:
 
 #if PROFILE_MOBILE
     void addBookmarkManagerTile();
-    void setIndexPage(const int page) const;
+    void setIndexPage(const uintptr_t page) const;
 #else
     Evas_Object* createBottomButton(Evas_Object *parent);
 #endif
