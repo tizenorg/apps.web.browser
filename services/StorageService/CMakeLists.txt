@@ -5,6 +5,7 @@ set(StorageServiceSOURCES
     StorageExceptionInitialization.cpp
     DriverManager.cpp
     Field.cpp
+    FoldersStorage.cpp
     SQLTransactionScope.cpp
     DBTools.cpp
     SQLDatabase.cpp

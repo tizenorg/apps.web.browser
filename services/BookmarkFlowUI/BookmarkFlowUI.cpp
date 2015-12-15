@@ -411,6 +411,8 @@ void BookmarkFlowUI::gridAddCustomFolders(services::SharedBookmarkFolderList fol
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     for (auto it = folders.begin(); it != folders.end(); ++it) {
+        if ((*it)->getName().compare("All") == 0)
+            continue;
         FolderData *folderData = new FolderData();
         folderData->name = (*it)->getName();
         folderData->folder_id = (*it)->getId();
@@ -418,9 +420,9 @@ void BookmarkFlowUI::gridAddCustomFolders(services::SharedBookmarkFolderList fol
         gridAddCustomFolder(folderData);
     }
 
-    if (folders.size() < 9)
+    if (elm_gengrid_items_count(m_gengrid) < 10)
         elm_object_signal_emit(m_bf_layout, "upto9", "ui");
-    if (folders.size() < 6)
+    if (elm_gengrid_items_count(m_gengrid) < 7)
         elm_object_signal_emit(m_bf_layout, "upto6", "ui");
 
     elm_object_part_content_set(m_bf_layout, "folder_grid_swallow", m_gengrid);
@@ -441,8 +443,7 @@ void BookmarkFlowUI::_gridCustomFolderClicked(void *data, Evas_Object *, void *)
     if (data != nullptr) {
         FolderData* folderData = static_cast<FolderData*>(data);
         BookmarkUpdate update;
-        update.folder_id = 0; //folderData->folder_id;
-        //TODO: UNCOMMENT WHEN BOOKMARKS IN FOLDER IS IMPLEMENTED
+        update.folder_id = folderData->folder_id;
         folderData->bookmarkFlowUI->saveBookmark(update);
         folderData->bookmarkFlowUI->dismiss();
     }
