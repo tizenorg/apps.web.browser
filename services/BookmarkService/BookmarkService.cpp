@@ -282,10 +282,6 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
             } else {
                 BROWSER_LOGD("bookmark favicon size is -1");
             }
-#if PROFILE_MOBILE
-            bool is_folder = (bookmark_info.type > 0 ? EINA_TRUE : EINA_FALSE);
-            bookmark->set_folder_flag(is_folder);
-#endif
             m_bookmarks.push_back(bookmark);
         } else {
             BROWSER_LOGD("bp_bookmark_adaptor_get_easy_all error");

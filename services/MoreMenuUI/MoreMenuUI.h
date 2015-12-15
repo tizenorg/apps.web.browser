@@ -109,7 +109,6 @@ public:
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
-    boost::signals2::signal<void ()> deleteBookmark;
     boost::signals2::signal<void (bool)> bookmarkFlowClicked;
 private:
     Elm_Gengrid_Item_Class* createItemClass();

@@ -39,6 +39,7 @@
 #include "BookmarkItem.h"
 #include "BookmarkFolder.h"
 #include "FocusManager.h"
+#include "app_i18n.h"
 
 #define BOOKMARK_FLOW_SERVICE "org.tizen.browser.bookmarkflowui"
 #define M_UNUSED(x) (void)(x)
@@ -47,7 +48,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 struct BookmarkUpdate {
-    int folder_id;
+    unsigned int folder_id;
     std::string title;
 };
 
@@ -142,6 +143,8 @@ private:
     Elm_Gengrid_Item_Class *m_folder_custom_item_class;
 
     FocusManager m_focusManager;
+    const unsigned int upto9 = 10;
+    const unsigned int upto6 = 7;
 #endif
 };
 
