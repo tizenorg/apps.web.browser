@@ -18,6 +18,7 @@
 #include <Elementary.h>
 #include <vector>
 #include <algorithm>
+#include "app_i18n.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "BrowserAssert.h"
 #include "DetailPopup.h"
@@ -77,7 +78,7 @@ void DetailPopup::createLayout()
     elm_object_focus_set(m_urlButton, EINA_TRUE);
 
     edje_object_signal_callback_add(elm_layout_edje_get(m_layout), "mouse,clicked,1", "thumbnail", _url_click, this);
-    elm_layout_text_set(m_layout, "history_title", "History");
+    elm_layout_text_set(m_layout, "history_title", _("IDS_BR_MBODY_HISTORY"));
     elm_layout_text_set(m_layout, "url", tools::clearURL(m_item->getUrl()).c_str());
 
     m_historyList = elm_genlist_add(m_layout);
