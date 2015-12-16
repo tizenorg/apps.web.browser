@@ -16,10 +16,11 @@
 
 #include <services/HistoryUI/HistoryUI.h>
 #include <services/HistoryService/HistoryItem.h>
-#include "BrowserLogger.h"
 #include "HistoryDaysListManagerTv.h"
 #include "HistoryDayItemData.h"
 #include "tv/HistoryDayItemTv.h"
+#include "tv/WebsiteHistoryItem/WebsiteHistoryItemTitleTv.h"
+#include "tv/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsTv.h"
 
 #include <EflTools.h>
 
@@ -29,6 +30,7 @@ namespace base_ui {
 HistoryDaysListManagerTv::HistoryDaysListManagerTv()
     : m_edjeFiles(std::make_shared<HistoryDaysListManagerEdjeTv>())
 {
+    connectSignals();
 }
 
 HistoryDaysListManagerTv::~HistoryDaysListManagerTv()
@@ -52,7 +54,7 @@ Evas_Object* HistoryDaysListManagerTv::createDaysList(Evas_Object* parent)
 
     elm_object_content_set(m_scrollerDaysColumns, m_layoutScrollerDaysColumns);
 
-    m_boxDaysColumns = elm_box_add(m_layoutScrollerDaysColumns);
+    m_boxDaysColumns = elm_box_add(parent);
     tools::EflTools::setExpandHints(m_boxDaysColumns);
     elm_box_horizontal_set(m_boxDaysColumns, EINA_TRUE);
     elm_object_part_content_set(m_layoutScrollerDaysColumns, "daysColumns",
@@ -87,11 +89,71 @@ void HistoryDaysListManagerTv::clear()
     m_dayItems.clear();
 }
 
+void HistoryDaysListManagerTv::connectSignals()
+{
+    HistoryDayItemTv::signalHeaderFocus.connect(
+            boost::bind(&HistoryDaysListManagerTv::onHistoryDayItemHeaderFocus,
+                    this, _1));
+    WebsiteHistoryItemTitleTv::signalWebsiteHistoryItemClicked.connect(
+            boost::bind(&HistoryDaysListManagerTv::onWebsiteHistoryItemClicked,
+                    this, _1));
+    WebsiteHistoryItemVisitItemsTv::signalWebsiteVisitItemClicked.connect(
+            boost::bind(&HistoryDaysListManagerTv::onWebsiteHistoryItemVisitItemClicked,
+                    this, _1));
+}
+
 void HistoryDaysListManagerTv::appendDayItem(HistoryDayItemDataPtr dayItemData)
 {
     auto item = std::make_shared<HistoryDayItemTv>(dayItemData);
     m_dayItems.push_back(item);
     elm_box_pack_end(m_boxDaysColumns, item->init(m_boxDaysColumns, m_edjeFiles));
+}
+
+void HistoryDaysListManagerTv::setFocusChain(Evas_Object* obj)
+{
+    for(auto& dayItem : m_dayItems) {
+        dayItem->setFocusChain(obj);
+    }
+}
+
+void HistoryDaysListManagerTv::onHistoryDayItemHeaderFocus(
+        const HistoryDayItemTv* focusedItem)
+{
+    scrollToDayItem(focusedItem);
+}
+
+void HistoryDaysListManagerTv::onWebsiteHistoryItemClicked(
+        const WebsiteHistoryItemDataPtr websiteHistoryItemData)
+{
+    historyItemClicked("http://" + websiteHistoryItemData->websiteDomain,
+            websiteHistoryItemData->websiteTitle);
+}
+
+void HistoryDaysListManagerTv::onWebsiteHistoryItemVisitItemClicked(
+        const WebsiteVisitItemDataPtr websiteVisitItemData)
+{
+    historyItemClicked(websiteVisitItemData->link, websiteVisitItemData->title);
+}
+
+void HistoryDaysListManagerTv::scrollToDayItem(const HistoryDayItemTv* item)
+{
+    int itemX, itemY, itemW, itemH;
+    itemX = itemY = itemW = itemH = 0;
+    evas_object_geometry_get(item->getLayoutDayColumn(), &itemX, &itemY, &itemW, &itemH);
+    int index = getHistoryItemIndex(item);
+    elm_scroller_region_show(m_scrollerDaysColumns, index*itemW, 1, 2*itemW, 1);
+}
+
+int HistoryDaysListManagerTv::getHistoryItemIndex(const HistoryDayItemTv* item)
+{
+    int index = 0;
+    for(auto& dayItem : m_dayItems) {
+        if(dayItem.get() == item) {
+            return index;
+        }
+        index++;
+    }
+    return -1;
 }
 
 }

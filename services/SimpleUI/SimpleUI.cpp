@@ -327,7 +327,7 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_historyUI.get());
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, desktop_ua));
+    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
@@ -669,6 +669,8 @@ void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::Histor
 
 void SimpleUI::onOpenURLInNewTab(const std::string& url)
 {
+    // TODO: desktop mode should be checked in WebView or QuickAcces
+    // (depends on which view is active)
     onOpenURLInNewTab(url, "", m_quickAccess->isDesktopMode());
 }
 
@@ -1252,13 +1254,13 @@ void SimpleUI::authPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
 void SimpleUI::showHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_viewManager.pushViewToStack(m_historyUI.get());
     m_historyUI->addHistoryItems(m_historyService->getHistoryToday(),
             HistoryPeriod::HISTORY_TODAY);
     m_historyUI->addHistoryItems(m_historyService->getHistoryYesterday(),
             HistoryPeriod::HISTORY_YESTERDAY);
     m_historyUI->addHistoryItems(m_historyService->getHistoryLastWeek(),
             HistoryPeriod::HISTORY_LASTWEEK);
+    m_viewManager.pushViewToStack(m_historyUI.get());
 }
 
 void SimpleUI::closeHistoryUI()

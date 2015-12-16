@@ -162,7 +162,10 @@ private:
     void onHistoryRemoved(const std::string& uri);
     void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
     /**
-     * @brief Handles 'openUrlInNewTab' signals. Uses QuickAccess to indicate desktop/mobile mode.
+     * @brief Handles 'openUrlInNewTab' signals. Uses QuickAccess to indicate
+     * desktop/mobile mode.
+     * TODO: desktop mode should be checked in WebView or QuickAcces (depends
+     * on which view is active)
      */
     void onOpenURLInNewTab(const std::string& url);
     void onOpenURLInNewTab(const std::string& url, const std::string& title, bool desktopMode);
