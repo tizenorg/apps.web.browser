@@ -27,6 +27,8 @@ namespace tools
     static const int SUFIX_CHAR_DEL = 1;
     static const char * PROTCOL_BEGIN = "://";
     static const char END_SLASH = '/';
+    // which protocol, when only domain is available?
+    static const std::string PROTOCOL_DEFAULT("http://");
 
     // declaration using 'unused' attribute because in some modules not all functions are used
     static std::string fromChar(const char* c) __attribute__ ((unused));

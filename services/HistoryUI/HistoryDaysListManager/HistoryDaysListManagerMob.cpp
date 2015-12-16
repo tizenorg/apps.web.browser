@@ -16,7 +16,6 @@
 
 #include <services/HistoryUI/HistoryUI.h>
 #include <services/HistoryService/HistoryItem.h>
-#include "BrowserLogger.h"
 #include "HistoryDaysListManagerMob.h"
 #include "HistoryDayItemData.h"
 #include "mob/HistoryDayItemMob.h"

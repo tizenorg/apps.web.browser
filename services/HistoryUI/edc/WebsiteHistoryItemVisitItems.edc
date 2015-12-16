@@ -73,6 +73,22 @@ collections {
                     }
                 }
             }
+            part {
+                name: "buttonSelect";
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 633 56;
+                    max: 633 56;
+                    rel1 {
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
         }
     }
     group {

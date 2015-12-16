@@ -21,6 +21,7 @@
 #include <Elementary.h>
 #include <map>
 #include <string>
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -37,6 +38,8 @@ public:
             HistoryPeriod period) = 0;
     // clear everything including efl objects (result: empty list)
     virtual void clear() = 0;
+    virtual void setFocusChain(Evas_Object* obj) = 0;
+    boost::signals2::signal<void (std::string url, std::string title)> historyItemClicked;
 };
 
 }
