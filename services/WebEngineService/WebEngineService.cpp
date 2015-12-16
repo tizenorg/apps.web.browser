@@ -422,6 +422,7 @@ bool WebEngineService::closeTab(TabId id) {
     m_tabs.erase(closingTabId);
     m_chronoTabs.remove(closingTabId);
     m_mostRecentTab.remove(closingTabId);
+    m_currentWebView.reset();
     if (m_tabs.size() == 0) {
         m_currentTabId = TabId::NONE;
     }
