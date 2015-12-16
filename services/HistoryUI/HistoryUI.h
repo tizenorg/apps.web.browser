@@ -32,7 +32,9 @@ namespace tizen_browser{
 namespace base_ui{
 
 class HistoryDaysListManager;
-typedef std::unique_ptr<HistoryDaysListManager> HistoryDaysListManagerPtrUnique;
+typedef std::shared_ptr<HistoryDaysListManager> HistoryDaysListManagerPtr;
+class HistoryUIFocusManager;
+typedef std::unique_ptr<HistoryUIFocusManager> HistoryUIFocusManagerPtrUnique;
 
 class BROWSER_EXPORT HistoryUI
     : public tizen_browser::interfaces::AbstractUIComponent
@@ -74,10 +76,14 @@ private:
 
     std::string m_edjFilePath;
     Evas_Object *m_parent;
-    Evas_Object *m_history_layout;
+    Evas_Object *m_main_layout;
     Evas_Object *m_actionBar;
+    Evas_Object *m_buttonClose;
+    Evas_Object *m_buttonClear;
     Evas_Object *m_daysList;
-    HistoryDaysListManagerPtrUnique m_historyDaysListManager;
+    HistoryDaysListManagerPtr m_historyDaysListManager;
+    HistoryUIFocusManagerPtrUnique m_focusManager;
+
 };
 
 }

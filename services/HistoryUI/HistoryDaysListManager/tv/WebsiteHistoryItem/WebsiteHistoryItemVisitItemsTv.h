@@ -21,20 +21,30 @@
 #include <string>
 #include <vector>
 #include "../../HistoryDayItemDataTypedef.h"
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser{
 namespace base_ui{
 
 class WebsiteHistoryItemVisitItemsTv
 {
+    struct LayoutButtonPair
+    {
+        Evas_Object* layout;
+        Evas_Object* selectButton;
+    };
 public:
     WebsiteHistoryItemVisitItemsTv(
             const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems);
     virtual ~WebsiteHistoryItemVisitItemsTv();
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
+    void setFocusChain(Evas_Object* obj);
+
+    static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
+    signalWebsiteVisitItemClicked;
 
 private:
-    Evas_Object* createLayoutVisitItem(Evas_Object* parent,
+    LayoutButtonPair createLayoutVisitItem(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
     Evas_Object* createLayoutVisitItemDate(Evas_Object* parent,
@@ -43,9 +53,13 @@ private:
     Evas_Object* createLayoutVisitItemUrl(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
+    void initCallbacks();
+    void deleteCallbacks();
+    static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
 
     std::vector<WebsiteVisitItemDataPtr> m_websiteVisitItems;
 
+    std::vector<Evas_Object*> m_buttonsSelect;
     Evas_Object* m_layoutHistoryItemVisitItems;
     Evas_Object* m_boxMainVertical;
 };
