@@ -20,10 +20,10 @@
 
 #include "EflTools.h"
 
-#include "BrowserLogger.h"
-
 namespace tizen_browser{
 namespace base_ui{
+
+boost::signals2::signal<void(const HistoryDayItemTv*)> HistoryDayItemTv::signalHeaderFocus;
 
 HistoryDayItemTv::HistoryDayItemTv(HistoryDayItemDataPtr dayItemData)
     : m_dayItemData(dayItemData)
@@ -37,6 +37,8 @@ HistoryDayItemTv::HistoryDayItemTv(HistoryDayItemDataPtr dayItemData)
 
 HistoryDayItemTv::~HistoryDayItemTv()
 {
+    deleteCallbacks();
+    evas_object_del(m_layoutDayColumn);
 }
 
 Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
@@ -50,18 +52,18 @@ Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
     elm_box_horizontal_set(m_boxMainVertical, EINA_FALSE);
     elm_object_part_content_set(m_layoutDayColumn, "boxMainVertical", m_boxMainVertical);
 
-    m_layoutHeader = elm_layout_add(parent);
+    m_layoutHeader = elm_layout_add(m_layoutDayColumn);
     evas_object_size_hint_align_set(m_layoutHeader, 0.0, 0.0);
     elm_layout_file_set(m_layoutHeader, edjeFiles->historyDaysList.c_str(), "layoutHeader");
     elm_object_text_set(m_layoutHeader, m_dayItemData->day.c_str());
 
-    m_layoutBoxScrollerWebsites = elm_layout_add(parent);
+    m_layoutBoxScrollerWebsites = elm_layout_add(m_layoutDayColumn);
     tools::EflTools::setExpandHints(m_layoutBoxScrollerWebsites);
     elm_layout_file_set(m_layoutBoxScrollerWebsites, edjeFiles->historyDaysList.c_str(), "layoutBoxScrollerWebsites");
 
     m_boxScrollerWebsites = elm_box_add(m_layoutDayColumn);
     tools::EflTools::setExpandHints(m_boxScrollerWebsites);
-    m_scrollerWebsites = createScrollerWebsites(m_boxScrollerWebsites, edjeFiles);
+    m_scrollerWebsites = createScrollerWebsites(m_layoutDayColumn, edjeFiles);
     elm_box_pack_end(m_boxScrollerWebsites, m_scrollerWebsites);
     elm_object_part_content_set(m_layoutBoxScrollerWebsites, "boxScrollerWebsites", m_boxScrollerWebsites);
 
@@ -79,7 +81,19 @@ Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
     evas_object_show(m_boxMainVertical);
     evas_object_show(m_layoutDayColumn);
 
+    initCallbacks();
+
     return m_layoutDayColumn;
+}
+
+void HistoryDayItemTv::setFocusChain(Evas_Object* obj)
+{
+    elm_object_focus_allow_set(m_layoutHeader, EINA_TRUE);
+    elm_object_focus_custom_chain_append(obj, m_layoutHeader, NULL);
+
+    for(auto& websiteHistoryItem : m_websiteHistoryItems) {
+        websiteHistoryItem->setFocusChain(obj);
+    }
 }
 
 Evas_Object* HistoryDayItemTv::createScrollerWebsites(Evas_Object* parent,
@@ -107,6 +121,17 @@ Evas_Object* HistoryDayItemTv::createScrollerWebsites(Evas_Object* parent,
     return scroller;
 }
 
+void HistoryDayItemTv::initCallbacks()
+{
+    evas_object_smart_callback_add(m_layoutHeader, "focused",
+        HistoryDayItemTv::_layoutHeaderFocused, this);
+}
+
+void HistoryDayItemTv::deleteCallbacks()
+{
+    evas_object_smart_callback_del(m_layoutHeader, "focused", NULL);
+}
+
 void HistoryDayItemTv::initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles)
 {
     for (auto& websiteHistoryItem : m_websiteHistoryItems) {
@@ -114,6 +139,13 @@ void HistoryDayItemTv::initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles
                 edjeFiles);
         elm_box_pack_end(m_boxWebsites, boxSingleWebsite);
     }
+}
+
+void HistoryDayItemTv::_layoutHeaderFocused(void* data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
+{
+    HistoryDayItemTv *self = static_cast<HistoryDayItemTv*>(data);
+    signalHeaderFocus(self);
 }
 
 }

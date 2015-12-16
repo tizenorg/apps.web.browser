@@ -40,6 +40,7 @@ public:
     void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
             HistoryPeriod period) override;
     void clear() override;
+    void setFocusChain(Evas_Object* /*obj*/) override {}
 
 private:
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
