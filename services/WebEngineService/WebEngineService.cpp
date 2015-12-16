@@ -583,7 +583,7 @@ void WebEngineService::moreKeyPressed()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
 
-    if (m_currentWebView->clearTextSelection())
+    if (m_currentTabId == TabId::NONE || m_currentWebView->clearTextSelection())
         return;
 
     if (m_currentWebView->isFullScreen()) {
