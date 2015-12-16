@@ -794,8 +794,7 @@ void SimpleUI::onEditFolderPopupClicked(const std::string& newName)
     if (m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
         unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
         m_storageService->getSessionStorage().updateFolderName(id, newName);
-        m_bookmarkManagerUI->hideUI();
-        showBookmarkManagerUI();
+        m_bookmarkDetailsUI->onBackPressed();
     }
 }
 
@@ -805,8 +804,7 @@ void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
     if (button == DELETE && m_storageService->getSessionStorage().ifFolderExists(m_folder_name)) {
         unsigned int id = m_storageService->getSessionStorage().getFolderId(m_folder_name);
         m_storageService->getSessionStorage().deleteFolder(id);
-        m_bookmarkManagerUI->hideUI();
-        showBookmarkManagerUI();
+        m_bookmarkDetailsUI->onBackPressed();
     }
 }
 #endif
