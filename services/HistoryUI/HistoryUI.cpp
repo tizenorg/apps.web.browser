@@ -29,6 +29,7 @@
 #include "HistoryDaysListManager/HistoryDaysListManagerMob.h"
 #include "HistoryDaysListManager/HistoryDaysListManagerTv.h"
 #include "services/HistoryService/HistoryItem.h"
+#include "HistoryUIFocusManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -50,7 +51,7 @@ static std::vector<HistoryItemData*> _history_item_data;
 
 HistoryUI::HistoryUI()
     : m_parent(nullptr)
-    , m_history_layout(nullptr)
+    , m_main_layout(nullptr)
     , m_actionBar(nullptr)
     , m_daysList(nullptr)
 {
@@ -59,10 +60,15 @@ HistoryUI::HistoryUI()
     m_edjFilePath.append("HistoryUI/History.edj");
 
 #if PROFILE_MOBILE
-    m_historyDaysListManager = std::unique_ptr<HistoryDaysListManager>(new HistoryDaysListManagerMob());
+    m_historyDaysListManager = std::make_shared<HistoryDaysListManagerMob>();
 #else
-    m_historyDaysListManager = std::unique_ptr<HistoryDaysListManager>(new HistoryDaysListManagerTv());
+    m_historyDaysListManager = std::make_shared<HistoryDaysListManagerTv>();
 #endif
+
+    m_historyDaysListManager->historyItemClicked.connect(historyItemClicked);
+
+    m_focusManager = std::unique_ptr<HistoryUIFocusManager>(
+            new HistoryUIFocusManager(m_historyDaysListManager));
 }
 
 HistoryUI::~HistoryUI()
@@ -73,20 +79,20 @@ HistoryUI::~HistoryUI()
 void HistoryUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_history_layout);
+    M_ASSERT(m_main_layout);
     evas_object_show(m_actionBar);
-    evas_object_show(m_history_layout);
-    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+    evas_object_show(m_main_layout);
+    m_focusManager->refreshFocusChain();
 }
 
 void HistoryUI::hideUI()
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_history_layout);
+    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_main_layout);
     evas_object_hide(m_actionBar);
-    evas_object_hide(m_history_layout);
-    elm_object_focus_custom_chain_unset(m_history_layout);
+    evas_object_hide(m_main_layout);
     clearItems();
+    m_focusManager->unsetFocusChain();
 }
 
 
@@ -95,28 +101,29 @@ void HistoryUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+
+    createHistoryUILayout(m_parent);
 }
 
 Evas_Object* HistoryUI::getContent()
 {
-    M_ASSERT(m_parent);
-    if (!m_history_layout)
-        createHistoryUILayout(m_parent);
-    return m_history_layout;
+    M_ASSERT(m_main_layout);
+    return m_main_layout;
 }
 
 void HistoryUI::createHistoryUILayout(Evas_Object* parent)
 {
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    m_history_layout = elm_layout_add(parent);
+    m_main_layout = elm_layout_add(parent);
 
-    elm_layout_file_set(m_history_layout, m_edjFilePath.c_str(), "history-layout");
-    evas_object_size_hint_weight_set(m_history_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_history_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_layout_file_set(m_main_layout, m_edjFilePath.c_str(), "history-layout");
+    evas_object_size_hint_weight_set(m_main_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_main_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    m_actionBar = createActionBar(m_history_layout);
-    m_daysList = createDaysList(m_history_layout);
+    m_actionBar = createActionBar(m_main_layout);
+    m_daysList = createDaysList(m_main_layout);
     clearItems();
+    m_focusManager->setFocusObj(m_main_layout);
 }
 
 std::map<std::string, services::HistoryItemVector>
@@ -156,17 +163,17 @@ Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
 
     elm_layout_file_set(actionBar, m_edjFilePath.c_str(), "action_bar");
 
-    Evas_Object *button = elm_button_add(actionBar);
-    elm_object_style_set(button, "history_button");
-    evas_object_smart_callback_add(button, "clicked", HistoryUI::_clearHistory_clicked, this);
-    elm_object_part_content_set(actionBar, "clearhistory_click", button);
-    elm_object_focus_custom_chain_append(history_layout, button, nullptr);
+    m_buttonClear = elm_button_add(actionBar);
+    elm_object_style_set(m_buttonClear, "history_button");
+    evas_object_smart_callback_add(m_buttonClear, "clicked", HistoryUI::_clearHistory_clicked, this);
+    elm_object_part_content_set(actionBar, "clearhistory_click", m_buttonClear);
 
-    button = elm_button_add(actionBar);
-    elm_object_style_set(button, "history_button");
-    evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
-    elm_object_part_content_set(actionBar, "close_click", button);
-    elm_object_focus_custom_chain_append(history_layout, button, nullptr);
+    m_buttonClose = elm_button_add(actionBar);
+    elm_object_style_set(m_buttonClose, "history_button");
+    evas_object_smart_callback_add(m_buttonClose, "clicked", HistoryUI::_close_clicked_cb, this);
+    elm_object_part_content_set(actionBar, "close_click", m_buttonClose);
+
+    m_focusManager->setHistoryUIButtons(m_buttonClose, m_buttonClear);
 
     return actionBar;
 }

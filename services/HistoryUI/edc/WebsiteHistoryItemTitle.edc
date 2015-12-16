@@ -7,8 +7,8 @@ collections {
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    visible: 0;
-                    color: 180 180 180 255;
+                    visible: 1;
+                    color: 255 255 255 255;
                     rel1 {
                         to: "boxMainHorizontal";
                         relative: 0.0 0.0;
@@ -21,6 +21,24 @@ collections {
             }
             part {
                 name: "boxMainHorizontal";
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: 284 110;
+                    max: -1 -1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        offset: 18.0 18.0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                }
+            }
+            part {
+                name: "buttonSelect";
                 type: SWALLOW;
                 description {
                     state: "default" 0.0;

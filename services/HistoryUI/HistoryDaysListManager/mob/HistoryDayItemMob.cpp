@@ -19,7 +19,6 @@
 #include "../HistoryDayItemData.h"
 
 #include <EflTools.h>
-#include "BrowserLogger.h"
 
 namespace tizen_browser {
 namespace base_ui {

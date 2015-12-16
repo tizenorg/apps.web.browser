@@ -20,8 +20,6 @@
 #include "../../HistoryDayItemData.h"
 #include <EflTools.h>
 
-#include "BrowserLogger.h"
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -55,6 +53,11 @@ Evas_Object* WebsiteHistoryItemTv::init(Evas_Object* parent,
     evas_object_show(m_layoutHistoryItem);
 
     return m_layoutHistoryItem;
+}
+
+void WebsiteHistoryItemTv::setFocusChain(Evas_Object* obj)
+{
+    m_websiteHistoryItemTitle->setFocusChain(obj);
 }
 
 Evas_Object* WebsiteHistoryItemTv::createBoxMainHorizontal(Evas_Object* parent,

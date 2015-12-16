@@ -2,6 +2,7 @@ project(HistoryUI)
 
 set(HistoryUI_SRCS
     HistoryUI.cpp
+    HistoryUIFocusManager.cpp
     HistoryPeriod.cpp
     HistoryDaysListManager/HistoryDaysListManagerMob.cpp
     HistoryDaysListManager/mob/HistoryDayItemMob.cpp
