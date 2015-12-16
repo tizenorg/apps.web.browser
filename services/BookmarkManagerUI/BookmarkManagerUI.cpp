@@ -20,6 +20,7 @@
 #include <vector>
 #include <AbstractMainWindow.h>
 
+#include "app_i18n.h"
 #include "BookmarkManagerUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -344,8 +345,80 @@ void BookmarkManagerUI::addCustomFolders(std::vector<std::shared_ptr<tizen_brows
             addCustomFolder(folderData);
         }
     }
-    elm_object_part_content_set(b_mm_layout, "elm.swallow.grid",m_gengrid);
-    evas_object_show(m_gengrid);
+    elm_object_part_content_set(b_mm_layout, "elm.swallow.grid",getGenGrid());
+    evas_object_show(getGenGrid());
+}
+
+void BookmarkManagerUI::addDetailsItem(std::shared_ptr<tizen_browser::services::BookmarkItem> hi)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BookmarkItemData *itemData = new BookmarkItemData();
+    itemData->item = hi;
+    itemData->bookmarkManagerUI.reset(this);
+    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_details_gengrid, m_details_item_class,
+                                                            itemData, _bookmarkItemClicked, itemData);
+    m_map_bookmark.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(),BookmarkView));
+    elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
+    setDetailsEmptyGengrid(false);
+}
+
+void BookmarkManagerUI::addDetails(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items, std::string folder_name)
+{
+    int count=0;
+
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    for (auto it = items.begin(); it != items.end(); ++it)
+    {
+        BROWSER_LOGD("%d %s %s",(*it)->is_folder(),(*it)->getTitle().c_str(), (*it)->getAddress().c_str());
+        if (!(*it)->is_folder()) {
+            addDetailsItem(*it);
+            count++;
+        }
+    }
+    elm_object_part_text_set(m_details_topContent, "title_text",
+                             (boost::format("%s(%d)") % folder_name.c_str() % count).str().c_str());
+    elm_object_part_content_set(b_details_layout, "elm.swallow.grid", m_details_gengrid);
+    evas_object_show(m_details_gengrid);
+    elm_box_unpack_all(m_menu_details);
+    if (folder_name != _("IDS_BR_BODY_ALL") && folder_name != "Mobile") {
+        evas_object_show(m_editButton);
+        evas_object_show(m_deleteButton);
+        elm_box_pack_end(m_menu_details, m_editButton);
+        elm_box_pack_end(m_menu_details, m_deleteButton);
+    } else {
+        evas_object_hide(m_editButton);
+        evas_object_hide(m_deleteButton);
+    }
+    elm_box_pack_end(m_menu_details, m_removeButton);
+}
+
+char* BookmarkManagerUI::_grid_title_text_get(void *data, Evas_Object *, const char *part)
+{
+    if ((data != nullptr) && (part != nullptr)) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
+        const char *part_name1 = "page_title";
+        static const int part_name1_len = strlen(part_name1);
+        if (!strncmp(part_name1, part, part_name1_len)) {
+            return strdup(itemData->item->getTitle().c_str());
+        }
+    }
+    return strdup("");
+}
+
+char* BookmarkManagerUI::_grid_folder_title_text_get(void *data, Evas_Object *, const char *part)
+{
+    if ((data != nullptr) && (part != nullptr)) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        FolderData *folderData = (FolderData*)(data);
+        const char *part_name1 = "page_title";
+        static const int part_name1_len = strlen(part_name1);
+        if (!strncmp(part_name1, part, part_name1_len)) {
+            return strdup((boost::format("%s(%d)") % folderData->name.c_str() % folderData->count).str().c_str());
+        }
+    }
+    return strdup("");
 }
 
 void BookmarkManagerUI::_bookmarkCustomFolderClicked(void * data , Evas_Object *, void *)
