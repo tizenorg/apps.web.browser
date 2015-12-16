@@ -23,6 +23,7 @@
 #include <vector>
 #include "../HistoryDayItemDataTypedef.h"
 #include "HistoryDaysListManagerEdjeTv.h"
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser{
 namespace base_ui{
@@ -35,10 +36,19 @@ public:
     HistoryDayItemTv(HistoryDayItemDataPtr dayItemData);
     virtual ~HistoryDayItemTv();
     Evas_Object* init(Evas_Object* parent, HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    void setFocusChain(Evas_Object* obj);
+    Evas_Object* getLayoutDayColumn() const {return m_layoutDayColumn;}
+
+    static boost::signals2::signal<void(const HistoryDayItemTv*)> signalHeaderFocus;
 
 private:
     void initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles);
-    Evas_Object* createScrollerWebsites(Evas_Object* parent, HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    Evas_Object* createScrollerWebsites(Evas_Object* parent,
+            HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    void initCallbacks();
+    void deleteCallbacks();
+    static void _layoutHeaderFocused(void* data, Evas_Object* obj,
+            void* event_info);
 
     HistoryDayItemDataPtr m_dayItemData;
     std::vector<WebsiteHistoryItemTvPtr> m_websiteHistoryItems;
