@@ -44,9 +44,8 @@ EXPORT_SERVICE(PlatformInputManager, "org.tizen.browser.platforminputmanager")
 
 PlatformInputManager::PlatformInputManager()
 #if PROFILE_MOBILE
-    : m_HWBackCallbackRegistered(false)
+    : m_HWKeyCallbackRegistered(false)
 #endif
-
 {
 
 }
@@ -60,30 +59,38 @@ void PlatformInputManager::init(Evas_Object* mainWindow)
 }
 
 #if PROFILE_MOBILE
-void PlatformInputManager::registerHWBackCallback(Evas_Object* view)
+void PlatformInputManager::registerHWKeyCallback(Evas_Object* view)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(view);
-    if (m_HWBackCallbackRegistered)
+    if (m_HWKeyCallbackRegistered)
         return;
     eext_object_event_callback_add(view, EEXT_CALLBACK_BACK, onHWBack, this);
-    m_HWBackCallbackRegistered = true;
+    eext_object_event_callback_add(view, EEXT_CALLBACK_MORE, onHWMore, this);
+    m_HWKeyCallbackRegistered = true;
 }
 
-void PlatformInputManager::unregisterHWBackCallback(Evas_Object* view)
+void PlatformInputManager::unregisterHWKeyCallback(Evas_Object* view)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(view);
-    if (!m_HWBackCallbackRegistered)
+    if (!m_HWKeyCallbackRegistered)
         return;
     eext_object_event_callback_del(view, EEXT_CALLBACK_BACK, onHWBack);
-    m_HWBackCallbackRegistered = false;
+    eext_object_event_callback_del(view, EEXT_CALLBACK_MORE, onHWMore);
+    m_HWKeyCallbackRegistered = false;
 }
 
 void PlatformInputManager::onHWBack(void* data, Evas_Object*, void*)
 {
     PlatformInputManager *self = static_cast<PlatformInputManager*>(data);
     self->backPressed();
+}
+
+void PlatformInputManager::onHWMore(void* data, Evas_Object*, void*)
+{
+    PlatformInputManager *self = static_cast<PlatformInputManager*>(data);
+    self->menuButtonPressed();
 }
 #endif
 
@@ -132,10 +139,6 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->yellowPressed();
         else if(!keyName.compare("XF86Blue"))   // F7 - Blue
             self->bluePressed();
-#if PROFILE_MOBILE
-        else if(!keyName.compare("XF86Menu"))
-            self->menuButtonPressed();
-#endif
 
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);

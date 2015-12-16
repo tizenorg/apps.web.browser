@@ -70,8 +70,8 @@ public:
     virtual std::string getName();
 
 #if PROFILE_MOBILE
-    void unregisterHWBackCallback(Evas_Object* view);
-    void registerHWBackCallback(Evas_Object* view);
+    void unregisterHWKeyCallback(Evas_Object* view);
+    void registerHWKeyCallback(Evas_Object* view);
 #endif
 
 private:
@@ -86,8 +86,9 @@ private:
     };
 
 #if PROFILE_MOBILE
-    bool m_HWBackCallbackRegistered;
+    bool m_HWKeyCallbackRegistered;
     static void onHWBack(void* data, Evas_Object*, void*);
+    static void onHWMore(void* data, Evas_Object*, void*);
 #endif
 
     /**
