@@ -297,6 +297,13 @@ public:
      */
     virtual void backButtonClicked() = 0;
 
+#if PROFILE_MOBILE
+    /**
+     * @brief clear text selection or exit full screen when more key is pressed
+     */
+    virtual void moreKeyPressed() = 0;
+#endif
+
     /**
      * @brief Switch current view to mobile mode
      */
@@ -475,12 +482,12 @@ public:
     /**
      * Register H/W back key callback for the current webview
      */
-    boost::signals2::signal<void()> registerHWBackCallback;
+    boost::signals2::signal<void()> registerHWKeyCallback;
 
     /**
      * Unregister H/W back key callback for the current webview
      */
-    boost::signals2::signal<void()> unregisterHWBackCallback;
+    boost::signals2::signal<void()> unregisterHWKeyCallback;
 #endif
 };
 

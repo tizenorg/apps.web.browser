@@ -175,6 +175,10 @@ public:
      */
     void backButtonClicked();
 
+#if PROFILE_MOBILE
+    void moreKeyPressed();
+#endif
+
     void switchToMobileMode();
     void switchToDesktopMode();
     bool isDesktopMode() const;
