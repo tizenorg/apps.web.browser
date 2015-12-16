@@ -180,7 +180,7 @@ void WebEngineService::suspend()
         M_ASSERT(m_currentWebView);
         m_currentWebView->suspend();
 #if PROFILE_MOBILE
-        unregisterHWBackCallback();
+        unregisterHWKeyCallback();
 #endif
     }
 }
@@ -191,7 +191,7 @@ void WebEngineService::resume()
         M_ASSERT(m_currentWebView);
         m_currentWebView->resume();
 #if PROFILE_MOBILE
-        registerHWBackCallback();
+        registerHWKeyCallback();
 #endif
     }
 }
@@ -576,6 +576,21 @@ void WebEngineService::_IMEStateChanged(bool enable)
 {
     IMEStateChanged(enable);
 }
+
+#if PROFILE_MOBILE
+void WebEngineService::moreKeyPressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+
+    if (m_currentWebView->clearTextSelection())
+        return;
+
+    if (m_currentWebView->isFullScreen()) {
+        m_currentWebView->exitFullScreen();
+    }
+}
+#endif
 
 void WebEngineService::backButtonClicked()
 {

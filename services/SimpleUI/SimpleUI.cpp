@@ -164,8 +164,8 @@ int SimpleUI::exec(const std::string& _url)
             m_viewManager.pushViewToStack(m_webPageUI.get());
 #if PROFILE_MOBILE
             // Register H/W back key callback
-            m_platformInputManager->registerHWBackCallback(m_viewManager.getContent());
-            m_platformInputManager->registerHWBackCallback(m_moreMenuUI->getContent());
+            m_platformInputManager->registerHWKeyCallback(m_viewManager.getContent());
+            m_platformInputManager->registerHWKeyCallback(m_moreMenuUI->getContent());
 #endif
         }
         m_currentSession = std::move(m_storageService->getSessionStorage().createSession());
@@ -524,22 +524,22 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
-    m_webEngine->registerHWBackCallback.connect(boost::bind(&SimpleUI::registerHWBackCallback, this));
-    m_webEngine->unregisterHWBackCallback.connect(boost::bind(&SimpleUI::unregisterHWBackCallback, this));
+    m_webEngine->registerHWKeyCallback.connect(boost::bind(&SimpleUI::registerHWKeyCallback, this));
+    m_webEngine->unregisterHWKeyCallback.connect(boost::bind(&SimpleUI::unregisterHWKeyCallback, this));
 #endif
 }
 
 #if PROFILE_MOBILE
-void SimpleUI::registerHWBackCallback()
+void SimpleUI::registerHWKeyCallback()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_platformInputManager->registerHWBackCallback(m_webEngine->getLayout());
+    m_platformInputManager->registerHWKeyCallback(m_webEngine->getLayout());
 }
 
-void SimpleUI::unregisterHWBackCallback()
+void SimpleUI::unregisterHWKeyCallback()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_platformInputManager->unregisterHWBackCallback(m_webEngine->getLayout());
+    m_platformInputManager->unregisterHWKeyCallback(m_webEngine->getLayout());
 }
 #endif
 
@@ -1270,6 +1270,7 @@ void SimpleUI::showMoreMenu()
     else {
         m_moreMenuUI->shouldShowFindOnPage(!m_webEngine->getURI().empty());
         m_moreMenuUI->blockThumbnails(m_webPageUI->stateEquals(WPUState::QUICK_ACCESS));
+        m_webEngine->moreKeyPressed();
         m_moreMenuUI->showUI();
     }
 #else
