@@ -40,9 +40,17 @@ public:
     void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
             HistoryPeriod period) override;
     void clear() override;
+    void setFocusChain(Evas_Object* obj) override;
+
+    void onHistoryDayItemHeaderFocus(const HistoryDayItemTv* focusedItem);
+    void onWebsiteHistoryItemClicked(const WebsiteHistoryItemDataPtr websiteHistoryItemData);
+    void onWebsiteHistoryItemVisitItemClicked(const WebsiteVisitItemDataPtr websiteVisitItemData);
 
 private:
+    void connectSignals();
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
+    int getHistoryItemIndex(const HistoryDayItemTv* item);
+    void scrollToDayItem(const HistoryDayItemTv* item);
 
     HistoryDaysListManagerEdjeTvPtr m_edjeFiles;
     std::vector<HistoryDayItemTvPtr> m_dayItems;
