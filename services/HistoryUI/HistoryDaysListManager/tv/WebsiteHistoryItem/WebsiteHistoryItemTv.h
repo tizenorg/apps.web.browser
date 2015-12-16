@@ -24,7 +24,6 @@
 #include "../../HistoryDayItemDataTypedef.h"
 #include "../HistoryDaysListManagerEdjeTv.h"
 
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -40,6 +39,7 @@ public:
     virtual ~WebsiteHistoryItemTv();
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    void setFocusChain(Evas_Object* obj);
 
 private:
     Evas_Object* createBoxMainHorizontal(Evas_Object* parent,

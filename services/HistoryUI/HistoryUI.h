@@ -32,7 +32,9 @@ namespace tizen_browser{
 namespace base_ui{
 
 class HistoryDaysListManager;
-typedef std::unique_ptr<HistoryDaysListManager> HistoryDaysListManagerPtrUnique;
+typedef std::shared_ptr<HistoryDaysListManager> HistoryDaysListManagerPtr;
+class HistoryUIFocusManager;
+typedef std::unique_ptr<HistoryUIFocusManager> HistoryUIFocusManagerPtrUnique;
 
 class BROWSER_EXPORT HistoryUI
     : public tizen_browser::interfaces::AbstractUIComponent
@@ -54,8 +56,7 @@ public:
     void addItems();
     boost::signals2::signal<void ()> closeHistoryUIClicked;
     boost::signals2::signal<void ()> clearHistoryClicked;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
+    boost::signals2::signal<void (std::string& url, std::string& title)> historyItemClicked;
 private:
     void clearItems();
     void createHistoryUILayout(Evas_Object* parent);
@@ -74,10 +75,14 @@ private:
 
     std::string m_edjFilePath;
     Evas_Object *m_parent;
-    Evas_Object *m_history_layout;
+    Evas_Object *m_main_layout;
     Evas_Object *m_actionBar;
+    Evas_Object *m_buttonClose;
+    Evas_Object *m_buttonClear;
     Evas_Object *m_daysList;
-    HistoryDaysListManagerPtrUnique m_historyDaysListManager;
+    HistoryDaysListManagerPtr m_historyDaysListManager;
+    HistoryUIFocusManagerPtrUnique m_focusManager;
+
 };
 
 }

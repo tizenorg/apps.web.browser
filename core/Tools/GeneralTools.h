@@ -27,11 +27,15 @@ namespace tools
     static const int SUFIX_CHAR_DEL = 1;
     static const char * PROTCOL_BEGIN = "://";
     static const char END_SLASH = '/';
+    // what protocol, when only domain is available?
+    static const std::string PROTOCOL_DEFAULT = "http://";
 
     // declaration using 'unused' attribute because in some modules not all functions are used
     static std::string fromChar(const char* c) __attribute__ ((unused));
     static std::string clearURL(const std::string & url) __attribute__ ((unused));
     static std::string extractDomain(const std::string & url) __attribute__ ((unused));
+
+    static std::string getProtocolDefault() __attribute__ ((unused));
 
     static std::string fromChar(const char* c) { return c ? std::string(c) : std::string(); }
 
@@ -46,6 +50,10 @@ namespace tools
         beg += strlen(PROTCOL_BEGIN);
         size_t end = url.find(END_SLASH, beg);
         return url.substr(beg, end - beg);
+    }
+
+    static std::string getProtocolDefault() {
+        return PROTOCOL_DEFAULT;
     }
 }
 }
