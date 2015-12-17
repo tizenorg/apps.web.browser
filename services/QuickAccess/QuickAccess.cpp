@@ -540,6 +540,7 @@ void QuickAccess::showMostVisited()
     setEmptyView(false);
 
 #if !PROFILE_MOBILE
+    m_currPage = QuickAccess::MOST_VISITED_PAGE;
     refreshFocusChain();
     elm_object_focus_set(m_mostVisitedButton, true);
 #endif
@@ -558,6 +559,7 @@ void QuickAccess::showBookmarks()
     elm_object_part_text_set(m_layout, "screen_title", "Bookmark");
     setIndexPage(QuickAccess::BOOKMARK_PAGE);
 #else
+    m_currPage = QuickAccess::BOOKMARK_PAGE;
     refreshFocusChain();
     elm_object_focus_set(m_bookmarksButton, true);
 #endif
