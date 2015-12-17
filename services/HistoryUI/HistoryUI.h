@@ -52,7 +52,9 @@ public:
     void removeHistoryItem(const std::string& uri);
     Evas_Object* createActionBar(Evas_Object* history_layout);
     void addItems();
+#if PROFILE_MOBILE
     boost::signals2::signal<void ()> closeHistoryUIClicked;
+#endif
     boost::signals2::signal<void ()> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyDeleteClicked;
@@ -70,7 +72,9 @@ private:
 
     static Evas_Object* _listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static void _clearHistory_clicked(void *data, Evas_Object *obj, void *event_info);
+#if PROFILE_MOBILE
     static void _close_clicked_cb(void *data, Evas_Object *obj, void *event_info);
+#endif
 
     std::string m_edjFilePath;
     Evas_Object *m_parent;

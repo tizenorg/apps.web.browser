@@ -258,7 +258,9 @@ private:
     void switchToMobileMode();
     void switchToDesktopMode();
     void showHistoryUI();
+#if PROFILE_MOBILE
     void closeHistoryUI();
+#endif
     void showSettingsUI();
     void closeSettingsUI();
     void showBookmarkFlowUI(bool state);
