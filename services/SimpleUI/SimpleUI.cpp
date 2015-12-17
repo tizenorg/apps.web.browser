@@ -1108,6 +1108,7 @@ void SimpleUI::closeFindOnPageUI()
 void SimpleUI::showTabUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webEngine->clearCurrentWebViewTextSelection();
     m_viewManager.pushViewToStack(m_tabUI.get());
 
     std::vector<basic_webengine::TabContentPtr> tabsContents =

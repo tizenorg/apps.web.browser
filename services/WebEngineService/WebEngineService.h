@@ -74,6 +74,7 @@ public:
     void clearPrivateData();
     void clearPasswordData();
     void clearFormData();
+    bool clearCurrentWebViewTextSelection() const;
 
     int tabsCount() const;
     TabId currentTabId() const;

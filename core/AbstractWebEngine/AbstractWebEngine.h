@@ -277,6 +277,11 @@ public:
     */
     virtual void clearFormData() = 0;
 
+    /**
+    * @brief Clear Text Selection of WebView
+    */
+    virtual bool clearCurrentWebViewTextSelection() const = 0;
+
     virtual void disconnectCurrentWebViewSignals() = 0;
 
     /**
