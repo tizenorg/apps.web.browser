@@ -331,7 +331,9 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_historyUI.get());
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
+#if PROFILE_MOBILE
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
+#endif
     m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
@@ -1258,12 +1260,14 @@ void SimpleUI::showHistoryUI()
             HistoryPeriod::HISTORY_LASTWEEK);
 }
 
+#if PROFILE_MOBILE
 void SimpleUI::closeHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_viewManager.topOfStack() == m_historyUI.get())
         m_viewManager.popTheStack();
 }
+#endif
 
 void SimpleUI::showSettingsUI()
 {

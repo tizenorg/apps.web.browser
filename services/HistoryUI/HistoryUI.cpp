@@ -162,15 +162,17 @@ Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
     elm_object_part_content_set(actionBar, "clearhistory_click", button);
     elm_object_focus_custom_chain_append(history_layout, button, nullptr);
 
+#if PROFILE_MOBILE
     button = elm_button_add(actionBar);
     elm_object_style_set(button, "history_button");
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", button);
     elm_object_focus_custom_chain_append(history_layout, button, nullptr);
-
+#endif
     return actionBar;
 }
 
+#if PROFILE_MOBILE
 void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -179,6 +181,7 @@ void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
         historyUI->closeHistoryUIClicked();
     }
 }
+#endif
 
 void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
 {
