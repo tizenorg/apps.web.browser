@@ -326,7 +326,7 @@ void QuickAccess::_mostVisited_clicked(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     auto self = reinterpret_cast<QuickAccess *>(data);
     self->showMostVisited();
-    elm_scroller_page_show(self->m_horizontalScroller, 0, 0);
+    elm_scroller_page_show(self->m_horizontalScroller, MOST_VISITED_PAGE, 0);
 }
 
 void QuickAccess::_bookmark_clicked(void * data, Evas_Object *, void *)
@@ -334,7 +334,7 @@ void QuickAccess::_bookmark_clicked(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     auto self = reinterpret_cast<QuickAccess *>(data);
     self->showBookmarks();
-    elm_scroller_page_show(self->m_horizontalScroller, 1, 0);
+    elm_scroller_page_show(self->m_horizontalScroller, BOOKMARK_PAGE, 0);
 }
 
 void QuickAccess::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
@@ -351,8 +351,6 @@ void QuickAccess::_horizontalScroller_scroll(void* data, Evas_Object* /*scroller
 
     elm_scroller_current_page_get(self->m_horizontalScroller, &page_no, NULL);
     if (self->m_currPage != page_no) {
-        self->m_currPage = page_no;
-
         switch (page_no) {
             case MOST_VISITED_PAGE:
                 self->showMostVisited();
@@ -529,6 +527,7 @@ void QuickAccess::showMostVisited()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_currPage = QuickAccess::MOST_VISITED_PAGE;
 #if PROFILE_MOBILE
     elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
     setIndexPage(QuickAccess::MOST_VISITED_PAGE);
@@ -554,6 +553,7 @@ void QuickAccess::clearBookmarkGengrid()
 void QuickAccess::showBookmarks()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_currPage = QuickAccess::BOOKMARK_PAGE;
 #if PROFILE_MOBILE
     elm_object_part_text_set(m_layout, "screen_title", "Bookmark");
     setIndexPage(QuickAccess::BOOKMARK_PAGE);
@@ -571,6 +571,8 @@ void QuickAccess::showUI()
     getMostVisitedItems();
     getBookmarksItems();
     _horizontalScroller_scroll(this, NULL, NULL);
+    if (m_historyItems.empty())
+        setEmptyView(true);
 }
 
 void QuickAccess::hideUI()
