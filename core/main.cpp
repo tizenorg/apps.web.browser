@@ -34,11 +34,9 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
-#if PROFILE_MOBILE
     tizen_browser::config::DefaultConfig config;
     config.load("");
-    elm_config_scale_set(boost::any_cast<double>(config.get("mobile_scale")));
-#endif
+    elm_config_scale_set(boost::any_cast<double>(config.get("scale")));
 
     elm_config_accel_preference_set("3d");
 

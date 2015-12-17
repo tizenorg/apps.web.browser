@@ -44,7 +44,7 @@ GenlistManager::GenlistManager()
     GENLIST_SHOW_SCROLLBAR = boost::any_cast<bool>(
             config.get(CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR));
 #if PROFILE_MOBILE
-    double mobile_scale = boost::any_cast<double>(config.get("mobile_scale"));
+    double mobile_scale = boost::any_cast<double>(config.get("scale"));
     ITEM_H = boost::any_cast<int>(
             config.get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT));
     ITEM_H *= mobile_scale;
