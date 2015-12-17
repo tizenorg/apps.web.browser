@@ -25,6 +25,7 @@
 #include <Ecore_Wayland.h>
 #include <Edje.h>
 #include <Evas.h>
+#include <app.h>
 #include "Config.h"
 
 #include "TabService.h"
@@ -873,12 +874,18 @@ void SimpleUI::onBackPressed()
         m_bookmarkDetailsUI->onBackPressed();
     } else if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
         m_viewManager.popTheStack();
-    } else if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) && m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
-        m_quickAccess->backButtonClicked();
     } else if (m_viewManager.topOfStack() == nullptr) {
         switchViewToQuickAccess();
     } else if ((m_viewManager.topOfStack() == m_webPageUI.get())) {
-        m_webEngine->backButtonClicked();
+        if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
+            if (m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
+                m_quickAccess->backButtonClicked();
+            } else {
+                ui_app_exit();
+            }
+        } else {
+            m_webEngine->backButtonClicked();
+        }
 #if PROFILE_MOBILE
     } else if ((m_viewManager.topOfStack() == m_settingsUI.get()) && m_settingsUI->isSubpage()) {
         m_settingsUI->onBackKey();
