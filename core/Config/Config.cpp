@@ -44,6 +44,7 @@ void DefaultConfig::load(const std::string &)
     m_data["resourcedb/dir"] = std::string(app_get_data_path());
 
     m_data["mobile_scale"] = 2.0;
+    m_data["tv_scale"] = 1.0;
 
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
