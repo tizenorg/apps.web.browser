@@ -290,6 +290,7 @@ void WebView::suspend()
     M_ASSERT(m_ewkView);
 
     ewk_view_suspend(m_ewkView);
+    ewk_view_visibility_set(m_ewkView, EINA_FALSE);
     m_suspended = true;
 }
 
@@ -299,6 +300,7 @@ void WebView::resume()
     M_ASSERT(m_ewkView);
 
     ewk_view_resume(m_ewkView);
+    ewk_view_visibility_set(m_ewkView, EINA_TRUE);
     m_suspended = false;
 }
 
