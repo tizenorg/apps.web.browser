@@ -567,6 +567,11 @@ void WebEngineService::clearFormData()
         }
 }
 
+bool WebEngineService::clearCurrentWebViewTextSelection() const
+{
+    return m_currentWebView->clearTextSelection();
+}
+
 void WebEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
     m_currentWebView->searchOnWebsite(searchString, flags);
@@ -583,7 +588,7 @@ void WebEngineService::moreKeyPressed()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
 
-    if (m_currentTabId == TabId::NONE || m_currentWebView->clearTextSelection())
+    if (m_currentTabId == TabId::NONE || clearCurrentWebViewTextSelection())
         return;
 
     if (m_currentWebView->isFullScreen()) {
@@ -597,7 +602,7 @@ void WebEngineService::backButtonClicked()
     M_ASSERT(m_currentWebView);
 
 #if PROFILE_MOBILE
-    if (m_currentWebView->clearTextSelection())
+    if (clearCurrentWebViewTextSelection())
         return;
 
     if (m_currentWebView->isFullScreen()) {
