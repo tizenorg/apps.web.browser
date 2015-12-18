@@ -163,11 +163,7 @@ Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
     elm_object_focus_custom_chain_append(history_layout, button, nullptr);
 
     button = elm_button_add(actionBar);
-#if PROFILE_MOBILE
-    elm_object_style_set(button, "history_button");
-#else
     elm_object_style_set(button, "close_history_button");
-#endif
     evas_object_smart_callback_add(button, "clicked", HistoryUI::_close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", button);
     elm_object_focus_custom_chain_append(history_layout, button, nullptr);
