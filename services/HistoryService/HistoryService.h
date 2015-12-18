@@ -42,10 +42,13 @@ public:
     virtual ~HistoryService();
     virtual std::string getName();
     int getHistoryId(const std::string & url);
-    void addHistoryItem(std::shared_ptr<HistoryItem> hi,
-                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>());
+    void addHistoryItem(const std::string & url,
+                        const std::string & title,
+                        std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
+                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
     void clearAllHistory();
     void clearURLHistory(const std::string & url);
+    void deleteHistoryItem(int id);
     std::shared_ptr<HistoryItem> getHistoryItem(const std::string & url);
     std::shared_ptr<HistoryItemVector> getHistoryAll();
     std::shared_ptr<HistoryItemVector> getHistoryToday();

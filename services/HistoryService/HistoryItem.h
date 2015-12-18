@@ -29,14 +29,13 @@ namespace services {
 
 class HistoryItem {
 public:
-	HistoryItem(const std::string & url,
+    HistoryItem(int id,
+                const std::string & url,
                 const std::string & title,
-                std::shared_ptr<tizen_browser::tools::BrowserImage> image);
-
+                std::shared_ptr<tools::BrowserImage> favicon,
+                std::shared_ptr<tools::BrowserImage> thumbnail = std::make_shared<tools::BrowserImage>());
 	HistoryItem(HistoryItem && other) throw();
-
-	HistoryItem(const std::string& url);
-	HistoryItem(const std::string& url, int& date_created);
+	HistoryItem(int id, const std::string& url);
 	HistoryItem(const HistoryItem& source);
 	virtual ~HistoryItem();
 
@@ -56,10 +55,6 @@ public:
 	void setTitle(const std::string & title);
 	std::string getTitle() const;
 
-///\todo Below functions is different because two different services uses different types. To fix.
-// 	void setVisitDate(boost::gregorian::date visitDate);
-// 	boost::gregorian::date getVisitDate();
-
 	void setLastVisit(boost::posix_time::ptime visitDate);
 	boost::posix_time::ptime getLastVisit() const;
 
@@ -75,9 +70,9 @@ public:
 	void setUriFavicon(const std::string & uri);
 	std::string getUriFavicon();
 
-
+    int getId() const { return m_primaryKey; };
 private:
-    std::string m_primaryKey;
+    int m_primaryKey;
     std::string m_url;
     std::string m_title;
     boost::gregorian::date m_visitDate;
