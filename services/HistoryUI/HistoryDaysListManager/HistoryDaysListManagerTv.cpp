@@ -16,6 +16,7 @@
 
 #include <services/HistoryUI/HistoryUI.h>
 #include <services/HistoryService/HistoryItem.h>
+#include "app_i18n.h"
 #include "BrowserLogger.h"
 #include "HistoryDaysListManagerTv.h"
 #include "HistoryDayItemData.h"
@@ -74,7 +75,7 @@ void HistoryDaysListManagerTv::addHistoryItems(
                     hi->getTitle(), hi->getUrl(), "00:00 AM"));
         }
         historyItems.push_back(std::make_shared<WebsiteHistoryItemData>(
-                "Title", itemPair.first, pageViewItems));
+                _("IDS_BR_BODY_TITLE"), itemPair.first, pageViewItems));
     }
     HistoryDayItemDataPtr dayItem = std::make_shared <HistoryDayItemData> (
             toString(period), historyItems);

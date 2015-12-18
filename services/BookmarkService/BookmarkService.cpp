@@ -27,6 +27,7 @@
 #include <boost/any.hpp>
 #include <BrowserAssert.h>
 
+#include "app_i18n.h"
 #include "ServiceManager.h"
 #include "service_macros.h"
 #include "BrowserLogger.h"
@@ -213,7 +214,7 @@ std::string BookmarkService::getBookmarkFolderName(int folder_id)
     char* folder_name;
     switch(folder_id){
         case ALL_BOOKMARKS_ID:
-           return "All";
+           return _("IDS_BR_BODY_ALL");
         case ROOT_FOLDER_ID:
 #if PROFILE_MOBILE
            return "Mobile";
@@ -224,7 +225,7 @@ std::string BookmarkService::getBookmarkFolderName(int folder_id)
 
     if (bp_bookmark_adaptor_get_title(folder_id, &folder_name) < 0) {
         errorPrint("bp_bookmark_adaptor_get_title");
-        return("Bookmark");
+        return(_("IDS_BR_OPT_BOOKMARK"));
     }
     return folder_name;
 }
@@ -475,7 +476,7 @@ bool BookmarkService::get_item_by_id(int id, BookmarkItem *item)
     }
 
     if (id == 0) {
-        item->setTitle("Bookmarks");
+        item->setTitle(_("IDS_BR_BODY_BOOKMARKS"));
         item->setAddress("");
         item->setId(id);
         item->setDir(-1);
