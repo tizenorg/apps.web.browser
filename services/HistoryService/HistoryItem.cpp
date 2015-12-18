@@ -26,18 +26,26 @@ HistoryItem::HistoryItem(HistoryItem && other) throw()
     *this = std::move(other);
 }
 
-HistoryItem::HistoryItem(const std::string & url,
+HistoryItem::HistoryItem(int id,
+                         const std::string & url,
                          const std::string & title,
-                         std::shared_ptr<tizen_browser::tools::BrowserImage> image)
-    : m_url(url)
+                        std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
+                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
+    : m_primaryKey(id)
+    , m_url(url)
     , m_title(title)
     , m_lastVisit()
-    , m_favIcon(image)
+    , m_favIcon(favicon)
 {
+    if (thumbnail)
+        m_thumbnail = thumbnail;
+    else
+        m_thumbnail = favicon;
 }
 
-HistoryItem::HistoryItem(const std::string & url)
-    : m_url(url)
+HistoryItem::HistoryItem(int id, const std::string & url)
+    : m_primaryKey(id)
+    , m_url(url)
     , m_title()
     , m_lastVisit()
     , m_favIcon(std::make_shared<tizen_browser::tools::BrowserImage>())
@@ -46,7 +54,8 @@ HistoryItem::HistoryItem(const std::string & url)
 }
 
 HistoryItem::HistoryItem(const HistoryItem& source)
-    : m_url(source.m_url)
+    : m_primaryKey(source.m_primaryKey)
+    , m_url(source.m_url)
     , m_title(source.m_title)
     , m_lastVisit(source.m_lastVisit)
     , m_favIcon(source.m_favIcon)
@@ -101,16 +110,6 @@ std::string HistoryItem::getTitle() const
 {
     return m_title;
 }
-
-// void HistoryItem::setVisitDate(boost::gregorian::date visitDate)
-// {
-//     m_visitDate = visitDate;
-// }
-//
-// boost::gregorian::date HistoryItem::getVisitDate()
-// {
-//     return m_visitDate;
-// }
 
 void HistoryItem::setLastVisit(boost::posix_time::ptime visitDate)
 {

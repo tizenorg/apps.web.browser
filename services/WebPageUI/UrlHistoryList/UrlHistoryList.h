@@ -76,7 +76,7 @@ public:
     void restoreEntryEditedContent();
     void restoreEntryURLContent();
 
-    boost::signals2::signal<void(shared_ptr<services::HistoryItem>)> openURLInNewTab;
+    boost::signals2::signal<void (const std::string&)> openURLInNewTab;
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
     int getItemsNumberMax() const

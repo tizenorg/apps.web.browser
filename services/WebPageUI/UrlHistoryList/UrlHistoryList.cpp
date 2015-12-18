@@ -21,7 +21,6 @@
 #include "BrowserLogger.h"
 #include "GenlistItemsManager.h"
 #include "WebPageUI/WebPageUIStatesManager.h"
-#include "services/HistoryService/HistoryItem.h"
 #include "Config.h"
 
 namespace tizen_browser {
@@ -144,7 +143,7 @@ void UrlHistoryList::onItemFocusChange()
 void UrlHistoryList::onItemSelect(std::string content)
 {
     if (m_webPageUiStatesMgr->equals(WPUState::QUICK_ACCESS)) {
-        openURLInNewTab (make_shared<services::HistoryItem>(content));
+        openURLInNewTab(content);
     } else {
         uriChanged(content);
     }

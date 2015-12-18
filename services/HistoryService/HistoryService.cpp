@@ -201,7 +201,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         bp_history_info_fmt history_info;
         bp_history_adaptor_get_info(ids[index_array[i]],offset,&history_info);
 
-        std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(std::string(history_info.url));
+        std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[index_array[i]], std::string(history_info.url));
         history->setUrl(std::string(history_info.url ? history_info.url : ""));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
@@ -277,7 +277,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
         bp_history_info_fmt history_info;
         bp_history_adaptor_get_info(ids[i], offset, &history_info);
 
-        std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(std::string(history_info.url));
+        std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[i], std::string(history_info.url));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
         items->push_back(history);
@@ -287,52 +287,50 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
     return items;
 }
 
-void HistoryService::addHistoryItem(std::shared_ptr<HistoryItem> his,std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail){
+void HistoryService::addHistoryItem(const std::string & url,
+                                    const std::string & title,
+                                    std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
+                                    std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
+{
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    his->setFavIcon(his->getFavIcon());
-    his->setThumbnail(thumbnail);
 
-    if (isDuplicate(his->getUrl().c_str()))
+    if (isDuplicate(url.c_str()))
         return;
 
     int id = -1;
     if(bp_history_adaptor_create(&id) < 0) {
         errorPrint("bp_history_adaptor_create");
     }
-
-    int *ids=nullptr;
-    int count=-1;
-    bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
-    conds.offset = -1;   //the first row's index
-    conds.order_offset =BP_HISTORY_O_DATE_CREATED; // property to sort
-    conds.ordering = 1; //way of ordering 0 asc 1 desc
-    conds.period_offset = BP_HISTORY_O_DATE_CREATED;
-    conds.period_type = BP_HISTORY_DATE_TODAY;
-
-    if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0) {
-        errorPrint("bp_history_adaptor_get_cond_ids_p");
+    if (bp_history_adaptor_set_url(id, url.c_str()) < 0) {
+        errorPrint("bp_history_adaptor_set_url");
     }
-
-    bp_history_adaptor_set_url(id, (his->getUrl()).c_str());
-    bp_history_adaptor_set_title(id, (his->getTitle()).c_str());
-    bp_history_adaptor_set_date_visited(id,-1);
-    bp_history_adaptor_set_frequency(id, 1);
+    if (bp_history_adaptor_set_title(id, title.c_str()) < 0) {
+        errorPrint("bp_history_adaptor_set_title");
+    }
+    if (bp_history_adaptor_set_date_visited(id,-1) < 0) {
+        errorPrint("bp_history_adaptor_set_date_visited");
+    }
+    if (bp_history_adaptor_set_frequency(id, 1) < 0) {
+        errorPrint("bp_history_adaptor_set_frequency");
+    }
 
     if (thumbnail) {
        std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
        unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-       bp_history_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
+       if (bp_history_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength()) < 0) {
+           errorPrint("bp_history_adaptor_set_snapshot");
+        }
     }
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = his->getFavIcon();
     if (favicon) {
        std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
        unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
-       bp_history_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength());
+       if (bp_history_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength()) < 0) {
+           errorPrint("bp_history_adaptor_set_icon");
+        }
     }
 
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto his = std::make_shared<tizen_browser::services::HistoryItem>(id, url, title, favicon, thumbnail);
     historyAdded(his);
 }
 
@@ -374,6 +372,12 @@ void HistoryService::clearURLHistory(const std::string & url)
     historyDeleted(url);
 }
 
+void HistoryService::deleteHistoryItem(int id) {
+    if (bp_history_adaptor_delete(id) < 0) {
+        errorPrint("bp_history_adaptor_delete");
+    }
+}
+
 std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNumber)
 {
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_VISITED);
@@ -396,7 +400,7 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
 
     m_year = 2000 + m_year % 100;
 
-    std::shared_ptr<HistoryItem> history = std::make_shared <HistoryItem> (std::string(history_info.url));
+    std::shared_ptr<HistoryItem> history = std::make_shared <HistoryItem> (ids[idNumber], std::string(history_info.url));
     boost::gregorian::date d(m_year, m_month, m_month_day);
     boost::posix_time::ptime t(d, boost::posix_time::time_duration(hour, min, sec));
     history->setLastVisit(t);

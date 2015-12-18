@@ -668,15 +668,19 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
 
 void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_viewManager.popStackTo(m_webPageUI.get());
-    std::string historyAddress = historyItem->getUrl();
-    openNewTab(historyAddress, historyItem->getTitle(), boost::none, desktopMode);
+    onOpenURLInNewTab(historyItem->getUrl(), historyItem->getTitle(), desktopMode);
 }
 
-void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem)
+void SimpleUI::onOpenURLInNewTab(const std::string& url)
 {
-    onOpenURLInNewTab(historyItem, m_quickAccess->isDesktopMode());
+    onOpenURLInNewTab(url, "", m_quickAccess->isDesktopMode());
+}
+
+void SimpleUI::onOpenURLInNewTab(const std::string& url, const std::string& title, bool desktopMode)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_viewManager.popStackTo(m_webPageUI.get());
+    openNewTab(url, title, boost::none, desktopMode);
 }
 
 void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)
@@ -957,13 +961,12 @@ void SimpleUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
-                                             m_webEngine->getURI(),
-                                             m_webEngine->getTitle(),
-                                             m_webEngine->getFavicon()),
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                         m_webEngine->getTitle(),
+                                         m_webEngine->getFavicon(),
                                          m_webEngine->getSnapshotData(
-                                             QuickAccess::MAX_THUMBNAIL_WIDTH,
-                                             QuickAccess::MAX_THUMBNAIL_HEIGHT));
+                                            QuickAccess::MAX_THUMBNAIL_WIDTH,
+                                            QuickAccess::MAX_THUMBNAIL_HEIGHT));
     m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
 }
@@ -973,10 +976,9 @@ void SimpleUI::loadStopped()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_historyService->addHistoryItem(std::make_shared<tizen_browser::services::HistoryItem>(
-                                             m_webEngine->getURI(),
-                                             m_webEngine->getURI(),
-                                             std::make_shared<tizen_browser::tools::BrowserImage>()),
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                         m_webEngine->getURI(),
+                                         std::make_shared<tizen_browser::tools::BrowserImage>(),
                                          std::make_shared<tizen_browser::tools::BrowserImage>());
     m_webPageUI->loadStopped();
 }
