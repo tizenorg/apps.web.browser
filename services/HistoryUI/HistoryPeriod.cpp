@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "app_i18n.h"
 #include "HistoryPeriod.h"
 #include "BrowserLogger.h"
 
@@ -24,9 +25,9 @@ std::string toString(HistoryPeriod period)
 {
     switch (period) {
     case HistoryPeriod::HISTORY_TODAY:
-        return "Today";
+        return _("IDS_BR_BODY_TODAY");
     case HistoryPeriod::HISTORY_YESTERDAY:
-        return "Yesterday";
+        return _("IDS_BR_BODY_YESTERDAY");
     case HistoryPeriod::HISTORY_LASTWEEK:
         return "Last Week";
     case HistoryPeriod::HISTORY_LASTMONTH:
