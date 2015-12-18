@@ -460,7 +460,7 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
     evas_object_show(m_gengrid);
 #if PROFILE_MOBILE
     elm_box_unpack_all(m_menu);
-    if (folder_name != "All" && folder_name != "Mobile") {
+    if (folder_name != _("IDS_BR_BODY_ALL") && folder_name != "Mobile") {
         evas_object_show(m_edit_button);
         evas_object_show(m_delete_button);
         elm_box_pack_end(m_menu, m_edit_button);
