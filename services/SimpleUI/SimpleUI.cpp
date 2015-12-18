@@ -74,7 +74,10 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
+    , m_readerMode(false)
+    , m_readerTabId(0)
     , m_ewkContext(ewk_context_new())
+
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
@@ -277,6 +280,11 @@ void SimpleUI::loadUIServices()
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::ZoomUI, tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
+
+    m_readerUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::ReaderUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.readerui"));
 }
 
 void SimpleUI::connectUISignals()
@@ -284,13 +292,14 @@ void SimpleUI::connectUISignals()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     M_ASSERT(m_webPageUI.get());
+    m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::removeReaderTab, this, _1));
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
     m_webPageUI->getUrlHistoryList()->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1));
     m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
-    m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
+    m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchView, this));
     m_webPageUI->showTabUI.connect(boost::bind(&SimpleUI::showTabUI, this));
     m_webPageUI->showMoreMenu.connect(boost::bind(&SimpleUI::showMoreMenu, this));
     m_webPageUI->forwardPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::forward, m_webEngine.get()));
@@ -349,6 +358,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this));
     m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this));
+    m_moreMenuUI->readerUIClicked.connect(boost::bind(&SimpleUI::showReaderUI, this));
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
@@ -472,6 +482,9 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_zoomUI.get());
     m_zoomUI->init(m_viewManager.getContent());
+
+    M_ASSERT(m_readerUI.get());
+    m_readerUI->init(m_webPageUI->getContent());
 }
 
 void SimpleUI::initModelServices()
@@ -557,6 +570,20 @@ void SimpleUI::unregisterHWKeyCallback()
 #endif
 
 
+void SimpleUI::switchView()
+{
+    std::vector<int>::iterator it = std::find(m_readerTabs.begin(), m_readerTabs.end(), m_webEngine->currentTabId().get());
+    if (it != m_readerTabs.end()) //Tab is in reader mode
+    {
+        switchViewToReaderMode();
+    }
+    else
+    {
+        switchOffReaderMode();
+        switchViewToWebPage();
+    }
+}
+
 void SimpleUI::switchViewToWebPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -565,6 +592,42 @@ void SimpleUI::switchViewToWebPage()
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI(), m_webEngine->getTitle());
     m_webPageUI->toIncognito(m_webEngine->isPrivateMode(m_webEngine->currentTabId()));
 }
+
+void SimpleUI::switchViewToReaderMode()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Object* content = m_webEngine->getLayout();
+    Evas_Object* m_mainLayout = m_webPageUI->getContent();
+    m_webPageUI->switchViewToReaderMode(m_webEngine->getURI(), m_webEngine->getTitle());
+
+    #if PROFILE_MOBILE
+        evas_object_show(m_readerUI->getContent());
+        elm_object_signal_emit(m_mainLayout, "show_reader_mode", "ui");
+        evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
+        elm_object_part_content_unset(m_mainLayout, "web_view");
+        elm_object_part_content_set(m_mainLayout, "web_view", content);
+    #else
+        evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
+        elm_object_part_content_unset(m_mainLayout, "web_view");
+        elm_object_part_content_set(m_mainLayout, "Reader_view", content);
+    #endif
+        evas_object_show(content);
+        elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
+}
+
+void SimpleUI::switchOffReaderMode()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    Evas_Object* m_mainLayout = m_webPageUI->getContent();
+    #if PROFILE_MOBILE
+        evas_object_hide(m_readerUI->getContent());
+        elm_object_signal_emit(m_mainLayout, "hide_reader_mode", "ui");
+    #else
+        evas_object_hide(elm_object_part_content_get(m_mainLayout, "Reader_view"));
+        elm_object_part_content_unset(m_mainLayout, "Reader_view");
+    #endif
+}
+
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
 {
@@ -578,8 +641,19 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
         loadError();
 	return;
     }
-    BROWSER_LOGD("[%s:%d] swiching to web_view ", __PRETTY_FUNCTION__, __LINE__);
-    switchViewToWebPage();
+    BROWSER_LOGD("[%s:%d] swiching to web_view reader mode: %d", __PRETTY_FUNCTION__, __LINE__, m_readerMode);
+    std::vector<int>::iterator it = std::find(m_readerTabs.begin(), m_readerTabs.end(), tabId.get());
+    if (it != m_readerTabs.end()) //Tab is in reader mode
+    {
+        switchViewToReaderMode();
+        m_webPageUI->getURIEntry().setURI(m_webEngine->getTitle());
+    }
+    else
+    {
+    BROWSER_LOGD("[%s:%d] reader mode false", __PRETTY_FUNCTION__, __LINE__);
+        switchOffReaderMode();
+        switchViewToWebPage();
+    }
 }
 
 void SimpleUI::showQuickAccess()
@@ -593,6 +667,7 @@ void SimpleUI::switchViewToQuickAccess()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
+    switchOffReaderMode();
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
 }
@@ -612,6 +687,9 @@ void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri,
             nullptr, adaptorId, title, desktopMode, incognitoMode);
+    if(m_readerMode)
+        m_readerTabs.push_back(tab.get());
+    m_readerMode = false;
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
     incognitoMode ? switchViewToIncognitoPage() : m_currentSession.updateItem(tab.toString(), uri, title);
@@ -627,6 +705,12 @@ void SimpleUI::closeTab()
 void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(id.get() == m_readerTabId)
+    {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        m_readerMode = false;
+        switchOffReaderMode();
+    }
     m_currentSession.removeItem(id.toString());
     m_tabService->clearThumb(id);
     m_webEngine->closeTab(id);
@@ -945,6 +1029,11 @@ void SimpleUI::loadStarted()
         m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
     m_tabService->clearThumb(m_webEngine->currentTabId());
     m_webPageUI->loadStarted();
+    std::vector<int>::iterator it = std::find(m_readerTabs.begin(), m_readerTabs.end(), m_webEngine->currentTabId().get());
+    if (it != m_readerTabs.end()) //Tab is in reader mode
+    {
+        m_readerUI->setReaderView(m_webEngine->getLayout());
+    }
 }
 
 void SimpleUI::progressChanged(double progress)
@@ -985,6 +1074,13 @@ void SimpleUI::loadError()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->switchViewToErrorPage();
+}
+
+void SimpleUI::removeReaderTab(const std::string& /*url*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::vector<int>::iterator it = std::find(m_readerTabs.begin(), m_readerTabs.end(), m_webEngine->currentTabId().get());
+    m_readerTabs.erase(it);
 }
 
 void SimpleUI::filterURL(const std::string& url)
@@ -1150,6 +1246,13 @@ bool SimpleUI::isIncognito(const tizen_browser::basic_webengine::TabId& tabId)
 void SimpleUI::closeTabsClicked(const tizen_browser::basic_webengine::TabId& tabId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if(tabId.get() == m_readerTabId)
+    {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        removeReaderTab("url");
+        switchOffReaderMode();
+    }
+
     m_webEngine->closeTab(tabId);
 }
 
@@ -1276,6 +1379,23 @@ void SimpleUI::closeSettingsUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_viewManager.topOfStack() == m_settingsUI.get())
         m_viewManager.popTheStack();
+}
+void SimpleUI::showReaderUI()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::vector<int>::iterator it = std::find(m_readerTabs.begin(), m_readerTabs.end(), m_webEngine->currentTabId().get());
+    if (it != m_readerTabs.end()) //Tab is already in reader mode
+        return;
+    M_ASSERT(m_readerUI);
+    m_readerUI->readerContentsReady.disconnect_all_slots();
+    m_readerUI->readerContentsReady.connect(boost::bind(&SimpleUI::showReaderContents, this,_1));
+    m_readerUI->generateReaderContents(m_webEngine->getLayout(),m_webEngine->getURI());
+}
+
+void SimpleUI::showReaderContents(const std::string& str)
+{
+    m_readerMode = true;
+    openNewTab(str,"READER MODE:" +m_webEngine->getTitle());
 }
 
 void SimpleUI::showMoreMenu()

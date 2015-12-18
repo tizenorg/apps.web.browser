@@ -26,7 +26,6 @@ include_directories(${CMAKE_SOURCE_DIR}/services/QuickAccess)
 include_directories(${CMAKE_SOURCE_DIR}/services/SettingsUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
 
-
 include(FindPkgConfig)
 
 pkg_check_modules(capi_net QUIET capi-network-connection)
@@ -62,6 +61,7 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
         ErrorMessage.edc
         LeftButtonBar_mob.edc
         RightButtonBar_mob.edc
+        ReaderMode_mob.edc
         URIEntry_mob.edc
         PrivateMode_mob.edc
         UrlHistoryList_mob.edc
