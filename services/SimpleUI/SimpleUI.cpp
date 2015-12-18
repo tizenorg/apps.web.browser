@@ -446,6 +446,7 @@ void SimpleUI::initUIServices()
 #if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
+    m_bookmarkFlowUI->setSpecialFolderId(m_storageService->getFoldersStorage().SpecialFolder);
 #endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
@@ -733,11 +734,14 @@ void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
     }
     unsigned int id = m_storageService->getFoldersStorage().addFolder(folder_name);
 #if PROFILE_MOBILE
+    SharedBookmarkFolder folder = m_storageService->getFoldersStorage().getFolder(id);
+    SharedBookmarkFolderList list;
+    list.push_back(folder);
     if (m_viewManager.topOfStack() == m_bookmarkManagerUI.get()) {
-        SharedBookmarkFolder folder = m_storageService->getFoldersStorage().getFolder(id);
-        SharedBookmarkFolderList list;
-        list.push_back(folder);
         m_bookmarkManagerUI->addCustomFolders(list);
+    } else if (m_viewManager.topOfStack() == m_bookmarkFlowUI.get()) {
+        m_bookmarkFlowUI->addCustomFolders(list);
+        m_bookmarkFlowUI->setFolder(folder->getId(), folder->getName());
     }
 #else
     BookmarkUpdate update;
@@ -1333,6 +1337,9 @@ void SimpleUI::showBookmarkFlowUI(bool state)
         m_bookmarkFlowUI->setTitle(item.getTitle());
     else
         m_bookmarkFlowUI->setTitle(m_webEngine->getTitle());
+    m_bookmarkFlowUI->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
+    unsigned int id = state ? item.getDir() : m_storageService->getFoldersStorage().SpecialFolder;
+    m_bookmarkFlowUI->setFolder(id, m_storageService->getFoldersStorage().getFolderName(id));
 #else
     BookmarkFlowUI *bookmarkFlow = BookmarkFlowUI::createPopup(m_viewManager.getContent());
     bookmarkFlow->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
@@ -1340,8 +1347,8 @@ void SimpleUI::showBookmarkFlowUI(bool state)
     bookmarkFlow->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
     bookmarkFlow->show();
-    bookmarkFlow->gridAddNewFolder();
-    bookmarkFlow->gridAddCustomFolders(m_storageService->getFoldersStorage().getFolders());
+    bookmarkFlow->addNewFolder();
+    bookmarkFlow->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
 #endif
 }
 #if PROFILE_MOBILE
@@ -1360,10 +1367,6 @@ void SimpleUI::showBookmarkManagerUI()
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->addNewFolder();
 #endif
-//    m_bookmarkManagerUI->addAllFolder(getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
-//                                      getBookmarkFolderName(tizen_browser::services::ALL_BOOKMARKS_ID));
-//    m_bookmarkManagerUI->addSpecialFolder(getBookmarks(tizen_browser::services::ROOT_FOLDER_ID),
-//                                         getBookmarkFolderName(tizen_browser::services::ROOT_FOLDER_ID));
     m_bookmarkManagerUI->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
 
     m_bookmarkManagerUI->showUI();
@@ -1571,7 +1574,7 @@ void SimpleUI::searchWebPage(std::string &text, int flags)
 
 void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
 {
-    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
             m_favoriteService->addBookmark(m_webEngine->getURI(),
@@ -1590,10 +1593,15 @@ void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
 #if PROFILE_MOBILE
 void SimpleUI::editBookmark(BookmarkUpdate bookmark_update)
 {
-    BROWSER_LOGD("[%s,%d],", __func__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
-               m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, bookmark_update.folder_id);
+            services::BookmarkItem oldItem;
+            m_favoriteService->getItem(m_webEngine->getURI(), &oldItem);
+            if (m_favoriteService->editBookmark(m_webEngine->getURI(), bookmark_update.title, bookmark_update.folder_id)) {
+                m_storageService->getFoldersStorage().removeNumberInFolder(oldItem.getDir());
+                m_storageService->getFoldersStorage().addNumberInFolder(bookmark_update.folder_id);
+            }
         }
     }
 }

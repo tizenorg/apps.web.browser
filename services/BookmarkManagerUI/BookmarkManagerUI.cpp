@@ -152,7 +152,7 @@ char* BookmarkManagerUI::_grid_folder_title_text_get(void *data, Evas_Object *, 
         const char *part_name1 = "page_title";
         static const int part_name1_len = strlen(part_name1);
         if (!strncmp(part_name1, part, part_name1_len)) {
-            return strdup((boost::format("%s (%d)") % folderData->name.c_str() % folderData->count).str().c_str());
+            return strdup((boost::format("%s  (%d)") % folderData->name.c_str() % folderData->count).str().c_str());
         }
     }
     return strdup("");

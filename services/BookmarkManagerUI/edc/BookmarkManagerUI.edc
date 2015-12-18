@@ -962,7 +962,7 @@ group { name: "elm/gengrid/item/grid_bm_item/default";
         styles {
             style {
                 name: "folder_name_2";
-                base: "font=Sans:style=Light font_size=22 color=#ffffff align=0.0 valign=1.0";
+                base: "font=Sans:style=Light font_size=22 ellipsis=0.85 color=#ffffff align=0.0 valign=1.0";
             }
         }
         parts {
@@ -1058,7 +1058,6 @@ group { name: "elm/gengrid/item/grid_bm_item/default";
             part {
                 name: "page_title";
                 type: TEXTBLOCK;
-                multiline: 1;
                 scale: 1;
                 description {
                     state: "default" 0.0;

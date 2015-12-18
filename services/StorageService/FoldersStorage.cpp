@@ -199,7 +199,7 @@ unsigned int FoldersStorage::addFolder(const std::string& name)
 void FoldersStorage::updateFolderName(unsigned int id, const std::string& newName)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (id == AllFolder || id == SpecialFolder)
+    if (id == AllFolder)
         return;
     boost::format updateFolderNameString("UPDATE %1%  SET %2% = ? WHERE %3% = ?" );
     updateFolderNameString % TABLE_FOLDER % COL_FOLDER_NAME % COL_FOLDER_ID;
@@ -218,7 +218,7 @@ void FoldersStorage::updateFolderName(unsigned int id, const std::string& newNam
 void FoldersStorage::addNumberInFolder(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (id != AllFolder && id != SpecialFolder)
+    if (id != AllFolder)
         addNumberInFolder(AllFolder);
     boost::format updateFolderNameString("UPDATE %1% SET %2% = ? WHERE %3% = ?" );
     updateFolderNameString % TABLE_FOLDER % COL_FOLDER_NUMBER % COL_FOLDER_ID;
@@ -238,7 +238,7 @@ void FoldersStorage::addNumberInFolder(unsigned int id)
 void FoldersStorage::removeNumberInFolder(unsigned int id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (id != AllFolder && id != SpecialFolder)
+    if (id != AllFolder)
         removeNumberInFolder(AllFolder);
     boost::format updateFolderNameString("UPDATE %1% SET %2% = ? WHERE %3% = ?" );
     updateFolderNameString % TABLE_FOLDER % COL_FOLDER_NUMBER % COL_FOLDER_ID;

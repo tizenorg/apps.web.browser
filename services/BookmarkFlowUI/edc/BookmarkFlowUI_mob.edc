@@ -1,19 +1,4 @@
 #include "../../../core/Tools/edc/InvisibleButton.edc"
-#define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
-   group { \
-      name: FILE_NAME; \
-      images.image: FILE_NAME LOSSY 100; \
-      parts { \
-         part { name: "image"; \
-            description { \
-               state: "default" 0.0; \
-               image.normal: FILE_NAME; \
-               aspect: 1 1; \
-               aspect_preference: BOTH; \
-            } \
-         } \
-      } \
-   }
 
 collections {
 
@@ -62,11 +47,11 @@ collections {
 #define CONTENTS_AREA_TITLE_INPUT_SELECTED_WIDTH 578
 #define CONTENTS_AREA_INPUT_CANCEL_OFFSET_X 24
 #define CONTENTS_AREA_INPUT_CANCEL_HEIGHT 40
-#define CONTENTS_AREA_INPUT_DIVIDER_OFFSET_X 32
-#define CONTENTS_AREA_INPUT_DIVIDER_OFFSET_Y 84
-#define CONTENTS_AREA_INPUT_DIVIDER_WIDTH 656
-#define CONTENTS_AREA_INPUT_DIVIDER_HEIGHT 2
-#define CONTENTS_AREA_DIVIDER_HEIGHT 2
+#define DIVIDER_OFFSET_X 32
+#define DIVIDER_OFFSET_Y 82
+#define DIVIDER_WIDTH 656
+#define DIVIDER_HEIGHT 2
+#define AREAS_DIVIDER_HEIGHT 2
 #define BOOKMARK_FOLDER_TEXT_OFFSET_X 32
 #define BOOKMARK_FOLDER_TEXT_OFFSET_Y 36
 #define BOOKMARK_FOLDER_TEXT_WIDTH 596
@@ -76,10 +61,27 @@ collections {
 #define BOOKMARK_FOLDER_BUTTON_SIZE 54
 #define BOOKMARK_FOLDER_BUTTON_ICON_OFFSET_SIZE 8
 #define BOOKMARK_FOLDER_BUTTON_ICON_SIZE 38
+#define BOOKMARK_DROPDOWN_HEIGHT 106
+#define BOOKMARK_DROPDOWN_OFFSET_Y 82
+#define BOOKMARK_DROPDOWN_ITEM_OFFSET_X 44
+#define BOOKMARK_DROPDOWN_ITEM_OFFSET_Y 25
+#define BOOKMARK_ICON_SIZE 40
+#define BOOKMARK_DROPDOWN_ICON_OFFSET_X 668
+#define BOOKMARK_DROPDOWN_ICON_OFFSET_Y 52
+#define BOOKMARK_DROPDOWN_ICON_SIZE 20
+#define BOOKMARK_DROPDOWN_ITEM_WIDTH 524
+#define BOOKMARK_DROPDOWN_ITEM_HEIGHT 40
+#define BOOKMARK_DROPDOWN_LIST_HEIGHT 96
 #define CONTENTS_AREA_REMOVE_TEXT_OFFSET_X 56
 #define CONTENTS_AREA_REMOVE_TEXT_OFFSET_Y 23
 #define CONTENTS_AREA_REMOVE_TEXT_WIDTH 360
 #define CONTENTS_AREA_REMOVE_TEXT_HEIGHT 34
+
+#define DROPDOWN_ITEM_TEXT_OFFSET_X 32
+#define DROPDOWN_ITEM_TEXT_OFFSET_Y 31
+#define DROPDOWN_ITEM_TEXT_WIDTH 520
+#define DROPDOWN_ITEM_TEXT_HEIGHT 34
+#define DROPDOWN_ITEM_ICON_OFFSET 38
 
     group {
         name: "elm/entry/selection/browser_entry";
@@ -755,21 +757,27 @@ collections {
         images {
             image: "input_ic_cancel.png" COMP;
             image: "list_ic_add.png" COMP;
+            image: "bookmark_ic_folder_1.png" COMP;
+            image: "bookmark_ic_folder_2.png" COMP;
+            image: "dropdown_ic.png" COMP;
         }
         styles {
             style {
                 name: "site_title_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#333333 align=0.0 valign=1.0"; //38
+                base: "font=Tizen:style=Regular font_size=30 color=#333333 align=0.0 valign=1.0";
             }
             style {
                 name: "site_url_style";
-                base: "font=Tizen:style=Regular font_size=24 color=#696f76 align=0.0 valign=1.0"; //30
+                base: "font=Tizen:style=Regular font_size=24 color=#696f76 align=0.0 valign=1.0";
             }
             style {
                 name: "remove_style";
-                base: "font=Tizen:style=Regular font_size=27 color=#ffffff align=0.5 valign=0.5"; //34
+                base: "font=Tizen:style=Regular font_size=27 color=#ffffff align=0.5 valign=0.5";
             }
-
+            style {
+                name: "dropdown_style";
+                base: "font=Tizen:style=Regular font_size=32 color=#0a84e5 align=0.0 valign=1.0";
+            }
         }
         parts {
             part {
@@ -1175,8 +1183,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: CONTENTS_AREA_INPUT_DIVIDER_OFFSET_X CONTENTS_AREA_INPUT_DIVIDER_OFFSET_Y;
-                    max: CONTENTS_AREA_INPUT_DIVIDER_OFFSET_X CONTENTS_AREA_INPUT_DIVIDER_OFFSET_Y;
+                    min: DIVIDER_OFFSET_X DIVIDER_OFFSET_Y;
+                    max: DIVIDER_OFFSET_X DIVIDER_OFFSET_Y;
                     visible: DEVELOPMENT;
                     color: 255 255 255 127;
                     rel1 {
@@ -1194,8 +1202,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: CONTENTS_AREA_INPUT_DIVIDER_WIDTH CONTENTS_AREA_INPUT_DIVIDER_HEIGHT;
-                    max: CONTENTS_AREA_INPUT_DIVIDER_WIDTH CONTENTS_AREA_INPUT_DIVIDER_HEIGHT;
+                    min: DIVIDER_WIDTH DIVIDER_HEIGHT;
+                    max: DIVIDER_WIDTH DIVIDER_HEIGHT;
                     visible: 1;
                     color: 112 112 112 255;
                     rel1 {
@@ -1213,8 +1221,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: 0 (CONTENTS_AREA_TITLE_HEIGHT-CONTENTS_AREA_DIVIDER_HEIGHT);
-                    max: 0 (CONTENTS_AREA_TITLE_HEIGHT-CONTENTS_AREA_DIVIDER_HEIGHT);
+                    min: 0 (CONTENTS_AREA_TITLE_HEIGHT-AREAS_DIVIDER_HEIGHT);
+                    max: 0 (CONTENTS_AREA_TITLE_HEIGHT-AREAS_DIVIDER_HEIGHT);
                     visible: DEVELOPMENT;
                     color: 255 255 255 127;
                     rel1 {
@@ -1232,8 +1240,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: WIDTH CONTENTS_AREA_DIVIDER_HEIGHT;
-                    max: WIDTH CONTENTS_AREA_DIVIDER_HEIGHT;
+                    min: WIDTH AREAS_DIVIDER_HEIGHT;
+                    max: WIDTH AREAS_DIVIDER_HEIGHT;
                     visible: 1;
                     color: 0 0 0 13;
                     rel1 {
@@ -1422,6 +1430,7 @@ collections {
                     min: BOOKMARK_FOLDER_BUTTON_SIZE BOOKMARK_FOLDER_BUTTON_SIZE;
                     max: BOOKMARK_FOLDER_BUTTON_SIZE BOOKMARK_FOLDER_BUTTON_SIZE;
                     visible: 1;
+                    fixed: 1 1;
                     rel1 {
                         relative: 0.0 0.0;
                         to: "folder_button_bg";
@@ -1432,6 +1441,304 @@ collections {
                     }
                 }
             }
+            part {
+                name: "folder_dropdown_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 0 BOOKMARK_DROPDOWN_OFFSET_Y;
+                    max: 0 BOOKMARK_DROPDOWN_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bookmark_folder_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "folder_dropdown_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+                    max: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+                    visible: DEVELOPMENT;
+                    color: 205 105 201 255;//orchid3
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "folder_dropdown_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 0;
+                    color: 224 237 251 255;
+                }
+            }
+            part {
+                name: "folder_icon_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default";
+                    align: 0.0 0.0;
+                    min: BOOKMARK_DROPDOWN_ITEM_OFFSET_X BOOKMARK_DROPDOWN_ITEM_OFFSET_Y;
+                    max: BOOKMARK_DROPDOWN_ITEM_OFFSET_X BOOKMARK_DROPDOWN_ITEM_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "folder_icon";
+                scale: 1;
+                type: IMAGE;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: BOOKMARK_ICON_SIZE BOOKMARK_ICON_SIZE;
+                    max: BOOKMARK_ICON_SIZE BOOKMARK_ICON_SIZE;
+                    visible: 1;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "folder_icon_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                    image.normal: "bookmark_ic_folder_1.png";
+                }
+                description {
+                    state: "normal" 0.0;
+                    inherit: "default";
+                    image.normal: "bookmark_ic_folder_2.png";
+                }
+            }
+            part {
+                name: "dropdown_text_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 20 0;
+                    max: 20 0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 1.0 0.0;
+                        to: "folder_icon";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "dropdown_text_bg";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: BOOKMARK_DROPDOWN_ITEM_WIDTH BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    max: BOOKMARK_DROPDOWN_ITEM_WIDTH BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    visible: DEVELOPMENT;
+                    color: 135 206 250 255;//lightskyblue
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "dropdown_text_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "dropdown_text";
+                scale: 1;
+                type: TEXTBLOCK;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: BOOKMARK_DROPDOWN_ITEM_WIDTH BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    max: BOOKMARK_DROPDOWN_ITEM_WIDTH BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "dropdown_text_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "dropdown_text_bg";
+                    }
+                    text {
+                        style: "dropdown_style";
+                        text: "WTF";
+                    }
+                }
+            }
+            part {
+                name: "dropdown_icon_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: BOOKMARK_DROPDOWN_ICON_OFFSET_X BOOKMARK_DROPDOWN_ICON_OFFSET_Y;
+                    max: BOOKMARK_DROPDOWN_ICON_OFFSET_X BOOKMARK_DROPDOWN_ICON_OFFSET_Y;
+                    color: 255 255 255 127;
+                    visible: DEVELOPMENT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "dropdown_icon";
+                scale: 1;
+                type: IMAGE;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: BOOKMARK_DROPDOWN_ICON_SIZE BOOKMARK_DROPDOWN_ICON_SIZE;
+                    max: BOOKMARK_DROPDOWN_ICON_SIZE BOOKMARK_DROPDOWN_ICON_SIZE;
+                    visible: 1;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "dropdown_icon_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                    image.normal: "dropdown_ic.png";
+                }
+            }
+            part {
+                name: "dropdown_divider_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: DIVIDER_OFFSET_X DIVIDER_OFFSET_Y;
+                    max: DIVIDER_OFFSET_X DIVIDER_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "dropdown_divider_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: DIVIDER_WIDTH DIVIDER_HEIGHT;
+                    max: DIVIDER_WIDTH DIVIDER_HEIGHT;
+                    visible: 1;
+                    color: 10 132 229 255;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "dropdown_divider_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "remove_divider_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 0 (BOOKMARK_DROPDOWN_HEIGHT-AREAS_DIVIDER_HEIGHT);
+                    max: 0 (BOOKMARK_DROPDOWN_HEIGHT-AREAS_DIVIDER_HEIGHT);
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "remove_divider_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: WIDTH AREAS_DIVIDER_HEIGHT;
+                    max: WIDTH AREAS_DIVIDER_HEIGHT;
+                    visible: 1;
+                    color: 0 0 0 13;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "remove_divider_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "folder_dropdown_click";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+                    max: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "folder_dropdown_bg";
+                    }
+                }
+            }
+//            part {
+//                name: "folder_dropdown_over";
+//                type: RECT;
+//                mouse_events: 1;
+//                repeat_events: 1;
+//                description {
+//                    state: "default" 0.0;
+//                    align: 0.0 0.0;
+//                    min: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+//                    max: WIDTH BOOKMARK_DROPDOWN_HEIGHT;
+//                    visible: 1;
+//                    color: 0 0 0 0;
+//                    rel1 {
+//                        relative: 0.0 0.0;
+//                        to: "folder_dropdown_bg";
+//                    }
+//                    rel2 {
+//                        relative: 1.0 1.0;
+//                        to: "folder_dropdown_bg";
+//                    }
+//                }
+//            }
             part {
                 name: "remove_spacer";
                 type: RECT;
@@ -1521,7 +1828,6 @@ collections {
                     min: CONTENTS_AREA_REMOVE_WIDTH CONTENTS_AREA_REMOVE_HEIGHT;
                     max: CONTENTS_AREA_REMOVE_WIDTH CONTENTS_AREA_REMOVE_HEIGHT;
                     visible: 1;
-                    //color: 142 56 142 255; //beat
                     rel1 {
                         relative: 0.0 0.0;
                         to: "remove_bg";
@@ -1537,8 +1843,197 @@ collections {
                     visible: 0;
                 }
             }
+            part {
+                name: "dropdown_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    visible: 0;
+                    color: 0 0 0 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "shadow_left_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: DIVIDER_OFFSET_X-3 DIVIDER_OFFSET_Y;
+                    max: DIVIDER_OFFSET_X-3 DIVIDER_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "folder_dropdown_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "dropdown_swallow_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    min: 3 0;
+                    max: 3 0;
+                    rel1 {
+                        relative: 1 1;
+                        to: "shadow_left_spacer";
+                    }
+                    rel2.relative: 1 1;
+                }
+            }
+            part {
+                name: "dropdown_swallow";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    fixed: 1 0;
+                    min: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT;
+                    max: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT*4;
+                    visible: 0;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "dropdown_swallow_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "shadow_bot";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    color: 0 0 0 51;
+                    min: DIVIDER_WIDTH-3 3;
+                    max: DIVIDER_WIDTH-3 3;
+                    align: 0 0;
+                    rel1 {
+                        relative: 0.0 1.0;
+                        to: "dropdown_swallow";
+                    }
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "shadow_left";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    color: 0 0 0 51;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "shadow_left_spacer";
+                    }
+                    rel2 {
+                        relative: 0.0 1.0;
+                        to: "shadow_bot";
+                    }
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
         }
         programs {
+            program {
+                name: "folder_icon_special";
+                source: "ui";
+                signal: "folder_icon_special";
+                action: STATE_SET "default";
+                target: "folder_icon";
+            }
+            program {
+                name: "folder_icon_normal";
+                source: "ui";
+                signal: "folder_icon_normal";
+                action: STATE_SET "normal";
+                target: "folder_icon";
+            }
+            program {
+                name: "folder_dropdown_down";
+                source: "folder_dropdown_click";
+                signal: "mouse,down,*";
+                script {
+                    emit("elm,action,click", "");
+                }
+                after: "folder_dropdown_down_2";
+            }
+            program {
+                name: "folder_dropdown_down_2";
+                action: STATE_SET "focused" 0.0;
+                target: "folder_dropdown_bg";
+            }
+            program {
+                name: "folder_dropdown_up";
+                source: "folder_dropdown_click";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "folder_dropdown_bg";
+            }
+            program {
+                name: "dropdown_swallow_show";
+                source: "ui";
+                signal: "dropdown_swallow_show";
+                action: STATE_SET "visible" 0.0;
+                target: "dropdown_swallow";
+                target: "dropdown_bg";
+                target: "shadow_bot";
+                target: "shadow_left";
+            }
+            program {
+                name: "dropdown_swallow_hide";
+                source: "ui";
+                signal: "dropdown_swallow_hide";
+                action: STATE_SET "default" 0.0;
+                target: "dropdown_swallow";
+                target: "dropdown_bg";
+                target: "shadow_bot";
+                target: "shadow_left";
+            }
+            program {
+                name: "dropdown_bg_click";
+                signal: "mouse,clicked,1";
+                source: "dropdown_bg";
+                action: STATE_SET "default" 0.0;
+                target: "dropdown_bg";
+                target: "dropdown_swallow";
+            }
             program {
                 name: "entry_swallow_down";
                 source: "title_input_swallow";
@@ -1654,6 +2149,366 @@ collections {
                 target: "remove_bg";
                 target: "remove_click";
                 target: "remove_text";
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/folder-custom-item/default";
+        data.item: "texts" "folder_text";
+        styles {
+            style {
+                name: "folder_text_normal";
+                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#333333 align=0.0 valign=1.0";
+            }
+        }
+        parts {
+            part {
+                name: "bg";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    align: 1 0;
+                    min: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT;
+                    max: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "pressed" 0.0;
+                    inherit: "default";
+                    color: 224 237 251 255;
+                }
+            }
+            part {
+                name: "folder_text_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_TEXT_OFFSET_X DROPDOWN_ITEM_TEXT_OFFSET_Y;
+                    max: DROPDOWN_ITEM_TEXT_OFFSET_X DROPDOWN_ITEM_TEXT_OFFSET_Y;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "folder_text";
+                scale: 1;
+                mouse_events: 1;
+                type: TEXTBLOCK;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_TEXT_WIDTH DROPDOWN_ITEM_TEXT_HEIGHT;
+                    max: DROPDOWN_ITEM_TEXT_WIDTH DROPDOWN_ITEM_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "folder_text_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    text.style: "folder_text_normal";
+                }
+            }
+            part {
+                name: "divider";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default";
+                    align: 0.0 1.0;
+                    visible: 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    min: DIVIDER_WIDTH 1;
+                    max: DIVIDER_WIDTH 1;
+                    color: 0 0 0 26;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "over";
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 0;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "invisible";
+                source: "ui";
+                signal: "invisible";
+                action: STATE_SET "default" 0.0;
+                target: "divider";
+            }
+            program {
+                name: "visible";
+                source: "ui";
+                signal: "visible";
+                action: STATE_SET "visible" 0.0;
+                target: "divider";
+            }
+            program {
+                name: "down";
+                source: "over";
+                signal: "mouse,down,*";
+                action: STATE_SET "pressed" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "up";
+                source: "over";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+
+    group {
+        name: "elm/genlist/item/folder-selected-item/default";
+        data.item: "texts" "folder_text";
+        images {
+            image: "list_ic_selected.png" COMP;
+        }
+        styles {
+            style {
+                name: "folder_text_selected";
+                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#0a84e5 align=0.0 valign=1.0";
+            }
+        }
+        parts {
+            part {
+                name: "bg";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                    align: 1 0;
+                    min: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT;
+                    max: DIVIDER_WIDTH BOOKMARK_DROPDOWN_LIST_HEIGHT;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "pressed" 0.0;
+                    inherit: "default";
+                    color: 224 237 251 255;
+                }
+            }
+            part {
+                name: "folder_text_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_TEXT_OFFSET_X DROPDOWN_ITEM_TEXT_OFFSET_Y;
+                    max: DROPDOWN_ITEM_TEXT_OFFSET_X DROPDOWN_ITEM_TEXT_OFFSET_Y;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "folder_text";
+                scale: 1;
+                mouse_events: 1;
+                type: TEXTBLOCK;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_TEXT_WIDTH DROPDOWN_ITEM_TEXT_HEIGHT;
+                    max: DROPDOWN_ITEM_TEXT_WIDTH DROPDOWN_ITEM_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "folder_text_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    text.style: "folder_text_selected";
+                }
+            }
+            part {
+                name: "folder_icon_spacer";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_ICON_OFFSET 0;
+                    max: DROPDOWN_ITEM_ICON_OFFSET 0;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 1.0 0.0;
+                        to: "folder_text";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "folder_icon";
+                scale: 1;
+                type: IMAGE;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: DROPDOWN_ITEM_TEXT_HEIGHT DROPDOWN_ITEM_TEXT_HEIGHT;
+                    max: DROPDOWN_ITEM_TEXT_HEIGHT DROPDOWN_ITEM_TEXT_HEIGHT;
+                    image.normal: "list_ic_selected.png";
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "folder_icon_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "divider";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default";
+                    align: 0.0 1.0;
+                    visible: 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    min: DIVIDER_WIDTH 1;
+                    max: DIVIDER_WIDTH 1;
+                    color: 0 0 0 26;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "over";
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 0;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "invisible";
+                source: "ui";
+                signal: "invisible";
+                action: STATE_SET "default" 0.0;
+                target: "divider";
+            }
+            program {
+                name: "visible";
+                source: "ui";
+                signal: "visible";
+                action: STATE_SET "visible" 0.0;
+                target: "divider";
+            }
+            program {
+                name: "down";
+                source: "over";
+                signal: "mouse,down,*";
+                action: STATE_SET "pressed" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "up";
+                source: "over";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
             }
         }
     }
