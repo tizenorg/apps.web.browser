@@ -66,6 +66,7 @@ public:
     //AbstractUIComponent interface methods
     void init(Evas_Object *parent);
     Evas_Object *getContent();
+    void addCustomFolders(services::SharedBookmarkFolderList folders);
 
 #if PROFILE_MOBILE
     void showUI();
@@ -73,13 +74,14 @@ public:
     void setState(bool state);
     void setTitle(const std::string& title);
     void setURL(const std::string& title);
+    void setFolder(unsigned int folder_id, const std::string& folder_name);
+    void setSpecialFolderId(unsigned int special);
 #else
     static BookmarkFlowUI* createPopup(Evas_Object* parent);
     void show();
     void dismiss();
     void onBackPressed();
-    void gridAddNewFolder();
-    void gridAddCustomFolders(services::SharedBookmarkFolderList folders);
+    void addNewFolder();
 #endif
     virtual std::string getName();
     void hide();
@@ -91,16 +93,28 @@ public:
     boost::signals2::signal<void ()> addFolder;
 
 private:
+    typedef struct
+    {
+        std::string name;
+        unsigned int folder_id;
+        std::shared_ptr<tizen_browser::base_ui::BookmarkFlowUI> bookmarkFlowUI;
+    } FolderData;
+
     Evas_Object* createBookmarkFlowLayout();
     void createTitleArea();
 
     Evas_Object *m_parent;
-    Evas_Object *m_bf_layout;
+    Evas_Object *m_layout;
     Evas_Object *m_titleArea;
     std::string m_edjFilePath;
     bool m_state;
+
+    static char* _folder_title_text_get(void* data, Evas_Object*, const char* part);
 #if PROFILE_MOBILE
     void createContentsArea();
+    void createGenlistItemClasses();
+    void createGenlist();
+    void listAddCustomFolder(FolderData* item);
 
     static void _save_clicked(void* data, Evas_Object*, void*);
     static void _cancel_clicked(void* data, Evas_Object*, void*);
@@ -109,7 +123,9 @@ private:
     static void _entry_changed(void* data, Evas_Object*, void*);
     static void _inputCancel_clicked(void* data, Evas_Object*, void*);
     static void _folder_clicked(void* data, Evas_Object*, void*);
+    static void _folder_dropdown_clicked(void* data, Evas_Object*, void*);
     static void _remove_clicked(void* data, Evas_Object*, void*);
+    static void _listCustomFolderClicked(void* data, Evas_Object*, void*);
 
     Evas_Object *m_contentsArea;
     Evas_Object *m_removeButton;
@@ -118,21 +134,21 @@ private:
     Evas_Object *m_cancelButton;
     Evas_Object *m_inputCancelButton;
     Evas_Object *m_folderButton;
-#else
-    typedef struct
-    {
-        std::string name;
-        int folder_id;
-        std::shared_ptr<tizen_browser::base_ui::BookmarkFlowUI> bookmarkFlowUI;
-    } FolderData;
+    Evas_Object *m_folder_dropdown_button;
+    Evas_Object *m_genlist;
 
+    Elm_Genlist_Item_Class *m_folder_custom_item_class;
+    Elm_Genlist_Item_Class *m_folder_selected_item_class;
+    std::map<unsigned int, Elm_Object_Item*> m_map_folders;
+    unsigned int m_folder_id;
+    unsigned int m_special_folder_id;
+    const unsigned int m_max_items = 4;
+#else
     void createGengridItemClasses();
     void createGengrid();
-    void clearGengridItems();
-
     void gridAddCustomFolder(FolderData* item);
     void createFocusVector();
-    static char* _grid_folder_title_text_get(void* data, Evas_Object*, const char* part);
+
     static void _gridNewFolderClicked(void* data, Evas_Object*, void*);
     static void _gridCustomFolderClicked(void* data, Evas_Object*, void*);
     static void _bg_clicked(void* data, Evas_Object*, void*);
