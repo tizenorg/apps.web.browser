@@ -199,7 +199,7 @@ unsigned int FoldersStorage::addFolder(const std::string& name)
 void FoldersStorage::updateFolderName(unsigned int id, const std::string& newName)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (id == AllFolder || id == SpecialFolder)
+    if (id == AllFolder)
         return;
     boost::format updateFolderNameString("UPDATE %1%  SET %2% = ? WHERE %3% = ?" );
     updateFolderNameString % TABLE_FOLDER % COL_FOLDER_NAME % COL_FOLDER_ID;
