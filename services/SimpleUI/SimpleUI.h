@@ -178,7 +178,9 @@ private:
     /**
      * @brief Handles 'generateThumb' signals.
      */
+#if SNAPSHOT
     void onGenerateThumb(basic_webengine::TabId tabId);
+#endif
     void onCreateTabId();
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);

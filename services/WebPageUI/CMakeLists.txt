@@ -53,6 +53,7 @@ include(EDCCompile)
 
 if (${PROFILE} MATCHES "mobile")
     ADD_DEFINITIONS(-DGESTURE=0)
+    ADD_DEFINITIONS(-DSNAPSHOT=0)
 endif (${PROFILE} MATCHES "mobile")
 
 #please do not add edc/ directory
