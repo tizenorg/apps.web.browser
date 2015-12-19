@@ -519,9 +519,9 @@ void SimpleUI::connectModelSignals()
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
 
     m_historyService->historyDeleted.connect(boost::bind(&SimpleUI::onHistoryRemoved, this,_1));
-
+#if SNAPSHOT
     m_tabService->generateThumb.connect(boost::bind(&SimpleUI::onGenerateThumb, this, _1));
-
+#endif
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
     m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
@@ -817,6 +817,7 @@ void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
 }
 #endif
 
+#if SNAPSHOT
 void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
 {
     const int THUMB_WIDTH = boost::any_cast<int>(
@@ -827,6 +828,7 @@ void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
             THUMB_WIDTH, THUMB_HEIGHT);
     m_tabService->onThumbGenerated(tabId, snapshotImage);
 }
+#endif
 
 void SimpleUI::onCreateTabId()
 {
@@ -962,14 +964,17 @@ void SimpleUI::progressChanged(double progress)
 void SimpleUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
         m_historyService->addHistoryItem(m_webEngine->getURI(),
                                          m_webEngine->getTitle(),
                                          m_webEngine->getFavicon(),
+#if SNAPSHOT
                                          m_webEngine->getSnapshotData(
                                             QuickAccess::MAX_THUMBNAIL_WIDTH,
                                             QuickAccess::MAX_THUMBNAIL_HEIGHT));
+#else
+					  NULL);
+#endif
     m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
 }
