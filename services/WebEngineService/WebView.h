@@ -96,7 +96,7 @@ public:
      */
     bool isPrivateMode() {return m_private;}
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height, Eina_Bool async);
      /**
      * \brief Sets Focus to URI entry.
      */
@@ -239,6 +239,7 @@ public:
 
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
     boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
     boost::signals2::signal<void (const std::string)> uriChanged;
 
@@ -308,6 +309,9 @@ private:
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
+
+    // Screenshot capture
+    static void __screenshotCaptured(Evas_Object* image, void* user_data);
 private:
     Evas_Object * m_parent;
     TabId m_tabId;
