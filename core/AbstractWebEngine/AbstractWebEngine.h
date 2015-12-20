@@ -210,7 +210,7 @@ public:
     /**
      * Gets snapshot data as void* for tab provided as parameter
      */
-    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height) = 0;
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, Eina_Bool async) = 0;
 
     /**
      * Get the state of private mode for a specific tab
@@ -477,6 +477,11 @@ public:
      * Generate id for the new tab.
      */
     boost::signals2::signal<void()> createTabId;
+
+    /**
+     * Async signal to save snapshot after it is generated.
+     */
+    boost::signals2::signal<void(std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
 
 #if PROFILE_MOBILE
     /**
