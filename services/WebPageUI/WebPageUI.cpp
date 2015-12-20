@@ -133,6 +133,7 @@ void WebPageUI::hideUI()
 #endif
 #if PROFILE_MOBILE
     hideMoreMenu();
+    enlargeWebview();
 #endif
 }
 
@@ -555,6 +556,7 @@ std::string WebPageUI::edjePath(const std::string& file)
 
 void WebPageUI::showTabUIConnect()
 {
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     hideUI();
     showTabUI();
 }
