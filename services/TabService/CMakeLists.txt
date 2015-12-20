@@ -9,6 +9,10 @@ include(EFLHelpers)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+if (${PROFILE} MATCHES "mobile")
+    ADD_DEFINITIONS(-DSAVE_SNAPSHOT=0)
+endif (${PROFILE} MATCHES "mobile")
+
 add_library(${PROJECT_NAME} SHARED ${TabService_SOURCES})
 
 if(TIZEN_BUILD)

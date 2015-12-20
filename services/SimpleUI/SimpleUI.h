@@ -179,6 +179,7 @@ private:
      * @brief Handles 'generateThumb' signals.
      */
     void onGenerateThumb(basic_webengine::TabId tabId);
+    void onSnapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void onCreateTabId();
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
