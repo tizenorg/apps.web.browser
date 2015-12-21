@@ -17,6 +17,7 @@
 #include "WebsiteHistoryItemTitleTv.h"
 #include "../../HistoryDayItemData.h"
 #include <EflTools.h>
+#include <services/HistoryUI/HistoryDeleteManager.h>
 
 namespace tizen_browser{
 namespace base_ui{
@@ -25,8 +26,10 @@ boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
 WebsiteHistoryItemTitleTv::signalWebsiteHistoryItemClicked;
 
 WebsiteHistoryItemTitleTv::WebsiteHistoryItemTitleTv(
-        WebsiteHistoryItemDataPtr websiteHistoryItemData)
+        WebsiteHistoryItemDataPtr websiteHistoryItemData,
+        HistoryDeleteManagerPtrConst historyDeleteManager)
     : m_websiteHistoryItemData(websiteHistoryItemData)
+    , m_historyDeleteManager(historyDeleteManager)
 {
 }
 
@@ -57,18 +60,59 @@ Evas_Object* WebsiteHistoryItemTitleTv::init(Evas_Object* parent,
     evas_object_color_set(m_buttonSelect, 0, 0, 0, 0);
     elm_object_style_set(m_buttonSelect, "anchor");
 
+    m_imageClear = createImageClear(parent, edjeFilePath);
+    elm_object_part_content_set(m_layoutHistoryItemTitle, "imageClear",
+            m_imageClear);
+
     Evas_Object* layoutIcon = createLayoutIcon(parent, edjeFilePath);
     Evas_Object* layoutSummary = createLayoutSummary(parent, edjeFilePath);
     elm_box_pack_end(m_boxMainHorizontal, layoutIcon);
     elm_box_pack_end(m_boxMainHorizontal, layoutSummary);
 
+    evas_object_show(m_buttonSelect);
     evas_object_show(layoutIcon);
     evas_object_show(layoutSummary);
     evas_object_show(m_layoutHistoryItemTitle);
 
-    initCallbacks();
+    evas_object_lower(m_imageClear);
 
+    initCallbacks();
     return m_layoutHistoryItemTitle;
+}
+
+void WebsiteHistoryItemTitleTv::initCallbacks()
+{
+    evas_object_smart_callback_add(m_buttonSelect, "clicked",
+            _buttonSelectClicked, &m_websiteHistoryItemData);
+    evas_object_smart_callback_add(m_buttonSelect, "focused",
+            _buttonSelectFocused, this);
+    evas_object_smart_callback_add(m_buttonSelect, "unfocused",
+            _buttonSelectUnfocused, m_imageClear);
+}
+
+void WebsiteHistoryItemTitleTv::_buttonSelectClicked(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    WebsiteHistoryItemDataPtr* websiteHistoryItemData =
+            static_cast<WebsiteHistoryItemDataPtr*> (data);
+    signalWebsiteHistoryItemClicked(*websiteHistoryItemData);
+}
+
+void WebsiteHistoryItemTitleTv::_buttonSelectFocused(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    WebsiteHistoryItemTitleTv* self = static_cast<WebsiteHistoryItemTitleTv*>(data);
+    if(self->getDeleteManager()->getDeleteMode()) {
+        Evas_Object* imageClear = self->getImageClear();
+        evas_object_raise(imageClear);
+    }
+}
+
+void WebsiteHistoryItemTitleTv::_buttonSelectUnfocused(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    Evas_Object* imageClear = static_cast<Evas_Object*>(data);
+    evas_object_lower(imageClear);
 }
 
 Evas_Object* WebsiteHistoryItemTitleTv::createLayoutIcon(Evas_Object* parent,
@@ -114,22 +158,17 @@ Evas_Object* WebsiteHistoryItemTitleTv::createLayoutSummary(Evas_Object* parent,
     return layout;
 }
 
-void WebsiteHistoryItemTitleTv::initCallbacks()
+Evas_Object* WebsiteHistoryItemTitleTv::createImageClear(Evas_Object* parent,
+        const std::string& edjeFilePath)
 {
-    evas_object_smart_callback_add(m_buttonSelect, "clicked",
-            _buttonSelectClicked, &m_websiteHistoryItemData);
+    Evas_Object* imageClear = elm_image_add(parent);
+    elm_image_file_set(imageClear, edjeFilePath.c_str(), "groupImageClear");
+    return imageClear;
 }
 
 void WebsiteHistoryItemTitleTv::deleteCallbacks()
 {
     evas_object_smart_callback_del(m_buttonSelect, "clicked", NULL);
-}
-
-void WebsiteHistoryItemTitleTv::_buttonSelectClicked(void* data,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    WebsiteHistoryItemDataPtr* websiteHistoryItemData = static_cast<WebsiteHistoryItemDataPtr*>(data);
-    signalWebsiteHistoryItemClicked(*websiteHistoryItemData);
 }
 
 void WebsiteHistoryItemTitleTv::setFocusChain(Evas_Object* obj)

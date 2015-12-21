@@ -24,7 +24,6 @@ HistoryUIFocusManager::HistoryUIFocusManager(
         HistoryDaysListManagerPtr historyDaysListManager)
     : m_historyDaysListManager(historyDaysListManager)
 {
-
 }
 
 HistoryUIFocusManager::~HistoryUIFocusManager()

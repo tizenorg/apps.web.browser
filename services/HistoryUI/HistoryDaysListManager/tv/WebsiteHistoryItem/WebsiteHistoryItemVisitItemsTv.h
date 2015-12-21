@@ -26,16 +26,27 @@
 namespace tizen_browser{
 namespace base_ui{
 
+class HistoryDeleteManager;
+typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;
+
 class WebsiteHistoryItemVisitItemsTv
 {
-    struct LayoutButtonPair
+    struct LayoutVisitItemObjects
     {
-        Evas_Object* layout;
-        Evas_Object* selectButton;
+        Evas_Object* layout = nullptr;
+        Evas_Object* buttonSelect = nullptr;
+        Evas_Object* imageClear = nullptr;
+    };
+    struct VisitItemObjects
+    {
+        WebsiteVisitItemDataPtr websiteVisitItemData;
+        LayoutVisitItemObjects layoutVisitItemObjects;
+        HistoryDeleteManagerPtrConst deleteManager;
     };
 public:
     WebsiteHistoryItemVisitItemsTv(
-            const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems);
+            const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems,
+            HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~WebsiteHistoryItemVisitItemsTv();
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
     void setFocusChain(Evas_Object* obj);
@@ -43,25 +54,39 @@ public:
     static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
     signalWebsiteVisitItemClicked;
 
+    bool contains(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+    void removeItem(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+
+    void setEflObjectsAsDeleted();
+    int size() {return eina_list_count(elm_box_children_get(m_boxMainVertical));}
+
 private:
-    LayoutButtonPair createLayoutVisitItem(Evas_Object* parent,
+    LayoutVisitItemObjects createLayoutVisitItem(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
+    Evas_Object* createImageClear(Evas_Object* parent,
+            const std::string& edjeFilePath);
     Evas_Object* createLayoutVisitItemDate(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
     Evas_Object* createLayoutVisitItemUrl(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
+
+    void remove(VisitItemObjects);
     void initCallbacks();
     void deleteCallbacks();
     static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectFocused(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectUnfocused(void* data, Evas_Object* obj, void* event_info);
 
-    std::vector<WebsiteVisitItemDataPtr> m_websiteVisitItems;
-
-    std::vector<Evas_Object*> m_buttonsSelect;
-    Evas_Object* m_layoutHistoryItemVisitItems;
+    /// used to indicate, if efl object were already deleted
+    bool m_eflObjectsDeleted = false;
+    std::vector<VisitItemObjects> m_websiteVisitItems;
+    Evas_Object* m_layoutMain;
     Evas_Object* m_boxMainVertical;
+
+    HistoryDeleteManagerPtrConst m_historyDeleteManager;
 };
 
 }
