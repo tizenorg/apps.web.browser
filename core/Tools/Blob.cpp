@@ -49,8 +49,8 @@ Blob::Blob(const void * ptr, int length) :
         BROWSER_LOGE("%s - Failed to allocate %d bytes", length);
     	throw std::bad_alloc();
     }
-
-    memcpy(m_data, ptr, length);
+    if(m_data)
+        memcpy(m_data, ptr, length);
 }
 
 Blob::~Blob()
