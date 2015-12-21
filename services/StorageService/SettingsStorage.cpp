@@ -259,8 +259,9 @@ void SettingsStorage::setSettingsValue(const std::string & key, storage::FieldPt
             insert.bindText(2, field->getString());
             break;
         default:
+            BROWSER_LOGE("[%s:%d] Unknown filed type!", __PRETTY_FUNCTION__, __LINE__);
             M_ASSERT(0);
-            break;
+            return;
     }
 
     insert.bindText(1, key);
