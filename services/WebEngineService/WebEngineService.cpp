@@ -41,7 +41,6 @@ WebEngineService::WebEngineService()
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
-    m_chronoTabs.clear();
     m_config.load("");
 
 #if PROFILE_MOBILE
@@ -316,16 +315,10 @@ TabId WebEngineService::currentTabId() const
     return m_currentTabId;
 }
 
-std::list<TabId> WebEngineService::listTabs() const
-{
-    return m_mostRecentTab;
-}
-
 std::vector<TabContentPtr> WebEngineService::getTabContents() const {
     std::vector<TabContentPtr> result;
-    for(std::list<TabId>::const_iterator it = m_chronoTabs.begin(); it != m_chronoTabs.end(); ++it){
-        WebViewPtr item = m_tabs.find(*it)->second;
-        auto tabContent = std::make_shared<TabContent>(*it, item->getTitle());
+    for (auto const& tab : m_tabs) {
+        auto tabContent = std::make_shared<TabContent>(tab.first, tab.second->getTitle());
         result.push_back(tabContent);
     }
     return result;
@@ -368,7 +361,6 @@ TabId WebEngineService::addTab(const std::string & uri,
     }
 
     AbstractWebEngine::tabCreated();
-    m_chronoTabs.push_front(newTabId);
 
     return newTabId;
 }
@@ -389,7 +381,7 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
 
     m_currentWebView = m_tabs[newTabId];
     m_currentTabId = newTabId;
-    m_mostRecentTab.remove(newTabId);
+    m_mostRecentTab.erase(std::remove(m_mostRecentTab.begin(), m_mostRecentTab.end(), newTabId), m_mostRecentTab.end());
     m_mostRecentTab.push_back(newTabId);
 
     connectSignals(m_currentWebView);
@@ -421,20 +413,25 @@ bool WebEngineService::closeTab(TabId id) {
         return res;
     }
     m_tabs.erase(closingTabId);
-    m_chronoTabs.remove(closingTabId);
-    m_mostRecentTab.remove(closingTabId);
+    m_mostRecentTab.erase(std::remove(m_mostRecentTab.begin(), m_mostRecentTab.end(), closingTabId), m_mostRecentTab.end());
+    
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (closingTabId == m_currentTabId) {
         m_currentWebView.reset();
     }
     if (m_tabs.size() == 0) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
         m_currentTabId = TabId::NONE;
     }
     else if (closingTabId == m_currentTabId && m_mostRecentTab.size()){
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
         res = switchToTab(m_mostRecentTab.back());
     }
 
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     tabClosed(closingTabId);
 
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return res;
 }
 
