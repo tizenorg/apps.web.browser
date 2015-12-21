@@ -514,6 +514,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
+    m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -817,15 +818,20 @@ void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
 }
 #endif
 
+void SimpleUI::onSnapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_tabService->onThumbGenerated(m_webEngine->currentTabId(), snapshot);
+}
+
 void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     const int THUMB_WIDTH = boost::any_cast<int>(
             m_config->get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
     const int THUMB_HEIGHT = boost::any_cast<int>(
             m_config->get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
-    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId,
-            THUMB_WIDTH, THUMB_HEIGHT);
-    m_tabService->onThumbGenerated(tabId, snapshotImage);
+    m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, true);
 }
 
 void SimpleUI::onCreateTabId()
