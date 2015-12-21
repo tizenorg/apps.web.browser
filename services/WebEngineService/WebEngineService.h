@@ -113,7 +113,7 @@ public:
      */
     std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width, int height);
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, bool async);
 
     /**
      * @brief Get the state of private mode for a specific tab
@@ -228,6 +228,7 @@ private:
     void _loadProgress(double);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
+    void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void webViewClicked();
 #if PROFILE_MOBILE
     void setWebViewSettings(std::shared_ptr<WebView> webView);
