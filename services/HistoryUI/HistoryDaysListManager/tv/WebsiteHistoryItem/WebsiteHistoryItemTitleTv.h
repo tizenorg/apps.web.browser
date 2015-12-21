@@ -25,13 +25,20 @@
 namespace tizen_browser{
 namespace base_ui{
 
+class HistoryDeleteManager;
+typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;
+
 class WebsiteHistoryItemTitleTv
 {
 public:
-    WebsiteHistoryItemTitleTv(WebsiteHistoryItemDataPtr websiteHistoryItemData);
+    WebsiteHistoryItemTitleTv(WebsiteHistoryItemDataPtr websiteHistoryItemData,
+            HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~WebsiteHistoryItemTitleTv();
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
     void setFocusChain(Evas_Object* obj);
+
+    HistoryDeleteManagerPtrConst getDeleteManager() const {return m_historyDeleteManager;}
+    Evas_Object* getImageClear() {return m_imageClear;}
 
     static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
     signalWebsiteHistoryItemClicked;
@@ -41,15 +48,22 @@ private:
             const std::string& edjeFilePath);
     Evas_Object* createLayoutSummary(Evas_Object* parent,
             const std::string& edjeFilePath);
+    Evas_Object* createImageClear(Evas_Object* parent,
+            const std::string& edjeFilePath);
     void initCallbacks();
     void deleteCallbacks();
     static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectFocused(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectUnfocused(void* data, Evas_Object* obj, void* event_info);
 
     WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
 
     Evas_Object* m_buttonSelect;
+    Evas_Object* m_imageClear;
     Evas_Object* m_layoutHistoryItemTitle;
     Evas_Object* m_boxMainHorizontal;
+
+    HistoryDeleteManagerPtrConst m_historyDeleteManager;
 };
 
 }

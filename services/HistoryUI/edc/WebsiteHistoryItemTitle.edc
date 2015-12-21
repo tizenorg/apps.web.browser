@@ -1,4 +1,22 @@
 collections {
+
+    group {
+        name: "groupImageClear";
+        images.image: "navi_ic_clear.png" COMP;
+        parts {
+            part {
+                name: "image";
+                type: IMAGE;
+                mouse_events: 1;
+                repeat_events: 0;
+                description {
+                    state: "default" 0.0;
+                    image.normal: "navi_ic_clear.png";
+                }
+            }
+        }
+    }
+
     group {
         name: "layoutWebsiteHistoryItemTitle";
         parts {
@@ -43,14 +61,33 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: 284 110;
-                    max: -1 -1;
                     rel1 {
                         relative: 0.0 0.0;
-                        offset: 18.0 18.0;
+                        to: "boxMainHorizontal";
                     }
                     rel2 {
                         relative: 1.0 1.0;
+                        to: "boxMainHorizontal";
+                    }
+                }
+            }
+            part {
+                name: "imageClear";
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 0 0;
+                    min: 40 40;
+                    max: 40 40;
+                    align: 1.0 0.0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "boxMainHorizontal";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "boxMainHorizontal";
                     }
                 }
             }
@@ -64,6 +101,7 @@ collections {
                 name: "background";
                 type: RECT;
                 description {
+                    visible: 1;
                     state: "default" 0.0;
                     color: 85 85 85 255;
                     rel1 {

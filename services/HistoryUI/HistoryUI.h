@@ -35,6 +35,8 @@ class HistoryDaysListManager;
 typedef std::shared_ptr<HistoryDaysListManager> HistoryDaysListManagerPtr;
 class HistoryUIFocusManager;
 typedef std::unique_ptr<HistoryUIFocusManager> HistoryUIFocusManagerPtrUnique;
+class HistoryDeleteManager;
+typedef std::shared_ptr<HistoryDeleteManager> HistoryDeleteManagerPtr;
 
 class BROWSER_EXPORT HistoryUI
     : public tizen_browser::interfaces::AbstractUIComponent
@@ -61,6 +63,8 @@ private:
     void clearItems();
     void createHistoryUILayout(Evas_Object* parent);
 
+    HistoryDeleteManagerPtr getHistoryDeleteManager() {return m_historyDeleteManager;}
+
     /**
      * @brief Groups history items by domain
      *
@@ -82,6 +86,7 @@ private:
     Evas_Object *m_daysList;
     HistoryDaysListManagerPtr m_historyDaysListManager;
     HistoryUIFocusManagerPtrUnique m_focusManager;
+    HistoryDeleteManagerPtr m_historyDeleteManager;
 
 };
 

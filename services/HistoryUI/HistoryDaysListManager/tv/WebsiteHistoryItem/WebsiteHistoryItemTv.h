@@ -31,27 +31,35 @@ class WebsiteHistoryItemTitleTv;
 typedef std::shared_ptr<WebsiteHistoryItemTitleTv> WebsiteHistoryItemTitleTvPtr;
 class WebsiteHistoryItemVisitItemsTv;
 typedef std::shared_ptr<WebsiteHistoryItemVisitItemsTv> WebsiteHistoryItemVisitItemsTvPtr;
+class HistoryDeleteManager;
+typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;
 
 class WebsiteHistoryItemTv
 {
 public:
-    WebsiteHistoryItemTv(WebsiteHistoryItemDataPtr websiteHistoryItemData);
+    WebsiteHistoryItemTv(WebsiteHistoryItemDataPtr websiteHistoryItemData,
+            HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~WebsiteHistoryItemTv();
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjeTvPtr edjeFiles);
     void setFocusChain(Evas_Object* obj);
+    void setEflObjectsAsDeleted();
 
 private:
     Evas_Object* createBoxMainHorizontal(Evas_Object* parent,
             HistoryDaysListManagerEdjeTvPtr edjeFiles);
 
+    /// used to indicate, if efl object were already deleted
+    bool m_eflObjectsDeleted;
+
     WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
     WebsiteHistoryItemTitleTvPtr m_websiteHistoryItemTitle;
     WebsiteHistoryItemVisitItemsTvPtr m_websiteHistoryItemVisitItems;
 
-    Evas_Object* m_layoutHistoryItem = nullptr;
-    Evas_Object* m_boxMainHorizontal = nullptr;
+    Evas_Object* m_layoutMain;
+    Evas_Object* m_boxMainHorizontal;
 
+    HistoryDeleteManagerPtrConst m_historyDeleteManager;
 };
 
 }
