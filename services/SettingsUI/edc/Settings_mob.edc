@@ -1,3 +1,4 @@
+#include "../../../core/Tools/edc/Spacer.edc"
 #define __CONCAT(X,Y)          X##Y
 
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
@@ -229,6 +230,7 @@ group {
                     }
                 }
             }
+        ADD_SPACER_VERTICAL("spacer_1", "settings_sub_text", 0, 40)
         part {
                 name: "sign_in_button";
                 scale:1;
@@ -243,12 +245,11 @@ group {
                     min: 348 80;
                     max: 348 80;
                     rel1 {
-                        to: "settings_sub_text";
+                        to: "spacer_1";
                         relative: 0.0 1.0;
-                        offset: 0 80;
                     }
                     rel2 {
-                        to: "settings_sub_text";
+                        to: "spacer_1";
                         relative: 1.0 1.0;
                     }
                     color_class: defaultButtonColor;
