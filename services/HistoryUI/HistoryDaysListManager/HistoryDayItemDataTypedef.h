@@ -25,12 +25,15 @@ namespace base_ui{
 
 typedef struct WebsiteVisitItemData_ WebsiteVisitItemData;
 typedef std::shared_ptr<WebsiteVisitItemData> WebsiteVisitItemDataPtr;
+typedef std::shared_ptr<const WebsiteVisitItemData> WebsiteVisitItemDataPtrConst;
 
 typedef struct WebsiteHistoryItemData_ WebsiteHistoryItemData;
 typedef std::shared_ptr<WebsiteHistoryItemData> WebsiteHistoryItemDataPtr;
+typedef std::shared_ptr<const WebsiteHistoryItemData> WebsiteHistoryItemDataPtrConst;
 
 typedef struct HistoryDayItemData_ HistoryDayItemData;
 typedef std::shared_ptr<HistoryDayItemData> HistoryDayItemDataPtr;
+typedef std::shared_ptr<const HistoryDayItemData> HistoryDayItemDataPtrConst;
 
 }
 }

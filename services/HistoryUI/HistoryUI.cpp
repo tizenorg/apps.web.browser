@@ -30,6 +30,7 @@
 #include "HistoryDaysListManager/HistoryDaysListManagerTv.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "HistoryUIFocusManager.h"
+#include "HistoryDeleteManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -53,7 +54,10 @@ HistoryUI::HistoryUI()
     : m_parent(nullptr)
     , m_main_layout(nullptr)
     , m_actionBar(nullptr)
+    , m_buttonClose(nullptr)
+    , m_buttonClear(nullptr)
     , m_daysList(nullptr)
+    , m_historyDeleteManager(std::make_shared<HistoryDeleteManager>())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -62,7 +66,7 @@ HistoryUI::HistoryUI()
 #if PROFILE_MOBILE
     m_historyDaysListManager = std::make_shared<HistoryDaysListManagerMob>();
 #else
-    m_historyDaysListManager = std::make_shared<HistoryDaysListManagerTv>();
+    m_historyDaysListManager = std::make_shared<HistoryDaysListManagerTv>(m_historyDeleteManager);
 #endif
 
     m_historyDaysListManager->historyItemClicked.connect(historyItemClicked);
@@ -73,7 +77,6 @@ HistoryUI::HistoryUI()
 
 HistoryUI::~HistoryUI()
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void HistoryUI::showUI()
@@ -82,7 +85,6 @@ void HistoryUI::showUI()
     M_ASSERT(m_main_layout);
     evas_object_show(m_actionBar);
     evas_object_show(m_main_layout);
-    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
     m_focusManager->refreshFocusChain();
 }
 
@@ -102,6 +104,7 @@ void HistoryUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+
     createHistoryUILayout(m_parent);
 }
 
@@ -190,9 +193,9 @@ void HistoryUI::_close_clicked_cb(void * data, Evas_Object*, void*)
 void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!data) return;
     HistoryUI *historyUI = static_cast<HistoryUI*>(data);
-    historyUI->clearHistoryClicked();
-    historyUI->clearItems();
+    historyUI->getHistoryDeleteManager()->toggleDeleteMode();
 }
 
 void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items,
