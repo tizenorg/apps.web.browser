@@ -92,7 +92,7 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
-    if (m_ewkContext) {
+    if (m_ewkContext && !m_private) {       // private context is deleted by engine
         ewk_context_delete(m_ewkContext);
     }
 }
