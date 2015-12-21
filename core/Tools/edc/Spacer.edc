@@ -27,3 +27,18 @@ part {  name: NAME;                                                 \
             max: WIDTH HEIGHT;                                      \
             }                                                       \
     }
+
+#define ADD_SPACER_VERTICAL(NAME, RELATIVE_TO, WIDTH, HEIGHT)       \
+part {  name: NAME;                                                 \
+        type: SPACER;                                               \
+        scale: 1;                                                   \
+        description {                                               \
+            state: "default" 0.0;                                   \
+            rel1 { relative: 0.5 1.0; to: RELATIVE_TO; }            \
+            rel2 { relative: 0.5 1.0; to: RELATIVE_TO; }            \
+            fixed: 1 1;                                             \
+            align: 0 0;                                             \
+            min: WIDTH HEIGHT;                                      \
+            max: WIDTH HEIGHT;                                      \
+            }                                                       \
+    }
