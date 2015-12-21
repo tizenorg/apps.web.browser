@@ -21,6 +21,7 @@
 #include "tv/HistoryDayItemTv.h"
 #include "tv/WebsiteHistoryItem/WebsiteHistoryItemTitleTv.h"
 #include "tv/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsTv.h"
+#include <services/HistoryUI/HistoryDeleteManager.h>
 
 #include <GeneralTools.h>
 #include <EflTools.h>
@@ -28,8 +29,12 @@
 namespace tizen_browser {
 namespace base_ui {
 
-HistoryDaysListManagerTv::HistoryDaysListManagerTv()
+HistoryDaysListManagerTv::HistoryDaysListManagerTv(HistoryDeleteManagerPtrConst deleteManager)
     : m_edjeFiles(std::make_shared<HistoryDaysListManagerEdjeTv>())
+    , m_scrollerDaysColumns(nullptr)
+    , m_layoutScrollerDaysColumns(nullptr)
+    , m_boxDaysColumns(nullptr)
+    , m_historyDeleteManager(deleteManager)
 {
     connectSignals();
 }
@@ -105,7 +110,7 @@ void HistoryDaysListManagerTv::connectSignals()
 
 void HistoryDaysListManagerTv::appendDayItem(HistoryDayItemDataPtr dayItemData)
 {
-    auto item = std::make_shared<HistoryDayItemTv>(dayItemData);
+    auto item = std::make_shared<HistoryDayItemTv>(dayItemData, m_historyDeleteManager);
     m_dayItems.push_back(item);
     elm_box_pack_end(m_boxDaysColumns, item->init(m_boxDaysColumns, m_edjeFiles));
 }
@@ -140,7 +145,7 @@ void HistoryDaysListManagerTv::scrollToDayItem(const HistoryDayItemTv* item)
 {
     int itemX, itemY, itemW, itemH;
     itemX = itemY = itemW = itemH = 0;
-    evas_object_geometry_get(item->getLayoutDayColumn(), &itemX, &itemY, &itemW, &itemH);
+    evas_object_geometry_get(item->getLayoutMain(), &itemX, &itemY, &itemW, &itemH);
     int index = getHistoryItemIndex(item);
     elm_scroller_region_show(m_scrollerDaysColumns, index*itemW, 1, 2*itemW, 1);
 }

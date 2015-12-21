@@ -1,7 +1,39 @@
 collections {
+
+    group {
+        name: "groupImageClear";
+        images.image: "ico_delete.png" COMP;
+        parts {
+            part {
+                name: "image";
+                type: IMAGE;
+                mouse_events: 1;
+                repeat_events: 0;
+                description {
+                    state: "default" 0.0;
+                    image.normal: "ico_delete.png";
+                }
+            }
+        }
+    }
+
     group {
         name: "historyDaysList";
         parts {
+            part {
+                name: "spacerDaysColumns";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default";
+                    min: 65 1;
+                    max: 65 -1;
+                    visible: 0;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 0.0 1.0; }
+                }
+            }
             part {
                 name: "daysColumns";
                 type: SWALLOW;
@@ -11,13 +43,8 @@ collections {
                     visible: 1;
                     align: 0.0 0.0;
                     max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 65.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
+                    rel1 { relative: 1.0 0.0; to: "spacerDaysColumns"; }
+                    rel2 { relative: 1.0 1.0; to: "spacerDaysColumns"; }
                 }
             }
         }
@@ -31,8 +58,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     max: -1 -1;
-                    visible: 0;
-                    color: 0 200 0 150;
+                    visible: 1;
+                    color: 255 255 255 255;
                     rel1 {
                         to: "boxMainVertical";
                         relative: 0.0 0.0;
@@ -53,12 +80,8 @@ collections {
                     align: 0.0 0.0;
                     min: 1004 1;
                     max: 1004 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
                 }
             }
         }
@@ -68,8 +91,12 @@ collections {
         name: "layoutHeader";
         styles {
             style {
-                name: "styleDay";
+                name: "styleDayDefault";
                 base: "font=Tizen:style=Regular font_size=30 color=#333333 align=0.0 valign=1.0";
+            }
+            style {
+                name: "styleDayFocused";
+                base: "font=Tizen:style=Regular font_size=30 color=#FFFFFF align=0.0 valign=1.0";
             }
         }
         parts {
@@ -78,17 +105,29 @@ collections {
                 type: RECT;
                 description {
                     state: "default" 0.0;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0; to: "buttonSelect"; }
+                    rel2 { relative: 1.0 1.0; to: "buttonSelect"; }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    color: 0 119 246 255;
+                }
+            }
+            part {
+                name: "spacerTextLeft";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default";
                     visible: 0;
-                    color: 0 0 200 150;
-                    align: 0.0 0.0;
-                    rel1 {
-                        to: "elm.text";
-                        relative: 0.0 0.0;
-                    }
-                    rel2{
-                        to: "elm.text";
-                        relative: 1.0 1.0;
-                    }
+                    fixed: 1 1;
+                    min: 16.0 (36 + 2*16);
+                    max: 16.0 (36 + 2*16);
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0; }
                 }
             }
             part {
@@ -98,20 +137,65 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: 1 36;
-                    max: -1 36;
                     visible: 1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 0.0 5.0;
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                    }
-                    text {
-                        style: "styleDay";
-                    }
+                    rel1 { relative: 1.0 0.0; to: "spacerTextLeft"; }
+                    text { style: "styleDayDefault"; }
                 }
+            }
+            part {
+                name: "buttonSelect";
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 284 (36 + 2*16);
+                    max: 284 (36 + 2*16);
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "imageClear";
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 0 0;
+                    min: 40 40;
+                    max: 40 40;
+                    align: 1.0 0.5;
+                    rel1 { relative: 0.0 0.0; to: "elm.text"; }
+                    rel2 { relative: 1.0 1.0; to: "elm.text"; }
+                }
+                description {
+                    state: "imageClearVisible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focused";
+                signal: "buttonSelectFocused";
+                source: "ui";
+                action: STATE_SET "focused" 0.0;
+                target: "background";
+            }
+            program {
+                name: "unfocused";
+                signal: "buttonSelectUnfocused";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "imageClear";
+                target: "background";
+            }
+            program {
+                name: "showImageClear";
+                signal: "showImageClear";
+                source: "ui";
+                action: STATE_SET "imageClearVisible" 0.0;
+                target: "imageClear";
             }
         }
     }
@@ -126,14 +210,21 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     color: 200 0 200 150;
-                    rel1 {
-                        to: "boxScrollerWebsites";
-                        relative: 0.0 0.0;
-                    }
-                    rel2{
-                        to: "boxScrollerWebsites";
-                        relative: 1.0 1.0;
-                    }
+                    rel1 { to: "boxScrollerWebsites"; relative: 0.0 0.0; }
+                    rel2{ to: "boxScrollerWebsites"; relative: 1.0 1.0; }
+                }
+            }
+            part {
+                name: "spacerDaysColumns";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default";
+                    min: 1 21;
+                    max: -1 21;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
                 }
             }
             part {
@@ -145,13 +236,7 @@ collections {
                     align: 0.0 0.0;
                     min: 1 1;
                     max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 0.0 21.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
+                    rel1 { relative: 0.0 1.0; to: "spacerDaysColumns"; }
                 }
             }
         }
@@ -169,14 +254,8 @@ collections {
                     max: -1 -1;
                     visible: 1;
                     color: 194 194 194 255;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "boxWebsites";
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                        to: "boxWebsites";
-                    }
+                    rel1 { relative: 0.0 0.0; to: "boxWebsites"; }
+                    rel2 { relative: 1.0 1.0; to: "boxWebsites"; }
                 }
             }
             part {
@@ -189,12 +268,8 @@ collections {
                     align: 0.0 0.0;
                     min: 1 1;
                     max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0  1.0; }
                 }
             }
         }
