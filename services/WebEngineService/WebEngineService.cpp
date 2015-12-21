@@ -98,6 +98,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
+    webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
 }
 
 void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
@@ -461,14 +462,14 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapsho
 {
     M_ASSERT(m_currentWebView);
     if(m_currentWebView)
-        return m_currentWebView->captureSnapshot(width, height);
+        return m_currentWebView->captureSnapshot(width, height, false);
     else
         return std::make_shared<tizen_browser::tools::BrowserImage>();
 
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height){
-   return m_tabs[id]->captureSnapshot(width,height);
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height, bool async){
+   return m_tabs[id]->captureSnapshot(width, height, async);
 }
 
 void WebEngineService::setFocus()
@@ -575,6 +576,11 @@ void WebEngineService::searchOnWebsite(const std::string & searchString, int fla
 void WebEngineService::_IMEStateChanged(bool enable)
 {
     IMEStateChanged(enable);
+}
+
+void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> image)
+{
+    snapshotCaptured(image);
 }
 
 #if PROFILE_MOBILE

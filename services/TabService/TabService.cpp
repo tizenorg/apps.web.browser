@@ -138,7 +138,9 @@ void TabService::onThumbGenerated(const basic_webengine::TabId& tabId,
         // prepare adaptor id before saving in db
         createTabId(tabId.get());
     }
+#if !PROFILE_MOBILE
     saveThumbDatabase(tabId, imagePtr);
+#endif
     saveThumbCache(tabId, imagePtr);
 }
 
