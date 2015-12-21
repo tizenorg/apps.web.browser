@@ -77,7 +77,6 @@ public:
 
     int tabsCount() const;
     TabId currentTabId() const;
-    std::list<TabId> listTabs() const;
 
     void destroyTabs();
 
@@ -263,9 +262,7 @@ private:
     // map of all tabs (WebViews)
     std::map<TabId, WebViewPtr > m_tabs;
     // Most recent tab list
-    std::list<TabId> m_mostRecentTab;
-    // recently added tabs first
-    std::list<TabId> m_chronoTabs;
+    std::vector<TabId> m_mostRecentTab;
     int m_tabIdCreated;
     config::DefaultConfig m_config;
 #if PROFILE_MOBILE

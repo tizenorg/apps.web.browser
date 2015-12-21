@@ -193,12 +193,6 @@ BOOST_AUTO_TEST_CASE(TabsSwitching)
 
     BOOST_CHECK(webEngineService->tabsCount() == 2);
 
-    auto listTabs = webEngineService->listTabs();
-
-    BOOST_CHECK(find(listTabs.begin(), listTabs.end(), first) != listTabs.end());
-
-    BOOST_CHECK(find(listTabs.begin(), listTabs.end(), second) != listTabs.end());
-
     BOOST_TEST_MESSAGE(TAG "Print closeTab():" << webEngineService->closeTab(second));
 
     BOOST_CHECK(webEngineService->currentTabId() == first);

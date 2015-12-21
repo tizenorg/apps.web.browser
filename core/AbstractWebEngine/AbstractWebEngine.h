@@ -136,11 +136,6 @@ public:
     virtual TabId currentTabId() const = 0;
 
     /**
-     * @return list (RVO) of tabs in most recent order
-     */
-    virtual std::list<TabId> listTabs() const = 0;
-
-    /**
      * Destroy active WebViews.
      */
     virtual void destroyTabs() = 0;
