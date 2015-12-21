@@ -468,7 +468,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
     }
 }
 
-std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight)
+std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight, bool async)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
@@ -499,15 +499,29 @@ std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targ
     if (area.w == 0 || area.h == 0)
         return noImage;
 
-
     BROWSER_LOGD("[%s:%d] Before snapshot (screenshot) - look at the time of taking snapshot below",__func__, __LINE__);
 
-    Evas_Object *snapshot = ewk_view_screenshot_contents_get( m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
-    BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
-    if (snapshot)
-        return EflTools::getBrowserImage(snapshot);
+    if (async) {
+        bool result = ewk_view_screenshot_contents_get_async(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView), __screenshotCaptured, this);
+        if (!result)
+            BROWSER_LOGD("[%s:%d] ewk_view_screenshot_contents_get_async API failed", __func__, __LINE__);
+    }
+    else {
+        Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
+        BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
+        if (snapshot)
+            return EflTools::getBrowserImage(snapshot);
+    }
 
     return noImage;
+}
+
+void WebView::__screenshotCaptured(Evas_Object* image, void* data)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    WebView * self = reinterpret_cast<WebView *>(data);
+    self->snapshotCaptured(EflTools::getBrowserImage(image));
 }
 
 void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
