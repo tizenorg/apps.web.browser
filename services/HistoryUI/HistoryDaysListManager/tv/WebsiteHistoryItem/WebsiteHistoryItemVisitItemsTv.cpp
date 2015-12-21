@@ -17,6 +17,8 @@
 #include "WebsiteHistoryItemVisitItemsTv.h"
 #include "../../HistoryDayItemData.h"
 #include <EflTools.h>
+#include <services/HistoryUI/HistoryDeleteManager.h>
+#include "BrowserLogger.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -25,54 +27,71 @@ boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
 WebsiteHistoryItemVisitItemsTv::signalWebsiteVisitItemClicked;
 
 WebsiteHistoryItemVisitItemsTv::WebsiteHistoryItemVisitItemsTv(
-        const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems) :
-    m_websiteVisitItems(websiteVisitItems)
+        const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems,
+        HistoryDeleteManagerPtrConst historyDeleteManager)
+    : m_eflObjectsDeleted(false)
+    , m_layoutMain(nullptr)
+    , m_boxMainVertical(nullptr)
+    , m_historyDeleteManager(historyDeleteManager)
 {
+    for (auto& visitItem : websiteVisitItems) {
+        VisitItemObjects obj;
+        obj.websiteVisitItemData = visitItem;
+        obj.deleteManager = historyDeleteManager;
+        m_websiteVisitItems.push_back(obj);
+    }
 }
 
 WebsiteHistoryItemVisitItemsTv::~WebsiteHistoryItemVisitItemsTv()
 {
     deleteCallbacks();
+    if (!m_eflObjectsDeleted)
+        evas_object_del(m_layoutMain);
 }
 
 Evas_Object* WebsiteHistoryItemVisitItemsTv::init(Evas_Object* parent,
         const std::string& edjeFilePath)
 {
-    m_layoutHistoryItemVisitItems = elm_layout_add(parent);
-    elm_layout_file_set(m_layoutHistoryItemVisitItems, edjeFilePath.c_str(),
+    m_layoutMain = elm_layout_add(parent);
+    elm_layout_file_set(m_layoutMain, edjeFilePath.c_str(),
             "layoutWebsiteHistoryItemVisitItems");
-    evas_object_size_hint_align_set(m_layoutHistoryItemVisitItems, 0.0, 0.0);
+    evas_object_size_hint_align_set(m_layoutMain, 0.0, 0.0);
 
-    m_boxMainVertical = elm_box_add(parent);
+    m_boxMainVertical = elm_box_add(m_layoutMain);
     tools::EflTools::setExpandHints(m_boxMainVertical);
-    elm_object_part_content_set(m_layoutHistoryItemVisitItems,
+    elm_object_part_content_set(m_layoutMain,
             "boxMainVertical", m_boxMainVertical);
     elm_box_padding_set(m_boxMainVertical, 0.0, 1.0);
 
-    for(auto& item : m_websiteVisitItems) {
-        LayoutButtonPair pair = createLayoutVisitItem(parent, edjeFilePath, item);
-        m_buttonsSelect.push_back(pair.selectButton);
-        elm_box_pack_end(m_boxMainVertical, pair.layout);
-        evas_object_show(pair.layout);
+    for (auto& item : m_websiteVisitItems) {
+        LayoutVisitItemObjects layoutObjects = createLayoutVisitItem(
+                m_layoutMain, edjeFilePath, item.websiteVisitItemData);
+        item.layoutVisitItemObjects = layoutObjects;
+        elm_box_pack_end(m_boxMainVertical, layoutObjects.layout);
+        evas_object_show(layoutObjects.layout);
     }
 
     evas_object_show(m_boxMainVertical);
-    evas_object_show(m_layoutHistoryItemVisitItems);
+    evas_object_show(m_layoutMain);
 
     initCallbacks();
 
-    return m_layoutHistoryItemVisitItems;
+    return m_layoutMain;
 }
 
 void WebsiteHistoryItemVisitItemsTv::setFocusChain(Evas_Object* obj)
 {
-    for(auto& buttonSelect : m_buttonsSelect) {
-        elm_object_focus_allow_set(buttonSelect, EINA_TRUE);
-        elm_object_focus_custom_chain_append(obj, buttonSelect, NULL);
+    for (auto& websiteVisitItem : m_websiteVisitItems) {
+        elm_object_focus_allow_set(
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect,
+                EINA_TRUE);
+        elm_object_focus_custom_chain_append(obj,
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect, NULL);
     }
 }
 
-WebsiteHistoryItemVisitItemsTv::LayoutButtonPair WebsiteHistoryItemVisitItemsTv::createLayoutVisitItem(
+WebsiteHistoryItemVisitItemsTv::LayoutVisitItemObjects
+WebsiteHistoryItemVisitItemsTv::createLayoutVisitItem(
         Evas_Object* parent, const std::string& edjeFilePath,
         WebsiteVisitItemDataPtr websiteVisitItemData)
 {
@@ -92,6 +111,9 @@ WebsiteHistoryItemVisitItemsTv::LayoutButtonPair WebsiteHistoryItemVisitItemsTv:
     evas_object_color_set(buttonSelect, 0, 0, 0, 0);
     elm_object_style_set(buttonSelect, "anchor");
 
+    Evas_Object* imageClear = createImageClear(parent, edjeFilePath);
+    elm_object_part_content_set(lay, "imageClear", imageClear);
+
     Evas_Object* layoutDate = createLayoutVisitItemDate(parent, edjeFilePath,
             websiteVisitItemData);
     elm_box_pack_end(boxMainHorizontal, layoutDate);
@@ -103,7 +125,19 @@ WebsiteHistoryItemVisitItemsTv::LayoutButtonPair WebsiteHistoryItemVisitItemsTv:
     evas_object_show(layoutDate);
     evas_object_show(layoutUrl);
 
-    return {lay, buttonSelect};
+    WebsiteHistoryItemVisitItemsTv::LayoutVisitItemObjects ret;
+    ret.layout = lay;
+    ret.buttonSelect = buttonSelect;
+    ret.imageClear = imageClear;
+    return ret;
+}
+
+Evas_Object* WebsiteHistoryItemVisitItemsTv::createImageClear(Evas_Object* parent,
+        const std::string& edjeFilePath)
+{
+    Evas_Object* imageClear = elm_image_add(parent);
+    elm_image_file_set(imageClear, edjeFilePath.c_str(), "groupImageClear");
+    return imageClear;
 }
 
 Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemDate(
@@ -134,28 +168,61 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemUrl(
     return layoutUrl;
 }
 
-void WebsiteHistoryItemVisitItemsTv::initCallbacks()
-{
-    int index = 0;
-    for(auto& button : m_buttonsSelect) {
-        evas_object_smart_callback_add(button, "clicked", _buttonSelectClicked,
-                &m_websiteVisitItems.at(index));
-        index++;
-    }
-}
-
 void WebsiteHistoryItemVisitItemsTv::deleteCallbacks()
 {
-    for(auto& button : m_buttonsSelect) {
-        evas_object_smart_callback_del(button, "clicked", NULL);
+    for (auto& visitItem : m_websiteVisitItems)
+        evas_object_smart_callback_del(
+                visitItem.layoutVisitItemObjects.buttonSelect, "clicked", NULL);
+}
+
+void WebsiteHistoryItemVisitItemsTv::initCallbacks()
+{
+    for (auto& websiteVisitItem : m_websiteVisitItems) {
+        evas_object_smart_callback_add(
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect, "clicked",
+                _buttonSelectClicked, &websiteVisitItem);
+
+        evas_object_smart_callback_add(
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect, "focused",
+                _buttonSelectFocused, &websiteVisitItem);
+
+        evas_object_smart_callback_add(
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect,
+                "unfocused", _buttonSelectUnfocused, &websiteVisitItem);
     }
 }
 
 void WebsiteHistoryItemVisitItemsTv::_buttonSelectClicked(void* data,
         Evas_Object* /*obj*/, void* /*event_info*/)
 {
+    if (!data) return;
     WebsiteVisitItemDataPtr* websiteVisitItemData = static_cast<WebsiteVisitItemDataPtr*>(data);
     signalWebsiteVisitItemClicked(*websiteVisitItemData);
+}
+
+void WebsiteHistoryItemVisitItemsTv::_buttonSelectFocused(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    if (!data) return;
+    VisitItemObjects* visitItemObject = static_cast<VisitItemObjects*>(data);
+    Evas_Object* layout = visitItemObject->layoutVisitItemObjects.layout;
+    elm_object_signal_emit(layout, "buttonSelectFocused", "ui");
+    if (visitItemObject->deleteManager->getDeleteMode())
+        elm_object_signal_emit(layout, "showImageClear", "ui");
+}
+
+void WebsiteHistoryItemVisitItemsTv::_buttonSelectUnfocused(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    if (!data) return;
+    VisitItemObjects* visitItemObject = static_cast<VisitItemObjects*>(data);
+    Evas_Object* layout = visitItemObject->layoutVisitItemObjects.layout;
+    elm_object_signal_emit(layout, "buttonSelectUnfocused", "ui");
+}
+
+void WebsiteHistoryItemVisitItemsTv::setEflObjectsAsDeleted()
+{
+    m_eflObjectsDeleted = true;
 }
 
 }

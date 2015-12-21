@@ -30,43 +30,66 @@ namespace base_ui{
 
 class WebsiteHistoryItemTv;
 typedef std::shared_ptr<WebsiteHistoryItemTv> WebsiteHistoryItemTvPtr;
+class HistoryDeleteManager;
+typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;
 
 class HistoryDayItemTv {
 public:
-    HistoryDayItemTv(HistoryDayItemDataPtr dayItemData);
+    HistoryDayItemTv(HistoryDayItemDataPtr dayItemData,
+            HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~HistoryDayItemTv();
     Evas_Object* init(Evas_Object* parent, HistoryDaysListManagerEdjeTvPtr edjeFiles);
     void setFocusChain(Evas_Object* obj);
-    Evas_Object* getLayoutDayColumn() const {return m_layoutDayColumn;}
+    Evas_Object* getLayoutMain() const {return m_layoutMain;}
+    Evas_Object* getLayoutHeader() const {return m_layoutHeader;}
+
+    // invoked when main layout is already removed. prevents from second
+    // evas_object_del() on main layout in destructor
+    void setEflObjectsAsDeleted();
+    HistoryDeleteManagerPtrConst getDeleteManager() const {return m_historyDeleteManager;}
 
     static boost::signals2::signal<void(const HistoryDayItemTv*)> signalHeaderFocus;
-
+    static boost::signals2::signal<void(const HistoryDayItemDataPtr)>
+    signaButtonClicked;
 private:
     void initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles);
     Evas_Object* createScrollerWebsites(Evas_Object* parent,
             HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    Evas_Object* createImageClear(Evas_Object* parent,
+            const std::string& edjeFilePath);
     void initCallbacks();
     void deleteCallbacks();
     static void _layoutHeaderFocused(void* data, Evas_Object* obj,
             void* event_info);
+    static void _buttonSelectClicked(void *data, Evas_Object *obj, void *event_info);
+    static void _buttonSelectFocused(void *data, Evas_Object *obj, void *event_info);
+    static void _buttonSelectUnfocused(void *data, Evas_Object *obj, void *event_info);
+
+    /// used to indicate, if efl object were already deleted
+    bool m_eflObjectsDeleted;
 
     HistoryDayItemDataPtr m_dayItemData;
     std::vector<WebsiteHistoryItemTvPtr> m_websiteHistoryItems;
 
-    Evas_Object* m_layoutDayColumn = nullptr;
+    // main layout: all children widgets will have this as their parent
+    Evas_Object* m_layoutMain;
+    Evas_Object* m_buttonSelect;
+    Evas_Object* m_imageClear;
 
     // vertical box: day label + websites history scroller
-    Evas_Object* m_boxMainVertical = nullptr;
+    Evas_Object* m_boxMainVertical;
 
-    Evas_Object* m_layoutHeader = nullptr;
-    Evas_Object* m_boxHeader = nullptr;
+    Evas_Object* m_layoutHeader;
+    Evas_Object* m_boxHeader;
 
     // box containing scroller
-    Evas_Object* m_layoutBoxScrollerWebsites = nullptr;
+    Evas_Object* m_layoutBoxScrollerWebsites;
     Evas_Object* m_boxScrollerWebsites;
     Evas_Object* m_scrollerWebsites;
     Evas_Object* m_layoutScrollerWebsites;
     Evas_Object* m_boxWebsites;
+
+    HistoryDeleteManagerPtrConst m_historyDeleteManager;
 };
 
 }
