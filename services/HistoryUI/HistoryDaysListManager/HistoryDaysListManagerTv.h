@@ -30,11 +30,13 @@ namespace base_ui {
 
 class HistoryDayItemTv;
 typedef std::shared_ptr<HistoryDayItemTv> HistoryDayItemTvPtr;
+class HistoryDeleteManager;
+typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;
 
 class HistoryDaysListManagerTv : public HistoryDaysListManager
 {
 public:
-    HistoryDaysListManagerTv();
+    HistoryDaysListManagerTv(HistoryDeleteManagerPtrConst deleteManager);
     virtual ~HistoryDaysListManagerTv();
     Evas_Object* createDaysList(Evas_Object* parentLayout) override;
     void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
@@ -58,6 +60,8 @@ private:
     Evas_Object* m_scrollerDaysColumns = nullptr;
     Evas_Object* m_layoutScrollerDaysColumns = nullptr;
     Evas_Object* m_boxDaysColumns  = nullptr;
+
+    HistoryDeleteManagerPtrConst m_historyDeleteManager;
 };
 
 }

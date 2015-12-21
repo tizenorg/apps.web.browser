@@ -24,35 +24,44 @@ namespace tizen_browser{
 namespace base_ui{
 
 WebsiteHistoryItemTv::WebsiteHistoryItemTv(
-        WebsiteHistoryItemDataPtr websiteHistoryItemData)
+        WebsiteHistoryItemDataPtr websiteHistoryItemData,
+        HistoryDeleteManagerPtrConst historyDeleteManager)
     : m_websiteHistoryItemData(websiteHistoryItemData)
-    , m_websiteHistoryItemTitle(std::make_shared<WebsiteHistoryItemTitleTv>(websiteHistoryItemData))
+    , m_websiteHistoryItemTitle(
+            std::make_shared<WebsiteHistoryItemTitleTv>(websiteHistoryItemData,
+                    historyDeleteManager))
     , m_websiteHistoryItemVisitItems(
             std::make_shared<WebsiteHistoryItemVisitItemsTv>(
-                    websiteHistoryItemData->websiteVisitItems))
+                    websiteHistoryItemData->websiteVisitItems,
+                    historyDeleteManager))
+    , m_historyDeleteManager(historyDeleteManager)
 {
 }
 
 WebsiteHistoryItemTv::~WebsiteHistoryItemTv()
 {
+    // clear all widgets aded by this class
+    if (!m_eflObjectsDeleted) {
+        evas_object_del(m_layoutMain);
+    }
 }
 
 Evas_Object* WebsiteHistoryItemTv::init(Evas_Object* parent,
         HistoryDaysListManagerEdjeTvPtr edjeFiles)
 {
-    m_layoutHistoryItem = elm_layout_add(parent);
-    tools::EflTools::setExpandHints(m_layoutHistoryItem);
-    elm_layout_file_set(m_layoutHistoryItem,
+    m_layoutMain = elm_layout_add(parent);
+    tools::EflTools::setExpandHints(m_layoutMain);
+    elm_layout_file_set(m_layoutMain,
             edjeFiles->websiteHistoryItem.c_str(), "layoutWebsiteHistoryItem");
 
-    m_boxMainHorizontal = createBoxMainHorizontal(parent, edjeFiles);
-    elm_object_part_content_set(m_layoutHistoryItem, "boxMainHorizontal",
+    m_boxMainHorizontal = createBoxMainHorizontal(m_layoutMain, edjeFiles);
+    elm_object_part_content_set(m_layoutMain, "boxMainHorizontal",
             m_boxMainHorizontal);
 
     evas_object_show(m_boxMainHorizontal);
-    evas_object_show(m_layoutHistoryItem);
+    evas_object_show(m_layoutMain);
 
-    return m_layoutHistoryItem;
+    return m_layoutMain;
 }
 
 void WebsiteHistoryItemTv::setFocusChain(Evas_Object* obj)
@@ -74,6 +83,12 @@ Evas_Object* WebsiteHistoryItemTv::createBoxMainHorizontal(Evas_Object* parent,
     elm_box_align_set(box, 0.0, 0.0);
 
     return box;
+}
+
+void WebsiteHistoryItemTv::setEflObjectsAsDeleted()
+{
+    m_eflObjectsDeleted = true;
+    m_websiteHistoryItemVisitItems->setEflObjectsAsDeleted();
 }
 
 }
