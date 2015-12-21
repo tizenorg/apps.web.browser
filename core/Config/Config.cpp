@@ -17,6 +17,7 @@
 #include "browser_config.h"
 #include "Config.h"
 #include "BrowserLogger.h"
+#include "Ecore_Wayland.h"
 #include <app_common.h>
 
 namespace tizen_browser
@@ -24,29 +25,34 @@ namespace tizen_browser
 namespace config
 {
 
+const int SCALE_FACTOR =
+#if PROFILE_MOBILE
+        720;
+#else
+        1920;
+#endif
+
 void DefaultConfig::load(const std::string &)
 {
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
-    //m_data["favorite_service_name"] = std::string("org.tizen.browser.service.favorite.browserProvider");
     m_data["favorite_service_name"] = std::string("org.tizen.browser.favoriteservice");
     m_data["DB_FOLDERS"] = std::string(".browser.bookmark.db");
     m_data["DB_SETTINGS"] = std::string(".browser.settings.db");
     m_data["DB_HISTORY"] = std::string(".browser.history.db");
     m_data["DB_SESSION"] = std::string(".browser.session.db");
 
-    m_data["TOOLTIP_DELAY"] = 0.05; // time from mouse in to tooltip show
+    m_data["TOOLTIP_DELAY"] = 0.05;       // time from mouse in to tooltip show
     m_data["TOOLTIP_HIDE_TIMEOUT"] = 2.0; // time from tooltip show to tooltip hide
-    m_data["TAB_LIMIT"] = 10;    // max number of open tabs
-    m_data["FAVORITES_LIMIT"] = 40;    // max number of added favorites
+    m_data["TAB_LIMIT"] = 10;             // max number of open tabs
+    m_data["FAVORITES_LIMIT"] = 40;       // max number of added favorites
 
 #   include "ConfigValues.h"
 
     m_data["resourcedb/dir"] = std::string(app_get_data_path());
-#if PROFILE_MOBILE
-    m_data["scale"] = 2.0;
-#else
-    m_data["scale"] = 1.0;
-#endif
+
+    int width, height;
+    ecore_wl_screen_size_get(&width, &height);
+    m_data["scale"] = static_cast<double>(width/SCALE_FACTOR);
 
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
