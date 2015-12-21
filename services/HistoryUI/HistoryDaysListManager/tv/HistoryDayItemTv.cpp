@@ -17,6 +17,7 @@
 #include "HistoryDayItemTv.h"
 #include "WebsiteHistoryItem/WebsiteHistoryItemTv.h"
 #include "../HistoryDayItemData.h"
+#include <services/HistoryUI/HistoryDeleteManager.h>
 
 #include "EflTools.h"
 
@@ -24,52 +25,81 @@ namespace tizen_browser{
 namespace base_ui{
 
 boost::signals2::signal<void(const HistoryDayItemTv*)> HistoryDayItemTv::signalHeaderFocus;
+boost::signals2::signal<void(const HistoryDayItemDataPtr)>
+        HistoryDayItemTv::signaButtonClicked;
 
-HistoryDayItemTv::HistoryDayItemTv(HistoryDayItemDataPtr dayItemData)
-    : m_dayItemData(dayItemData)
+HistoryDayItemTv::HistoryDayItemTv(HistoryDayItemDataPtr dayItemData,
+        HistoryDeleteManagerPtrConst deleteManager)
+    : m_eflObjectsDeleted(nullptr)
+    , m_dayItemData(dayItemData)
+    , m_layoutMain(nullptr)
+    , m_buttonSelect(nullptr)
+    , m_imageClear(nullptr)
+    , m_boxMainVertical(nullptr)
+    , m_layoutHeader(nullptr)
+    , m_boxHeader(nullptr)
+    , m_layoutBoxScrollerWebsites(nullptr)
+    , m_boxScrollerWebsites(nullptr)
+    , m_scrollerWebsites(nullptr)
+    , m_layoutScrollerWebsites(nullptr)
+    , m_boxWebsites(nullptr)
+    , m_historyDeleteManager(deleteManager)
 {
     for(auto& websiteHistoryItemData : dayItemData->websiteHistoryItems) {
         auto websiteHistoryItem = std::make_shared<WebsiteHistoryItemTv>(
-                websiteHistoryItemData);
+                websiteHistoryItemData, m_historyDeleteManager);
         m_websiteHistoryItems.push_back(websiteHistoryItem);
     }
 }
 
 HistoryDayItemTv::~HistoryDayItemTv()
 {
+    // clear all widgets aded by this class
+    if (!m_eflObjectsDeleted)
+        evas_object_del(m_layoutMain);
     deleteCallbacks();
-    evas_object_del(m_layoutDayColumn);
 }
 
 Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
         HistoryDaysListManagerEdjeTvPtr edjeFiles)
 {
-    m_layoutDayColumn = elm_layout_add(parent);
-    tools::EflTools::setExpandHints(m_layoutDayColumn);
-    elm_layout_file_set(m_layoutDayColumn, edjeFiles->historyDaysList.c_str(), "layoutDayColumn");
+    m_layoutMain = elm_layout_add(parent);
+    tools::EflTools::setExpandHints(m_layoutMain);
+    elm_layout_file_set(m_layoutMain, edjeFiles->historyDaysList.c_str(), "layoutDayColumn");
 
-    m_boxMainVertical = elm_box_add(m_layoutDayColumn);
+    // add all children widgets with m_layoutMain as parent
+    m_boxMainVertical = elm_box_add(m_layoutMain);
     elm_box_horizontal_set(m_boxMainVertical, EINA_FALSE);
-    elm_object_part_content_set(m_layoutDayColumn, "boxMainVertical", m_boxMainVertical);
+    elm_object_part_content_set(m_layoutMain, "boxMainVertical", m_boxMainVertical);
 
-    m_layoutHeader = elm_layout_add(m_layoutDayColumn);
+    m_layoutHeader = elm_layout_add(m_layoutMain);
     evas_object_size_hint_align_set(m_layoutHeader, 0.0, 0.0);
     elm_layout_file_set(m_layoutHeader, edjeFiles->historyDaysList.c_str(), "layoutHeader");
     elm_object_text_set(m_layoutHeader, m_dayItemData->day.c_str());
 
-    m_layoutBoxScrollerWebsites = elm_layout_add(m_layoutDayColumn);
+    m_buttonSelect = elm_button_add(m_layoutMain);
+    elm_object_part_content_set(m_layoutHeader, "buttonSelect",
+            m_buttonSelect);
+    evas_object_color_set(m_buttonSelect, 0, 0, 0, 0);
+
+    m_imageClear = createImageClear(m_layoutMain, edjeFiles->historyDaysList.c_str());
+    elm_object_part_content_set(m_layoutHeader, "imageClear",
+            m_imageClear);
+
+    m_layoutBoxScrollerWebsites = elm_layout_add(m_layoutMain);
     tools::EflTools::setExpandHints(m_layoutBoxScrollerWebsites);
     elm_layout_file_set(m_layoutBoxScrollerWebsites, edjeFiles->historyDaysList.c_str(), "layoutBoxScrollerWebsites");
 
-    m_boxScrollerWebsites = elm_box_add(m_layoutDayColumn);
+    m_boxScrollerWebsites = elm_box_add(m_layoutMain);
     tools::EflTools::setExpandHints(m_boxScrollerWebsites);
-    m_scrollerWebsites = createScrollerWebsites(m_layoutDayColumn, edjeFiles);
+    m_scrollerWebsites = createScrollerWebsites(m_layoutMain, edjeFiles);
     elm_box_pack_end(m_boxScrollerWebsites, m_scrollerWebsites);
     elm_object_part_content_set(m_layoutBoxScrollerWebsites, "boxScrollerWebsites", m_boxScrollerWebsites);
 
     elm_box_pack_end(m_boxMainVertical, m_layoutHeader);
     elm_box_pack_end(m_boxMainVertical, m_layoutBoxScrollerWebsites);
 
+    evas_object_show(m_buttonSelect);
     evas_object_show(m_layoutHeader);
     evas_object_show(m_layoutBoxScrollerWebsites);
 
@@ -79,17 +109,23 @@ Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
     evas_object_show(m_boxWebsites);
 
     evas_object_show(m_boxMainVertical);
-    evas_object_show(m_layoutDayColumn);
+    evas_object_show(m_layoutMain);
 
     initCallbacks();
+    return m_layoutMain;
+}
 
-    return m_layoutDayColumn;
+void HistoryDayItemTv::setEflObjectsAsDeleted()
+{
+    m_eflObjectsDeleted = true;
+    for (auto& websiteHistoryItem : m_websiteHistoryItems)
+        websiteHistoryItem->setEflObjectsAsDeleted();
 }
 
 void HistoryDayItemTv::setFocusChain(Evas_Object* obj)
 {
-    elm_object_focus_allow_set(m_layoutHeader, EINA_TRUE);
-    elm_object_focus_custom_chain_append(obj, m_layoutHeader, NULL);
+    elm_object_focus_allow_set(m_buttonSelect, EINA_TRUE);
+    elm_object_focus_custom_chain_append(obj, m_buttonSelect, NULL);
 
     for(auto& websiteHistoryItem : m_websiteHistoryItems) {
         websiteHistoryItem->setFocusChain(obj);
@@ -117,14 +153,56 @@ Evas_Object* HistoryDayItemTv::createScrollerWebsites(Evas_Object* parent,
     elm_object_part_content_set(m_layoutScrollerWebsites, "boxWebsites", m_boxWebsites);
 
     initBoxWebsites(edjeFiles);
-
     return scroller;
+}
+
+Evas_Object* HistoryDayItemTv::createImageClear(Evas_Object* parent,
+        const std::string& edjeFilePath)
+{
+    Evas_Object* imageClear = elm_image_add(parent);
+    elm_image_file_set(imageClear, edjeFilePath.c_str(), "groupImageClear");
+    return imageClear;
 }
 
 void HistoryDayItemTv::initCallbacks()
 {
     evas_object_smart_callback_add(m_layoutHeader, "focused",
         HistoryDayItemTv::_layoutHeaderFocused, this);
+    evas_object_smart_callback_add(m_buttonSelect, "clicked",
+            HistoryDayItemTv::_buttonSelectClicked, &m_dayItemData);
+    evas_object_smart_callback_add(m_buttonSelect, "focused",
+            HistoryDayItemTv::_buttonSelectFocused, this);
+    evas_object_smart_callback_add(m_buttonSelect, "unfocused",
+            HistoryDayItemTv::_buttonSelectUnfocused, this);
+}
+
+void HistoryDayItemTv::_buttonSelectFocused(void* data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
+{
+    if (!data) return;
+    HistoryDayItemTv* self = static_cast<HistoryDayItemTv*>(data);
+    Evas_Object* layoutHeader = self->getLayoutHeader();
+    elm_object_signal_emit(layoutHeader, "buttonSelectFocused", "ui");
+    if (self->getDeleteManager()->getDeleteMode())
+        elm_object_signal_emit(layoutHeader, "showImageClear", "ui");
+}
+
+void HistoryDayItemTv::_buttonSelectUnfocused(void* data, Evas_Object* /*obj*/,
+        void* /*event_info*/)
+{
+    if (!data) return;
+    HistoryDayItemTv* self = static_cast<HistoryDayItemTv*>(data);
+    Evas_Object* layoutHeader = self->getLayoutHeader();
+    elm_object_signal_emit(layoutHeader, "buttonSelectUnfocused", "ui");
+}
+
+void HistoryDayItemTv::_buttonSelectClicked(void* data, Evas_Object* /*obj*/,
+        void*)
+{
+    if (!data) return;
+    HistoryDayItemDataPtr* historyDayItemData =
+            static_cast<HistoryDayItemDataPtr*>(data);
+    signaButtonClicked(*historyDayItemData);
 }
 
 void HistoryDayItemTv::deleteCallbacks()
