@@ -138,7 +138,8 @@ void TabService::onThumbGenerated(const basic_webengine::TabId& tabId,
         // prepare adaptor id before saving in db
         createTabId(tabId.get());
     }
-    saveThumbDatabase(tabId, imagePtr);
+    // TODO (Gajendra.N) Enable after getBlobPNG() is improved
+    // saveThumbDatabase(tabId, imagePtr);
     saveThumbCache(tabId, imagePtr);
 }
 
