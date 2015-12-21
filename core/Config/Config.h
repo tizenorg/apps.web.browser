@@ -84,6 +84,8 @@ public:
 private:
     std::map<std::string, boost::any> m_data;
     std::map<CONFIG_KEY, boost::any> m_keysValues;
+    int m_appWidth;
+    int m_appHeight;
 
     const std::string MOBILE = "mobile";
 };
