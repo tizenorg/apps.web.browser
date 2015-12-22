@@ -130,7 +130,7 @@ void BookmarkFlowUI::addCustomFolders(services::SharedBookmarkFolderList folders
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     for (auto it = folders.begin(); it != folders.end(); ++it) {
-        if ((*it)->getName().compare("All") == 0)
+        if ((*it)->getName().compare(_("IDS_BR_BODY_ALL")) == 0)
             continue;
         FolderData *folderData = new FolderData();
         folderData->name = (*it)->getName();
