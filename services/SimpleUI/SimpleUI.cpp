@@ -598,7 +598,6 @@ void SimpleUI::switchViewToQuickAccess()
 void SimpleUI::switchViewToIncognitoPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_webPageUI->toIncognito(true);
     m_webPageUI->switchViewToIncognitoPage();
     m_viewManager.popStackTo(m_webPageUI.get());
 }
@@ -1140,11 +1139,10 @@ void SimpleUI::closeTabUI()
 
 void SimpleUI::newTabClicked()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!checkIfCreate())
         return;
 
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_webPageUI->toIncognito(false);
     switchViewToQuickAccess();
 }
 
@@ -1608,6 +1606,7 @@ void SimpleUI::windowCreated()
 }
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_currentSession.removeItem(id.toString());
     m_tabService->clearThumb(id);
     updateView();
