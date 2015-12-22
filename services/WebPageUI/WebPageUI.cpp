@@ -227,6 +227,7 @@ void WebPageUI::switchViewToIncognitoPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_statesMgr->set(WPUState::MAIN_INCOGNITO_PAGE);
+    toIncognito(true);
     setMainContent(m_privateLayout);
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
@@ -262,6 +263,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_statesMgr->set(WPUState::QUICK_ACCESS);
+    toIncognito(false);
     setMainContent(content);
     evas_object_hide(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
