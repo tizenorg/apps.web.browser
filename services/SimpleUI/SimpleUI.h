@@ -139,9 +139,6 @@ private:
     bool checkIfCreate();
     void tabClosed(const tizen_browser::basic_webengine::TabId& id);
 
-    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > getBookmarks(int folder_id = -1);
-
-    const std::string getBookmarkFolderName(int folder_id);
     std::shared_ptr<services::HistoryItemVector> getHistory();
     std::shared_ptr<services::HistoryItemVector> getMostVisitedItems();
 
@@ -154,6 +151,7 @@ private:
 #if PROFILE_MOBILE
     void onEditFolderClicked(const std::string& folder_name);
     void onDeleteFolderClicked(const std::string& folder_name);
+    void onRemoveFoldersClicked(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> items);
     void onEditFolderPopupClicked(const std::string& newName);
     void onDeleteFolderPopupClicked(PopupButtons button);
 #endif
@@ -281,7 +279,7 @@ private:
     void showBookmarkManagerUI();
     void onBookmarkCustomFolderClicked(int);
     void onBookmarkAllFolderClicked();
-    void onBookmarkMobileClicked();
+    void onBookmarkSpecialFolderClicked();
 
     void showPopup(interfaces::AbstractPopup* popup);
     void dismissPopup(interfaces::AbstractPopup* popup);
