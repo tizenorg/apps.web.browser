@@ -36,6 +36,7 @@
 #include "BookmarkItem.h"
 #include "BookmarkFolder.h"
 #include "FocusManager.h"
+#include "app_i18n.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -63,17 +64,10 @@ public:
 #if PROFILE_MOBILE
     boost::signals2::signal<void (std::string)> editFolderButtonClicked;
     boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
+    boost::signals2::signal<void (std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>>)> removeFoldersButtonClicked;
 #endif
 
 private:
-    typedef struct
-    {
-        std::string name;
-        int count;
-        unsigned int folder_id;
-        std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkManagerUI;
-    } FolderData;
-
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
     void createFocusVector();
     void createGengridItemClasses();
@@ -86,10 +80,13 @@ private:
     void createBottomContent();
 #if PROFILE_MOBILE
     void createMenuDetails();
+    void resetRemovalMode(bool clear = true);
     static void _more_button_clicked(void *data, Evas_Object *, void *);
     static void _edit_button_clicked(void *data, Evas_Object *, void *);
     static void _delete_button_clicked(void *data, Evas_Object *, void *);
     static void _remove_button_clicked(void *data, Evas_Object *, void *);
+    static void _cancel_top_button_clicked(void *data, Evas_Object *, void *);
+    static void _remove_top_button_clicked(void *data, Evas_Object *, void *);
 #endif
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
@@ -98,7 +95,6 @@ private:
     static void _close_button_clicked(void *data, Evas_Object *, void *);
 
     Evas_Object *m_parent;
-    std::map<std::string,Elm_Object_Item*> m_map_bookmark;
     std::string m_edjFilePath;
     FocusManager m_focusManager;
     Evas_Object *m_layout;
@@ -107,15 +103,23 @@ private:
 #if !PROFILE_MOBILE
     Evas_Object *m_bottom_content;
 #else
+    std::map<std::string, Elm_Object_Item*> m_map_bookmark;
+    std::map<std::string, bool> m_map_delete;
+
     Evas_Object *m_more_button;
     Evas_Object *m_menu;
     Evas_Object *m_edit_button;
     Evas_Object *m_delete_button;
     Evas_Object *m_remove_button;
+    Evas_Object *m_cancel_top_button;
+    Evas_Object *m_remove_top_button;
+    unsigned int m_delete_count;
+    bool m_remove_bookmark_mode;
 #endif
     Evas_Object *m_close_button;
 
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
+    std::string m_folder_name;
 };
 
 }
