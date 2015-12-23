@@ -1479,7 +1479,7 @@ collections {
                 description {
                     state: "focused" 0.0;
                     inherit: "default";
-                    visible: 0;
+                    visible: 1;
                     color: 224 237 251 255;
                 }
             }

@@ -82,6 +82,7 @@ private:
     void createMenuDetails();
     void resetRemovalMode(bool clear = true);
     static void _more_button_clicked(void *data, Evas_Object *, void *);
+    static void _menu_bg_button_clicked(void *data, Evas_Object *, void *);
     static void _edit_button_clicked(void *data, Evas_Object *, void *);
     static void _delete_button_clicked(void *data, Evas_Object *, void *);
     static void _remove_button_clicked(void *data, Evas_Object *, void *);
@@ -107,6 +108,7 @@ private:
     std::map<std::string, bool> m_map_delete;
 
     Evas_Object *m_more_button;
+    Evas_Object *m_menu_bg_button;
     Evas_Object *m_menu;
     Evas_Object *m_edit_button;
     Evas_Object *m_delete_button;
