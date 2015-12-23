@@ -61,6 +61,7 @@ BookmarkDetailsUI::BookmarkDetailsUI()
     , m_bottom_content(nullptr)
 #else
     , m_more_button(nullptr)
+    , m_menu_bg_button(nullptr)
     , m_menu(nullptr)
     , m_edit_button(nullptr)
     , m_delete_button(nullptr)
@@ -84,6 +85,7 @@ BookmarkDetailsUI::~BookmarkDetailsUI()
     evas_object_smart_callback_del(m_close_button, "clicked", _close_button_clicked);
 #if PROFILE_MOBILE
     evas_object_smart_callback_del(m_more_button, "clicked", _more_button_clicked);
+    evas_object_smart_callback_del(m_menu_bg_button, "clicked", _menu_bg_button_clicked);
     evas_object_smart_callback_del(m_edit_button, "clicked", _edit_button_clicked);
     evas_object_smart_callback_del(m_delete_button, "clicked", _delete_button_clicked);
     evas_object_smart_callback_del(m_remove_button, "clicked", _remove_button_clicked);
@@ -97,6 +99,7 @@ BookmarkDetailsUI::~BookmarkDetailsUI()
     evas_object_del(m_gengrid);
 #if PROFILE_MOBILE
     evas_object_del(m_more_button);
+    evas_object_del(m_menu_bg_button);
     evas_object_del(m_menu);
     evas_object_del(m_edit_button);
     evas_object_del(m_delete_button);
@@ -136,6 +139,8 @@ void BookmarkDetailsUI::showUI()
 #if PROFILE_MOBILE
     evas_object_hide(m_menu);
     evas_object_hide(elm_object_part_content_get(m_layout, "more_swallow"));
+    evas_object_hide(m_menu_bg_button);
+    evas_object_hide(elm_object_part_content_get(m_layout, "more_bg"));
 #endif
 }
 
@@ -145,6 +150,7 @@ void BookmarkDetailsUI::hideUI()
     evas_object_hide(m_gengrid);
     elm_gengrid_clear(m_gengrid);
 #if PROFILE_MOBILE
+    elm_object_signal_emit(m_top_content, "icon_less", "ui");
     m_map_bookmark.clear();
 #endif
     m_focusManager.stopFocusManager();
@@ -271,6 +277,16 @@ void BookmarkDetailsUI::_more_button_clicked(void* data, Evas_Object*, void*)
             evas_object_hide(bookmarkDetailsUI->m_menu);
             evas_object_hide(elm_object_part_content_get(bookmarkDetailsUI->m_layout,"more_swallow"));
         }
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkDetailsUI::_menu_bg_button_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkDetailsUI* bookmarkDetailsUI = static_cast<BookmarkDetailsUI*>(data);
+        elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_less", "ui");
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
@@ -449,6 +465,11 @@ void BookmarkDetailsUI::createGengrid()
 #if PROFILE_MOBILE
 void BookmarkDetailsUI::createMenuDetails()
 {
+    m_menu_bg_button = elm_button_add(m_layout);
+    elm_object_style_set(m_menu_bg_button, "invisible_button");
+    evas_object_smart_callback_add(m_menu_bg_button, "clicked", _menu_bg_button_clicked, this);
+    elm_object_part_content_set(m_layout, "more_bg_click", m_menu_bg_button);
+
     m_menu = elm_box_add(m_layout);
     evas_object_size_hint_weight_set(m_menu, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_menu, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -460,7 +481,6 @@ void BookmarkDetailsUI::createMenuDetails()
     elm_object_part_text_set(m_edit_button, "elm.text", "Edit folder name");
     elm_box_pack_end(m_menu, m_edit_button);
     evas_object_smart_callback_add(m_edit_button, "clicked", _edit_button_clicked, this);
-    elm_object_signal_emit(m_edit_button, "visible", "ui");
 
     evas_object_show(m_edit_button);
     elm_object_tree_focus_allow_set(m_edit_button, EINA_FALSE);
@@ -472,13 +492,12 @@ void BookmarkDetailsUI::createMenuDetails()
     elm_object_part_text_set(m_delete_button, "elm.text", "Delete folder");
     elm_box_pack_end(m_menu, m_delete_button);
     evas_object_smart_callback_add(m_delete_button, "clicked", _delete_button_clicked, this);
-    elm_object_signal_emit(m_delete_button, "visible", "ui");
 
     evas_object_show(m_delete_button);
     elm_object_tree_focus_allow_set(m_delete_button, EINA_FALSE);
 
     m_remove_button = elm_button_add(m_menu);
-    elm_object_style_set(m_remove_button, "more-button");
+    elm_object_style_set(m_remove_button, "more-shadow-button");
     evas_object_size_hint_weight_set(m_remove_button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_remove_button, 0.0, 0.0);
     elm_object_part_text_set(m_remove_button, "elm.text", "Remove Bookmarks");
