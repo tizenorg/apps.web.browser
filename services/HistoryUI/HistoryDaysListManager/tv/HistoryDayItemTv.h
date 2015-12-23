@@ -43,14 +43,32 @@ public:
     Evas_Object* getLayoutMain() const {return m_layoutMain;}
     Evas_Object* getLayoutHeader() const {return m_layoutHeader;}
 
-    // invoked when main layout is already removed. prevents from second
-    // evas_object_del() on main layout in destructor
+    std::shared_ptr<std::vector<int>> getVisitItemsIds();
+
+	WebsiteHistoryItemTvPtr getItem(WebsiteHistoryItemDataPtrConst historyDayItemData);
+	WebsiteHistoryItemTvPtr getItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
+
+    /**
+     * @brief invoked when main layout is already removed.
+     * prevents from second evas_object_del() on main layout in destructor
+     */
     void setEflObjectsAsDeleted();
+    HistoryDayItemDataPtrConst getData() const {return m_dayItemData;}
+
     HistoryDeleteManagerPtrConst getDeleteManager() const {return m_historyDeleteManager;}
 
-    static boost::signals2::signal<void(const HistoryDayItemTv*)> signalHeaderFocus;
-    static boost::signals2::signal<void(const HistoryDayItemDataPtr)>
-    signaButtonClicked;
+    static boost::signals2::signal<void(const HistoryDayItemDataPtr)> signaButtonClicked;
+
 private:
     void initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles);
     Evas_Object* createScrollerWebsites(Evas_Object* parent,
@@ -59,11 +77,14 @@ private:
             const std::string& edjeFilePath);
     void initCallbacks();
     void deleteCallbacks();
-    static void _layoutHeaderFocused(void* data, Evas_Object* obj,
-            void* event_info);
     static void _buttonSelectClicked(void *data, Evas_Object *obj, void *event_info);
     static void _buttonSelectFocused(void *data, Evas_Object *obj, void *event_info);
     static void _buttonSelectUnfocused(void *data, Evas_Object *obj, void *event_info);
+
+    /**
+     * @brief remove website history item from vector
+     */
+    void remove(WebsiteHistoryItemTvPtr websiteHistoryItem);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;

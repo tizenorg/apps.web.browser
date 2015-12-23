@@ -87,10 +87,31 @@ Evas_Object* WebsiteHistoryItemTv::createBoxMainHorizontal(Evas_Object* parent,
     return box;
 }
 
+bool WebsiteHistoryItemTv::contains(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    return m_websiteHistoryItemVisitItems->contains(historyVisitItemData);
+}
+
+std::shared_ptr<std::vector<int>> WebsiteHistoryItemTv::getVisitItemsIds()
+{
+    return m_websiteHistoryItemVisitItems->getVisitItemsIds();
+}
+
 void WebsiteHistoryItemTv::setEflObjectsAsDeleted()
 {
     m_eflObjectsDeleted = true;
     m_websiteHistoryItemVisitItems->setEflObjectsAsDeleted();
+}
+
+int WebsiteHistoryItemTv::sizeHistoryVisitItems() {
+    return m_websiteHistoryItemVisitItems->size();
+}
+
+void WebsiteHistoryItemTv::removeItem(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    m_websiteHistoryItemVisitItems->removeItem(historyVisitItemData);
 }
 
 }

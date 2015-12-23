@@ -71,15 +71,15 @@ void HistoryDaysListManagerMob::addHistoryItems(
     std::vector<WebsiteHistoryItemDataPtr> historyItems;
     for (auto& itemPair : items) {
         std::vector<WebsiteVisitItemDataPtr> pageViewItems;
-        for(auto& hi : itemPair.second) {
-            pageViewItems.push_back(std::make_shared<WebsiteVisitItemData>(
-                            hi->getTitle(), hi->getUrl(), "00:00 AM"));
-        }
-        historyItems.push_back(std::make_shared<WebsiteHistoryItemData>(
-                "title", itemPair.first, pageViewItems));
+        for (auto& hi : itemPair.second)
+            pageViewItems.push_back(
+                    std::make_shared < WebsiteVisitItemData > (hi));
+        historyItems.push_back(
+                std::make_shared < WebsiteHistoryItemData
+                        > ("title", itemPair.first, pageViewItems));
     }
-    HistoryDayItemDataPtr dayItem = std::make_shared<HistoryDayItemData>(
-            toString(period), historyItems);
+    HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
+            > (toString(period), historyItems);
     appendDayItem(dayItem);
 }
 

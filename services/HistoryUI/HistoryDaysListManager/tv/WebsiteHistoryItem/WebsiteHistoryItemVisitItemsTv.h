@@ -52,10 +52,11 @@ public:
     void setFocusChain(Evas_Object* obj);
 
     static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
-    signalWebsiteVisitItemClicked;
+    signalButtonClicked;
 
     bool contains(WebsiteVisitItemDataPtrConst websiteVisitItemData);
     void removeItem(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+    std::shared_ptr<std::vector<int>> getVisitItemsIds();
 
     void setEflObjectsAsDeleted();
     int size() {return eina_list_count(elm_box_children_get(m_boxMainVertical));}
@@ -75,7 +76,6 @@ private:
 
     void remove(VisitItemObjects);
     void initCallbacks();
-    void deleteCallbacks();
     static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
     static void _buttonSelectFocused(void* data, Evas_Object* obj, void* event_info);
     static void _buttonSelectUnfocused(void* data, Evas_Object* obj, void* event_info);

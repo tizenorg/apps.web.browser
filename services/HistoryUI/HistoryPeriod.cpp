@@ -16,6 +16,7 @@
 
 #include "HistoryPeriod.h"
 #include "BrowserLogger.h"
+#include "app_i18n.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -24,16 +25,18 @@ std::string toString(HistoryPeriod period)
 {
     switch (period) {
     case HistoryPeriod::HISTORY_TODAY:
-        return "Today";
+        return _("IDS_BR_BODY_TODAY");
     case HistoryPeriod::HISTORY_YESTERDAY:
-        return "Yesterday";
+        return _("IDS_BR_BODY_YESTERDAY");
     case HistoryPeriod::HISTORY_LASTWEEK:
-        return "Last Week";
+        return _("IDS_BR_BODY_LAST_WEEK");
     case HistoryPeriod::HISTORY_LASTMONTH:
-        return "Last Month";
+        return _("IDS_BR_BODY_LAST_MONTH");
+    case HistoryPeriod::HISTORY_OLDER:
+        return _("IDS_BR_BODY_OLDER");
     default:
-        BROWSER_LOGE("[%s:%d]not handled period ",
-                __PRETTY_FUNCTION__, __LINE__);
+        BROWSER_LOGE("[%s:%d]not handled period ", __PRETTY_FUNCTION__,
+                __LINE__);
         return "";
     }
 }
