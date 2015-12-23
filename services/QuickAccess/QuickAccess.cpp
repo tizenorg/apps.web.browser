@@ -19,6 +19,7 @@
 #include <vector>
 #include <AbstractMainWindow.h>
 
+#include "app_i18n.h"
 #include "QuickAccess.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -555,7 +556,7 @@ void QuickAccess::showBookmarks()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_currPage = QuickAccess::BOOKMARK_PAGE;
 #if PROFILE_MOBILE
-    elm_object_part_text_set(m_layout, "screen_title", "Bookmark");
+    elm_object_translatable_part_text_set(m_layout, "screen_title", "IDS_BR_OPT_BOOKMARK");
     setIndexPage(QuickAccess::BOOKMARK_PAGE);
 #else
     refreshFocusChain();

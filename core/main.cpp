@@ -23,6 +23,8 @@
 #include <stdexcept>
 #include <app.h>
 #include <ewk_chromium.h>
+#include <system_settings.h>
+#include <app_common.h>
 
 // for tests...
 #include "Lifecycle.h"
@@ -146,6 +148,17 @@ static void app_resume(void *){
     mainUi->resume();
 }
 
+static void app_language_changed(app_event_info*, void *)
+{
+   BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
+   char *language;
+   // Retrieve the current system language
+   system_settings_get_value_string(SYSTEM_SETTINGS_KEY_LOCALE_LANGUAGE, &language);
+   // Set the language in elementary
+   elm_language_set(language);
+   free(language);
+}
+
 int main(int argc, char* argv[])try
 {
     BEGIN()
@@ -167,9 +180,11 @@ int main(int argc, char* argv[])try
     ops.create = app_create;
     ops.terminate = app_terminate;
     ops.app_control = app_control;
-
     ops.pause = app_pause;
     ops.resume = app_resume;
+
+    app_event_handler_h lang_changed_handler;
+    ui_app_add_event_handler(&lang_changed_handler, APP_EVENT_LANGUAGE_CHANGED, app_language_changed, NULL);
 
     ui_app_main(argc, argv, &ops, NULL);
 
