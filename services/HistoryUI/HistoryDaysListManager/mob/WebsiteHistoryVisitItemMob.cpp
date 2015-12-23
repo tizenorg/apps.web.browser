@@ -25,9 +25,9 @@ namespace base_ui {
 WebsiteHistoryVisitItemMob::WebsiteHistoryVisitItemMob(
         WebsiteVisitItemDataPtr visitItemData)
     : m_websiteVisitItemData(visitItemData)
-    , m_websiteTitle(visitItemData->title)
-    , m_websiteUrl(visitItemData->link)
-    , m_websiteTimestamp(visitItemData->date)
+    , m_websiteTitle(visitItemData->historyItem->getTitle())
+    , m_websiteUrl(visitItemData->historyItem->getUrl())
+    , m_websiteTimestamp("00:00")
 {
     m_websiteTitle = "<font_size=34>" + m_websiteTitle + "</font>";
     m_websiteUrl = "<font_size=30>" + m_websiteUrl + "</font>";

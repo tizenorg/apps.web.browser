@@ -20,20 +20,18 @@
 #include <string>
 #include <vector>
 #include "HistoryDayItemDataTypedef.h"
+#include <services/HistoryService/HistoryItem.h>
 
 namespace tizen_browser{
 namespace base_ui{
 
 typedef struct WebsiteVisitItemData_
 {
-    WebsiteVisitItemData_(const std::string& title, const std::string& link,
-            const std::string& date) :
-            title(title), link(link), date(date)
+    WebsiteVisitItemData_(std::shared_ptr<services::HistoryItem> historyItem)
+    : historyItem(historyItem)
     {
     }
-    const std::string title;
-    const std::string link;
-    const std::string date;
+    std::shared_ptr<const services::HistoryItem> historyItem;
 } WebsiteVisitItemData;
 
 typedef struct WebsiteHistoryItemData_
