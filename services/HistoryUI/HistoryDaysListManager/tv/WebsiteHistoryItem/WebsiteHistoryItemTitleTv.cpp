@@ -23,7 +23,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
-WebsiteHistoryItemTitleTv::signalWebsiteHistoryItemClicked;
+WebsiteHistoryItemTitleTv::signalButtonClicked;
 
 WebsiteHistoryItemTitleTv::WebsiteHistoryItemTitleTv(
         WebsiteHistoryItemDataPtr websiteHistoryItemData,
@@ -98,7 +98,7 @@ void WebsiteHistoryItemTitleTv::_buttonSelectClicked(void* data,
     if (!data) return;
     WebsiteHistoryItemDataPtr* websiteHistoryItemData =
             static_cast<WebsiteHistoryItemDataPtr*> (data);
-    signalWebsiteHistoryItemClicked(*websiteHistoryItemData);
+    signalButtonClicked(*websiteHistoryItemData);
 }
 
 void WebsiteHistoryItemTitleTv::_buttonSelectFocused(void* data,

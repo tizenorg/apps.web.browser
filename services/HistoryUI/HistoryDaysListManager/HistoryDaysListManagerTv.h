@@ -44,15 +44,35 @@ public:
     void clear() override;
     void setFocusChain(Evas_Object* obj) override;
 
-    void onHistoryDayItemHeaderFocus(const HistoryDayItemTv* focusedItem);
-    void onWebsiteHistoryItemClicked(const WebsiteHistoryItemDataPtr websiteHistoryItemData);
-    void onWebsiteHistoryItemVisitItemClicked(const WebsiteVisitItemDataPtr websiteVisitItemData);
+    void onHistoryDayItemFocused(const HistoryDayItemTv* focusedItem);
+    void onHistoryDayItemClicked(const HistoryDayItemDataPtrConst clickedItem);
+    void onWebsiteHistoryItemClicked(const WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+    void onWebsiteHistoryItemVisitItemClicked(const WebsiteVisitItemDataPtrConst websiteVisitItemData);
 
 private:
     void connectSignals();
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
-    int getHistoryItemIndex(const HistoryDayItemTv* item);
     void scrollToDayItem(const HistoryDayItemTv* item);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(HistoryDayItemDataPtrConst historyDayItemData);
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+    /**
+     * @brief remove history day item from vector
+     */
+    void remove(HistoryDayItemTvPtr historyDayItem);
+
+    int getHistoryItemIndex(const HistoryDayItemTv* item);
+    HistoryDayItemTvPtr getItem(HistoryDayItemDataPtrConst historyDayItemData);
 
     HistoryDaysListManagerEdjeTvPtr m_edjeFiles;
     std::vector<HistoryDayItemTvPtr> m_dayItems;

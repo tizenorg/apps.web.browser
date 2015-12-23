@@ -27,7 +27,8 @@ enum class HistoryPeriod
     HISTORY_TODAY,
     HISTORY_YESTERDAY,
     HISTORY_LASTWEEK,
-    HISTORY_LASTMONTH
+    HISTORY_LASTMONTH,
+    HISTORY_OLDER
 };
 
 std::string toString(HistoryPeriod period);

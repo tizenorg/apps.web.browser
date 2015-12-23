@@ -31,6 +31,8 @@ std::string toString(HistoryPeriod period)
         return "Last Week";
     case HistoryPeriod::HISTORY_LASTMONTH:
         return "Last Month";
+    case HistoryPeriod::HISTORY_OLDER:
+        return "Older";
     default:
         BROWSER_LOGE("[%s:%d]not handled period ",
                 __PRETTY_FUNCTION__, __LINE__);

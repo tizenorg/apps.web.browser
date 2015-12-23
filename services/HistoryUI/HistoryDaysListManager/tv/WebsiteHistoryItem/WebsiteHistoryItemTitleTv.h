@@ -41,7 +41,7 @@ public:
     Evas_Object* getLayoutMain() {return m_layoutMain;}
 
     static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
-    signalWebsiteHistoryItemClicked;
+    signalButtonClicked;
 
 private:
     Evas_Object* createLayoutIcon(Evas_Object* parent,
