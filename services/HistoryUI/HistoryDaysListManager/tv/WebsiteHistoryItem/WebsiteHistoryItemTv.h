@@ -43,7 +43,16 @@ public:
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjeTvPtr edjeFiles);
     void setFocusChain(Evas_Object* obj);
+    Evas_Object* getLayoutMain() {return m_layoutMain;}
+    WebsiteHistoryItemDataPtrConst getData() const {return m_websiteHistoryItemData;}
+    WebsiteVisitItemDataPtrConst getItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
+    void removeItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
+    bool contains(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+
+    std::shared_ptr<std::vector<int>> getVisitItemsIds();
+
     void setEflObjectsAsDeleted();
+    int sizeHistoryVisitItems();
 
 private:
     Evas_Object* createBoxMainHorizontal(Evas_Object* parent,

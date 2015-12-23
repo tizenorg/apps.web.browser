@@ -313,9 +313,10 @@ void SimpleUI::connectUISignals()
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
-    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryClicked, this));
+    m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryAllClicked, this));
+    m_historyUI->signalDeleteHistoryItems.connect(boost::bind(&SimpleUI::onDeleteHistoryItems, this, _1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    m_historyUI->historyItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2, desktop_ua));
+    m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
@@ -677,10 +678,18 @@ void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem >
     m_quickAccess->openDetailPopup(historyItem, m_historyService->getHistoryItemsByURL(historyItem->getUrl(), itemsNumber));
 }
 
-void SimpleUI::onClearHistoryClicked()
+void SimpleUI::onClearHistoryAllClicked()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_historyService->clearAllHistory();
+}
+
+void SimpleUI::onDeleteHistoryItems(
+        std::shared_ptr<const std::vector<int>> itemIds)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    for (const int& id : *itemIds)
+        m_historyService->deleteHistoryItem(id);
 }
 
 void SimpleUI::onMostVisitedClicked()
@@ -1268,6 +1277,8 @@ void SimpleUI::showHistoryUI()
             HistoryPeriod::HISTORY_YESTERDAY);
     m_historyUI->addHistoryItems(m_historyService->getHistoryLastWeek(),
             HistoryPeriod::HISTORY_LASTWEEK);
+    m_historyUI->addHistoryItems(m_historyService->getHistoryLastMonth(),
+            HistoryPeriod::HISTORY_LASTMONTH);
     m_viewManager.pushViewToStack(m_historyUI.get());
 }
 

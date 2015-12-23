@@ -19,6 +19,7 @@
 #include "HistoryDaysListManagerTv.h"
 #include "HistoryDayItemData.h"
 #include "tv/HistoryDayItemTv.h"
+#include "tv/WebsiteHistoryItem/WebsiteHistoryItemTv.h"
 #include "tv/WebsiteHistoryItem/WebsiteHistoryItemTitleTv.h"
 #include "tv/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsTv.h"
 #include <services/HistoryUI/HistoryDeleteManager.h>
@@ -41,6 +42,8 @@ HistoryDaysListManagerTv::HistoryDaysListManagerTv(HistoryDeleteManagerPtrConst 
 
 HistoryDaysListManagerTv::~HistoryDaysListManagerTv()
 {
+    for (auto& dayItem : m_dayItems)
+        dayItem->setEflObjectsAsDeleted();
 }
 
 Evas_Object* HistoryDaysListManagerTv::createDaysList(Evas_Object* parent)
@@ -70,6 +73,20 @@ Evas_Object* HistoryDaysListManagerTv::createDaysList(Evas_Object* parent)
     return m_scrollerDaysColumns;
 }
 
+void HistoryDaysListManagerTv::connectSignals()
+{
+    HistoryDayItemTv::signaButtonClicked.connect(
+            boost::bind(&HistoryDaysListManagerTv::onHistoryDayItemClicked,
+                    this, _1));
+    WebsiteHistoryItemTitleTv::signalButtonClicked.connect(
+            boost::bind(&HistoryDaysListManagerTv::onWebsiteHistoryItemClicked,
+                    this, _1));
+    WebsiteHistoryItemVisitItemsTv::signalButtonClicked.connect(
+            boost::bind(
+                    &HistoryDaysListManagerTv::onWebsiteHistoryItemVisitItemClicked,
+                    this, _1));
+}
+
 void HistoryDaysListManagerTv::addHistoryItems(
         const std::map<std::string, services::HistoryItemVector>& items,
         HistoryPeriod period)
@@ -77,35 +94,44 @@ void HistoryDaysListManagerTv::addHistoryItems(
     std::vector<WebsiteHistoryItemDataPtr> historyItems;
     for (auto& itemPair : items) {
         std::vector<WebsiteVisitItemDataPtr> pageViewItems;
-        for(auto& hi : itemPair.second) {
-            pageViewItems.push_back(std::make_shared<WebsiteVisitItemData>(
-                    hi->getTitle(), hi->getUrl(), "00:00 AM"));
-        }
-        historyItems.push_back(std::make_shared<WebsiteHistoryItemData>(
-                "Title", itemPair.first, pageViewItems));
+        for (auto& hi : itemPair.second)
+            pageViewItems.push_back(
+                    std::make_shared < WebsiteVisitItemData > (hi));
+        historyItems.push_back(
+                std::make_shared < WebsiteHistoryItemData
+                        > ("Title", itemPair.first, pageViewItems));
     }
-    HistoryDayItemDataPtr dayItem = std::make_shared <HistoryDayItemData> (
-            toString(period), historyItems);
+    HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
+            > (toString(period), historyItems);
     appendDayItem(dayItem);
+}
+
+int HistoryDaysListManagerTv::getHistoryItemIndex(const HistoryDayItemTv* item)
+{
+    int index = 0;
+    for (auto& dayItem : m_dayItems) {
+        if (dayItem.get() == item)
+            return index;
+        index++;
+    }
+    return -1;
+}
+
+HistoryDayItemTvPtr HistoryDaysListManagerTv::getItem(
+        HistoryDayItemDataPtrConst historyDayItemData)
+{
+    for (auto& historyDayItem : m_dayItems)
+        if (historyDayItem->getData() == historyDayItemData)
+            return historyDayItem;
+    BROWSER_LOGE("%s no item", __PRETTY_FUNCTION__);
+    return nullptr;
 }
 
 void HistoryDaysListManagerTv::clear()
 {
+    // clear days items main layouts
     elm_box_clear(m_boxDaysColumns);
     m_dayItems.clear();
-}
-
-void HistoryDaysListManagerTv::connectSignals()
-{
-    HistoryDayItemTv::signalHeaderFocus.connect(
-            boost::bind(&HistoryDaysListManagerTv::onHistoryDayItemHeaderFocus,
-                    this, _1));
-    WebsiteHistoryItemTitleTv::signalWebsiteHistoryItemClicked.connect(
-            boost::bind(&HistoryDaysListManagerTv::onWebsiteHistoryItemClicked,
-                    this, _1));
-    WebsiteHistoryItemVisitItemsTv::signalWebsiteVisitItemClicked.connect(
-            boost::bind(&HistoryDaysListManagerTv::onWebsiteHistoryItemVisitItemClicked,
-                    this, _1));
 }
 
 void HistoryDaysListManagerTv::appendDayItem(HistoryDayItemDataPtr dayItemData)
@@ -117,28 +143,103 @@ void HistoryDaysListManagerTv::appendDayItem(HistoryDayItemDataPtr dayItemData)
 
 void HistoryDaysListManagerTv::setFocusChain(Evas_Object* obj)
 {
-    for(auto& dayItem : m_dayItems) {
+    for (auto& dayItem : m_dayItems)
         dayItem->setFocusChain(obj);
-    }
 }
 
-void HistoryDaysListManagerTv::onHistoryDayItemHeaderFocus(
+void HistoryDaysListManagerTv::onHistoryDayItemFocused(
         const HistoryDayItemTv* focusedItem)
 {
     scrollToDayItem(focusedItem);
 }
 
-void HistoryDaysListManagerTv::onWebsiteHistoryItemClicked(
-        const WebsiteHistoryItemDataPtr websiteHistoryItemData)
+void HistoryDaysListManagerTv::onHistoryDayItemClicked(
+        const HistoryDayItemDataPtrConst clickedItem)
 {
-    historyItemClicked(tools::PROTOCOL_DEFAULT + websiteHistoryItemData->websiteDomain,
-            websiteHistoryItemData->websiteTitle);
+    if (m_historyDeleteManager->getDeleteMode())
+        removeItem(clickedItem);
+}
+
+void HistoryDaysListManagerTv::onWebsiteHistoryItemClicked(
+        const WebsiteHistoryItemDataPtrConst clickedItem)
+{
+    if (m_historyDeleteManager->getDeleteMode())
+        removeItem(clickedItem);
+    else
+        signalHistoryItemClicked(
+                tools::PROTOCOL_DEFAULT + clickedItem->websiteDomain,
+                clickedItem->websiteTitle);
+}
+
+void HistoryDaysListManagerTv::removeItem(
+        HistoryDayItemDataPtrConst historyDayItemData)
+{
+    auto item = getItem(historyDayItemData);
+    if (!item)
+        return;
+    signalDeleteHistoryItems(item->getVisitItemsIds());
+    // remove day item from vector, destructor will clear efl objects
+    remove(item);
+    elm_box_unpack(m_boxDaysColumns, item->getLayoutMain());
+}
+
+void HistoryDaysListManagerTv::removeItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
+{
+    if (!websiteHistoryItemData) {
+        BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+        return;
+    }
+    for (auto& dayItem : m_dayItems) {
+        auto websiteHistoryItem = dayItem->getItem(websiteHistoryItemData);
+        if (websiteHistoryItem) {
+            signalDeleteHistoryItems(websiteHistoryItem->getVisitItemsIds());
+            dayItem->removeItem(websiteHistoryItemData);
+            return;
+        }
+    }
+    BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+}
+
+void HistoryDaysListManagerTv::removeItem(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    if (!websiteVisitItemData) {
+        BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+        return;
+    }
+    for (auto& dayItem : m_dayItems) {
+        if (dayItem->getItem(websiteVisitItemData)) {
+            dayItem->removeItem(websiteVisitItemData);
+            return;
+        }
+    }
+    BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
 }
 
 void HistoryDaysListManagerTv::onWebsiteHistoryItemVisitItemClicked(
-        const WebsiteVisitItemDataPtr websiteVisitItemData)
+        const WebsiteVisitItemDataPtrConst clickedItem)
 {
-    historyItemClicked(websiteVisitItemData->link, websiteVisitItemData->title);
+    if (m_historyDeleteManager->getDeleteMode()) {
+        removeItem(clickedItem);
+        signalDeleteHistoryItems(
+                std::make_shared<std::vector<int>>(std::initializer_list<int> {
+                        clickedItem->historyItem->getId() }));
+    } else {
+        signalHistoryItemClicked(clickedItem->historyItem->getUrl(),
+                clickedItem->historyItem->getTitle());
+    }
+}
+
+void HistoryDaysListManagerTv::remove(HistoryDayItemTvPtr historyDayItem)
+{
+    for (auto it = m_dayItems.begin(); it != m_dayItems.end();) {
+        if ((*it) == historyDayItem) {
+            m_dayItems.erase(it);
+            return;
+        } else
+            ++it;
+    }
 }
 
 void HistoryDaysListManagerTv::scrollToDayItem(const HistoryDayItemTv* item)
@@ -148,18 +249,6 @@ void HistoryDaysListManagerTv::scrollToDayItem(const HistoryDayItemTv* item)
     evas_object_geometry_get(item->getLayoutMain(), &itemX, &itemY, &itemW, &itemH);
     int index = getHistoryItemIndex(item);
     elm_scroller_region_show(m_scrollerDaysColumns, index*itemW, 1, 2*itemW, 1);
-}
-
-int HistoryDaysListManagerTv::getHistoryItemIndex(const HistoryDayItemTv* item)
-{
-    int index = 0;
-    for(auto& dayItem : m_dayItems) {
-        if(dayItem.get() == item) {
-            return index;
-        }
-        index++;
-    }
-    return -1;
 }
 
 }
