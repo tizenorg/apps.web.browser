@@ -19,7 +19,6 @@
 
 #include <memory>
 
-#include "Config.h"
 #include "ServiceManager.h"
 #include "ServiceLoader.h"
 
@@ -49,8 +48,6 @@ private:
      */
     void enumerateServices();/// write names of all services
 
-
-    config::DefaultConfig config;
     //ServiceFactory is a static ServiceFactory member - no need to delete it manually (or by smart_ptr) by calling delete or free on it
     std::unordered_map<std::string, ServiceFactory*> servicesMap; /// "com.class.interface":&ServiceFactory
     std::unordered_map<std::string, std::shared_ptr<ServiceLoader>>  servicesLoaderMap; /// "path/to/library.so": &service_factory_interface

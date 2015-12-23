@@ -60,7 +60,6 @@ const std::string ResetBrowserPopupMsg = "Do you really want to reset browser?" 
                                          " and return to initial setting.";
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
-    , m_config(config::DefaultConfigUniquePtr(new config::DefaultConfig()))
     , m_webPageUI()
     , m_moreMenuUI()
 #if PROFILE_MOBILE
@@ -78,7 +77,6 @@ SimpleUI::SimpleUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
-    m_config->load("");
 
     Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
@@ -142,8 +140,8 @@ int SimpleUI::exec(const std::string& _url)
 
     if(!m_initialised){
         if (m_window.get()) {
-            m_tabLimit = boost::any_cast <int> (m_config->get("TAB_LIMIT"));
-            m_favoritesLimit = boost::any_cast <int> (m_config->get("FAVORITES_LIMIT"));
+            m_tabLimit = boost::any_cast <int> (tizen_browser::config::Config::getInstance().get("TAB_LIMIT"));
+            m_favoritesLimit = boost::any_cast <int> (tizen_browser::config::Config::getInstance().get("FAVORITES_LIMIT"));
 
 
             loadUIServices();
@@ -831,9 +829,9 @@ void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     const int THUMB_WIDTH = boost::any_cast<int>(
-            m_config->get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
     const int THUMB_HEIGHT = boost::any_cast<int>(
-            m_config->get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
     m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, true);
 }
 

@@ -25,6 +25,7 @@
 #include "AbstractWebEngine/TabId.h"
 #include "BrowserAssert.h"
 #include "BrowserLogger.h"
+#include "Config/Config.h"
 #include "WebView.h"
 
 namespace tizen_browser {
@@ -41,16 +42,15 @@ WebEngineService::WebEngineService()
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
-    m_config.load("");
 
 #if PROFILE_MOBILE
     // init settings
-    m_settings[WebEngineSettings::PAGE_OVERVIEW] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW));
-    m_settings[WebEngineSettings::LOAD_IMAGES] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES));
-    m_settings[WebEngineSettings::ENABLE_JAVASCRIPT] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT));
-    m_settings[WebEngineSettings::REMEMBER_FROM_DATA] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA));
-    m_settings[WebEngineSettings::REMEMBER_PASSWORDS] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS));
-    m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA] = boost::any_cast<bool>(m_config.get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA));
+    m_settings[WebEngineSettings::PAGE_OVERVIEW] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW));
+    m_settings[WebEngineSettings::LOAD_IMAGES] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES));
+    m_settings[WebEngineSettings::ENABLE_JAVASCRIPT] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT));
+    m_settings[WebEngineSettings::REMEMBER_FROM_DATA] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA));
+    m_settings[WebEngineSettings::REMEMBER_PASSWORDS] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS));
+    m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA));
 #endif
 }
 
@@ -330,7 +330,7 @@ TabId WebEngineService::addTab(const std::string & uri,
 {
     AbstractWebEngine::checkIfCreate();
 
-    if (tabsCount() >= boost::any_cast<int>(m_config.get("TAB_LIMIT")))
+    if (tabsCount() >= boost::any_cast<int>(tizen_browser::config::Config::getInstance().get("TAB_LIMIT")))
         return currentTabId();
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

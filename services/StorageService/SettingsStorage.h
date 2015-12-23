@@ -21,7 +21,6 @@
 #include <boost/signals2/signal.hpp>
 
 #include "SQLDatabase.h"
-#include "Config.h"
 #include "WebEngineSettings.h"
 
 
@@ -84,7 +83,6 @@ private:
     void setSettingsValue(const std::string & key, storage::FieldPtr field) const;
 
     bool m_dbSettingsInitialised;
-    config::DefaultConfig config;
     std::string DB_SETTINGS;
 
     bool m_isInitialized;

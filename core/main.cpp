@@ -16,7 +16,7 @@
 #include "browser_config.h"
 
 #include "BrowserLogger.h"
-#include "Config/Config.h"
+#include "Config.h"
 #include <Ecore.h>
 #include <Edje.h>
 #include <Elementary.h>
@@ -34,9 +34,7 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
-    tizen_browser::config::DefaultConfig config;
-    config.load("");
-    elm_config_scale_set(boost::any_cast<double>(config.get("scale")));
+    elm_config_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
 
     elm_config_accel_preference_set("3d");
 
