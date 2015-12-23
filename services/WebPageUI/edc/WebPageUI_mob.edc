@@ -46,13 +46,8 @@ collections {
                     min: URI_BG_WIDTH URI_BG_HEIGHT;
                     max: URI_BG_WIDTH URI_BG_HEIGHT;
                     color: 255 255 255 255;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 0 0;
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                    }
+                    rel1 {relative: 0.0 0.0;}
+                    rel2 {relative: 1.0 0.0;}
                 }
                 description {
                     state: "hidden" 0.0;
@@ -60,6 +55,7 @@ collections {
                     rel1.offset: 0 -2*URI_BG_HEIGHT;
                 }
             }
+            ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 16, URI_BG_HEIGHT)
             part {
                 name: "uri_bar_buttons_left";
                 type : SWALLOW;
@@ -71,15 +67,8 @@ collections {
                     min: 196 64;
                     max: 196 64;
                     fixed: 1 1;
-                    rel1 {
-                        to: "uri_bar_bg";
-                        relative: 0.0 0.0;
-                        offset: 16 0;
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                        to: "uri_bar_bg";
-                    }
+                    rel1 { relative: 1.0 1.0; to: "left_spacer"; }
+                    rel2 { relative: 0.0 0.0; to: "left_spacer"; }
                 }
                 description {
                     state: "hidden" 0.0;
@@ -103,7 +92,7 @@ collections {
                 }
             }
 
-            ADD_SPACER("spacer_1", "uri_bar_buttons_left", 18, 64)
+            ADD_SPACER("left_buttons_spacer", "uri_bar_buttons_left", 18, URI_BG_HEIGHT)
 
             part {
                 name: "uri_entry";
@@ -116,15 +105,8 @@ collections {
                     min: URI_LENGTH URI_WIDTH;
                     max: URI_LENGTH URI_WIDTH;
                     fixed: 1 1;
-                    rel1 {
-                        to: "uri_bar_bg";
-                        relative: 0.0 0.0;
-                        offset: 32 0;
-                    }
-                    rel2 {
-                        to: "uri_bar_bg";
-                        relative: 1.0 1.0;
-                    }
+                    rel1 { relative: 1.0 0.5; to: "left_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "left_spacer"; }
                 }
                 description {
                     state: "moveright" 0.0;
@@ -132,14 +114,8 @@ collections {
                     visible: 1;
                     min: URI_LENGTH_SHORT URI_WIDTH;
                     max: URI_LENGTH_SHORT URI_WIDTH;
-                    rel1 {
-                        to: "spacer_1";
-                        relative: 1.0 0.0;
-                    }
-                    rel2 {
-                        to: "spacer_1";
-                        relative: 1.0 1.0;
-                    }
+                    rel1 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "left_buttons_spacer"; }
                 }
                 description {
                     state: "entry_enlarged" 0.0;
@@ -172,6 +148,7 @@ collections {
                     inherit: "moveright" 0.0;
                 }
             }
+            ADD_SPACER("right_buttons_spacer", "uri_entry", 24, URI_BG_HEIGHT)
             part {
                 name: "uri_bar_buttons_right";
                 type : SWALLOW;
@@ -179,19 +156,12 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    align: 0.0 0.0;
+                    align: 0.0 0.5;
                     min: 130 64;
                     max: 130 64;
                     fixed: 1 1;
-                    rel1 {
-                        to: "uri_entry";
-                        relative: 1.0 0.0;
-                        offset: 18 0;
-                    }
-                    rel2 {
-                        to: "uri_bar_bg";
-                        relative: 1.0 1.0;
-                    }
+                    rel1 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
+                    rel2 { relative: 1.0 0.5; to: "right_buttons_spacer"; }
                 }
                 description {
                     state: "hidden" 0.0;
