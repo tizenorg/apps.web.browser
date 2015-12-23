@@ -32,7 +32,6 @@
 #include "service_macros.h"
 #include "BookmarkItem.h"
 #include "BrowserImage.h"
-#include "Config/Config.h"
 #include "AbstractFavoriteService.h"
 
 namespace tizen_browser{
@@ -151,7 +150,6 @@ private:
     std::vector<std::shared_ptr<BookmarkItem> > m_bookmarks;
 ///    \todo Need to change getBookmarkId function for finding stored bookmark - check getBookmarkExists function
     int getBookmarkId(const std::string & url);
-    config::DefaultConfig config;
 };
 
 }

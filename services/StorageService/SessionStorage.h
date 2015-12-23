@@ -22,7 +22,6 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <string>
 
-#include <core/Config/Config.h>
 #include "SQLDatabase.h"
 #include "Session.h"
 #include "BookmarkFolder.h"
@@ -110,7 +109,6 @@ private:
     void readSession(Session& session, std::shared_ptr<storage::SQLDatabase> connection);
     bool m_isInitialized;
 
-    config::DefaultConfig config;
     std::string m_dbString;
 
 };

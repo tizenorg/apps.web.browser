@@ -31,7 +31,6 @@
 #include <boost/signals2/signal.hpp>
 
 #include "SQLDatabase.h"
-#include "Config.h"
 #include "WebEngineSettings.h"
 #include "BookmarkFolder.h"
 #include "app_i18n.h"
@@ -132,7 +131,6 @@ private:
     bool m_isInitialized;
     bool m_dbFoldersInitialised;
 
-    config::DefaultConfig config;
     std::string DB_FOLDERS;
 };
 

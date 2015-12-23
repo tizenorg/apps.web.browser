@@ -61,7 +61,6 @@
 #include "InputPopup.h"
 #include "SimplePopup.h"
 #include "WebConfirmation.h"
-#include "ConfigTypedef.h"
 #include "ViewManager.h"
 #include "MenuButton.h"
 
@@ -305,8 +304,6 @@ private:
     void searchWebPage(std::string &text, int flags);
 
     std::string edjePath(const std::string &);
-
-    config::DefaultConfigUniquePtr m_config;
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
 
