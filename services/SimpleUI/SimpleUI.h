@@ -167,7 +167,8 @@ private:
     void onOpenURLInNewTab(const std::string& url);
     void onOpenURLInNewTab(const std::string& url, const std::string& title, bool desktopMode);
     void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
-    void onClearHistoryClicked();
+    void onClearHistoryAllClicked();
+    void onDeleteHistoryItems(std::shared_ptr<const std::vector<int>> itemIds);
 
     void onMostVisitedClicked();
     void onBookmarkButtonClicked();

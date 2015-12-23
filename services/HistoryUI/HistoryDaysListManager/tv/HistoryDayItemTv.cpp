@@ -24,7 +24,6 @@
 namespace tizen_browser{
 namespace base_ui{
 
-boost::signals2::signal<void(const HistoryDayItemTv*)> HistoryDayItemTv::signalHeaderFocus;
 boost::signals2::signal<void(const HistoryDayItemDataPtr)>
         HistoryDayItemTv::signaButtonClicked;
 
@@ -132,6 +131,17 @@ void HistoryDayItemTv::setFocusChain(Evas_Object* obj)
     }
 }
 
+std::shared_ptr<std::vector<int>> HistoryDayItemTv::getVisitItemsIds()
+{
+    auto vec = std::make_shared<std::vector<int>>();
+    for (auto& websiteHistoryItem : m_websiteHistoryItems) {
+        auto websiteHistoryItemIds = websiteHistoryItem->getVisitItemsIds();
+        vec->insert(vec->end(), websiteHistoryItemIds->begin(),
+                websiteHistoryItemIds->end());
+    }
+    return vec;
+}
+
 Evas_Object* HistoryDayItemTv::createScrollerWebsites(Evas_Object* parent,
         HistoryDaysListManagerEdjeTvPtr edjeFiles)
 {
@@ -166,8 +176,6 @@ Evas_Object* HistoryDayItemTv::createImageClear(Evas_Object* parent,
 
 void HistoryDayItemTv::initCallbacks()
 {
-    evas_object_smart_callback_add(m_layoutHeader, "focused",
-        HistoryDayItemTv::_layoutHeaderFocused, this);
     evas_object_smart_callback_add(m_buttonSelect, "clicked",
             HistoryDayItemTv::_buttonSelectClicked, &m_dayItemData);
     evas_object_smart_callback_add(m_buttonSelect, "focused",
@@ -219,11 +227,63 @@ void HistoryDayItemTv::initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles
     }
 }
 
-void HistoryDayItemTv::_layoutHeaderFocused(void* data, Evas_Object* /*obj*/,
-        void* /*event_info*/)
+WebsiteHistoryItemTvPtr HistoryDayItemTv::getItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
 {
-    HistoryDayItemTv *self = static_cast<HistoryDayItemTv*>(data);
-    signalHeaderFocus(self);
+    for(auto& websiteHistoryItem : m_websiteHistoryItems) {
+        if(websiteHistoryItem->getData() == websiteHistoryItemData)
+            return websiteHistoryItem;
+    }
+    return nullptr;
+}
+
+WebsiteHistoryItemTvPtr HistoryDayItemTv::getItem(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    for(auto& websiteHistoryItem : m_websiteHistoryItems) {
+        if(websiteHistoryItem->contains(websiteVisitItemData))
+            return websiteHistoryItem;
+    }
+    return nullptr;
+}
+
+void HistoryDayItemTv::removeItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
+{
+    auto itemWebsite = getItem(websiteHistoryItemData);
+    if (!itemWebsite)
+        return;
+    elm_box_unpack(m_boxWebsites, itemWebsite->getLayoutMain());
+    // remove item from vector, destructor will clear efl objects
+    remove(itemWebsite);
+    if (m_websiteHistoryItems.size() == 0) {
+        signaButtonClicked(m_dayItemData);
+    }
+}
+
+void HistoryDayItemTv::removeItem(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    auto itemWebsite = getItem(historyVisitItemData);
+    if(!itemWebsite) {
+        BROWSER_LOGE("%s get item error", __PRETTY_FUNCTION__);
+    }
+    itemWebsite->removeItem(historyVisitItemData);
+    if(itemWebsite->sizeHistoryVisitItems() == 0) {
+        removeItem(itemWebsite->getData());
+    }
+}
+
+void HistoryDayItemTv::remove(WebsiteHistoryItemTvPtr websiteHistoryItem)
+{
+    for (auto it = m_websiteHistoryItems.begin(); it != m_websiteHistoryItems.end();) {
+        if ((*it) == websiteHistoryItem) {
+            m_websiteHistoryItems.erase(it);
+            return;
+        } else {
+            ++it;
+        }
+    }
 }
 
 }

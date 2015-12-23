@@ -113,7 +113,6 @@ collections {
                 signal: "buttonSelectFocused";
                 source: "ui";
                 action: STATE_SET "focused" 0.0;
-                target: "imageClear";
                 target: "background";
             }
             program {

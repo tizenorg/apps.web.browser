@@ -24,7 +24,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
-WebsiteHistoryItemVisitItemsTv::signalWebsiteVisitItemClicked;
+WebsiteHistoryItemVisitItemsTv::signalButtonClicked;
 
 WebsiteHistoryItemVisitItemsTv::WebsiteHistoryItemVisitItemsTv(
         const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems,
@@ -44,7 +44,6 @@ WebsiteHistoryItemVisitItemsTv::WebsiteHistoryItemVisitItemsTv(
 
 WebsiteHistoryItemVisitItemsTv::~WebsiteHistoryItemVisitItemsTv()
 {
-    deleteCallbacks();
     if (!m_eflObjectsDeleted)
         evas_object_del(m_layoutMain);
 }
@@ -142,12 +141,13 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createImageClear(Evas_Object* paren
 
 Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemDate(
         Evas_Object* parent, const std::string& edjeFilePath,
-        WebsiteVisitItemDataPtr websiteVisitItemData)
+        WebsiteVisitItemDataPtr /*websiteVisitItemData*/)
 {
     Evas_Object* layoutDate = elm_layout_add(parent);
     elm_layout_file_set(layoutDate, edjeFilePath.c_str(),
             "layoutWebsiteHistoryVisitItemDate");
-    elm_object_text_set(layoutDate, websiteVisitItemData->date.c_str());
+    // TODO: timestamp conversion
+    elm_object_text_set(layoutDate, "00:00");
     return layoutDate;
 }
 
@@ -162,17 +162,10 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemUrl(
     elm_layout_file_set(layoutUrl, edjeFilePath.c_str(),
             "layoutWebsiteHistoryVisitItemUrl");
 
-    std::string text = "<font_weight=bold>" + websiteVisitItemData->title
-            + "</font_weight>" + " - " + websiteVisitItemData->link;
+    std::string text = "<font_weight=bold>" + websiteVisitItemData->historyItem->getTitle()
+            + "</font_weight>" + " - " + websiteVisitItemData->historyItem->getUrl();
     elm_object_text_set(layoutUrl, text.c_str());
     return layoutUrl;
-}
-
-void WebsiteHistoryItemVisitItemsTv::deleteCallbacks()
-{
-    for (auto& visitItem : m_websiteVisitItems)
-        evas_object_smart_callback_del(
-                visitItem.layoutVisitItemObjects.buttonSelect, "clicked", NULL);
 }
 
 void WebsiteHistoryItemVisitItemsTv::initCallbacks()
@@ -196,8 +189,9 @@ void WebsiteHistoryItemVisitItemsTv::_buttonSelectClicked(void* data,
         Evas_Object* /*obj*/, void* /*event_info*/)
 {
     if (!data) return;
-    WebsiteVisitItemDataPtr* websiteVisitItemData = static_cast<WebsiteVisitItemDataPtr*>(data);
-    signalWebsiteVisitItemClicked(*websiteVisitItemData);
+    VisitItemObjects* visitItemObject =
+            static_cast<VisitItemObjects*>(data);
+    signalButtonClicked((*visitItemObject).websiteVisitItemData );
 }
 
 void WebsiteHistoryItemVisitItemsTv::_buttonSelectFocused(void* data,
@@ -218,6 +212,38 @@ void WebsiteHistoryItemVisitItemsTv::_buttonSelectUnfocused(void* data,
     VisitItemObjects* visitItemObject = static_cast<VisitItemObjects*>(data);
     Evas_Object* layout = visitItemObject->layoutVisitItemObjects.layout;
     elm_object_signal_emit(layout, "buttonSelectUnfocused", "ui");
+}
+
+bool WebsiteHistoryItemVisitItemsTv::contains(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    for (auto& item : m_websiteVisitItems) {
+        if (item.websiteVisitItemData == websiteVisitItemData)
+            return true;
+    }
+    return false;
+}
+
+void WebsiteHistoryItemVisitItemsTv::removeItem(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    for (auto& item : m_websiteVisitItems) {
+        if (item.websiteVisitItemData == websiteVisitItemData) {
+            elm_box_unpack(m_boxMainVertical,
+                    item.layoutVisitItemObjects.layout);
+            evas_object_del(item.layoutVisitItemObjects.layout);
+            return;
+        }
+    }
+}
+
+std::shared_ptr<std::vector<int>> WebsiteHistoryItemVisitItemsTv::getVisitItemsIds()
+{
+    auto vec = std::make_shared<std::vector<int>>();
+    for (auto& item : m_websiteVisitItems) {
+        vec->push_back(item.websiteVisitItemData->historyItem->getId());
+    }
+    return vec;
 }
 
 void WebsiteHistoryItemVisitItemsTv::setEflObjectsAsDeleted()

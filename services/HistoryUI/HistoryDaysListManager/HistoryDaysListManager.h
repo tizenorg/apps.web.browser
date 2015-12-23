@@ -39,7 +39,8 @@ public:
     // clear everything including efl objects (result: empty list)
     virtual void clear() = 0;
     virtual void setFocusChain(Evas_Object* obj) = 0;
-    boost::signals2::signal<void (std::string url, std::string title)> historyItemClicked;
+    boost::signals2::signal<void (std::string url, std::string title)> signalHistoryItemClicked;
+    boost::signals2::signal<void (std::shared_ptr<const std::vector<int>> itemIds)> signalDeleteHistoryItems;
 };
 
 }

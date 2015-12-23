@@ -69,7 +69,8 @@ HistoryUI::HistoryUI()
     m_historyDaysListManager = std::make_shared<HistoryDaysListManagerTv>(m_historyDeleteManager);
 #endif
 
-    m_historyDaysListManager->historyItemClicked.connect(historyItemClicked);
+    m_historyDaysListManager->signalHistoryItemClicked.connect(signalHistoryItemClicked);
+    m_historyDaysListManager->signalDeleteHistoryItems.connect(signalDeleteHistoryItems);
 
     m_focusManager = std::unique_ptr<HistoryUIFocusManager>(
             new HistoryUIFocusManager(m_historyDaysListManager));
