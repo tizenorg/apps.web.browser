@@ -25,7 +25,7 @@ namespace base_ui{
 class HistoryDeleteManager
 {
 public:
-    HistoryDeleteManager() {}
+    HistoryDeleteManager() : m_deleteModeOn(false) {}
     virtual ~HistoryDeleteManager() {}
     void setDeleteMode(bool mode) {
         m_deleteModeOn = mode;
