@@ -58,7 +58,8 @@ public:
     void addItems();
     boost::signals2::signal<void ()> closeHistoryUIClicked;
     boost::signals2::signal<void ()> clearHistoryClicked;
-    boost::signals2::signal<void (std::string& url, std::string& title)> historyItemClicked;
+    boost::signals2::signal<void (std::shared_ptr<const std::vector<int>> itemIds)> signalDeleteHistoryItems;
+    boost::signals2::signal<void (std::string& url, std::string& title)> signalHistoryItemClicked;
 private:
     void clearItems();
     void createHistoryUILayout(Evas_Object* parent);
