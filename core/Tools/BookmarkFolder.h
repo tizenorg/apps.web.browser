@@ -26,7 +26,6 @@
 #define BOOKMARKFOLDER_H
 
 #include "BrowserLogger.h"
-#include "Config.h"
 #include "BrowserImage.h"
 
 namespace tizen_browser {

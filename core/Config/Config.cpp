@@ -32,8 +32,7 @@ const int SCALE_FACTOR =
         1920;
 #endif
 
-void DefaultConfig::load(const std::string &)
-{
+Config::Config(){
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
     m_data["favorite_service_name"] = std::string("org.tizen.browser.favoriteservice");
     m_data["DB_FOLDERS"] = std::string(".browser.bookmark.db");
@@ -75,26 +74,22 @@ void DefaultConfig::load(const std::string &)
     m_keysValues[CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA] = true;
 }
 
-void DefaultConfig::store(const std::string & )
+boost::any Config::get(const std::string& key)
 {
+    return m_data[key];
 }
 
-boost::any DefaultConfig::get(const std::string & key)
-{
-	return m_data[key];
-}
-
-const boost::any& DefaultConfig::get(const CONFIG_KEY& key) const
+const boost::any& Config::get(const CONFIG_KEY& key) const
 {
     return m_keysValues.find(key)->second;
 }
 
-void DefaultConfig::set(const std::string & key, const boost::any & value)
+void Config::set(const std::string & key, const boost::any & value)
 {
-	m_data[key] = value;
+    m_data[key] = value;
 }
 
-bool DefaultConfig::isMobileProfile() const
+bool Config::isMobileProfile() const
 {
     return boost::any_cast<std::string>(m_data.at("profile")) == MOBILE;
 }

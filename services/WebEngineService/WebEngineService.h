@@ -29,7 +29,6 @@
 #include "AbstractWebEngine/TabIdTypedef.h"
 #include "AbstractWebEngine/WebConfirmation.h"
 #include "BrowserImage.h"
-#include "Config/Config.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -264,7 +263,6 @@ private:
     // Most recent tab list
     std::vector<TabId> m_mostRecentTab;
     int m_tabIdCreated;
-    config::DefaultConfig m_config;
 #if PROFILE_MOBILE
     std::map<WebEngineSettings, bool>  m_settings;
 #endif

@@ -30,7 +30,6 @@
 #include "BookmarkItem.h"
 #include "BrowserImage.h"
 #include "StorageService.h"
-#include "Config/Config.h"
 
 namespace tizen_browser{
 namespace interfaces{

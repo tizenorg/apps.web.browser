@@ -102,16 +102,14 @@ void SettingsStorage::init(bool testmode)
         return;
     }
 
-    config.load("whatever");
-
     std::string resourceDbDir;
     std::string dbSettings;
 
     if (!testmode) {
-        resourceDbDir = boost::any_cast < std::string > (config.get("resourcedb/dir"));
-        dbSettings = boost::any_cast < std::string > (config.get("DB_SETTINGS"));
+        resourceDbDir = boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("resourcedb/dir"));
+        dbSettings = boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("DB_SETTINGS"));
     } else {
-        resourceDbDir = boost::any_cast < std::string > (config.get("resourcedb/dir"));
+        resourceDbDir = boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("resourcedb/dir"));
         dbSettings = "settings_test.db";
     }
 
