@@ -33,10 +33,8 @@ BOOST_AUTO_TEST_CASE(InitSession)
 {
     BROWSER_LOGI("[UT] SessionStorage - InitSession - START --> ");
 
-    tizen_browser::config::DefaultConfig config;
-    config.load("not used text");
-    std::string resourceDbDir(boost::any_cast < std::string > (config.get("resourcedb/dir")));
-    std::string sessionDb(boost::any_cast < std::string > (config.get("DB_SESSION")));
+    std::string resourceDbDir(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("resourcedb/dir")));
+    std::string sessionDb(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("DB_SESSION")));
 
     boost::filesystem::path dbFile(resourceDbDir + sessionDb);
     boost::filesystem::remove(dbFile);

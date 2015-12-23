@@ -29,37 +29,20 @@ namespace config
 {
 
 /**
- * @brief Abstract config interface.
- */
-class BasicConfig
-{
-public:
-    virtual ~BasicConfig() {}
-    virtual void load(const std::string & filename) = 0;
-    virtual void store(const std::string & filename) = 0;
-};
-
-
-/**
  * @brief Default config placeholder.
  */
-class DefaultConfig : BasicConfig
+class Config
 {
 public:
+    static Config& getInstance()
+    {
+        static Config instance;
+        return instance;
+    }
+    Config();
+    Config(Config const&)   = delete;
+    void operator=(Config const&)  = delete;
 
-    /**
-     * @brief This method loads config from file, validates if file has
-	 * necessary values and sections.
-     *
-     * @param filename Name of config file.
-     */
-    void load(const std::string & filename); //final;
-    /**
-     * @brief This method stores config to file.
-     *
-     * @param filename Name of config file.
-     */
-    void store(const std::string & filename); //final;
     /**
      * @brief This method gets value from config stored under key.
      *
@@ -67,7 +50,7 @@ public:
      *
      * @return Value from config.
      */
-    boost::any get(const std::string & key);
+    boost::any get(const std::string& key);
     const boost::any& get(const CONFIG_KEY& key) const;
     /**
      * @brief This method sets passed value under passed key.

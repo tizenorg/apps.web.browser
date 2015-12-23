@@ -26,6 +26,7 @@
 #include <boost/format.hpp>
 #include <BrowserAssert.h>
 #include <string>
+#include "Config.h"
 #include "FoldersStorage.h"
 #include "Field.h"
 #include "SQLTransactionScope.h"
@@ -75,9 +76,8 @@ void FoldersStorage::init()
     if(m_isInitialized)
         return;
 
-    config.load("not used text");
-    std::string resourceDbDir(boost::any_cast < std::string > (config.get("resourcedb/dir")));
-    std::string sessionDb(boost::any_cast < std::string > (config.get("DB_FOLDERS")));
+    std::string resourceDbDir(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("resourcedb/dir")));
+    std::string sessionDb(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("DB_FOLDERS")));
 
     DB_FOLDERS = resourceDbDir + sessionDb;
 

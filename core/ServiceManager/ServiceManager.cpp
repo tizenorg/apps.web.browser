@@ -16,12 +16,10 @@
 #include "browser_config.h"
 #include <unordered_map>
 #include <boost/filesystem.hpp>
-
+#include "Config.h"
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
 #include "ServiceManager_p.h"
-
-static const std::string config_file = "mockuped/path/to/config/file.json";
 
 namespace tizen_browser
 {
@@ -30,7 +28,6 @@ namespace core
 
 ServiceManagerPrivate::ServiceManagerPrivate()
 {
-    config.load(config_file);
     findServiceLibs();
     loadServiceLibs();
     enumerateServices();
@@ -42,7 +39,7 @@ ServiceManagerPrivate::~ServiceManagerPrivate()
 void ServiceManagerPrivate::findServiceLibs()
 {
     try{
-        boost::filesystem::path servicesDir(boost::any_cast<std::string>(config.get("services/dir")));
+        boost::filesystem::path servicesDir(boost::any_cast<std::string>(tizen_browser::config::Config::getInstance().get("services/dir")));
         for( boost::filesystem::directory_iterator it(servicesDir);
                 it != boost::filesystem::directory_iterator();
                 ++it){

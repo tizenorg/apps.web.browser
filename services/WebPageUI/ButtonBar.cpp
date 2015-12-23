@@ -33,10 +33,8 @@ Ecore_Timer* ButtonBar::m_tooltipShowTimer = NULL;
 
 ButtonBar::ButtonBar(Evas_Object* parent, const std::string& edjFile, const std::string& groupName)
 {
-    config::DefaultConfig config;
-    config.load("");
 #if !PROFILE_MOBILE
-    ButtonBar::tooltipHideTimeout =  boost::any_cast <double> (config.get("TOOLTIP_HIDE_TIMEOUT"));
+    ButtonBar::tooltipHideTimeout =  boost::any_cast <double> (tizen_browser::config::Config::getInstance().get("TOOLTIP_HIDE_TIMEOUT"));
 #endif
 
     std::string edjFilePath = EDJE_DIR;

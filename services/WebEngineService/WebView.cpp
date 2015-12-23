@@ -81,7 +81,6 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_private(incognitoMode)
     , m_fullscreen(false)
 {
-    config.load("whatever");
 }
 
 WebView::~WebView()

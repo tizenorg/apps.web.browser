@@ -18,6 +18,7 @@
 
 #include <boost/format.hpp>
 #include <string>
+#include "Config.h"
 #include "SessionStorage.h"
 #include "Field.h"
 #include "SQLTransactionScope.h"
@@ -102,9 +103,8 @@ bool SessionStorage::init()
         return true;
     }
 
-    config.load("not used text");
-    std::string resourceDbDir(boost::any_cast < std::string > (config.get("resourcedb/dir")));
-    std::string sessionDb(boost::any_cast < std::string > (config.get("DB_SESSION")));
+    std::string resourceDbDir(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("resourcedb/dir")));
+    std::string sessionDb(boost::any_cast < std::string > (tizen_browser::config::Config::getInstance().get("DB_SESSION")));
 
     m_dbString = resourceDbDir + sessionDb;
     bool status = initSessionDatabase();
