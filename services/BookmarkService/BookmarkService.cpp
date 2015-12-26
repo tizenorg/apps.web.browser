@@ -124,12 +124,13 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
     // max sequence
     ret = bp_bookmark_adaptor_set_sequence(id, -1);
 
-    if(thumbnail)
-    {
-        std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
-        unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-        bp_bookmark_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
-    }
+    // TODO (siba.samal) Re-Enable  getBlobPNG() call. Currently disabled as it takes longer time fo WebGL Pages
+    //if(thumbnail)
+    //{
+        //std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
+        //unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
+        //bp_bookmark_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
+    //}
     if(favicon)
     {
         std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
