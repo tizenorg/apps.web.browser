@@ -44,7 +44,7 @@ URIEntry::URIEntry()
     , m_entry(NULL)
     , m_favicon(0)
     , m_entry_layout(NULL)
-    , m_entrySelectedAllFirst(false)
+    , m_entryClickCounter(0)
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("WebPageUI/URIEntry.edj");
@@ -91,9 +91,7 @@ Evas_Object* URIEntry::getContent()
         evas_object_smart_callback_add(m_entry, "focused", URIEntry::focused, this);
         evas_object_smart_callback_add(m_entry, "unfocused", URIEntry::unfocused, this);
         evas_object_smart_callback_add(m_entry, "clicked", _uri_entry_clicked, this);
-#if PROFILE_MOBILE
         evas_object_smart_callback_add(m_entry, "clicked,double", _uri_entry_double_clicked, this);
-#endif
         evas_object_event_callback_priority_add(m_entry, EVAS_CALLBACK_KEY_DOWN, 2 * EVAS_CALLBACK_PRIORITY_BEFORE, URIEntry::_fixed_entry_key_down_handler, this);
 
         elm_object_part_content_set(m_entry_layout, "uri_entry_swallow", m_entry);
@@ -200,10 +198,14 @@ void URIEntry::selectWholeText()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_oryginalEntryText = elm_entry_markup_to_utf8(elm_entry_entry_get(m_entry));
-    if (!m_entrySelectedAllFirst && !m_oryginalEntryText.empty()) {
-        elm_entry_select_all(m_entry);
-        elm_entry_cursor_end_set(m_entry);
-        m_entrySelectedAllFirst = true;
+    if(m_entryClickCounter == 0) {
+        if (!m_oryginalEntryText.empty()) {
+            elm_entry_select_all(m_entry);
+            elm_entry_cursor_end_set(m_entry);
+            m_entryClickCounter++;
+        }
+    } else {
+        elm_entry_select_none(m_entry);
     }
 }
 
@@ -213,14 +215,8 @@ void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* e
     URIEntry* self = static_cast<URIEntry*>(data);
 #if PROFILE_MOBILE
     self->showCancelIcon();
-    if (self->m_entrySelectedAllFirst) {
-        self->m_entrySelectedAllFirst = false;
-        return;
-    }
-    elm_entry_select_none(self->m_entry);
-#else
-    self->selectWholeText();
 #endif
+    self->selectWholeText();
 }
 
 #if !PROFILE_MOBILE
@@ -229,7 +225,6 @@ void URIEntry::_uri_entry_btn_clicked(void* data, Evas_Object* /*obj*/, void* /*
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
     elm_object_focus_set(self->m_entry, EINA_TRUE);
-    self->selectWholeText();
 
     elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
 }
@@ -280,7 +275,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-    self->m_entrySelectedAllFirst = false;
+    self->m_entryClickCounter = 0;
     self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
@@ -447,6 +442,7 @@ void URIEntry::_uri_entry_double_clicked(void* data, Evas_Object* /*obj*/, void*
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->selectWholeText();
+    self->m_entryClickCounter = 0;
 }
 
 void URIEntry::showCancelIcon()
