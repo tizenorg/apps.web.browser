@@ -1022,7 +1022,8 @@ void SimpleUI::filterURL(const std::string& url)
         else
             m_webEngine->setURI(url);
 
-        if (m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
+        if (m_webEngine->isPrivateMode(m_webEngine->currentTabId()) ||
+                m_webPageUI->stateEquals(WPUState::MAIN_ERROR_PAGE))
             switchViewToWebPage();
     }
     m_webPageUI->getURIEntry().clearFocus();
