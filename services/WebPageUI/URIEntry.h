@@ -131,7 +131,7 @@ private:
     Evas_Object* m_entry;
     Evas_Object* m_favicon;
     Evas_Object* m_entry_layout;
-    bool m_entrySelectedAllFirst;
+    unsigned m_entryClickCounter;
     std::string m_oryginalEntryText;
     std::string m_pageTitle;
     std::string m_URI;

@@ -44,7 +44,7 @@ URIEntry::URIEntry()
     , m_entry(NULL)
     , m_favicon(0)
     , m_entry_layout(NULL)
-    , m_entrySelectedAllFirst(false)
+    , m_entryClickCounter(0)
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("WebPageUI/URIEntry.edj");
@@ -200,10 +200,10 @@ void URIEntry::selectWholeText()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_oryginalEntryText = elm_entry_markup_to_utf8(elm_entry_entry_get(m_entry));
-    if (!m_entrySelectedAllFirst && !m_oryginalEntryText.empty()) {
+    if (!m_oryginalEntryText.empty()) {
         elm_entry_select_all(m_entry);
         elm_entry_cursor_end_set(m_entry);
-        m_entrySelectedAllFirst = true;
+        m_entryClickCounter++;
     }
 }
 
@@ -213,14 +213,12 @@ void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* e
     URIEntry* self = static_cast<URIEntry*>(data);
 #if PROFILE_MOBILE
     self->showCancelIcon();
-    if (self->m_entrySelectedAllFirst) {
-        self->m_entrySelectedAllFirst = false;
+    if (self->m_entryClickCounter == 1) {
+        elm_entry_select_none(self->m_entry);
         return;
     }
-    elm_entry_select_none(self->m_entry);
-#else
-    self->selectWholeText();
 #endif
+    self->selectWholeText();
 }
 
 #if !PROFILE_MOBILE
@@ -280,7 +278,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-    self->m_entrySelectedAllFirst = false;
+    self->m_entryClickCounter = 0;
     self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
@@ -447,6 +445,7 @@ void URIEntry::_uri_entry_double_clicked(void* data, Evas_Object* /*obj*/, void*
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->selectWholeText();
+    self->m_entryClickCounter = 0;
 }
 
 void URIEntry::showCancelIcon()
