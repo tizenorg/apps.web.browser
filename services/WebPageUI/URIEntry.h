@@ -118,12 +118,6 @@ private:
     void showCancelIcon();
 #endif
 
-#if !PROFILE_MOBILE
-    static void focusedBtn(void* data, Evas_Object* obj, void* event_info);
-    static void unfocusedBtn(void* data, Evas_Object* obj, void* event_info);
-    static void _uri_entry_btn_clicked(void* data, Evas_Object* obj, void* event_info);
-#endif
-
 private:
     Evas_Object* m_parent;
     IconType m_currentIconType;

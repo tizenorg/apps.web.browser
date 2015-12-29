@@ -95,18 +95,6 @@ Evas_Object* URIEntry::getContent()
         evas_object_event_callback_priority_add(m_entry, EVAS_CALLBACK_KEY_DOWN, 2 * EVAS_CALLBACK_PRIORITY_BEFORE, URIEntry::_fixed_entry_key_down_handler, this);
 
         elm_object_part_content_set(m_entry_layout, "uri_entry_swallow", m_entry);
-
-#if !PROFILE_MOBILE
-        m_entryBtn = elm_button_add(m_entry_layout);
-
-        evas_object_smart_callback_add(m_entryBtn, "focused", URIEntry::focusedBtn, this);
-        evas_object_smart_callback_add(m_entryBtn, "unfocused", URIEntry::unfocusedBtn, this);
-
-        elm_object_style_set(m_entryBtn, "entry_btn");
-        evas_object_smart_callback_add(m_entryBtn, "clicked", _uri_entry_btn_clicked, this);
-
-        elm_object_part_content_set(m_entry_layout, "uri_entry_btn", m_entryBtn);
-#endif
     }
     return m_entry_layout;
 }
@@ -218,17 +206,6 @@ void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* e
 #endif
     self->selectionTool();
 }
-
-#if !PROFILE_MOBILE
-void URIEntry::_uri_entry_btn_clicked(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    URIEntry* self = static_cast<URIEntry*>(data);
-    elm_object_focus_set(self->m_entry, EINA_TRUE);
-
-    elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
-}
-#endif
 
 void URIEntry::activated(void* /* data */, Evas_Object* /* obj */, void* /*event_info*/)
 {
@@ -402,22 +379,6 @@ bool URIEntry::hasFocus() const
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return elm_object_focus_get(m_entry) == EINA_TRUE ? true : false;
 }
-
-#if !PROFILE_MOBILE
-void URIEntry::focusedBtn(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    URIEntry* self = static_cast<URIEntry*>(data);
-    elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
-}
-
-void URIEntry::unfocusedBtn(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    URIEntry* self = static_cast<URIEntry*>(data);
-    elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
-}
-#endif
 
 void URIEntry::setDisabled(bool disabled)
 {
