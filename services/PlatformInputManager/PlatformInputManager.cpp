@@ -125,7 +125,12 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->rightPressed();
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
-#if !PROFILE_MOBILE
+#if PROFILE_MOBILE
+        else if (!keyName.compare("XF86AudioLowerVolume"))
+            self->rotateCounterClockwise();
+        else if (!keyName.compare("XF86AudioRaiseVolume"))
+            self->rotateClockwise();
+#else
         else if(!keyName.compare("F11") || !keyName.compare("XF86Back"))
             self->backPressed();
 #endif

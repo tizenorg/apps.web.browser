@@ -61,6 +61,8 @@ public:
     boost::signals2::signal<void ()> bluePressed;
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> menuButtonPressed;
+    boost::signals2::signal<void ()> rotateClockwise;
+    boost::signals2::signal<void ()> rotateCounterClockwise;
 #endif
     boost::signals2::signal<void ()> mouseClicked;
 
