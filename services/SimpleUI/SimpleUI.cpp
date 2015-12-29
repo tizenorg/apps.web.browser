@@ -78,7 +78,7 @@ SimpleUI::SimpleUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
 
-    Evas_Object *main_window = elm_win_util_standard_add("browserApp", "browserApp");
+    main_window = elm_win_util_standard_add("browserApp", "browserApp");
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");
 
@@ -525,6 +525,10 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
+    //TODO: This is a rotation workaround. Please delete this when proper rotation is implemented
+    m_platformInputManager->rotateClockwise.connect(boost::bind(&SimpleUI::onRotateClockwisePressed, this));
+    m_platformInputManager->rotateCounterClockwise.connect(boost::bind(&SimpleUI::onRotateCounterClockwisePressed, this));
+    //TODO: end of workaround
     m_webEngine->registerHWKeyCallback.connect(boost::bind(&SimpleUI::registerHWKeyCallback, this));
     m_webEngine->unregisterHWKeyCallback.connect(boost::bind(&SimpleUI::unregisterHWKeyCallback, this));
 #endif
@@ -950,6 +954,22 @@ void SimpleUI::onMenuButtonPressed()
     BROWSER_LOGD("[%s]", __func__);
     showMoreMenu();
 }
+
+//TODO: This is a rotation workaround. Those functions should be connected to proper callback.
+void SimpleUI::onRotateClockwisePressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    angle -= 90;
+    elm_win_rotation_with_resize_set(main_window, angle);
+}
+
+void SimpleUI::onRotateCounterClockwisePressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    angle += 90;
+    elm_win_rotation_with_resize_set(main_window, angle);
+}
+//TODO: end of a workaround
 #endif
 
 void SimpleUI::reloadEnable(bool enable)
