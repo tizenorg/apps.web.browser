@@ -267,30 +267,6 @@ collections {
                 visible: 1;
             }
         }
-        part {
-            name: "over";
-            type: RECT;
-            mouse_events: 1;
-            repeat_events: 1;
-            description {
-                state: "default" 0.0;
-                color: 0 0 0 0;
-                rel1 { relative: 0 0; to: "spacer_1"; }
-                rel2 { relative: 1 1; to: "spacer_1"; }
-            }
-        }
-        part {
-            name: "uri_entry_btn";
-            type: SWALLOW;
-            mouse_events: 1;
-            repeat_events: 1;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                rel1.to: "uri_entry_swallow";
-                rel2.to: "uri_entry_swallow";
-            }
-        }
     }
     programs {
         program {
@@ -306,20 +282,6 @@ collections {
             source: "ui";
             action: STATE_SET "default" 0.0;
             target: "uri_entry_swallow";
-        }
-        program {
-            name: "mouse_in_entry";
-            source: "over";
-            signal: "mouse,in";
-            action: STATE_SET "focused" 0.0;
-            target: "spacer_1";
-        }
-        program {
-            name: "mouse_out_entry";
-            source: "over";
-            signal: "mouse,out";
-            action: STATE_SET "default" 0.0;
-            target: "spacer_1";
         }
     }
 }
