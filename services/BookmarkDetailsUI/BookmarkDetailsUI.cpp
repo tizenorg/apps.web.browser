@@ -73,10 +73,13 @@ BookmarkDetailsUI::BookmarkDetailsUI()
 #endif
     , m_close_button(nullptr)
     , m_bookmark_item_class(nullptr)
+    , m_rotation_state(0)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("BookmarkDetailsUI/BookmarkDetailsUI.edj");
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     createGengridItemClasses();
 }
 
@@ -107,8 +110,6 @@ BookmarkDetailsUI::~BookmarkDetailsUI()
     evas_object_del(m_cancel_top_button);
     evas_object_del(m_remove_top_button);
 #endif
-
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_bookmark_item_class)
         elm_gengrid_item_class_free(m_bookmark_item_class);
 }
@@ -133,7 +134,6 @@ void BookmarkDetailsUI::init(Evas_Object* parent)
 
 void BookmarkDetailsUI::showUI()
 {
-    evas_object_show(m_layout);
     m_focusManager.startFocusManager(m_gengrid);
     elm_object_signal_emit(m_layout, "hide_menu", "ui");
 #if PROFILE_MOBILE
@@ -142,6 +142,7 @@ void BookmarkDetailsUI::showUI()
     evas_object_hide(m_menu_bg_button);
     evas_object_hide(elm_object_part_content_get(m_layout, "more_bg"));
 #endif
+    evas_object_show(m_layout);
 }
 
 void BookmarkDetailsUI::hideUI()
@@ -161,7 +162,7 @@ Evas_Object* BookmarkDetailsUI::getContent()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_parent);
     if (!m_layout)
-      m_layout = createLayout(m_parent);
+        m_layout = createLayout(m_parent);
     setEmpty(true);
     return m_layout;
 }
@@ -175,6 +176,28 @@ void BookmarkDetailsUI::onBackPressed()
 #endif
     closeBookmarkDetailsClicked();
 }
+
+#if PROFILE_MOBILE
+void BookmarkDetailsUI::setLandscape(bool state)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_rotation_state = state ? 0 : 1;
+    resetContent();
+}
+
+void BookmarkDetailsUI::resetContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    if (m_rotation_state) {
+        elm_gengrid_item_size_set(m_gengrid, (290+18) * efl_scale, (308+18) * efl_scale);
+        elm_object_signal_emit(m_layout, "switch_landscape", "ui");
+    } else {
+        elm_gengrid_item_size_set(m_gengrid, (319+18) * efl_scale, (361+18) * efl_scale);
+        elm_object_signal_emit(m_layout, "switch_vertical", "ui");
+    }
+}
+#endif
 
 char* BookmarkDetailsUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
@@ -229,9 +252,9 @@ void BookmarkDetailsUI::_bookmark_item_clicked(void* data, Evas_Object*, void*)
             itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getAddress()] =
                     !itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getAddress()];
             elm_object_item_signal_emit(itemData->bookmarkDetailsUI->
-                                        m_map_bookmark[itemData->item->getAddress()], "check_box_click", "ui");
+                                    m_map_bookmark[itemData->item->getAddress()], "check_box_click", "ui");
             elm_object_part_text_set(itemData->bookmarkDetailsUI->m_top_content, "title_text", (boost::format("%d %s")
-                                     % itemData->bookmarkDetailsUI->m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
+                                    % itemData->bookmarkDetailsUI->m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
         }
         else
             itemData->bookmarkDetailsUI->bookmarkItemClicked(itemData->item);
@@ -270,12 +293,12 @@ void BookmarkDetailsUI::_more_button_clicked(void* data, Evas_Object*, void*)
             elm_object_signal_emit(bookmarkDetailsUI->m_layout, "show_menu", "ui");
             elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_more", "ui");
             evas_object_show(bookmarkDetailsUI->m_menu);
-            evas_object_show(elm_object_part_content_get(bookmarkDetailsUI->m_layout,"more_swallow"));
+            evas_object_show(elm_object_part_content_get(bookmarkDetailsUI->m_layout, "more_swallow"));
         } else {
             elm_object_signal_emit(bookmarkDetailsUI->m_layout, "hide_menu", "ui");
             elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_less", "ui");
             evas_object_hide(bookmarkDetailsUI->m_menu);
-            evas_object_hide(elm_object_part_content_get(bookmarkDetailsUI->m_layout,"more_swallow"));
+            evas_object_hide(elm_object_part_content_get(bookmarkDetailsUI->m_layout, "more_swallow"));
         }
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
@@ -317,19 +340,19 @@ void BookmarkDetailsUI::_remove_button_clicked(void* data, Evas_Object*, void*)
     if (data != nullptr) {
         BookmarkDetailsUI* bookmarkDetailsUI = static_cast<BookmarkDetailsUI*>(data);
         bookmarkDetailsUI->m_map_delete.clear();
+        bookmarkDetailsUI->m_remove_bookmark_mode = true;
+
         for (auto it = bookmarkDetailsUI->m_map_bookmark.begin(); it != bookmarkDetailsUI->m_map_bookmark.end(); ++it) {
             elm_object_item_signal_emit(it->second, "check_box_click", "ui");
             bookmarkDetailsUI->m_map_delete.insert(std::pair<std::string, bool>(it->first, false));
         }
-        bookmarkDetailsUI->m_remove_bookmark_mode = true;
-
         elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_less", "ui");
         elm_object_signal_emit(bookmarkDetailsUI->m_layout, "hide_menu", "ui");
         elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "removal_mode", "ui");
         elm_object_part_text_set(bookmarkDetailsUI->m_top_content, "title_text", (boost::format("%d %s")
                                  % bookmarkDetailsUI->m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
         evas_object_hide(bookmarkDetailsUI->m_menu);
-        evas_object_hide(elm_object_part_content_get(bookmarkDetailsUI->m_layout,"more_swallow"));
+        evas_object_hide(elm_object_part_content_get(bookmarkDetailsUI->m_layout, "more_swallow"));
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
@@ -366,10 +389,10 @@ void BookmarkDetailsUI::_remove_top_button_clicked(void* data, Evas_Object*, voi
                 elm_object_item_del(bookmarkDetailsUI->m_map_bookmark[it->first]);
                 bookmarkDetailsUI->m_map_bookmark.erase(it->first);
             }
-        bookmarkDetailsUI->m_map_delete.clear();
         elm_object_part_text_set(bookmarkDetailsUI->m_top_content, "title_text", (boost::format("%s(%d)")
-                                 % bookmarkDetailsUI->m_folder_name.c_str()
-                                 % elm_gengrid_items_count(bookmarkDetailsUI->m_gengrid)).str().c_str());
+                                % bookmarkDetailsUI->m_folder_name.c_str()
+                                % elm_gengrid_items_count(bookmarkDetailsUI->m_gengrid)).str().c_str());
+        bookmarkDetailsUI->m_map_delete.clear();
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
@@ -441,8 +464,9 @@ void BookmarkDetailsUI::createTopContent()
 void BookmarkDetailsUI::createGengrid()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+
     m_gengrid = elm_gengrid_add(m_layout);
+    edje_object_update_hints_set(m_gengrid, EINA_TRUE);
     elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
     elm_gengrid_align_set(m_gengrid, 0, 0);
     elm_gengrid_select_mode_set(m_gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
@@ -450,8 +474,8 @@ void BookmarkDetailsUI::createGengrid()
 #if PROFILE_MOBILE
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_TRUE);
     elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_item_size_set(m_gengrid, (319+18) * efl_scale, (361+18) * efl_scale);
 #else
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_object_style_set(m_gengrid, "back_ground");
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(m_gengrid, 0, 327);
@@ -543,7 +567,6 @@ void BookmarkDetailsUI::createBottomContent()
 Evas_Object* BookmarkDetailsUI::createLayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     m_layout = elm_layout_add(parent);
     elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "bookmark-details-layout");
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -552,6 +575,7 @@ Evas_Object* BookmarkDetailsUI::createLayout(Evas_Object* parent)
     createTopContent();
     createGengrid();
 #if PROFILE_MOBILE
+    resetContent();
     createMenuDetails();
 #else
     createBottomContent();
@@ -566,12 +590,12 @@ void BookmarkDetailsUI::addBookmarkItem(std::shared_ptr<tizen_browser::services:
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkDetailsUI.reset(this);
-    Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_bookmark_item_class,
+    Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_bookmark_item_class,
                                                             itemData, _bookmark_item_clicked, itemData);
 #if PROFILE_MOBILE
-    m_map_bookmark.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(), BookmarkView));
+    m_map_bookmark.insert(std::pair<std::string,Elm_Object_Item*>(hi->getAddress(), bookmarkView));
 #endif
-    elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
+    elm_gengrid_item_selected_set(bookmarkView, EINA_FALSE);
 }
 
 void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > items, std::string folder_name)
@@ -582,12 +606,11 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
         addBookmarkItem(*it);
     elm_object_part_text_set(m_top_content, "title_text",
 #if PROFILE_MOBILE
-                             (boost::format("%s(%d)") % m_folder_name.c_str() % items.size()).str().c_str());
+                            (boost::format("%s(%d)") % m_folder_name.c_str() % items.size()).str().c_str());
 #else
-                             (boost::format("Bookmark manager > %s") % m_folder_name.c_str()).str().c_str());
+                            (boost::format("Bookmark manager > %s") % m_folder_name.c_str()).str().c_str());
 #endif
     elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
-    evas_object_show(m_gengrid);
 #if PROFILE_MOBILE
     elm_box_unpack_all(m_menu);
     //TODO: missing translation
@@ -603,11 +626,13 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
     elm_box_pack_end(m_menu, m_remove_button);
 #else
     elm_object_part_text_set(m_bottom_content, "text", (boost::format("%d %s") % elm_gengrid_items_count(m_gengrid) %
-                                                        (elm_gengrid_items_count(m_gengrid) == 1 ? "bookmark" : "bookmarks")).str().c_str());
+                                                    (elm_gengrid_items_count(m_gengrid) == 1 ? "bookmark" : "bookmarks")).str().c_str());
 #endif
     if (items.size() != 0)
         setEmpty(false);
+    evas_object_show(m_gengrid);
 }
 
 }
 }
+

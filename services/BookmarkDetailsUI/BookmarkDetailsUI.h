@@ -65,6 +65,8 @@ public:
     boost::signals2::signal<void (std::string)> editFolderButtonClicked;
     boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
     boost::signals2::signal<void (std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>>)> removeFoldersButtonClicked;
+
+    void setLandscape(bool state);
 #endif
 
 private:
@@ -79,6 +81,7 @@ private:
     void createGengrid();
     void createBottomContent();
 #if PROFILE_MOBILE
+    void resetContent();
     void createMenuDetails();
     void resetRemovalMode(bool clear = true);
     static void _more_button_clicked(void *data, Evas_Object *, void *);
@@ -122,6 +125,7 @@ private:
 
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     std::string m_folder_name;
+    unsigned int m_rotation_state;
 };
 
 }

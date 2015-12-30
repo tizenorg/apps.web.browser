@@ -1,34 +1,20 @@
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
-collections {
-
 #define DEVELOPMENT 0
 
-#define INDICATOR 52
-#define LAYOUT_WIDTH 720
-#define LAYOUT_HEIGHT 1120+INDICATOR
-#define LAYOUT_TITLE_HEIGHT 108
+#define CONTENT_AREA_GRID_SPACER_X 32 //do programu 33/32
+#define CONTENT_AREA_GRID_SPACER_Y 40 //do programu 39/40 w zaleznosci od landscape/vertical.
 
+#define LAYOUT_TITLE_HEIGHT 108
 #define TITLE_AREA_OFFSET_X 32
 #define TITLE_AREA_OFFSET_Y 39
-#define TITLE_AREA_CANCEL_WIDTH 130
-#define TITLE_AREA_CANCEL_HEIGHT 30
-#define TITLE_AREA_CANCEL_CLICK_OFFSET_X 16
-#define TITLE_AREA_CANCEL_CLICK_OFFSET_Y 22
-#define TITLE_AREA_CANCEL_CLICK_WIDTH 143
-#define TITLE_AREA_CANCEL_CLICK_HEIGHT 64
-#define TITLE_AREA_TEXT_OFFSET_X 180
-#define TITLE_AREA_TEXT_OFFSET_Y 32
-#define TITLE_AREA_REMOVE_WIDTH 130
-#define TITLE_AREA_REMOVE_HEIGHT 32
-#define TITLE_AREA_REMOVE_OFFSET_X (396+TITLE_AREA_OFFSET_X+TITLE_AREA_CANCEL_WIDTH)
-#define TITLE_AREA_REMOVE_CLICK_OFFSET_X (402+143+16)
-#define TITLE_AREA_REMOVE_CLICK_OFFSET_Y 22
-#define TITLE_AREA_REMOVE_CLICK_WIDTH 143
-#define TITLE_AREA_REMOVE_CLICK_HEIGHT 64
-
-#define SMALL_TILE_WIDTH 319
-#define SMALL_TILE_HEIGHT 361
+#define TITLE_AREA_ICON_SIZE 64
+#define TITLE_AREA_MODE_WIDTH 130
+#define TITLE_AREA_MODE_HEIGHT 30
+#define TITLE_AREA_CLICK_OFFSET_X 16
+#define TITLE_AREA_CLICK_OFFSET_Y 22
+#define TITLE_AREA_CLICK_WIDTH 143
+#define TITLE_AREA_CLICK_HEIGHT 64
 
 #define MORE_SWALLOW_WIDTH 480
 #define MORE_SWALLOW_HEIGHT 360
@@ -39,10 +25,11 @@ collections {
 #define TEXT_HEIGHT 38
 #define TEXT_OFFSET_X 33
 #define TEXT_OFFSET_Y 41
-#define REMOVE_CHECKBOX_OFFSET_X 257
+#define REMOVE_CHECKBOX_OFFSET_X 14
 #define REMOVE_CHECKBOX_OFFSET_Y 14
 #define REMOVE_CHECKBOX_SIZE 48
 
+collections {
     group {
         name: "elm/button/base/more-shadow-button";
         min: MORE_SWALLOW_WIDTH+SHADOW_SIZE MORE_ITEM_HEIGHT+SHADOW_SIZE;
@@ -409,8 +396,6 @@ collections {
 
     group {
         name: "top-content";
-        min: LAYOUT_WIDTH LAYOUT_HEIGHT;
-        max: LAYOUT_WIDTH LAYOUT_HEIGHT;
         images {
             image: "navi_ic_back_nor.png" COMP;
             image: "navi_ic_more_nor.png" COMP;
@@ -433,32 +418,21 @@ collections {
         }
         parts {
             part {
-                name: "bg_rect";
+                name: "bg";
                 scale:1;
                 mouse_events: 1;
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    color: 231 231 231 255;
-                    align: 0 0;
-                    min: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
-                    max: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
-                    rel1.relative: 0.0 0.0;
-                }
-            }
-            part {
-                name: "action_bar_bg";
-                type: RECT;
-                scale: 1;
-                description { state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    min: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
-                    max: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
-                    align: 0 0;
-                    rel1 { relative: 0.0 0.0;to: "bg_rect";}
-                    rel2 { relative: 1.0 1.0;to: "bg_rect";}
                     color : 255 255 255 255;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 0 1;
+                    min: 0 LAYOUT_TITLE_HEIGHT;
+                    max: -1 LAYOUT_TITLE_HEIGHT;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    color: 255 255 255 255;
                 }
             }
             part {
@@ -470,11 +444,11 @@ collections {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
                     color: 255 255 255 127;
-                    min: TITLE_AREA_CANCEL_CLICK_OFFSET_X TITLE_AREA_CANCEL_CLICK_OFFSET_Y;
-                    max: TITLE_AREA_CANCEL_CLICK_OFFSET_X TITLE_AREA_CANCEL_CLICK_OFFSET_Y;
+                    min: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
+                    max: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
                     align: 0.0 0.0;
                     rel1 {
-                        to: "action_bar_bg";
+                        to: "bg";
                         relative: 0.0 0.0;
                     }
                     rel2.relative: 1.0 1.0;
@@ -487,11 +461,11 @@ collections {
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    visible: 0;
+                    visible: DEVELOPMENT;
                     align: 0.0 0.0;
                     color: 224 237 251 255;
-                    min: TITLE_AREA_CANCEL_CLICK_WIDTH TITLE_AREA_CANCEL_CLICK_HEIGHT;
-                    max: TITLE_AREA_CANCEL_CLICK_WIDTH TITLE_AREA_CANCEL_CLICK_HEIGHT;
+                    min: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
+                    max: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
                     rel1 {
                         to: "cancel_click_spacer_2";
                         relative: 1.0 1.0;
@@ -518,7 +492,7 @@ collections {
                     color: 255 255 255 127;
                     rel1 {
                         relative: 0.0 0.0;
-                        to: "action_bar_bg";
+                        to: "bg";
                     }
                     rel2.relative: 1.0 1.0;
                 }
@@ -531,8 +505,8 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: TITLE_AREA_CANCEL_WIDTH TITLE_AREA_CANCEL_HEIGHT;
-                    max: TITLE_AREA_CANCEL_WIDTH TITLE_AREA_CANCEL_HEIGHT;
+                    min: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
+                    max: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
                     visible: DEVELOPMENT;
                     color: 255 255 0 255; //yellow
                     rel1 {
@@ -551,8 +525,8 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
-                    min: TITLE_AREA_CANCEL_WIDTH (TITLE_AREA_CANCEL_HEIGHT);
-                    max: TITLE_AREA_CANCEL_WIDTH (TITLE_AREA_CANCEL_HEIGHT);
+                    min: TITLE_AREA_MODE_WIDTH (TITLE_AREA_MODE_HEIGHT);
+                    max: TITLE_AREA_MODE_WIDTH (TITLE_AREA_MODE_HEIGHT);
                     rel1 {
                         to: "cancel_bg_2";
                         relative: 0.0 0.0;
@@ -583,8 +557,8 @@ collections {
                     visible: 0;
                     align: 0.0 0.0;
                     fixed: 1.0 1.0;
-                    min: TITLE_AREA_CANCEL_CLICK_WIDTH TITLE_AREA_CANCEL_CLICK_HEIGHT;
-                    max: TITLE_AREA_CANCEL_CLICK_WIDTH TITLE_AREA_CANCEL_CLICK_HEIGHT;
+                    min: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
+                    max: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
                     rel1 {
                         to: "cancel_click_bg_2";
                         relative: 0.0 0.0;
@@ -601,87 +575,86 @@ collections {
                     visible: 1;
                 }
             }
-            part {
-                name: "remove_click_spacer_2";
-                type: RECT;
-                scale: 1;
-                mouse_events: 0;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    min: TITLE_AREA_REMOVE_CLICK_OFFSET_X TITLE_AREA_REMOVE_CLICK_OFFSET_Y;
-                    max: TITLE_AREA_REMOVE_CLICK_OFFSET_X TITLE_AREA_REMOVE_CLICK_OFFSET_Y;
-                    align: 0.0 0.0;
-                    rel1 {
-                        to: "action_bar_bg";
-                        relative: 0.0 0.0;
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-            }
-            part {
-                name: "remove_click_bg_2";
-                type: RECT;
-                scale: 1;
-                mouse_events: 0;
-                description {
-                    state: "default" 0.0;
-                    visible: 0;
-                    align: 0.0 0.0;
-                    color: 224 237 251 255;
-                    min: TITLE_AREA_REMOVE_CLICK_WIDTH TITLE_AREA_REMOVE_CLICK_HEIGHT;
-                    max: TITLE_AREA_REMOVE_CLICK_WIDTH TITLE_AREA_REMOVE_CLICK_HEIGHT;
-                    rel1 {
-                        to: "remove_click_spacer_2";
-                        relative: 1.0 1.0;
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-                description {
-                    state: "focused" 0.0;
-                    inherit: "default";
-                    visible: 1;
-                }
-            }
-            part {
-                name: "remove_spacer_2";
-                type: RECT;
-                scale: 1;
-                mouse_events: 0;
-                description {
-                    state: "default" 0.0;
-                    align: 0.0 0.0;
-                    min: TITLE_AREA_REMOVE_OFFSET_X TITLE_AREA_OFFSET_Y;
-                    max: TITLE_AREA_REMOVE_OFFSET_X TITLE_AREA_OFFSET_Y;
-                    visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "action_bar_bg";
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-            }
-            part {
-                name: "remove_bg_2";
-                type: RECT;
-                scale: 1;
-                mouse_events: 0;
-                description {
-                    state: "default" 0.0;
-                    align: 0.0 0.0;
-                    min: TITLE_AREA_REMOVE_WIDTH TITLE_AREA_REMOVE_HEIGHT;
-                    max: TITLE_AREA_REMOVE_WIDTH TITLE_AREA_REMOVE_HEIGHT;
-                    color: 238 201 0 255; //gold;
-                    visible: DEVELOPMENT;
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "remove_spacer_2";
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-            }
+            part { name: "remove_click_spacer_2";
+                   type: RECT;
+                   scale: 1;
+                   mouse_events: 0;
+                   description { state: "default" 0.0;
+                                 visible: DEVELOPMENT;
+                                 color: 255 255 255 127;
+                                 min: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
+                                 max: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
+                                 fixed: 1 1;
+                                 align: 1.0 1.0;
+                                 rel1 { to: "bg";
+                                        relative: 0.0 0.0;
+                                      }
+                                 rel2 { to: "bg";
+                                        relative: 1.0 1.0;
+                                      }
+                               }
+                 }
+            part { name: "remove_click_bg_2";
+                   type: RECT;
+                   scale: 1;
+                   mouse_events: 0;
+                   description { state: "default" 0.0;
+                                 visible: DEVELOPMENT;
+                                 align: 1.0 1.0;
+                                 color: 224 237 251 255;
+                                 min: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
+                                 max: TITLE_AREA_CLICK_WIDTH TITLE_AREA_CLICK_HEIGHT;
+                                 fixed: 1 1;
+                                 rel1 { to: "bg";
+                                        relative: 0.0 0.0;
+                                      }
+                                 rel2 { to: "remove_click_spacer_2";
+                                        relative: 0.0 0.0;
+                                      }
+                               }
+                   description { state: "focused" 0.0;
+                                 inherit: "default";
+                                 visible: 1;
+                               }
+                 }
+            part { name: "remove_spacer_2";
+                   type: RECT;
+                   scale: 1;
+                   mouse_events: 0;
+                   description { state: "default" 0.0;
+                                 align: 1.0 1.0;
+                                 min: TITLE_AREA_OFFSET_X TITLE_AREA_OFFSET_Y;
+                                 max: TITLE_AREA_OFFSET_X TITLE_AREA_OFFSET_Y;
+                                 fixed: 1 1;
+                                 visible: DEVELOPMENT;
+                                 color: 255 255 255 127;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 1.0 1.0;
+                                        to: "bg";
+                                      }
+                   }
+                 }
+            part { name: "remove_bg_2";
+                   type: RECT;
+                   scale: 1;
+                   mouse_events: 0;
+                   description { state: "default" 0.0;
+                                 align: 1.0 1.0;
+                                 min: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
+                                 max: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
+                                 fixed: 1 1;
+                                 color: 238 201 0 255; //gold;
+                                 visible: DEVELOPMENT;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 0.0 0.0;
+                                        to: "remove_spacer_2";
+                                      }
+                               }
+                 }
             part {
                 name: "remove_text_2";
                 type: TEXTBLOCK;
@@ -691,8 +664,8 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
-                    min: TITLE_AREA_REMOVE_WIDTH TITLE_AREA_REMOVE_HEIGHT;
-                    max: TITLE_AREA_REMOVE_WIDTH TITLE_AREA_REMOVE_HEIGHT;
+                    min: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
+                    max: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
                     rel1 {
                         to: "remove_bg_2";
                         relative: 0.0 0.0;
@@ -728,8 +701,8 @@ collections {
                     visible: 0;
                     align: 0.0 0.0;
                     fixed: 1.0 1.0;
-                    min: TITLE_AREA_REMOVE_CLICK_WIDTH TITLE_AREA_REMOVE_CLICK_HEIGHT;
-                    max: TITLE_AREA_REMOVE_CLICK_WIDTH TITLE_AREA_REMOVE_CLICK_HEIGHT;
+                    min: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
+                    max: TITLE_AREA_MODE_WIDTH TITLE_AREA_MODE_HEIGHT;
                     rel1 {
                         to: "remove_click_bg_2";
                         relative: 0.0 0.0;
@@ -758,7 +731,7 @@ collections {
                     color: 255 255 255 127;
                     rel1 {
                         relative: 0.0 0.0;
-                        to: "action_bar_bg";
+                        to: "bg";
                     }
                     rel2.relative: 1.0 1.0;
                 }
@@ -772,16 +745,16 @@ collections {
                     visible: 0;
                     fixed: 1 1;
                     align: 0 0.5;
-                    min: 64 64;
-                    max: 64 64;
+                    min: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                    max: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
                     color: 224 237 251 255;
                     rel1 {
                         relative: 1.0 1.0;
-                        to: "back_spacer";
+                        to: "bg";
                     }
                     rel2 {
                         relative: 1.0 1.0;
-                        to: "action_bar_bg";
+                        to: "bg";
                     }
                 }
                 description {
@@ -799,15 +772,15 @@ collections {
                     visible: 1;
                     fixed: 1 1;
                     align: 0 0.5;
-                    min: 64 64;
-                    max: 64 64;
+                    min: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                    max: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
                     rel1 {
                         relative: 1.0 1.0;
                         to: "back_spacer";
                     }
                     rel2 {
                         relative: 1.0 1.0;
-                        to: "action_bar_bg";
+                        to: "bg";
                     }
                     image.normal: "navi_ic_back_nor.png";
                 }
@@ -826,11 +799,14 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0 0;
-                    fixed: 1 1;
-                    min: 64 64;
-                    max: 64 64;
-                    rel1 { relative: 0.0 0.0; to: "close_icon";}
-                    rel2 { relative: 1.0 1.0; to: "close_icon";}
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "close_icon";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "close_icon";
+                    }
                     color_class: transparent;
                 }
                 description {
@@ -849,11 +825,14 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0 0;
-                    fixed: 1 1;
-                    min: 64 64;
-                    max: 64 64;
-                    rel1 { relative: 0.0 0.0; to: "close_icon";}
-                    rel2 { relative: 1.0 1.0; to: "close_icon";}
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "close_icon";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "close_icon";
+                    }
                     color: 0 0 0 0;
                 }
                 description {
@@ -869,76 +848,68 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    align: 0.0 0.0;
+                    align: 1.0 1.0;
                     color: 255 255 255 127;
-                    min: 640 0;
-                    max: 640 0;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "action_bar_bg";
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-            }
-            part {
-                name: "more_bg";
-                type: RECT;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 0;
                     fixed: 1 1;
-                    align: 0 0.5;
-                    min: 64 64;
-                    max: 64 64;
-                    color: 224 237 251 255;
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "more_spacer";
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                        to: "action_bar_bg";
-                    }
-                }
-                description {
-                    state: "focused" 0.0;
-                    inherit: "default";
-                    visible: 1;
+                    min: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
+                    max: TITLE_AREA_CLICK_OFFSET_X TITLE_AREA_CLICK_OFFSET_Y;
+                    rel1 { relative: 0.0 0.0;
+                           to: "bg";
+                         }
+                    rel2 { relative: 1.0 1.0;
+                           to: "bg";
+                         }
                 }
             }
-            part {
-                name: "more_icon";
-                type: IMAGE;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    fixed: 1 1;
-                    align: 0 0.5;
-                    min: 64 64;
-                    max: 64 64;
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "more_spacer";
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                        to: "action_bar_bg";
-                    }
-                    image.normal: "navi_ic_more_nor.png";
-                }
-                description {
-                    state: "more" 0.0;
-                    inherit: "default";
-                    image.normal: "navi_ic_more_sel.png";
-                }
-                description {
-                    state: "removal";
-                    inherit: "default";
-                    visible: 0;
-                }
-            }
+            part { name: "more_bg";
+                   type: RECT;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 visible: 0;
+                                 fixed: 1 1;
+                                 align: 1 1;
+                                 min: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                                 max: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                                 color: 224 237 251 255;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 0.0 0.0;
+                                        to: "more_spacer";
+                                      }
+                               }
+                   description {
+                       state: "focused" 0.0;
+                       inherit: "default";
+                       visible: 1;
+                   }
+                 }
+            part { name: "more_icon";
+                   type: IMAGE;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 visible: 1;
+                                 fixed: 1 1;
+                                 align: 1 1;
+                                 min: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                                 max: TITLE_AREA_ICON_SIZE TITLE_AREA_ICON_SIZE;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 0.0 0.0;
+                                        to: "more_spacer";
+                                      }
+                                 image.normal: "navi_ic_more_nor.png";
+                               }
+                   description { state: "more" 0.0;
+                                 inherit: "default";
+                                 image.normal: "navi_ic_more_sel.png";
+                               }
+                   description { state: "removal";
+                                 inherit: "default";
+                                 visible: 0;
+                               }
+                 }
             part {
                 name: "more_click";
                 scale: 1;
@@ -948,11 +919,14 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0 0;
-                    fixed: 1 1;
-                    min: 64 64;
-                    max: 64 64;
-                    rel1 { relative: 0.0 0.0; to: "more_icon";}
-                    rel2 { relative: 1.0 1.0; to: "more_icon";}
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "more_icon";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "more_icon";
+                    }
                     color_class: transparent;
                 }
                 description {
@@ -971,11 +945,14 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0 0;
-                    fixed: 1 1;
-                    min: 64 64;
-                    max: 64 64;
-                    rel1 { relative: 0.0 0.0; to: "more_icon";}
-                    rel2 { relative: 1.0 1.0; to: "more_icon";}
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "more_icon";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "more_icon";
+                    }
                     color: 0 0 0 0;
                 }
                 description {
@@ -994,10 +971,12 @@ collections {
                     fixed: 1 1;
                     rel1 {
                         relative: 1.0 0.0;
-                        to: "close_icon";}
+                        to: "close_icon";
+                    }
                     rel2 {
                         relative: 0.0 1.0;
-                        to: "more_icon";}
+                        to: "more_icon";
+                    }
                     color: 51 51 51 255;
                     text {
                         text: "FolderName (10)";
@@ -1150,22 +1129,20 @@ collections {
             item: "highlight_focus" "off";
         }
         parts {
-            part { name: "window_bg";
+            part {
+                name: "window_bg";
                 type: RECT;
                 scale: 1;
                 mouse_events: 0;
-                description { state: "default" 0.0;
-                              align: 0.0 0.0;
-                              visible: 1;
-                              min: LAYOUT_WIDTH LAYOUT_HEIGHT;
-                              max: LAYOUT_WIDTH LAYOUT_HEIGHT;
-                              color: 231 231 231 255;
-                              rel1 {
-                                  relative: 0 0;
-                              }
-                              rel2{
-                                  relative: 1 1;
-                              }
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    visible: 1;
+                    fixed: 0 0;
+                    max: -1 -1;
+                    color: 231 231 231 255;
+                    rel1.relative: 0 0;
+                    rel2.relative: 1 1;
                 }
             }
             part {
@@ -1175,10 +1152,10 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    min: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
-                    max: LAYOUT_WIDTH LAYOUT_TITLE_HEIGHT;
                     align: 0.0 0.0;
-                    fixed: 0 0;
+                    fixed: 0 1;
+                    min: 0 LAYOUT_TITLE_HEIGHT;
+                    max: -1 LAYOUT_TITLE_HEIGHT;
                     rel1 { relative: 0.0 0.0; to: "window_bg";}
                     rel2 { relative: 1.0 1.0; to: "window_bg";}
                 }
@@ -1202,10 +1179,10 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: LAYOUT_WIDTH LAYOUT_HEIGHT;
-                    max: LAYOUT_WIDTH LAYOUT_HEIGHT;
+                    min: 0 0;
+                    max: -1 -1;
                     color: 231 231 231 255;
-                    fixed: 1 1;
+                    fixed: 0 0;
                     rel1 {
                         relative: 0 1;
                         to: "top_content";
@@ -1217,20 +1194,23 @@ collections {
                 name: "swallow_grid_spacer";
                 type: RECT;
                 scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    align: 0.0 0.0;
-                    color: 255 255 255 127;
-                    min: 32 40;
-                    max: 32 40;
-                    rel1 {
-                        relative: 0 0;
-                        to: "gengrid_bg";
-                    }
-                    rel2.relative: 1 1;
-                }
-            }
+                description { state: "default" 0.0;
+                              visible: DEVELOPMENT;
+                              align: 0.0 0.0;
+                              color: 255 255 255 127;
+                              min: 32 40;
+                              max: 32 40;
+                              rel1 { relative: 0 0;
+                                     to: "gengrid_bg";
+                                   }
+                              rel2.relative: 1 1;
+                            }
+                description { state: "landscape" 0.0;
+                              inherit: "default";
+                              min: 33 39;
+                              max: 33 30;
+                            }
+                 }
             part {
                 name: "elm.swallow.grid";
                 type: SWALLOW;
@@ -1238,12 +1218,18 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    min: LAYOUT_WIDTH LAYOUT_HEIGHT;
-                    max: LAYOUT_WIDTH LAYOUT_HEIGHT;
+                    fixed: 0 0;
+                    min: 0 0;
+                    max: -1 -1;
                     align: 0.0 0.0;
-                    fixed: 1 1;
-                    rel1 { relative: 1.0 1.0; to: "swallow_grid_spacer";}
-                    rel2 { relative: 1.0 1.0; to: "gengrid_bg";}
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "swallow_grid_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "gengrid_bg";
+                    }
                 }
                 description {
                     state: "hidden" 0.0;
@@ -1291,6 +1277,7 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
+                    fixed: 0 0;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
                 }
@@ -1346,6 +1333,20 @@ collections {
         }
         programs {
             program {
+                name: "switch_landscape";
+                source: "ui";
+                signal: "switch_landscape";
+                action: STATE_SET "landscape" 0.0;
+                target: "swallow_grid_spacer";
+            }
+            program {
+                name: "switch_vertical";
+                source: "ui";
+                signal: "switch_vertical";
+                action: STATE_SET "default" 0.0;
+                target: "swallow_grid_spacer";
+            }
+            program {
                 name: "more_bg_click";
                 source: "more_bg_click";
                 signal: "mouse,down,*";
@@ -1396,25 +1397,61 @@ collections {
             image: "check_box_on.png" COMP;
         }
         parts {
+            part { name: "bg_spacer";
+                   type: RECT;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 min: 18 18;
+                                 max: 18 18;
+                                 fixed: 1 1;
+                                 align: 1 1;
+                                 visible: DEVELOPMENT;
+                                 color: 255 255 255 127;
+                                 rel1.relative: 0.0 0.0;
+                                 rel2.relative: 1.0 1.0;
+                               }
+                 }
+            part { name: "bg";
+                   type: RECT;
+                   scale: 1;
+                   mouse_events: 0;
+                   description { state: "default" 0.0;
+                                 min: 0 0;
+                                 max: -1 -1;
+                                 fixed: 0 0;
+                                 align: 0.0 0.0;
+                                 visible: 1;
+                                 color: 206 118 70 200;
+                                 rel1.relative: 0 0;
+                                 rel2 { relative: 0 0;
+                                        to: "bg_spacer";
+                                      }
+                               }
+                 }
             part {
-                name: "bg";
+                name: "background";
                 type: RECT;
                 scale: 1;
-                mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
-                    max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
-                    align: 0.0 0.0;
-                    visible: 1;
-                    color: 206 118 70 200;
-                    rel1.relative: 0 0;
-                    rel2.relative: 1 1;
+                    min: 0 100;
+                    max: -1 100;
+                    align: 0.0 1.0;
+                    color: 206 118 70 255;
+                    fixed: 0 1;
+                    rel1 {
+                        to: "bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "bg";
+                        relative: 1.0 1.0;
+                    }
                 }
                 description {
-                    state: "selected";
+                    state: "selected" 0.0;
                     inherit: "default" 0.0;
-                    color: 206 118 70 255;
+                    color: 206 118 70 200;
                 }
             }
             part {
@@ -1423,43 +1460,20 @@ collections {
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    fixed: 1 0;
+                    fixed: 0 0;
                     align: 0.0 0.0;
-                    color : 206 118 70 200;
-                    min: SMALL_TILE_WIDTH (SMALL_TILE_HEIGHT-100);
-                    max: SMALL_TILE_WIDTH (SMALL_TILE_HEIGHT-100);
+                    color: 206 118 70 200;
+                    min: 0 0;
+                    max: -1 -1;
+                    fixed: 0 0;
                     rel1 {
                         relative: 0.0 0.0;
                         to: "bg";
                     }
                     rel2 {
-                        relative: 1.0 1.0;
-                        to: "bg";
+                        relative: 1.0 0.0;
+                        to: "background";
                     }
-                }
-            }
-            part {
-                name: "background";
-                type: RECT;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    min: SMALL_TILE_WIDTH 100;
-                    max: SMALL_TILE_WIDTH 100;
-                    align: 0.0 0.0;
-                    color: 206 118 70 255;
-                    rel1 {
-                        to: "elm.thumbnail";
-                        relative: 0.0 1.0;
-                    }
-                    rel2 {
-                        relative: 1.0 1.0;
-                    }
-                }
-                description {
-                    state: "selected" 0.0;
-                    inherit: "default" 0.0;
-                    color: 206 118 70 200;
                 }
             }
             part {
@@ -1481,22 +1495,43 @@ collections {
                 }
             }
             part {
+                name: "page_title_spacer2";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 18 0;
+                    max: 18 0;
+                    align: 1.0 1.0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "background";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "background";
+                    }
+                }
+            }
+            part {
                 name: "page_title";
                 type: TEXT;
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: 300 48;
-                    max: 300 48;
                     align: 0.0 0.5;
                     color: 255 255 255 255;
+                    fixed: 1 1;
+                    visible: 1;
                     rel1 {
                         to: "page_title_spacer";
                         relative: 1.0 1.0;
                     }
                     rel2 {
-                        to: "background";
-                        relative: 1.0 1.0;
+                        to: "page_title_spacer2";
+                        relative: 0.0 0.0;
                     }
                     text {
                         text: "Web page title";
@@ -1506,54 +1541,70 @@ collections {
                     }
                 }
             }
-            part {
-                name: "remove_checkbox_spacer";
-                type: RECT;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    align: 0.0 0.0;
-                    min: REMOVE_CHECKBOX_OFFSET_X REMOVE_CHECKBOX_OFFSET_Y;
-                    max: REMOVE_CHECKBOX_OFFSET_X REMOVE_CHECKBOX_OFFSET_Y;
-                    visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "bg";
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-            }
-            part {
-                name: "remove_checkbox_image";
-                type: IMAGE;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    align: 0.0 0.0;
-                    visible: 0;
-                    min: REMOVE_CHECKBOX_SIZE REMOVE_CHECKBOX_SIZE;
-                    max: REMOVE_CHECKBOX_SIZE REMOVE_CHECKBOX_SIZE;
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "remove_checkbox_spacer";
-                    }
-                    rel2.relative: 1.0 1.0;
-                }
-                description {
-                    state: "unselected" 0.0;
-                    inherit: "default";
-                    visible: 1;
-                    image.normal: "check_box_off.png";
-                }
-                description {
-                    state: "selected" 0.0;
-                    inherit: "default";
-                    visible: 1;
-                    image.normal: "check_box_on.png";
-                }
-            }
-        }
+            part { name: "remove_checkbox_spacer_1";
+                   type: RECT;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 align: 0 0;
+                                 min: 0 REMOVE_CHECKBOX_OFFSET_Y;
+                                 max: 0 REMOVE_CHECKBOX_OFFSET_Y;
+                                 fixed: 1 1;
+                                 visible: DEVELOPMENT;
+                                 color: 255 255 255 127;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 1.0 1.0;
+                                        to: "bg";
+                                      }
+                               }
+                 }
+            part { name: "remove_checkbox_spacer_2";
+                   type: RECT;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 align: 1.0 1.0;
+                                 min: REMOVE_CHECKBOX_OFFSET_X 0;
+                                 max: REMOVE_CHECKBOX_OFFSET_X 0;
+                                 fixed: 1 1;
+                                 visible: DEVELOPMENT;
+                                 color: 255 255 255 127;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "bg";
+                                      }
+                                 rel2 { relative: 1.0 1.0;
+                                        to: "bg";
+                                      }
+                               }
+                 }
+            part { name: "remove_checkbox_image";
+                   type: IMAGE;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 align: 1.0 0.0;
+                                 visible: 0;
+                                 min: REMOVE_CHECKBOX_SIZE REMOVE_CHECKBOX_SIZE;
+                                 max: REMOVE_CHECKBOX_SIZE REMOVE_CHECKBOX_SIZE;
+                                 rel1 {
+                                     relative: 1.0 1.0;
+                                     to: "remove_checkbox_spacer_1";
+                                 }
+                                 rel2 {
+                                     relative: 0.0 0.0;
+                                     to: "remove_checkbox_spacer_2";
+                                 }
+                               }
+                   description { state: "unselected" 0.0;
+                                 inherit: "default";
+                                 visible: 1;
+                                 image.normal: "check_box_off.png";
+                               }
+                   description { state: "selected" 0.0;
+                                 inherit: "default";
+                                 visible: 1;
+                                 image.normal: "check_box_on.png";
+                               }
+                 }
         programs {
             program {
                 name: "check_box_invisible";

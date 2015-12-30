@@ -957,14 +957,22 @@ void SimpleUI::onRotateClockwisePressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     angle -= 90;
-    elm_win_rotation_with_resize_set(main_window, angle);
+    onRotation();
 }
 
 void SimpleUI::onRotateCounterClockwisePressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     angle += 90;
+    onRotation();
+}
+
+void SimpleUI::onRotation()
+{
+    if (angle == 360 || angle == -360)
+        angle = 0;
     elm_win_rotation_with_resize_set(main_window, angle);
+    m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
 }
 //TODO: end of a workaround
 #endif
