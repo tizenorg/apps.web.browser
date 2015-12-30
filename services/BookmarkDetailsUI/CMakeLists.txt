@@ -22,7 +22,8 @@ install(TARGETS ${PROJECT_NAME}
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")    # mobile profile
 set(edcFiles
-    BookmarkDetailsUI_mob.edc
+    Landscape.edc
+    Vertical.edc
     )
 else (${PROFILE} MATCHES "mobile")  # tv profile
 set(edcFiles

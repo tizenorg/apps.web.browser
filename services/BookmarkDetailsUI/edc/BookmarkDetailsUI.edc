@@ -233,7 +233,7 @@ group {
 }
 
 group {
-    name: "elm/gengrid/item/grid_bookmark_item/default";
+    name: "elm/gengrid/item/grid_bookmark_item_0/default";
     data.item: "texts" "page_title page_url";
     data.item: "contents" "elm.thumbnail";
     images {

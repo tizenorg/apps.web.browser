@@ -38,6 +38,12 @@
 #include "FocusManager.h"
 #include "app_i18n.h"
 
+#if PROFILE_MOBILE
+#define TAB_SIZE 2
+#else
+#define TAB_SIZE 1
+#endif
+
 namespace tizen_browser{
 namespace base_ui{
 
@@ -65,21 +71,24 @@ public:
     boost::signals2::signal<void (std::string)> editFolderButtonClicked;
     boost::signals2::signal<void (std::string)> deleteFolderButtonClicked;
     boost::signals2::signal<void (std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>>)> removeFoldersButtonClicked;
+
+    void setLandscape(bool state);
+    void resetContent();
 #endif
 
 private:
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
-    void createFocusVector();
+    void createFocusVector(int state = 0);
     void createGengridItemClasses();
     std::string getFolderName();
-    void setEmpty(bool isEmpty);
+    void setEmpty(bool isEmpty, int state = 0);
 
-    Evas_Object* createLayout(Evas_Object* parent);
-    void createTopContent();
-    void createGengrid();
-    void createBottomContent();
+    Evas_Object* createLayout(Evas_Object* parent, int state = 0);
+    void createTopContent(int state = 0);
+    void createGengrid(int state = 0);
+    void createBottomContent(int state = 0);
 #if PROFILE_MOBILE
-    void createMenuDetails();
+    void createMenuDetails(int state = 0);
     void resetRemovalMode(bool clear = true);
     static void _more_button_clicked(void *data, Evas_Object *, void *);
     static void _menu_bg_button_clicked(void *data, Evas_Object *, void *);
@@ -96,32 +105,33 @@ private:
     static void _close_button_clicked(void *data, Evas_Object *, void *);
 
     Evas_Object *m_parent;
-    std::string m_edjFilePath;
-    FocusManager m_focusManager;
-    Evas_Object *m_layout;
-    Evas_Object *m_top_content;
-    Evas_Object *m_gengrid;
+    std::string m_edjFilePath[TAB_SIZE];
+    FocusManager m_focusManager[TAB_SIZE];
+    Evas_Object *m_layout[TAB_SIZE];
+    Evas_Object *m_top_content[TAB_SIZE];
+    Evas_Object *m_gengrid[TAB_SIZE];
 #if !PROFILE_MOBILE
-    Evas_Object *m_bottom_content;
+    Evas_Object *m_bottom_content[TAB_SIZE];
 #else
-    std::map<std::string, Elm_Object_Item*> m_map_bookmark;
+    std::map<std::string, Elm_Object_Item*> m_map_bookmark[TAB_SIZE];
     std::map<std::string, bool> m_map_delete;
 
-    Evas_Object *m_more_button;
-    Evas_Object *m_menu_bg_button;
-    Evas_Object *m_menu;
-    Evas_Object *m_edit_button;
-    Evas_Object *m_delete_button;
-    Evas_Object *m_remove_button;
-    Evas_Object *m_cancel_top_button;
-    Evas_Object *m_remove_top_button;
+    Evas_Object *m_more_button[TAB_SIZE];
+    Evas_Object *m_menu_bg_button[TAB_SIZE];
+    Evas_Object *m_menu[TAB_SIZE];
+    Evas_Object *m_edit_button[TAB_SIZE];
+    Evas_Object *m_delete_button[TAB_SIZE];
+    Evas_Object *m_remove_button[TAB_SIZE];
+    Evas_Object *m_cancel_top_button[TAB_SIZE];
+    Evas_Object *m_remove_top_button[TAB_SIZE];
     unsigned int m_delete_count;
     bool m_remove_bookmark_mode;
 #endif
-    Evas_Object *m_close_button;
+    Evas_Object *m_close_button[TAB_SIZE];
 
-    Elm_Gengrid_Item_Class * m_bookmark_item_class;
+    Elm_Gengrid_Item_Class * m_bookmark_item_class[TAB_SIZE];
     std::string m_folder_name;
+    unsigned int m_rotation_state;
 };
 
 }
