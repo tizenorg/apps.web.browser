@@ -6,8 +6,9 @@ set(HistoryUI_SRCS
     HistoryPeriod.cpp
     HistoryDaysListManager/HistoryDaysListManagerMob.cpp
     HistoryDaysListManager/mob/HistoryDayItemMob.cpp
-    HistoryDaysListManager/mob/WebsiteHistoryItemMob.cpp
-    HistoryDaysListManager/mob/WebsiteHistoryVisitItemMob.cpp
+    HistoryDaysListManager/mob/WebsiteHistoryItem/WebsiteHistoryItemMob.cpp
+    HistoryDaysListManager/mob/WebsiteHistoryItem/WebsiteHistoryItemTitleMob.cpp
+    HistoryDaysListManager/mob/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsMob.cpp
     HistoryDaysListManager/HistoryDaysListManagerTv.cpp
     HistoryDaysListManager/tv/HistoryDayItemTv.cpp
     HistoryDaysListManager/tv/WebsiteHistoryItem/WebsiteHistoryItemTv.cpp
@@ -33,11 +34,16 @@ install(TARGETS ${PROJECT_NAME}
 include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
+        colorClasses.edc
         History_mob.edc
         HistoryDaysList_mob.edc
+        WebsiteHistoryItem_mob.edc
+        WebsiteHistoryItemTitle_mob.edc
+        WebsiteHistoryItemVisitItems_mob.edc
         )
-else (${PROFILE} MATCHES "mobile")  # tv profile
+else()                               # tv profile
     set(edcFiles
+        colorClasses.edc
         History.edc
         HistoryDaysList.edc
         WebsiteHistoryItem.edc

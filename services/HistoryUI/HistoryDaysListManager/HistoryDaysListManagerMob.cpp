@@ -26,42 +26,43 @@ namespace tizen_browser {
 namespace base_ui {
 
 HistoryDaysListManagerMob::HistoryDaysListManagerMob()
+    : m_edjeFiles(std::make_shared<HistoryDaysListManagerEdje>())
+    , m_parent(nullptr)
+    , m_scrollerDays(nullptr)
+    , m_layoutScrollerDays(nullptr)
+    , m_boxDays(nullptr)
 {
-    m_daysListEdjFilePath = EDJE_DIR;
-    m_daysListEdjFilePath.append("HistoryUI/HistoryDaysList.edj");
-    elm_theme_extension_add(nullptr, m_daysListEdjFilePath.c_str());
 }
 
 HistoryDaysListManagerMob::~HistoryDaysListManagerMob()
 {
-    clear();
-    elm_box_clear(m_boxMain);
-    evas_object_del(m_boxMain);
-    evas_object_del(m_scrollerMain);
-    evas_object_del(m_layoutScroller);
+    for (auto& dayItem : m_dayItems)
+        dayItem->setEflObjectsAsDeleted();
 }
 
 Evas_Object* HistoryDaysListManagerMob::createDaysList(
-        Evas_Object* parentLayout)
+        Evas_Object* parent)
 {
-    m_scrollerMain = elm_scroller_add(parentLayout);
-    elm_scroller_policy_set(m_scrollerMain, ELM_SCROLLER_POLICY_OFF,
-            ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(m_scrollerMain, EINA_FALSE, EINA_FALSE);
-    tools::EflTools::setExpandHints(m_scrollerMain);
+    m_parent = parent;
+    m_scrollerDays = elm_scroller_add(parent);
+    tools::EflTools::setExpandHints(m_scrollerDays);
 
-    m_layoutScroller = elm_layout_add(parentLayout);
-    tools::EflTools::setExpandHints(m_layoutScroller);
-    elm_layout_file_set(m_layoutScroller, m_daysListEdjFilePath.c_str(), "historyDaysList");
+    m_layoutScrollerDays = elm_layout_add(parent);
+    evas_object_size_hint_weight_set(m_layoutScrollerDays, EVAS_HINT_EXPAND,
+            0.0);
+    evas_object_size_hint_align_set(m_layoutScrollerDays, EVAS_HINT_FILL, 0.0);
+    elm_layout_file_set(m_layoutScrollerDays,
+            m_edjeFiles->historyDaysList.c_str(), "layoutScrollerDays");
 
-    elm_object_content_set(m_scrollerMain, m_layoutScroller);
+    elm_object_content_set(m_scrollerDays, m_layoutScrollerDays);
 
-    m_boxMain = elm_box_add(m_layoutScroller);
-    evas_object_box_align_set(m_boxMain, 0.0, 0.0);
-    tools::EflTools::setExpandHints(m_boxMain);
-    elm_object_part_content_set(m_layoutScroller, "main_box", m_boxMain);
+    m_boxDays = elm_box_add(m_layoutScrollerDays);
+    tools::EflTools::setExpandHints(m_boxDays);
+    elm_box_horizontal_set(m_boxDays, EINA_FALSE);
+    elm_object_part_content_set(m_layoutScrollerDays, "boxDays",
+            m_boxDays);
 
-    return m_scrollerMain;
+    return m_scrollerDays;
 }
 
 void HistoryDaysListManagerMob::addHistoryItems(
@@ -76,7 +77,7 @@ void HistoryDaysListManagerMob::addHistoryItems(
                     std::make_shared < WebsiteVisitItemData > (hi));
         historyItems.push_back(
                 std::make_shared < WebsiteHistoryItemData
-                        > ("title", itemPair.first, pageViewItems));
+                        > (itemPair.first, itemPair.first, pageViewItems));
     }
     HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
             > (toString(period), historyItems);
@@ -85,7 +86,7 @@ void HistoryDaysListManagerMob::addHistoryItems(
 
 void HistoryDaysListManagerMob::clear()
 {
-    elm_box_clear(m_boxMain);
+    elm_box_clear(m_boxDays);
     m_dayItems.clear();
 }
 
@@ -94,8 +95,8 @@ void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
     auto item = std::make_shared<HistoryDayItemMob>(dayItemData);
     m_dayItems.push_back(item);
 
-    Evas_Object* boxDay = item->init(m_boxMain);
-    elm_box_pack_end(m_boxMain, boxDay);
+    Evas_Object* dayItemLayout = item->init(m_parent, m_edjeFiles);
+    elm_box_pack_end(m_boxDays, dayItemLayout);
 }
 
 } /* namespace base_ui */

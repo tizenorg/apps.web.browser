@@ -56,9 +56,9 @@ collections {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: 1 614;
-                    max: -1 614;
-                    fixed: 0 1;
+                    min: 1 1;
+                    max: -1 -1;
+                    fixed: 0 0;
                     rel1 {
                         relative: 0.0 1.0;
                         to: "history_list_spacer";
