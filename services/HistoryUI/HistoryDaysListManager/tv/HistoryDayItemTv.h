@@ -22,11 +22,12 @@
 #include <string>
 #include <vector>
 #include "../HistoryDayItemDataTypedef.h"
-#include "HistoryDaysListManagerEdjeTv.h"
 #include <boost/signals2/signal.hpp>
 
-namespace tizen_browser{
-namespace base_ui{
+#include "../HistoryDaysListManagerEdje.h"
+
+namespace tizen_browser {
+namespace base_ui {
 
 class WebsiteHistoryItemTv;
 typedef std::shared_ptr<WebsiteHistoryItemTv> WebsiteHistoryItemTvPtr;
@@ -38,7 +39,7 @@ public:
     HistoryDayItemTv(HistoryDayItemDataPtr dayItemData,
             HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~HistoryDayItemTv();
-    Evas_Object* init(Evas_Object* parent, HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    Evas_Object* init(Evas_Object* parent, HistoryDaysListManagerEdjePtr edjeFiles);
     void setFocusChain(Evas_Object* obj);
     Evas_Object* getLayoutMain() const {return m_layoutMain;}
     Evas_Object* getLayoutHeader() const {return m_layoutHeader;}
@@ -70,9 +71,9 @@ public:
     static boost::signals2::signal<void(const HistoryDayItemDataPtr)> signaButtonClicked;
 
 private:
-    void initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles);
+    void initBoxWebsites(HistoryDaysListManagerEdjePtr edjeFiles);
     Evas_Object* createScrollerWebsites(Evas_Object* parent,
-            HistoryDaysListManagerEdjeTvPtr edjeFiles);
+            HistoryDaysListManagerEdjePtr edjeFiles);
     Evas_Object* createImageClear(Evas_Object* parent,
             const std::string& edjeFilePath);
     void initCallbacks();

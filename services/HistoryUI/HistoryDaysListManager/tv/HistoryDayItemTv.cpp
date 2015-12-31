@@ -21,8 +21,8 @@
 
 #include "EflTools.h"
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 boost::signals2::signal<void(const HistoryDayItemDataPtr)>
         HistoryDayItemTv::signaButtonClicked;
@@ -60,7 +60,7 @@ HistoryDayItemTv::~HistoryDayItemTv()
 }
 
 Evas_Object* HistoryDayItemTv::init(Evas_Object* parent,
-        HistoryDaysListManagerEdjeTvPtr edjeFiles)
+        HistoryDaysListManagerEdjePtr edjeFiles)
 {
     m_layoutMain = elm_layout_add(parent);
     tools::EflTools::setExpandHints(m_layoutMain);
@@ -143,7 +143,7 @@ std::shared_ptr<std::vector<int>> HistoryDayItemTv::getVisitItemsIds()
 }
 
 Evas_Object* HistoryDayItemTv::createScrollerWebsites(Evas_Object* parent,
-        HistoryDaysListManagerEdjeTvPtr edjeFiles)
+        HistoryDaysListManagerEdjePtr edjeFiles)
 {
     Evas_Object* scroller = elm_scroller_add(parent);
     tools::EflTools::setExpandHints(scroller);
@@ -218,7 +218,7 @@ void HistoryDayItemTv::deleteCallbacks()
     evas_object_smart_callback_del(m_layoutHeader, "focused", NULL);
 }
 
-void HistoryDayItemTv::initBoxWebsites(HistoryDaysListManagerEdjeTvPtr edjeFiles)
+void HistoryDayItemTv::initBoxWebsites(HistoryDaysListManagerEdjePtr edjeFiles)
 {
     for (auto& websiteHistoryItem : m_websiteHistoryItems) {
         Evas_Object* boxSingleWebsite = websiteHistoryItem->init(m_boxWebsites,

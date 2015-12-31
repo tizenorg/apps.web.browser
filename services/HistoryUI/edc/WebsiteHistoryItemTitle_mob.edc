@@ -1,0 +1,73 @@
+#include "../../../core/Tools/edc/SpacerRect.edc"
+#include "../../../core/Tools/edc/Background.edc"
+#include "colorClasses.edc"
+
+collections {
+    group { name: "layoutWebsiteHistoryItemTitle";
+            parts {
+                SPACER_RECT_HORIZONTAL("spacerBoxLeft", 0, 38, 0.0)
+                SPACER_RECT_HORIZONTAL("spacerBoxRight", 0, 38, 1.0)
+                part { name: "boxMainHorizontal";
+                       scale: 1;
+                       type: SWALLOW;
+                       description { state: "default" 0.0;
+                                     min: 1 150;
+                                     max: -1 150;
+                                     align: 0.0 0.0;
+                                     rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
+                                     rel2 { relative: 0.0 1.0; to: "spacerBoxRight"; }
+                                   }
+                     }
+                rect { "divider";
+                       scale: 1;
+                       desc { "default";
+                              visible: 1; color_class: "colorPanelListDivider";
+                              align: 0.5 1.0;
+                              min: 1 2;
+                              max: -1 2;
+                              rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
+                              rel2 { relative: 0.0 1.0; to: "spacerBoxRight"; }
+                            }
+                     }
+            }
+          }
+    group { name: "layoutItemIcon";
+            parts {
+                BACKGROUND_COVER("swallowIcon", 1, "colorTemporaryFavicon")
+                part { name: "swallowIcon";
+                       scale: 1;
+                       type: SWALLOW;
+                       description { state: "default" 0.0;
+                                     align: 0.0 0.0;
+                                     min: 84 84;
+                                     max: 84 84;
+                                     rel1 { relative: 0.0 0.0; }
+                                     rel2 { relative: 1.0 1.0; }
+                                   }
+                     }
+            }
+          }
+    group { name: "layoutTextSummaryTitle";
+            styles {
+                style {
+                    name: "styleTitle";
+                    base: "font=Tizen:style=Regular font_size=30 color=#333333 align=0.0 valign=1.0 ellipsis=1.0";
+                }
+            }
+            parts {
+                SPACER_RECT_HORIZONTAL("spacerTextLeft", 0, 20, 0.0)
+                part { name: "elm.text";
+                       type: TEXTBLOCK;
+                       scale: 1;
+                       description { state: "default" 0.0;
+                                     visible: 1;
+                                     align: 0.0 0.5;
+                                     min: 1 38;
+                                     max: -1 38;
+                                     rel1 { relative: 1.0 0.0; to: "spacerTextLeft"; }
+                                     text { style: "styleTitle"; }
+                                   }
+                     }
+            }
+          }
+}

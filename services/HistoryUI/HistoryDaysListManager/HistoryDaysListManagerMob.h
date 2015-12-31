@@ -21,22 +21,23 @@
 #include <Elementary.h>
 #include <string>
 #include <vector>
-#include "HistoryDaysListManager.h"
 #include "HistoryDayItemDataTypedef.h"
+#include "HistoryDaysListManager.h"
+#include "HistoryDaysListManagerEdje.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
 class HistoryDayItemMob;
 typedef std::shared_ptr<HistoryDayItemMob> HistoryDayItemMobPtr;
-enum class HistoryPeriod;
 
 class HistoryDaysListManagerMob : public HistoryDaysListManager
 {
 public:
     HistoryDaysListManagerMob();
     virtual ~HistoryDaysListManagerMob();
-    Evas_Object* createDaysList(Evas_Object* parentLayout) override;
+
+    Evas_Object* createDaysList(Evas_Object* parent) override;
     void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
             HistoryPeriod period) override;
     void clear() override;
@@ -45,13 +46,13 @@ public:
 private:
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
 
+    HistoryDaysListManagerEdjePtr m_edjeFiles;
     std::vector<HistoryDayItemMobPtr> m_dayItems;
 
-    Evas_Object* m_scrollerMain = nullptr;
-    Evas_Object* m_layoutScroller = nullptr;
-    Evas_Object* m_boxMain  = nullptr;
-
-    std::string m_daysListEdjFilePath;
+    Evas_Object* m_parent;
+    Evas_Object* m_scrollerDays;
+    Evas_Object* m_layoutScrollerDays;
+    Evas_Object* m_boxDays;
 };
 
 } /* namespace base_ui */
