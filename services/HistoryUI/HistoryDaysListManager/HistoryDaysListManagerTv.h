@@ -23,7 +23,7 @@
 #include <vector>
 #include "HistoryDayItemDataTypedef.h"
 #include "HistoryDaysListManager.h"
-#include "tv/HistoryDaysListManagerEdjeTv.h"
+#include "HistoryDaysListManagerEdje.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -77,7 +77,7 @@ private:
     int getHistoryItemIndex(const HistoryDayItemTv* item);
     HistoryDayItemTvPtr getItem(HistoryDayItemDataPtrConst historyDayItemData);
 
-    HistoryDaysListManagerEdjeTvPtr m_edjeFiles;
+    HistoryDaysListManagerEdjePtr m_edjeFiles;
     std::vector<HistoryDayItemTvPtr> m_dayItems;
 
     Evas_Object* m_scrollerDaysColumns;

@@ -20,8 +20,8 @@
 #include <memory>
 #include <Elementary.h>
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 typedef struct WebsiteVisitItemData_ WebsiteVisitItemData;
 typedef std::shared_ptr<WebsiteVisitItemData> WebsiteVisitItemDataPtr;
