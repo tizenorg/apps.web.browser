@@ -22,8 +22,8 @@
 #include "HistoryDayItemDataTypedef.h"
 #include <services/HistoryService/HistoryItem.h>
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 typedef struct WebsiteVisitItemData_
 {
