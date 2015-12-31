@@ -20,8 +20,8 @@
 #include <services/HistoryUI/HistoryDeleteManager.h>
 #include "BrowserLogger.h"
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
 WebsiteHistoryItemVisitItemsTv::signalButtonClicked;
