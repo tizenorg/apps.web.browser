@@ -14,29 +14,31 @@
  * limitations under the License.
  */
 
-#ifndef HistoryDayItemMob_H_
-#define HistoryDayItemMob_H_
+#ifndef WEBSITEHISTORYITEMMOB_H_
+#define WEBSITEHISTORYITEMMOB_H_
 
-#include <memory>
 #include <Elementary.h>
+#include <string>
 #include <vector>
-#include "../HistoryDayItemDataTypedef.h"
-#include "../HistoryDaysListManagerEdje.h"
+#include <memory>
+#include "../../HistoryDayItemDataTypedef.h"
+#include "../../HistoryDaysListManagerEdje.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
-class WebsiteHistoryItemMob;
-typedef std::shared_ptr<WebsiteHistoryItemMob> WebsiteHistoryItemMobPtr;
+class WebsiteHistoryItemTitleMob;
+typedef std::shared_ptr<WebsiteHistoryItemTitleMob> WebsiteHistoryItemTitleMobPtr;
+class WebsiteHistoryItemVisitItemsMob;
+typedef std::shared_ptr<WebsiteHistoryItemVisitItemsMob> WebsiteHistoryItemVisitItemsMobPtr;
 
-class HistoryDayItemMob
+class WebsiteHistoryItemMob
 {
 public:
-    HistoryDayItemMob(HistoryDayItemDataPtr dayItemData);
-    virtual ~HistoryDayItemMob();
+    WebsiteHistoryItemMob(WebsiteHistoryItemDataPtr websiteHistoryItemData);
+    virtual ~WebsiteHistoryItemMob();
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjePtr edjeFiles);
-
     /**
      * @brief invoked when main layout is already removed.
      * prevents from second evas_object_del() on main layout in destructor
@@ -44,27 +46,21 @@ public:
     void setEflObjectsAsDeleted();
 
 private:
-    Evas_Object* createBoxWebsites(Evas_Object* parent,
+    Evas_Object* createBoxMainVertical(Evas_Object* parent,
             HistoryDaysListManagerEdjePtr edjeFiles);
 
     /// used to indicate, if efl object were already deleted
-    bool m_eflObjectsDeleted;
+    bool m_eflObjectsDeleted = false;
 
-    HistoryDayItemDataPtr m_dayItemData;
-    std::vector<WebsiteHistoryItemMobPtr> m_websiteHistoryItems;
+    WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
+    WebsiteHistoryItemTitleMobPtr m_websiteHistoryItemTitle;
+    WebsiteHistoryItemVisitItemsMobPtr m_websiteHistoryItemVisitItems;
 
     Evas_Object* m_layoutMain;
-    // vertical box: day label + websites history scroller
     Evas_Object* m_boxMainVertical;
-
-    Evas_Object* m_layoutHeader;
-    Evas_Object* m_boxHeader;
-
-    Evas_Object* m_layoutBoxWebsites;
-    Evas_Object* m_boxWebsites;
 };
 
 }
 }
 
-#endif /* BROWSER_MERGING_SERVICES_HISTORYUI_HISTORYDAYSLISTMANAGER_MOB_HISTORYDAYITEMMOB_H_ */
+#endif /* WEBSITEHISTORYITEMMOB_H_ */

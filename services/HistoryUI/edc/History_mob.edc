@@ -22,10 +22,10 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    min: 720 108;
-                    max: 720 108;
+                    min: 0 108;
+                    max: -1 108;
                     align: 0.0 0.0;
-                    fixed: 1 1;
+                    fixed: 0 1;
                     rel1 {
                         relative: 0.0 0.0;
                         to: "history_bg";
@@ -39,10 +39,10 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    min: 720 1120+52; // space for indicator bar
-                    max: 720 1120+52;
+                    min: 0 0;
+                    max: -1 -1;
                     align: 0.0 0.0;
-                    fixed: 1 1;
+                    fixed: 0 0;
                     rel1 {
                         relative: 0.0 1.0;
                         to: "action_bar_history";

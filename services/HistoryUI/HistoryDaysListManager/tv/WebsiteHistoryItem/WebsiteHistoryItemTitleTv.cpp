@@ -19,8 +19,8 @@
 #include <EflTools.h>
 #include <services/HistoryUI/HistoryDeleteManager.h>
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
 WebsiteHistoryItemTitleTv::signalButtonClicked;
