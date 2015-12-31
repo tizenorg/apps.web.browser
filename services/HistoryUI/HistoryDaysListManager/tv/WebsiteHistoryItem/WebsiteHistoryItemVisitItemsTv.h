@@ -23,8 +23,8 @@
 #include "../../HistoryDayItemDataTypedef.h"
 #include <boost/signals2/signal.hpp>
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 class HistoryDeleteManager;
 typedef std::shared_ptr<const HistoryDeleteManager> HistoryDeleteManagerPtrConst;

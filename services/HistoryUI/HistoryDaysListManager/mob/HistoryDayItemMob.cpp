@@ -15,20 +15,22 @@
  */
 
 #include "HistoryDayItemMob.h"
-#include "WebsiteHistoryItemMob.h"
+#include "WebsiteHistoryItem/WebsiteHistoryItemMob.h"
 #include "../HistoryDayItemData.h"
 
-#include <EflTools.h>
+#include "EflTools.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
 HistoryDayItemMob::HistoryDayItemMob(HistoryDayItemDataPtr dayItemData)
-    : m_dayItemData(dayItemData)
-    , m_day(dayItemData->day)
+    : m_eflObjectsDeleted(false)
+    , m_dayItemData(dayItemData)
+    , m_layoutMain(nullptr)
+    , m_boxMainVertical(nullptr)
+    , m_layoutHeader(nullptr)
+    , m_boxHeader(nullptr)
 {
-    m_day = "<font_size=30>" + m_day + "</font>";
-
     for(auto& websiteHistoryItemData : dayItemData->websiteHistoryItems) {
         auto websiteHistoryItem = std::make_shared<WebsiteHistoryItemMob>(
                 websiteHistoryItemData);
@@ -38,56 +40,70 @@ HistoryDayItemMob::HistoryDayItemMob(HistoryDayItemDataPtr dayItemData)
 
 HistoryDayItemMob::~HistoryDayItemMob()
 {
-    elm_box_clear(m_boxMain);
+    // clear all widgets aded by this class
+    if (!m_eflObjectsDeleted)
+        evas_object_del(m_layoutMain);
 }
 
-Evas_Object* HistoryDayItemMob::init(Evas_Object* parent)
+Evas_Object* HistoryDayItemMob::init(Evas_Object* parent,
+        HistoryDaysListManagerEdjePtr edjeFiles)
 {
-    std::string m_daysListEdjFilePath = EDJE_DIR;
-    m_daysListEdjFilePath.append("HistoryUI/HistoryDaysList.edj");
+    m_layoutMain = elm_layout_add(parent);
+    evas_object_size_hint_align_set(m_layoutMain, EVAS_HINT_FILL, 0.0);
 
-    m_layout = elm_layout_add(parent);
-    tools::EflTools::setExpandHints(m_layout);
-    elm_layout_file_set(m_layout, m_daysListEdjFilePath.c_str(), "historyDaysList_DayItem");
+    elm_layout_file_set(m_layoutMain, edjeFiles->historyDaysList.c_str(), "layoutDayItem");
 
-    m_boxMain = elm_box_add(m_layout);
-    tools::EflTools::setExpandHints(m_boxMain);
-    elm_box_padding_set(m_boxWebsites, 20, 20);
+    // add all children widgets with m_layoutMain as parent
+    m_boxMainVertical = elm_box_add(m_layoutMain);
+    elm_box_horizontal_set(m_boxMainVertical, EINA_FALSE);
+    elm_object_part_content_set(m_layoutMain, "boxMainVertical", m_boxMainVertical);
 
-    m_boxHeader = elm_box_add(m_layout);
-    tools::EflTools::setExpandHints(m_boxHeader);
-    elm_box_horizontal_set(m_boxHeader, EINA_TRUE);
+    m_layoutHeader = elm_layout_add(m_layoutMain);
+    evas_object_size_hint_align_set(m_layoutHeader, 0.0, 0.0);
+    elm_layout_file_set(m_layoutHeader, edjeFiles->historyDaysList.c_str(), "layoutHeader");
+    elm_object_text_set(m_layoutHeader, m_dayItemData->day.c_str());
 
-    m_labelDay = elm_label_add(m_layout);
-    tools::EflTools::setExpandHints(m_labelDay);
-    evas_object_color_set(m_labelDay, 0, 0, 0, 255);
-    evas_object_size_hint_align_set(m_labelDay, 0.0, 0.5);
-    elm_object_text_set(m_labelDay, m_day.c_str());
+    m_layoutBoxWebsites = elm_layout_add(m_layoutMain);
+    tools::EflTools::setExpandHints(m_layoutBoxWebsites);
+    elm_layout_file_set(m_layoutBoxWebsites, edjeFiles->historyDaysList.c_str(), "layoutBoxWebsites");
+    m_boxWebsites = createBoxWebsites(m_layoutMain, edjeFiles);
+    elm_box_padding_set(m_boxWebsites, 0.0, 18.0);
+    elm_object_part_content_set(m_layoutBoxWebsites, "boxWebsites", m_boxWebsites);
 
-    m_boxWebsites = elm_box_add(m_layout);
-    tools::EflTools::setExpandHints(m_boxWebsites);
-    elm_box_padding_set(m_boxWebsites, 20, 20);
-    for (auto& websiteHistoryItem : m_websiteHistoryItems) {
-        Evas_Object* boxSingleWebsite = websiteHistoryItem->init(m_boxWebsites);
-        elm_box_pack_end(m_boxWebsites, boxSingleWebsite);
-    }
+    elm_box_pack_end(m_boxMainVertical, m_layoutHeader);
+    elm_box_pack_end(m_boxMainVertical, m_layoutBoxWebsites);
 
-    elm_box_pack_end(m_boxHeader, m_labelDay);
-
-    elm_box_pack_end(m_boxMain, m_boxHeader);
-    elm_box_pack_end(m_boxMain, m_boxWebsites);
-
-    evas_object_show(m_boxHeader);
-    evas_object_show(m_labelDay);
+    evas_object_show(m_layoutHeader);
+    evas_object_show(m_layoutBoxWebsites);
     evas_object_show(m_boxWebsites);
-    evas_object_show(m_boxMain);
 
-    evas_object_show(m_layout);
+    evas_object_show(m_boxMainVertical);
+    evas_object_show(m_layoutMain);
 
-    elm_object_part_content_set(m_layout, "main_box", m_boxMain);
-
-    return m_layout;
+    return m_layoutMain;
 }
 
-} /* namespace base_ui */
-} /* namespace tizen_browser */
+void HistoryDayItemMob::setEflObjectsAsDeleted()
+{
+    m_eflObjectsDeleted = true;
+    for (auto& websiteHistoryItem : m_websiteHistoryItems)
+        websiteHistoryItem->setEflObjectsAsDeleted();
+}
+
+Evas_Object* HistoryDayItemMob::createBoxWebsites(Evas_Object* parent,
+        HistoryDaysListManagerEdjePtr edjeFiles)
+{
+    Evas_Object* boxWebsites = elm_box_add(parent);
+    tools::EflTools::setExpandHints(boxWebsites);
+    elm_box_horizontal_set(boxWebsites, EINA_FALSE);
+
+    for (auto& websiteHistoryItem : m_websiteHistoryItems) {
+        Evas_Object* boxSingleWebsite = websiteHistoryItem->init(m_layoutMain,
+                edjeFiles);
+        elm_box_pack_end(boxWebsites, boxSingleWebsite);
+    }
+    return boxWebsites;
+}
+
+}
+}

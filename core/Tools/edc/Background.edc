@@ -1,0 +1,14 @@
+/*
+  Covers given target with a given color.
+  @param TARGET Target to cover.
+  @param COLOR_CLASS Defined color class.
+*/
+#define BACKGROUND_COVER(TARGET, VISIBLE, COLOR_CLASS) \
+rect { \
+    scale: 1; \
+    desc { "default"; \
+           visible: VISIBLE; color_class: COLOR_CLASS; \
+           rel1 { relative: 0.0 0.0; to: TARGET; } \
+           rel2 { relative: 1.0 1.0; to: TARGET; } \
+    } \
+} \

@@ -31,7 +31,7 @@ namespace tizen_browser {
 namespace base_ui {
 
 HistoryDaysListManagerTv::HistoryDaysListManagerTv(HistoryDeleteManagerPtrConst deleteManager)
-    : m_edjeFiles(std::make_shared<HistoryDaysListManagerEdjeTv>())
+    : m_edjeFiles(std::make_shared<HistoryDaysListManagerEdje>())
     , m_scrollerDaysColumns(nullptr)
     , m_layoutScrollerDaysColumns(nullptr)
     , m_boxDaysColumns(nullptr)

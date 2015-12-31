@@ -1,155 +1,88 @@
+#include "../../../core/Tools/edc/SpacerRect.edc"
+#include "../../../core/Tools/edc/Background.edc"
+#include "colorClasses.edc"
+
 collections {
-
-    group {
-        name: "historyDaysList";
-        parts {
-            part {
-                name: "main_box";
-                type: SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
-                }
+    group { name: "layoutScrollerDays";
+            parts {
+                BACKGROUND_COVER("", 1, "colorMainBg")
+                SPACER_RECT_HORIZONTAL("spacerBoxLeft", 0, 20, 0.0);
+                SPACER_RECT_HORIZONTAL("spacerBoxRight", 0, 20, 1.0);
+                part { name: "boxDays";
+                       type: SWALLOW;
+                       scale: 1;
+                       description { state: "default" 0.0;
+                                     visible: 1;
+                                     min: 1 1;
+                                     max: -1 -1;
+                                     fixed: 0 0;
+                                     rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
+                                     rel2 { relative: 0.0 1.0; to: "spacerBoxRight"; }
+                                   }
+                     }
             }
-        }
-    }
-
-    group {
-        name: "historyDaysList_DayItem";
-        parts {
-            part {
-                name: "background";
-                type: RECT;
-                mouse_events: 1;
-                description {
-                    state: "default" 0.0;
-                    max: -1 -1;
-                    visible: 1;
-                    color: 174 187 191 255;
-                    rel1 {
-                        to: "main_box";
-                        relative: 0.0 0.0;
-                    }
-                    rel2{
-                        to: "main_box";
-                        relative: 1.0 1.0;
-                    }
-                }
+          }
+    group { name: "layoutDayItem";
+            parts {
+                part { name: "boxMainVertical";
+                       type: SWALLOW;
+                       scale: 1;
+                       description { state: "default" 0.0;
+                                     visible: 1;
+                                     align: 0.0 0.0;
+                                     min: 1 1;
+                                     max: -1 -1;
+                                     fixed: 0 0;
+                                     rel1 { relative: 0.0 0.0; }
+                                     rel2 { relative: 1.0 1.0; }
+                                   }
+                     }
             }
-            part {
-                name: "main_box";
-                type: SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                    }
-                    rel2 {
-                        relative: 1.0  1.0;
-                    }
-                }
+          }
+    group { name: "layoutHeader";
+            styles {
+                style { name: "styleDayDefault";
+                        base: "font=Tizen:style=Regular font_size=30 color=#333333 align=0.0 valign=1.0";
+                      }
+                style { name: "styleDayFocused";
+                        base: "font=Tizen:style=Regular font_size=30 color=#FFFFFF align=0.0 valign=1.0";
+                      }
             }
-        }
-    }
-
-    group {
-        name: "historyDaysList_WebsiteHistoryItem";
-        parts {
-            part {
-                name: "background";
-                type: RECT;
-                mouse_events: 1;
-                description {
-                    state: "default" 0.0;
-                    max: -1 -1;
-                    visible: 1;
-                    color: 255 255 255 255;
-                    rel1 {
-                        to: "main_box";
-                        relative: 0.0 0.0;
-                    }
-                    rel2{
-                        to: "main_box";
-                        relative: 1.0 1.0;
-                    }
-                }
+            parts {
+                SPACER_RECT_VERTICAL("spacerTextTop", 0, 60, 0.0)
+                SPACER_RECT_VERTICAL("spacerTextBottom", 0, 20, 1.0)
+                part { name: "elm.text";
+                       scale: 1;
+                       type: TEXTBLOCK;
+                       description { state: "default" 0.0;
+                                     align: 0.0 0.0;
+                                     visible: 1;
+                                     min: 1 38;
+                                     max: -1 38;
+                                     fixed: 0 0;
+                                     align: 0.0 0.0;
+                                     rel1 { relative: 0.0 1.0; to: "spacerTextTop"; }
+                                     rel2 { relative: 1.0 0.0; to: "spacerTextBottom"; }
+                                     text { style: "styleDayDefault"; }
+                                   }
+                     }
             }
-            part {
-                name: "main_box";
-                type: SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    max: -1 -1;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 32 0;
-                    }
-                    rel2{
-                        relative: 1.0 1.0;
-                        offset: -32 0;
-                    }
-                }
+          }
+    group { name: "layoutBoxWebsites";
+            parts {
+                part { name: "boxWebsites";
+                       type: SWALLOW;
+                       scale: 1;
+                       description { state: "default";
+                                     visible: 1;
+                                     align: 0.0 0.0;
+                                     min: 1 1;
+                                     max: -1 -1;
+                                     fixed: 0 0;
+                                     rel1 { relative: 0.0 0.0; }
+                                     rel2 { relative: 1.0 1.0; }
+                                   }
+                     }
             }
-        }
-    }
-
-    group {
-        name: "historyDaysList_WebsiteHistoryVisitItem";
-        parts {
-            part {
-                name: "background";
-                type: RECT;
-                mouse_events: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    color: 144 195 212 255;
-                    rel1 {
-                        to: "main_box";
-                        relative: 0.0 0.0;
-                    }
-                    rel2{
-                        to: "main_box";
-                        relative: 1.0 1.0;
-                    }
-                }
-            }
-            part {
-                name: "main_box";
-                type: SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    min: 652 120;
-                    max: 652 120;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        offset: 32 0;
-                    }
-                    rel2{
-                        relative: 1.0 1.0;
-                        offset: -32 0;
-                    }
-                }
-            }
-        }
-    }
+          }
 }
