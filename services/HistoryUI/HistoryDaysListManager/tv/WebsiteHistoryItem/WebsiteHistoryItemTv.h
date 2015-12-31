@@ -22,10 +22,10 @@
 #include <vector>
 #include <memory>
 #include "../../HistoryDayItemDataTypedef.h"
-#include "../HistoryDaysListManagerEdjeTv.h"
+#include "../../HistoryDaysListManagerEdje.h"
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 class WebsiteHistoryItemTitleTv;
 typedef std::shared_ptr<WebsiteHistoryItemTitleTv> WebsiteHistoryItemTitleTvPtr;
@@ -41,7 +41,7 @@ public:
             HistoryDeleteManagerPtrConst historyDeleteManager);
     virtual ~WebsiteHistoryItemTv();
     Evas_Object* init(Evas_Object* parent,
-            HistoryDaysListManagerEdjeTvPtr edjeFiles);
+            HistoryDaysListManagerEdjePtr edjeFiles);
     void setFocusChain(Evas_Object* obj);
     Evas_Object* getLayoutMain() {return m_layoutMain;}
     WebsiteHistoryItemDataPtrConst getData() const {return m_websiteHistoryItemData;}
@@ -56,7 +56,7 @@ public:
 
 private:
     Evas_Object* createBoxMainHorizontal(Evas_Object* parent,
-            HistoryDaysListManagerEdjeTvPtr edjeFiles);
+            HistoryDaysListManagerEdjePtr edjeFiles);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;

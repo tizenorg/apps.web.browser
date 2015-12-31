@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef HistoryDayItemMob_H_
-#define HistoryDayItemMob_H_
+#ifndef WEBSITEHISTORYITEMVISITITEMSMOB_H_
+#define WEBSITEHISTORYITEMVISITITEMSMOB_H_
 
-#include <memory>
 #include <Elementary.h>
+#include <string>
 #include <vector>
-#include "../HistoryDayItemDataTypedef.h"
-#include "../HistoryDaysListManagerEdje.h"
+#include "../../HistoryDayItemDataTypedef.h"
 
 namespace tizen_browser {
 namespace base_ui {
 
-class WebsiteHistoryItemMob;
-typedef std::shared_ptr<WebsiteHistoryItemMob> WebsiteHistoryItemMobPtr;
-
-class HistoryDayItemMob
+class WebsiteHistoryItemVisitItemsMob
 {
+    struct LayoutVisitItemObjects
+    {
+        Evas_Object* layout = nullptr;
+    };
+    struct VisitItemObjects
+    {
+        WebsiteVisitItemDataPtr websiteVisitItemData;
+        struct LayoutVisitItemObjects layoutVisitItemObjects;
+    };
 public:
-    HistoryDayItemMob(HistoryDayItemDataPtr dayItemData);
-    virtual ~HistoryDayItemMob();
-    Evas_Object* init(Evas_Object* parent,
-            HistoryDaysListManagerEdjePtr edjeFiles);
-
+    WebsiteHistoryItemVisitItemsMob(
+            const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems);
+    virtual ~WebsiteHistoryItemVisitItemsMob();
+    Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
     /**
      * @brief invoked when main layout is already removed.
      * prevents from second evas_object_del() on main layout in destructor
@@ -44,27 +48,19 @@ public:
     void setEflObjectsAsDeleted();
 
 private:
-    Evas_Object* createBoxWebsites(Evas_Object* parent,
-            HistoryDaysListManagerEdjePtr edjeFiles);
+    LayoutVisitItemObjects createLayoutVisitItem(Evas_Object* parent,
+            const std::string& edjeFilePath,
+            WebsiteVisitItemDataPtr websiteVisitItemData);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;
 
-    HistoryDayItemDataPtr m_dayItemData;
-    std::vector<WebsiteHistoryItemMobPtr> m_websiteHistoryItems;
-
+    std::vector<VisitItemObjects> m_websiteVisitItems;
     Evas_Object* m_layoutMain;
-    // vertical box: day label + websites history scroller
     Evas_Object* m_boxMainVertical;
-
-    Evas_Object* m_layoutHeader;
-    Evas_Object* m_boxHeader;
-
-    Evas_Object* m_layoutBoxWebsites;
-    Evas_Object* m_boxWebsites;
 };
 
 }
 }
 
-#endif /* BROWSER_MERGING_SERVICES_HISTORYUI_HISTORYDAYSLISTMANAGER_MOB_HISTORYDAYITEMMOB_H_ */
+#endif /* WEBSITEHISTORYITEMVISITITEMSMOB_H_ */

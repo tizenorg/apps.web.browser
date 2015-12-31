@@ -20,8 +20,8 @@
 #include "../../HistoryDayItemData.h"
 #include <EflTools.h>
 
-namespace tizen_browser{
-namespace base_ui{
+namespace tizen_browser {
+namespace base_ui {
 
 WebsiteHistoryItemTv::WebsiteHistoryItemTv(
         WebsiteHistoryItemDataPtr websiteHistoryItemData,
@@ -49,7 +49,7 @@ WebsiteHistoryItemTv::~WebsiteHistoryItemTv()
 }
 
 Evas_Object* WebsiteHistoryItemTv::init(Evas_Object* parent,
-        HistoryDaysListManagerEdjeTvPtr edjeFiles)
+        HistoryDaysListManagerEdjePtr edjeFiles)
 {
     m_layoutMain = elm_layout_add(parent);
     tools::EflTools::setExpandHints(m_layoutMain);
@@ -72,7 +72,7 @@ void WebsiteHistoryItemTv::setFocusChain(Evas_Object* obj)
 }
 
 Evas_Object* WebsiteHistoryItemTv::createBoxMainHorizontal(Evas_Object* parent,
-        HistoryDaysListManagerEdjeTvPtr edjeFiles)
+        HistoryDaysListManagerEdjePtr edjeFiles)
 {
     Evas_Object* box = elm_box_add(parent);
     elm_box_horizontal_set(box, EINA_TRUE);
