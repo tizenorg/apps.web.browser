@@ -96,7 +96,7 @@ include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
-    InputPopup_mob.edc
+    InputPopup_z3.edc
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
@@ -113,7 +113,7 @@ set(edcFiles
 endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_z3)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
                ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
                ${CMAKE_CURRENT_BINARY_DIR})

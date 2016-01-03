@@ -22,7 +22,7 @@ install(TARGETS ${PROJECT_NAME}
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")    # mobile profile
 set(edcFiles
-    BookmarkManagerUI_mob.edc
+    BookmarkManagerUI_z3.edc
     )
 else (${PROFILE} MATCHES "mobile")  # tv profile
 set(edcFiles
@@ -31,7 +31,7 @@ set(edcFiles
 endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_z3)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
                ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
                ${CMAKE_CURRENT_BINARY_DIR})

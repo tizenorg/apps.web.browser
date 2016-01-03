@@ -33,8 +33,8 @@ install(TARGETS ${PROJECT_NAME}
 include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
-        History_mob.edc
-        HistoryDaysList_mob.edc
+        History_z3.edc
+        HistoryDaysList_z3.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles
@@ -47,7 +47,7 @@ else (${PROFILE} MATCHES "mobile")  # tv profile
 endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_z3)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
         ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
         ${CMAKE_CURRENT_BINARY_DIR})

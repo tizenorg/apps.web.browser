@@ -41,10 +41,10 @@ include(EDCCompile)
 
 if (${PROFILE} MATCHES "mobile")
 EDJ_TARGET(SettingsMobileUI.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/Settings_mob.edc
+    ${CMAKE_CURRENT_SOURCE_DIR}/edc/Settings_z3.edc
     ${CMAKE_CURRENT_BINARY_DIR})
 EDJ_TARGET(AutoFillMobileUI.edj
-    ${CMAKE_CURRENT_SOURCE_DIR}/edc/AutoFill_mob.edc
+    ${CMAKE_CURRENT_SOURCE_DIR}/edc/AutoFill_z3.edc
     ${CMAKE_CURRENT_BINARY_DIR})
 else (${PROFILE} MATCHES "mobile")
 EDJ_TARGET(SettingsUI.edj

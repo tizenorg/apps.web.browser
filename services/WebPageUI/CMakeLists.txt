@@ -58,13 +58,13 @@ endif (${PROFILE} MATCHES "mobile")
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     set(edcFiles
-        WebPageUI_mob.edc
+        WebPageUI_z3.edc
         ErrorMessage.edc
-        LeftButtonBar_mob.edc
-        RightButtonBar_mob.edc
-        URIEntry_mob.edc
+        LeftButtonBar_z3.edc
+        RightButtonBar_z3.edc
+        URIEntry_z3.edc
         PrivateMode_mob.edc
-        UrlHistoryList_mob.edc
+        UrlHistoryList_z3.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles
@@ -79,7 +79,7 @@ else (${PROFILE} MATCHES "mobile")  # tv profile
 endif (${PROFILE} MATCHES "mobile")
 
 foreach(edec ${edcFiles})
-    string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})
+    string(REGEX REPLACE "(_z3)?.edc" ".edj" target_name ${edec})
     EDJ_TARGET(${target_name}
         ${CMAKE_CURRENT_SOURCE_DIR}/edc/${edec}
         ${CMAKE_CURRENT_BINARY_DIR})
