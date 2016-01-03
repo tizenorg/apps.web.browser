@@ -1,0 +1,996 @@
+#include "../../../core/Tools/edc/InvisibleButton.edc"
+
+#define DEVELOPMENT 0
+#define WIDTH 380 //720
+#define HEIGHT 900 //1280
+#define TITLE_HEIGHT 80 //101
+#define INPUT_HEIGHT 170 //205
+#define BUTTON_HEIGHT 80//100//60 //120
+#define BUTTON_WIDTH 170 //30
+#define TITLE_TEXT_OFFSET_X 50//100
+#define TITLE_TEXT_OFFSET_Y 30//44
+#define TITLE_TEXT_WIDTH 260 //520
+#define TITLE_TEXT_HEIGHT 30 //45
+#define BUTTON_TEXT_OFFSET_X 20//50
+#define BUTTON_TEXT_OFFSET_Y 18 //40
+#define BUTTON_TEXT_WIDTH 130//260
+#define BUTTON_TEXT_HEIGHT 40
+#define MESSAGE_TEXT_OFFSET_X 30//44
+#define MESSAGE_TEXT_OFFSET_Y 30
+#define MESSAGE_TEXT_WIDTH 550//632
+#define MESSAGE_TEXT_HEIGHT 38
+#define INPUT_OFFSET_Y 78
+#define INPUT_AREA_HEIGHT 80//106
+#define INPUT_TEXT_OFFSET_X 30//44
+#define INPUT_TEXT_OFFSET_Y 26
+#define INPUT_TEXT_WIDTH 320//632
+#define INPUT_TEXT_SELECTED_WIDTH 350//578
+#define INPUT_TEXT_HEIGHT 35//40
+#define INPUT_CANCEL_OFFSET_X 24
+#define INPUT_DIVIDER_OFFSET_X 25//32
+#define INPUT_DIVIDER_OFFSET_Y 70//82
+#define INPUT_DIVIDER_HEIGHT 2
+#define INPUT_DIVIDER_WIDTH 380 //656
+
+collections{
+    group {
+        name: "elm/entry/selection/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 255 255 255 255;
+                }
+            }
+        }
+    }
+    group {
+        name: "elm/entry/cursor/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 10 132 229 255;
+                    min: 3 50;
+                    max: 3 50;
+                    visible: 0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focused";
+                signal: "elm,action,focus";
+                source: "elm";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "unfocused";
+                signal: "elm,action,unfocus";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+        }
+    }
+    group {
+        name: "elm/entry/base-single/popup-input-entry";
+        styles {
+            style {
+                name: "input_text_style";
+                base: "font=Tizen:style=Regular font_size=24 wrap=none color=#333333 align=0.0 valign=0.5"; //40
+            }
+            style {
+                name: "guide_text_style";
+                base: "font=Tizen:style=Regular font_size=24 wrap=none color=#969696 align=0.0 valign=0.5"; //40
+            }
+        }
+        data {
+            item: focus_highlight "off";
+        }
+        parts {
+            part {
+                name: "bg";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 244 244 244 255;
+                }
+                description {
+                    state: "focused" 0.0;
+                    color: 224 237 251 255;
+                }
+            }
+            part {
+                name: "label.text.clip";
+                scale: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                }
+            }
+            part {
+                name: "elm.text";
+                scale: 1;
+                multiline: 0;
+                entry_mode: EDITABLE;
+                select_mode: DEFAULT;
+                cursor_mode: BEFORE;
+                type: TEXTBLOCK;
+                clip_to: "label.text.clip";
+                source: "elm/entry/selection/browser_entry";
+                source4: "elm/entry/cursor/browser_entry";
+                description {
+                    state: "default" 0.0;
+                    min: 0 INPUT_TEXT_HEIGHT;
+                    max: -1 INPUT_TEXT_HEIGHT;
+                    rel1 {
+                        to: "bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    text.style: "input_text_style";
+                }
+            }
+            part {
+                name: "elm.guide";
+                scale: 1;
+                type: TEXTBLOCK;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    rel1 {
+                        to: "bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2.relative: 1.0 1.0;
+                    min: 0 INPUT_TEXT_HEIGHT;
+                    max: -1 INPUT_TEXT_HEIGHT;
+                    text {
+                        text: "Input folder name";
+                        style: "guide_text_style";
+                    }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focus";
+                signal: "load";
+                source: "";
+                action: FOCUS_SET;
+                target: "elm.text";
+            }
+            program {
+                name: "focused";
+                signal: "focused";
+                source: "ui";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "unfocused";
+                signal: "unfocused";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "gdisabled";
+                signal: "elm,guide,disabled";
+                source: "elm";
+                action: STATE_SET "hidden" 0.0;
+                target: "elm.guide";
+            }
+            program {
+                name: "genabled";
+                signal: "elm,guide,enabled";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "elm.guide";
+            }
+        }
+    }
+    group {
+        name: "input-popup-layout";
+        styles {
+            style {
+                name: "title_text_style";
+                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#389ae9 align=0.5 valign=0.5"; //45
+            }
+        }
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 0 0 0 102.4;
+                    align: 0.0 0.0;
+                    min: WIDTH HEIGHT;
+                    max: WIDTH HEIGHT;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "title_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    align: 0.0 0.0;
+                    min: WIDTH TITLE_HEIGHT;
+                    max: WIDTH TITLE_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "title_text_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    min: TITLE_TEXT_OFFSET_X TITLE_TEXT_OFFSET_Y;
+                    max: TITLE_TEXT_OFFSET_X TITLE_TEXT_OFFSET_Y;
+                    align: 0.0 0.0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "title_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "title_text_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    color: 255 182 193 255; //lightpink
+                    align: 0.0 0.0;
+                    min: TITLE_TEXT_WIDTH TITLE_TEXT_HEIGHT;
+                    max: TITLE_TEXT_WIDTH TITLE_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "title_text_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "title_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: TITLE_TEXT_WIDTH TITLE_TEXT_HEIGHT;
+                    max: TITLE_TEXT_WIDTH TITLE_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "title_text_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "title_text_bg";
+                    }
+                    text.style: "title_text_style";
+                }
+            }
+            part {
+                name: "input_swallow";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    min: WIDTH INPUT_HEIGHT;
+                    max: WIDTH INPUT_HEIGHT;
+                    align: 0.0 0.0;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 1.0;
+                        to: "title_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "buttons_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 0 255 255 255;
+                    align: 0.0 0.0;
+                    min: WIDTH BUTTON_HEIGHT;
+                    max: WIDTH BUTTON_HEIGHT;
+                    rel1 {
+                        relative: 0.0 1.0;
+                        to: "input_swallow";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "bg";
+                    }
+                }
+            }
+            part {
+                name: "buttons_swallow";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: WIDTH BUTTON_HEIGHT;
+                    max: WIDTH BUTTON_HEIGHT;
+                    align: 0.0 0.0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "buttons_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "buttons_bg";
+                    }
+                }
+            }
+        }
+    }
+    group {
+        name: "input-area-layout";
+        styles {
+            style {
+                name: "message_text_style";
+                base: "font=Tizen:style=Regular font_size=24 wrap=none color=#141414 align=0.0 valign=0.5"; //40
+            }
+        }
+        images {
+            image: "input_ic_cancel.png" COMP;
+        }
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 255 255 255 255;
+                    align: 0.0 0.0;
+                    min: WIDTH INPUT_HEIGHT;
+                    max: WIDTH INPUT_HEIGHT;
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_message_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    color: 255 0 0 127;
+                    align: 0.0 0.0;
+                    min: MESSAGE_TEXT_OFFSET_X MESSAGE_TEXT_OFFSET_Y;
+                    max: MESSAGE_TEXT_OFFSET_X MESSAGE_TEXT_OFFSET_Y;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_message_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    color: 202 225 255 255; //lightsteelblue
+                    align: 0.0 0.0;
+                    min: MESSAGE_TEXT_WIDTH MESSAGE_TEXT_HEIGHT;
+                    max: MESSAGE_TEXT_WIDTH MESSAGE_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_message_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_message_text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default";
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: MESSAGE_TEXT_WIDTH MESSAGE_TEXT_HEIGHT;
+                    max: MESSAGE_TEXT_WIDTH MESSAGE_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_message_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "input_message_bg";
+                    }
+                    text.style: "message_text_style";
+                }
+            }
+            part {
+                name: "input_area_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: 0 INPUT_OFFSET_Y;
+                    max: 0 INPUT_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_area_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: WIDTH INPUT_AREA_HEIGHT;
+                    max: WIDTH INPUT_AREA_HEIGHT;
+                    visible: 0;
+                    color: 224 237 251 255;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_area_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "input_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_TEXT_OFFSET_X INPUT_TEXT_OFFSET_Y;
+                    max: INPUT_TEXT_OFFSET_X INPUT_TEXT_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_area_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_text_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_TEXT_WIDTH INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_WIDTH INPUT_TEXT_HEIGHT;
+                    visible: DEVELOPMENT;
+                    color: 238 229 222 255; //seashell
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    min: INPUT_TEXT_SELECTED_WIDTH INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_SELECTED_WIDTH INPUT_TEXT_HEIGHT;
+                }
+            }
+            part {
+                name: "input_text_swallow";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_TEXT_WIDTH INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_WIDTH INPUT_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_text_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "input_text_bg";
+                    }
+                }
+                description {
+                    state: "focused";
+                    inherit: "default";
+                    min: INPUT_TEXT_SELECTED_WIDTH INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_SELECTED_WIDTH INPUT_TEXT_HEIGHT;
+                }
+            }
+            part {
+                name: "input_cancel_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_CANCEL_OFFSET_X 0;
+                    max: INPUT_CANCEL_OFFSET_X 0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 1.0 0.0;
+                        to: "input_text_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_cancel_bg";
+                type: RECT;
+                mouse_events: 0;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: INPUT_TEXT_HEIGHT INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_HEIGHT INPUT_TEXT_HEIGHT;
+                    visible: 0;
+                    align: 0.0 0.0;
+                    color: 255 255 255 0;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_cancel_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    color: 224 237 251 255;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "input_cancel_icon";
+                type: IMAGE;
+                scale: 1;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_TEXT_HEIGHT INPUT_TEXT_HEIGHT;
+                    max: INPUT_TEXT_HEIGHT INPUT_TEXT_HEIGHT;
+                    visible: 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_cancel_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "input_cancel_bg";
+                    }
+                    image {
+                        normal: "input_ic_cancel.png";
+                        border: 0 0 0 0;
+                    }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "input_cancel_click_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    min: WIDTH 0;
+                    max: WIDTH 0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_area_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    min: (INPUT_TEXT_SELECTED_WIDTH+INPUT_TEXT_OFFSET_X) 0;
+                    max: (INPUT_TEXT_SELECTED_WIDTH+INPUT_TEXT_OFFSET_X) 0;
+                }
+            }
+            part {
+                name: "input_cancel_click";
+                type: SWALLOW;
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: (INPUT_CANCEL_OFFSET_X+INPUT_TEXT_HEIGHT+34) INPUT_AREA_HEIGHT;
+                    max: (INPUT_CANCEL_OFFSET_X+INPUT_TEXT_HEIGHT+34) INPUT_AREA_HEIGHT;
+                    visible: 1;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_cancel_click_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0  1.0;
+                        to: "input_cancel_bg";
+                    }
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "input_divider_spacer";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_DIVIDER_OFFSET_X INPUT_DIVIDER_OFFSET_Y;
+                    max: INPUT_DIVIDER_OFFSET_X INPUT_DIVIDER_OFFSET_Y;
+                    visible: DEVELOPMENT;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "input_area_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "input_divider_bg";
+                type: RECT;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    align: 0.0 0.0;
+                    min: INPUT_DIVIDER_WIDTH INPUT_DIVIDER_HEIGHT;
+                    max: INPUT_DIVIDER_WIDTH INPUT_DIVIDER_HEIGHT;
+                    visible: 1;
+                    color: 10 132 229 255;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "input_divider_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "entry_swallow_down";
+                source: "input_text_swallow";
+                signal: "mouse,down,*";
+                action: STATE_SET "focused" 0.0;
+                target: "input_area_bg";
+            }
+            program {
+                name: "entry_swallow_up";
+                source: "input_text_swallow";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "input_area_bg";
+            }
+            program {
+                name: "entry_focused";
+                signal: "entry_focused";
+                source: "ui";
+                action: STATE_SET "focused" 0.0;
+                target: "input_text_bg";
+                target: "input_text_swallow";
+                target: "input_cancel_icon";
+                target: "input_cancel_click_spacer";
+                target: "input_cancel_click";
+            }
+            program {
+                name: "entry_unfocused";
+                signal: "entry_unfocused";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "input_text_bg";
+                target: "input_text_swallow";
+                target: "input_cancel_icon";
+                target: "input_cancel_click_spacer";
+                target: "input_cancel_click";
+            }
+            program {
+                name: "input_cancel_down";
+                source: "input_cancel_click";
+                signal: "mouse,down,*";
+                action: STATE_SET "focused" 0.0;
+                target: "input_cancel_bg";
+            }
+            program {
+                name: "input_cancel_up";
+                source: "input_cancel_click";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "input_cancel_bg";
+            }
+        }
+    }
+    group {
+        name: "elm/button/base/input-popup-button";
+        styles {
+            style {
+                name: "button_text_style";
+                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#141414 align=0.5 valign=0.5"; //40
+            }
+            style {
+                name: "button_text_style_dissabled";
+                base: "font=Tizen:style=Regular font_size=24 wrap=none color=#C0C0C0 align=0.5 valign=0.5"; //40
+            }
+        }
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.5 0.5;
+                    fixed: 1 1;
+                    color: 244 244 244 255;
+                    min: BUTTON_WIDTH BUTTON_HEIGHT;
+                    max: BUTTON_WIDTH BUTTON_HEIGHT;
+                }
+                description {
+                    state: "pressed" 0.0;
+                    inherit: "default" 0.0;
+                    color: 224 237 251 255;
+                }
+            }
+            part {
+                name: "divider_horizontal";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.5 0.0;
+                    color: 0 0 0 38.4;
+                    min: BUTTON_WIDTH 1;
+                    max: BUTTON_WIDTH 1;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "divider_vertical";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    align: 0.0 0.0;
+                    color: 0 0 0 38.4;
+                    min: 1 BUTTON_HEIGHT;
+                    max: 1 BUTTON_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default";
+                    visible: 1;
+                }
+            }
+            part {
+                name: "text_spacer";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 0.0 0.0;
+                    color: 255 255 255 127;
+                    min: BUTTON_TEXT_OFFSET_X BUTTON_TEXT_OFFSET_Y;
+                    max: BUTTON_TEXT_OFFSET_X BUTTON_TEXT_OFFSET_Y;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "text_bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 0.0 0.0;
+                    color: 255 0 255 255; //magenta
+                    min: BUTTON_TEXT_WIDTH BUTTON_TEXT_HEIGHT;
+                    max: BUTTON_TEXT_WIDTH BUTTON_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 1.0 1.0;
+                        to: "text_spacer";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+            }
+            part {
+                name: "elm.text";
+                type: TEXTBLOCK;
+                scale: 1;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    min: BUTTON_TEXT_WIDTH BUTTON_TEXT_HEIGHT;
+                    max: BUTTON_TEXT_WIDTH BUTTON_TEXT_HEIGHT;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "text_bg";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "text_bg";
+                    }
+                    text.style: "button_text_style";
+                }
+                description {
+                    state: "dissabled" 0.0;
+                    inherit: "default";
+                    text.style: "button_text_style_dissabled";
+                }
+            }
+            part {
+                name: "over";
+                scale: 1;
+                mouse_events: 1;
+                repeat_events: 0;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    rel1 { relative: 0.0 0.0; to: "bg";}
+                    rel2 { relative: 1.0 1.0; to: "bg";}
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "visible";
+                source: "ui";
+                signal: "visible";
+                action: STATE_SET "visible" 0.0;
+                target: "divider_vertical";
+            }
+            program {
+                name: "dissabled";
+                source: "ui";
+                signal: "dissabled";
+                action: STATE_SET "dissabled" 0.0;
+                target: "elm.text";
+            }
+            program {
+                name: "enabled";
+                source: "ui";
+                signal: "enabled";
+                action: STATE_SET "default" 0.0;
+                target: "elm.text";
+            }
+            program {
+                name: "down";
+                source: "over";
+                signal: "mouse,down,*";
+                action: STATE_SET "pressed" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "up";
+                source: "over";
+                signal: "mouse,up,*";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+            }
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+}

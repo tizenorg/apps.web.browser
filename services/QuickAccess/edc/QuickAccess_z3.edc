@@ -1,0 +1,1338 @@
+#include "../../../core/Tools/edc/InvisibleButton.edc"
+#include "../../../core/Tools/edc/Spacer.edc"
+#include "BrowserPageControl_mob.edc"
+
+#define URI_INPUTBOX_LENGTH 265
+#define URL_HISTORY_ITEM_H 60
+#define URL_HISTORY_ITEMS_VISIBLE_MAX 5
+#define URL_HISTORY_LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
+#define LAYOUT_WIDTH 360
+#define LAYOUT_HEIGHT 580
+
+#define BIG_TILE_WIDTH 350
+#define BIG_TILE_HEIGHT 170
+#define SMALL_TILE_WIDTH 170
+#define SMALL_TILE_HEIGHT 120
+#define TILE_SEPARATOR 20
+#define TILE_LABEL_BG_HEIGHT 30
+#define TOTAL_TILES_HEIGHT 800
+
+#define PAGE_INDICATOR_WIDTH 74
+#define PAGE_INDICATOR_HEIGHT 14
+
+# define SMALL_TILE \
+    data.item: "texts" "page_title page_url";               \
+    data.item: "contents" "elm.thumbnail";      \
+    parts {     \
+        part { name: "bg";      \
+            type: RECT;     \
+            scale: 1;       \
+            mouse_events: 0;        \
+            description { state: "default" 0.0;     \
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;        \
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;        \
+                visible: 1;     \
+                color: 231 231 231 255;     \
+                align: 0.5 0.0;     \
+                rel1 {      \
+                    relative: 0.0  0.0;     \
+                }       \
+                rel2 {      \
+                    relative: 1.0  1.0;     \
+                }       \
+            }       \
+        }       \
+                \
+        part { name: "elm.thumbnail";       \
+            type: SWALLOW;      \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                fixed: 1 0;     \
+                align: 0.0 0.0;     \
+                color : 231 231 231 255;        \
+                min: SMALL_TILE_WIDTH 90;   \
+                max: SMALL_TILE_WIDTH 90;      \
+                rel1 {      \
+                    relative: 0.0  0.0; to: "bg";       \
+                }       \
+                rel2 {      \
+                    relative: 1.0  1.0; to: "bg";       \
+                }       \
+            }       \
+            description { state: "selected";        \
+                inherit: "default" 0.0;     \
+            }       \
+        }       \
+                \
+        part { name: "border_top";      \
+            type: RECT;     \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                color_class: focusBgColor;      \
+                min: 0 6;       \
+                max: -1 6;      \
+                align: 0 0;     \
+                rel1 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 0.0 0.0;      \
+                }       \
+                rel2 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 1.0  1.0;     \
+                }       \
+                visible: 0;     \
+            }       \
+            description { state: "selected";        \
+                inherit: "default" 0.0;     \
+                visible: 1;     \
+            }       \
+        }       \
+                \
+        part { name: "border_left";     \
+            type: RECT;     \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                color_class: focusBgColor;      \
+                min: 6 0;       \
+                max: 6 -1;      \
+                align: 0 0;     \
+                rel1 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 0.0 0.0;      \
+                }       \
+                rel2 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 1.0  1.0;     \
+                }       \
+                visible: 0;     \
+            }       \
+            description { state: "selected";        \
+                inherit: "default" 0.0;     \
+                visible: 1;     \
+            }       \
+        }       \
+                \
+        part { name: "border_right";        \
+            type: RECT;     \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                color_class: focusBgColor;      \
+                min: 6 0;       \
+                max: 6 -1;      \
+                align: 1 0;     \
+                rel1 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 0.0 0.0;      \
+                }       \
+                rel2 {      \
+                    to: "elm.thumbnail";        \
+                    relative: 1.0  1.0;     \
+                }       \
+                visible: 0;     \
+            }       \
+            description { state: "selected";        \
+                inherit: "default" 0.0;     \
+                visible: 1;     \
+            }       \
+        }       \
+                \
+        part { name: "lb_bg";       \
+            type: RECT;     \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                min: SMALL_TILE_WIDTH 30;      \
+                max: SMALL_TILE_WIDTH 30;      \
+                align: 0.0 0.0;     \
+                color: 113 128 147 255;     \
+                visible: 1;     \
+                rel1 {      \
+                    to: "elm.thumbnail";       \
+                    relative: 0.0  1.0;     \
+                }               \
+                rel2 {          \
+                    to: "bg";   \
+                    relative: 1.0  1.0;     \
+                }       \
+            }       \
+            description { state: "selected" 0.0;        \
+                inherit: "default" 0.0;     \
+                color: 0 119 246 255;       \
+            }       \
+        }       \
+                \
+        ADD_SPACER_OVER("title_spacer", "lb_bg", 15, 10) \
+                \
+        part { name: "page_title";      \
+            type: TEXT;     \
+            scale: 1;       \
+            description { state: "default" 0.0;     \
+                min: 100 10;        \
+                max: 100 10;        \
+                align: 0.0 0.0;     \
+                color: 255 255 255 255;     \
+                rel1 {      \
+                    to: "title_spacer";        \
+                    relative: 1.0 1.0;      \
+                }       \
+                rel2 {      \
+                    to: "lb_bg";        \
+                    relative: 1.0  1.0;     \
+                }       \
+                text {      \
+                    text: "Web page title";     \
+                    font: "Sans";       \
+                    size: 11;       \
+                    align: 0 0;       \
+                }       \
+            }       \
+        }       \
+                \
+        part { name: "over";        \
+            type: RECT;     \
+            scale: 1;       \
+            mouse_events: 1;        \
+            repeat_events: 1;       \
+            description { state: "default" 0.0;     \
+                color: 0 0 0 0;     \
+                rel1.to: "bg";      \
+                rel2.to: "lb_bg";       \
+            }       \
+        }       \
+    }       \
+                \
+    programs {      \
+        program { name: "mouse_in";     \
+            signal: "mouse,in";     \
+            source: "over";     \
+            action: STATE_SET "selected" 0.0;       \
+            target: "lb_bg";        \
+            target: "border_top";       \
+            target: "border_left";      \
+            target: "border_right";     \
+        }       \
+        program { name: "mouse_out";        \
+            signal: "mouse,out";        \
+            source: "over";     \
+            action: STATE_SET "default" 0.0;        \
+            target: "lb_bg";        \
+            target: "border_top";       \
+            target: "border_left";      \
+            target: "border_right";     \
+        }       \
+        program {       \
+            name: "mouse_click";        \
+            signal: "mouse,clicked,1";      \
+            source: "over";     \
+            script {        \
+                emit("elm,action,click", "");       \
+            }       \
+        }       \
+    }
+
+collections {
+
+group {
+    name: "elm/button/base/thumbButton";
+    parts {
+        part {
+            name: "elm.swallow.content";
+            type: RECT;
+            scale: 1;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                color: 0 0 0 0;
+                visible: 1;
+                rel1.relative: 0.0 0.0;
+                rel2.relative: 1.0 1.0;
+                align: 0.0 0.0;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "mouse,clicked";
+            signal: "mouse,down,1";
+            source: "elm.swallow.content";
+            action: SIGNAL_EMIT "elm,action,click" "";
+        }
+    }
+}
+
+group {
+    name: "page_indicator_layout";
+    parts {
+    }
+}
+
+group {
+    name: "main_layout";
+    parts {
+        part {
+            name: "bg";
+            type: RECT;
+            scale: 1;
+            description {
+                color: 244 244 244 255;
+                state: "default" 0.0;
+                align: 0.0 0.0;
+                rel1.relative: 0 0;
+                rel2.relative: 1 1;
+            }
+        }
+
+        part {
+            name: "screen_title_area";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description {
+                color: 0 0 0 0;
+                state: "default" 0.0;
+                align: 0.0 0.0;
+                min: LAYOUT_WIDTH 100;
+                max: LAYOUT_WIDTH 100;
+                rel1.relative: 0 0;
+                rel2.relative: 1 1;
+            }
+        }
+
+        part {
+            /* pagecontrol container for mobile */
+            name: "buttons";
+            type: SWALLOW;
+            scale: 1;
+            mouse_events: 1;
+            description {
+                state: "default" 0.0;
+                align: 0.5 0.0;
+                fixed: 0 1;
+                min: 0 71;
+                max: -1 71;
+                rel1 {
+                    to: "screen_title_area";
+                    relative: 0 0;
+                }
+                rel2 {
+                    to: "screen_title_area";
+                    relative: 1 1;
+                }
+            }
+        }
+
+        part {
+            name: "screen_title";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                fixed: 1 1;
+                color: 51 51 51 255;
+                rel1 {
+                    to: "buttons";  //TODO: ditto
+                    relative: 0 1;
+                }
+                rel2 {
+                    to: "screen_title_area";
+                    relative: 1 1;
+                }
+                text {
+                    text: "Most Visited";
+                    font: "Tizen";
+                    align: 0.5 0.5;
+                    size: 25;
+                }
+            }
+        }
+
+        part {
+            name: "view";
+            type: SWALLOW;
+            scale: 1;
+            mouse_events: 1;
+            description { state: "default" 0.0;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                rel1 {
+                    to: "screen_title";
+                    relative: 0 1;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+        }
+    }
+}
+
+group { name: "page_layout";
+    data {
+        item: "focus_highlight" "off";
+    }
+    color_classes{
+        color_class{
+            name: "focusBgColor";
+            color: 0 119 246 255;
+        }
+        color_class{
+            name: "transparent";
+            color: 0 0 0 0;
+        }
+    }
+
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                color: 244 244 244 255;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                min: LAYOUT_WIDTH 800;
+                max: LAYOUT_WIDTH -1;
+                visible: 1;
+                rel1 {
+                    relative: 0 0;
+                }
+                rel2{
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                color: 244 244 244 255;
+            }
+        }
+
+        part { name: "elm.swallow.grid";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                visible: 1;
+                min: LAYOUT_WIDTH 650;
+                max: LAYOUT_WIDTH 650;
+                rel1 {
+                    to: "bg";
+                    relative: 0 0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+        }
+
+        part { name: "center_swallow";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                align: 0 0;
+                visible: 1;
+                rel1 {
+                    to: "bg";
+                    relative: 0 0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.text.empty";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 0;
+                align: 0.5 0.5;
+                color: 0 0 0 179;
+                text {
+                    text: "empty";
+                    font: "Sans";
+                    size: 20;
+                    align: 0.5 0.5;
+                }
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+    }
+
+    programs {
+        program { name: "empty";
+            signal: "empty,view";
+            source: "quickaccess";
+            action:  STATE_SET "empty" 0.0;
+            target: "elm.text.empty";
+            target: "bg";
+            target: "center_swallow";
+        }
+        program { name: "not_empty";
+            signal: "not,empty,view";
+            source: "quickaccess";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.text.empty";
+            target: "bg";
+            target: "center_swallow";
+        }
+    }
+}
+
+
+group { name: "center_layout";
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color: 0 0 0 0;
+                align: 0 0;
+                visible: 0;
+                rel1 {
+                    relative: 0 0;
+                }
+                rel2 {
+                    relative: 1 1;
+                }
+            }
+            description {
+                state: "fixed_size" 0.0;
+                color: 0 0 0 0;
+                min: 0 TOTAL_TILES_HEIGHT;
+                max: -1 TOTAL_TILES_HEIGHT;
+            }
+        }
+
+        part { name: "elm.swallow.big";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
+                max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
+                align: 0.5 0.0;
+                fixed: 1 1;
+                visible: 1;
+                rel1 {
+                    to: "bg";
+                    relative: 0 0;
+                    offset: 0 60;
+                }
+                rel2 {
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_first";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                align: 0.0 0.0;
+                fixed: 1 1;
+                visible: 1;
+                rel1 {
+                    to: "elm.swallow.big";
+                    relative: 0 1;
+                    offset: 0 TILE_SEPARATOR;
+                }
+                rel2{
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_second";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                align: 0.0 0.0;
+                fixed: 1 1;
+                visible: 1;
+                rel1 {
+                    to: "elm.swallow.small_first";
+                    relative: 1 0;
+                    offset: TILE_SEPARATOR 0;
+                }
+                rel2{
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_third";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                align: 0.0 0.0;
+                fixed: 1 1;
+                visible: 1;
+                rel1 {
+                    to: "elm.swallow.small_first";
+                    relative: 0 1;
+                    offset: 0 TILE_SEPARATOR;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.swallow.small_fourth";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                align: 0.0 0.0;
+                fixed: 1 1;
+                visible: 1;
+                rel1 {
+                    to: "elm.swallow.small_third";
+                    relative: 1 0;
+                    offset: TILE_SEPARATOR 0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+    }
+
+    programs {
+        program {
+            name: "set_dynamic_size";
+            signal: "set_dynamic_size";
+            source: "ui";
+            action:  STATE_SET "default" 0.0;
+            target:  "bg";
+        }
+        program {
+            name: "set_fixed_size";
+            signal: "set_fixed_size";
+            source: "ui";
+            action:  STATE_SET "fixed_size" 0.0;
+            target:  "bg";
+        }
+    }
+}
+
+group { name: "elm/button/base/big_tile";
+    data.item: "texts" "page_title page_url";
+    data.item: "contents" "elm.thumbnail";
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                rel1 {
+                    relative: 0.0  0.0; to: "bg";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "bg";
+                }
+                visible: 1;
+                color: 231 231 231 255;
+            }
+        }
+
+        part { name: "elm.thumbnail";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                fixed: 1 1;
+                align: 0.0 0.0;
+                color : 231 231 231 255;
+                min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;   // size adjusted to max thubnail with and height
+                max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
+                rel1 {
+                    relative: 0.0  0.0; to: "bg";
+                }
+                rel2 {
+                    relative: 1.0  1.0; to: "bg";
+                }
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+            }
+        }
+
+        part { name: "border_top";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 0 6;
+                max: -1 6;
+                align: 0 0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "border_left";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 6 0;
+                max: 6 -1;
+                align: 0 0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "border_right";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 6 0;
+                max: 6 -1;
+                align: 1 0;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "lb_bg";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
+                max: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
+                align: 0.0 1.0;
+                color: 113 128 147 255;
+                visible: 1;
+                rel1 {
+                    to: "elm.thumbnail";
+                    relative: 0.0  0.0;
+                }
+                rel2 {
+                    to: "elm.thumbnail";
+                    relative: 1.0  1.0;
+                }
+            }
+            description { state: "selected" 0.0;
+                inherit: "default" 0.0;
+                color: 0 119 246 255;
+            }
+        }
+
+        ADD_SPACER_OVER("title_spacer", "lb_bg", 15, 10)
+
+        part { name: "page_title";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 350 10;
+                max: 350 10;
+                align: 0.0 0.0;
+                color: 255 255 255 255;
+                rel1 {
+                    to: "title_spacer";
+                    relative: 1.0 1.0;
+                }
+                rel2 {
+                    to: "lb_bg";
+                    relative: 1.0  1.0;
+                }
+                text {
+                    text: "Web page title";
+                    font: "Sans";
+                    size: 11;
+                    align: 0 0.5;
+                }
+            }
+        }
+
+        part { name: "page_url";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "over";
+            type: RECT;
+            scale: 1;
+            mouse_events: 1;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1.to: "bg";
+                rel2.to: "lb_bg";
+            }
+        }
+    }
+
+    programs{
+        program { name: "mouse_in";
+            signal: "mouse,in";
+            source: "over";
+            action:  STATE_SET "selected" 0.0;
+            target:  "lb_bg";
+            target: "border_top";
+            target: "border_left";
+            target: "border_right";
+        }
+        program { name: "mouse_out";
+            signal: "mouse,out";
+            source: "over";
+            action:  STATE_SET "default" 0.0;
+            target:  "lb_bg";
+            target: "border_top";
+            target: "border_left";
+            target: "border_right";
+        }
+        program {
+            name: "mouse_click";
+            signal: "mouse,clicked,1";
+            source: "over";
+            script {
+                emit("elm,action,click", "");
+            }
+        }
+    }
+}
+
+group { name: "elm/button/base/small_tile";
+    SMALL_TILE
+}
+
+group { name: "elm/gengrid/item/grid_item/default";
+    SMALL_TILE
+}
+
+group { name: "elm/gengrid/item/bookmark_manager/default";
+    images {
+        image: "bookmark_ic.png" COMP;
+    }
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;
+                visible: 1;
+                color: 255 255 255 255;
+                align: 0.5 0.0;
+                rel1 {
+                    relative: 0.0  0.0;
+                }
+                rel2 {
+                    relative: 1.0  1.0;
+                }
+            }
+        }
+
+        ADD_SPACER_OVER("img_spacer", "bg", 0, 72)
+
+        part {
+            name: "img";
+            type: IMAGE;
+            scale: 1;
+            mouse_events: 1;
+            description {
+                min: 111 111;
+                max: 111 111;
+                state: "default" 0.0;
+                visible: 1;
+                align: 0.5 0.0;
+                image.normal: "bookmark_ic.png";
+                rel1 {
+                    to: "img_spacer";
+                    relative: 0.0  1.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+            }
+        }
+
+        ADD_SPACER_OVER("text_spacer", "bg", 0, 224)
+
+        part { name: "label1";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 199 34;
+                max: 199 34;
+                align: 0.5 0.0;
+                color:  51 51 51 255;
+                rel1 {
+                    to: "text_spacer";
+                    relative: 0.0 1.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+                text {
+                    text: "Bookmark";
+                    font: "Sans";
+                    size: 34;
+                    align: 0.5 0.0;
+                }
+            }
+        }
+
+        ADD_SPACER_OVER("text_spacer2", "bg", 0, 268)
+
+        part { name: "label2";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 199 34;
+                max: 199 34;
+                align: 0.5 0.0;
+                color:  51 51 51 255;
+                rel1 {
+                    to: "text_spacer2";
+                    relative: 0.0 1.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+                text {
+                    text: "manager";
+                    font: "Sans";
+                    size: 34;
+                    align: 0.5 0.0;
+                }
+            }
+        }
+
+        part { name: "border_top";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 0 6;
+                max: -1 6;
+                align: 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "border_left";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 6 0;
+                max: 6 -1;
+                align: 0 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "border_right";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                color_class: focusBgColor;
+                min: 6 0;
+                max: 6 -1;
+                align: 1 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+                visible: 0;
+            }
+            description { state: "selected";
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "border_bottom";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 0 6;
+                max: -1 6;
+                align: 0.0 1.0;
+                color_class: focusBgColor;
+                visible: 0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0  0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+            }
+            description { state: "selected" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+
+        part { name: "over";
+            type: RECT;
+            scale: 1;
+            mouse_events: 1;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+                color: 0 0 0 0;
+                rel1.to: "bg";
+                rel2.to: "bg";
+            }
+        }
+    }
+    programs {
+        program { name: "mouse_in";
+            signal: "mouse,in";
+            source: "over";
+            action: STATE_SET "selected" 0.0;
+            target: "border_top";
+            target: "border_left";
+            target: "border_right";
+            target: "border_bottom";
+        }
+        program { name: "mouse_out";
+            signal: "mouse,out";
+            source: "over";
+            action: STATE_SET "default" 0.0;
+            target: "border_top";
+            target: "border_left";
+            target: "border_right";
+            target: "border_bottom";
+        }
+    }
+}
+
+group { name: "top_button_item";
+        data.item: "texts" "mostvisited_text bookmark_text";
+        data.item: "contents" "mostvisited_click bookmark_click";
+        parts{
+            part {
+                name: "bg_clipper";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                }
+            }
+            part {
+                name: "mostvisited_button";
+                mouse_events: 1;
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 192 192 192 255;
+                    align: 0 0;
+                    min: 300 64;
+                    max: 300 64;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 20 58;}
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusBgColor;
+                    visible: 1;
+                }
+            }
+            part{
+                name: "mostvisited_text";
+                type: TEXT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;to: "mostvisited_button";}
+                    rel2 { relative: 1.0 1.0;to: "mostvisited_button";}
+                    color: 0 0 0 255;
+                text {
+                        text: "Most visited";
+                        font: "Sans";
+                        size: 27;
+                        align: 0.5 0.5;
+                    }
+                }
+            }
+            part {
+                name: "mostvisited_over";
+                scale:1;
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
+                    rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
+                    color_class: transparent;
+                }
+            }
+            part {
+                name: "mostvisited_click";
+                scale:1;
+                type: SWALLOW;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "mostvisited_button";}
+                    rel2 { relative: 1.0 1.0; to: "mostvisited_button";}
+                }
+            }
+            part {
+                name: "bookmark_button";
+                scale:1;
+                mouse_events: 1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 192 192 192 255;
+                    align: 0 0;
+                    min: 300 64;
+                    max: 300 64;
+                    rel1 { relative: 0.0 0.0; to: "bg_clipper"; offset: 600 58;}
+                    rel2 { relative: 1.0 1.0; to: "bg_clipper"; }
+                }
+                description {
+                    state: "highlight" 0.0;
+                    inherit: "default" 0.0;
+                    color_class: focusBgColor;
+                    visible: 1;
+                }
+            }
+            part{
+                name: "bookmark_text";
+                type: TEXT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;to: "bookmark_button";}
+                    rel2 { relative: 1.0 1.0;to: "bookmark_button";}
+                    color: 0 0 0 255;
+                text {
+                        text: "Bookmark";
+                        font: "Sans";
+                        size: 27;
+                        align: 0.5 0.5;
+                    }
+                }
+            }
+            part {
+                name: "bookmark_over";
+                scale:1;
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "bookmark_button";}
+                    rel2 { relative: 1.0 1.0; to: "bookmark_button";}
+                    color_class: transparent;
+                }
+            }
+            part {
+                name: "bookmark_click";
+                scale:1;
+                type: SWALLOW;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0; to: "bookmark_button";}
+                    rel2 { relative: 1.0 1.0; to: "bookmark_button";}
+                    color_class: transparent;
+                }
+            }
+
+        programs{
+            program {
+                name: "mouse_click_mostvisited";
+                signal: "mouse,clicked,1";
+                source: "mostvisited_over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "mouse_in_mostvisited_click";
+                signal: "mouse,in";
+                source: "mostvisited_*";
+                action: STATE_SET "highlight" 0.0;
+                target: "mostvisited_button";
+                target: "mostvisited_over";
+                target: "mostvisited_text";
+             }
+            program {
+                name: "mouse_out_mostvisited_click";
+                signal: "mouse,out";
+                source: "mostvisited_*";
+                action: STATE_SET "default" 0.0;
+                target: "mostvisited_button";
+                target: "mostvisited_over";
+                target: "mostvisited_text";
+            }
+            program {
+                name: "mouse_click_bookmark";
+                signal: "mouse,clicked,1";
+                source: "bookmark_over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "mouse_in_bookmark_click";
+                signal: "mouse,in";
+                source: "bookmark_*";
+                action: STATE_SET "highlight" 0.0;
+                target: "bookmark_button";
+                target: "bookmark_over";
+                target: "bookmark_text";
+             }
+            program {
+                name: "mouse_out_bookmark_click";
+                signal: "mouse,out";
+                source: "bookmark_*";
+                action: STATE_SET "default" 0.0;
+                target: "bookmark_button";
+                target: "bookmark_over";
+                target: "mostvisited_text";
+            }
+        }
+    }
+}

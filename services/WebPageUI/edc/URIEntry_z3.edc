@@ -1,0 +1,749 @@
+#define URI_INPUTBOX_LENGTH 265
+#define URI_INPUTBOX_LENGTH_ENLARGED 350
+#define URI_INPUTBOX_LENGTH_SMALL 190
+#define URI_INPUTBOX_WIDTH 30
+#define CANCEL_ICON_FIELD_SIZE 30
+#define BORDER_WIDTH 5
+
+#define RESOURCE_IMAGE_LOSSY( FILE_NAME ) \
+   group { \
+      name: FILE_NAME; \
+      images.image: FILE_NAME LOSSY 50; \
+      parts { \
+         part { name: "image"; \
+            description { \
+               state: "default" 0.0; \
+               image.normal: FILE_NAME; \
+               aspect: 1 1; \
+               aspect_preference: BOTH; \
+            } \
+         } \
+      } \
+   }
+
+collections {
+RESOURCE_IMAGE_LOSSY("input_ic_incognito.png")
+RESOURCE_IMAGE_LOSSY("navi_input_ic_cancel.png")
+    group {
+        name: "elm/entry/selection/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 224 237 251 255;
+                }
+            }
+        }
+    }
+    group {
+        name: "elm/entry/cursor/browser_entry";
+        parts {
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 10 132 229 255;
+                    min: 3 40;
+                    max: 3 40;
+                    visible: 0;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focused";
+                signal: "elm,action,focus";
+                source: "elm";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+                after: "cursor_show";
+            }
+            program {
+                name: "unfocused";
+                signal: "elm,action,unfocus";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+                after: "stop_action";
+            }
+            program { name: "cursor_show";
+                action: STATE_SET "focused" 0.0;
+                target: "bg";
+                after: "cursor_show_timer";
+            }
+            program { name: "cursor_hide";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+                transition: SINUSOIDAL 0.2;
+                after: "cursor_hide_timer";
+            }
+            program { name: "cursor_show_timer";
+                in: 0.4 0.0;
+                after: "cursor_hide";
+            }
+            program { name: "cursor_hide_timer";
+                in: 0.3 0.0;
+                after: "cursor_show";
+            }
+            program {
+                name: "stop_action";
+                action: ACTION_STOP;
+                target: "cursor_show";
+                target: "cursor_hide";
+                target: "cursor_show_timer";
+                target: "cursor_hide_timer";
+            }
+        }
+    }
+    group {
+        name: "elm/entry/base-single/uri_entry";
+        color_classes {
+            color_class {
+                name: "guide_text_unselected_color";
+                color: 51 51 51 0.5;
+            }
+        }
+        styles {
+            style {
+                name: "browser-entry-uri-style-unselected";
+                base: "font=Sans:style=SVD_Medium font_size="18" wrap=none color=#969696";
+            }
+            style {
+                name: "browser-entry-uri-style-selected";
+                base: "font=Sans:style=SVD_Medium font_size="18" wrap=none color=#4088d3";
+            }
+            style {
+                name: "browser-entry-uri-style-selected-incognito";
+                base: "font=Sans:style=SVD_Medium font_size="18" wrap=none color=#4088d3";
+            }
+        }
+        data {
+            item: focus_highlight "off";
+        }
+        images {
+            image: "input_ic_incognito.png" COMP;
+        }
+        parts {
+
+            part {
+                name: "bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    color: 244 244 244 255;
+                    max: -1 URI_INPUTBOX_WIDTH;
+                    align: 0.0 0.0;
+                }
+            }
+            part {
+                name: "label.text.clip";
+                scale:1;
+                type: RECT;
+                description {
+                    state: "default" 0.0;
+                }
+            }
+            part {
+                name: "elm.text";
+                scale: 1;
+                multiline: 0;
+                entry_mode: EDITABLE;
+                select_mode: DEFAULT;
+                cursor_mode: BEFORE;
+                type: TEXTBLOCK;
+                clip_to: "label.text.clip";
+                source: "elm/entry/selection/browser_entry";
+                source4: "elm/entry/cursor/browser_entry";
+                description {
+                    state: "default" 0.0;
+                    rel1.to: "bg";
+                    rel1.relative: 0.0 0.0;
+                    rel1.offset: BORDER_WIDTH 0;
+                    rel2.to: "bg";
+                    rel2.relative: 1.0 1.0;
+                    align: 0.0 0.0;
+                    fixed: 0 1;
+                    text {
+                        style: "browser-entry-uri-style-selected";
+                        min: 1 1;
+                    }
+                }
+                description {
+                    state: "incognito" 0.0;
+                    align: 0.0 0.0;
+                    text {
+                        style: "browser-entry-uri-style-selected-incognito";
+                        min: 0 1;
+                    }
+                }
+            }
+            part {
+                name: "elm.guide";
+                scale:1;
+                type: TEXTBLOCK;
+                mouse_events: 0;
+                clip_to: "label.text.clip";
+                source4: "elm/entry/cursor/browser_entry";
+                description {
+                    state: "default" 0.0;
+                    rel1.to: "bg";
+                    rel1.relative: 0.0 0.0;
+                    rel1.offset: BORDER_WIDTH 0;
+                    rel2.relative: 1.0 1.0;
+                    max: -1 URI_INPUTBOX_WIDTH;
+                    text {
+                        style: "browser-entry-uri-style-unselected";
+                        min: 0 1;
+                    }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "focus";
+                signal: "load";
+                source: "";
+                action: FOCUS_SET;
+                target: "elm.text";
+            }
+            program {
+                name: "gdisabled";
+                signal: "elm,guide,disabled";
+                source: "elm";
+                action: STATE_SET "hidden" 0.0;
+                target: "elm.guide";
+            }
+            program {
+                name: "genabled";
+                signal: "elm,guide,enabled";
+                source: "elm";
+                action: STATE_SET "default" 0.0;
+                target: "elm.guide";
+            }
+            program {
+                name: "normal_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_normal";
+            }
+            program {
+                name: "incognito_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_incognito";
+                action: STATE_SET "incognito" 0.0;
+                target: "elm.text";
+            }
+        }
+    }//group
+
+    group {
+        name: "uri_entry_layout";
+        parts {
+            part {
+                name: "uri_entry_space";
+                type : RECT;
+                repeat_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    min: URI_INPUTBOX_LENGTH URI_INPUTBOX_WIDTH;
+                    max: URI_INPUTBOX_LENGTH URI_INPUTBOX_WIDTH;
+                    fixed: 1 1;
+                    color: 244 244 244 255;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    min: URI_INPUTBOX_LENGTH_SMALL URI_INPUTBOX_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_SMALL URI_INPUTBOX_WIDTH;
+                }
+                description {
+                    state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    min: URI_INPUTBOX_LENGTH_ENLARGED URI_INPUTBOX_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_ENLARGED URI_INPUTBOX_WIDTH;
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "over_icon";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    min: 0 0;
+                    max: 0 0;
+                    rel1.to: "uri_entry_space";
+                    rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                    align: 0 0;
+                    color: 244 244 244 255;
+                }
+                description {
+                    state: "incognito" 0.0;
+                    inherit: "default" 0.0;
+                    min: 38 URI_INPUTBOX_WIDTH;
+                    max: 38 URI_INPUTBOX_WIDTH;
+                }
+            }
+            part {
+                name: "incognito_icon";
+                type: IMAGE;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    min: 0 0;
+                    max: 0 0;
+                    rel1 {
+                        to: "over_icon";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                    }
+                    image.normal: "input_ic_incognito.png";
+                    align: 0 0.5;
+                }
+                description {
+                    state: "incognito" 0.0;
+                    inherit: "default" 0.0;
+                    min: 20 20;
+                    max: 20 20;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "uri_entry_swallow";
+                type : SWALLOW;
+                mouse_events: 1;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 1 1;
+                    rel1 { relative: 1.0 0.0; to: "over_icon"; }
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_space"; }
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+                description {
+                    state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                    rel1 { relative: 1.0 0.0; to: "over_icon"; }
+                    rel2 { relative: 0.0 1.0; to: "cancel_icon_bg"; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "over";
+                type: RECT;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    color: 0 0 0 0;
+                    rel1 { relative: 0 0; }
+                    rel2 { relative: 1 1; }
+                }
+            }
+
+/*
+ * This is workaround. Platform border of the entry should not be visible.
+ * These rectangles coveres the border. Remove them when border is thrown by the platform.
+ */
+            part {
+                name: "top_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: URI_INPUTBOX_LENGTH BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH BORDER_WIDTH;
+                    rel1 { relative: 0.0 0.0; to: "uri_entry_space";}
+                    rel2 { relative: 1.0 0.0; to: "uri_entry_space";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    max: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    rel2 { relative: 1.0 0.0;}
+                }
+            }
+            part {
+                name: "bottom_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: URI_INPUTBOX_LENGTH BORDER_WIDTH*2;
+                    max: -1 BORDER_WIDTH*2;
+                    rel1 { relative: 0.0 (1.0-(BORDER_WIDTH/2)/URI_INPUTBOX_WIDTH); to: "uri_entry_space"; offset: -3 0;}
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_space"; offset: 0 4;}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_SMALL BORDER_WIDTH;
+                    max: -1 BORDER_WIDTH;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                    min: URI_INPUTBOX_LENGTH_ENLARGED BORDER_WIDTH;
+                    max: -1 BORDER_WIDTH;
+                    rel2 { relative: 1.0 0.0;}
+                }
+            }
+            part {
+                name: "left_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    max: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    rel1 { relative: 0.0 0.0; to: "uri_entry_swallow"; offset: -3 0;}
+                    rel2 { relative: 0.0 1.0; to: "uri_entry_swallow";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                }
+            }
+            part {
+                name: "right_border";
+                type: RECT;
+                scale: 1;
+                repeat_events: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    min: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    max: BORDER_WIDTH URI_INPUTBOX_WIDTH;
+                    rel1 { relative: (1.0-BORDER_WIDTH/URI_INPUTBOX_LENGTH_ENLARGED) 0.0; to: "uri_entry_swallow";}
+                    rel2 { relative: 1.0 1.0; to: "uri_entry_swallow";}
+                    color: 244 244 244 255;
+                    align: 0 0;
+                    fixed: 0 1;
+                }
+                description { state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                }
+                description { state: "entry_enlarged" 0.0;
+                    inherit: "default" 0.0;
+                }
+            }
+
+/*
+ *The end of the workaround.
+ */
+
+            part {
+                name: "cancel_icon_bg";
+                scale:1;
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 0 0;
+                    max: 0 0;
+                    visible: 0;
+                    color: 0 0 0 0;
+                    fixed: 0 1;
+                    align: 1 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    min: 30 30;
+                    max: 30 30;
+                    fixed: 0 1;
+                    rel1 {
+                        to: "uri_entry_space";
+                        relative: (1.0-CANCEL_ICON_FIELD_SIZE/URI_INPUTBOX_LENGTH_ENLARGED) 0.0;
+                    }
+                    rel2 {
+                        to: "uri_entry_space";
+                        relative: 1.0 1.0;
+                    }
+                    visible: 1;
+                    color: 244 244 244 255;
+                }
+                description {
+                    state: "focused" 0.0;
+                    inherit: "visible" 0.0;
+                    visible: 1;
+                    color: 224 237 251 255;
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part {
+                name: "cancel_icon";
+                type: IMAGE;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                    min: 0 0;
+                    max: 0 0;
+                    rel1 {
+                        to: "cancel_icon_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "cancel_icon_bg";
+                        relative: 1.0 1.0;
+                    }
+                    image.normal: "navi_input_ic_cancel.png";
+                    image.border: 8 8 8 8;
+                    image.border_scale: 1;
+                    align: 0.5 0.5;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    min: 30 30;
+                    max: 30 30;
+                    visible: 1;
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+            }
+            part {
+                name: "cancel_over";
+                scale:1;
+                type: RECT;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 30 30;
+                    max: 30 30;
+                    visible: 0;
+                    rel1 {
+                        to: "cancel_icon_bg";
+                        relative: 0.0 0.0;
+                    }
+                    rel2 {
+                        to: "cancel_icon_bg";
+                        relative: 1.0 1.0;
+                    }
+                    color: 0 0 0 0;
+                }
+                description {
+                    state: "moveright" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+            }
+            part {
+                name: "cancel_click";
+                scale:1;
+                mouse_events: 1;
+                repeat_events: 1;
+                type: SWALLOW;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0 0;
+                    fixed: 1 1;
+                    min: 40 40;
+                    max: 40 40;
+                    rel1 { relative: 0.0 0.0; to: "cancel_over";}
+                    rel2 { relative: 1.0 1.0; to: "cancel_over";}
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs {
+            program {
+                name: "shiftright_uribarbg";
+                signal: "shiftright_uribg";
+                source: "ui";
+                action: STATE_SET "moveright" 0.0;
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_swallow";
+                target: "cancel_icon";
+                target: "cancel_over";
+                target: "cancel_icon_bg";
+                target: "uri_entry_space";
+            }
+            program {
+                name: "shiftback_uribarbg";
+                signal: "shiftback_uribg";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "uri_entry_swallow";
+                target: "cancel_icon";
+                target: "cancel_over";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
+            }
+            program {
+                name: "decrease_unfocused_qa_uribar";
+                signal: "decrease_unfocused_qa_uri";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "uri_entry_swallow";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
+            }
+            program {
+                name: "enlarge_focused_uribar";
+                signal: "enlarge_focused_uribg";
+                source: "ui";
+                action: STATE_SET "entry_enlarged" 0.0;
+                target: "uri_entry_swallow";
+                target: "top_border";
+                target: "bottom_border";
+                target: "left_border";
+                target: "right_border";
+                target: "uri_entry_space";
+            }
+            program {
+                name: "mouse_in_cancel_icon";
+                signal: "mouse,down,*";
+                source: "cancel_over";
+                action: STATE_SET "focused" 0.0;
+                target: "cancel_icon_bg";
+            }
+            program {
+                name: "mouse_out_cancel_icon";
+                signal: "mouse,up,*";
+                source: "cancel_over";
+                action: STATE_SET "visible" 0.0;
+                target: "cancel_icon_bg";
+            }
+            program {
+                name: "mouse_clicked_cancel_icon";
+                signal: "mouse,clicked,*";
+                source: "cancel_over";
+                after: "call_on_cancel_icon_clicked_cb";
+            }
+            program {
+                name: "call_on_cancel_icon_clicked_cb";
+                signal: "call_on_cancel_icon_clicked_cb";
+                source: "ui";
+                action: SIGNAL_EMIT "cancel_icon_clicked" "ui";
+            }
+            program {
+                name: "normal_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_normal";
+                action: STATE_SET "default" 0.0;
+                target: "incognito_icon";
+                target: "over_icon";
+            }
+            program {
+                name: "incognito_mode_uri_entry";
+                source: "ui";
+                signal: "uri_entry_incognito";
+                action: STATE_SET "incognito" 0.0;
+                target: "incognito_icon";
+                target: "over_icon";
+            }
+            program {
+                name: "show_cancel_icon";
+                source: "ui";
+                signal: "show_cancel_icon";
+                action: STATE_SET "visible" 0.0;
+                target: "cancel_icon";
+                target: "cancel_icon_bg";
+                target: "cancel_over";
+            }
+            program {
+                name: "hide_cancel_icon";
+                source: "ui";
+                signal: "hide_cancel_icon";
+                action: STATE_SET "default" 0.0;
+                target: "cancel_icon";
+                target: "cancel_icon_bg";
+                target: "cancel_over";
+            }
+        }
+    }
+}
