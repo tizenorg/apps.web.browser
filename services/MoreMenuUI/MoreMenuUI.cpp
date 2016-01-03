@@ -184,7 +184,10 @@ void MoreMenuUI::createGengrid()
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
 #if PROFILE_MOBILE
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_FALSE);
-    elm_gengrid_item_size_set(m_gengrid, (228-1) * efl_scale, (213-1) * efl_scale); //FIXME
+    // Note4 Profile
+    // elm_gengrid_item_size_set(m_gengrid, (228-1) * efl_scale, (213-1) * efl_scale); //FIXME
+    // Z3 Profile
+    elm_gengrid_item_size_set(m_gengrid, (130-1) * efl_scale, (120-1) * efl_scale);  //for z3
 #else
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);

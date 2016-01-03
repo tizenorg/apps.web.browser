@@ -208,7 +208,10 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
 #if PROFILE_MOBILE
     elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
     elm_scroller_page_size_set(gengrid, 720, 0);
-    elm_gengrid_item_size_set(gengrid, 656 * efl_scale, 450 * efl_scale);
+    // Note4 Profile
+    // elm_gengrid_item_size_set(gengrid, 656 * efl_scale, 450 * efl_scale);
+    // Z3 Profile
+    elm_gengrid_item_size_set(gengrid, 300 * efl_scale, 250 * efl_scale); //for z3
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
 
     elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
