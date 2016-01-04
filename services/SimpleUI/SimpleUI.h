@@ -337,11 +337,6 @@ private:
 
     //helper object used to view management
     ViewManager m_viewManager;
-
-    // This context object is used to implicitly init internal ewk data used by opengl to create the first and
-    // consecutive webviews in the application, otherwise we would encounter a crash after creating
-    // the first web view
-    Ewk_Context *m_ewkContext;
     Evas_Object *main_window;
 #if PROFILE_MOBILE
     int angle = 0;
