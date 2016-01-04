@@ -61,7 +61,7 @@ class WebView
 public:
     WebView(Evas_Object *, TabId, const std::string& title, bool incognitoMode);
     virtual ~WebView();
-    void init(bool desktopMode, Evas_Object * opener = NULL);
+    void init(bool desktopMode, Evas_Object * view = NULL);
 
     void setURI(const std::string &);
     std::string getURI(void);
