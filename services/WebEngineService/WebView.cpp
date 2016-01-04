@@ -91,15 +91,12 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
-    if (m_ewkContext && !m_private) {       // private context is deleted by engine
-        ewk_context_delete(m_ewkContext);
-    }
 }
 
 void WebView::init(bool desktopMode, Evas_Object*)
 {
     m_ewkView = m_private ? ewk_view_add_in_incognito_mode(evas_object_evas_get(m_parent)) :
-                            ewk_view_add_with_context(evas_object_evas_get(m_parent), ewk_context_new());
+                            ewk_view_add_with_context(evas_object_evas_get(m_parent), ewk_context_default_get());
 
     m_ewkContext = ewk_view_context_get(m_ewkView);
     if (m_ewkContext)

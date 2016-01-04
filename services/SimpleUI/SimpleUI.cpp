@@ -73,7 +73,6 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
-    , m_ewkContext(ewk_context_new())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
@@ -103,9 +102,7 @@ SimpleUI::~SimpleUI() {
 void SimpleUI::destroyUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_del(m_window.get());
     m_webEngine->destroyTabs();
-    ewk_context_delete(m_ewkContext);
 }
 
 std::string SimpleUI::edjePath(const std::string &file)
