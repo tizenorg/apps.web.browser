@@ -96,10 +96,12 @@ WebView::~WebView()
     }
 }
 
-void WebView::init(bool desktopMode, Evas_Object*)
+void WebView::init(bool desktopMode, Evas_Object* view)
 {
+    Ewk_Context* context = view ? ewk_view_context_get(view) : ewk_context_default_get();
+
     m_ewkView = m_private ? ewk_view_add_in_incognito_mode(evas_object_evas_get(m_parent)) :
-                            ewk_view_add_with_context(evas_object_evas_get(m_parent), ewk_context_new());
+                            ewk_view_add_with_context(evas_object_evas_get(m_parent), context);
 
     m_ewkContext = ewk_view_context_get(m_ewkView);
     if (m_ewkContext)
