@@ -73,6 +73,7 @@ QuickAccess::QuickAccess()
     , m_bookmarkManagerButton(nullptr)
     , m_after_history_thumb(false)
     , m_parentFocusChain(nullptr)
+    , m_currPage(-1)    // init with no page selected
     , m_bookmark_item_class(nullptr)
     , m_detailPopup(this)
 #if PROFILE_MOBILE
@@ -154,6 +155,7 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
 #if !PROFILE_MOBILE
     Evas_Object* topButtons = createTopButtons(layout);
     elm_object_part_content_set(layout, "buttons", topButtons);
+    elm_object_tree_focus_allow_set(topButtons, EINA_TRUE);
 #else
     m_index = elm_index_add(layout);
     evas_object_size_hint_weight_set(m_index, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -276,23 +278,33 @@ Evas_Object* QuickAccess::createTopButtons (Evas_Object *parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *layoutTop = elm_layout_add(parent);
-    elm_layout_file_set(layoutTop, edjFilePath.c_str(), "top_button_item");
+    elm_layout_file_set(layoutTop, edjFilePath.c_str(), "category_menu");
     evas_object_size_hint_weight_set(layoutTop, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layoutTop, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(layoutTop);
 
     Evas_Object *mostVisitedButton = elm_button_add(layoutTop);
-    elm_object_style_set(mostVisitedButton, "invisible_button");
+    elm_object_style_set(mostVisitedButton, "category_button");
+    elm_object_translatable_part_text_set(mostVisitedButton, "btn_txt", "IDS_BR_TAB_MOST_VISITED");
     evas_object_smart_callback_add(mostVisitedButton, "clicked", _mostVisited_clicked, this);
+    evas_object_smart_callback_add(mostVisitedButton, "mouse,in", _category_btn_mouse_in, nullptr);
+    evas_object_smart_callback_add(mostVisitedButton, "mouse,out", _category_btn_mouse_out, this);
+    evas_object_smart_callback_add(mostVisitedButton, "focused", _category_btn_mouse_in, nullptr);
+    evas_object_smart_callback_add(mostVisitedButton, "unfocused", _category_btn_mouse_out, this);
     evas_object_show(mostVisitedButton);
-    elm_layout_content_set(layoutTop, "mostvisited_click", mostVisitedButton);
+    elm_layout_content_set(layoutTop, "most_visited_btn", mostVisitedButton);
     m_mostVisitedButton = mostVisitedButton;
 
     Evas_Object *bookmarksButton = elm_button_add(layoutTop);
-    elm_object_style_set(bookmarksButton, "invisible_button");
+    elm_object_style_set(bookmarksButton, "category_button");
+    elm_object_translatable_part_text_set(bookmarksButton, "btn_txt", "IDS_BR_OPT_BOOKMARK");
     evas_object_smart_callback_add(bookmarksButton, "clicked", _bookmark_clicked, this);
+    evas_object_smart_callback_add(bookmarksButton, "mouse,in", _category_btn_mouse_in, nullptr);
+    evas_object_smart_callback_add(bookmarksButton, "mouse,out", _category_btn_mouse_out, this);
+    evas_object_smart_callback_add(bookmarksButton, "focused", _category_btn_mouse_in, nullptr);
+    evas_object_smart_callback_add(bookmarksButton, "unfocused", _category_btn_mouse_out, this);
     evas_object_show(bookmarksButton);
-    elm_layout_content_set(layoutTop, "bookmark_click", bookmarksButton);
+    elm_layout_content_set(layoutTop, "bookmark_btn", bookmarksButton);
     m_bookmarksButton = bookmarksButton;
 
     return layoutTop;
@@ -363,6 +375,27 @@ void QuickAccess::_horizontalScroller_scroll(void* data, Evas_Object* /*scroller
         }
     }
 }
+
+#if !PROFILE_MOBILE
+void QuickAccess::_category_btn_mouse_in(void* /*data*/, Evas_Object* obj, void* /*event_info*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(obj, "btn,focused", "border");
+    elm_object_focus_set(obj, EINA_TRUE);
+}
+void QuickAccess::_category_btn_mouse_out(void* data, Evas_Object* obj, void* /*event_info*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = static_cast<QuickAccess*>(data);
+    if (((obj == self->m_mostVisitedButton) && (self->m_currPage == MOST_VISITED_PAGE)) ||
+            ((obj == self->m_bookmarksButton) && (self->m_currPage == BOOKMARK_PAGE))   ){
+        elm_object_signal_emit(obj, "btn,selected", "border");
+    } else {
+        elm_object_signal_emit(obj, "btn,normal", "border");
+    }
+    elm_object_focus_set(obj, EINA_FALSE);
+}
+#endif
 
 void QuickAccess::addMostVisitedItem(std::shared_ptr<services::HistoryItem> hi)
 {
@@ -531,17 +564,17 @@ void QuickAccess::showMostVisited()
 #if PROFILE_MOBILE
     elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
     setIndexPage(QuickAccess::MOST_VISITED_PAGE);
-#endif
-    if (m_historyItems.empty()) {
-        setEmptyView(true);
-        return;
-    }
-    setEmptyView(false);
-
-#if !PROFILE_MOBILE
+#else
     refreshFocusChain();
-    elm_object_focus_set(m_mostVisitedButton, true);
+    // Setting focus is needed for time we open QuickAccess
+    elm_object_focus_set(m_mostVisitedButton, EINA_TRUE);
+    // Unfocused signal to previous category button is send before m_currPage is change
+    // we must change state of other buttons manually
+    elm_object_signal_emit(m_bookmarksButton, "btn,normal", "border");
+    // Category buttons overlay each other so we need to raise active one.
+    evas_object_raise(m_mostVisitedButton);
 #endif
+    setEmptyView(m_historyItems.empty());
 }
 
 void QuickAccess::clearBookmarkGengrid()
@@ -559,7 +592,9 @@ void QuickAccess::showBookmarks()
     setIndexPage(QuickAccess::BOOKMARK_PAGE);
 #else
     refreshFocusChain();
-    elm_object_focus_set(m_bookmarksButton, true);
+    elm_object_focus_set(m_bookmarksButton, EINA_TRUE);
+    elm_object_signal_emit(m_mostVisitedButton, "btn,normal", "border");
+    evas_object_raise(m_bookmarksButton);
 #endif
 }
 
@@ -571,8 +606,6 @@ void QuickAccess::showUI()
     getMostVisitedItems();
     getBookmarksItems();
     _horizontalScroller_scroll(this, NULL, NULL);
-    if (m_historyItems.empty())
-        setEmptyView(true);
 }
 
 void QuickAccess::hideUI()
@@ -581,6 +614,7 @@ void QuickAccess::hideUI()
     evas_object_hide(m_layout);
     clearMostVisitedGenlist();
     clearBookmarkGengrid();
+    m_currPage = -1; // Reset current page no.
 }
 
 void QuickAccess::openDetailPopup(std::shared_ptr<services::HistoryItem> currItem, std::shared_ptr<services::HistoryItemVector> prevItems)
@@ -659,20 +693,33 @@ void QuickAccess::refreshFocusChain()
 
     elm_object_focus_custom_chain_append(m_parent, m_mostVisitedButton, NULL);
     elm_object_focus_custom_chain_append(m_parent, m_bookmarksButton, NULL);
+    elm_object_focus_next_object_set(m_mostVisitedButton, m_bookmarksButton, ELM_FOCUS_RIGHT);
+    elm_object_focus_next_object_set(m_bookmarksButton, m_mostVisitedButton, ELM_FOCUS_LEFT);
     if (isMostVisitedActive()) {
-        for (auto tile = m_tiles.begin(); tile != m_tiles.end(); ++tile) {
-                elm_object_focus_custom_chain_append(m_parent, *tile, NULL);
+        if (!m_tiles.empty()) {
+            for (auto tile = m_tiles.begin(); tile != m_tiles.end(); ++tile) {
+                    elm_object_focus_custom_chain_append(m_parent, *tile, NULL);
+            }
+            // prevent from moving outside of screen
+            elm_object_focus_next_object_set(m_tiles[BIG_TILE_INDEX], m_tiles[BIG_TILE_INDEX], ELM_FOCUS_LEFT);
+            elm_object_focus_next_object_set(m_tiles[TOP_RIGHT_TILE_INDEX], m_tiles[TOP_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
+            elm_object_focus_next_object_set(m_tiles[BOTTOM_RIGHT_TILE_INDEX], m_tiles[BOTTOM_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
+            // set focus chain for category buttons
+            elm_object_focus_next_object_set(m_mostVisitedButton, m_tiles[BIG_TILE_INDEX], ELM_FOCUS_DOWN);
+            elm_object_focus_next_object_set(m_bookmarksButton, m_tiles[BIG_TILE_INDEX], ELM_FOCUS_DOWN);
         }
-        // prevent from moving outside of screen
-        elm_object_focus_next_object_set(m_tiles[BIG_TILE_INDEX], m_tiles[BIG_TILE_INDEX], ELM_FOCUS_LEFT);
-        elm_object_focus_next_object_set(m_tiles[TOP_RIGHT_TILE_INDEX], m_tiles[TOP_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
-        elm_object_focus_next_object_set(m_tiles[BOTTOM_RIGHT_TILE_INDEX], m_tiles[BOTTOM_RIGHT_TILE_INDEX], ELM_FOCUS_RIGHT);
     } else {
-        elm_object_focus_custom_chain_append(m_parent, m_bookmarkGengrid, NULL);
+        if (elm_gengrid_items_count(m_bookmarkGengrid)) {
+            elm_object_focus_custom_chain_append(m_parent, m_bookmarkGengrid, NULL);
+            // prevent from moving outside of screen
+            elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_LEFT);
+            elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_RIGHT);
+            // set focus chain for category buttons
+            elm_object_focus_next_object_set(m_mostVisitedButton, m_bookmarkGengrid, ELM_FOCUS_DOWN);
+            elm_object_focus_next_object_set(m_bookmarksButton, m_bookmarkGengrid, ELM_FOCUS_DOWN);
+            elm_object_focus_next_object_set(m_bookmarkGengrid, m_mostVisitedButton, ELM_FOCUS_UP);
+        }
         elm_object_focus_custom_chain_append(m_parent, m_bookmarkManagerButton, NULL);
-        // prevent from moving outside of screen
-        elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_LEFT);
-        elm_object_focus_next_object_set(m_bookmarkGengrid, m_bookmarkGengrid, ELM_FOCUS_RIGHT);
     }
 }
 
