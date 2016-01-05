@@ -27,6 +27,7 @@
 #include <boost/any.hpp>
 #include <BrowserAssert.h>
 
+#include "app_i18n.h"
 #include "ServiceManager.h"
 #include "service_macros.h"
 #include "BrowserLogger.h"
@@ -449,7 +450,7 @@ bool BookmarkService::get_item_by_id(int id, BookmarkItem *item)
     }
 
     if (id == 0) {
-        item->setTitle("Bookmarks");
+        item->setTitle(_("IDS_BR_BODY_BOOKMARKS"));
         item->setAddress("");
         item->setId(id);
         item->setDir(-1);
