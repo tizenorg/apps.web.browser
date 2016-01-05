@@ -22,6 +22,7 @@ namespace tizen_browser{
 namespace base_ui{
 
 AutoFillFormItem::AutoFillFormItem(AutoFillFormItemData *item_data)
+    : m_ewkContext(ewk_context_default_get())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -90,8 +91,7 @@ profileSaveErrorcode AutoFillFormItem::saveItem(void)
     if (m_itemData.email_address)
         ewk_autofill_profile_data_set(profile, EWK_PROFILE_EMAIL, m_itemData.email_address);
 
-    Ewk_Context *ewk_context = ewk_context_default_get();
-    if (ewk_context_form_autofill_profile_add(ewk_context, profile) == EINA_FALSE) {
+    if (ewk_context_form_autofill_profile_add(m_ewkContext, profile) == EINA_FALSE) {
         BROWSER_LOGE("Failed to ewk_context_form_autofill_profile_add");
         ewk_autofill_profile_delete(profile);
         return duplicate_profile;
@@ -107,8 +107,7 @@ profileEditErrorcode AutoFillFormItem::updateItem(void)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     /* Find profile with id */
-    Ewk_Context *ewk_context = ewk_context_default_get();
-    Ewk_Autofill_Profile *profile = ewk_context_form_autofill_profile_get(ewk_context, m_itemData.profile_id);
+    Ewk_Autofill_Profile *profile = ewk_context_form_autofill_profile_get(m_ewkContext, m_itemData.profile_id);
     if (!profile) {
         BROWSER_LOGE("Failed to ewk_context_form_autofill_profile_get with ID [%d]", m_itemData.profile_id);
         return profile_edit_failed;
@@ -135,7 +134,7 @@ profileEditErrorcode AutoFillFormItem::updateItem(void)
     if (m_itemData.email_address)
         ewk_autofill_profile_data_set(profile, EWK_PROFILE_EMAIL, m_itemData.email_address);
 
-    if (ewk_context_form_autofill_profile_set(ewk_context, m_itemData.profile_id, profile) == EINA_FALSE) {
+    if (ewk_context_form_autofill_profile_set(m_ewkContext, m_itemData.profile_id, profile) == EINA_FALSE) {
         BROWSER_LOGE("Failed to ewk_context_form_autofill_profile_set with ID [%d]", m_itemData.profile_id);
         return profile_already_exist;
     }
