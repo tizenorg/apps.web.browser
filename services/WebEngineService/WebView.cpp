@@ -676,7 +676,7 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
     if(data)
     {
         WebView * self = static_cast<WebView *>(data);
-        Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(self->m_ewkView), ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
+        Evas_Object * favicon = ewk_context_icon_database_icon_object_add(self->m_ewkContext, ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
         if (favicon && self->isLoading()) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
             self->faviconImage = EflTools::getBrowserImage(favicon);
@@ -1149,7 +1149,7 @@ std::shared_ptr<BrowserImage> WebView::getFavicon()
 {
     BROWSER_LOGD("%s:%d, TabId: %s", __PRETTY_FUNCTION__, __LINE__, m_tabId.toString().c_str());
 
-    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(ewk_view_context_get(m_ewkView), ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
+    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(m_ewkContext, ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
     faviconImage = EflTools::getBrowserImage(favicon);
     evas_object_unref(favicon);
 
@@ -1164,86 +1164,47 @@ void WebView::clearCache()
 {
     BROWSER_LOGD("Clearing cache");
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_cache_clear(context);
-        }
-    }
+    if (m_ewkContext)
+        ewk_context_cache_clear(m_ewkContext);
 }
 
 void WebView::clearCookies()
 {
     BROWSER_LOGD("Clearing cookies");
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
-        }
-    }
+    if (m_ewkContext)
+        ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(m_ewkContext));
 }
 
 void WebView::clearPrivateData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_cache_clear(context);
-            ewk_context_web_storage_delete_all(context);
-            ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(context));
-        }
+    if (m_ewkContext) {
+        ewk_context_cache_clear(m_ewkContext);
+        ewk_context_web_storage_delete_all(m_ewkContext);
+        ewk_cookie_manager_cookies_clear(ewk_context_cookie_manager_get(m_ewkContext));
     }
 }
+
 void WebView::clearPasswordData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_form_password_data_delete_all(context);
-        }
-        else
-        {
-            BROWSER_LOGD("[%s:%d] Warning: no context", __PRETTY_FUNCTION__, __LINE__);
-        }
-    }
+    if (m_ewkContext)
+        ewk_context_form_password_data_delete_all(m_ewkContext);
     else
-    {
-        BROWSER_LOGD("[%s:%d] Warning: no m_ewkView", __PRETTY_FUNCTION__, __LINE__);
-    }
+        BROWSER_LOGD("[%s:%d] Warning: no context", __PRETTY_FUNCTION__, __LINE__);
 }
+
 void WebView::clearFormData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (m_ewkView)
-    {
-        Ewk_Context *context = ewk_view_context_get(m_ewkView);
-        if (context)
-        {
-            ewk_context_form_candidate_data_delete_all(context);
-        }
-        else
-        {
-            BROWSER_LOGD("[%s:%d] Warning: no context", __PRETTY_FUNCTION__, __LINE__);
-        }
-    }
+    if (m_ewkContext)
+        ewk_context_form_candidate_data_delete_all(m_ewkContext);
     else
-    {
-        BROWSER_LOGD("[%s:%d] Warning: no m_ewkView", __PRETTY_FUNCTION__, __LINE__);
-    }
+        BROWSER_LOGD("[%s:%d] Warning: no context", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void WebView::searchOnWebsite(const std::string & searchString, int flags)
