@@ -80,13 +80,13 @@ private:
     void addBookmarkManagerTile();
     void setIndexPage(const uintptr_t page) const;
 #else
+    Evas_Object* createTopButtons(Evas_Object *parent);
     Evas_Object* createBottomButton(Evas_Object *parent);
 #endif
 
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);
     Evas_Object* createBookmarksView(Evas_Object *parent);
-    Evas_Object* createTopButtons(Evas_Object *parent);
 
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
@@ -99,6 +99,10 @@ private:
     static void _bookmark_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _horizontalScroller_scroll(void* data, Evas_Object* scroller, void* event_info);
+#if !PROFILE_MOBILE
+    static void _category_btn_mouse_in(void* data, Evas_Object* obj, void* event_info);
+    static void _category_btn_mouse_out(void* data, Evas_Object* obj, void* event_info);
+#endif
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
