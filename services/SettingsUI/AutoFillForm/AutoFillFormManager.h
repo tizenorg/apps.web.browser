@@ -76,6 +76,7 @@ private:
     AutoFillFormListView *m_listView;
     AutoFillFormComposeView *m_composer;
     AutoProfileDeleteView *m_deleteView;
+    Ewk_Context* m_ewkContext;
 };
 
 }
