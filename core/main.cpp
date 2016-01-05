@@ -36,7 +36,7 @@ static bool app_create(void * /*app_data*/)
 {
     elm_config_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
 
-    elm_config_accel_preference_set("3d");
+    elm_config_accel_preference_set("opengl:depth24:stencil8");
 
     elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
     // Enabling focus
