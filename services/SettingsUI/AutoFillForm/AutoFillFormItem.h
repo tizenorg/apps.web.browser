@@ -96,6 +96,7 @@ public:
 
 private:
     AutoFillFormItemData m_itemData;
+    Ewk_Context* m_ewkContext;
 };
 
 }

@@ -28,6 +28,7 @@ AutoFillFormManager::AutoFillFormManager(void)
     : m_listView(NULL)
     , m_composer(NULL)
     , m_deleteView(NULL)
+    , m_ewkContext(ewk_context_default_get())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -75,8 +76,7 @@ std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)
 
     m_AutoFillFormItemList.clear();
 
-    Ewk_Context *ewk_context = ewk_context_default_get();
-    Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(ewk_context);
+    Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(m_ewkContext);
 
     Eina_List *list = NULL;
     void *item_data = NULL;
@@ -106,8 +106,7 @@ Eina_Bool AutoFillFormManager::deleteAutoFillFormItem(AutoFillFormItem *item)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     for (unsigned int i = 0; i < m_AutoFillFormItemList.size(); i++) {
         if (m_AutoFillFormItemList[i]->getProfileId() == item->getProfileId()) {
-            Ewk_Context *ewk_context = ewk_context_default_get();
-            if (ewk_context_form_autofill_profile_remove(ewk_context, item->getProfileId()) == EINA_FALSE)
+            if (ewk_context_form_autofill_profile_remove(m_ewkContext, item->getProfileId()) == EINA_FALSE)
                 return EINA_FALSE;
 
             m_AutoFillFormItemList.erase(m_AutoFillFormItemList.begin() + i);
@@ -122,8 +121,7 @@ Eina_Bool AutoFillFormManager::deleteAllAutoFillFormItems(void)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_AutoFillFormItemList.clear();
 
-    Ewk_Context *ewk_context = ewk_context_default_get();
-    Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(ewk_context);
+    Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(m_ewkContext);
 
     Eina_List *list = NULL;
     void *item_data = NULL;
@@ -131,7 +129,7 @@ Eina_Bool AutoFillFormManager::deleteAllAutoFillFormItems(void)
     EINA_LIST_FOREACH(entire_item_list, list, item_data) {
         if (item_data) {
             Ewk_Autofill_Profile *profile = static_cast<Ewk_Autofill_Profile*>(item_data);
-            ewk_context_form_autofill_profile_remove(ewk_context, ewk_autofill_profile_id_get(profile));
+            ewk_context_form_autofill_profile_remove(m_ewkContext, ewk_autofill_profile_id_get(profile));
         }
     }
 
