@@ -78,6 +78,7 @@ if(TIZEN_BUILD)
         capi-appfw-application
         libpng
         efl-extension
+        capi-system-system-settings
     )
 
    if (${PROFILE} MATCHES "mobile")
