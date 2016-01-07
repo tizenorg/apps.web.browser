@@ -26,6 +26,8 @@
 #include <Evas.h>
 #include <app.h>
 #include "Config.h"
+#include <chrono>
+
 #include "app_i18n.h"
 #include "TabService.h"
 #include "BrowserLogger.h"

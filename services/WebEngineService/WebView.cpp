@@ -86,6 +86,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_downloadControl(nullptr)
 #endif
     , m_timer(nullptr)
+    , m_start_time(0)
 {
 }
 
@@ -231,7 +232,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
-    evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
+//    evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 //     evas_object_smart_callback_add(m_ewkView, "notify,certificate,info", __setCertificatePem, this);    TODO: when engine will implement proper callback, change to it
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
@@ -659,6 +660,7 @@ Evas_Object * WebView::getLayout()
 void WebView::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
+    BROWSER_LOGD("[PROFILING] --- setURI | ewk_view_url_set [%s]", uri.c_str());
     m_faviconImage.reset();
     ewk_view_url_set(m_ewkView, uri.c_str());
     m_loadError = false;
@@ -714,6 +716,7 @@ void WebView::stopLoading(void)
 
 void WebView::reload(void)
 {
+    BROWSER_LOGD("---[PROFILING] --- reload | ewk_view_url_set");
     m_isLoading = true;
     if(m_loadError)
     {
@@ -979,7 +982,27 @@ void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
 
 void WebView::__loadStarted(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char seconds[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (seconds,80,"%S",timeinfo);
+    std::string value;
+    value.append(seconds);
+    value.append(".");
+    value.append(std::to_string(fractional_seconds));
+    float start_time = std::stof(value, nullptr);
+    BROWSER_LOGD("[PROFILING] --- LOAD STARTED --- [ %.3f ] ",start_time);
+    // --- TIMESTAMP ---
+
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebView * self = reinterpret_cast<WebView *>(data);
+    self->m_start_time = start_time;
 
     BROWSER_LOGD("%s:%d\n\t %s", __func__, __LINE__, ewk_view_url_get(self->m_ewkView));
 
@@ -999,9 +1022,38 @@ void WebView::__loadStop(void * data, Evas_Object * /* obj */, void * /* event_i
 
 void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* event_info */)
 {
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char seconds[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (seconds,80,"%S",timeinfo);
+    std::string value;
+    value.append(seconds);
+    value.append(".");
+    value.append(std::to_string(fractional_seconds));
+    float stop_time = std::stof(value, nullptr);
+    BROWSER_LOGD("[PROFILING] --- LOAD FINISH --- [ %.3f ] ",stop_time);
+    // --- TIMESTAMP ---
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
+
+    // --- TIMESTAMP --- PRINT DATA
+//    if(self->m_start_time < stop_time) {
+//        float duration = stop_time - self->m_start_time;
+//        BROWSER_LOGD("[PROFILING], %.3f", duration);
+//    }
+//    else {
+//        float duration = (60-self->m_start_time)+stop_time;
+//        BROWSER_LOGD("[PROFILING] --- LOADING DURATION --- [%.3f] <--- CHECK!", duration);
+//    }
+    // --- TIMESTAMP --- PRINT DATA
 
     self->m_isLoading = false;
     self->m_loadProgress = 1;
