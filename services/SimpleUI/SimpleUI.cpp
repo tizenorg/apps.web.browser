@@ -566,7 +566,7 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
     if(m_webEngine->isLoadError()){
         BROWSER_LOGD("[%s:%d] LOAD ERROR!", __PRETTY_FUNCTION__, __LINE__);
         loadError();
-	return;
+    return;
     }
     BROWSER_LOGD("[%s:%d] swiching to web_view ", __PRETTY_FUNCTION__, __LINE__);
     switchViewToWebPage();
@@ -1079,7 +1079,7 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
             m_webPageUI->getUrlHistoryList()->getKeywordLengthMin();
     std::shared_ptr<services::HistoryItemVector> result =
             m_historyService->getHistoryItemsByKeywordsString(editedUrl,
-                    historyItemsVisibleMax, minKeywordLength);
+                    historyItemsVisibleMax, minKeywordLength, true);
     m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
 
