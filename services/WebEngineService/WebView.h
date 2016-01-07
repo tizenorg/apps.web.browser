@@ -20,6 +20,7 @@
 #include <boost/signals2/signal.hpp>
 #include <string>
 #include <Evas.h>
+#include <chrono>
 
 #include <ewk_chromium.h>
 #include "browser_config.h"
@@ -327,6 +328,8 @@ private:
     bool m_suspended;
     bool m_private;
     bool m_fullscreen;
+
+    float m_start_time;
 
     std::map<WebConfirmationPtr, Ewk_Geolocation_Permission_Request *> m_confirmationGeolocationMap;
     std::map<WebConfirmationPtr, Ewk_User_Media_Permission_Request *> m_confirmationUserMediaMap;
