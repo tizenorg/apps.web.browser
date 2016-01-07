@@ -1072,7 +1072,7 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
             m_webPageUI->getUrlHistoryList()->getKeywordLengthMin();
     std::shared_ptr<services::HistoryItemVector> result =
             m_historyService->getHistoryItemsByKeywordsString(editedUrl,
-                    historyItemsVisibleMax, minKeywordLength);
+                    historyItemsVisibleMax, minKeywordLength, true);
     m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
 

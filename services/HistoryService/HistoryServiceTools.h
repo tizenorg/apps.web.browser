@@ -28,13 +28,25 @@ namespace tizen_browser {
 namespace services {
 
 /**
- * @brief removes history items not matching given keywords
- * @param historyItems vector from which mismatching items will be removed
- * @param keywords keywords (history item is a match, when all keywords are
+ * @brief Removes history items not matching given keywords
+ * @param historyItems Vector from which mismatching items will be removed
+ * @param keywords Keywords (history item is a match, when all keywords are
  * matching)
  */
-void removeMismatches(const std::shared_ptr<HistoryItemVector>& historyItems,
+void removeMismatches(std::shared_ptr<HistoryItemVector>& historyItems,
         const vector<string>& keywords);
+
+/**
+ * @brief Returns true, if vector contains checked item
+ */
+bool containsDuplicates(std::shared_ptr<HistoryItemVector>& vec,
+        std::shared_ptr<HistoryItem>& checked);
+
+/**
+ * @brief Removes history items with urls duplicating other items.
+ * In the end, vector has items with unique URLs.
+ */
+void removeUrlDuplicates(std::shared_ptr<HistoryItemVector>& historyItems);
 
 } /* namespace services */
 } /* namespace tizen_browser */

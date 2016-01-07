@@ -74,12 +74,13 @@ public:
      * @param minKeywordLength minimum length of the longest keyword picked,
      * from which searching will start. If longest keyword is shorter than
      * #minKeywordLength, then search will not start.
+     * @param uniqueUrls true if return should contain items with unique url
      * @return vector of shared pointers to history items matching given
      * pattern
      */
     std::shared_ptr<HistoryItemVector> getHistoryItemsByKeywordsString(
             const std::string& keywordsString, const int maxItems,
-            const unsigned int minKeywordLength);
+            const unsigned int minKeywordLength, bool uniqueUrls = false);
 
     int getHistoryItemsCount();
     void setStorageServiceTestMode(bool testmode = true);
