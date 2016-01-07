@@ -6,8 +6,8 @@
 #define URI_BG_WIDTH 720
 #define WEB_VIEW_HEIGHT 1172        // FIXME: set propper size when top bar will be available
 #define WEB_VIEW_FULL_HEIGHT 1280   // FIXME: set propper size when top bar will be available
-#define MOREMENU_HEIGHT 588
-#define MOREMENU_WIDTH 720
+#define MORE_HEIGHT_VERTICAL 586
+#define MORE_HEIGHT_LANDSCAPE 373
 #define FINDONPAGE_HEIGHT 104
 #define FINDONPAGE_WIDTH 720
 #include "../../../core/Tools/edc/Spacer.edc"
@@ -212,15 +212,15 @@ collections {
         }
             part {
                 name: "web_view";
-                type : SWALLOW;
+                type: SWALLOW;
                 scale: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    fixed: 1 1;
-                    min: URI_BG_WIDTH WEB_VIEW_HEIGHT;
-                    max: URI_BG_WIDTH WEB_VIEW_HEIGHT;
+                    fixed: 0 0;
+                    min: 0 0;
+                    max: -1 -1;
                     rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
                     rel2 { relative: 1.0 1.0; to: "bg"; }
                 }
@@ -299,6 +299,8 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
+                    min: 0 0;
+                    max: -1 -1;
                     fixed: 0 0;
                     color: 0 0 0 102.4;
                     rel1 {
@@ -324,21 +326,28 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
-                    fixed: 0 0;
+                    min: 0 MORE_HEIGHT_VERTICAL;
+                    max: -1 MORE_HEIGHT_VERTICAL;
+                    fixed: 0 1;
                     color: 244 244 244 255;
-                    min: MOREMENU_WIDTH MOREMENU_HEIGHT;
-                    max: MOREMENU_WIDTH MOREMENU_HEIGHT;
                     rel1 {
                         relative: 0.0 0.0;
                         to: "web_view";
                     }
                     rel2.relative: 1.0 1.0;
                 }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default";
-                    visible: 1;
-                }
+                description { state: "landscape" 0.0;
+                              inherit: "default";
+                              visible: 1;
+                              min: 0 MORE_HEIGHT_LANDSCAPE;
+                              max: -1 MORE_HEIGHT_LANDSCAPE;
+                            }
+                description { state: "vertical" 0.0;
+                              inherit: "default";
+                              visible: 1;
+                              min: 0 MORE_HEIGHT_VERTICAL;
+                              max: -1 MORE_HEIGHT_VERTICAL;
+                            }
             }
             part {
                 name: "moremenu";
@@ -349,9 +358,9 @@ collections {
                     state: "default" 0.0;
                     visible: 0;
                     align: 0.0 0.0;
-                    fixed: 0 0;
-                    min: MOREMENU_WIDTH MOREMENU_HEIGHT;
-                    max: MOREMENU_WIDTH MOREMENU_HEIGHT;
+                    min: 0 MORE_HEIGHT_VERTICAL;
+                    max: -1 MORE_HEIGHT_VERTICAL;
+                    fixed: 0 1;
                     rel1 {
                         relative: 0.0 0.0;
                         to: "moremenu_bg";
@@ -361,11 +370,18 @@ collections {
                         to: "moremenu_bg";
                     }
                 }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "default";
-                    visible: 1;
-                }
+                description { state: "landscape" 0.0;
+                              inherit: "default";
+                              visible: 1;
+                              min: 0 MORE_HEIGHT_LANDSCAPE;
+                              max: -1 MORE_HEIGHT_LANDSCAPE;
+                            }
+                description { state: "vertical" 0.0;
+                              inherit: "default";
+                              visible: 1;
+                              min: 0 MORE_HEIGHT_VERTICAL;
+                              max: -1 MORE_HEIGHT_VERTICAL;
+                            }
             }
             part {
                 name: "findonpage_bg";
@@ -553,12 +569,26 @@ collections {
                 target: "moremenu_dimmed_bg";
             }
             program {
-                name: "show_moremenu";
-                signal: "show_moremenu";
+                name: "show_moremenu_landscape";
+                signal: "show_moremenu_landscape";
                 source: "ui";
-                action: STATE_SET "visible" 0.0;
+                action: STATE_SET "landscape" 0.0;
                 target: "moremenu";
                 target: "moremenu_bg";
+                after: "show_moremenu_dimmed_bg";
+            }
+            program {
+                name: "show_moremenu_vertical";
+                signal: "show_moremenu_vertical";
+                source: "ui";
+                action: STATE_SET "vertical" 0.0;
+                target: "moremenu";
+                target: "moremenu_bg";
+                after: "show_moremenu_dimmed_bg";
+            }
+            program {
+                name: "show_moremenu_dimmed_bg";
+                action: STATE_SET "visible" 0.0;
                 target: "moremenu_dimmed_bg";
             }
             program {
