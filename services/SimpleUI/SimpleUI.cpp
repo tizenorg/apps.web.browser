@@ -26,6 +26,8 @@
 #include <Evas.h>
 #include <app.h>
 #include "Config.h"
+#include <chrono>
+
 #include "app_i18n.h"
 #include "TabService.h"
 #include "BrowserLogger.h"
@@ -665,6 +667,19 @@ void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
         const boost::optional<int> adaptorId, bool desktopMode,
         bool incognitoMode)
 {
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char buffer[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (buffer,80,"%T",timeinfo);
+    BROWSER_LOGD("[PROFILING] --- NEW_TAB --- [%s.%d] ",buffer, fractional_seconds);
+    // --- TIMESTAMP ---
+
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri,
             nullptr, adaptorId, title, desktopMode, incognitoMode);
