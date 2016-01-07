@@ -22,18 +22,38 @@
 namespace tizen_browser {
 namespace services {
 
-void removeMismatches(const shared_ptr<HistoryItemVector>& historyItems,
+void removeMismatches(shared_ptr<HistoryItemVector>& historyItems,
         const vector<string>& keywords)
 {
-    for (auto itItem = historyItems->begin(); itItem != historyItems->end();) {
+    for (auto itItem = historyItems->begin(); itItem != historyItems->end();)
         if (!tools::string_tools::stringMatchesKeywords((*itItem)->getUrl(),
-                keywords.begin(), keywords.end())) {
+                keywords.begin(), keywords.end()))
             // remove url not matching all keywords
             itItem = historyItems->erase(itItem);
-        } else {
+        else
             ++itItem;
+}
+
+bool containsDuplicates(std::shared_ptr<HistoryItemVector>& vec,
+        std::shared_ptr<HistoryItem>& checked)
+{
+    bool found = false;
+    for (auto& s : *vec)
+        if (s->getUrl().compare(checked->getUrl()) == 0) {
+            if (found)
+                return true;
+            found = true;
         }
-    }
+    return false;
+}
+
+void removeUrlDuplicates(std::shared_ptr<HistoryItemVector>& historyItems)
+{
+    for (auto itItem = historyItems->begin(); itItem != historyItems->end();)
+        if (containsDuplicates(historyItems, *itItem))
+            itItem = historyItems->erase(itItem);
+        else
+            ++itItem;
 }
 
 } /* namespace services */
