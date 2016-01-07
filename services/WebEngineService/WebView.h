@@ -21,6 +21,7 @@
 #include <string>
 #include <Evas.h>
 #include <ecore-1/Ecore.h>
+#include <chrono>
 
 #include <ewk_chromium.h>
 #include "browser_config.h"
@@ -397,6 +398,8 @@ private:
     //TODO: delete this lines when "ready" signal is supported by ewk_view
     Ecore_Timer *m_timer;
     const double TIMER_INTERVAL = 5.0;
+
+    float m_start_time;
 };
 
 } /* namespace webengine_service */

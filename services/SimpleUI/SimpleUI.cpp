@@ -26,6 +26,8 @@
 #include <Evas.h>
 #include <app.h>
 #include "Config.h"
+#include <chrono>
+
 #include "app_i18n.h"
 #include "TabService.h"
 #include "BrowserLogger.h"
@@ -777,6 +779,24 @@ void SimpleUI::onBookmarkButtonClicked()
 
 void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
 {
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char seconds[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (seconds,80,"%S",timeinfo);
+    std::string value;
+    value.append(seconds);
+    value.append(".");
+    value.append(std::to_string(fractional_seconds));
+    float click_time = std::stof(value, nullptr);
+    BROWSER_LOGD("[PROFILING] --- BOOKMARK CLICKED --- [ %.3f ] ",click_time);
+    // --- TIMESTAMP ---
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     std::string bookmarkAddress = bookmarkItem->getAddress();
 
