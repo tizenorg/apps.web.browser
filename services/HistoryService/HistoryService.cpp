@@ -472,7 +472,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByURL(
 
 std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsString(
         const std::string& keywordsString, const int maxItems,
-        const unsigned int minKeywordLength)
+        const unsigned int minKeywordLength, bool uniqueUrls)
 {
     if (keywordsString.empty())
         return std::make_shared<HistoryItemVector>();
@@ -508,6 +508,9 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeywordsStri
                     historyItems->end());
         }
     }
+
+    if(uniqueUrls)
+        removeUrlDuplicates(historyItems);
     return historyItems;
 }
 
