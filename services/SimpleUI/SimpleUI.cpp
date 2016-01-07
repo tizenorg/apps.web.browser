@@ -338,6 +338,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
 #if PROFILE_MOBILE
     m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
+    m_moreMenuUI->isRotated.connect(boost::bind(&SimpleUI::isRotated, this));
 #endif
 
     M_ASSERT(m_bookmarkDetailsUI.get());
@@ -973,8 +974,14 @@ void SimpleUI::onRotation()
         angle = 0;
     elm_win_rotation_with_resize_set(main_window, angle);
     m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
+    m_moreMenuUI->resetContent();
 }
 //TODO: end of a workaround
+
+bool SimpleUI::isRotated()
+{
+    return elm_win_rotation_get(main_window) % 180;
+}
 #endif
 
 void SimpleUI::reloadEnable(bool enable)
