@@ -18,6 +18,7 @@
 #include <boost/concept_check.hpp>
 #include <vector>
 #include <AbstractMainWindow.h>
+#include <chrono>
 
 #include "app_i18n.h"
 #include "QuickAccess.h"
@@ -626,6 +627,26 @@ void QuickAccess::_grid_bookmark_del(void* data, Evas_Object*)
 
 void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 {
+    BROWSER_LOGD("---[PROFILING] --- bookmark clicked | _thumbBookmarkClicked");
+
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char seconds[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (seconds,80,"%S",timeinfo);
+    std::string value;
+    value.append(seconds);
+    value.append(".");
+    value.append(std::to_string(fractional_seconds));
+    float time = std::stof(value, nullptr);
+    BROWSER_LOGD("[PROFILING] --- BOOKMARK CLICKED --- [ %.3f ] ", time);
+    // --- TIMESTAMP ---
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
     itemData->quickAccess->openURL(itemData->item, itemData->quickAccess->isDesktopMode());

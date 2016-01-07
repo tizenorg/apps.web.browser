@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <boost/regex.hpp>
 #include "BrowserAssert.h"
+#include <chrono>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -299,6 +300,25 @@ void URIEntry::_fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Objec
 
 void URIEntry::editingCompleted()
 {
+    BROWSER_LOGD("---[PROFILING] --- keydown | editingCompleted");
+    // --- TIMESTAMP ---
+    std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+    std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(p.time_since_epoch());
+    std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(ms);
+    std::time_t t = s.count();
+    std::size_t fractional_seconds = ms.count() % 1000;
+    char seconds[80];
+    struct tm * timeinfo;
+    timeinfo = localtime(&t);\
+    strftime (seconds,80,"%S",timeinfo);
+    std::string value;
+    value.append(seconds);
+    value.append(".");
+    value.append(std::to_string(fractional_seconds));
+    float time = std::stof(value, nullptr);
+    BROWSER_LOGD("[PROFILING] --- URI EDITING COMPLETE --- [ %.3f ] ", time);
+    // --- TIMESTAMP ---
+
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     char* text = elm_entry_markup_to_utf8(elm_entry_entry_get(m_entry));
     std::string userString(text);
