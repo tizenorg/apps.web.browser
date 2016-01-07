@@ -973,6 +973,7 @@ void SimpleUI::onRotation()
         angle = 0;
     elm_win_rotation_with_resize_set(main_window, angle);
     m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
+    m_moreMenuUI->setLandscape((angle % 180) == 0);
 }
 //TODO: end of a workaround
 #endif

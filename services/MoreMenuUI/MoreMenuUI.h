@@ -96,6 +96,7 @@ public:
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
     void shouldShowFindOnPage(bool show);
+    void setLandscape(bool state);
     boost::signals2::signal<void ()> findOnPageClicked;
 #endif
     void setIsBookmark(bool isBookmark);
@@ -115,6 +116,7 @@ private:
     void createMoreMenuLayout();
 #if PROFILE_MOBILE
     void deleteMoreMenuLayout();
+    void resetContent();
 #endif
     void createGengrid();
     void addItems();
@@ -153,6 +155,7 @@ private:
 #if PROFILE_MOBILE
     bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
+    unsigned int m_rotation_state;
 #endif
 };
 
