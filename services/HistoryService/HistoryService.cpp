@@ -92,7 +92,7 @@ bool HistoryService::isDuplicate(const char* url) const
     conds.order_offset =BP_HISTORY_O_DATE_CREATED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
     conds.period_offset = BP_HISTORY_O_DATE_CREATED;
-    conds.period_type = BP_HISTORY_DATE_TODAY;
+    conds.period_type = BP_HISTORY_DATE_ALL; // checking duplicates for all history items
     if(bp_history_adaptor_get_cond_ids_p(&ids ,&count, &conds, 0, nullptr, 0) < 0 ) {
         errorPrint("bp_history_adaptor_get_cond_ids_p");
     }
