@@ -25,8 +25,6 @@
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -99,15 +97,15 @@ void MoreMenuUI::showUI()
     M_ASSERT(m_mm_layout);
     createGengrid();    // recreate gengrid because icons could have changed
     addItems();
-#if PROFILE_MOBILE
-    elm_object_signal_emit(m_parent, "show_moremenu", "ui");
-#else
+#if !PROFILE_MOBILE
     m_focusManager.startFocusManager(m_gengrid);
     setFocus(EINA_TRUE);
 #endif
     evas_object_show(m_mm_layout);
     evas_object_show(elm_object_part_content_get(m_mm_layout,"current_tab_bar"));
-    evas_object_show(m_gengrid);
+#if PROFILE_MOBILE
+    resetContent();
+#endif
 }
 
 void MoreMenuUI::hideUI()
@@ -138,6 +136,31 @@ Evas_Object* MoreMenuUI::getContent()
         createMoreMenuLayout();
     return m_mm_layout;
 }
+
+#if PROFILE_MOBILE
+void MoreMenuUI::resetContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    boost::optional<bool> rotated = isRotated();
+    if (rotated) {
+        if (*rotated) {
+            elm_gengrid_item_size_set(m_gengrid, m_gengrid_item_width_landscape * efl_scale,
+                                      m_gengrid_item_height_landscape * efl_scale);
+            elm_object_signal_emit(m_mm_layout, "switch_landscape", "ui");
+            if (evas_object_visible_get(m_mm_layout))
+                elm_object_signal_emit(m_parent, "show_moremenu_landscape", "ui");
+        } else {
+            elm_gengrid_item_size_set(m_gengrid, m_gengrid_item_width * efl_scale,
+                                      m_gengrid_item_height * efl_scale);
+            elm_object_signal_emit(m_mm_layout, "switch_vertical", "ui");
+            if (evas_object_visible_get(m_mm_layout))
+                elm_object_signal_emit(m_parent, "show_moremenu_vertical", "ui");
+        }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+#endif
 
 void MoreMenuUI::createMoreMenuLayout()
 {
@@ -184,14 +207,14 @@ void MoreMenuUI::createGengrid()
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
 #if PROFILE_MOBILE
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_FALSE);
-    elm_gengrid_item_size_set(m_gengrid, (228-1) * efl_scale, (213-1) * efl_scale); //FIXME
+    elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
 #else
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     elm_gengrid_item_size_set(m_gengrid, 364 * efl_scale, 320 * efl_scale);
 #endif
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_gengrid);
 }
 
 void MoreMenuUI::showCurrentTab()

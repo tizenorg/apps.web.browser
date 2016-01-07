@@ -93,13 +93,15 @@ public:
     void enableAddToBookmarkButton(bool data);
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
+    void setIsBookmark(bool isBookmark);
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
     void shouldShowFindOnPage(bool show);
-    boost::signals2::signal<void ()> findOnPageClicked;
-#endif
-    void setIsBookmark(bool isBookmark);
+    void resetContent();
 
+    boost::signals2::signal<void ()> findOnPageClicked;
+    boost::signals2::signal<bool ()> isRotated;
+#endif
     boost::signals2::signal<void (int)> addToBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
@@ -153,6 +155,10 @@ private:
 #if PROFILE_MOBILE
     bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
+    const unsigned int m_gengrid_item_width = 228;
+    const unsigned int m_gengrid_item_height = 213;
+    const unsigned int m_gengrid_item_width_landscape = 208;
+    const unsigned int m_gengrid_item_height_landscape = 213;
 #endif
 };
 
