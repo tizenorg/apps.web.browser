@@ -29,32 +29,27 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
 
 #define DEVELOPMENT 0
 
-#define WIDTH 720
 #define TITLE_HEIGHT 120
 #define TITLE_TEXT_OFFSET_Y 43
 #define TITLE_TEXT_OFFSET_LEFT 32
 #define TITLE_TEXT_LEFT_WIDTH 200
 #define TITLE_TEXT_RIGHT_WIDTH 250
-#define TITLE_TEXT_RIGHT_OFFSET_LEFT 342
+#define TITLE_TEXT_OFFSET_RIGHT 128
 #define TITLE_TEXT_HEIGHT 34
+#define TITLE_ICON_OFFSET_X 30
 #define TITLE_ICON_OFFSET_Y 23
-#define TITLE_ICON_OFFSET_LEFT 616
 #define TITLE_ICON_WIDTH 74
 #define TITLE_ICON_HEIGHT 74
 #define TITLE_BUTTON_WIDTH 132
 #define TITLE_BUTTON_HEIGHT 68
-#define GRID_OFFSET_X 18
+#define SIGNIN_OFFSET_X 16
+#define SIGNIN_OFFSET_Y 26
+#define GRID_OFFSET_X_VERTICAL 18
+#define GRID_OFFSET_X_LANDSCAPE 16
 #define GRID_OFFSET_Y 20
-#define ITEM_WIDTH 228
-#define ITEM_HEIGHT 213
-#define ITEM_ICON_WIDTH 90
-#define ITEM_ICON_HEIGHT 90
-#define ITEM_ICON_OFFSET_X 69
-#define ITEM_ICON_OFFSET_TOP 20
+#define ITEM_ICON_SIZE 90
+#define ITEM_ICON_OFFSET_Y 20
 #define ITEM_TEXT_WIDTH 148
-#define ITEM_TEXT_HEIGHT 58
-#define ITEM_TEXT_OFFSET_TOP 17
-#define ITEM_TEXT_OFFSET_X 40
 
     group {
         name: "elm/button/base/dimmed_button";
@@ -151,6 +146,20 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
 
     group {
         name: "moremenu-layout";
+        styles {
+            style {
+                name: "title_area_text_style_menu";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0";
+            }
+            style {
+                name: "title_area_text_style_user";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=1.0";
+            }
+            style {
+                name: "title_area_button_style";
+                base: "font=Tizen:style=Regular font_size=34 color=#389ae9 align=0.5";
+            }
+        }
         parts {
             part {
                 name: "title_area_bg";
@@ -161,8 +170,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     state: "default" 0.0;
                     visible: 1;
                     align: 0.0 0.0;
-                    min: WIDTH TITLE_HEIGHT;
-                    max: WIDTH TITLE_HEIGHT;
+                    min: 0 TITLE_HEIGHT;
+                    max: -1 TITLE_HEIGHT;
+                    fixed: 0 1;
                     color: 255 255 255 255;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
@@ -181,7 +191,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     color: 255 255 255 127;
                     rel1 {
                         relative: 0.0 0.0;
-                        to: title_area_bg;
+                        to: "title_area_bg";
                     }
                     rel2.relative: 1.0 1.0;
                 }
@@ -196,13 +206,15 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     visible: DEVELOPMENT;
                     align: 0.0 0.0;
                     min: TITLE_TEXT_LEFT_WIDTH TITLE_TEXT_HEIGHT;
-                    max: TITLE_TEXT_LEFT_WIDTH TITLE_TEXT_HEIGHT;
+                    max: TITLE_TEXT_LEFT_WIDTH -1;
+                    fixed: 1 0;
                     color: 237 145 33 255; //carrot
-                    rel1 {
-                        relative: 1 1;
-                        to: title_area_text_left_spacer;
-                    }
-                    rel2.relative: 1.0 1.0;
+                    rel1 { relative: 1.0 1.0;
+                           to: "title_area_text_left_spacer";
+                         }
+                    rel2 { relative: 1.0 1.0;
+                           to: "title_area_bg";
+                         }
                 }
             }
             part {
@@ -211,10 +223,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: TITLE_TEXT_LEFT_WIDTH TITLE_TEXT_HEIGHT;
-                    max: TITLE_TEXT_LEFT_WIDTH TITLE_TEXT_HEIGHT;
                     align: 0 0;
-                    fixed: 0 0;
                     visible: 1;
                     rel1 {
                         to: "title_area_text_left_bg";
@@ -225,7 +234,8 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                         relative: 1.0  1.0;
                     }
                     text {
-                        style: "title_area_text_style";
+                        style: "title_area_text_style_menu";
+                        align: 0 0;
                         text: "More menu";
                     }
                 }
@@ -238,14 +248,17 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    align: 0.0 0.0;
-                    min: TITLE_TEXT_RIGHT_OFFSET_LEFT TITLE_TEXT_OFFSET_Y;
-                    max: TITLE_TEXT_RIGHT_OFFSET_LEFT TITLE_TEXT_OFFSET_Y;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "title_area_bg";
-                    }
-                    rel2.relative: 1.0 1.0;
+                    color: 255 255 255 127;
+                    align: 1.0 1.0;
+                    min: TITLE_TEXT_OFFSET_RIGHT 0;
+                    max: TITLE_TEXT_OFFSET_RIGHT 0;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;
+                           to: "title_area_bg";
+                         }
+                    rel2 { relative: 1.0 1.0;
+                           to: "title_area_bg";
+                         }
                 }
             }
             part {
@@ -256,15 +269,17 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    align: 0.0 0.0;
+                    align: 1.0 0.0;
                     min: TITLE_TEXT_RIGHT_WIDTH TITLE_TEXT_HEIGHT;
-                    max: TITLE_TEXT_RIGHT_WIDTH TITLE_TEXT_HEIGHT;
+                    max: TITLE_TEXT_RIGHT_WIDTH -1;
+                    fixed: 1 0;
                     color: 255 218 185 255; //peach
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "title_area_text_right_spacer";
-                    }
-                    rel2.relative: 1.0 1.0;
+                    rel1 { relative: 1.0 1.0;
+                           to: "title_area_text_left_spacer";
+                         }
+                    rel2 { relative: 0.0 0.0;
+                           to: "title_area_text_right_spacer";
+                         }
                 }
                 description {
                     state: "button_visible" 0.0;
@@ -279,86 +294,81 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
             }
             part {
                 name: "title_area_text_right";
-                type: TEXT;
+                type: TEXTBLOCK;
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: TITLE_TEXT_RIGHT_WIDTH TITLE_TEXT_HEIGHT;
-                    max: TITLE_TEXT_RIGHT_WIDTH TITLE_TEXT_HEIGHT;
                     align: 0.0 0.0;
-                    fixed: 0.0 0.0;
-                    visible: 1;
+                    visible: DEVELOPMENT;
                     rel1 {
                         to: "title_area_text_right_bg";
                         relative: 0.0 0.0;
                     }
                     rel2 {
                         to: "title_area_text_right_bg";
-                        relative: 1.0  1.0;
-                    }
-                    color: 56 154 233 255;
-                    text {
-                        text: "Surname";
-                        style: "title_area_text_style";
-                    }
-                }
-                description {
-                    state: "button_visible" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
-                description {
-                    state: "button_hidden" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                }
-            }
-            part {
-                name: "title_area_button_spacer";
-                type: RECT;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    align: 0.0 0.0;
-                    min: 572 26;
-                    max: 572 26;
-                    color: 255 255 255 127;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: title_area_bg;
-                    }
-                }
-            }
-            part {
-                name: "title_area_button_bg";
-                type: RECT;
-                mouse_events: 0;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    min: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
-                    max: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
-                    color: 224 237 251 255;
-                    rel1 {
                         relative: 1.0 1.0;
-                        to: title_area_button_spacer;
                     }
-                    rel2.relative: 1.0 1.0;
+                    text {
+                        style: "title_area_text_style_user";
+                        align: 1 0;
+                        text: "Surname";
+                    }
                 }
                 description {
                     state: "button_visible" 0.0;
                     inherit: "default" 0.0;
-                    visible: 1;
+                    visible: 0;
                 }
                 description {
                     state: "button_hidden" 0.0;
                     inherit: "default" 0.0;
-                    visible: 0;
+                    visible: 1;
                 }
             }
+            part { name: "title_area_button_spacer";
+                   type: RECT;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 visible: DEVELOPMENT;
+                                 align: 1.0 1.0;
+                                 min: SIGNIN_OFFSET_X SIGNIN_OFFSET_Y;
+                                 max: SIGNIN_OFFSET_X SIGNIN_OFFSET_Y;
+                                 color: 255 255 255 127;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "title_area_bg";
+                                      }
+                                 rel2 { relative: 1.0 1.0;
+                                        to: "title_area_bg";
+                                      }
+                               }
+                 }
+            part { name: "title_area_button_bg";
+                   type: RECT;
+                   mouse_events: 0;
+                   scale: 1;
+                   description { state: "default" 0.0;
+                                 visible: 1;
+                                 align: 1.0 1.0;
+                                 min: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
+                                 max: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
+                                 fixed: 1 1;
+                                 color: 224 237 251 255;
+                                 rel1 { relative: 0.0 0.0;
+                                        to: "title_area_bg";
+                                      }
+                                 rel2 { relative: 0.0 0.0;
+                                        to: "title_area_button_spacer";
+                                      }
+                               }
+                   description { state: "button_visible" 0.0;
+                                 inherit: "default" 0.0;
+                                 visible: 1;
+                               }
+                   description { state: "button_hidden" 0.0;
+                                 inherit: "default" 0.0;
+                                 visible: 0;
+                               }
+                 }
             part {
                 name: "title_area_button_text";
                 type: TEXTBLOCK;
@@ -366,19 +376,18 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
-                    max: TITLE_BUTTON_WIDTH TITLE_BUTTON_HEIGHT;
                     visible: 1;
                     align: 0.0 0.0;
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "title_area_button_spacer";
-                    }
-                    rel2.relative: 1.0 1.0;
-                    text {
-                        style: "title_area_button_style";
-                        text: "Sign in";
-                    }
+                    rel1 { relative: 0.0 0.0;
+                           to: "title_area_button_bg";
+                         }
+                    rel2 { relative: 1.0 1.0;
+                           to: "title_area_button_bg";
+                         }
+                    text { style: "title_area_button_style";
+                           align: 0.5 0.5;
+                           text: "Sign in";
+                         }
                 }
                 description {
                     state: "button_visible" 0.0;
@@ -399,15 +408,17 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    align: 0.0 0.0;
-                    min: TITLE_ICON_OFFSET_LEFT TITLE_ICON_OFFSET_Y;
-                    max: TITLE_ICON_OFFSET_LEFT TITLE_ICON_OFFSET_Y;
+                    align: 1.0 1.0;
+                    min: TITLE_ICON_OFFSET_X TITLE_ICON_OFFSET_Y;
+                    max: TITLE_ICON_OFFSET_X TITLE_ICON_OFFSET_Y;
+                    fixed: 1 1;
                     color: 255 255 255 127;
-                    rel1 {
-                        relative: 0.0 0.0;
-                        to: "title_area_bg";
-                    }
-                    rel2.relative: 1.0 1.0;
+                    rel1 { relative: 0.0 0.0;
+                           to: "title_area_bg";
+                         }
+                    rel2 { relative: 1.0 1.0;
+                           to: "title_area_bg";
+                         }
                 }
             }
             part {
@@ -417,15 +428,16 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    align: 0.0 0.0;
+                    align: 1.0 1.0;
                     min: TITLE_ICON_WIDTH TITLE_ICON_HEIGHT;
                     max: TITLE_ICON_WIDTH TITLE_ICON_HEIGHT;
                     color: 250 128 114 255; //salmon
-                    rel1 {
-                        relative: 1.0 1.0;
-                        to: "title_area_icon_spacer";
-                    }
-                    rel2.relative: 1.0 1.0;
+                    rel1 { relative: 0.0 0.0;
+                           to: "title_area_bg";
+                         }
+                    rel2 { relative: 0.0 0.0;
+                           to: "title_area_icon_spacer";
+                         }
                 }
                 description {
                     state: "button_visible" 0.0;
@@ -438,8 +450,8 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     visible: 1;
                 }
             }
-            part
-                name: "gengrid_spacer";
+            part {
+                name: "gengrid_spacer_1";
                 type: RECT;
                 mouse_events: 0;
                 scale: 1;
@@ -447,8 +459,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
                     align: 0.0 0.0;
-                    min: GRID_OFFSET_X GRID_OFFSET_Y;
-                    max: GRID_OFFSET_X GRID_OFFSET_Y;
+                    min: GRID_OFFSET_X_VERTICAL GRID_OFFSET_Y;
+                    max: GRID_OFFSET_X_VERTICAL GRID_OFFSET_Y;
+                    fixed: 1 1;
                     color: 255 255 255 127;
                     rel1 {
                         relative: 0.0 1.0;
@@ -456,6 +469,36 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     }
                     rel2.relative: 1.0 1.0;
                 }
+                description { state: "landscape" 0.0;
+                              inherit: "default";
+                              min: GRID_OFFSET_X_LANDSCAPE GRID_OFFSET_Y;
+                              max: GRID_OFFSET_X_LANDSCAPE GRID_OFFSET_Y;
+                            }
+            }
+            part {
+                name: "gengrid_spacer_2";
+                type: RECT;
+                mouse_events: 0;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    align: 1.0 1.0;
+                    min: GRID_OFFSET_X_VERTICAL GRID_OFFSET_Y;
+                    max: GRID_OFFSET_X_VERTICAL GRID_OFFSET_Y;
+                    fixed: 1 1;
+                    color: 255 255 255 127;
+                    rel1 {
+                        relative: 0.0 1.0;
+                        to: "title_area_bg";
+                    }
+                    rel2.relative: 1.0 1.0;
+                }
+                description { state: "landscape" 0.0;
+                              inherit: "default";
+                              min: GRID_OFFSET_X_LANDSCAPE GRID_OFFSET_Y;
+                              max: GRID_OFFSET_X_LANDSCAPE GRID_OFFSET_Y;
+                            }
             }
             part {
                 name: "gengrid_bg";
@@ -466,14 +509,16 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
                     align: 0.0 0.0;
-                    min: (3*ITEM_WIDTH) (2*ITEM_HEIGHT);
-                    max: (3*ITEM_WIDTH) (2*ITEM_HEIGHT);
+                    min: 0 0;
+                    max: -1 -1;
+                    fixed: 0 0;
                     color: 187 255 255 255; //turquoise
-                    rel1 {
-                        relative: 1 1;
-                        to: "gengrid_spacer";
-                    }
-                    rel2.relative: 1 1;
+                    rel1 { relative: 1 1;
+                           to: "gengrid_spacer_1";
+                         }
+                    rel2 { relative: 0 0;
+                           to: "gengrid_spacer_2";
+                         }
                 }
             }
             part {
@@ -484,8 +529,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    min: (3*ITEM_WIDTH) (2*ITEM_HEIGHT);
-                    max: (3*ITEM_WIDTH) (2*ITEM_HEIGHT);
+                    min: 0 0;
+                    max: -1 -1;
+                    fixed: 0 0;
                     align: 0.5 0.5;
                     rel1 {
                         relative: 0.0 0.0;
@@ -509,8 +555,23 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
             }
         }
         programs {
+            program { name: "switch_landscape";
+                      source: "ui";
+                      signal: "switch_landscape";
+                      action: STATE_SET "landscape" 0.0;
+                      target: "gengrid_spacer_1";
+                      target: "gengrid_spacer_2";
+                    }
+            program { name: "switch_vertical";
+                      source: "ui";
+                      signal: "switch_vertical";
+                      action: STATE_SET "default" 0.0;
+                      target: "gengrid_spacer_1";
+                      target: "gengrid_spacer_2";
+                    }
             program {
                 name: "show_signin_button";
+                source: "ui";
                 signal: "show_sign_button";
                 action: STATE_SET "button_visible" 0.0;
                 target: "title_area_text_right_bg";
@@ -521,6 +582,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
             }
             program {
                 name: "hide_signin_button";
+                source: "ui";
                 signal: "hide_sign_button";
                 action: STATE_SET "button_hidden" 0.0;
                 target: "title_area_text_right_bg";
@@ -539,15 +601,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
         styles {
             style {
                 name: "thumbnail_text_style";
-                base: "font=Tizen:style=Regular font_size=28 color=#696f76 linegap=2 wrap=mixed align=0.5 valign=1.0";
-            }
-            style {
-                name: "title_area_text_style";
-                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 valign=1.0";
-            }
-            style {
-                name: "title_area_button_style";
-                base: "font=Tizen:style=Regular font_size=34 color=#389ae9 align=0.5 valign=0.5";
+                base: "font=Tizen:style=Regular font_size=28 color=#696f76 linegap=2 wrap=mixed align=0.5";
             }
         }
         parts {
@@ -558,8 +612,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: (ITEM_WIDTH-1) (ITEM_HEIGHT-1); //FIXME
-                    max: (ITEM_WIDTH-1) (ITEM_HEIGHT-1); //FIXME
+                    min: 0 0;
+                    max: -1 -1;
+                    fixed: 0 0;
                     visible: 1;
                     color: 244 244 244 255;
                 }
@@ -576,8 +631,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: ITEM_ICON_OFFSET_X ITEM_ICON_OFFSET_TOP;
-                    max: ITEM_ICON_OFFSET_X ITEM_ICON_OFFSET_TOP;
+                    min: 0 ITEM_ICON_OFFSET_Y;
+                    max: 0 ITEM_ICON_OFFSET_Y;
+                    fixed: 1 1;
                     visible: DEVELOPMENT;
                     color: 255 255 255 127;
                     align: 0.0 0.0;
@@ -595,11 +651,12 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: ITEM_ICON_WIDTH ITEM_ICON_HEIGHT;
-                    max: ITEM_ICON_WIDTH ITEM_ICON_HEIGHT;
+                    min: ITEM_ICON_SIZE ITEM_ICON_SIZE;
+                    max: ITEM_ICON_SIZE ITEM_ICON_SIZE;
+                    fixed: 1 1;
                     visible: DEVELOPMENT;
                     color: 192 192 192 255; //silver
-                    align: 0.0 0.0;
+                    align: 0.5 0.0;
                     rel1 {
                         relative: 1.0 1.0;
                         to: "thumbnail_icon_spacer";
@@ -613,16 +670,16 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    fixed: 1 0;
                     align: 0.0 0.0;
-                    min: ITEM_ICON_WIDTH ITEM_ICON_HEIGHT;
-                    max: ITEM_ICON_WIDTH ITEM_ICON_HEIGHT;
+                    min: ITEM_ICON_SIZE ITEM_ICON_SIZE;
+                    max: ITEM_ICON_SIZE ITEM_ICON_SIZE;
+                    fixed: 1 1;
                     rel1 {
-                        relative: 0.0  0.0;
+                        relative: 0.0 0.0;
                         to: "thumbnail_icon_bg";
                     }
                     rel2 {
-                        relative: 1.0  1.0;
+                        relative: 1.0 1.0;
                         to: "thumbnail_icon_bg";
                     }
                 }
@@ -633,14 +690,15 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    min: ITEM_TEXT_OFFSET_X (ITEM_TEXT_OFFSET_TOP+ITEM_ICON_OFFSET_TOP+ITEM_ICON_HEIGHT);
-                    max: ITEM_TEXT_OFFSET_X (ITEM_TEXT_OFFSET_TOP+ITEM_ICON_OFFSET_TOP+ITEM_ICON_HEIGHT);
+                    min: 0 (ITEM_ICON_OFFSET_Y+ITEM_ICON_SIZE);
+                    max: 0 (ITEM_ICON_OFFSET_Y+ITEM_ICON_SIZE);
+                    fixed: 1 1;
                     align: 0.0 0.0;
                     color: 255 255 255 127;
                     visible: DEVELOPMENT;
                     rel1 {
-                        relative: 0.0 0.0;
-                        to: "thumbnail_bg";
+                        relative: 1.0 1.0;
+                        to: "thumbnail_icon_spacer";
                     }
                     rel2.relative: 1.0 1.0;
                 }
@@ -651,9 +709,10 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    min: ITEM_TEXT_WIDTH ITEM_TEXT_HEIGHT+10;
-                    max: ITEM_TEXT_WIDTH ITEM_TEXT_HEIGHT+10;
-                    align: 0.0 0.0;
+                    min: ITEM_TEXT_WIDTH 0;
+                    max: ITEM_TEXT_WIDTH -1;
+                    fixed: 1 0;
+                    align: 0.5 0.0;
                     color: 255 182 193 255; //pink
                     visible: DEVELOPMENT;
                     rel1 {
@@ -669,8 +728,6 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: ITEM_TEXT_WIDTH ITEM_TEXT_HEIGHT+10;
-                    max: ITEM_TEXT_WIDTH ITEM_TEXT_HEIGHT+10;
                     visible: 1;
                     rel1 {
                         to: "thumbnail_text_bg";
@@ -681,7 +738,9 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
                         relative: 1.0 1.0;
                     }
                     color: 92 92 92 255;
-                    text.style: "thumbnail_text_style";
+                    text { style: "thumbnail_text_style";
+                           align: 0.5 0;
+                         }
                 }
             }
             part {
