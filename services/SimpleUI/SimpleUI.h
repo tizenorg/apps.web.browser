@@ -273,10 +273,6 @@ private:
 
     void registerHWKeyCallback();
     void unregisterHWKeyCallback();
-
-    void onRotateClockwisePressed();
-    void onRotateCounterClockwisePressed();
-    void onRotation();
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -338,10 +334,6 @@ private:
 
     //helper object used to view management
     ViewManager m_viewManager;
-    Evas_Object *main_window;
-#if PROFILE_MOBILE
-    int angle = 0;
-#endif
 };
 
 }
