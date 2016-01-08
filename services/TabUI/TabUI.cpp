@@ -21,7 +21,6 @@
 #include <string.h>
 #include <AbstractMainWindow.h>
 
-#include "app_i18n.h"
 #include "TabId.h"
 #include "TabUI.h"
 #include "ServiceManager.h"
@@ -368,7 +367,7 @@ void TabUI::_closetabs_clicked(void* data, Evas_Object*, void*)
         if (!tabUI->editMode && !tabUI->onOtherDevicesSwitch) {
             tabUI->editMode = true;
             BROWSER_LOGD("[%s:%d] --------> edit mode: %d ", __PRETTY_FUNCTION__, __LINE__, tabUI->editMode);
-            elm_object_translatable_part_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "IDS_BR_OPT_CLOSE_ALL");
+            elm_layout_text_set(elm_layout_content_get(tabUI->m_tab_layout, "action_bar"), "closetabs_text", "Close all");
         } else if (tabUI->editMode && !tabUI->onOtherDevicesSwitch) {
             tabUI->editMode = false;
             tabUI->closeAllTabs();

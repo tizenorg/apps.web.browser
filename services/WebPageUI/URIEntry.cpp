@@ -16,7 +16,6 @@
 
 #include <Elementary.h>
 #include <Evas.h>
-#include "app_i18n.h"
 #include "URIEntry.h"
 #include "BrowserLogger.h"
 #include "MenuButton.h"
@@ -34,8 +33,8 @@ namespace base_ui {
 #define GUIDE_TEXT_UNFOCUSED "Search or URL - Press [A] to enter"
 #endif
 
-const std::string keynameSelect = _("IDS_BR_OPT_SELECT");
-const std::string keynameClear = _("IDS_BR_SK3_CLEAR");
+const std::string keynameSelect = "Select";
+const std::string keynameClear = "Clear";
 const std::string keynameKP_Enter = "KP_Enter";
 const std::string keynameReturn = "Return";
 const std::string keynameEsc = "XF86Back";

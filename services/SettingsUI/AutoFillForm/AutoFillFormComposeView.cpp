@@ -18,7 +18,6 @@
 #include "AutoFillFormComposeView.h"
 #include "AutoFillFormListView.h"
 #include "BrowserLogger.h"
-#include "app_i18n.h"
 
 #include <Ecore.h>
 #include <Elementary.h>
@@ -288,11 +287,11 @@ char *AutoFillFormComposeView::__text_get_cb(void* data, Evas_Object* /*obj*/, c
         if (type == profile_composer_title_full_name)
             return strdup("Full Name" /*BR_STRING_AUTO_FILL_DATA_FULL_NAME*/);
         else if (type == profile_composer_title_company_name)
-            return strdup(_("IDS_BR_BODY_COMPANY_NAME_ABB") /*BR_STRING_AUTO_FILL_DATA_COMPANY_NAME*/);
+            return strdup("Company name" /*BR_STRING_AUTO_FILL_DATA_COMPANY_NAME*/);
         else if (type == profile_composer_title_address_line_1)
-            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_1_ABB") /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_1*/);
+            return strdup("Address line 1" /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_1*/);
         else if (type == profile_composer_title_address_line_2)
-            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_2_ABB") /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_2*/);
+            return strdup("Address line 2" /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_2*/);
         else if (type == profile_composer_title_city_town)
             return strdup("City town" /*BR_STRING_TOWN_AUTO_FILL_CITY_COUNTY*/);
         else if (type == profile_composer_title_county_region)
@@ -302,9 +301,9 @@ char *AutoFillFormComposeView::__text_get_cb(void* data, Evas_Object* /*obj*/, c
         else if (type == profile_composer_title_country)
             return strdup("Country" /*BR_STRING_AUTO_FILL_DATA_COUNTRY*/);
         else if (type == profile_composer_title_phone)
-            return strdup(_("IDS_BR_BODY_PHONE") /*BR_STRING_AUTO_FILL_DATA_PHONE*/);
+            return strdup("Phone" /*BR_STRING_AUTO_FILL_DATA_PHONE*/);
         else if (type == profile_composer_title_email)
-            return strdup(_("IDS_BR_OPT_SENDURLVIA_EMAIL") /*BR_STRING_AUTO_FILL_DATA_EMAIL*/);
+            return strdup("Email" /*BR_STRING_AUTO_FILL_DATA_EMAIL*/);
     }
 
     return NULL;

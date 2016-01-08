@@ -27,7 +27,7 @@
 #include <Evas.h>
 #include <app.h>
 #include "Config.h"
-#include "app_i18n.h"
+
 #include "TabService.h"
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
@@ -729,10 +729,10 @@ void SimpleUI::onNewFolderClicked()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add New Folder?",
-                                                          "New Folder #", _("IDS_BR_OPT_ADD"), _("IDS_BR_SK_CANCEL_ABB"), true);
+                                                          "New Folder #", "Add", "Cancel", true);
 #else
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add new folder for adding to bookmark?",
-                                                          "Folder #", _("IDS_BR_SK_CANCEL_ABB"), "Add to bookmark", false);
+                                                          "Folder #", "Cancel", "Add to bookmark", false);
 #endif
     services::SharedBookmarkFolderList badWords = m_storageService->getFoldersStorage().getFolders();
     for (auto it = badWords.begin(); it != badWords.end(); ++it)
@@ -773,7 +773,7 @@ void SimpleUI::onEditFolderClicked(const std::string& folder_name)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "Edit Folder name", "Edit folder name?",
-                                                        folder_name, _("IDS_BR_SK_DONE"), _("IDS_BR_SK_CANCEL_ABB"), true);
+                                                          folder_name, "Done", "Cancel", true);
     services::SharedBookmarkFolderList badWords = m_storageService->getFoldersStorage().getFolders();
     for (auto it = badWords.begin(); it != badWords.end(); ++it)
         inputPopup->addBadWord((*it)->getName());
@@ -790,7 +790,7 @@ void SimpleUI::onDeleteFolderClicked(const std::string& folder_name)
     TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
     popup->setRightButton(DELETE);
     popup->setLeftButton(CANCEL);
-    popup->setTitle(_("IDS_BR_SK_DELETE"));
+    popup->setTitle("Delete");
     popup->setMessage("<b>Delete '" + folder_name + "'?</b><br>If you delete this Folder, All Bookmarks in the folder will also be deleted.");
     popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteFolderPopupClicked, this, _1));
     popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
@@ -1223,8 +1223,8 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
         if (!layoutSetResult)
             throw std::runtime_error("Layout file not found: " + edjFilePath);
 
-        elm_object_translatable_part_text_set(popup_content, "login_label", "IDS_BR_BODY_LOGIN");
-        elm_object_translatable_part_text_set(popup_content, "password_label", "IDS_BR_BODY_PASSWORD");
+        elm_object_translatable_part_text_set(popup_content, "login_label", "Login");
+        elm_object_translatable_part_text_set(popup_content, "password_label", "Password");
 
         std::string entryTextStyle = "DEFAULT='font=Sans:style=Regular font_size=20 ellipsis=0.0'";
         Evas_Object *loginEntry = elm_entry_add(popup_content);

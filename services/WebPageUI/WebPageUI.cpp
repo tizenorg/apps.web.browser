@@ -17,7 +17,6 @@
 #include <Elementary.h>
 #include <memory>
 #include <boost/format.hpp>
-#include "app_i18n.h"
 #include "WebPageUI.h"
 #include "BrowserLogger.h"
 #include "ServiceManager.h"
@@ -455,27 +454,27 @@ void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 void WebPageUI::createActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_back = sharedAction(new Action(_("IDS_BR_BUTTON_BACK_ABB")));
+    m_back = sharedAction(new Action("Back"));
     m_back->setIcon("browser/toolbar_prev");
 
-    m_forward = sharedAction(new Action(_("IDS_BR_SK_NEXT")));
+    m_forward = sharedAction(new Action("Next"));
     m_forward->setIcon("browser/toolbar_next");
 
-    m_stopLoading = sharedAction(new Action(_("IDS_BR_OPT_STOP")));
+    m_stopLoading = sharedAction(new Action("Stop"));
     m_stopLoading->setIcon("browser/toolbar_stop");
 
     m_reload = sharedAction(new Action("Reload"));
     m_reload->setIcon("browser/toolbar_reload");
-    m_tab = sharedAction(new Action(_("IDS_BR_SK_TABS")));
+    m_tab = sharedAction(new Action("Tabs"));
     m_tab->setIcon("browser/toolbar_tab");
 
     m_showMoreMenu = sharedAction(new Action("More_Menu"));
     m_showMoreMenu->setIcon("browser/toolbar_setting");
 
 #if !PROFILE_MOBILE
-    m_back->setToolTip(_("IDS_BR_SK_PREVIOUS"));
-    m_forward->setToolTip(_("IDS_BR_SK_NEXT"));
-    m_stopLoading->setToolTip(_("IDS_BR_OPT_STOP"));
+    m_back->setToolTip("Previous");
+    m_forward->setToolTip("Next");
+    m_stopLoading->setToolTip("Stop");
     m_reload->setToolTip("Reload");
     m_tab->setToolTip("Tab Manager");
     m_showMoreMenu->setToolTip("More Menu");
