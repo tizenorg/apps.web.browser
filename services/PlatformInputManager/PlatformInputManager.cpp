@@ -127,10 +127,10 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->enterPressed();
 #if PROFILE_MOBILE
         //TODO: This is a rotation workaround. Please delete this when proper rotation is implemented
-        else if (!keyName.compare("XF86AudioLowerVolume"))
-            self->rotateCounterClockwise();
-        else if (!keyName.compare("XF86AudioRaiseVolume"))
-            self->rotateClockwise();
+        //else if (!keyName.compare("XF86AudioLowerVolume"))
+        //    self->rotateCounterClockwise();
+        //else if (!keyName.compare("XF86AudioRaiseVolume"))
+        //    self->rotateClockwise();
         //TODO: end of workaround
 #else
         else if(!keyName.compare("F11") || !keyName.compare("XF86Back"))
