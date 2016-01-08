@@ -273,9 +273,6 @@ private:
 
     void registerHWKeyCallback();
     void unregisterHWKeyCallback();
-
-    void onRotateClockwisePressed();
-    void onRotateCounterClockwisePressed();
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -342,10 +339,6 @@ private:
     // consecutive webviews in the application, otherwise we would encounter a crash after creating
     // the first web view
     Ewk_Context *m_ewkContext;
-    Evas_Object *main_window;
-#if PROFILE_MOBILE
-    int angle = 0;
-#endif
 };
 
 }
