@@ -132,8 +132,6 @@ group {
             description {
                 state: "default" 0.0;
                 align: 0.0 0.0;
-                min: 720 1280;
-                max: 720 1280;
                 rel1 {
                     relative: 0 1;
                     to: "background";

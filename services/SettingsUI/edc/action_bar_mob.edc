@@ -123,6 +123,14 @@ group
                 }
             }
             description {
+                state: "privacySettings" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                text {
+                    text: "Privacy";
+                }
+            }
+            description {
                 state: "highlight" 0.0;
                 inherit: "default" 0.0;
                 color_class: focusBgColor1;
@@ -291,6 +299,14 @@ group
                 signal: "switch,content,Settings";
                 source: "del_but";
                 action: STATE_SET "contentSettings" 0.0;
+                target: "settings_title";
+                after: "backIconChange";
+            }
+            program {
+                name: "toPrivacySettings";
+                signal: "switch,privacy,Settings";
+                source: "del_but";
+                action: STATE_SET "privacySettings" 0.0;
                 target: "settings_title";
                 after: "backIconChange";
             }
