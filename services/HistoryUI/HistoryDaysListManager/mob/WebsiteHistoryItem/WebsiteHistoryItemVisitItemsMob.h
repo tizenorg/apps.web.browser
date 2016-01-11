@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 #include "../../HistoryDayItemDataTypedef.h"
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -30,6 +31,7 @@ class WebsiteHistoryItemVisitItemsMob
     struct LayoutVisitItemObjects
     {
         Evas_Object* layout = nullptr;
+        Evas_Object* buttonSelect = nullptr;
     };
     struct VisitItemObjects
     {
@@ -47,10 +49,16 @@ public:
      */
     void setEflObjectsAsDeleted();
 
+    static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
+    signalButtonClicked;
+
 private:
     LayoutVisitItemObjects createLayoutVisitItem(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
+
+    void initCallbacks();
+    static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;
