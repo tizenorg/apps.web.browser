@@ -229,13 +229,20 @@ Evas_Object * BookmarkDetailsUI::_grid_bookmark_content_get(void *data, Evas_Obj
         BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
         const char *part_name1 = "elm.thumbnail";
         static const int part_name1_len = strlen(part_name1);
+        const char *part_name2 = "remove_checkbox_swallow";
+        static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name1, part, part_name1_len))
         {
             std::shared_ptr<tizen_browser::tools::BrowserImage> image = itemData->item->getThumbnail();
             if (image)
-            {
                 return tizen_browser::tools::EflTools::getEvasImage(image, itemData->bookmarkDetailsUI->m_parent);
-            }
+        }
+        if (!strncmp(part_name2, part, part_name2_len)) {
+            Evas_Object* box = elm_layout_add(obj);
+            elm_object_style_set(box, "custom_check");
+            elm_layout_content_set(obj, "remove_checkbox_swallow", box);
+            elm_check_state_set(box, EINA_TRUE);
+            return box;
         }
     }
     return nullptr;
@@ -343,7 +350,7 @@ void BookmarkDetailsUI::_remove_button_clicked(void* data, Evas_Object*, void*)
         bookmarkDetailsUI->m_remove_bookmark_mode = true;
 
         for (auto it = bookmarkDetailsUI->m_map_bookmark.begin(); it != bookmarkDetailsUI->m_map_bookmark.end(); ++it) {
-            elm_object_item_signal_emit(it->second, "check_box_click", "ui");
+            elm_object_item_signal_emit(it->second, "check_box_visible", "ui");
             bookmarkDetailsUI->m_map_delete.insert(std::pair<std::string, bool>(it->first, false));
         }
         elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_less", "ui");
