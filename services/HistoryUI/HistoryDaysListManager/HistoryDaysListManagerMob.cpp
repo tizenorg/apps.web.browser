@@ -19,7 +19,11 @@
 #include "HistoryDaysListManagerMob.h"
 #include "HistoryDayItemData.h"
 #include "mob/HistoryDayItemMob.h"
+#include "mob/WebsiteHistoryItem/WebsiteHistoryItemTitleMob.h"
+#include "mob/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsMob.h"
+#include <services/HistoryUI/HistoryDeleteManager.h>
 
+#include <GeneralTools.h>
 #include <EflTools.h>
 
 namespace tizen_browser {
@@ -32,6 +36,7 @@ HistoryDaysListManagerMob::HistoryDaysListManagerMob()
     , m_layoutScrollerDays(nullptr)
     , m_boxDays(nullptr)
 {
+    connectSignals();
 }
 
 HistoryDaysListManagerMob::~HistoryDaysListManagerMob()
@@ -90,6 +95,18 @@ void HistoryDaysListManagerMob::clear()
     m_dayItems.clear();
 }
 
+void HistoryDaysListManagerMob::connectSignals()
+{
+    WebsiteHistoryItemTitleMob::signalButtonClicked.connect(
+            boost::bind(&HistoryDaysListManagerMob::onWebsiteHistoryItemClicked,
+                    this, _1));
+    WebsiteHistoryItemVisitItemsMob::signalButtonClicked.connect(
+            boost::bind(
+                    &HistoryDaysListManagerMob::onWebsiteHistoryItemVisitItemClicked,
+                    this, _1));
+}
+
+
 void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
 {
     auto item = std::make_shared<HistoryDayItemMob>(dayItemData);
@@ -97,6 +114,21 @@ void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
 
     Evas_Object* dayItemLayout = item->init(m_parent, m_edjeFiles);
     elm_box_pack_end(m_boxDays, dayItemLayout);
+}
+
+void HistoryDaysListManagerMob::onWebsiteHistoryItemClicked(
+        const WebsiteHistoryItemDataPtrConst clickedItem)
+{
+    signalHistoryItemClicked(
+            tools::PROTOCOL_DEFAULT + clickedItem->websiteDomain,
+            clickedItem->websiteTitle);
+}
+
+void HistoryDaysListManagerMob::onWebsiteHistoryItemVisitItemClicked(
+        const WebsiteVisitItemDataPtrConst clickedItem)
+{
+    signalHistoryItemClicked(clickedItem->historyItem->getUrl(),
+            clickedItem->historyItem->getTitle());
 }
 
 } /* namespace base_ui */
