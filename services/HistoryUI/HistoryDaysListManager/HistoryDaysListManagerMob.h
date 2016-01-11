@@ -43,7 +43,13 @@ public:
     void clear() override;
     void setFocusChain(Evas_Object* /*obj*/) override {}
 
+    void onWebsiteHistoryItemClicked(
+            const WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+    void onWebsiteHistoryItemVisitItemClicked(
+            const WebsiteVisitItemDataPtrConst websiteVisitItemData);
+
 private:
+    void connectSignals();
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
 
     HistoryDaysListManagerEdjePtr m_edjeFiles;
