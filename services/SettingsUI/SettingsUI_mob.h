@@ -29,6 +29,15 @@
 namespace tizen_browser{
 namespace base_ui{
 
+class SettingsUI;
+
+struct ItemData {
+    SettingsUI* settingsUI;
+    std::string buttonText;
+    Evas_Object* object;
+    Elm_Object_Item * e_item;
+};
+
 class AutoFillFormManager;
 class BROWSER_EXPORT SettingsUI
         : public tizen_browser::interfaces::AbstractUIComponent
@@ -38,6 +47,7 @@ public:
     SettingsUI();
     ~SettingsUI();
     void init(Evas_Object* parent);
+    void initializeButtonMap();
     Evas_Object* getContent();
     void showUI();
     void hideUI();
@@ -87,6 +97,7 @@ private:
     static void _content_settings_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
 
     static void _privacy_menu_clicked_cb(void * data, Evas_Object * obj, void * event_info);
+    static char* _genlist_item_text_get(void* /*data*/, Evas_Object *obj, const char* /*part*/);
 
     std::unique_ptr<AutoFillFormManager> m_autoFillManager;
     Evas_Object *m_settings_layout;
@@ -96,6 +107,8 @@ private:
     Evas_Object *m_parent;
 
     std::string m_edjFilePath;
+    Elm_Gengrid_Item_Class * m_setting_item_class;
+    std::map<unsigned, ItemData> m_buttonsMap;
 };
 
 }

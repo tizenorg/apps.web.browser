@@ -34,11 +34,6 @@ namespace base_ui{
 
 EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
 
-struct ItemData {
-    tizen_browser::base_ui::SettingsUI* settingsUI;
-    Elm_Object_Item * e_item;
-};
-
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)
     , m_subpage_layout(nullptr)
@@ -48,6 +43,16 @@ SettingsUI::SettingsUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SettingsUI/SettingsMobileUI.edj");
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+
+    m_setting_item_class = elm_genlist_item_class_new();
+    m_setting_item_class->item_style = "settings_button";
+    m_setting_item_class->func.text_get = _genlist_item_text_get;
+    m_setting_item_class->func.content_get = nullptr;
+    m_setting_item_class->func.state_get = nullptr;
+    m_setting_item_class->func.del = nullptr;
+
+    initializeButtonMap();
 }
 
 SettingsUI::~SettingsUI()
@@ -60,6 +65,39 @@ void SettingsUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+}
+
+void SettingsUI::initializeButtonMap() {
+    ItemData deleteWebBrowsing;
+    deleteWebBrowsing.settingsUI=this;
+    deleteWebBrowsing.buttonText="Delete Web browsing data";
+
+    ItemData resetMostVisited;
+    resetMostVisited.settingsUI=this;
+    resetMostVisited.buttonText="Reset most visited site";
+
+    ItemData resetBrowser;
+    resetBrowser.settingsUI=this;
+    resetBrowser.buttonText="Reset browser";
+
+    ItemData autoFill;
+    autoFill.settingsUI=this;
+    autoFill.buttonText="Auto Fill data";
+
+    ItemData content;
+    content.settingsUI=this;
+    content.buttonText="Content Settings";
+
+    ItemData privacy;
+    privacy.settingsUI=this;
+    privacy.buttonText="Privacy";
+
+    m_buttonsMap[0]=deleteWebBrowsing;
+    m_buttonsMap[1]=resetMostVisited;
+    m_buttonsMap[2]=resetBrowser;
+    m_buttonsMap[3]=autoFill;
+    m_buttonsMap[4]=content;
+    m_buttonsMap[5]=privacy;
 }
 
 Evas_Object* SettingsUI::getContent()
@@ -89,7 +127,6 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     Evas_Object* settings_layout = elm_layout_add(parent);
     elm_layout_file_set(settings_layout, m_edjFilePath.c_str(), "settings-layout");
     evas_object_size_hint_weight_set(settings_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -150,6 +187,22 @@ Evas_Object* SettingsUI::createBackActionBar(Evas_Object* settings_layout)
     return actionBar;
 }
 
+char* SettingsUI::_genlist_item_text_get(void* data, Evas_Object* /*obj*/, const char* part)
+{
+   M_ASSERT(data);
+   if(!data)
+       return nullptr;
+
+   ItemData* it = static_cast<ItemData*>(data);
+
+   if (strcmp(part, "button_text")==0) {
+       const char* item_name = it->buttonText.c_str();
+       if (item_name)
+          return strdup(item_name);
+   }
+   return nullptr;
+}
+
 Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -165,35 +218,32 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
-    Evas_Object *auto_fill_data_button = elm_button_add(layout);
-    elm_object_style_set(auto_fill_data_button, "basic_button");
-    evas_object_smart_callback_add(auto_fill_data_button, "clicked", _auto_fill_data_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "auto_fill_data_click", auto_fill_data_button);
+    Evas_Object *sign_in_button = elm_button_add(layout);
+    elm_object_style_set(sign_in_button, "sign_in_button");
+    elm_layout_content_set(layout, "sign_in_click", sign_in_button);
+    elm_object_part_text_set(sign_in_button, "text", "Sign in");
 
-    Evas_Object *del_selected_data_button = elm_button_add(layout);
-    elm_object_style_set(del_selected_data_button, "basic_button");
-    evas_object_smart_callback_add(del_selected_data_button, "clicked", _del_selected_data_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "del_web_bro_click", del_selected_data_button);
+    Evas_Object* scroller = elm_gengrid_add(layout);
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_gengrid_align_set(scroller, 0, 0);
+    elm_gengrid_select_mode_set(scroller, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(scroller, EINA_FALSE);
+    elm_gengrid_horizontal_set(scroller, EINA_FALSE);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
+    elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
+    elm_gengrid_item_size_set(scroller, 720 * efl_scale, 120 * efl_scale);
 
-    Evas_Object *reset_mv_button = elm_button_add(layout);
-    elm_object_style_set(reset_mv_button, "basic_button");
-    evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "reset_most_visited_click", reset_mv_button);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[0], _del_selected_data_menu_clicked_cb, (void*)id);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[1], _reset_mv_menu_clicked_cb, (void*)id);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[2], _reset_browser_menu_clicked_cb, (void*)id);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[3], _auto_fill_data_menu_clicked_cb, (void*)id);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[4], _content_settings_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[5], _privacy_menu_clicked_cb, this);
 
-    Evas_Object *reset_browser_button = elm_button_add(layout);
-    elm_object_style_set(reset_browser_button, "basic_button");
-    evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
+    elm_object_part_content_set(layout, "list_swallow", scroller);
+    evas_object_show(scroller);
 
-    Evas_Object *content_settings_button = elm_button_add(layout);
-    elm_object_style_set(content_settings_button, "basic_button");
-    evas_object_smart_callback_add(content_settings_button, "clicked", _content_settings_menu_clicked_cb, this);
-    elm_layout_content_set(layout, "content_settings_click", content_settings_button);
-
-    Evas_Object *privacy_button = elm_button_add(layout);
-    elm_object_style_set(privacy_button, "basic_button");
-    evas_object_smart_callback_add(privacy_button, "clicked", _privacy_menu_clicked_cb, this);
-    elm_layout_content_set(layout, "privacy_click", privacy_button);
     return layout;
 }
 
