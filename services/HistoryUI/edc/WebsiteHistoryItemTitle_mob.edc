@@ -1,6 +1,9 @@
 #include "../../../core/Tools/edc/SpacerRect.edc"
 #include "../../../core/Tools/edc/Background.edc"
+#include "../../../core/Tools/edc/InvisibleButtonSwallow.edc"
 #include "colorClasses.edc"
+
+#define ELEMENTS_HORIZONTAL_SPACER 38
 
 collections {
     group { name: "groupImageFaviconMask";
@@ -18,8 +21,9 @@ collections {
           }
     group { name: "layoutWebsiteHistoryItemTitle";
             parts {
-                SPACER_RECT_HORIZONTAL("spacerBoxLeft", 0, 38, 0.0)
-                SPACER_RECT_HORIZONTAL("spacerBoxRight", 0, 38, 1.0)
+                SPACER_RECT_HORIZONTAL("spacerBoxLeft", 0, ELEMENTS_HORIZONTAL_SPACER, 0.0)
+                SPACER_RECT_HORIZONTAL("spacerBoxRight", 0, ELEMENTS_HORIZONTAL_SPACER, 1.0)
+                BACKGROUND_COVER_TOGGLABLE("clickBackground", "", "colorWebsiteHistoryItemTitleMouseIn")
                 part { name: "boxMainHorizontal";
                        scale: 1;
                        type: SWALLOW;
@@ -28,8 +32,8 @@ collections {
                                      max: -1 150;
                                      align: 0.0 0.0;
                                      fixed: 0 0;
-                                     rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
-                                     rel2 { relative: 0.0 1.0; to: "spacerBoxRight"; }
+                                     rel1 { relative: 0.0 0.0; }
+                                     rel2 { relative: 1.0 1.0; }
                                    }
                      }
                 rect { "divider";
@@ -44,10 +48,16 @@ collections {
                               rel2 { relative: 0.0 1.0; to: "spacerBoxRight"; }
                             }
                      }
+                INVISIBLE_BUTTON_SWALLOW("boxMainHorizontal")
+            }
+            programs {
+                PROGRAM_BACKGROUND_COVER_TOGGLABLE("buttonSelectOver", "clickBackground")
             }
           }
     group { name: "layoutItemIcon";
             parts {
+                SPACER_RECT_HORIZONTAL("spacerBoxLeft", 0, ELEMENTS_HORIZONTAL_SPACER, 0.0)
+                SPACER_RECT_HORIZONTAL("spacerBoxRight", 0, ELEMENTS_HORIZONTAL_SPACER, 1.0)
                 BACKGROUND_COVER("swallowIcon", 1, "colorTemporaryFavicon")
                 part { name: "swallowIcon";
                        scale: 1;
@@ -56,8 +66,8 @@ collections {
                                      align: 0.0 0.0;
                                      min: 84 84;
                                      max: 84 84;
-                                     fixed: 1 1;
-                                     rel1 { relative: 0.0 0.0; }
+                                     fixed: 0 0;
+                                     rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
                                      rel2 { relative: 1.0 1.0; }
                                    }
                      }
@@ -69,8 +79,8 @@ collections {
                                      visible: 1;
                                      min: 84 84;
                                      max: 84 84;
-                                     fixed: 0 0;
-                                     rel1 { relative: 0.0 0.0; }
+                                     fixed: 1 1;
+                                     rel1 { relative: 1.0 0.0; to: "spacerBoxLeft"; }
                                      rel2 { relative: 1.0 1.0; }
                                    }
                      }
@@ -84,15 +94,15 @@ collections {
                 }
             }
             parts {
-                SPACER_RECT_HORIZONTAL("spacerTextLeft", 0, 20, 0.0)
+                SPACER_RECT_HORIZONTAL("spacerTextLeft", 0, 28, 0.0)
                 part { name: "elm.text";
                        type: TEXTBLOCK;
                        scale: 1;
                        description { state: "default" 0.0;
                                      visible: 1;
                                      align: 0.0 0.5;
-                                     min: 1 38;
-                                     max: -1 38;
+                                     min: 1 ELEMENTS_HORIZONTAL_SPACER;
+                                     max: -1 ELEMENTS_HORIZONTAL_SPACER;
                                      fixed: 0 1;
                                      rel1 { relative: 1.0 0.0; to: "spacerTextLeft"; }
                                      text { style: "styleTitle"; }

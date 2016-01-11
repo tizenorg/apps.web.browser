@@ -20,6 +20,7 @@
 #include <Elementary.h>
 #include <string>
 #include "../../HistoryDayItemDataTypedef.h"
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -32,15 +33,22 @@ public:
     virtual ~WebsiteHistoryItemTitleMob();
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
 
+    static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
+    signalButtonClicked;
+
 private:
     Evas_Object* createLayoutIcon(Evas_Object* parent,
             const std::string& edjeFilePath);
     Evas_Object* createLayoutSummary(Evas_Object* parent,
             const std::string& edjeFilePath);
+    void initCallbacks();
+
+    static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
 
     WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
 
-    Evas_Object* m_imageClear;
+    Evas_Object* m_buttonSelect;
+    Evas_Object* m_imageIcon;
 
     Evas_Object* m_layoutMain;
     Evas_Object* m_boxMainHorizontal;
