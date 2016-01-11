@@ -481,7 +481,7 @@ void BookmarkDetailsUI::createGengrid()
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
+    elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
     elm_gengrid_item_size_set(m_gengrid, 404 * efl_scale, 320 * efl_scale);
 #endif
 }
