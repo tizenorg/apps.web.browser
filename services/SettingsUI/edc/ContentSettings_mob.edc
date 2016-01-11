@@ -75,10 +75,10 @@ collections
             TEXT_WITH_CHBOX("images",  "overview_spacer", "Load images");
             TEXT_WITH_CHBOX("javascript",  "images_spacer", "Enable Javascript");
 
-            SETTINGS_LINE("line1", "head_bg")
-            SETTINGS_LINE("line2", "overview_spacer")
-            SETTINGS_LINE("line3", "images_spacer")
-            SETTINGS_LINE("line4", "javascript_spacer")
+            SETTINGS_LINE_AFTER("line1", "head_bg")
+            SETTINGS_LINE_AFTER("line2", "overview_spacer")
+            SETTINGS_LINE_AFTER("line3", "images_spacer")
+            SETTINGS_LINE_AFTER("line4", "javascript_spacer")
         }
     }
 }
