@@ -32,12 +32,16 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
-
-struct ItemData {
-    tizen_browser::base_ui::SettingsUI* settingsUI;
-    Elm_Object_Item * e_item;
+enum SettingsOptions {
+    DEL_WEB_BRO,
+    RESET_MOST_VIS,
+    RESET_BRO,
+    AUTO_FILL,
+    CONTENT,
+    PRIVACY
 };
+
+EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)
@@ -48,6 +52,16 @@ SettingsUI::SettingsUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SettingsUI/SettingsMobileUI.edj");
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+
+    m_setting_item_class = elm_gengrid_item_class_new();
+    m_setting_item_class->item_style = "settings_button";
+    m_setting_item_class->func.text_get = _gengrid_item_text_get;
+    m_setting_item_class->func.content_get = nullptr;
+    m_setting_item_class->func.state_get = nullptr;
+    m_setting_item_class->func.del = nullptr;
+
+    initializeButtonMap();
 }
 
 SettingsUI::~SettingsUI()
@@ -60,6 +74,34 @@ void SettingsUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+}
+
+void SettingsUI::initializeButtonMap() {
+    ItemData deleteWebBrowsing;
+    //TODO Add translation API
+    deleteWebBrowsing.buttonText="Delete Web browsing data";
+
+    ItemData resetMostVisited;
+    resetMostVisited.buttonText="Reset most visited site";
+
+    ItemData resetBrowser;
+    resetBrowser.buttonText="Reset browser";
+
+    ItemData autoFill;
+    autoFill.buttonText="Auto Fill data";
+
+    ItemData content;
+    content.buttonText="Content Settings";
+
+    ItemData privacy;
+    privacy.buttonText="Privacy";
+
+    m_buttonsMap[SettingsOptions::DEL_WEB_BRO]=deleteWebBrowsing;
+    m_buttonsMap[SettingsOptions::RESET_MOST_VIS]=resetMostVisited;
+    m_buttonsMap[SettingsOptions::RESET_BRO]=resetBrowser;
+    m_buttonsMap[SettingsOptions::AUTO_FILL]=autoFill;
+    m_buttonsMap[SettingsOptions::CONTENT]=content;
+    m_buttonsMap[SettingsOptions::PRIVACY]=privacy;
 }
 
 Evas_Object* SettingsUI::getContent()
@@ -89,7 +131,6 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
     Evas_Object* settings_layout = elm_layout_add(parent);
     elm_layout_file_set(settings_layout, m_edjFilePath.c_str(), "settings-layout");
     evas_object_size_hint_weight_set(settings_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -150,12 +191,26 @@ Evas_Object* SettingsUI::createBackActionBar(Evas_Object* settings_layout)
     return actionBar;
 }
 
+char* SettingsUI::_gengrid_item_text_get(void* data, Evas_Object* /*obj*/, const char* part)
+{
+   M_ASSERT(data);
+   if(!data)
+       return nullptr;
+
+   ItemData* it = static_cast<ItemData*>(data);
+
+   if (strcmp(part, "button_text") == 0) {
+       //TODO Implement translation API
+       const char* item_name = it->buttonText.c_str();
+       if (item_name)
+          return strdup(item_name);
+   }
+   return nullptr;
+}
+
 Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    ItemData *id = new ItemData;
-    id->settingsUI = this;
 
     Evas_Object* layout = elm_layout_add(settings_layout);
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "settings_items");
@@ -165,44 +220,40 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
-    Evas_Object *auto_fill_data_button = elm_button_add(layout);
-    elm_object_style_set(auto_fill_data_button, "basic_button");
-    evas_object_smart_callback_add(auto_fill_data_button, "clicked", _auto_fill_data_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "auto_fill_data_click", auto_fill_data_button);
+    Evas_Object *sign_in_button = elm_button_add(layout);
+    elm_object_style_set(sign_in_button, "sign_in_button");
+    elm_layout_content_set(layout, "sign_in_click", sign_in_button);
 
-    Evas_Object *del_selected_data_button = elm_button_add(layout);
-    elm_object_style_set(del_selected_data_button, "basic_button");
-    evas_object_smart_callback_add(del_selected_data_button, "clicked", _del_selected_data_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "del_web_bro_click", del_selected_data_button);
+    //TODO Add translation API
+    elm_object_part_text_set(sign_in_button, "text", "Sign in");
 
-    Evas_Object *reset_mv_button = elm_button_add(layout);
-    elm_object_style_set(reset_mv_button, "basic_button");
-    evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "reset_most_visited_click", reset_mv_button);
+    Evas_Object* scroller = elm_gengrid_add(layout);
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_gengrid_align_set(scroller, 0, 0);
+    elm_gengrid_select_mode_set(scroller, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_gengrid_multi_select_set(scroller, EINA_FALSE);
+    elm_gengrid_horizontal_set(scroller, EINA_FALSE);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
+    elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
+    elm_gengrid_item_size_set(scroller, 720 * efl_scale, 120 * efl_scale);
 
-    Evas_Object *reset_browser_button = elm_button_add(layout);
-    elm_object_style_set(reset_browser_button, "basic_button");
-    evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_menu_clicked_cb, (void*)id);
-    elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], _del_selected_data_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], _reset_mv_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_BRO], _reset_browser_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::AUTO_FILL], _auto_fill_data_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::CONTENT], _content_settings_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::PRIVACY], _privacy_menu_clicked_cb, this);
 
-    Evas_Object *content_settings_button = elm_button_add(layout);
-    elm_object_style_set(content_settings_button, "basic_button");
-    evas_object_smart_callback_add(content_settings_button, "clicked", _content_settings_menu_clicked_cb, this);
-    elm_layout_content_set(layout, "content_settings_click", content_settings_button);
+    elm_object_part_content_set(layout, "list_swallow", scroller);
+    evas_object_show(scroller);
 
-    Evas_Object *privacy_button = elm_button_add(layout);
-    elm_object_style_set(privacy_button, "basic_button");
-    evas_object_smart_callback_add(privacy_button, "clicked", _privacy_menu_clicked_cb, this);
-    elm_layout_content_set(layout, "privacy_click", privacy_button);
     return layout;
 }
 
 Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    ItemData *id = new ItemData;
-    id->settingsUI = this;
 
     Evas_Object* layout = elm_layout_add(settings_layout);
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "delete_browsing_data_mobile");
@@ -221,33 +272,33 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
     elm_object_style_set(cache_checkbox, "custom_check");
     elm_layout_content_set(layout, "cache_cb", cache_checkbox);
     elm_check_state_set(cache_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cache_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cache_cb_text_bg", __checkbox_label_click_cb, this);
 
     elm_object_style_set(cookies_checkbox, "custom_check");
     elm_layout_content_set(layout, "cookies_cb", cookies_checkbox);
     elm_check_state_set(cookies_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cookies_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "cookies_cb_text_bg", __checkbox_label_click_cb, this);
 
     elm_object_style_set(history_checkbox, "custom_check");
     elm_layout_content_set(layout, "history_cb", history_checkbox);
     elm_check_state_set(history_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(edje, "mouse,clicked,1", "history_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(edje, "mouse,clicked,1", "history_cb_text_bg", __checkbox_label_click_cb, this);
 
     Evas_Object* password_checkbox = elm_check_add(layout);
     elm_object_style_set(password_checkbox, "custom_check");
     elm_layout_content_set(layout, "password_cb", password_checkbox);
     elm_check_state_set(password_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "password_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "password_cb_text_bg", __checkbox_label_click_cb, this);
 
     Evas_Object* formdata_checkbox = elm_check_add(layout);
     elm_object_style_set(formdata_checkbox, "custom_check");
     elm_layout_content_set(layout, "formdata_cb", formdata_checkbox);
     elm_check_state_set(formdata_checkbox, EINA_TRUE);
-    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "formdata_cb_text_bg", __checkbox_label_click_cb, (void*)id);
+    edje_object_signal_callback_add(elm_layout_edje_get(layout), "mouse,clicked,1", "formdata_cb_text_bg", __checkbox_label_click_cb, this);
 
     Evas_Object *del_selected_data_button = elm_button_add(layout);
     elm_object_style_set(del_selected_data_button, "basic_button");
-    evas_object_smart_callback_add(del_selected_data_button, "clicked", _del_selected_data_clicked_cb, (void*)id);
+    evas_object_smart_callback_add(del_selected_data_button, "clicked", _del_selected_data_clicked_cb, this);
     elm_layout_content_set(layout, "del_selected_data_click", del_selected_data_button);
 
     return layout;
@@ -256,9 +307,6 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
 Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    ItemData *id = new ItemData;
-    id->settingsUI = this;
 
     Evas_Object* layout = elm_layout_add(settings_layout);
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "reset_most_visited");
@@ -271,7 +319,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
 
     Evas_Object *reset_mv_button = elm_button_add(layout);
     elm_object_style_set(reset_mv_button, "basic_button");
-    evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_clicked_cb, (void*)id);
+    evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_clicked_cb, this);
     elm_layout_content_set(layout, "reset_most_visited_click", reset_mv_button);
 
     return layout;
@@ -280,9 +328,6 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
 Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    ItemData *id = new ItemData;
-    id->settingsUI = this;
 
     Evas_Object* layout = elm_layout_add(settings_layout);
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "reset_browser");
@@ -295,7 +340,7 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
 
     Evas_Object *reset_browser_button = elm_button_add(layout);
     elm_object_style_set(reset_browser_button, "basic_button");
-    evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_clicked_cb, (void*)id);
+    evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_clicked_cb, this);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
 
     return layout;
@@ -315,26 +360,26 @@ void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData *id = static_cast<ItemData*>(data);
+        SettingsUI* self = static_cast<SettingsUI*>(data);
 
         if(strcmp(source, "cache_cb_text_bg") == 0 ){
-            Evas_Object *cache_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cache_cb");
+            Evas_Object *cache_check = elm_layout_content_get(self->m_subpage_layout, "cache_cb");
             elm_check_state_set(cache_check, !elm_check_state_get(cache_check));
         }
         else if (strcmp(source, "cookies_cb_text_bg") == 0 ){
-            Evas_Object *cookies_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cookies_cb");
+            Evas_Object *cookies_check = elm_layout_content_get(self->m_subpage_layout, "cookies_cb");
             elm_check_state_set(cookies_check, !elm_check_state_get(cookies_check));
         }
         else if (strcmp(source, "history_cb_text_bg") == 0 ){
-            Evas_Object *history_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "history_cb");
+            Evas_Object *history_check = elm_layout_content_get(self->m_subpage_layout, "history_cb");
             elm_check_state_set(history_check, !elm_check_state_get(history_check));
         }
         else if (strcmp(source, "password_cb_text_bg") == 0 ){
-            Evas_Object *password_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "password_cb");
+            Evas_Object *password_check = elm_layout_content_get(self->m_subpage_layout, "password_cb");
             elm_check_state_set(password_check, !elm_check_state_get(password_check));
         }
         else if (strcmp(source, "formdata_cb_text_bg") == 0 ){
-            Evas_Object *formdata_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "formdata_cb");
+            Evas_Object *formdata_check = elm_layout_content_get(self->m_subpage_layout, "formdata_cb");
             elm_check_state_set(formdata_check, !elm_check_state_get(formdata_check));
         }
         else{
@@ -348,6 +393,9 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object* layout = createPageLayout(settings_layout, "content_settings_mobile");
+
+    elm_object_signal_emit(m_actionBar,"switch,content,Settings", "del_but");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     boost::optional<bool> sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::PAGE_OVERVIEW);
     Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
@@ -371,6 +419,9 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object* layout = createPageLayout(settings_layout, "privacy_mobile");
+
+    elm_object_signal_emit(m_actionBar,"switch,privacy,Settings", "del_but");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     boost::optional<bool> sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::REMEMBER_FROM_DATA);
     Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
@@ -476,8 +527,8 @@ void SettingsUI::_auto_fill_data_menu_clicked_cb(void* data, Evas_Object*, void*
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData *id = static_cast<ItemData*>(data);
-        id->settingsUI->initializeAutoFillManager();
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->initializeAutoFillManager();
     }
 }
 
@@ -485,12 +536,12 @@ void SettingsUI::_del_selected_data_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData *id = static_cast<ItemData*>(data);
-        Evas_Object *cache_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cache_cb");
-        Evas_Object *cookies_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "cookies_cb");
-        Evas_Object *history_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "history_cb");
-        Evas_Object *password_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "password_cb");
-        Evas_Object *formdata_check = elm_layout_content_get(id->settingsUI->m_subpage_layout, "formdata_cb");
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        Evas_Object *cache_check = elm_layout_content_get(self->m_subpage_layout, "cache_cb");
+        Evas_Object *cookies_check = elm_layout_content_get(self->m_subpage_layout, "cookies_cb");
+        Evas_Object *history_check = elm_layout_content_get(self->m_subpage_layout, "history_cb");
+        Evas_Object *password_check = elm_layout_content_get(self->m_subpage_layout, "password_cb");
+        Evas_Object *formdata_check = elm_layout_content_get(self->m_subpage_layout, "formdata_cb");
         std::string type;
         elm_check_state_get(cache_check) ? type += "_CACHE" : "";
         elm_check_state_get(cookies_check) ? type += "_COOKIES" : "";
@@ -498,7 +549,7 @@ void SettingsUI::_del_selected_data_clicked_cb(void *data, Evas_Object*, void*)
         elm_check_state_get(password_check) ? type += "_PASSWORD" : "";
         elm_check_state_get(formdata_check) ? type += "_FORMDATA" : "";
 
-        id->settingsUI->deleteSelectedDataClicked(type);
+        self->deleteSelectedDataClicked(type);
     }
 }
 
@@ -506,10 +557,10 @@ void SettingsUI::_del_selected_data_menu_clicked_cb(void *data, Evas_Object*, vo
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData *id = static_cast<ItemData*>(data);
-        id->settingsUI->resetItemsLayoutContent();
-        id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
-        id->settingsUI->m_subpage_layout = id->settingsUI->createDelDataMobilePage(id->settingsUI->m_settings_layout);
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetItemsLayoutContent();
+        self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+        self->m_subpage_layout = self->createDelDataMobilePage(self->m_settings_layout);
     }
 }
 
@@ -517,8 +568,8 @@ void SettingsUI::_reset_mv_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData* itemData = static_cast<ItemData*>(data);
-        itemData->settingsUI->resetMostVisitedClicked();
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetMostVisitedClicked();
     }
 }
 
@@ -526,10 +577,10 @@ void SettingsUI::_reset_mv_menu_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData* id = static_cast<ItemData*>(data);
-        id->settingsUI->resetItemsLayoutContent();
-        id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
-        id->settingsUI->m_subpage_layout = id->settingsUI->createRemoveMostVisitedMobilePage(id->settingsUI->m_settings_layout);
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetItemsLayoutContent();
+        self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+        self->m_subpage_layout = self->createRemoveMostVisitedMobilePage(self->m_settings_layout);
     }
 }
 
@@ -537,8 +588,8 @@ void SettingsUI::_reset_browser_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData* itemData = static_cast<ItemData*>(data);
-        itemData->settingsUI->resetBrowserClicked();
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetBrowserClicked();
     }
 }
 
@@ -546,10 +597,10 @@ void SettingsUI::_reset_browser_menu_clicked_cb(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        ItemData* id = static_cast<ItemData*>(data);
-        id->settingsUI->resetItemsLayoutContent();
-        id->settingsUI->m_actionBar = id->settingsUI->createBackActionBar(id->settingsUI->m_settings_layout);
-        id->settingsUI->m_subpage_layout = id->settingsUI->createRemoveBrowserDataMobilePage(id->settingsUI->m_settings_layout);
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetItemsLayoutContent();
+        self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+        self->m_subpage_layout = self->createRemoveBrowserDataMobilePage(self->m_settings_layout);
     }
 }
 
