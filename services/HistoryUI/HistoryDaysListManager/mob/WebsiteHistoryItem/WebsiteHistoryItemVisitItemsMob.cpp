@@ -21,6 +21,8 @@
 namespace tizen_browser {
 namespace base_ui {
 
+boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
+WebsiteHistoryItemVisitItemsMob::signalButtonClicked;
 WebsiteHistoryItemVisitItemsMob::WebsiteHistoryItemVisitItemsMob(
         const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems)
     : m_eflObjectsDeleted(nullptr)
@@ -64,6 +66,7 @@ Evas_Object* WebsiteHistoryItemVisitItemsMob::init(Evas_Object* parent,
     evas_object_show(m_boxMainVertical);
     evas_object_show(m_layoutMain);
 
+    initCallbacks();
     return m_layoutMain;
 }
 
@@ -92,11 +95,34 @@ WebsiteHistoryItemVisitItemsMob::createLayoutVisitItem(
     elm_object_part_text_set(lay, "textTime",
             "00:00 AM");
 
+    Evas_Object* buttonSelect = elm_button_add(parent);
+    elm_object_part_content_set(lay, "buttonSelect", buttonSelect);
+    evas_object_color_set(buttonSelect, 0, 0, 0, 0);
+    elm_object_style_set(buttonSelect, "invisible_button");
+
     evas_object_show(lay);
 
     WebsiteHistoryItemVisitItemsMob::LayoutVisitItemObjects ret;
     ret.layout = lay;
+    ret.buttonSelect = buttonSelect;
     return ret;
+}
+
+void WebsiteHistoryItemVisitItemsMob::initCallbacks()
+{
+    for (auto& websiteVisitItem : m_websiteVisitItems)
+        evas_object_smart_callback_add(
+                websiteVisitItem.layoutVisitItemObjects.buttonSelect, "clicked",
+                _buttonSelectClicked, &websiteVisitItem);
+}
+
+void WebsiteHistoryItemVisitItemsMob::_buttonSelectClicked(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    if (!data)
+        return;
+    VisitItemObjects* visitItemObject = static_cast<VisitItemObjects*>(data);
+    signalButtonClicked((*visitItemObject).websiteVisitItemData);
 }
 
 }

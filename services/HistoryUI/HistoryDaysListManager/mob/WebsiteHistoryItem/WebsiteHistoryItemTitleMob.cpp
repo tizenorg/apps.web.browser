@@ -21,6 +21,8 @@
 namespace tizen_browser {
 namespace base_ui {
 
+boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
+WebsiteHistoryItemTitleMob::signalButtonClicked;
 WebsiteHistoryItemTitleMob::WebsiteHistoryItemTitleMob(
         WebsiteHistoryItemDataPtr websiteHistoryItemData)
     : m_websiteHistoryItemData(websiteHistoryItemData)
@@ -47,6 +49,11 @@ Evas_Object* WebsiteHistoryItemTitleMob::init(Evas_Object* parent,
     elm_object_part_content_set(m_layoutMain, "boxMainHorizontal",
             m_boxMainHorizontal);
 
+    m_buttonSelect = elm_button_add(parent);
+    elm_object_part_content_set(m_layoutMain, "buttonSelect", m_buttonSelect);
+    evas_object_color_set(m_buttonSelect, 0, 0, 0, 0);
+    elm_object_style_set(m_buttonSelect, "invisible_button");
+
     Evas_Object* layoutIcon = createLayoutIcon(parent, edjeFilePath);
     Evas_Object* layoutSummary = createLayoutSummary(parent, edjeFilePath);
     elm_box_pack_end(m_boxMainHorizontal, layoutIcon);
@@ -56,7 +63,24 @@ Evas_Object* WebsiteHistoryItemTitleMob::init(Evas_Object* parent,
     evas_object_show(layoutSummary);
     evas_object_show(m_layoutMain);
 
+    initCallbacks();
     return m_layoutMain;
+}
+
+void WebsiteHistoryItemTitleMob::initCallbacks()
+{
+    evas_object_smart_callback_add(m_buttonSelect, "clicked",
+            _buttonSelectClicked, &m_websiteHistoryItemData);
+}
+
+void WebsiteHistoryItemTitleMob::_buttonSelectClicked(void* data,
+        Evas_Object* /*obj*/, void* /*event_info*/)
+{
+    if (!data)
+        return;
+    WebsiteHistoryItemDataPtr* websiteHistoryItemData =
+            static_cast<WebsiteHistoryItemDataPtr*>(data);
+    signalButtonClicked(*websiteHistoryItemData);
 }
 
 Evas_Object* WebsiteHistoryItemTitleMob::createLayoutIcon(Evas_Object* parent,
@@ -65,10 +89,10 @@ Evas_Object* WebsiteHistoryItemTitleMob::createLayoutIcon(Evas_Object* parent,
     Evas_Object* layout = elm_layout_add(parent);
     elm_layout_file_set(layout, edjeFilePath.c_str(), "layoutItemIcon");
 
-    m_imageClear = elm_image_add(parent);
-    elm_image_file_set(m_imageClear, edjeFilePath.c_str(), "groupImageFaviconMask");
+    m_imageIcon = elm_image_add(parent);
+    elm_image_file_set(m_imageIcon, edjeFilePath.c_str(), "groupImageFaviconMask");
     elm_object_part_content_set(layout, "swallowIconMask",
-            m_imageClear);
+            m_imageIcon);
 
     return layout;
 }
