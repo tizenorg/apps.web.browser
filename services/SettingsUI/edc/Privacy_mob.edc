@@ -74,9 +74,9 @@ collections
             TEXT_WITH_CHBOX("form_data",  "head_bg", "Remember form data");
             TEXT_WITH_CHBOX("passwords",  "form_data_spacer", "Remember passwords");
 
-            SETTINGS_LINE("line1", "head_bg")
-            SETTINGS_LINE("line2", "form_data_spacer")
-            SETTINGS_LINE("line3", "passwords_spacer")
+            SETTINGS_LINE_AFTER("line1", "head_bg")
+            SETTINGS_LINE_AFTER("line2", "form_data_spacer")
+            SETTINGS_LINE_AFTER("line3", "passwords_spacer")
         }
     }
 }
