@@ -1,9 +1,7 @@
 #include "../../../core/Tools/edc/InvisibleButton.edc"
+#include "../../SettingsUI/edc/custom_check_mob.edc"
 
 #define DEVELOPMENT 0
-
-#define CONTENT_AREA_GRID_SPACER_X 32 //do programu 33/32
-#define CONTENT_AREA_GRID_SPACER_Y 40 //do programu 39/40 w zaleznosci od landscape/vertical.
 
 #define LAYOUT_TITLE_HEIGHT 108
 #define TITLE_AREA_OFFSET_X 32
@@ -1391,11 +1389,11 @@ collections {
     group {
         name: "elm/gengrid/item/grid_bookmark_item/default";
         data.item: "texts" "page_title";
-        data.item: "contents" "elm.thumbnail elm.thumbButton";
-        images {
-            image: "check_box_off.png" COMP;
-            image: "check_box_on.png" COMP;
-        }
+        data.item: "contents" "elm.thumbnail elm.thumbButton remove_checkbox_swallow";
+//        images {
+//            image: "check_box_off.png" COMP;
+//            image: "check_box_on.png" COMP;
+//        }
         parts {
             part { name: "bg_spacer";
                    type: RECT;
@@ -1577,8 +1575,8 @@ collections {
                                       }
                                }
                  }
-            part { name: "remove_checkbox_image";
-                   type: IMAGE;
+            part { name: "remove_checkbox_swallow";
+                   type: SWALLOW;
                    scale: 1;
                    description { state: "default" 0.0;
                                  align: 1.0 0.0;
@@ -1594,15 +1592,9 @@ collections {
                                      to: "remove_checkbox_spacer_2";
                                  }
                                }
-                   description { state: "unselected" 0.0;
+                   description { state: "visible" 0.0;
                                  inherit: "default";
                                  visible: 1;
-                                 image.normal: "check_box_off.png";
-                               }
-                   description { state: "selected" 0.0;
-                                 inherit: "default";
-                                 visible: 1;
-                                 image.normal: "check_box_on.png";
                                }
                  }
         programs {
@@ -1611,21 +1603,14 @@ collections {
                 source: "ui";
                 signal: "check_box_invisible";
                 action: STATE_SET "default" 0.0;
-                target: "remove_checkbox_image";
+                target: "remove_checkbox_swallow";
             }
             program {
-                name: "check_box_click";
+                name: "check_box_visible";
                 source: "ui";
-                signal: "check_box_click";
-                script {
-                    new st[31];
-                    new Float:vl
-                    get_state(PART:"remove_checkbox_image", st, 30, vl)
-                    if(strcmp(st, "unselected") == 0)
-                        set_state(PART:"remove_checkbox_image", "selected", 0.0);
-                    else
-                        set_state(PART:"remove_checkbox_image", "unselected", 0.0);
-                }
+                signal: "check_box_visible";
+                action: STATE_SET "visible" 0.0;
+                target: "remove_checkbox_swallow";
             }
         }
     }
