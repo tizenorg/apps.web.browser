@@ -102,6 +102,7 @@ private:
 #if !PROFILE_MOBILE
     static void _category_btn_mouse_in(void* data, Evas_Object* obj, void* event_info);
     static void _category_btn_mouse_out(void* data, Evas_Object* obj, void* event_info);
+    static void _bookmark_btn_show(void* data, Evas* e, Evas_Object* obj, void* event_info);
 #endif
 
     Evas_Object *m_parent;

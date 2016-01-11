@@ -5,6 +5,18 @@ collections{
         name: "category_menu";
         parts {
             part {
+                name: "spacer";
+                scale: 1;
+                type: SPACER;
+                description {
+                    state: "default" 0.0;
+                    min: 0 58;
+                    max: -1 58;
+                    fixed: 0 1;
+                    align: 0.0 0.0;
+                }
+            }
+            part {
                 name: "bg";
                 scale: 1;
                 type: RECT;
@@ -17,6 +29,11 @@ collections{
                     max: 694 64;
                     fixed: 1 1;
                     color: 244 244 244 255;
+                    align: 0.5 0.0;
+                    rel1 {
+                        relative: 0 1;
+                        to: "spacer";
+                    }
                 }
             }
             part {
