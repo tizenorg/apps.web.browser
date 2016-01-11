@@ -83,7 +83,8 @@ private:
 #if PROFILE_MOBILE
     void resetContent();
     void createMenuDetails();
-    void resetRemovalMode(bool clear = true);
+    void updateGengridItems();
+    void resetRemovalMode();
     static void _more_button_clicked(void *data, Evas_Object *, void *);
     static void _menu_bg_button_clicked(void *data, Evas_Object *, void *);
     static void _edit_button_clicked(void *data, Evas_Object *, void *);
@@ -107,8 +108,8 @@ private:
 #if !PROFILE_MOBILE
     Evas_Object *m_bottom_content;
 #else
-    std::map<std::string, Elm_Object_Item*> m_map_bookmark;
-    std::map<std::string, bool> m_map_delete;
+    std::map<unsigned int, Elm_Object_Item*> m_map_bookmark;
+    std::map<unsigned int, bool> m_map_delete;
 
     Evas_Object *m_more_button;
     Evas_Object *m_menu_bg_button;
