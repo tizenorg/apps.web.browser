@@ -27,7 +27,7 @@
 #include <boost/concept_check.hpp>
 #include <vector>
 #include <AbstractMainWindow.h>
-
+#include "app_i18n.h"
 #include "BookmarkDetailsUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -613,7 +613,6 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
     elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
 #if PROFILE_MOBILE
     elm_box_unpack_all(m_menu);
-    //TODO: missing translation
     if (m_folder_name != _("IDS_BR_BODY_ALL") && m_folder_name != "Mobile") {
         evas_object_show(m_edit_button);
         evas_object_show(m_delete_button);

@@ -131,6 +131,7 @@ collections {
                     text {
                         style: "fop-entry-style-unselected";
                         min: 0 1;
+                        size: 28;
                     }
                 }
                 description {

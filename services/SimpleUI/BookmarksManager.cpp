@@ -20,6 +20,7 @@
 #include <iostream>
 #include <Eina.h>
 #include <Evas.h>
+#include "app_i18n.h"
 #include "BrowserLogger.h"
 
 namespace tizen_browser
@@ -175,7 +176,10 @@ Evas_Object* BookmarksManager::gridOptionLabelGet(void* data, Evas_Object* obj, 
     if(!strcmp(part, "optionValue")){
         if(bookmarks_managerItem->action->isEnabled() && bookmarks_managerItem->action->isCheckable()){
             Evas_Object *label = elm_label_add(obj);
-            elm_object_text_set(label, (bookmarks_managerItem->action->isChecked() ? "On" :"Off" ));
+            if (bookmarks_managerItem->action->isChecked())
+                elm_object_translatable_text_set(label, "IDS_BR_BODY_ON");
+            else
+                elm_object_translatable_text_set(label, "IDS_BR_BODY_OFF");
             elm_object_style_set(label, "bookmarks_manager_label");
             return label;
         }
@@ -293,8 +297,8 @@ void BookmarksManager::showInternalPopup(Elm_Object_Item* listItem)
     Evas_Object * radioOff = elm_radio_add(m_internalPopup);
 
 
-    elm_object_text_set(radioOn, "On");
-    elm_object_text_set(radioOff, "Off");
+    elm_object_translatable_text_set(radioOn, "IDS_BR_BODY_ON");
+    elm_object_translatable_text_set(radioOff, "IDS_BR_BODY_OFF");
 
     elm_object_style_set(radioOn, "bookmarks_manager_radio");
     elm_object_style_set(radioOff, "bookmarks_manager_radio");
