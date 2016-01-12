@@ -76,6 +76,7 @@ public:
     void setURL(const std::string& title);
     void setFolder(unsigned int folder_id, const std::string& folder_name);
     void setSpecialFolderId(unsigned int special);
+    void resetContent();
 #else
     static BookmarkFlowUI* createPopup(Evas_Object* parent);
     void show();
@@ -91,6 +92,9 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
     boost::signals2::signal<void ()> addFolder;
+#if PROFILE_MOBILE
+    boost::signals2::signal<bool ()> isRotated;
+#endif
 
 private:
     typedef struct
@@ -105,7 +109,7 @@ private:
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
-    Evas_Object *m_titleArea;
+    Evas_Object *m_title_area;
     std::string m_edjFilePath;
     bool m_state;
 
@@ -127,13 +131,17 @@ private:
     static void _remove_clicked(void* data, Evas_Object*, void*);
     static void _listCustomFolderClicked(void* data, Evas_Object*, void*);
 
-    Evas_Object *m_contentsArea;
-    Evas_Object *m_removeButton;
+    Evas_Object *m_contents_area;
+    Evas_Object *m_remove_button;
     Evas_Object *m_entry;
-    Evas_Object *m_saveButton;
-    Evas_Object *m_cancelButton;
-    Evas_Object *m_inputCancelButton;
-    Evas_Object *m_folderButton;
+    Evas_Object *m_save_box;
+    Evas_Object *m_save;
+    Evas_Object *m_save_button;
+    Evas_Object *m_cancel_box;
+    Evas_Object *m_cancel;
+    Evas_Object *m_cancel_button;
+    Evas_Object *m_input_cancel_button;
+    Evas_Object *m_folder_button;
     Evas_Object *m_folder_dropdown_button;
     Evas_Object *m_genlist;
 
@@ -142,7 +150,11 @@ private:
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
     unsigned int m_special_folder_id;
-    const unsigned int m_max_items = 4;
+    unsigned int m_max_items;
+    const unsigned int MAX_ITEMS = 4;
+    const unsigned int MAX_ITEMS_LANDSCAPE = 2;
+    const unsigned int GENLIST_HEIGHT = 384;
+    const unsigned int GENLIST_HEIGHT_LANDSCAPE = 192;
 #else
     void createGengridItemClasses();
     void createGengrid();

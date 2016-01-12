@@ -41,15 +41,16 @@ EXPORT_SERVICE(BookmarkFlowUI, BOOKMARK_FLOW_SERVICE)
 BookmarkFlowUI::BookmarkFlowUI()
     : m_parent(nullptr)
     , m_layout(nullptr)
-    , m_titleArea(nullptr)
+    , m_title_area(nullptr)
 #if PROFILE_MOBILE
-    , m_contentsArea(nullptr)
-    , m_removeButton(nullptr)
+    , m_contents_area(nullptr)
+    , m_remove_button(nullptr)
     , m_entry(nullptr)
-    , m_saveButton(nullptr)
-    , m_cancelButton(nullptr)
-    , m_inputCancelButton(nullptr)
-    , m_folderButton(nullptr)
+    , m_save_button(nullptr)
+    , m_cancel_button(nullptr)
+    , m_input_cancel_button(nullptr)
+    , m_folder_button(nullptr)
+    , m_max_items(MAX_ITEMS_LANDSCAPE)
 #else
     , m_gengrid(nullptr)
     , m_bg(nullptr)
@@ -71,22 +72,26 @@ BookmarkFlowUI::~BookmarkFlowUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
 #if PROFILE_MOBILE
-    evas_object_smart_callback_del(m_saveButton, "clicked", _save_clicked);
-    evas_object_smart_callback_del(m_cancelButton, "clicked", _cancel_clicked);
+    evas_object_smart_callback_del(m_save_button, "clicked", _save_clicked);
+    evas_object_smart_callback_del(m_cancel_button, "clicked", _cancel_clicked);
     evas_object_smart_callback_del(m_entry, "focused", _entry_focused);
     evas_object_smart_callback_del(m_entry, "unfocused", _entry_unfocused);
     evas_object_smart_callback_del(m_entry, "changed,user",_entry_changed);
-    evas_object_smart_callback_del(m_inputCancelButton, "clicked", _inputCancel_clicked);
-    evas_object_smart_callback_del(m_folderButton, "clicked", _folder_clicked);
-    evas_object_smart_callback_del(m_removeButton, "clicked", _remove_clicked);
+    evas_object_smart_callback_del(m_input_cancel_button, "clicked", _inputCancel_clicked);
+    evas_object_smart_callback_del(m_folder_button, "clicked", _folder_clicked);
+    evas_object_smart_callback_del(m_remove_button, "clicked", _remove_clicked);
 
-    evas_object_del(m_removeButton);
+    evas_object_del(m_remove_button);
     evas_object_del(m_entry);
-    evas_object_del(m_saveButton);
-    evas_object_del(m_cancelButton);
-    evas_object_del(m_inputCancelButton);
-    evas_object_del(m_folderButton);
-    evas_object_del(m_contentsArea);
+    evas_object_del(m_save_button);
+    evas_object_del(m_save);
+    evas_object_del(m_save_box);
+    evas_object_del(m_cancel_button);
+    evas_object_del(m_cancel);
+    evas_object_del(m_cancel_box);
+    evas_object_del(m_input_cancel_button);
+    evas_object_del(m_folder_button);
+    evas_object_del(m_contents_area);
 #else
     if(m_folder_new_item_class)
         elm_gengrid_item_class_free(m_folder_new_item_class);
@@ -99,7 +104,7 @@ BookmarkFlowUI::~BookmarkFlowUI()
     popupDismissed.disconnect_all_slots();
     popupShown.disconnect_all_slots();
 #endif
-    evas_object_del(m_titleArea);
+    evas_object_del(m_title_area);
     evas_object_del(m_layout);
 
     closeBookmarkFlowClicked.disconnect_all_slots();
@@ -144,7 +149,7 @@ void BookmarkFlowUI::addCustomFolders(services::SharedBookmarkFolderList folders
     }
 
 #if PROFILE_MOBILE
-    elm_object_part_content_set(m_contentsArea, "dropdown_swallow", m_genlist);
+    elm_object_part_content_set(m_contents_area, "dropdown_swallow", m_genlist);
     evas_object_show(m_genlist);
     elm_object_item_signal_emit(elm_genlist_last_item_get(m_genlist), "invisible", "ui");
 #else
@@ -164,6 +169,7 @@ void BookmarkFlowUI::showUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_signal_emit(m_parent, "show_popup", "ui");
     evas_object_show(m_layout);
+    resetContent();
 }
 
 void BookmarkFlowUI::hideUI()
@@ -172,8 +178,8 @@ void BookmarkFlowUI::hideUI()
     elm_object_signal_emit(m_parent, "hide_popup", "ui");
     evas_object_hide(m_layout);
     evas_object_hide(m_genlist);
-    elm_object_signal_emit(m_contentsArea, "dropdown_swallow_hide", "ui");
-    evas_object_hide(elm_object_part_content_get(m_contentsArea, "dropdown_swallow"));
+    elm_object_signal_emit(m_contents_area, "dropdown_swallow_hide", "ui");
+    evas_object_hide(elm_object_part_content_get(m_contents_area, "dropdown_swallow"));
     elm_genlist_clear(m_genlist);
     m_map_folders.clear();
 }
@@ -183,14 +189,14 @@ void BookmarkFlowUI::setState(bool state)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_state = state;
     if (m_state) {
-        elm_object_signal_emit(m_contentsArea, "show_remove", "ui");
-        elm_object_signal_emit(m_titleArea, "title_text_edit", "ui");
-        evas_object_show(m_removeButton);
+        elm_object_signal_emit(m_contents_area, "show_remove", "ui");
+        elm_object_translatable_part_text_set(m_title_area, "title_area_text", _("IDS_BR_HEADER_EDIT_BOOKMARK"));
+        evas_object_show(m_remove_button);
     }
     else {
-        elm_object_signal_emit(m_contentsArea, "hide_remove", "ui");
-        elm_object_signal_emit(m_titleArea, "title_text_add", "ui");
-        evas_object_hide(m_removeButton);
+        elm_object_signal_emit(m_contents_area, "hide_remove", "ui");
+        elm_object_translatable_part_text_set(m_title_area, "title_area_text", _("IDS_BR_OPT_ADD_BOOKMARK"));
+        evas_object_hide(m_remove_button);
     }
 }
 
@@ -200,19 +206,19 @@ void BookmarkFlowUI::setTitle(const std::string& title)
     elm_object_part_text_set(m_entry, "elm.text", title.c_str());
 
     if (title.empty()) {
-        elm_object_disabled_set(m_saveButton, EINA_TRUE);
-        elm_object_signal_emit(m_titleArea, "save_dissabled", "ui");
+        elm_object_disabled_set(m_save_button, EINA_TRUE);
+        elm_object_signal_emit(m_title_area, "save_dissabled", "ui");
     }
     else {
-        elm_object_disabled_set(m_saveButton, EINA_FALSE);
-        elm_object_signal_emit(m_titleArea, "save_enabled", "ui");
+        elm_object_disabled_set(m_save_button, EINA_FALSE);
+        elm_object_signal_emit(m_title_area, "save_enabled", "ui");
     }
 }
 
 void BookmarkFlowUI::setURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
-    elm_object_part_text_set(m_contentsArea, "site_url_text", url.c_str());
+    elm_object_part_text_set(m_contents_area, "site_url_text", url.c_str());
 }
 
 void BookmarkFlowUI::setFolder(unsigned int folder_id, const std::string& folder_name)
@@ -220,15 +226,40 @@ void BookmarkFlowUI::setFolder(unsigned int folder_id, const std::string& folder
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_genlist_item_item_class_update(m_map_folders[m_folder_id], m_folder_custom_item_class);
     m_folder_id = folder_id;
-    elm_object_signal_emit(m_contentsArea, (m_folder_id == m_special_folder_id)
+    elm_object_signal_emit(m_contents_area, (m_folder_id == m_special_folder_id)
                            ? "folder_icon_special" : "folder_icon_normal", "ui");
-    elm_object_part_text_set(m_contentsArea, "dropdown_text", folder_name.c_str());
+    elm_object_part_text_set(m_contents_area, "dropdown_text", folder_name.c_str());
     elm_genlist_item_item_class_update(m_map_folders[m_folder_id], m_folder_selected_item_class);
 }
 
 void BookmarkFlowUI::setSpecialFolderId(unsigned int special)
 {
     m_special_folder_id = special;
+}
+
+void BookmarkFlowUI::resetContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    boost::optional<bool> rotated = isRotated();
+    if (rotated) {
+        if (*rotated) {
+            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT_LANDSCAPE*efl_scale);
+            m_max_items = MAX_ITEMS_LANDSCAPE;
+        } else {
+            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT*efl_scale);
+            m_max_items = MAX_ITEMS;
+        }
+        if (evas_object_visible_get(m_genlist) == EINA_TRUE) {
+            unsigned int count = elm_genlist_items_count(m_genlist);
+            if (count > m_max_items)
+                count = m_max_items;
+            elm_object_signal_emit(m_contents_area, (boost::format("%s_%u") % "dropdown_swallow_show" % count).str().c_str(), "ui");
+            evas_object_show(m_genlist);
+            evas_object_show(elm_object_part_content_get(m_contents_area, "dropdown_swallow"));
+        }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
@@ -262,53 +293,55 @@ void BookmarkFlowUI::createContentsArea()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_layout);
 
-    m_contentsArea = elm_layout_add(m_layout);
-    elm_object_part_content_set(m_layout, "contents_area_swallow", m_contentsArea);
-    evas_object_size_hint_weight_set(m_contentsArea, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_contentsArea, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_contentsArea);
+    m_contents_area = elm_layout_add(m_layout);
+    elm_object_part_content_set(m_layout, "contents_area_swallow", m_contents_area);
+    evas_object_size_hint_weight_set(m_contents_area, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_contents_area, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_contents_area);
 
-    elm_layout_file_set(m_contentsArea, m_edjFilePath.c_str(), "contents-area-layout");
+    elm_layout_file_set(m_contents_area, m_edjFilePath.c_str(), "contents-area-layout");
 
-    m_entry = elm_entry_add(m_contentsArea);
+    m_entry = elm_entry_add(m_contents_area);
     elm_object_style_set(m_entry, "title_input_entry");
 
     elm_entry_single_line_set(m_entry, EINA_TRUE);
     elm_entry_scrollable_set(m_entry, EINA_TRUE);
     elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
-    elm_object_part_content_set(m_contentsArea, "title_input_swallow", m_entry);
+    elm_object_part_content_set(m_contents_area, "title_input_swallow", m_entry);
 
     evas_object_smart_callback_add(m_entry, "focused", _entry_focused, this);
     evas_object_smart_callback_add(m_entry, "unfocused", _entry_unfocused, this);
     evas_object_smart_callback_add(m_entry, "changed,user",_entry_changed, this);
 
-    m_inputCancelButton = elm_button_add(m_contentsArea);
-    elm_object_style_set(m_inputCancelButton, "invisible_button");
-    evas_object_smart_callback_add(m_inputCancelButton, "clicked", _inputCancel_clicked, this);
-    evas_object_show(m_inputCancelButton);
+    m_input_cancel_button = elm_button_add(m_contents_area);
+    elm_object_style_set(m_input_cancel_button, "invisible_button");
+    evas_object_smart_callback_add(m_input_cancel_button, "clicked", _inputCancel_clicked, this);
+    evas_object_show(m_input_cancel_button);
 
-    elm_object_part_content_set(m_contentsArea, "input_cancel_click", m_inputCancelButton);
+    elm_object_part_content_set(m_contents_area, "input_cancel_click", m_input_cancel_button);
 
-    m_folderButton = elm_button_add(m_contentsArea);
-    elm_object_style_set(m_folderButton, "invisible_button");
-    evas_object_smart_callback_add(m_folderButton, "clicked", _folder_clicked, this);
-    evas_object_show(m_inputCancelButton);
+    m_folder_button = elm_button_add(m_contents_area);
+    elm_object_style_set(m_folder_button, "invisible_button");
+    evas_object_smart_callback_add(m_folder_button, "clicked", _folder_clicked, this);
+    evas_object_show(m_input_cancel_button);
 
-    elm_object_part_content_set(m_contentsArea, "folder_button_click", m_folderButton);
+    elm_object_part_content_set(m_contents_area, "folder_button_click", m_folder_button);
 
-    m_folder_dropdown_button = elm_button_add(m_contentsArea);
+    m_folder_dropdown_button = elm_button_add(m_contents_area);
     elm_object_style_set(m_folder_dropdown_button, "invisible_button");
     evas_object_smart_callback_add(m_folder_dropdown_button, "clicked", _folder_dropdown_clicked, this);
     evas_object_show(m_folder_dropdown_button);
 
-    elm_object_part_content_set(m_contentsArea, "folder_dropdown_click", m_folder_dropdown_button);
+    elm_object_part_content_set(m_contents_area, "folder_dropdown_click", m_folder_dropdown_button);
 
-    m_removeButton = elm_button_add(m_contentsArea);
-    elm_object_style_set(m_removeButton, "invisible_button");
-    evas_object_smart_callback_add(m_removeButton, "clicked", _remove_clicked, this);
-    evas_object_show(m_removeButton);
+    m_remove_button = elm_button_add(m_contents_area);
+    elm_object_style_set(m_remove_button, "invisible_button");
+    evas_object_smart_callback_add(m_remove_button, "clicked", _remove_clicked, this);
+    evas_object_show(m_remove_button);
 
-    elm_object_part_content_set(m_contentsArea, "remove_click", m_removeButton);
+    elm_object_part_content_set(m_contents_area, "remove_click", m_remove_button);
+
+    elm_object_translatable_part_text_set(m_contents_area, "folder_text", _("IDS_BR_HEADER_FOLDER"));
 }
 
 void BookmarkFlowUI::createGenlistItemClasses()
@@ -332,12 +365,9 @@ void BookmarkFlowUI::createGenlistItemClasses()
 void BookmarkFlowUI::createGenlist()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-    m_genlist = elm_genlist_add(m_contentsArea);
-    elm_object_part_content_set(m_contentsArea, "dropdown_swallow", m_genlist);
+    m_genlist = elm_genlist_add(m_contents_area);
+    elm_object_part_content_set(m_contents_area, "dropdown_swallow", m_genlist);
     elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(m_genlist, 0, 384*efl_scale);
     elm_genlist_homogeneous_set(m_genlist, EINA_FALSE);
     elm_genlist_multi_select_set(m_genlist, EINA_FALSE);
     elm_genlist_select_mode_set(m_genlist, ELM_OBJECT_SELECT_MODE_ALWAYS);
@@ -365,14 +395,14 @@ void BookmarkFlowUI::_listCustomFolderClicked(void *data, Evas_Object *, void *)
         elm_genlist_item_item_class_update(folderData->bookmarkFlowUI->m_map_folders[folderData->bookmarkFlowUI->m_folder_id],
                 folderData->bookmarkFlowUI->m_folder_custom_item_class);
         folderData->bookmarkFlowUI->m_folder_id = folderData->folder_id;
-        elm_object_part_text_set(folderData->bookmarkFlowUI->m_contentsArea,
+        elm_object_part_text_set(folderData->bookmarkFlowUI->m_contents_area,
                                  "dropdown_text", folderData->name.c_str());
-        elm_object_signal_emit(folderData->bookmarkFlowUI->m_contentsArea,
+        elm_object_signal_emit(folderData->bookmarkFlowUI->m_contents_area,
                                (folderData->bookmarkFlowUI->m_folder_id == folderData->bookmarkFlowUI->m_special_folder_id)
                                ? "folder_icon_special" : "folder_icon_normal", "ui");
-        elm_object_signal_emit(folderData->bookmarkFlowUI->m_contentsArea, "dropdown_swallow_hide", "ui");
+        elm_object_signal_emit(folderData->bookmarkFlowUI->m_contents_area, "dropdown_swallow_hide", "ui");
         evas_object_hide(folderData->bookmarkFlowUI->m_genlist);
-        evas_object_hide(elm_object_part_content_get(folderData->bookmarkFlowUI->m_contentsArea, "dropdown_swallow"));
+        evas_object_hide(elm_object_part_content_get(folderData->bookmarkFlowUI->m_contents_area, "dropdown_swallow"));
         elm_genlist_item_item_class_update(folderData->bookmarkFlowUI->m_map_folders[folderData->bookmarkFlowUI->m_folder_id],
                 folderData->bookmarkFlowUI->m_folder_selected_item_class);
     }
@@ -383,8 +413,8 @@ void BookmarkFlowUI::_entry_focused(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_TRUE);
-        elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_focused", "ui");
+        elm_object_focus_allow_set(bookmarkFlowUI->m_input_cancel_button, EINA_TRUE);
+        elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "entry_focused", "ui");
         elm_object_signal_emit(bookmarkFlowUI->m_entry, "focused", "ui");
     }
 }
@@ -394,8 +424,8 @@ void BookmarkFlowUI::_entry_unfocused(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        elm_object_focus_allow_set(bookmarkFlowUI->m_inputCancelButton, EINA_FALSE);
-        elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "entry_unfocused", "ui");
+        elm_object_focus_allow_set(bookmarkFlowUI->m_input_cancel_button, EINA_FALSE);
+        elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "entry_unfocused", "ui");
         elm_object_signal_emit(bookmarkFlowUI->m_entry, "unfocused", "ui");
     }
 }
@@ -407,11 +437,11 @@ void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         std::string text = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
         if (text.empty()) {
-            elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_TRUE);
-            elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_dissabled", "ui");
+            elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_TRUE);
+            elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_dissabled", "ui");
         } else {
-            elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_FALSE);
-            elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_enabled", "ui");
+            elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_FALSE);
+            elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_enabled", "ui");
         }
     }
 }
@@ -422,8 +452,8 @@ void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_part_text_set(bookmarkFlowUI->m_entry, "elm.text", "");
-        elm_object_disabled_set(bookmarkFlowUI->m_saveButton, EINA_TRUE);
-        elm_object_signal_emit(bookmarkFlowUI->m_titleArea, "save_dissabled", "ui");
+        elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_TRUE);
+        elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_dissabled", "ui");
     }
 }
 
@@ -447,13 +477,13 @@ void BookmarkFlowUI::_folder_dropdown_clicked(void* data, Evas_Object*, void*)
             unsigned int count = elm_genlist_items_count(bookmarkFlowUI->m_genlist);
             if (count > bookmarkFlowUI->m_max_items)
                 count = bookmarkFlowUI->m_max_items;
-            elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, (boost::format("%s_%u") % "dropdown_swallow_show" % count).str().c_str(), "ui");
+            elm_object_signal_emit(bookmarkFlowUI->m_contents_area, (boost::format("%s_%u") % "dropdown_swallow_show" % count).str().c_str(), "ui");
             evas_object_show(bookmarkFlowUI->m_genlist);
-            evas_object_show(elm_object_part_content_get(bookmarkFlowUI->m_contentsArea,"dropdown_swallow"));
+            evas_object_show(elm_object_part_content_get(bookmarkFlowUI->m_contents_area,"dropdown_swallow"));
         } else {
-            elm_object_signal_emit(bookmarkFlowUI->m_contentsArea, "dropdown_swallow_hide", "ui");
+            elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "dropdown_swallow_hide", "ui");
             evas_object_hide(bookmarkFlowUI->m_genlist);
-            evas_object_hide(elm_object_part_content_get(bookmarkFlowUI->m_contentsArea, "dropdown_swallow"));
+            evas_object_hide(elm_object_part_content_get(bookmarkFlowUI->m_contents_area, "dropdown_swallow"));
         }
     }
 }
@@ -637,27 +667,51 @@ void BookmarkFlowUI::createTitleArea()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_layout);
 
-    m_titleArea = elm_layout_add(m_layout);
-    elm_object_part_content_set(m_layout, "title_area_swallow", m_titleArea);
-    evas_object_size_hint_weight_set(m_titleArea, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_titleArea, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(m_titleArea);
+    m_title_area = elm_layout_add(m_layout);
+    elm_object_part_content_set(m_layout, "title_area_swallow", m_title_area);
+    evas_object_size_hint_weight_set(m_title_area, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_title_area, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_title_area);
 
-    elm_layout_file_set(m_titleArea, m_edjFilePath.c_str(), "title-area-layout");
+    elm_layout_file_set(m_title_area, m_edjFilePath.c_str(), "title-area-layout");
 #if PROFILE_MOBILE
-    m_saveButton = elm_button_add(m_titleArea);
-    elm_object_style_set(m_saveButton, "invisible_button");
-    evas_object_smart_callback_add(m_saveButton, "clicked", _save_clicked, this);
-    evas_object_show(m_saveButton);
 
-    elm_object_part_content_set(m_titleArea, "save_click", m_saveButton);
+    m_save_box = elm_box_add(m_title_area);
+    m_save = elm_layout_add(m_save_box);
+    elm_layout_file_set(m_save, m_edjFilePath.c_str(), "button_with_background");
+    evas_object_size_hint_weight_set(m_save, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_save, 1, 0);
+    elm_object_translatable_text_set(m_save, _("IDS_BR_SK_SAVE")); //TODO: ADD UPPERCASE SAVE
+    elm_box_pack_end(m_save_box, m_save);
+    evas_object_show(m_save);
 
-    m_cancelButton = elm_button_add(m_titleArea);
-    elm_object_style_set(m_cancelButton, "invisible_button");
-    evas_object_smart_callback_add(m_cancelButton, "clicked", _cancel_clicked, this);
-    evas_object_show(m_cancelButton);
+    m_save_button = elm_button_add(m_save);
+    elm_object_style_set(m_save_button, "invisible_button");
+    evas_object_smart_callback_add(m_save_button, "clicked", _save_clicked, this);
+    elm_object_part_content_set(m_save, "button_click", m_save_button);
+    evas_object_show(m_save_button);
 
-    elm_object_part_content_set(m_titleArea, "cancel_click", m_cancelButton);
+    elm_object_part_content_set(m_title_area, "save_swallow", m_save_box);
+    evas_object_show(m_save_box);
+
+
+    m_cancel_box = elm_box_add(m_title_area);
+    m_cancel = elm_layout_add(m_cancel_box);
+    elm_layout_file_set(m_cancel, m_edjFilePath.c_str(), "button_with_background");
+    evas_object_size_hint_weight_set(m_cancel, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_cancel, 0, 0);
+    elm_object_translatable_text_set(m_cancel, _("IDS_TPLATFORM_ACBUTTON_CANCEL_ABB"));
+    elm_box_pack_end(m_cancel_box, m_cancel);
+    evas_object_show(m_cancel);
+
+    m_cancel_button = elm_button_add(m_cancel);
+    elm_object_style_set(m_cancel_button, "invisible_button");
+    evas_object_smart_callback_add(m_cancel_button, "clicked", _cancel_clicked, this);
+    elm_object_part_content_set(m_cancel, "button_click", m_cancel_button);
+    evas_object_show(m_cancel_button);
+
+    elm_object_part_content_set(m_title_area, "cancel_swallow", m_cancel_box);
+    evas_object_show(m_cancel_box);
 #endif
 }
 
