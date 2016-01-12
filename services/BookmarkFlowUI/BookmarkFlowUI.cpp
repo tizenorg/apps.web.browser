@@ -50,6 +50,7 @@ BookmarkFlowUI::BookmarkFlowUI()
     , m_cancelButton(nullptr)
     , m_inputCancelButton(nullptr)
     , m_folderButton(nullptr)
+    , m_max_items(MAX_ITEMS_LANDSCAPE)
 #else
     , m_gengrid(nullptr)
     , m_bg(nullptr)
@@ -164,6 +165,7 @@ void BookmarkFlowUI::showUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_signal_emit(m_parent, "show_popup", "ui");
     evas_object_show(m_layout);
+    resetContent();
 }
 
 void BookmarkFlowUI::hideUI()
@@ -229,6 +231,31 @@ void BookmarkFlowUI::setFolder(unsigned int folder_id, const std::string& folder
 void BookmarkFlowUI::setSpecialFolderId(unsigned int special)
 {
     m_special_folder_id = special;
+}
+
+void BookmarkFlowUI::resetContent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    boost::optional<bool> rotated = isRotated();
+    if (rotated) {
+        if (*rotated) {
+            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT_LANDSCAPE*efl_scale);
+            m_max_items = MAX_ITEMS_LANDSCAPE;
+        } else {
+            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT*efl_scale);
+            m_max_items = MAX_ITEMS;
+        }
+        if (evas_object_visible_get(m_genlist) == EINA_TRUE) {
+            unsigned int count = elm_genlist_items_count(m_genlist);
+            if (count > m_max_items)
+                count = m_max_items;
+            elm_object_signal_emit(m_contentsArea, (boost::format("%s_%u") % "dropdown_swallow_show" % count).str().c_str(), "ui");
+            evas_object_show(m_genlist);
+            evas_object_show(elm_object_part_content_get(m_contentsArea, "dropdown_swallow"));
+        }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
@@ -332,12 +359,9 @@ void BookmarkFlowUI::createGenlistItemClasses()
 void BookmarkFlowUI::createGenlist()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     m_genlist = elm_genlist_add(m_contentsArea);
     elm_object_part_content_set(m_contentsArea, "dropdown_swallow", m_genlist);
     elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_page_size_set(m_genlist, 0, 384*efl_scale);
     elm_genlist_homogeneous_set(m_genlist, EINA_FALSE);
     elm_genlist_multi_select_set(m_genlist, EINA_FALSE);
     elm_genlist_select_mode_set(m_genlist, ELM_OBJECT_SELECT_MODE_ALWAYS);

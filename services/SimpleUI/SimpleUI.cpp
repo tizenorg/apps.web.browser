@@ -355,6 +355,7 @@ void SimpleUI::connectUISignals()
     m_bookmarkFlowUI->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
     m_bookmarkFlowUI->editBookmark.connect(boost::bind(&SimpleUI::editBookmark, this, _1));
     m_bookmarkFlowUI->removeBookmark.connect(boost::bind(&SimpleUI::deleteBookmark, this));
+    m_bookmarkFlowUI->isRotated.connect(boost::bind(&SimpleUI::isRotated, this));
 
     M_ASSERT(m_findOnPageUI.get());
     m_findOnPageUI->closeFindOnPageUIClicked.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
@@ -975,6 +976,7 @@ void SimpleUI::onRotation()
     elm_win_rotation_with_resize_set(main_window, angle);
     m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
     m_moreMenuUI->resetContent();
+    m_bookmarkFlowUI->resetContent();
 }
 //TODO: end of a workaround
 

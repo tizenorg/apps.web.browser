@@ -76,6 +76,7 @@ public:
     void setURL(const std::string& title);
     void setFolder(unsigned int folder_id, const std::string& folder_name);
     void setSpecialFolderId(unsigned int special);
+    void resetContent();
 #else
     static BookmarkFlowUI* createPopup(Evas_Object* parent);
     void show();
@@ -91,6 +92,9 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
     boost::signals2::signal<void ()> addFolder;
+#if PROFILE_MOBILE
+    boost::signals2::signal<bool ()> isRotated;
+#endif
 
 private:
     typedef struct
@@ -142,7 +146,11 @@ private:
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
     unsigned int m_special_folder_id;
-    const unsigned int m_max_items = 4;
+    unsigned int m_max_items;
+    const unsigned int MAX_ITEMS = 4;
+    const unsigned int MAX_ITEMS_LANDSCAPE = 2;
+    const unsigned int GENLIST_HEIGHT = 384;
+    const unsigned int GENLIST_HEIGHT_LANDSCAPE = 192;
 #else
     void createGengridItemClasses();
     void createGengrid();
