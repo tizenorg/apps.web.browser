@@ -19,17 +19,13 @@
 #define FIND_WORD_MAX_COUNT 10000
 #define FIND_ON_PAGE_MAX_TEXT 1000
 #define FIND_ON_PAGE_ENTRY_STYLE "DEFAULT='font_size=30 color=#404040 ellipsis=1'"
-#define BR_STRING_TEXT_FIELD_T "Text field"
-#define BR_STRING_FIND_ON_PAGE "Find on page"
-#define BR_STRING_CLEAR_ALL "Clear all"
-#define BR_STRING_ACCESS_NEXT_BUT "Next"
-#define BR_STRING_ACCESS_PREV_BUT "Previous"
 
 #include <Elementary.h>
 #include <vector>
 #include <string>
 #include <string.h>
 #include <AbstractMainWindow.h>
+#include "app_i18n.h"
 #include "FindOnPageUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -158,10 +154,10 @@ Evas_Object* FindOnPageUI::createFindOnPageUILayout()
     evas_object_smart_callback_add(entry, "activated", __enter_key_cb, this);
     evas_object_smart_callback_add(entry, "changed", __entry_changed_cb, this);
 
-    elm_object_part_text_set(entry, "elm.guide", (std::string("<font_size=28>") + BR_STRING_FIND_ON_PAGE + "</font>").c_str());
+    elm_object_translatable_part_text_set(entry, "elm.guide", "IDS_BR_OPT_FIND_ON_PAGE");
 
     Evas_Object *access = elm_access_object_get(elm_entry_textblock_get(entry));
-    elm_access_info_set(access, ELM_ACCESS_TYPE, BR_STRING_TEXT_FIELD_T);
+    elm_access_info_set(access, ELM_ACCESS_TYPE, _("IDS_BR_BODY_TEXT_FIELD_T_TTS"));
     elm_entry_text_style_user_push(entry, FIND_ON_PAGE_ENTRY_STYLE);
 
     static Elm_Entry_Filter_Limit_Size limit_filter_data;
@@ -174,21 +170,21 @@ Evas_Object* FindOnPageUI::createFindOnPageUILayout()
     // Clear button
     Evas_Object *clear_button = elm_button_add(layout);
     elm_object_style_set(clear_button, "basic_button");
-    elm_access_info_set(clear_button, ELM_ACCESS_INFO, BR_STRING_CLEAR_ALL);
+    elm_access_info_set(clear_button, ELM_ACCESS_INFO, _("IDS_BR_OPT_CLEAR_ALL"));
     evas_object_smart_callback_add(clear_button, "clicked", __clear_clicked_cb, this);
     elm_object_part_content_set(layout, "clear_button_click", clear_button);
 
     // Down button.
     Evas_Object *down_button = elm_button_add(layout);
     elm_object_style_set(down_button, "basic_button");
-    elm_access_info_set(down_button, ELM_ACCESS_INFO, BR_STRING_ACCESS_NEXT_BUT);
+    elm_access_info_set(down_button, ELM_ACCESS_INFO, _("IDS_BR_SK_NEXT"));
     evas_object_smart_callback_add(down_button, "clicked", __down_clicked_cb, this);
     elm_object_part_content_set(layout, "down_button_click", down_button);
 
     // Up button.
     Evas_Object *up_button = elm_button_add(layout);
     elm_object_style_set(up_button, "basic_button");
-    elm_access_info_set(up_button, ELM_ACCESS_INFO, BR_STRING_ACCESS_PREV_BUT);
+    elm_access_info_set(up_button, ELM_ACCESS_INFO, _("IDS_BR_SK_PREVIOUS"));
     evas_object_smart_callback_add(up_button, "clicked", __up_clicked_cb, this);
     elm_object_part_content_set(layout, "up_button_click", up_button);
 

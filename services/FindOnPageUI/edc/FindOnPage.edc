@@ -100,11 +100,11 @@ collections {
         styles {
             style {
                 name: "fop-entry-style-unselected";
-                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#969696";
+                base: "font=Sans:style=SVD_Medium font_size="28" wrap=none color=#969696";
             }
             style {
                 name: "fop-entry-style-selected";
-                base: "font=Sans:style=SVD_Medium font_size="42" wrap=none ellipsis="0.0" color=#4088d3";
+                base: "font=Sans:style=SVD_Medium font_size="28" wrap=none ellipsis="0.0" color=#4088d3";
             }
         }
         parts {

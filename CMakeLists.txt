@@ -83,7 +83,9 @@ if(TIZEN_BUILD)
    if (${PROFILE} MATCHES "mobile")
     SET(tizen_pkgs_list
         ${tizen_pkgs_list}
-        capi-system-device )
+        capi-system-device
+        capi-system-system-settings
+    )
     endif (${PROFILE} MATCHES "mobile")
 
     pkg_check_modules(tizen_pkgs REQUIRED "${tizen_pkgs_list}")

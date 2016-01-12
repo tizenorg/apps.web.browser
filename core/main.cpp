@@ -23,6 +23,10 @@
 #include <stdexcept>
 #include <app.h>
 #include <ewk_chromium.h>
+#if PROFILE_MOBILE
+#include <system_settings.h>
+#include <app_common.h>
+#endif
 
 // for tests...
 #include "Lifecycle.h"
@@ -144,6 +148,24 @@ static void app_resume(void *){
     mainUi->resume();
 }
 
+#if PROFILE_MOBILE
+static void app_language_changed(app_event_info*, void *)
+{
+   BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+   char *language;
+   // Retrieve the current system language
+   system_settings_get_value_string(SYSTEM_SETTINGS_KEY_LOCALE_LANGUAGE, &language);
+   if (language) {
+        BROWSER_LOGD("[%s:%d] new lang: %s", __PRETTY_FUNCTION__, __LINE__, language);
+        // Set the language in elementary
+        elm_language_set(language);
+        free(language);
+   } else {
+        BROWSER_LOGD("[%s:%d] Warning, failed to set new language!", __PRETTY_FUNCTION__, __LINE__);
+   }
+}
+#endif
+
 int main(int argc, char* argv[])try
 {
     BEGIN()
@@ -167,9 +189,13 @@ int main(int argc, char* argv[])try
     ops.create = app_create;
     ops.terminate = app_terminate;
     ops.app_control = app_control;
-
     ops.pause = app_pause;
     ops.resume = app_resume;
+
+#if PROFILE_MOBILE
+    app_event_handler_h lang_changed_handler;
+    ui_app_add_event_handler(&lang_changed_handler, APP_EVENT_LANGUAGE_CHANGED, app_language_changed, NULL);
+#endif
 
     ui_app_main(argc, argv, &ops, NULL);
 
