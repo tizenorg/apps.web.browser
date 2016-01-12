@@ -105,6 +105,9 @@ void AutoFillFormComposeView::show(Evas_Object* parent)
     evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_mainLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+    elm_object_translatable_part_text_set(m_mainLayout, "cancel_text", "IDS_BR_SK_CANCEL");
+    elm_object_translatable_part_text_set(m_mainLayout, "done_text", "IDS_BR_SK_DONE");
+
     m_genlist = createGenlist(m_mainLayout);
     evas_object_show(m_genlist);
     elm_object_part_content_set(m_mainLayout, "affcv_genlist", m_genlist);
@@ -286,25 +289,25 @@ char *AutoFillFormComposeView::__text_get_cb(void* data, Evas_Object* /*obj*/, c
 
     if (!strcmp(part, "field_name")) {
         if (type == profile_composer_title_full_name)
-            return strdup("Full Name" /*BR_STRING_AUTO_FILL_DATA_FULL_NAME*/);
+            return strdup(_("IDS_BR_BODY_FULL_NAME_ABB"));
         else if (type == profile_composer_title_company_name)
-            return strdup(_("IDS_BR_BODY_COMPANY_NAME_ABB") /*BR_STRING_AUTO_FILL_DATA_COMPANY_NAME*/);
+            return strdup(_("IDS_BR_BODY_COMPANY_NAME_ABB"));
         else if (type == profile_composer_title_address_line_1)
-            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_1_ABB") /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_1*/);
+            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_1_ABB"));
         else if (type == profile_composer_title_address_line_2)
-            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_2_ABB") /*BR_STRING_AUTO_FILL_DATA_ADDRESS_LINE_2*/);
+            return strdup(_("IDS_BR_BODY_ADDRESS_LINE_2_ABB"));
         else if (type == profile_composer_title_city_town)
-            return strdup("City town" /*BR_STRING_TOWN_AUTO_FILL_CITY_COUNTY*/);
+            return strdup(_("IDS_BR_BODY_CITY_TOWN_ABB"));
         else if (type == profile_composer_title_county_region)
-            return strdup("Region" /*BR_STRING_AUTO_FILL_DATA_COUNTRY_REGION*/);
+            return strdup(_("IDS_BR_MBODY_COUNTRY_REGION"));
         else if (type == profile_composer_title_post_code)
-            return strdup("Post code"/*BR_STRING_AUTO_FILL_DATA_POST_CODE*/);
+            return strdup(_("IDS_BR_BODY_POSTCODE_ABB"));
         else if (type == profile_composer_title_country)
             return strdup("Country" /*BR_STRING_AUTO_FILL_DATA_COUNTRY*/);
         else if (type == profile_composer_title_phone)
-            return strdup(_("IDS_BR_BODY_PHONE") /*BR_STRING_AUTO_FILL_DATA_PHONE*/);
+            return strdup(_("IDS_BR_BODY_PHONE"));
         else if (type == profile_composer_title_email)
-            return strdup(_("IDS_BR_OPT_SENDURLVIA_EMAIL") /*BR_STRING_AUTO_FILL_DATA_EMAIL*/);
+            return strdup(_("IDS_BR_OPT_SENDURLVIA_EMAIL"));
     }
 
     return NULL;

@@ -216,6 +216,8 @@ void BookmarkManagerUI::createTopContent()
 
     elm_layout_file_set(m_topContent, m_edjFilePath.c_str(), "topContent");
 
+    elm_object_translatable_part_text_set(m_topContent, "bookmark_group_text", "IDS_BR_BODY_BOOKMARKS");
+
     Evas_Object* close_button = elm_button_add(m_topContent);
     elm_object_style_set(close_button, "hidden_button");
     evas_object_smart_callback_add(close_button, "clicked", _close_clicked_cb, this);
