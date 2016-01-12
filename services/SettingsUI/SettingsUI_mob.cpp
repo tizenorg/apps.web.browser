@@ -129,6 +129,7 @@ Evas_Object* SettingsUI::createActionBar(Evas_Object* settings_layout)
     elm_object_style_set(close_click_btn, "basic_button");
     evas_object_smart_callback_add(close_click_btn, "clicked", SettingsUI::close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", close_click_btn);
+    elm_object_translatable_part_text_set(actionBar, "settings_title", "IDS_BR_BODY_SETTINGS");
 
     return actionBar;
 }

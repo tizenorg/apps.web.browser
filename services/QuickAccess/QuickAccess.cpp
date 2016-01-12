@@ -562,7 +562,7 @@ void QuickAccess::showMostVisited()
 
     m_currPage = QuickAccess::MOST_VISITED_PAGE;
 #if PROFILE_MOBILE
-    elm_object_part_text_set(m_layout, "screen_title", "Most Visited");
+    elm_object_translatable_part_text_set(m_layout, "screen_title", "IDS_BR_TAB_MOST_VISITED");
     setIndexPage(QuickAccess::MOST_VISITED_PAGE);
 #else
     refreshFocusChain();
@@ -624,7 +624,7 @@ void QuickAccess::openDetailPopup(std::shared_ptr<services::HistoryItem> currIte
 
 void QuickAccess::showNoMostVisitedLabel()
 {
-    elm_layout_text_set(m_mostVisitedView, "elm.text.empty", "No visited site");
+    elm_object_translatable_part_text_set(m_mostVisitedView, "elm.text.empty", "IDS_BR_BODY_NO_VISITED_SITES");
     elm_layout_signal_emit(m_mostVisitedView, "empty,view", "quickaccess");
 }
 
