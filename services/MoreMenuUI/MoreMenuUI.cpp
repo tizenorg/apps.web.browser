@@ -19,6 +19,7 @@
 #include <vector>
 #include <AbstractMainWindow.h>
 
+#include "app_i18n.h"
 #include "MoreMenuUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -448,13 +449,13 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to bookmark";
                 break;
             case READER_MODE:
-                item_name = "Reader mode";
+                item_name = _("IDS_BR_OPT_READER_MODE_TTS");
                 break;
             case SHARE:
                 item_name = "Share<br>";
                 break;
             case FIND_ON_PAGE:
-                item_name = "Find on page";
+                item_name = _("IDS_BR_OPT_FIND_ON_PAGE");
                 break;
             case SETTINGS:
                 item_name = "Settings<br>";
@@ -462,7 +463,7 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
 #else
 #ifdef READER_MODE_ENABLED
             case READER_MODE:
-                item_name = "Reader mode";
+                item_name = _("IDS_BR_OPT_READER_MODE_TTS");
                 break;
 #endif
             case SCREEN_ZOOM:
@@ -480,10 +481,10 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = "View Desktop Web";
                 break;
             case SHARE:
-                item_name = "Share";
+                item_name = _("IDS_BR_OPT_SHARE");
                 break;
             case SETTINGS:
-                item_name = "Settings";
+                item_name = _("IDS_BR_BUTTON_SETTINGS_ABB");
                 break;
             case EXIT_BROWSER:
                 item_name = "Exit Browser";

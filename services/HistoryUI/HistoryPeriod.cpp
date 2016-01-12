@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "app_i18n.h"
 #include "HistoryPeriod.h"
 #include "BrowserLogger.h"
 #include "app_i18n.h"

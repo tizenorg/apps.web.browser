@@ -38,6 +38,7 @@ BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
 %if "%{?profile}" == "mobile"
 BuildRequires:  pkgconfig(capi-system-device)
+BuildRequires:  pkgconfig(capi-system-system-settings)
 BuildRequires:  pkgconfig(haptic)
 %endif
 BuildRequires:  browser-provider-devel
