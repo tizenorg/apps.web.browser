@@ -14,14 +14,20 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 720 1268;
-                max: 720 1268;
+                min: 720 1280-52;
+                max: 720 1280-52;
                 visible: 1;
                 fixed: 1 1;
                 align: 0 0;
                 color: 243 243 243 255;
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52;
+                max: 1280 720-52;
             }
         }
         part {
@@ -38,6 +44,12 @@ group {
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 104;
+                max: 1280 104;
             }
         }
         part {
@@ -85,8 +97,6 @@ group {
                 visible: 1;
                 align: 0 0;
                 fixed: 1 1;
-                //min: 64 64;
-                //max: 64 64;
                 rel1 { relative: 0.0 0.0; to: "back_bg";}
                 rel2 { relative: 1.0 1.0; to: "back_bg";}
                 color_class: transparent;
@@ -107,6 +117,12 @@ group {
                 color: 231 231 231 255;
                 rel1 { relative: 0.0 1.0; to: "title_bg";}
                 rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 72;
+                max: 1280 72;
             }
         }
         part {
@@ -177,6 +193,12 @@ group {
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 100;
+                max: 1280 100;
+            }
         }
         part {
             name: "del_bg";
@@ -193,6 +215,12 @@ group {
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
                 rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 100;
+                max: 1280 100;
             }
         }
         part {
@@ -235,6 +263,12 @@ group {
                 rel2 { relative: 1.0 1.0; to: "del_bg";}
                 color_class: transparent;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 640 100;
+                max: 640 100;
+            }
         }
         part {
             name: "affdv_genlist";
@@ -250,9 +284,41 @@ group {
                 rel1 { relative: 0.0 1.0; to: "select_all_bg";}
                 rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52-100-104;
+                max: 1280 720-52-100-104;
+            }
         }
     }
     programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "bg_clipper";
+            target: "affdv_genlist";
+            target: "del_button";
+            target: "del_bg";
+            target: "bottom_bar_bg";
+            target: "select_all_bg";
+            target: "title_bg";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "bg_clipper";
+            target: "affdv_genlist";
+            target: "del_button";
+            target: "del_bg";
+            target: "bottom_bar_bg";
+            target: "select_all_bg";
+            target: "title_bg";
+        }
         program {
             name: "show_del_button";
             signal: "show,del,button,signal";
@@ -344,14 +410,20 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 720 1268;
-                max: 720 1268;
+                min: 720 1280-52;
+                max: 720 1280-52;
                 visible: 1;
                 fixed: 1 1;
                 align: 0 0;
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52;
+                max: 1280 720-52;
             }
         }
         part {
@@ -368,6 +440,12 @@ group {
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 104;
+                max: 1280 104;
             }
         }
 
@@ -511,9 +589,33 @@ group {
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
                 //color_class: transparent;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 0;
+                max: 1280 720-52-104;
+            }
         }
     }
     programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "affcv_genlist";
+            target: "title_bg";
+            target: "bg_clipper";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "affcv_genlist";
+            target: "title_bg";
+            target: "bg_clipper";
+        }
         program {
             name: "show_done_button";
             signal: "show,done,button,signal";
@@ -533,10 +635,9 @@ group {
 
 group {
     name : "elm/genlist/item/affcv_item/default";
-    min: 700 150;
-    max: 700 150;
     data.item: "texts" "field_name";
     data.item: "contents" "entry_swallow entry_clear_button";
+    data.item: "states" "default landscape";
     images {
         image: "btn_bar_stop_nor.png" COMP;
     }
@@ -555,6 +656,12 @@ group {
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 150;
+                max: 1280 150;
+            }
         }
         part {
             name: "field_name";
@@ -564,7 +671,7 @@ group {
                 state: "default" 0.0;
                 min: 700 50;
                 max: 700 50;
-                fixed: 1 0;
+                fixed: 0 0;
                 align: 0 0.0;
                 color: 64 64 64 255;
                 rel1 { relative: 0.0 0.0; to: "bg"; offset: 30 15;}
@@ -575,6 +682,12 @@ group {
                     size: 30;
                     align: 0 0.0;
                 }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 50;
+                max: 1260 50;
             }
         }
         part {
@@ -589,6 +702,12 @@ group {
                 align: 0 0.8;
                 rel1 { relative: 0.0 0.0; to:"bg"; offset: 30 0;}
                 rel2 { relative: 1.0 1.0; to:"bg"; }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 80;
+                max: 1260 80;
             }
         }
         part {
@@ -605,6 +724,34 @@ group {
                 rel1 { relative: 0.0 1.0; to: "bg"; offset: 30 -1;}
                 rel2 { relative: 1.0 1.0; to: "bg";}
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1250 1;
+                max: 1250 1;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "line";
+            target: "entry_swallow";
+            target: "field_name";
+            target: "bg";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "line";
+            target: "entry_swallow";
+            target: "field_name";
+            target: "bg";
         }
     }
 }
@@ -636,6 +783,12 @@ group {
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 80;
+                max: 1260 80;
+            }
         }
         part {
             name: "elm.text";
@@ -661,6 +814,20 @@ group {
         }
     }
     programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "bg";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+        }
         program {
             name: "focus";
             signal: "load";
@@ -689,6 +856,12 @@ group {
                 align: 0.0 0.0;
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 80;
+                max: 1260 80;
             }
         }
         part {
@@ -735,6 +908,20 @@ group {
     }
     programs {
         program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "editfield_entry";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "editfield_entry";
+        }
+        program {
             name: "show_clear_button";
             signal: "show,clear,button,signal";
             source: "";
@@ -774,6 +961,12 @@ group {
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52;
+                max: 1280 720-52;
+            }
         }
         part {
             name: "title_bg";
@@ -789,6 +982,12 @@ group {
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 0.1 1.0; to: "bg_clipper";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 104;
+                max: 1280 104;
             }
         }
         part {
@@ -856,6 +1055,12 @@ group {
                 rel1 { relative: 0.0 1.0; to: "title_bg";}
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 56;
+                max: 1280 56;
+            }
         }
         part {
             name: "profile_text";
@@ -889,8 +1094,14 @@ group {
                 min: 720 100;
                 max: 720 100;
                 color: 255 255 255 255;
-                rel1 { relative: 0.0 0.0; to: "bg_clipper";}
+                //rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 100;
+                max: 1280 100;
             }
         }
         part {
@@ -902,12 +1113,18 @@ group {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
-                align: 0 0.5;
+                align: 0 0;
                 min: 360 100;
                 max: 360 100;
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
                 rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 640 100;
+                max: 640 100;
             }
         }
         part {
@@ -945,6 +1162,12 @@ group {
                 rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
                 color_class: transparent;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 640 100;
+                max: 640 100;
+            }
         }
         part {
             name: "delete_profile_bg";
@@ -955,12 +1178,18 @@ group {
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 1 1;
-                align: 1 0.5;
+                align: 0 0;
                 min: 360 100;
                 max: 360 100;
                 color: 255 255 255 255;
-                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
-                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+                rel1 { relative: 1.0 0.0; to: "add_profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "add_profile_bg";}
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 640 100;
+                max: 640 100;
             }
         }
         part {
@@ -1003,6 +1232,12 @@ group {
                 rel2 { relative: 1.0 1.0; to: "delete_profile_bg";}
                 color_class: transparent;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 640 100;
+                max: 640 100;
+            }
         }
         part {
             name: "afflv_genlist";
@@ -1018,9 +1253,43 @@ group {
                 rel1 { relative: 0.0 1.0; to: "profile_bg";}
                 rel2 { relative: 1.0 0.0; to: "bottom_bar_bg";}
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52-100-104;
+                max: 1280 720-52-100-104;
+            }
         }
     }
     programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "afflv_genlist";
+            target: "delete_profile_button";
+            target: "delete_profile_bg";
+            target: "add_profile_button";
+            target: "add_profile_bg";
+            target: "profile_bg";
+            target: "title_bg";
+            target: "bg_clipper";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "afflv_genlist";
+            target: "delete_profile_button";
+            target: "delete_profile_bg";
+            target: "add_profile_button";
+            target: "add_profile_bg";
+            target: "profile_bg";
+            target: "title_bg";
+            target: "bg_clipper";
+        }
         program {
             name: "show_del_button";
             signal: "show,del,button,signal";
@@ -1058,6 +1327,12 @@ group {
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 100;
+                max: 1260 100;
+            }
         }
         part {
             name: "item_title";
@@ -1079,6 +1354,30 @@ group {
                     align: 0.02 0.5;
                 }
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1260 100;
+                max: 1260 100;
+            }
+        }
+    }
+    programs {
+        program {
+            name: "landscapeMode";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "item_bg";
+            target: "item_title";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "item_bg";
+            target: "item_title";
         }
     }
 }

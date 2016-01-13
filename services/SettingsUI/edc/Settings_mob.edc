@@ -27,41 +27,89 @@ group {
                 align: 0 0;
                 state: "default" 0.0;
                 fixed: 1 1;
-                min: 720 1228;
-                max: 720 1228;
+                min: 720 1280-52;
+                max: 720 1280-52;
                 visible: 1;
                 color: 244 244 244 255;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52;
+                max: 1280 720-52;
+            }
         }
         part {
-            name: "sign_in_click";
+            name: "info_swallow";
             scale:1;
             type: SWALLOW;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 align: 0 0;
-                fixed: 1 1;
+                fixed: 0 0;
                 min: 720 285;
                 max: 720 285;
                 rel1 { relative: 0.0 0.0; to: "bg";}
                 rel2 { relative: 1.0 1.0;}
                 color_class: transparent;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 560 560;
+                max: 560 560;
+            }
+            description {
+                state: "landscapeAutofill" 0.0;
+                inherit: "default";
+                min: 1280 720-52-100;
+                max: 1280 720-52-100;
+            }
         }
         part {
-            name: "list_swallow";
+            name: "options_swallow";
             scale:1;
             type: SWALLOW;
             description {
                 state: "default" 0.0;
                 visible: 1;
                 align: 0 0;
-                fixed: 1 1;
-                rel1 { relative: 0.0 1.0; to: "sign_in_click";}
+                fixed: 0 0;
+                min: 720 716;
+                max: 720 -1;
+                rel1 { relative: 0.0 1.0; to: "info_swallow";}
                 rel2 { relative: 1.0 1.0;}
                 color_class: defaultListColor;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 720 560;
+                max: 720 560;
+                rel1 { relative: 1.0 0.0; to: "info_swallow";}
+                rel2 { relative: 1.0 1.0;}
+            }
+        }
+    }
+    programs {
+        program {
+            name: "landscapeSignIn";
+            signal: "rotation,landscape";
+            source: "rot";
+            action: STATE_SET "landscape" 0.0;
+            target: "bg";
+            target: "info_swallow";
+            target: "options_swallow";
+        }
+        program {
+            name: "portraitMode";
+            signal: "rotation,portrait";
+            source: "rot";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+            target: "info_swallow";
+            target: "options_swallow";
         }
     }
 

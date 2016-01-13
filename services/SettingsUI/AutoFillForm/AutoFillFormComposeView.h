@@ -30,6 +30,8 @@ public:
 
     void show(Evas_Object *parent);
     void hide();
+    void rotateLandscape();
+    void rotatePortrait();
 private:
     typedef enum _menu_type
     {
@@ -61,6 +63,7 @@ private:
 
     static void __genlist_realized_cb(void* data, Evas_Object* obj, void* event_info);
     static char *__text_get_cb(void* data, Evas_Object* obj, const char *part);
+    static Eina_Bool __state_get_cb(void*, Evas_Object*, const char*);
     static Evas_Object *__content_get_cb(void* data, Evas_Object* obj, const char *part);
     static void __done_button_cb(void* data, Evas_Object* obj, void* event_info);
     static void __cancel_button_cb(void* data, Evas_Object* obj, void* event_info);

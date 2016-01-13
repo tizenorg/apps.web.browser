@@ -34,6 +34,8 @@ public:
     Eina_Bool show(Evas_Object *parent);
     void hide();
     void refreshView(void);
+    void rotateLandscape();
+    void rotatePortrait();
 private:
     typedef struct _genlistCallbackData {
         unsigned int menu_index;

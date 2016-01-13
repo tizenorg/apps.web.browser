@@ -21,6 +21,7 @@
 #include <boost/signals2/signal.hpp>
 
 #include "AbstractUIComponent.h"
+#include "AbstractRotatable.h"
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
@@ -38,6 +39,7 @@ struct ItemData {
 class AutoFillFormManager;
 class BROWSER_EXPORT SettingsUI
         : public tizen_browser::interfaces::AbstractUIComponent
+        , public tizen_browser::interfaces::AbstractRotatable
         , public tizen_browser::core::AbstractService
 {
 public:
@@ -51,10 +53,14 @@ public:
     void onBackKey();
     bool isSubpage();
     virtual std::string getName();
+    virtual void orientationChanged();
     Evas_Object* createActionBar(Evas_Object* settings_layout);
     Evas_Object* createBackActionBar(Evas_Object* settings_layout);
     Evas_Object* createSettingsMobilePage(Evas_Object* settings_layout);
+    Evas_Object* createMainView(Evas_Object* settings_layout);
+    Evas_Object* createInfoField(const char* name, const char* text, Evas_Object* parent);
     Evas_Object* createDelDataMobilePage(Evas_Object* settings_layout);
+    Evas_Object* createDelDataMobileCheckBoxes(Evas_Object* parent);
     Evas_Object* createRemoveMostVisitedMobilePage(Evas_Object* settings_layout);
     Evas_Object* createRemoveBrowserDataMobilePage(Evas_Object* settings_layout);
     Evas_Object* createContentSettingsPage(Evas_Object* settings_layout);
@@ -69,7 +75,6 @@ public:
 
 private:
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
-    Evas_Object* createPageLayout(Evas_Object* parent, const std::string& layoutFile);
     void resetItemsLayoutContent();
     void initializeAutoFillManager();
     void destroyAutoFillManager();
@@ -102,6 +107,7 @@ private:
     Evas_Object* m_subpage_layout;
     Evas_Object* m_items_layout;
     Evas_Object* m_parent;
+    Evas_Object* m_checkbox_layout;
 
     std::string m_edjFilePath;
     Elm_Gengrid_Item_Class* m_setting_item_class;
