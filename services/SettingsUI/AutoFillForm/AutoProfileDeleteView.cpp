@@ -92,6 +92,9 @@ Evas_Object *AutoProfileDeleteView::createMainLayout(Evas_Object *parent)
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+    elm_object_translatable_part_text_set(layout, "select_all_text", "IDS_BR_OPT_SELECT_ALL");
+    elm_object_translatable_part_text_set(layout, "del_text", "IDS_BR_SK_DELETE");
+
     Evas_Object* checkbox = elm_check_add(layout);
     if (!checkbox) {
         BROWSER_LOGE("Failed to add check");
