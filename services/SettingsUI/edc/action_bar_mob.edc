@@ -21,6 +21,12 @@ group
                 rel1 { relative: 0.0 0.0;}
                 rel2 { relative: 1.0 1.0;}
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 108;
+                max: 1280 108;
+            }
         }
         part {
             name: "settings_bg";
@@ -36,6 +42,12 @@ group
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
                 color : 255 255 255 255;
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: 1280 108;
+                max: 1280 108;
             }
         }
         part {
@@ -316,6 +328,22 @@ group
                 source: "del_but";
                 action: STATE_SET "back_icon" 0.0;
                 target: "close_icon";
+            }
+            program {
+                name: "landscapeMode";
+                signal: "rotation,landscape";
+                source: "rot";
+                action: STATE_SET "landscape" 0.0;
+                target: "bg_clipper";
+                target: "settings_bg";
+            }
+            program {
+                name: "portraitMode";
+                signal: "rotation,portrait";
+                source: "rot";
+                action: STATE_SET "default" 0.0;
+                target: "bg_clipper";
+                target: "settings_bg";
             }
         }
     }

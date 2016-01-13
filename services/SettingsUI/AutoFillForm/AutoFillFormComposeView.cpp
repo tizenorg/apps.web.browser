@@ -568,5 +568,17 @@ void AutoFillFormComposeView::hide()
     evas_object_hide(m_mainLayout);
 }
 
+void AutoFillFormComposeView::rotateLandscape()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,landscape", "rot");
+}
+
+void AutoFillFormComposeView::rotatePortrait()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,portrait", "rot");
+}
+
 }
 }

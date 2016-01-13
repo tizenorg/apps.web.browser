@@ -89,6 +89,18 @@ void AutoFillFormListView::refreshView(void)
     appendGenlist(m_genlist);
 }
 
+void AutoFillFormListView::rotateLandscape()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,landscape", "rot");
+}
+
+void AutoFillFormListView::rotatePortrait()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,portrait", "rot");
+}
+
 Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

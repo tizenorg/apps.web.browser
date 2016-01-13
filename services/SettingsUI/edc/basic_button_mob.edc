@@ -23,6 +23,73 @@ scale:1;                                                            \
         }                                                           \
     }
 
+#define TEXT_WITH_CHBOX_FIRST(twc_name, twc_text)                                     \
+    part{                                                                       \
+        name: __CONCAT(twc_name, "_spacer");                                    \
+        type: SPACER;                                                           \
+        scale: 1;                                                               \
+        description {                                                           \
+            state: "default" 0.0;                                               \
+            min: 32 120;                                                        \
+            max: 32 120;                                                        \
+            align: 0 0;                                                         \
+            rel1 { relative: 0.0 0.0; }                                         \
+            rel2 { relative: 1.0 1.0; }                                         \
+        }                                                                       \
+    }                                                                           \
+    part{                                                                       \
+        name: __CONCAT(twc_name, "_cb_text_bg");                                \
+        type: RECT;                                                             \
+        scale: 1;                                                               \
+        mouse_events: 1;                                                        \
+        description {                                                           \
+            state: "default" 0.0;                                               \
+            visible: 1;                                                         \
+            min: 720 120;                                                       \
+            max: 720 120;                                                       \
+            align: 0 0.0;                                                       \
+            rel1 { relative: 0.0 0.0; }                                         \
+            rel2 { relative: 1.0 1.0; }                                         \
+            color: 0 0 0 0;                                                     \
+        }                                                                       \
+    }                                                                           \
+    part{                                                                       \
+        name: __CONCAT(twc_name, "_cb_text");                                   \
+        type: TEXTBLOCK;                                                        \
+        scale: 1;                                                               \
+        repeat_events: 1;                                                       \
+        description {                                                           \
+            state: "default" 0.0;                                               \
+            visible: 1;                                                         \
+            min: 608 120;                                                       \
+            max: 608 120;                                                       \
+            align: 0 0.5;                                                       \
+            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_spacer");}       \
+            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_spacer");}       \
+            text {                                                              \
+                min: 0 1;                                                       \
+                max: 1 1;                                                       \
+                text: twc_text;                                                 \
+                style: "check_box_text";                                        \
+            }                                                                   \
+        }                                                                       \
+    }                                                                           \
+    part {                                                                      \
+        name: __CONCAT(twc_name, "_cb");                                        \
+        type: SWALLOW;                                                          \
+        scale: 1;                                                               \
+        description {                                                           \
+            state: "default" 0.0;                                               \
+            visible: 1;                                                         \
+            align: 0 0.5;                                                       \
+            min: 48 48;                                                         \
+            max: 48 48;                                                         \
+            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_cb_text");}      \
+            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text");}      \
+            color_class: transparent;                                           \
+        }                                                                       \
+    }
+
 #define TEXT_WITH_CHBOX(twc_name, rel_to_part, twc_text)                        \
     part{                                                                       \
         name: __CONCAT(twc_name, "_spacer");                                    \
@@ -189,7 +256,49 @@ collections
             }
         }
     }
-
+    group{
+        name: "elm/button/base/info_field";
+        styles {
+            style { name: "sub_title_text2";
+                    base: "font=Sans:style=Regular font_size="38" color=#696F76 color_class=T024D text_class=T024D wrap=mixed align=0.5";
+                    STYLE_TAGS
+            }
+        }
+        parts {
+            part {
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    color: 232 232 232 232;
+                }
+            }
+            part {
+                name: "text";
+                type: TEXTBLOCK;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 500 194;
+                    max: 500 194;
+                    align: 0.5 0.5;
+                    rel1 { to: "bg"; relative: 0.0 0.0;}
+                    rel2 { to: "bg"; relative: 1.0  1.0;}
+                    color: 105 111 118 255;
+                    text {
+                        min: 0 1;
+                        max: 1 1;
+                        style: "sub_title_text2";
+                        size: 38;
+                        align: 0.5 0.5;
+                    }
+               }
+           }
+        }
+    }
     group{
         name: "elm/button/base/sign_in_button";
         styles {
@@ -210,15 +319,7 @@ collections
             description {
                 state: "default" 0.0;
                 visible: 1;
-                min: 720 285;
-                max: 720 285;
                 align: 0.0 0.0;
-                rel1 {
-                    relative: 0.0 0.0;
-                }
-                rel2 {
-                    relative: 1.0  1.0;
-                }
                 color: 232 232 232 232;
             }
         }
@@ -300,7 +401,6 @@ collections
                      color: 255 255 255 255;
                      text {
                          max: 1 1;
-                         text: "Sign in";
                          font: "Sans";
                          size: 24;
                          align: 0.5 0.5;
@@ -446,6 +546,137 @@ collections
         }
         programs{
             SETTINGS_ITEM_PROGRAM()
+        }
+    }
+    group {
+        name: "elm/button/base/custom_button";
+        data.item: "texts" "button_text";
+        parts {
+            part{
+                name: "bg";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0;}
+                    rel2 { relative: 1.0 1.0;}
+                    color_class: transparent;
+                }
+            }
+            part{
+                name: "button_spacer";
+                type: SPACER;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    fixed: 1 1;
+                    min: 720 80;
+                    max: 720 80;
+                    align: 0 0;
+                    rel1 { relative: 0.0 0.0; to: "bg";}
+                    rel2 { relative: 1.0 1.0; to: "bg";}
+                }
+            }
+             part{
+                 name: "button";
+                 scale:1;
+                 mouse_events: 1;
+                 type: RECT;
+                 description {
+                     state: "default" 0.0;
+                     visible: 1;
+                     fixed: 1 1;
+                     align: 0.5 0.0;
+                     min: 348 80;
+                     max: 348 80;
+                     rel1 {
+                         to: "button_spacer";
+                         relative: 0.0 1.0;
+                     }
+                     rel2 {
+                         to: "button_spacer";
+                         relative: 1.0 1.0;
+                     }
+                     color_class: defaultButtonColor;
+                 }
+                 description {
+                     state: "highlight" 0.0;
+                     inherit: "default" 0.0;
+                     color_class: pressButtonColor;
+                     visible: 1;
+                 }
+                 description {
+                     state: "focus" 0.0;
+                     inherit: "default" 0.0;
+                     color_class: pressButtonColor;
+                     visible: 1;
+                 }
+             }
+             part{
+                 name: "button_text";
+                 type: TEXT;
+                 scale: 1;
+                 description {
+                     state: "default" 0.0;
+                     visible: 1;
+                     fixed: 1 1;
+                     rel1 {
+                         relative: 0.0 0.0;to: "button";}
+                         rel2 { relative: 1.0 1.0;to: "button";}
+                         color: 255 255 255 255;
+                         text {
+                             max: 1 1;
+                             font: "Sans";
+                             size: 24;
+                             align: 0.5 0.5;
+                         }
+                     }
+                 }
+                 part {
+                     name: "over";
+                     scale:1;
+                     type: RECT;
+                     description {
+                         state: "default" 0.0;
+                         visible: 1;
+                         align: 0 0;
+                         fixed: 1 1;
+                         min: 348 64;
+                         max: 348 64;
+                         rel1 { relative: 0.0 0.0; to: "button";}
+                         rel2 { relative: 1.0 1.0; to: "button";}
+                         color_class: transparent;
+                     }
+                 }
+        }
+        programs{
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+            program {
+                name: "mouse_in_click";
+                signal: "mouse,down,1";
+                source: "click";
+                action: STATE_SET "highlight" 0.0;
+                target: "button";
+                target: "over";
+                target: "button_text";
+         }
+            program {
+                name: "mouse_out_click";
+                signal: "mouse,up,1";
+                source: "click";
+                action: STATE_SET "default" 0.0;
+                target: "button";
+                target: "over";
+                target: "button_text";
+            }
         }
     }
 }
