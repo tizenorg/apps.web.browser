@@ -452,13 +452,13 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = _("IDS_BR_OPT_READER_MODE_TTS");
                 break;
             case SHARE:
-                item_name = "Share<br>";
+                item_name = (std::string(_("IDS_BR_OPT_SHARE")) + "<br>").c_str();
                 break;
             case FIND_ON_PAGE:
                 item_name = _("IDS_BR_OPT_FIND_ON_PAGE");
                 break;
             case SETTINGS:
-                item_name = "Settings<br>";
+                item_name = (std::string(_("IDS_BR_BODY_SETTINGS")) + "<br>").c_str();
                 break;
 #else
 #ifdef READER_MODE_ENABLED

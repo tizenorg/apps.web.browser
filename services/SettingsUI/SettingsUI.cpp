@@ -117,6 +117,7 @@ Evas_Object* SettingsUI::createActionBar(Evas_Object* settings_layout)
     elm_object_style_set(close_click_btn, "basic_button");
     evas_object_smart_callback_add(close_click_btn, "clicked", SettingsUI::close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", close_click_btn);
+    elm_object_translatable_part_text_set(actionBar, "settings_title", "IDS_BR_BODY_SETTINGS");
 
     return actionBar;
 }
@@ -159,16 +160,19 @@ Evas_Object* SettingsUI::createSettingsPage(Evas_Object* settings_layout)
     elm_layout_content_set(m_items_layout, "cache_cb", cache_checkbox);
     elm_check_state_set(cache_checkbox, EINA_TRUE);
     edje_object_signal_callback_add(elm_layout_edje_get(m_items_layout), "mouse,clicked,1", "cache_cb_text", __checkbox_label_click_cb, (void*)id);
+    elm_object_translatable_part_text_set(m_items_layout, "cache_cb_text", "IDS_BR_OPT_CACHE");
 
     Evas_Object *cookies_checkbox = elm_check_add(m_items_layout);
     elm_layout_content_set(m_items_layout, "cookies_cb", cookies_checkbox);
     elm_check_state_set(cookies_checkbox, EINA_TRUE);
     edje_object_signal_callback_add(elm_layout_edje_get(m_items_layout), "mouse,clicked,1", "cookies_cb_text", __checkbox_label_click_cb, (void*)id);
+    elm_object_translatable_part_text_set(m_items_layout, "cookies_cb_text", "IDS_BR_BODY_COOKIES");
 
     Evas_Object *history_checkbox = elm_check_add(m_items_layout);
     elm_layout_content_set(m_items_layout, "history_cb", history_checkbox);
     elm_check_state_set(history_checkbox, EINA_TRUE);
     edje_object_signal_callback_add(elm_layout_edje_get(m_items_layout), "mouse,clicked,1", "history_cb_text", __checkbox_label_click_cb, (void*)id);
+    elm_object_translatable_part_text_set(m_items_layout, "history_cb_text", "IDS_BR_MBODY_HISTORY");
 
     Evas_Object *accept_all_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(accept_all_rb, "settings_radio");
@@ -193,6 +197,7 @@ Evas_Object* SettingsUI::createSettingsPage(Evas_Object* settings_layout)
     elm_layout_content_set(m_items_layout, "bs_enable_rb", bs_enable_rb);
     Evas_Object *bookmarkSyncGroup = bs_enable_rb;
     elm_radio_state_value_set(bs_enable_rb, BS_ENABLE);
+    elm_object_translatable_part_text_set(m_items_layout, "bs_enable_rb_text", "IDS_BR_BUTTON_ENABLE_ABB");
 
     Evas_Object *bs_disable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(bs_disable_rb, "settings_radio");
@@ -205,6 +210,7 @@ Evas_Object* SettingsUI::createSettingsPage(Evas_Object* settings_layout)
     elm_layout_content_set(m_items_layout, "ts_enable_rb", ts_enable_rb);
     Evas_Object *tabSyncGroup = ts_enable_rb;
     elm_radio_state_value_set(ts_enable_rb, TS_ENABLE);
+    elm_object_translatable_part_text_set(m_items_layout, "ts_enable_rb_text", "IDS_BR_BUTTON_ENABLE_ABB");
 
     Evas_Object *ts_disable_rb = elm_radio_add(m_items_layout);
     elm_object_style_set(ts_disable_rb, "settings_radio");
