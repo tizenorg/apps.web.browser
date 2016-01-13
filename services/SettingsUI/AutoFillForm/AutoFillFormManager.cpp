@@ -101,6 +101,24 @@ Eina_Bool AutoFillFormManager::addItemToList(AutoFillFormItem *item)
     return EINA_TRUE;;
 }
 
+void AutoFillFormManager::rotateLandscape(){
+    if(m_listView)
+        m_listView->rotateLandscape();
+    if(m_composer)
+        m_composer->rotateLandscape();
+    if(m_deleteView)
+        m_deleteView->rotateLandscape();
+}
+
+void AutoFillFormManager::rotatePortrait(){
+    if(m_listView)
+        m_listView->rotatePortrait();
+    if(m_composer)
+        m_composer->rotatePortrait();
+    if(m_deleteView)
+        m_deleteView->rotatePortrait();
+}
+
 Eina_Bool AutoFillFormManager::deleteAutoFillFormItem(AutoFillFormItem *item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

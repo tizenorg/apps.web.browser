@@ -39,7 +39,7 @@ public:
      * Class which implements AbstractRotatable has to connect this signal in SimpleUI class.
      * @returns True if rotation is portrait, false if rotation is landscape.
      */
-    boost::signals2::signal<bool ()> isPortrait;
+    boost::signals2::signal<bool ()> isLandscape;
 };
 
 }//namespace interfaces

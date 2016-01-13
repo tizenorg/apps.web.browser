@@ -297,7 +297,7 @@ void BookmarkManagerUI::orientationChanged()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-    boost::optional<bool> portrait = isPortrait();
+    boost::optional<bool> portrait = isLandscape();
     if (portrait) {
         if (*portrait) {
             elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH_LANDSCAPE * efl_scale,

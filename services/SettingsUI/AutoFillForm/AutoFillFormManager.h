@@ -64,6 +64,8 @@ public:
     std::vector<AutoFillFormItem *> getItemList(void) { return m_AutoFillFormItemList; }
     std::vector<AutoFillFormItem *> loadEntireItemList(void);
     Eina_Bool addItemToList(AutoFillFormItem *item);
+    void rotateLandscape();
+    void rotatePortrait();
 
     boost::signals2::signal<void ()> listViewBackClicked;
 

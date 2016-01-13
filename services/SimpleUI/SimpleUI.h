@@ -277,7 +277,7 @@ private:
     void onRotateClockwisePressed();
     void onRotateCounterClockwisePressed();
     void onRotation();
-    bool isRotated();
+    bool isLandscape();
     void resizeWindowOnIME(bool isIMEOpened);
 #endif
     void closeBookmarkDetailsUI();

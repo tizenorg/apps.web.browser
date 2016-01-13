@@ -28,6 +28,8 @@ public:
     ~AutoProfileDeleteView(void);
     void show(Evas_Object *parent);
     void hide();
+    void rotateLandscape();
+    void rotatePortrait();
 
 private:
     typedef struct _genlistCallbackData{

@@ -334,5 +334,17 @@ void AutoProfileDeleteView::hide(void)
     evas_object_hide(m_mainLayout);
 }
 
+void AutoProfileDeleteView::rotateLandscape()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,landscape", "rot");
+}
+
+void AutoProfileDeleteView::rotatePortrait()
+{
+    if(m_mainLayout)
+        elm_object_signal_emit(m_mainLayout,"rotation,portrait", "rot");
+}
+
 }
 }

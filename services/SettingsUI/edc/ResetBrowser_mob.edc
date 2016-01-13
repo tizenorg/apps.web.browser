@@ -42,6 +42,12 @@ group {
                 visible: 1;
                 color: 244 244 244 255;
             }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 1280 720-52;
+                max: 1280 720-52;
+            }
         }
         part {
             name: "reset_browser_text_spacer";
@@ -49,10 +55,10 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 110 451;
-                max: 110 451;
+                min: 0 451;
+                max: 0 451;
                 fixed: 1 1;
-                align: 0 0;
+                align: 0.5 0;
                 rel1 {
                     to: "bg";
                     relative: 0 0;
@@ -61,6 +67,12 @@ group {
                     to: "bg";
                     relative: 1  1;
                 }
+            }
+            description {
+                state: "landscape" 0.0;
+                inherit: "default";
+                min: 0 110;
+                max: 0 110;
             }
         }
         part {
@@ -72,7 +84,7 @@ group {
                 min: 500 84;
                 max: 500 84;
                 fixed: 1 1;
-                align: 0 0;
+                align: 0.5 0;
                 rel1 {
                     to: "reset_browser_text_spacer";
                     relative: 1 1;
@@ -208,6 +220,22 @@ group {
             }
         }
         programs{
+            program {
+                name: "landscapeMode";
+                signal: "rotation,landscape";
+                source: "rot";
+                action: STATE_SET "landscape" 0.0;
+                target: "bg";
+                target: "reset_browser_text_spacer";
+            }
+            program {
+                name: "portraitMode";
+                signal: "rotation,portrait";
+                source: "rot";
+                action: STATE_SET "default" 0.0;
+                target: "bg";
+                target: "reset_browser_text_spacer";
+            }
             program {
                 name: "mouse_click_reset_browser";
                 signal: "mouse,clicked,1";
