@@ -102,6 +102,11 @@ Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+    elm_object_translatable_part_text_set(layout, "title_text", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
+    elm_object_translatable_part_text_set(layout, "profile_text", "IDS_BR_HEADER_PROFILES");
+    elm_object_translatable_part_text_set(layout, "add_profile_text", "IDS_BR_OPT_ADD");
+    elm_object_translatable_part_text_set(layout, "delete_profile_text", "IDS_BR_SK_DELETE_ABB");
+
     m_genlist = createGenlist(layout);
     if (!m_genlist) {
         BROWSER_LOGE("elm_genlist_add failed");

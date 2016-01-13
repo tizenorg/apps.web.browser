@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <vector>
 #include <AbstractMainWindow.h>
-
+#include "app_i18n.h"
 #include "SettingsUI_mob.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -88,7 +88,7 @@ void SettingsUI::initializeButtonMap() {
     resetBrowser.buttonText="Reset browser";
 
     ItemData autoFill;
-    autoFill.buttonText="Auto Fill data";
+    autoFill.buttonText=_("IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
 
     ItemData content;
     content.buttonText="Content Settings";
@@ -170,6 +170,7 @@ Evas_Object* SettingsUI::createActionBar(Evas_Object* settings_layout)
     elm_object_style_set(close_click_btn, "basic_button");
     evas_object_smart_callback_add(close_click_btn, "clicked", SettingsUI::close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", close_click_btn);
+    elm_object_translatable_part_text_set(actionBar, "settings_title", "IDS_BR_BODY_SETTINGS");
 
     return actionBar;
 }
