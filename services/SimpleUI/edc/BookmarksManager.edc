@@ -45,7 +45,7 @@ color_classes{
         color: 255 255 255 255;
     }
 }
-collections {
+collections { base_scale: 2.0;
     group{ name: "elm/genlist/base/bookmarks_manager";
         min: 473 426;
         max: 473 426;

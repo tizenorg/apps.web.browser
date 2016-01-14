@@ -3,7 +3,7 @@
 #define ELEMENTS_HORIZONTAL_SPACER 38
 #define TITLE_HEIGHT 150
 
-collections {
+collections { base_scale: 2.6;
     group { name: "groupImageFaviconMask";
             images.image: "favicon_mask.png" COMP;
             parts {

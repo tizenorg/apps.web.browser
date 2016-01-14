@@ -1,4 +1,4 @@
-collections {
+collections { base_scale: 2.0;
     group {
         name: "layoutWebsiteHistoryItem";
         parts {

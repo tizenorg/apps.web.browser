@@ -21,6 +21,7 @@ scale:1;                                                            \
 
 collections
 {
+base_scale: 2.6;
 group {
     name: "reset_browser";
     images {
@@ -35,10 +36,10 @@ group {
             mouse_events: 0;
             description {
                 state: "default" 0.0;
-                fixed: 1 1;
+                fixed: 0 0;
                 align: 0 0;
                 min: 720 1228;
-                max: 720 1228;
+                max: -1 -1;
                 visible: 1;
                 color: 244 244 244 255;
             }
@@ -46,7 +47,7 @@ group {
                 state: "landscape" 0.0;
                 inherit: "default";
                 min: 1280 720-52;
-                max: 1280 720-52;
+                max: -1 -1;
             }
         }
         part {
@@ -128,8 +129,9 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
+                fixed: 0 0;
                 min: 720 54;
-                max: 720 54;
+                max: -1 54;
                 fixed: 1 1;
                 align: 0.5 0;
                 rel1 {
@@ -172,7 +174,7 @@ group {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    fixed: 1 1;
+                    fixed: 0 0;
                     rel1 { relative: 0.0 0.0;to: "reset_browser_button";}
                     rel2 { relative: 1.0 1.0;to: "reset_browser_button";}
                     color: 255 255 255 255;

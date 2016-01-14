@@ -1,5 +1,6 @@
 collections
 {
+base_scale: 2.6;
 group {
     name: "settings-layout";
     data {
@@ -69,8 +70,6 @@ group {
     images {
         image: "web_shadow.png" COMP;
     }
-    min: 720 1280;
-    max: 720 1280;
     parts {
         part {
             name: "background";
@@ -80,8 +79,9 @@ group {
             description {
                 state: "default" 0.0;
                 align: 0.0 0.0;
+                fixed: 0 1;
                 min: 720 108;
-                max: 720 108;
+                max: -1 108;
                 rel1 {
                     relative: 0 0;
                 }
@@ -97,8 +97,9 @@ group {
             description {
                 state: "default" 0.0;
                 align: 0.0 0.0;
+                fixed: 0 1;
                 min: 720 108;
-                max: 720 108;
+                max: -1 108;
                 rel1 {
                     relative: 0 0;
                     to: "background";
@@ -119,7 +120,7 @@ group {
                 align: 0.0 0.0;
                 fixed: 0 0;
                 min: 720 14;
-                max: 720 14;
+                max: -1 14;
                 image.normal: "web_shadow.png";
                 rel1 { to: "background"; relative: 0 1;}
                 rel2 { relative: 1.0 1.0; }
@@ -162,8 +163,9 @@ group {
             description {
                 state: "default" 0.0;
                 align: 0.0 0.0;
+                fixed: 0 0;
                 min: 720 1280;
-                max: 720 1280;
+                max: -1 -1;
                 rel1 {
                     relative: 0 1;
                     to: "background";
