@@ -1,0 +1,268 @@
+#define READER_BG_HEIGHT 108
+#define READER_BG_WIDTH 720
+
+collections {
+group {
+        name: "elm/button/base/basic_button";
+        parts{
+            part{
+                name: "button";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    color: 0 0 0 0;
+                }
+            }
+            part{
+                name: "over";
+                type: RECT;
+                scale: 1;
+                description { state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    rel1 { relative: 0.0 0.0;to: "button";}
+                    rel2 { relative: 1.0 1.0;to: "button";}
+                    color: 0 0 0 0;
+                }
+            }
+        }
+        programs{
+            program {
+                name: "mouse_click";
+                signal: "mouse,clicked,1";
+                source: "over";
+                script {
+                    emit("elm,action,click", "");
+                }
+            }
+        }
+    }
+group {
+    images {
+       image: "reader_mode_icon.png" COMP;
+    }
+    name: "reader_layout";
+    parts {
+      part {
+        name: "reader_bar_bg";
+        type : RECT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            visible: 1;
+            fixed: 1 1;
+            align: 0 0;
+            min: READER_BG_WIDTH READER_BG_HEIGHT;
+            max: READER_BG_WIDTH READER_BG_HEIGHT;
+            color: 247 247 247 255;
+            rel1 { relative: 0.0 0.0; }
+            rel2 { relative: 1.0 1.0; }
+        }
+        description {
+            state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: 0 -2*READER_BG_HEIGHT;
+        }
+    }
+  part {
+    name: "reader_icon";
+    type: IMAGE;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.5;
+        min: 64 64;
+        max: 64 64;
+        rel1 { relative: 0.1 0.0; to: "reader_bar_bg";}
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";}
+        image.normal: "reader_mode_icon.png";
+    }
+}
+part { name: "reader_text";
+        type: TEXT;
+        scale: 1;
+        description {
+            state: "default" 0.0;
+            min: 56 0;
+            fixed: 1 0;
+            align: 0 0.5;
+            color: 128 128 128 255;
+            rel1 { relative: 0.0 0.0; to: "reader_bar_bg"; offset: 300 0;}
+            rel2 { relative: 1.0 1.0; to: "reader_bar_bg";}
+            text {
+                text: "Reader Mode";
+                font: "Sans";
+                size: 30;
+                align: 0 0.5;
+            }
+        }
+}
+  part {
+    name: "font_down_button_bg";
+    scale:1;
+    type: RECT;
+    mouse_events: 1;
+
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.5;
+        min: 64 64;
+        max: 64 64;
+        color: 247 247 247 255;
+        rel1 { relative: 0.72 0.0; to: "reader_bar_bg";}
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";}
+    }
+    description {
+        state: "highlight" 0.0;
+        inherit: "default" 0.0;
+        color_class: focusBgColor;
+        visible: 1;
+    }
+   description {
+       state: "focus" 0.0;
+       inherit: "default" 0.0;
+       color_class: focusBgColor;
+       visible: 1;
+   }
+}
+part {
+    name: "font_down_button_text";
+    type: TEXT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 64 64;
+        max: 64 64;
+        color: 64 64 64 255;
+        rel1 { relative: 0.0 0.0; to: "font_down_button_bg";}
+        rel2 { relative: 1.0 1.0; to: "font_down_button_bg";}
+           text {
+                text: "A";
+                font: "Sans";
+                size: 35;
+                align: 0 1;
+            }
+    }
+}
+
+part {
+    name: "font_down_button_click";
+    scale:1;
+    type: SWALLOW;
+    mouse_events: 1;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        min: 64 64;
+        max: 64 64;
+        rel1 { relative: 0.0 0.0; to: "font_down_button_bg";}
+        rel2 { relative: 1.0 1.0; to: "font_down_button_bg";}
+        color: 0 0 0 0;
+    }
+}
+  part {
+    name: "font_up_button_bg";
+    scale:1;
+    type: RECT;
+     mouse_events: 1;
+     description {
+        state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0.65;
+        min: 64 64;
+        max: 64 64;
+        color: 247 247 247 255;
+        rel1 { relative: 0.8 0.0; to: "reader_bar_bg";}
+        rel2 { relative: 1.0 1.0; to: "reader_bar_bg";}
+    }
+    description {
+        state: "highlight" 0.0;
+        inherit: "default" 0.0;
+        color_class: focusBgColor;
+        visible: 1;
+    }
+}
+part {
+    name: "font_up_button_text";
+    type: TEXT;
+    scale: 1;
+    description { state: "default" 0.0;
+        visible: 1;
+        fixed: 1 1;
+        align: 0 0;
+        min: 64 64;
+        max: 64 64;
+        color: 64 64 64 255;
+        rel1 { relative: 0.0 0.0; to: "font_up_button_bg";}
+        rel2 { relative: 1.0 1.0; to: "font_up_button_bg";}
+        text {
+                text: "A";
+                font: "Sans";
+                size: 50;
+                align: 0 1;
+            }
+    }
+}
+part {
+    name: "font_up_button_click";
+    scale:1;
+    type: SWALLOW;
+    mouse_events: 1;
+    description {
+        state: "default" 0.0;
+        visible: 1;
+        align: 0 0;
+        fixed: 1 1;
+        min: 64 64;
+        max: 64 64;
+        rel1 { relative: 0.0 0.0; to: "font_up_button_bg";}
+        rel2 { relative: 1.0 1.0; to: "font_up_button_bg";}
+        color: 0 0 0 0;
+    }
+}
+}
+
+programs{
+            program {
+                name: "mouse_down_upbutton_click";
+                signal: "mouse,down,1";
+                source: "font_up_button_click";
+                action: STATE_SET "highlight" 0.0;
+                target: "font_up_button_bg";
+            }
+            program {
+                name: "mouse_up_upbutton_click";
+                signal: "mouse,up,1";
+                source: "font_up_button_click";
+                action: STATE_SET "default" 0.0;
+                target: "font_up_button_bg";
+            }
+
+
+            program {
+                name: "mouse_up_downbutton_click";
+                signal: "mouse,down,1";
+                source: "font_down_button_click";
+                action: STATE_SET "highlight" 0.0;
+                target: "font_down_button_bg";
+            }
+            program {
+                name: "mouse_down_downbutton_click";
+                signal: "mouse,up,1";
+                source: "font_down_button_click";
+                action: STATE_SET "default" 0.0;
+                target: "font_down_button_bg";
+            }
+}
+}
+}

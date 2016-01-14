@@ -15,6 +15,8 @@ if(TIZEN_BUILD)
     target_link_libraries(${PROJECT_NAME} ${pkgs_LDFLAGS})
 endif(TIZEN_BUILD)
 
+ADD_DEFINITIONS(-READER_MODE_ENABLED=1)
+
 install(TARGETS ${PROJECT_NAME}
             LIBRARY DESTINATION services
             ARCHIVE DESTINATION services/static)

@@ -48,6 +48,7 @@
 #include "TabUI.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
+#include "ReaderUI.h"
 #include "TabServiceTypedef.h"
 #include "BookmarkDetailsUI.h"
 #include "BookmarkFlowUI.h"
@@ -115,8 +116,11 @@ private:
     void showQuickAccess();
     void switchViewToQuickAccess();
     void switchViewToIncognitoPage();
+    void switchView();
     void switchViewToWebPage();
+    void switchViewToReaderMode();
     void updateView();
+    void updateReaderView();
     void windowCreated();
 
 #if PROFILE_MOBILE
@@ -203,6 +207,8 @@ private:
      */
     void filterURL(const std::string& url);
 
+    void removeReaderTab(const std::string& url);
+
     // // on uri entry widget "changed,user" signal
     void onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr);
     // on uri entry widget "changed" signal
@@ -262,6 +268,12 @@ private:
     void showHistoryUI();
     void closeHistoryUI();
     void showSettingsUI();
+    void showReaderUI();
+    void showReaderContents(const std::string& str);
+    void readerContentsUnavailable();
+    void getreaderWebView(const std::string& str);
+    void getReaderContent();
+    void switchOffReaderMode();
     void closeSettingsUI();
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
@@ -326,6 +338,7 @@ private:
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
     std::shared_ptr<SettingsUI> m_settingsUI;
+    std::shared_ptr<ReaderUI> m_readerUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::StorageService> m_storageService;
@@ -335,6 +348,9 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    std::vector<int> m_readerTabs;
+    bool m_readerMode;
+    int m_readerTabId;
     std::string m_folder_name;
 
     //helper object used to view management

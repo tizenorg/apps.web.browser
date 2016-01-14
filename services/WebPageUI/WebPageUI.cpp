@@ -25,6 +25,8 @@
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "WebPageUIStatesManager.h"
 
+#define M_UNUSED(x) (void)(x)
+
 namespace tizen_browser {
 namespace base_ui {
 
@@ -257,6 +259,16 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri,
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     elm_object_signal_emit(m_urlHistoryList->getContent(), "switch_view_webpage", "ui");
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
+}
+
+void WebPageUI::switchViewToReaderMode(const std::string uri, const std::string title)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    updateURIBar(uri);
+    m_URIEntry->setPageTitle(title);
+    m_URIEntry->showPageTitle();
+    refreshFocusChain();
+    hideWebView();
 }
 
 void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
