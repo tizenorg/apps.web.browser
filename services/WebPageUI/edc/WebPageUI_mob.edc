@@ -260,26 +260,6 @@ collections {
                     rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
                     rel2 { relative: 1.0 1.0; to: "bg"; }
                 }
-                description {
-                    state: "state_ime_opened" 0.0;
-                    inherit: "default" 0.0;
-                    min: URI_BG_WIDTH (WEB_VIEW_HEIGHT-435);
-                    max: URI_BG_WIDTH (WEB_VIEW_HEIGHT-435);
-                    rel2 { relative: 1.0 0.5; to: "bg"; }
-                }
-                description {
-                    state: "state_ime_opened_uri_hidden" 0.0;
-                    inherit: "default" 0.0;
-                    min: URI_BG_WIDTH (WEB_VIEW_FULL_HEIGHT-435);
-                    max: URI_BG_WIDTH (WEB_VIEW_FULL_HEIGHT-435);
-                    rel2 { relative: 1.0 0.5; to: "bg"; }
-                }
-                description {
-                    state: "uri_bar_hidden" 0.0;
-                    inherit: "default" 0.0;
-                    min: URI_BG_WIDTH WEB_VIEW_FULL_HEIGHT;
-                    max: URI_BG_WIDTH WEB_VIEW_FULL_HEIGHT;
-                }
             }
             part {
                 name: "progress_bar";
@@ -559,43 +539,12 @@ collections {
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
                 after: "show_uri_bar_finished";
-                after: "decrease_webview";
             }
             program {
                 name: "enlarge_webview";
                 signal: "enlarge_webview";
                 source: "ui";
-                action: STATE_SET "uri_bar_hidden" 0.0;
-                target: "web_view";
                 after: "hide_uri_bar";
-            }
-            program {
-                name: "decrease_webview";
-                signal: "decrease_webview";
-                source: "ui";
-                action: STATE_SET "default" 0.0;
-                target: "web_view";
-            }
-            program {
-                name: "IME_closed";
-                signal: "ime_closed_uri_hidden";
-                source: "ui";
-                action: STATE_SET "uri_bar_hidden" 0.0;
-                target: "web_view";
-            }
-            program {
-                name: "IME_opened";
-                signal: "ime_opened";
-                source: "ui";
-                action: STATE_SET "state_ime_opened" 0.0;
-                target: "web_view";
-            }
-            program {
-                name: "IME_opened_uri_hidden";
-                signal: "ime_opened_uri_hiddden";
-                source: "ui";
-                action: STATE_SET "state_ime_opened_uri_hidden" 0.0;
-                target: "web_view";
             }
             program {
                 name: "hide_moremenu";

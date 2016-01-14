@@ -262,6 +262,7 @@ void SimpleUI::loadUIServices()
 void SimpleUI::connectUISignals()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_viewManager.isLandscape.connect(boost::bind(&SimpleUI::isRotated, this));
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
@@ -871,10 +872,7 @@ void SimpleUI::setwvIMEStatus(bool status)
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
 #if PROFILE_MOBILE
-    if (status)
-        m_webPageUI->decreaseWebview();
-    else
-        m_webPageUI->enlargeWebview();
+    resizeWindowOnIME(m_wvIMEStatus);
 #endif
 }
 
@@ -975,12 +973,21 @@ void SimpleUI::onRotation()
     elm_win_rotation_with_resize_set(main_window, angle);
     m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
     m_moreMenuUI->resetContent();
+    resizeWindowOnIME(m_wvIMEStatus);
 }
 //TODO: end of a workaround
 
 bool SimpleUI::isRotated()
 {
     return elm_win_rotation_get(main_window) % 180;
+}
+
+void SimpleUI::resizeWindowOnIME(bool isIMEOpened)
+{
+    if (isIMEOpened)
+        m_viewManager.decreaseWindow();
+    else
+        m_viewManager.enlargeWindow();
 }
 #endif
 
