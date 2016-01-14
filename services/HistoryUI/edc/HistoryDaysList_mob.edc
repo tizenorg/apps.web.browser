@@ -2,7 +2,7 @@
 #include "../../../core/Tools/edc/Background.edc"
 #include "colorClasses.edc"
 
-collections {
+collections { base_scale: 2.3;
     group { name: "layoutScrollerDays";
             parts {
                 BACKGROUND_COVER("", 1, "colorMainBg")

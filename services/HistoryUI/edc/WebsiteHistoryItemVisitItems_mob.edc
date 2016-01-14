@@ -3,7 +3,7 @@
 #include "../../../core/Tools/edc/Background.edc"
 #include "../../../core/Tools/edc/InvisibleButtonSwallow.edc"
 
-collections {
+collections { base_scale: 2.3;
     group {
         name: "layoutWebsiteHistoryItemVisitItems";
         parts {

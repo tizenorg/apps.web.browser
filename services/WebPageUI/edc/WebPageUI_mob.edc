@@ -8,7 +8,7 @@
 #define FINDONPAGE_WIDTH 720
 #include "../../../core/Tools/edc/Spacer.edc"
 
-collections {
+collections { base_scale: 2.3;
     group {
         name: "main_layout";
         images {

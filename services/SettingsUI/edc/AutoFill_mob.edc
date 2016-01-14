@@ -1,6 +1,6 @@
 #include "basic_button_mob.edc"
 #include "custom_check_mob.edc"
-collections {
+collections { base_scale: 2.3;
 
 group {
     name: "affdv-layout";

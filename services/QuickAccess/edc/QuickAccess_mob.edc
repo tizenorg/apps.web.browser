@@ -229,7 +229,7 @@
         }       \
     }
 
-collections {
+collections { base_scale: 2.3;
 
 group {
     name: "elm/button/base/thumbButton";

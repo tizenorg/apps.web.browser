@@ -27,8 +27,6 @@
 #include "../Tools/BrowserImage.h"
 #include "Tools/GeneralTools.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -261,12 +259,12 @@ Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
 
 #if !PROFILE_MOBILE
     elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
-    elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_gengrid_item_size_set(bookmarkGengrid, ELM_SCALE_SIZE(364), ELM_SCALE_SIZE(320));
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
 #else
     elm_scroller_page_size_set(bookmarkGengrid, 0, 1100);
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.0);
-    elm_gengrid_item_size_set(bookmarkGengrid, 337 * efl_scale, 379 * efl_scale);
+    elm_gengrid_item_size_set(bookmarkGengrid, ELM_SCALE_SIZE(337), ELM_SCALE_SIZE(379));
 #endif
     elm_scroller_bounce_set(bookmarkGengrid, EINA_FALSE, EINA_FALSE);
 

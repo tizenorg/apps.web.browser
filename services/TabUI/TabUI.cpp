@@ -199,8 +199,6 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
 
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-
     Evas_Object* gengrid = elm_gengrid_add(parent);
     elm_gengrid_align_set(gengrid, 0, 0);
     elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
@@ -209,7 +207,7 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
 #if PROFILE_MOBILE
     elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
     elm_scroller_page_size_set(gengrid, 720, 0);
-    elm_gengrid_item_size_set(gengrid, 656 * efl_scale, 450 * efl_scale);
+    elm_gengrid_item_size_set(gengrid, ELM_SCALE_SIZE(656), ELM_SCALE_SIZE(450));
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
 
     elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
@@ -217,7 +215,7 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
 #else
     elm_gengrid_horizontal_set(gengrid, EINA_TRUE);
     elm_scroller_page_size_set(gengrid, 0, 327);
-    elm_gengrid_item_size_set(gengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_gengrid_item_size_set(gengrid, ELM_SCALE_SIZE(364), ELM_SCALE_SIZE(320));
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
     evas_object_event_callback_add(gengrid, EVAS_CALLBACK_MOUSE_IN, _focus_in, this);
 #endif

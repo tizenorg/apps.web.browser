@@ -1,6 +1,6 @@
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
-collections {
+collections { base_scale: 2.3;
     styles {
         style {
             name: "message_style";
