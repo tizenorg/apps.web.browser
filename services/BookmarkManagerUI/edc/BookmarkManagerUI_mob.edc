@@ -1,5 +1,3 @@
-#include "../../../core/Tools/edc/InvisibleButton.edc"
-
 #define DEVELOPMENT 0
 
 #define LAYOUT_TITLE_HEIGHT 108
@@ -12,6 +10,7 @@
 #define GRID_ITEM_ICON_SIZE 99
 
 collections {
+    base_scale: 2.6;
     group {
         name: "topContent";
         images {

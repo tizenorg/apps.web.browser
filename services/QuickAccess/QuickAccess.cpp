@@ -27,8 +27,6 @@
 #include "../Tools/BrowserImage.h"
 #include "Tools/GeneralTools.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -278,6 +276,10 @@ void QuickAccess::createBookmarksView (Evas_Object * parent)
     m_bookmarkGengrid = createBookmarkGengrid(m_bookmarksView);
     evas_object_smart_callback_add(m_bookmarkGengrid, "realized", _bookmark_tile_realized, this);
     elm_object_part_content_set(m_bookmarksView, "center_swallow", m_bookmarkGengrid);
+    if (isOrientationLandscape())
+        evas_object_size_hint_min_set(m_bookmarkGengrid, ELM_SCALE_SIZE(1150), ELM_SCALE_SIZE(720));
+    else
+        evas_object_size_hint_min_set(m_bookmarkGengrid, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(1150));
     evas_object_show(m_bookmarkGengrid);
 #endif
 }
@@ -294,8 +296,8 @@ Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
     evas_object_size_hint_align_set(bookmarkGengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
 #if !PROFILE_MOBILE
-    elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
-    elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_scroller_page_size_set(bookmarkGengrid, ELM_SCALE_SIZE((0), ELM_SCALE_SIZE(327));
+    elm_gengrid_item_size_set(bookmarkGengrid, ELM_SCALE_SIZE(364), ELM_SCALE_SIZE(320));
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
 #else
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.0);

@@ -45,8 +45,9 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
+            fixed: 0 0;                                                         \
             min: 720 120;                                                       \
-            max: 720 120;                                                       \
+            max: -1 120;                                                        \
             align: 0 0.0;                                                       \
             rel1 { relative: 0.0 0.0; }                                         \
             rel2 { relative: 1.0 1.0; }                                         \
@@ -81,11 +82,11 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
-            align: 0 0.5;                                                       \
+            align: 0.5 0.5;                                                     \
             min: 48 48;                                                         \
             max: 48 48;                                                         \
             rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_cb_text");}      \
-            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text");}      \
+            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}   \
             color_class: transparent;                                           \
         }                                                                       \
     }
@@ -112,8 +113,9 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
+            fixed: 0 1;                                                         \
             min: 720 120;                                                       \
-            max: 720 120;                                                       \
+            max: -1 120;                                                        \
             align: 0 0.0;                                                       \
             rel1 { relative: 0.0 1.0; to: rel_to_part;}                         \
             rel2 { relative: 1.0 1.0; }                                         \
@@ -148,11 +150,11 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
-            align: 0 0.5;                                                       \
+            align: 0.5 0.5;                                                     \
             min: 48 48;                                                         \
             max: 48 48;                                                         \
             rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_cb_text");}      \
-            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text");}      \
+            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}   \
             color_class: transparent;                                           \
         }                                                                       \
     }
@@ -165,9 +167,9 @@ scale:1;                                                            \
         description {                                               \
             state: "default" 0.0;                                   \
             visible: 1;                                             \
-            fixed: 1 1;                                             \
+            fixed: 0 1;                                             \
             min: 720 2;                                             \
-            max: 720 2;                                             \
+            max: -1 2;                                              \
             align: 0 0;                                             \
             rel1 { relative: 0.0 0.0; to: relative_to;}             \
             rel2 { relative: 1.0 1.0;}                              \
@@ -183,9 +185,9 @@ scale:1;                                                            \
         description {                                               \
             state: "default" 0.0;                                   \
             visible: 1;                                             \
-            fixed: 1 1;                                             \
+            fixed: 0 1;                                             \
             min: 720 2;                                             \
-            max: 720 2;                                             \
+            max: -1 2;                                              \
             align: 0 0;                                             \
             rel1 { relative: 0.0 1.0; to: relative_to;}             \
             rel2 { relative: 1.0 1.0;}                              \
@@ -219,6 +221,7 @@ scale:1;                                                            \
 
 collections
 {
+    base_scale: 2.6;
     group{
         name: "elm/button/base/basic_button";
         parts{
@@ -447,9 +450,9 @@ collections
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    fixed: 1 1;
+                    fixed: 0 1;
                     min: 720 120;
-                    max: 720 120;
+                    max: -1 120;
                     align: 0 0;
                     visible: 1;
                     color_class: transparent;
@@ -461,9 +464,9 @@ collections
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    fixed: 1 1;
+                    fixed: 0 1;
                     min: 720 120;
-                    max: 720 120;
+                    max: -1 120;
                     align: 0 0;
                     visible: 0;
                     rel1 { relative: 0.0 0.0; to:"bg";}
@@ -518,7 +521,7 @@ collections
                     fixed: 1 1;
                     min: 28 120;
                     max: 28 120;
-                    align: 0 0;
+                    align: 0.5 0;
                     rel1 { relative: 1.0 0.0;to: "button_text";}
                     rel2 { relative: 1.0 1.0;}
                 }
@@ -533,13 +536,13 @@ collections
                     fixed: 1 1;
                     min: 38 38;
                     max: 38 38;
-                    align: 0 0.5;
+                    align: 0.5 0.5;
                     image.normal: "list_ic_arrow.png";
                     rel1 { relative: 1.0 0.0;to: "arrow_spacer";}
                     rel2 { relative: 1.0 1.0;to: "arrow_spacer";}
                 }
             }
-            SETTINGS_LINE_BEFORE("before", bg)
+            //SETTINGS_LINE_BEFORE("before", bg)
             SETTINGS_LINE_AFTER("after", bg)
         }
         programs{
@@ -568,9 +571,9 @@ collections
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    fixed: 1 1;
+                    fixed: 0 1;
                     min: 720 80;
-                    max: 720 80;
+                    max: -1 80;
                     align: 0 0;
                     rel1 { relative: 0.0 0.0; to: "bg";}
                     rel2 { relative: 1.0 1.0; to: "bg";}
