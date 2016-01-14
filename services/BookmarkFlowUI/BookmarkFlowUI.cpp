@@ -240,14 +240,13 @@ void BookmarkFlowUI::setSpecialFolderId(unsigned int special)
 void BookmarkFlowUI::resetContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     boost::optional<bool> rotated = isRotated();
     if (rotated) {
         if (*rotated) {
-            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT_LANDSCAPE*efl_scale);
+            elm_scroller_page_size_set(m_genlist, 0, ELM_SCALE_SIZE(GENLIST_HEIGHT_LANDSCAPE));
             m_max_items = MAX_ITEMS_LANDSCAPE;
         } else {
-            elm_scroller_page_size_set(m_genlist, 0, GENLIST_HEIGHT*efl_scale);
+            elm_scroller_page_size_set(m_genlist, 0, ELM_SCALE_SIZE(GENLIST_HEIGHT));
             m_max_items = MAX_ITEMS;
         }
         if (evas_object_visible_get(m_genlist) == EINA_TRUE) {
@@ -550,7 +549,6 @@ void BookmarkFlowUI::createGengrid()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_layout);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
 
     m_gengrid = elm_gengrid_add(m_layout);
     elm_object_part_content_set(m_layout, "folder_grid_swallow", m_gengrid);
@@ -560,7 +558,7 @@ void BookmarkFlowUI::createGengrid()
     elm_gengrid_horizontal_set(m_gengrid, EINA_FALSE);
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_AUTO);
     elm_scroller_page_size_set(m_gengrid, 0, 750);
-    elm_gengrid_item_size_set(m_gengrid, (208+18) * efl_scale, (208+18) * efl_scale);
+    elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(208+18), ELM_SCALE_SIZE(208+18));
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
