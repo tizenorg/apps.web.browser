@@ -43,14 +43,40 @@ public:
     void clear() override;
     void setFocusChain(Evas_Object* /*obj*/) override {}
 
+    void onHistoryDayItemButtonClicked(
+            const HistoryDayItemDataPtrConst clickedItem, bool remove);
     void onWebsiteHistoryItemClicked(
-            const WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+            const WebsiteHistoryItemDataPtrConst websiteHistoryItemData,
+            bool remove);
     void onWebsiteHistoryItemVisitItemClicked(
-            const WebsiteVisitItemDataPtrConst websiteVisitItemData);
+            const WebsiteVisitItemDataPtrConst websiteVisitItemData,
+            bool remove);
 
 private:
     void connectSignals();
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(HistoryDayItemDataPtrConst historyDayItemData);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+
+    /**
+     * @brief remove history day item from vector
+     */
+    void remove(HistoryDayItemMobPtr historyDayItem);
+
+    HistoryDayItemMobPtr getItem(HistoryDayItemDataPtrConst historyDayItemData);
 
     HistoryDaysListManagerEdjePtr m_edjeFiles;
     std::vector<HistoryDayItemMobPtr> m_dayItems;
