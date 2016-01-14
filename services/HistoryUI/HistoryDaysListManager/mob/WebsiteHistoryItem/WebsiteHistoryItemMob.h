@@ -39,11 +39,20 @@ public:
     virtual ~WebsiteHistoryItemMob();
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjePtr edjeFiles);
+
+    Evas_Object* getLayoutMain() {return m_layoutMain;}
+    WebsiteHistoryItemDataPtrConst getData() const {return m_websiteHistoryItemData;}
+    void removeItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
+    bool contains(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+
+    std::shared_ptr<std::vector<int>> getVisitItemsIds();
+
     /**
      * @brief invoked when main layout is already removed.
      * prevents from second evas_object_del() on main layout in destructor
      */
     void setEflObjectsAsDeleted();
+    int sizeHistoryVisitItems();
 
 private:
     Evas_Object* createBoxMainVertical(Evas_Object* parent,
