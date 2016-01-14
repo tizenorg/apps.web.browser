@@ -52,7 +52,7 @@ install(TARGETS ${PROJECT_NAME}
 include(EDCCompile)
 
 if (${PROFILE} MATCHES "mobile")
-    ADD_DEFINITIONS(-DGESTURE=0)
+    ADD_DEFINITIONS(-DGESTURE=1)
 endif (${PROFILE} MATCHES "mobile")
 
 #please do not add edc/ directory
