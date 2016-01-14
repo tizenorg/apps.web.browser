@@ -22,6 +22,7 @@
 #include <vector>
 #include "../HistoryDayItemDataTypedef.h"
 #include "../HistoryDaysListManagerEdje.h"
+#include <boost/signals2/signal.hpp>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -36,16 +37,38 @@ public:
     virtual ~HistoryDayItemMob();
     Evas_Object* init(Evas_Object* parent,
             HistoryDaysListManagerEdjePtr edjeFiles);
+    Evas_Object* getLayoutMain() {return m_layoutMain;}
+
+    WebsiteHistoryItemMobPtr getItem(
+            WebsiteHistoryItemDataPtrConst historyDayItemData);
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteHistoryItemDataPtrConst websiteHistoryItemData);
+    WebsiteHistoryItemMobPtr getItem(
+            WebsiteVisitItemDataPtrConst historyVisitItemData);
+    /**
+     * @brief remove item from view and from vector
+     */
+    void removeItem(WebsiteVisitItemDataPtrConst historyVisitItemData);
 
     /**
      * @brief invoked when main layout is already removed.
      * prevents from second evas_object_del() on main layout in destructor
      */
     void setEflObjectsAsDeleted();
+    HistoryDayItemDataPtrConst getData() const {return m_dayItemData;}
+
+    static boost::signals2::signal<void(const HistoryDayItemDataPtr, bool)> signaButtonClicked;
 
 private:
     Evas_Object* createBoxWebsites(Evas_Object* parent,
             HistoryDaysListManagerEdjePtr edjeFiles);
+
+    /**
+     * @brief remove website history item from vector
+     */
+    void remove(WebsiteHistoryItemMobPtr websiteHistoryItem);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;

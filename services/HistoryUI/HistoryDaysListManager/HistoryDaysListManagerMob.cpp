@@ -16,9 +16,11 @@
 
 #include <services/HistoryUI/HistoryUI.h>
 #include <services/HistoryService/HistoryItem.h>
+#include "BrowserLogger.h"
 #include "HistoryDaysListManagerMob.h"
 #include "HistoryDayItemData.h"
 #include "mob/HistoryDayItemMob.h"
+#include "mob/WebsiteHistoryItem/WebsiteHistoryItemMob.h"
 #include "mob/WebsiteHistoryItem/WebsiteHistoryItemTitleMob.h"
 #include "mob/WebsiteHistoryItem/WebsiteHistoryItemVisitItemsMob.h"
 #include <services/HistoryUI/HistoryDeleteManager.h>
@@ -95,15 +97,28 @@ void HistoryDaysListManagerMob::clear()
     m_dayItems.clear();
 }
 
+HistoryDayItemMobPtr HistoryDaysListManagerMob::getItem(
+        HistoryDayItemDataPtrConst historyDayItemData)
+{
+    for (auto& historyDayItem : m_dayItems) {
+        if (historyDayItem->getData() == historyDayItemData)
+            return historyDayItem;
+    }
+    return nullptr;
+}
+
 void HistoryDaysListManagerMob::connectSignals()
 {
+    HistoryDayItemMob::signaButtonClicked.connect(
+            boost::bind(&HistoryDaysListManagerMob::onHistoryDayItemButtonClicked,
+                    this, _1, _2));
     WebsiteHistoryItemTitleMob::signalButtonClicked.connect(
             boost::bind(&HistoryDaysListManagerMob::onWebsiteHistoryItemClicked,
-                    this, _1));
+                    this, _1, _2));
     WebsiteHistoryItemVisitItemsMob::signalButtonClicked.connect(
             boost::bind(
                     &HistoryDaysListManagerMob::onWebsiteHistoryItemVisitItemClicked,
-                    this, _1));
+                    this, _1, _2));
 }
 
 
@@ -115,20 +130,94 @@ void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
     Evas_Object* dayItemLayout = item->init(m_parent, m_edjeFiles);
     elm_box_pack_end(m_boxDays, dayItemLayout);
 }
+void HistoryDaysListManagerMob::onHistoryDayItemButtonClicked(
+        const HistoryDayItemDataPtrConst clickedItem, bool remove)
+{
+    if (remove)
+        removeItem(clickedItem);
+}
 
 void HistoryDaysListManagerMob::onWebsiteHistoryItemClicked(
-        const WebsiteHistoryItemDataPtrConst clickedItem)
+        const WebsiteHistoryItemDataPtrConst clickedItem, bool remove)
 {
-    signalHistoryItemClicked(
-            tools::PROTOCOL_DEFAULT + clickedItem->websiteDomain,
-            clickedItem->websiteTitle);
+    if (remove)
+        removeItem(clickedItem);
+    else
+        signalHistoryItemClicked(
+                tools::PROTOCOL_DEFAULT + clickedItem->websiteDomain,
+                clickedItem->websiteTitle);
 }
 
 void HistoryDaysListManagerMob::onWebsiteHistoryItemVisitItemClicked(
-        const WebsiteVisitItemDataPtrConst clickedItem)
+        const WebsiteVisitItemDataPtrConst clickedItem, bool remove)
 {
-    signalHistoryItemClicked(clickedItem->historyItem->getUrl(),
-            clickedItem->historyItem->getTitle());
+    if (remove) {
+        removeItem(clickedItem);
+        signalDeleteHistoryItems(
+                std::make_shared<std::vector<int>>(std::initializer_list<int> {
+                        clickedItem->historyItem->getId() }));
+    } else
+        signalHistoryItemClicked(clickedItem->historyItem->getUrl(),
+                clickedItem->historyItem->getTitle());
+}
+
+void HistoryDaysListManagerMob::removeItem(
+        HistoryDayItemDataPtrConst historyDayItemData)
+{
+    if (!historyDayItemData) {
+        BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+        return;
+    }
+    auto item = getItem(historyDayItemData);
+    if (!item)
+        return;
+    // remove day item from vector, destructor will clear efl objects
+    remove(item);
+    elm_box_unpack(m_boxDays, item->getLayoutMain());
+}
+
+void HistoryDaysListManagerMob::removeItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
+{
+    if (!websiteHistoryItemData) {
+        BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+        return;
+    }
+    for (auto& dayItem : m_dayItems) {
+        auto websiteHistoryItem = dayItem->getItem(websiteHistoryItemData);
+        if (websiteHistoryItem) {
+            signalDeleteHistoryItems(websiteHistoryItem->getVisitItemsIds());
+            dayItem->removeItem(websiteHistoryItemData);
+            return;
+        }
+    }
+}
+
+void HistoryDaysListManagerMob::removeItem(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    if (!websiteVisitItemData) {
+        BROWSER_LOGE("%s remove error", __PRETTY_FUNCTION__);
+        return;
+    }
+    for (auto& dayItem : m_dayItems) {
+        if (dayItem->getItem(websiteVisitItemData)) {
+            dayItem->removeItem(websiteVisitItemData);
+            return;
+        }
+    }
+}
+
+void HistoryDaysListManagerMob::remove(HistoryDayItemMobPtr historyDayItem)
+{
+    for (auto it = m_dayItems.begin(); it != m_dayItems.end();) {
+        if ((*it) == historyDayItem) {
+            m_dayItems.erase(it);
+            return;
+        } else {
+            ++it;
+        }
+    }
 }
 
 } /* namespace base_ui */
