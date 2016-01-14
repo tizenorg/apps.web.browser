@@ -33,25 +33,50 @@ public:
     virtual ~WebsiteHistoryItemTitleMob();
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
 
-    static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
+    WebsiteHistoryItemDataPtr getWebsiteHistoryItemDataPtr()
+    {
+        return m_websiteHistoryItemData;
+    }
+    static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr, bool)>
     signalButtonClicked;
+    void showButtonDelete(bool show);
+    void setClickBlock(bool blocked) {clickBlocked = blocked;}
+    bool getClickBlock() {return clickBlocked;}
+    // prevents click event, when gesture occured
+    bool clickBlocked = false;
 
 private:
+    Evas_Object* createLayoutContent(Evas_Object* parent,
+            const std::string& edjeFilePath);
+    Evas_Object* createLayoutButtonDelete(Evas_Object* parent,
+            const std::string& edjeFilePath);
     Evas_Object* createLayoutIcon(Evas_Object* parent,
             const std::string& edjeFilePath);
     Evas_Object* createLayoutSummary(Evas_Object* parent,
             const std::string& edjeFilePath);
     void initCallbacks();
 
-    static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectClicked(void* data, Evas_Object* obj, 
+            void* event_info);
+    static void _buttonDeleteClicked(void* data, Evas_Object* obj,
+            void* event_info);
+    static Evas_Event_Flags _gestureOccured(void *data, void *event_info);
 
     WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
 
     Evas_Object* m_buttonSelect;
+    Evas_Object* m_buttonDelete;
     Evas_Object* m_imageIcon;
 
     Evas_Object* m_layoutMain;
-    Evas_Object* m_boxMainHorizontal;
+    Evas_Object* m_layerGesture;
+    Evas_Object* m_boxMain;
+    Evas_Object* m_layoutContent;
+    Evas_Object* m_layoutButtonDelete;
+    Evas_Object* m_boxContentHorizontal;
+
+    // minimum value for which gesture will be considered
+    static int gestureMomentumMin;
 };
 
 }
