@@ -1,6 +1,6 @@
 #include "../../../core/Tools/edc/SpacerRect.edc"
 
-collections {
+collections { base_scale: 2.0;
 
     group {
         name: "groupImageClear";

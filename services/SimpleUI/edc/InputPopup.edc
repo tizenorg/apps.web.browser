@@ -28,6 +28,13 @@
 #define INPUT_TEXT_HEIGHT 68
 
 collections{
+
+#if PROFILE_MOBILE
+    base_scale: 2.6;
+#else
+    base_scale: 2.0;
+#endif
+
     group {
         name: "elm/entry/selection/browser_entry";
         parts {

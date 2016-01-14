@@ -1,4 +1,4 @@
-collections {
+collections { base_scale: 2.6;
 
 #define WIDTH 720
 #define HEIGHT 1280

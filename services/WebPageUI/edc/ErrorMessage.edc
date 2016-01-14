@@ -1,5 +1,5 @@
 
-collections {
+collections { base_scale: 2.0;
     images {
         image: "web_browsing_icon_error.png" COMP;
     }
