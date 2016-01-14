@@ -2,7 +2,7 @@
 #include "../../../core/Tools/edc/Background.edc"
 #include "colorClasses.edc"
 
-collections {
+collections { base_scale: 2.6;
     group { name: "layoutWebsiteHistoryItem";
             parts {
                 BACKGROUND_COVER("boxMainVertical", 1, "colorWebsiteHistoryItem")

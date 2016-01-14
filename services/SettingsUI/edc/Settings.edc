@@ -21,6 +21,7 @@ scale:1;                                                            \
 
 collections 
 {
+    base_scale: 2.0;
     group{
         name: "elm/button/base/basic_button";
         parts{

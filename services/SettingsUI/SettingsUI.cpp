@@ -25,8 +25,6 @@
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
