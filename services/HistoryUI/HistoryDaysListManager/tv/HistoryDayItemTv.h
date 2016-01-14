@@ -70,6 +70,7 @@ public:
 
     HistoryDeleteManagerPtrConst getDeleteManager() const {return m_historyDeleteManager;}
 
+    // static signals to allow easy connection in HistoryDaysListManager
     static boost::signals2::signal<void(const HistoryDayItemDataPtr)> signaButtonClicked;
 
 private:

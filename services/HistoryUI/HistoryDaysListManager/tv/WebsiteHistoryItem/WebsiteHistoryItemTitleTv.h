@@ -40,6 +40,7 @@ public:
     HistoryDeleteManagerPtrConst getDeleteManager() const {return m_historyDeleteManager;}
     Evas_Object* getLayoutMain() {return m_layoutMain;}
 
+    // static signals to allow easy connection in HistoryDaysListManager
     static boost::signals2::signal<void(const WebsiteHistoryItemDataPtr)>
     signalButtonClicked;
 

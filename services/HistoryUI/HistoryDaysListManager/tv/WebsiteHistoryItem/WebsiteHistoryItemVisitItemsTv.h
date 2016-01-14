@@ -51,6 +51,7 @@ public:
     Evas_Object* init(Evas_Object* parent, const std::string& edjeFilePath);
     void setFocusChain(Evas_Object* obj);
 
+    // static signals to allow easy connection in HistoryDaysListManager
     static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
     signalButtonClicked;
 
