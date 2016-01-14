@@ -25,7 +25,6 @@
 #include "service_macros.h"
 #include "ButtonBar.h"
 #include "URIEntry.h"
-
 namespace tizen_browser {
 namespace base_ui {
 
@@ -65,6 +64,7 @@ public:
     void toIncognito(bool);
     void switchViewToErrorPage();
     void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
+    void switchViewToReaderMode(const std::string uri, const std::string title);
     void switchViewToIncognitoPage();
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }

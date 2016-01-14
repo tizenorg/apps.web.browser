@@ -16,7 +16,6 @@
 
 #ifndef MOREMENUUI_H
 #define MOREMENUUI_H
-
 #include <Evas.h>
 #include <Eina.h>
 #include <memory>
@@ -105,6 +104,7 @@ public:
     boost::signals2::signal<void (int)> addToBookmarkClicked;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> historyUIClicked;
+    boost::signals2::signal<void ()> readerUIClicked;
     boost::signals2::signal<void ()> settingsClicked;
     boost::signals2::signal<void ()> closeMoreMenuClicked;
     boost::signals2::signal<void ()> zoomUIClicked;

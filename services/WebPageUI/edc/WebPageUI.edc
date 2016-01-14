@@ -25,6 +25,22 @@ collections {
         }
         parts {
             part {
+                name: "main_bg";
+                type : RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                align: 0 0;
+                min: 1920 1080;
+                max: 1920 1080;
+                color: 102 102 102 255;
+                rel1 { relative: 0.0 0.0; }
+                rel2 { relative: 1.0 0.0; }
+            }
+        }
+            part {
                 name: "uri_bar_bg";
                 type : RECT;
                 scale: 1;
@@ -141,6 +157,30 @@ collections {
                 rel2 { relative: 1.0 1.0; }
             }
         }
+        part { name: "Reader_view";
+                type : SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    align: 0.0 0.0;
+                    fixed: 0 0;
+                    min: 1000 974;
+                    max: 1000 974;
+                    rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; offset :460 0; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+                description {
+                    state: "hidden" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 0;
+                }
+                description {
+                    state: "visible" 0.0;
+                    inherit: "default" 0.0;
+                    visible: 1;
+                }
+             }
         part {
             name: "shadow";
             type: IMAGE;
