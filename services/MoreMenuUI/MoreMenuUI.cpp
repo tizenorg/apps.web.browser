@@ -142,18 +142,17 @@ Evas_Object* MoreMenuUI::getContent()
 void MoreMenuUI::resetContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     boost::optional<bool> rotated = isRotated();
     if (rotated) {
         if (*rotated) {
-            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH_LANDSCAPE * efl_scale,
-                                      GENGRID_ITEM_HEIGHT_LANDSCAPE * efl_scale);
+            elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH_LANDSCAPE),
+                                      ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT_LANDSCAPE));
             elm_object_signal_emit(m_mm_layout, "switch_landscape", "ui");
             if (evas_object_visible_get(m_mm_layout))
                 elm_object_signal_emit(m_parent, "show_moremenu_landscape", "ui");
         } else {
-            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale,
-                                      GENGRID_ITEM_HEIGHT * efl_scale);
+            elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH),
+                                      ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT));
             elm_object_signal_emit(m_mm_layout, "switch_vertical", "ui");
             if (evas_object_visible_get(m_mm_layout))
                 elm_object_signal_emit(m_parent, "show_moremenu_vertical", "ui");
@@ -210,9 +209,8 @@ void MoreMenuUI::createGengrid()
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_FALSE);
     elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
 #else
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_scroller_page_size_set(m_gengrid, 0, 327);
-    elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale, GENGRID_ITEM_HEIGHT * efl_scale);
+    elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH), ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT));
 #endif
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
