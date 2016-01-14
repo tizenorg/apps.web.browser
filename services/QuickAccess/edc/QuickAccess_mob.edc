@@ -283,7 +283,7 @@
         }                                           \
     }
 
-collections {
+collections { base_scale: 2.6;
 
 color_classes{
     color_class{
@@ -346,6 +346,8 @@ group {
                 color: 244 244 244 255;
                 state: "default" 0.0;
                 align: 0.0 0.0;
+                min: LAYOUT_WIDTH 0;
+                max: -1 -1;
                 rel1.relative: 0 0;
                 rel2.relative: 1 1;
             }
@@ -468,9 +470,10 @@ group { name: "page_layout";
             description { state: "default" 0.0;
                 color: 244 244 244 255;
                 align: 0.0 0.0;
+                visible: 1;
                 fixed: 0 0;
                 min: LAYOUT_WIDTH LAYOUT_HEIGHT;
-                max: LAYOUT_WIDTH -1;
+                max: -1 -1;
                 visible: 1;
                 rel1 {
                     relative: 0 0;
@@ -654,6 +657,9 @@ group { name: "center_layout";
                 color: 0 0 0 0;
                 align: 0 0;
                 visible: 0;
+                fixed: 0 0;
+                min: 0 0;
+                max: -1 -1;
                 rel1 {
                     relative: 0 0;
                 }

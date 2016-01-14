@@ -16,7 +16,7 @@ scale:1;                                                            \
             rel2 { to: over_part; relative: 1 1; }                  \
         }                                                           \
     }
-collections {
+collections { base_scale: 2.0;
     group {
         name: "main_layout";
         images {

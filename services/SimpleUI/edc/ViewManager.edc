@@ -25,7 +25,7 @@
 #define IME_PORTRAIT_HEIGHT 435
 #define IME_LANDSCAPE_HEIGHT 0   //TODO: Change it when landscape IME will be available
 
-collections {
+collections { base_scale: 2.0;
     group {
         name: "main_layout";
         parts {

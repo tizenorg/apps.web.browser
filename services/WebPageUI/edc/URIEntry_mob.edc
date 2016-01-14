@@ -21,7 +21,7 @@
       } \
    }
 
-collections {
+collections { base_scale: 2.6;
 RESOURCE_IMAGE_LOSSY("input_ic_incognito.png")
 RESOURCE_IMAGE_LOSSY("navi_input_ic_cancel.png")
     group {
