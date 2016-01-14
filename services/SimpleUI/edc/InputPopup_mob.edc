@@ -36,6 +36,7 @@
 #define CANCEL_BUTTON_WIDTH 98
 
 collections{
+    base_scale: 2.6;
     group {
         name: "elm/entry/selection/browser_entry";
         parts {
