@@ -29,7 +29,7 @@ scale:1;                                                            \
       } \
    }
 
-collections {
+collections { base_scale: 2.0;
 
 RESOURCE_IMAGE_LOSSY("ic_more_readermode_nor.png")
 RESOURCE_IMAGE_LOSSY("ic_more_bookmark_nor.png")

@@ -1,6 +1,12 @@
 
 collections {
 
+#if PROFILE_MOBILE
+    base_scale: 2.6;
+#else
+    base_scale: 2.0;
+#endif
+
     group{
         name: "elm/button/base/basic_button";
         parts {

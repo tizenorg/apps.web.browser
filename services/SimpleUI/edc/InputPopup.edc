@@ -28,6 +28,7 @@
 #define INPUT_TEXT_HEIGHT 68
 
 collections{
+    base_scale: 2.0;
     group {
         name: "elm/entry/selection/browser_entry";
         parts {
