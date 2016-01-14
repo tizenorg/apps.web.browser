@@ -27,8 +27,6 @@
 #include "../Tools/BrowserImage.h"
 #include "Tools/GeneralTools.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -213,7 +211,9 @@ Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
 
 #if PROFILE_MOBILE
     m_verticalScroller = elm_scroller_add(mostVisitedLayout);
+    evas_object_size_hint_min_set(elm_object_part_content_get(mostVisitedLayout, "bg"), ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(1150));
     evas_object_size_hint_weight_set(m_verticalScroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_min_set(m_verticalScroller, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(1150));
     evas_object_size_hint_align_set (m_verticalScroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_scroller_policy_set(m_verticalScroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(m_verticalScroller, EINA_FALSE, EINA_FALSE);
@@ -222,6 +222,7 @@ Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
 
     m_centerLayout = elm_layout_add(m_verticalScroller);
     elm_layout_file_set(m_centerLayout, edjFilePath.c_str(), "center_layout");
+    evas_object_size_hint_min_set(m_centerLayout, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(1150));
     evas_object_size_hint_weight_set(m_centerLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (m_centerLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_object_content_set(m_verticalScroller, m_centerLayout);
@@ -243,6 +244,7 @@ Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
 
     m_bookmarkGengrid = createBookmarkGengrid(bookmarkViewLayout);
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", m_bookmarkGengrid);
+    evas_object_size_hint_min_set(m_bookmarkGengrid, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(1150));
     evas_object_show(m_bookmarkGengrid);
 
     return bookmarkViewLayout;
@@ -260,13 +262,13 @@ Evas_Object* QuickAccess::createBookmarkGengrid(Evas_Object *parent)
     evas_object_size_hint_align_set(bookmarkGengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
 #if !PROFILE_MOBILE
-    elm_scroller_page_size_set(bookmarkGengrid, 0, 327);
-    elm_gengrid_item_size_set(bookmarkGengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_scroller_page_size_set(bookmarkGengrid, ELM_SCALE_SIZE((0), ELM_SCALE_SIZE(327));
+    elm_gengrid_item_size_set(bookmarkGengrid, ELM_SCALE_SIZE(364), ELM_SCALE_SIZE(320));
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.5);
 #else
-    elm_scroller_page_size_set(bookmarkGengrid, 0, 1100);
+    elm_scroller_page_size_set(bookmarkGengrid, ELM_SCALE_SIZE(0), ELM_SCALE_SIZE(1100));
     elm_gengrid_align_set(bookmarkGengrid, 0.5, 0.0);
-    elm_gengrid_item_size_set(bookmarkGengrid, 337 * efl_scale, 379 * efl_scale);
+    elm_gengrid_item_size_set(bookmarkGengrid, ELM_SCALE_SIZE(337), ELM_SCALE_SIZE(379));
 #endif
     elm_scroller_bounce_set(bookmarkGengrid, EINA_FALSE, EINA_FALSE);
 

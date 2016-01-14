@@ -27,8 +27,6 @@
 #include "Tools/EflTools.h"
 #include "AutoFillForm/AutoFillFormManager.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -241,10 +239,10 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     elm_gengrid_select_mode_set(scroller, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(scroller, EINA_FALSE);
     elm_gengrid_horizontal_set(scroller, EINA_FALSE);
-    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
-    elm_gengrid_item_size_set(scroller, 720 * efl_scale, 120 * efl_scale);
     evas_object_smart_callback_add(scroller, "language,changed", _language_changed, this);
+    elm_gengrid_item_size_set(scroller, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(120));
 
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], _del_selected_data_menu_clicked_cb, this);
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], _reset_mv_menu_clicked_cb, this);
@@ -293,7 +291,7 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
     auto check_boxes = createDelDataMobileCheckBoxes(main);
 
     auto scroller = elm_scroller_add(main);
-    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_TRUE);
@@ -313,13 +311,14 @@ Evas_Object* SettingsUI::createDelDataMobileCheckBoxes(Evas_Object* parent)
     auto box = elm_box_add(parent);
     elm_box_horizontal_set(box, EINA_FALSE);
     elm_object_content_set(parent, box);
+    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(box);
 
     m_checkbox_layout = elm_layout_add(box);
-    elm_layout_file_set(m_checkbox_layout, m_edjFilePath.c_str(), "delete_browsing_data_mobile");
-
     evas_object_size_hint_weight_set(m_checkbox_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_checkbox_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_layout_file_set(m_checkbox_layout, m_edjFilePath.c_str(), "delete_browsing_data_mobile");
 
     auto cache_checkbox = createCheckBox(m_checkbox_layout, "cache", __checkbox_label_click_cb, this);
     auto cookies_checkbox = createCheckBox(m_checkbox_layout, "cookies", __checkbox_label_click_cb, this);
