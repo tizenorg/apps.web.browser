@@ -2,7 +2,7 @@
 #define WIDTH 720
 #define HEIGHT 1280
 
-collections {
+collections { base_scale: 2.3;
    styles {
       style {
          name: "text_style";

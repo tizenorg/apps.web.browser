@@ -27,8 +27,6 @@
 #include "Tools/EflTools.h"
 #include "AutoFillForm/AutoFillFormManager.h"
 
-#define efl_scale       (elm_config_scale_get() / elm_app_base_scale_get())
-
 namespace tizen_browser{
 namespace base_ui{
 
@@ -237,7 +235,7 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     elm_gengrid_horizontal_set(scroller, EINA_FALSE);
     elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
     elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
-    elm_gengrid_item_size_set(scroller, 720 * efl_scale, 120 * efl_scale);
+    elm_gengrid_item_size_set(scroller, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(120));
 
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], _del_selected_data_menu_clicked_cb, this);
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], _reset_mv_menu_clicked_cb, this);

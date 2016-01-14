@@ -1,7 +1,7 @@
 #include "ImageButton.edc"
 #include "../../../core/Tools/edc/Spacer.edc"
 
-collections {
+collections { base_scale: 2.3;
 
     FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 64, 64, "btn_bar_back_nor.png", 224, 237, 251)
 

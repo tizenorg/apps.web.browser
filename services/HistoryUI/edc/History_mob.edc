@@ -1,6 +1,6 @@
 #include "history_ico_btn_mob.edc"
 
-collections {
+collections { base_scale: 2.3;
     group {
         name: "history-layout";
         parts {

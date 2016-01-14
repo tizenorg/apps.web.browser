@@ -191,14 +191,13 @@ void BookmarkManagerUI::createGengrid()
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_TRUE);
     elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
 #else
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_object_style_set(m_gengrid, "back_ground");
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale, GENGRID_ITEM_HEIGHT * efl_scale);
+    elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH), ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT));
 #endif
 }
 
@@ -296,16 +295,15 @@ void BookmarkManagerUI::addNewFolder()
 void BookmarkManagerUI::orientationChanged()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     boost::optional<bool> portrait = isPortrait();
     if (portrait) {
         if (*portrait) {
-            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH_LANDSCAPE * efl_scale,
-                                      GENGRID_ITEM_HEIGHT_LANDSCAPE * efl_scale);
+            elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH_LANDSCAPE),
+                                      ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT_LANDSCAPE));
             elm_object_signal_emit(b_mm_layout, "switch_landscape", "ui");
         } else {
-            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale,
-                                      GENGRID_ITEM_HEIGHT * efl_scale);
+            elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH),
+                                      ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT));
             elm_object_signal_emit(b_mm_layout, "switch_vertical", "ui");
         }
     } else

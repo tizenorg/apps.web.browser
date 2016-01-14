@@ -38,7 +38,8 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
-    elm_config_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
+    //elm_config_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
+    elm_app_base_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
 
     elm_config_accel_preference_set("opengl:depth24:stencil8");
 

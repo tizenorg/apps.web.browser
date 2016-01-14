@@ -5,7 +5,7 @@
 
 #define ELEMENTS_HORIZONTAL_SPACER 38
 
-collections {
+collections { base_scale: 2.3;
     group { name: "groupImageFaviconMask";
             images.image: "favicon_mask.png" COMP;
             parts {

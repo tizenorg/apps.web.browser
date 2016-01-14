@@ -1,4 +1,4 @@
-collections {
+collections { base_scale: 2.3;
     group { name: "elm/check/base/custom_check";
             images {
                 image: "check_box_off.png" COMP;

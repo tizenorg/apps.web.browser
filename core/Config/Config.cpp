@@ -18,6 +18,7 @@
 #include "Config.h"
 #include "BrowserLogger.h"
 #include "Ecore_Wayland.h"
+#include <Elementary.h>
 #include <app_common.h>
 
 namespace tizen_browser
@@ -52,7 +53,8 @@ Config::Config()
 
     int width;
     ecore_wl_screen_size_get(&width, nullptr);
-    m_data["scale"] = static_cast<double>(width)/SCALE_FACTOR;
+    double config_scale_value = (double)(width)/SCALE_FACTOR;
+    m_data["scale"] = static_cast<double>(elm_app_base_scale_get()/config_scale_value);
 
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
