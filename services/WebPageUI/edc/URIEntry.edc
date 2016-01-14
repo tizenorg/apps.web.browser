@@ -1,7 +1,7 @@
 #define URI_INPUTBOX_LENGTH 1720
 #define URI_INPUTBOX_LENGTH_SMALL 1460
 #define URI_INPUTBOX_WIDTH 82
-collections {
+collections { base_scale: 2.0;
     group {
         name: "elm/entry/selection/browser_entry";
         parts {
