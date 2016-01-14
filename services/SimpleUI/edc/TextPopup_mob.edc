@@ -15,7 +15,7 @@
 #define BUTTON_TEXT_WIDTH 260
 #define BUTTON_TEXT_HEIGHT 40
 
-collections {
+collections { base_scale: 2.6;
     group {
         name: "flexible-text";
         styles {

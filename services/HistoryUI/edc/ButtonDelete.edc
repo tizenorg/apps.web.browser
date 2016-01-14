@@ -3,7 +3,7 @@
 #include "../../../core/Tools/edc/InvisibleButtonSwallow.edc"
 #include "colorClasses.edc"
 
-collections {
+collections { base_scale: 2.0;
     group { name: "layoutButtonDelete";
             styles {
                 style {

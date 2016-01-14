@@ -188,12 +188,11 @@ void BookmarkDetailsUI::setLandscape(bool state)
 void BookmarkDetailsUI::resetContent()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     if (m_rotation_state) {
-        elm_gengrid_item_size_set(m_gengrid, (290+18) * efl_scale, (308+18) * efl_scale);
+        elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(290+18), ELM_SCALE_SIZE(308+18));
         elm_object_signal_emit(m_layout, "switch_landscape", "ui");
     } else {
-        elm_gengrid_item_size_set(m_gengrid, (319+18) * efl_scale, (361+18) * efl_scale);
+        elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(319+18), ELM_SCALE_SIZE(361+18));
         elm_object_signal_emit(m_layout, "switch_vertical", "ui");
     }
 }
@@ -475,14 +474,13 @@ void BookmarkDetailsUI::createGengrid()
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_TRUE);
     elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
 #else
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_object_style_set(m_gengrid, "back_ground");
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_item_size_set(m_gengrid, 404 * efl_scale, 320 * efl_scale);
+    elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(404), ELM_SCALE_SIZE(320));
 #endif
 }
 

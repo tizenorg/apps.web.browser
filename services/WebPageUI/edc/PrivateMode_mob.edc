@@ -28,7 +28,7 @@ part {  name: NAME;                                                 \
             }                                                       \
     }
 
-collections {
+collections { base_scale: 2.6;
     styles {
         style {
             name: "message_style";

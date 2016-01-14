@@ -1,4 +1,11 @@
 collections {
+
+#if PROFILE_MOBILE
+    base_scale: 2.6;
+#else
+    base_scale: 2.0;
+#endif
+
     group {
         name: "elm/button/base/category_button";
         data.item: "text" "btn_txt";
