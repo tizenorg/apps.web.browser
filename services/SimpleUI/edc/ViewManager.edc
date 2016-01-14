@@ -22,10 +22,40 @@
 #      Author: m.lapinski@samsung.com
 #
 
+#define IME_PORTRAIT_HEIGHT 435
+#define IME_LANDSCAPE_HEIGHT 0   //TODO: Change it when landscape IME will be available
+
 collections {
     group {
         name: "main_layout";
         parts {
+            part {
+                name: "IME_space";
+                type: RECT;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 0 1;
+                    min: 0 0;
+                    max: -1 0;
+                    align: 0.0 1.0;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 { relative: 1.0 1.0; }
+                }
+                description {
+                    state: "IME_portrait" 0.0;
+                    inherit: "default" 0.0;
+                    min: 0 IME_PORTRAIT_HEIGHT;
+                    max: -1 IME_PORTRAIT_HEIGHT;
+                }
+                description {
+                    state: "IME_landscape" 0.0;
+                    inherit: "default" 0.0;
+                    min: 0 IME_LANDSCAPE_HEIGHT;
+                    max: -1 IME_LANDSCAPE_HEIGHT;
+                }
+            }
             part {
                 name: "content";
                 type: SWALLOW;
@@ -36,8 +66,33 @@ collections {
                     fixed: 1 1;
                     align: 0.0 0.0;
                     rel1 { relative: 0.0 0.0; }
-                    rel2 { relative: 1.0 1.0; }
+                    rel2 {
+                        to: "IME_space";
+                        relative: 1.0 0.0; }
                 }
+            }
+        }
+        programs {
+            program {
+                name: "open_portrait_ime";
+                signal: "open_portrait_ime";
+                source: "ui";
+                action: STATE_SET "IME_portrait" 0.0;
+                target: "IME_space";
+            }
+            program {
+                name: "open_landscape_ime";
+                signal: "open_landscape_ime";
+                source: "ui";
+                action: STATE_SET "IME_landscape" 0.0;
+                target: "IME_space";
+            }
+            program {
+                name: "hidden_ime";
+                signal: "hidden_ime";
+                source: "ui";
+                action: STATE_SET "default" 0.0;
+                target: "IME_space";
             }
         }
     }

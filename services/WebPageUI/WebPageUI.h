@@ -83,8 +83,6 @@ public:
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
-    void enlargeWebview();
-    void decreaseWebview();
 #endif
 
     boost::signals2::signal<void ()> backPage;

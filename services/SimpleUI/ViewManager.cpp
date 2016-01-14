@@ -155,5 +155,19 @@ interfaces::AbstractUIComponent* ViewManager::topOfStack()
         return nullptr;
 }
 
+void ViewManager::decreaseWindow()
+{
+    if (*isLandscape())
+        elm_object_signal_emit(getContent(), "open_landscape_ime", "ui");
+    else
+        elm_object_signal_emit(getContent(), "open_portrait_ime", "ui");
+}
+
+void ViewManager::enlargeWindow()
+{
+    elm_object_signal_emit(getContent(), "hidden_ime", "ui");
+}
+
+
 }//namespace base_ui
 }//names1pace tizen_browser

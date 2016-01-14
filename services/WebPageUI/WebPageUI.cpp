@@ -606,7 +606,7 @@ void WebPageUI::geastureUp()
     if (!m_uriBarHidden) {
         m_uriBarHidden = true;
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        elm_object_signal_emit(m_mainLayout, "enlarge_webview", "ui");
+        elm_object_signal_emit(m_mainLayout, "hide_uri_bar", "ui");
         if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
             setWebViewTouchEvents(false);
         }
@@ -653,28 +653,6 @@ void WebPageUI::mobileEntryUnfocused()
         elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
-}
-
-void WebPageUI::enlargeWebview()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if GESTURE
-    if (m_uriBarHidden)
-        elm_object_signal_emit(m_mainLayout, "ime_closed_uri_hidden", "ui");
-    else
-#endif
-        elm_object_signal_emit(m_mainLayout, "decrease_webview", "ui");
-}
-
-void WebPageUI::decreaseWebview()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if GESTURE
-    if (m_uriBarHidden)
-        elm_object_signal_emit(m_mainLayout, "ime_opened_uri_hiddden", "ui");
-    else
-#endif
-        elm_object_signal_emit(m_mainLayout, "ime_opened", "ui");
 }
 #endif
 

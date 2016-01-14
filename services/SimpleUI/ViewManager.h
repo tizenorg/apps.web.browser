@@ -27,6 +27,7 @@
 #include <Evas.h>
 
 #include <stack>
+#include <boost/signals2/signal.hpp>
 
 #include "core/AbstractInterfaces/AbstractUIComponent.h"
 
@@ -97,6 +98,23 @@ public:
  * @return actual dispalyed view
  */
     interfaces::AbstractUIComponent* topOfStack();
+
+/**
+ * @brief Method decreases entire window when IME is opened.
+ */
+    void decreaseWindow();
+
+/**
+ * @brief Method enlarges entire window when IME is closed.
+ */
+    void enlargeWindow();
+
+/**
+ * @brief Signal checks if browser is in landscape mode.
+ *
+ * @return Returnes true when app is in landscape mode.
+ */
+    boost::signals2::signal<bool ()> isLandscape;
 
 private:
     void updateLayout(interfaces::AbstractUIComponent* previousView);
