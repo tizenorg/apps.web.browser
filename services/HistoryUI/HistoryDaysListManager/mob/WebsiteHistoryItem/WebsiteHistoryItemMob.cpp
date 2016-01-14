@@ -84,5 +84,26 @@ Evas_Object* WebsiteHistoryItemMob::createBoxMainVertical(Evas_Object* parent,
     return box;
 }
 
+bool WebsiteHistoryItemMob::contains(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    return m_websiteHistoryItemVisitItems->contains(historyVisitItemData);
+}
+
+std::shared_ptr<std::vector<int>> WebsiteHistoryItemMob::getVisitItemsIds()
+{
+    return m_websiteHistoryItemVisitItems->getVisitItemsIds();
+}
+
+int WebsiteHistoryItemMob::sizeHistoryVisitItems() {
+    return m_websiteHistoryItemVisitItems->size();
+}
+
+void WebsiteHistoryItemMob::removeItem(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    m_websiteHistoryItemVisitItems->removeItem(historyVisitItemData);
+}
+
 }
 }
