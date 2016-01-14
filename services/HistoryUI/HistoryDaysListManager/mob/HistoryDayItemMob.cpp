@@ -23,6 +23,7 @@
 namespace tizen_browser {
 namespace base_ui {
 
+boost::signals2::signal<void(const HistoryDayItemDataPtr, bool)> HistoryDayItemMob::signaButtonClicked;
 HistoryDayItemMob::HistoryDayItemMob(HistoryDayItemDataPtr dayItemData)
     : m_eflObjectsDeleted(false)
     , m_dayItemData(dayItemData)
@@ -31,9 +32,9 @@ HistoryDayItemMob::HistoryDayItemMob(HistoryDayItemDataPtr dayItemData)
     , m_layoutHeader(nullptr)
     , m_boxHeader(nullptr)
 {
-    for(auto& websiteHistoryItemData : dayItemData->websiteHistoryItems) {
-        auto websiteHistoryItem = std::make_shared<WebsiteHistoryItemMob>(
-                websiteHistoryItemData);
+    for (auto& websiteHistoryItemData : dayItemData->websiteHistoryItems) {
+        auto websiteHistoryItem =
+                std::make_shared<WebsiteHistoryItemMob>(websiteHistoryItemData);
         m_websiteHistoryItems.push_back(websiteHistoryItem);
     }
 }
@@ -103,6 +104,58 @@ Evas_Object* HistoryDayItemMob::createBoxWebsites(Evas_Object* parent,
         elm_box_pack_end(boxWebsites, boxSingleWebsite);
     }
     return boxWebsites;
+}
+
+WebsiteHistoryItemMobPtr HistoryDayItemMob::getItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
+{
+    for (auto& websiteHistoryItem : m_websiteHistoryItems) {
+        if (websiteHistoryItem->getData() == websiteHistoryItemData)
+            return websiteHistoryItem;
+    }
+    return nullptr;
+}
+
+void HistoryDayItemMob::removeItem(
+        WebsiteHistoryItemDataPtrConst websiteHistoryItemData)
+{
+    auto item = getItem(websiteHistoryItemData);
+    if (!item)
+        return;
+    elm_box_unpack(m_boxWebsites, item->getLayoutMain());
+    remove(item);
+    if (m_websiteHistoryItems.size() == 0)
+        signaButtonClicked(m_dayItemData, true);
+}
+
+WebsiteHistoryItemMobPtr HistoryDayItemMob::getItem(
+        WebsiteVisitItemDataPtrConst websiteVisitItemData)
+{
+    for (auto& websiteHistoryItem : m_websiteHistoryItems) {
+        if (websiteHistoryItem->contains(websiteVisitItemData))
+            return websiteHistoryItem;
+    }
+    return nullptr;
+}
+
+void HistoryDayItemMob::removeItem(
+        WebsiteVisitItemDataPtrConst historyVisitItemData)
+{
+    auto item = getItem(historyVisitItemData);
+    item->removeItem(historyVisitItemData);
+    if (item->sizeHistoryVisitItems() == 0) {
+        removeItem(item->getData());
+    }
+}
+
+void HistoryDayItemMob::remove(WebsiteHistoryItemMobPtr websiteHistoryItem)
+{
+    for (auto it = m_websiteHistoryItems.begin(); it != m_websiteHistoryItems.end();)
+        if ((*it) == websiteHistoryItem) {
+            m_websiteHistoryItems.erase(it);
+            return;
+        } else
+            ++it;
 }
 
 }
