@@ -32,6 +32,12 @@ class WebsiteHistoryItemVisitItemsMob
     {
         Evas_Object* layout = nullptr;
         Evas_Object* buttonSelect = nullptr;
+        Evas_Object* layerGesture = nullptr;
+        Evas_Object* boxMain = nullptr;
+        Evas_Object* layoutButtonDelete = nullptr;
+        Evas_Object* buttonDelete = nullptr;
+        // prevents click event, when gesture occured
+        bool clickBlocked = false;
     };
     struct VisitItemObjects
     {
@@ -49,16 +55,32 @@ public:
      */
     void setEflObjectsAsDeleted();
 
-    static boost::signals2::signal<void(const WebsiteVisitItemDataPtr)>
+    // static signals to allow easy connection in HistoryDaysListManager
+    static boost::signals2::signal<void(const WebsiteVisitItemDataPtr, bool)>
     signalButtonClicked;
+
+    bool contains(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+    void removeItem(WebsiteVisitItemDataPtrConst websiteVisitItemData);
+    std::shared_ptr<std::vector<int>> getVisitItemsIds();
+    int size() {return eina_list_count(elm_box_children_get(m_boxMainVertical));}
 
 private:
     LayoutVisitItemObjects createLayoutVisitItem(Evas_Object* parent,
             const std::string& edjeFilePath,
             WebsiteVisitItemDataPtr websiteVisitItemData);
+    Evas_Object* createLayoutContent(Evas_Object* parent,
+            const std::string& edjeFilePath,
+            WebsiteVisitItemDataPtr websiteVisitItemData);
+    Evas_Object* createLayoutButtonDelete(Evas_Object* parent,
+            const std::string& edjeFilePath);
 
     void initCallbacks();
-    static void _buttonSelectClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _buttonSelectClicked(void* data, Evas_Object* obj,
+            void* event_info);
+    static void _buttonDeleteClicked(void* data, Evas_Object* obj,
+            void* event_info);
+    static Evas_Event_Flags _gestureOccured(void *data, void *event_info);
+    static void showButtonDelete(Evas_Object* layoutButtonDelete, Evas_Object* box, bool show);
 
     /// used to indicate, if efl object were already deleted
     bool m_eflObjectsDeleted;
@@ -66,6 +88,9 @@ private:
     std::vector<VisitItemObjects> m_websiteVisitItems;
     Evas_Object* m_layoutMain;
     Evas_Object* m_boxMainVertical;
+
+    // minimum value for which gesture will be considered
+    static const int GESTURE_MOMENTUM_MIN;
 };
 
 }
