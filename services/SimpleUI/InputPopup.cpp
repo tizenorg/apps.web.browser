@@ -172,8 +172,7 @@ void InputPopup::createLayout()
     m_button_left = elm_button_add(m_buttons_box);
     elm_object_style_set(m_button_left, "input-popup-button");
     evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_button_left, 0.5, 0.5);
-    elm_object_part_text_set(m_button_left, "elm.text", m_cancel_button_text.c_str());
+    evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);    elm_object_part_text_set(m_button_left, "elm.text", m_cancel_button_text.c_str());
     elm_box_pack_end(m_buttons_box, m_button_left);
     evas_object_smart_callback_add(m_button_left, "clicked", _left_button_clicked, (void*)this);
 
@@ -182,7 +181,7 @@ void InputPopup::createLayout()
     m_button_right = elm_button_add(m_buttons_box);
     elm_object_style_set(m_button_right, "input-popup-button");
     evas_object_size_hint_weight_set(m_button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_button_right, 0.5, 0.5);
+    evas_object_size_hint_align_set(m_button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_object_part_text_set(m_button_right, "elm.text", m_ok_button_text.c_str());
     elm_box_pack_end(m_buttons_box, m_button_right);
     evas_object_smart_callback_add(m_button_right, "clicked", _right_button_clicked, (void*)this);
@@ -194,6 +193,7 @@ void InputPopup::createLayout()
     elm_object_part_content_set(m_layout, "buttons_swallow", m_buttons_box);
 
     evas_object_show(m_layout);
+    elm_object_part_content_set(m_parent, "popup_content", m_layout);
 
     if (std::find(m_bad_words.begin(), m_bad_words.end(), m_input) != m_bad_words.end()) {
         elm_object_disabled_set(m_accept_right_left ? m_button_right : m_button_left, EINA_TRUE);

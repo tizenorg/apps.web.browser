@@ -71,6 +71,21 @@ collections {
                         relative: 1.0 0.0; }
                 }
             }
+            part {
+                name: "popup_content";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    fixed: 1 1;
+                    align: 0.0 0.0;
+                    rel1 { relative: 0.0 0.0; }
+                    rel2 {
+                        to: "IME_space";
+                        relative: 1.0 0.0; }
+                }
+            }
         }
         programs {
             program {
