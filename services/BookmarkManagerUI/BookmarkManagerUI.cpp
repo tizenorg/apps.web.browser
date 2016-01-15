@@ -87,6 +87,9 @@ void BookmarkManagerUI::showUI()
 {
     evas_object_show(b_mm_layout);
     m_focusManager.startFocusManager(m_gengrid);
+#if PROFILE_MOBILE
+    orientationChanged();
+#endif
 }
 
 void BookmarkManagerUI::hideUI()
@@ -103,9 +106,8 @@ Evas_Object* BookmarkManagerUI::getContent()
     M_ASSERT(m_parent);
     if (!b_mm_layout)
       b_mm_layout = createBookmarksLayout(m_parent);
-#if !PROFILE_MOBILE
-    elm_object_part_text_set(m_topContent, "title_text", "Bookmark manager");
-#endif
+    elm_object_part_text_set(m_topContent, "title_text", "Bookmark manager"); //TODO: add translation
+
     return b_mm_layout;
 }
 
@@ -180,8 +182,6 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
 //      (After fixing window managment)
 void BookmarkManagerUI::createGengrid()
 {
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
-
     m_gengrid = elm_gengrid_add(b_mm_layout);
     elm_object_part_content_set(b_mm_layout, "elm.swallow.grid", m_gengrid);
     elm_gengrid_align_set(m_gengrid, 0, 0);
@@ -190,15 +190,15 @@ void BookmarkManagerUI::createGengrid()
 #if PROFILE_MOBILE
     elm_scroller_bounce_set(m_gengrid, EINA_FALSE, EINA_TRUE);
     elm_object_scroll_lock_x_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_item_size_set(m_gengrid, (319+30) * efl_scale, (361+30) * efl_scale);
 #else
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_object_style_set(m_gengrid, "back_ground");
     elm_scroller_policy_set(m_gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_page_size_set(m_gengrid, 0, 327);
     evas_object_size_hint_weight_set(m_gengrid, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_gengrid, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
-    elm_gengrid_item_size_set(m_gengrid, 404 * efl_scale, 320 * efl_scale);
+    elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale, GENGRID_ITEM_HEIGHT * efl_scale);
 #endif
 }
 
@@ -217,7 +217,7 @@ void BookmarkManagerUI::createTopContent()
     elm_layout_file_set(m_topContent, m_edjFilePath.c_str(), "topContent");
 
     Evas_Object* close_button = elm_button_add(m_topContent);
-    elm_object_style_set(close_button, "hidden_button");
+    elm_object_style_set(close_button, "invisible_button");
     evas_object_smart_callback_add(close_button, "clicked", _close_clicked_cb, this);
     elm_object_part_content_set(m_topContent, "close_click", close_button);
 
@@ -291,6 +291,27 @@ void BookmarkManagerUI::addNewFolder()
     Elm_Object_Item* BookmarkView = elm_gengrid_item_append(m_gengrid, m_folder_new_item_class,
                                                             NULL, _bookmarkNewFolderClicked, this);
     elm_gengrid_item_selected_set(BookmarkView, EINA_FALSE);
+}
+
+void BookmarkManagerUI::orientationChanged()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    boost::optional<bool> portrait = isPortrait();
+    if (portrait) {
+        if (*portrait) {
+            BROWSER_LOGD("[%s:%d] LANDSCAPE", __PRETTY_FUNCTION__, __LINE__);
+            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH_LANDSCAPE * efl_scale,
+                                      GENGRID_ITEM_HEIGHT_LANDSCAPE * efl_scale);
+            elm_object_signal_emit(b_mm_layout, "switch_landscape", "ui");
+        } else {
+            BROWSER_LOGD("[%s:%d] PORTRAIT", __PRETTY_FUNCTION__, __LINE__);
+            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale,
+                                      GENGRID_ITEM_HEIGHT * efl_scale);
+            elm_object_signal_emit(b_mm_layout, "switch_vertical", "ui");
+        }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
 }
 #endif
 
