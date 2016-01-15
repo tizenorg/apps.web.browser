@@ -372,6 +372,7 @@ void SimpleUI::connectUISignals()
     m_bookmarkManagerUI->specialFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkSpecialFolderClicked, this));
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+    m_bookmarkManagerUI->isPortrait.connect(boost::bind(&SimpleUI::isRotated, this));
 #endif
 
     M_ASSERT(m_zoomUI.get());
@@ -978,6 +979,7 @@ void SimpleUI::onRotation()
     m_moreMenuUI->resetContent();
     m_bookmarkFlowUI->resetContent();
     resizeWindowOnIME(m_wvIMEStatus);
+    m_bookmarkManagerUI->orientationChanged();
 }
 //TODO: end of a workaround
 
