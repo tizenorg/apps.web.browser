@@ -21,6 +21,9 @@
 #include <boost/signals2/signal.hpp>
 
 #include "AbstractUIComponent.h"
+#if PROFILE_MOBILE
+#include "AbstractRotatable.h"
+#endif
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
@@ -35,6 +38,9 @@ namespace base_ui{
 class BROWSER_EXPORT BookmarkManagerUI
         : public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
+#if PROFILE_MOBILE
+        , public tizen_browser::interfaces::AbstractRotatable
+#endif
 {
 public:
     BookmarkManagerUI();
@@ -50,6 +56,7 @@ public:
     void setFoldersId(unsigned int all, unsigned int special);
 #if PROFILE_MOBILE
     void addNewFolder();
+    virtual void orientationChanged() override;
 #endif
     void addCustomFolders(services::SharedBookmarkFolderList folders);
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
@@ -104,7 +111,15 @@ private:
     Evas_Object *m_gengrid;
 #if !PROFILE_MOBILE
     Evas_Object *m_bottom_content;
+
+    const unsigned int GENGRID_ITEM_WIDTH = 404;
+    const unsigned int GENGRID_ITEM_HEIGHT = 320;
 #else
+    const unsigned int GENGRID_ITEM_WIDTH = 337;
+    const unsigned int GENGRID_ITEM_HEIGHT = 379;
+    const unsigned int GENGRID_ITEM_WIDTH_LANDSCAPE = 308;
+    const unsigned int GENGRID_ITEM_HEIGHT_LANDSCAPE = 326;
+
     Elm_Gengrid_Item_Class * m_folder_new_item_class;
 #endif
     Elm_Gengrid_Item_Class * m_folder_all_item_class;
