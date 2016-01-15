@@ -262,7 +262,9 @@ void SimpleUI::loadUIServices()
 void SimpleUI::connectUISignals()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
     m_viewManager.isLandscape.connect(boost::bind(&SimpleUI::isRotated, this));
+#endif
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
