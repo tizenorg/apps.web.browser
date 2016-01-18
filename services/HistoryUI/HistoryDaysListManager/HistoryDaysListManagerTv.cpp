@@ -96,12 +96,16 @@ void HistoryDaysListManagerTv::addHistoryItems(
     std::vector<WebsiteHistoryItemDataPtr> historyItems;
     for (auto& itemPair : items) {
         std::vector<WebsiteVisitItemDataPtr> pageViewItems;
-        for (auto& hi : itemPair.second)
+        std::shared_ptr<tools::BrowserImage> websiteFavicon = nullptr;
+        for (auto& hi : itemPair.second) {
             pageViewItems.push_back(
-                    std::make_shared < WebsiteVisitItemData > (hi));
+                    std::make_shared<WebsiteVisitItemData>(hi));
+            if (!websiteFavicon && hi->getFavIcon()->imageData)
+                websiteFavicon = hi->getFavIcon();
+        }
         historyItems.push_back(
-                std::make_shared < WebsiteHistoryItemData
-                        > (_("IDS_BR_BODY_TITLE"), itemPair.first, pageViewItems));
+                std::make_shared<WebsiteHistoryItemData>
+        (_("IDS_BR_BODY_TITLE"), itemPair.first, websiteFavicon, pageViewItems));
     }
     HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
             > (toString(period), historyItems);

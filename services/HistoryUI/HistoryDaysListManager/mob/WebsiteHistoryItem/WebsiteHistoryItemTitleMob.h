@@ -48,7 +48,8 @@ private:
     WebsiteHistoryItemDataPtr m_websiteHistoryItemData;
 
     Evas_Object* m_buttonSelect;
-    Evas_Object* m_imageIcon;
+    Evas_Object* m_imageFavIcon;
+    Evas_Object* m_imageFavIconMask;
 
     Evas_Object* m_layoutMain;
     Evas_Object* m_boxMainHorizontal;

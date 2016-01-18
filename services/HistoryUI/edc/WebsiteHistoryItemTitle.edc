@@ -1,3 +1,5 @@
+#include "../../../core/Tools/edc/SpacerRect.edc"
+
 collections {
 
     group {
@@ -106,26 +108,17 @@ collections {
     group {
         name: "layoutItemIcon";
         parts {
+            SPACER_RECT_HORIZONTAL("spacerLeft", 0, 18.0, 0.0)
             part {
-                name: "background";
-                type: RECT;
-                description {
-                    visible: 1;
-                    state: "default" 0.0;
-                    color: 85 85 85 255;
-                    rel1 { to: "swallowIcon"; relative: 0.0 0.0; }
-                    rel2 { to: "swallowIcon"; relative: 1.0 1.0; }
-                }
-            }
-            part {
-                name: "swallowIcon";
+                name: "swallowFavIcon";
+                scale: 1;
                 type: SWALLOW;
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
                     min: 58 58;
                     max: 58 58;
-                    rel1 { relative: 0.0 0.0; offset: 18.0 0.0; }
+                    rel1 { relative: 1.0 0.0; to: "spacerLeft"; }
                     rel2 { relative: 1.0 1.0; }
                 }
             }
