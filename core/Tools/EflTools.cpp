@@ -57,6 +57,21 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> getBrowserImage(Evas_Object 
     return std::make_shared<tizen_browser::tools::BrowserImage>();
 }
 
+std::shared_ptr<BrowserImage> createBrowserImage(const int width,
+        const int height, const int length,
+        const unsigned char* const imageData)
+{
+    auto image = std::make_shared<BrowserImage>();
+    image->imageType =
+            tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
+    image->width = width;
+    image->height = height;
+    image->dataSize = length;
+    image->imageData = (void*) malloc(length);
+    memcpy(image->imageData, (void*) imageData, length);
+    return image;
+}
+
 Evas_Object * getEvasImage(std::shared_ptr<BrowserImage> b_image, Evas_Object * parent)
 {
     if (!b_image) {

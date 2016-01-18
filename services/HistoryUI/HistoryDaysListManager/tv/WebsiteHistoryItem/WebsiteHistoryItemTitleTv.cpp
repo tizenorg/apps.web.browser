@@ -127,6 +127,13 @@ Evas_Object* WebsiteHistoryItemTitleTv::createLayoutIcon(Evas_Object* parent,
 {
     Evas_Object* layout = elm_layout_add(parent);
     elm_layout_file_set(layout, edjeFilePath.c_str(), "layoutItemIcon");
+
+    m_imageFavIcon = tizen_browser::tools::EflTools::getEvasImage(
+            m_websiteHistoryItemData->favIcon, parent);
+    elm_object_part_content_set(layout, "swallowFavIcon", m_imageFavIcon);
+
+    evas_object_show(m_imageFavIcon);
+
     return layout;
 }
 
