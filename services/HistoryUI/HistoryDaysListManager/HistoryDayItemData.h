@@ -38,13 +38,15 @@ typedef struct WebsiteHistoryItemData_
 {
     WebsiteHistoryItemData_(const std::string& websiteTitle,
             const std::string& websiteDomain,
+            std::shared_ptr<tools::BrowserImage> favIcon,
             const std::vector<WebsiteVisitItemDataPtr>& list) :
             websiteTitle(websiteTitle), websiteDomain(websiteDomain),
-            websiteVisitItems(list)
+            favIcon(favIcon), websiteVisitItems(list)
     {
     }
     const std::string websiteTitle;
     const std::string websiteDomain;
+    std::shared_ptr<tools::BrowserImage> favIcon;
     const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems;
 } WebsiteHistoryItemData;
 
