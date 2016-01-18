@@ -40,6 +40,13 @@ namespace EflTools
 {
     std::shared_ptr<BrowserImage> getBrowserImage(Evas_Object * eo_image);
 
+    /**
+     * Create BrowserImage based on data e.g. from bp_history_info_fmt.
+     */
+    std::shared_ptr<BrowserImage> createBrowserImage(const int width,
+        const int height, const int length,
+        const unsigned char* const imageData);
+
     Evas_Object * getEvasImage(std::shared_ptr<BrowserImage> b_image, Evas_Object * parent);
 
     std::vector< uint8_t > rawEvasImageData(std::shared_ptr<BrowserImage> browserImage);
