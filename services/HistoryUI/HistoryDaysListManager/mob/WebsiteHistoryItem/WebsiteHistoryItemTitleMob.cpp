@@ -29,7 +29,8 @@ WebsiteHistoryItemTitleMob::WebsiteHistoryItemTitleMob(
         WebsiteHistoryItemDataPtr websiteHistoryItemData)
     : m_websiteHistoryItemData(websiteHistoryItemData)
     , m_buttonSelect(nullptr)
-    , m_imageIcon(nullptr)
+    , m_imageFavIcon(nullptr)
+    , m_imageFavIconMask(nullptr)
     , m_layoutMain(nullptr)
     , m_boxMain(nullptr)
     , m_layoutContent(nullptr)
@@ -198,10 +199,18 @@ Evas_Object* WebsiteHistoryItemTitleMob::createLayoutIcon(Evas_Object* parent,
     Evas_Object* layout = elm_layout_add(parent);
     elm_layout_file_set(layout, edjeFilePath.c_str(), "layoutItemIcon");
 
-    m_imageIcon = elm_image_add(parent);
-    elm_image_file_set(m_imageIcon, edjeFilePath.c_str(), "groupImageFaviconMask");
-    elm_object_part_content_set(layout, "swallowIconMask",
-            m_imageIcon);
+    if (m_websiteHistoryItemData->favIcon) {
+        m_imageFavIcon = tizen_browser::tools::EflTools::getEvasImage(
+                m_websiteHistoryItemData->favIcon, parent);
+        elm_object_part_content_set(layout, "swallowFavIcon", m_imageFavIcon);
+    }
+
+    m_imageFavIconMask = elm_image_add(parent);
+    elm_image_file_set(m_imageFavIconMask, edjeFilePath.c_str(), "groupImageFaviconMask");
+    elm_object_part_content_set(layout, "swallowFavIconMask",
+            m_imageFavIconMask);
+
+    evas_object_show(m_imageFavIcon);
 
     return layout;
 }

@@ -61,6 +61,7 @@ private:
 
     Evas_Object* m_buttonSelect;
     Evas_Object* m_imageClear;
+    Evas_Object* m_imageFavIcon;
     Evas_Object* m_layoutMain;
     Evas_Object* m_boxMainHorizontal;
 

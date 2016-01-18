@@ -429,15 +429,14 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     history->setUrl(std::string(history_info.url ? history_info.url : ""));
     history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
-    //thumbail
-    std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
-    hi->imageType = tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
-    hi->width = history_info.thumbnail_width;
-    hi->height = history_info.thumbnail_height;
-    hi->dataSize = history_info.thumbnail_length;
-    hi->imageData = (void*) malloc(history_info.thumbnail_length);
-    memcpy(hi->imageData, (void*) history_info.thumbnail, history_info.thumbnail_length);
-    history->setThumbnail(hi);
+    auto thumbnail = tools::EflTools::createBrowserImage(
+            history_info.thumbnail_width, history_info.thumbnail_height,
+            history_info.thumbnail_length, history_info.thumbnail);
+    auto favIcon = tools::EflTools::createBrowserImage(
+            history_info.favicon_width, history_info.favicon_height,
+            history_info.favicon_length, history_info.favicon);
+    history->setThumbnail(thumbnail);
+    history->setFavIcon(favIcon);
 
     bp_history_adaptor_easy_free(&history_info);
 
