@@ -14,7 +14,4 @@ color_classes {
     color_class { name: "colorWebsiteHistoryItemTitleMouseIn";
                   color: 224 237 251 255;
                 }
-    color_class { name: "colorTemporaryFavicon";
-                  color: 19 147 161 255;
-                }
 }
