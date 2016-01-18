@@ -58,7 +58,8 @@ void HistoryService::setStorageServiceTestMode(bool testmode) {
 void HistoryService::errorPrint(std::string method) const
 {
     int error_code = bp_history_adaptor_get_errorcode();
-    BROWSER_LOGE("%s error: %d (%s)", method.c_str(), error_code,
+    BROWSER_LOGE("[%s:%d] %s error: %d (%s)", __PRETTY_FUNCTION__, __LINE__,
+            method.c_str(), error_code,
             tools::capiWebError::historyErrorToString(error_code).c_str());
 }
 
@@ -101,7 +102,11 @@ bool HistoryService::isDuplicate(const char* url) const
 
     for (int i = 0; i < count; i++) {
         bp_history_info_fmt history_info;
-        bp_history_adaptor_get_info(ids[i], offset, &history_info);
+        if (bp_history_adaptor_get_info(ids[i], offset, &history_info) < 0) {
+            BROWSER_LOGE("[%s:%d] bp_history_adaptor_get_info error ",
+                    __PRETTY_FUNCTION__, __LINE__);
+            return false;
+        }
         if (!history_info.url) {
             BROWSER_LOGD("Warning: history entry without url!");
         } else if (!strcmp(history_info.url, url)) {
@@ -109,8 +114,10 @@ bool HistoryService::isDuplicate(const char* url) const
             bp_history_adaptor_get_frequency(ids[i], &freq);
             bp_history_adaptor_set_frequency(ids[i], freq + 1);
             bp_history_adaptor_set_date_visited(ids[i],-1);
+            bp_history_adaptor_easy_free(&history_info);
             return true;
         }
+        bp_history_adaptor_easy_free(&history_info);
     }
     return false;
 }
@@ -199,7 +206,12 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
 
     for(int i = 0; i < j; i++){
         bp_history_info_fmt history_info;
-        bp_history_adaptor_get_info(ids[index_array[i]],offset,&history_info);
+        if (bp_history_adaptor_get_info(ids[index_array[i]], offset,
+                &history_info) < 0) {
+            BROWSER_LOGE("[%s:%d] bp_history_adaptor_get_info error ",
+                    __PRETTY_FUNCTION__, __LINE__);
+            return ret_history_list;
+        }
 
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[index_array[i]], std::string(history_info.url));
         history->setUrl(std::string(history_info.url ? history_info.url : ""));
@@ -220,6 +232,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         }
         if(history_info.frequency > 0)
             ret_history_list->push_back(history);
+        bp_history_adaptor_easy_free(&history_info);
     }
 
     free(ids);
@@ -275,12 +288,17 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_DATE_VISITED);
     for(int i = 0; i < count; i++) {
         bp_history_info_fmt history_info;
-        bp_history_adaptor_get_info(ids[i], offset, &history_info);
+        if (bp_history_adaptor_get_info(ids[i], offset, &history_info) < 0) {
+            BROWSER_LOGE("[%s:%d] bp_history_adaptor_get_info error ",
+                    __PRETTY_FUNCTION__, __LINE__);
+            return items;
+        }
 
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[i], std::string(history_info.url));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
         items->push_back(history);
+        bp_history_adaptor_easy_free(&history_info);
     }
 
     free(ids);
@@ -382,7 +400,11 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
 {
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_VISITED);
     bp_history_info_fmt history_info;
-    bp_history_adaptor_get_info(ids[idNumber], offset, &history_info);
+    if (bp_history_adaptor_get_info(ids[idNumber], offset, &history_info) < 0) {
+        BROWSER_LOGE("[%s:%d] bp_history_adaptor_get_info error ",
+                __PRETTY_FUNCTION__, __LINE__);
+        return std::make_shared <HistoryItem> (ids[idNumber], "");
+    }
 
     int date;
     bp_history_adaptor_get_date_created(ids[idNumber], &date);
@@ -416,6 +438,8 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     hi->imageData = (void*) malloc(history_info.thumbnail_length);
     memcpy(hi->imageData, (void*) history_info.thumbnail, history_info.thumbnail_length);
     history->setThumbnail(hi);
+
+    bp_history_adaptor_easy_free(&history_info);
 
     return history;
 }
