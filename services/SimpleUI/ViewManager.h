@@ -100,16 +100,6 @@ public:
     interfaces::AbstractUIComponent* topOfStack();
 
 /**
- * @brief Method decreases entire window when IME is opened.
- */
-    void decreaseWindow();
-
-/**
- * @brief Method enlarges entire window when IME is closed.
- */
-    void enlargeWindow();
-
-/**
  * @brief Signal checks if browser is in landscape mode.
  *
  * @return Returnes true when app is in landscape mode.
@@ -120,6 +110,7 @@ private:
     void updateLayout(interfaces::AbstractUIComponent* previousView);
 private:
     Evas_Object* m_mainLayout;
+    Evas_Object* m_conformant;
     Evas_Object* m_parentWindow;
     std::stack<interfaces::AbstractUIComponent*> m_viewStack;
 };

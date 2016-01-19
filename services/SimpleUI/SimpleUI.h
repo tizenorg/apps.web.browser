@@ -278,7 +278,6 @@ private:
     void onRotateCounterClockwisePressed();
     void onRotation();
     bool isLandscape();
-    void resizeWindowOnIME(bool isIMEOpened);
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -342,6 +341,7 @@ private:
     ViewManager m_viewManager;
     Evas_Object *main_window;
 #if PROFILE_MOBILE
+    Evas_Object *m_conformant;
     int angle = 0;
 #endif
 };

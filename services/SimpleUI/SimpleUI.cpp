@@ -78,17 +78,12 @@ SimpleUI::SimpleUI()
     elm_init(0, nullptr);
 
     main_window = elm_win_util_standard_add("browserApp", "browserApp");
+    elm_win_conformant_set(main_window, EINA_TRUE);
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");
 
     setMainWindow(main_window);
     m_viewManager.init(main_window);
-    evas_object_size_hint_weight_set(main_window, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set (main_window, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-#if PROFILE_MOBILE
-    elm_win_conformant_set(main_window, EINA_TRUE);
-#endif
 
     elm_win_resize_object_add(main_window, m_viewManager.getContent());
     evas_object_show(main_window);
@@ -878,9 +873,6 @@ void SimpleUI::setwvIMEStatus(bool status)
 {
     BROWSER_LOGD("[%s]", __func__);
     m_wvIMEStatus = status;
-#if PROFILE_MOBILE
-    resizeWindowOnIME(m_wvIMEStatus);
-#endif
 }
 
 void SimpleUI::onBackPressed()
@@ -982,7 +974,6 @@ void SimpleUI::onRotation()
     m_moreMenuUI->resetContent();
     m_bookmarkFlowUI->resetContent();
     m_settingsUI->orientationChanged();
-    resizeWindowOnIME(m_wvIMEStatus);
     m_bookmarkManagerUI->orientationChanged();
     m_webPageUI->orientationChanged();
     m_tabUI->orientationChanged();
@@ -992,14 +983,6 @@ void SimpleUI::onRotation()
 bool SimpleUI::isLandscape()
 {
     return elm_win_rotation_get(main_window) % 180;
-}
-
-void SimpleUI::resizeWindowOnIME(bool isIMEOpened)
-{
-    if (isIMEOpened)
-        m_viewManager.decreaseWindow();
-    else
-        m_viewManager.enlargeWindow();
 }
 #endif
 
