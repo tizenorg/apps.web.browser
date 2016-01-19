@@ -44,9 +44,21 @@ void ViewManager::init(Evas_Object* parentWindow)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parentWindow);
-    m_mainLayout = elm_layout_add(parentWindow);
+
+    m_conformant = elm_conformant_add(parentWindow);
+    evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show(m_conformant);
+    elm_win_resize_object_add(parentWindow, m_conformant);
+
+    Evas_Object* bx = elm_box_add(parentWindow);
+    evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bx, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    m_mainLayout = elm_layout_add(bx);
     evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (m_mainLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_mainLayout);
+    elm_box_pack_end(bx, m_mainLayout);
 
     Eina_Bool ret = elm_layout_file_set(m_mainLayout,
                                         (std::string(EDJE_DIR)
@@ -55,8 +67,7 @@ void ViewManager::init(Evas_Object* parentWindow)
     if (!ret)
         BROWSER_LOGD("[%s:%d]  elm_layout_file_set falied !!!",__PRETTY_FUNCTION__, __LINE__);
 
-    elm_win_resize_object_add(parentWindow, m_mainLayout);
-    evas_object_show(m_mainLayout);
+    elm_object_content_set(m_conformant, bx);
 }
 
 ViewManager::~ViewManager()
@@ -153,19 +164,6 @@ interfaces::AbstractUIComponent* ViewManager::topOfStack()
         return m_viewStack.top();
     else
         return nullptr;
-}
-
-void ViewManager::decreaseWindow()
-{
-    if (*isLandscape())
-        elm_object_signal_emit(getContent(), "open_landscape_ime", "ui");
-    else
-        elm_object_signal_emit(getContent(), "open_portrait_ime", "ui");
-}
-
-void ViewManager::enlargeWindow()
-{
-    elm_object_signal_emit(getContent(), "hidden_ime", "ui");
 }
 
 
