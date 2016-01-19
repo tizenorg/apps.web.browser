@@ -61,7 +61,7 @@ SettingsUI::SettingsUI()
     m_setting_item_class->func.state_get = nullptr;
     m_setting_item_class->func.del = nullptr;
 
-    initializeButtonMap();
+    updateButtonMap();
 }
 
 SettingsUI::~SettingsUI()
@@ -76,7 +76,7 @@ void SettingsUI::init(Evas_Object* parent)
     m_parent = parent;
 }
 
-void SettingsUI::initializeButtonMap() {
+void SettingsUI::updateButtonMap() {
     ItemData deleteWebBrowsing;
     //TODO Add translation API
     deleteWebBrowsing.buttonText="Delete Web browsing data";
@@ -209,6 +209,16 @@ char* SettingsUI::_gengrid_item_text_get(void* data, Evas_Object* /*obj*/, const
    return nullptr;
 }
 
+void SettingsUI::_language_changed(void *data, Evas_Object* obj, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->updateButtonMap();
+        elm_gengrid_realized_items_update(obj);
+    }
+}
+
 Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -238,6 +248,7 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
     elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
     elm_gengrid_item_size_set(scroller, 720 * efl_scale, 120 * efl_scale);
+    evas_object_smart_callback_add(scroller, "language,changed", _language_changed, this);
 
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], _del_selected_data_menu_clicked_cb, this);
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], _reset_mv_menu_clicked_cb, this);
