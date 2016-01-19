@@ -43,12 +43,12 @@ TextPopup::TextPopup(Evas_Object* parent,
                      const std::string& title,
                      const std::string& message)
     : m_parent(parent)
-    , m_title(title)
-    , m_message(message)
     , m_layout(nullptr)
     , m_buttons_box(nullptr)
     , m_button_left(nullptr)
     , m_button_right(nullptr)
+    , m_title(title)
+    , m_message(message)
 {
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SimpleUI/TextPopup.edj");
