@@ -46,7 +46,7 @@ public:
     SettingsUI();
     ~SettingsUI();
     void init(Evas_Object* parent);
-    void initializeButtonMap();
+    void updateButtonMap();
     Evas_Object* getContent();
     void showUI();
     void hideUI();
@@ -99,7 +99,9 @@ private:
     static void _content_settings_menu_clicked_cb(void* data, Evas_Object* obj, void* event_info);
 
     static void _privacy_menu_clicked_cb(void* data, Evas_Object* obj, void * event_info);
+
     static char* _gengrid_item_text_get(void* /*data*/, Evas_Object* obj, const char* /*part*/);
+    static void _language_changed(void *data, Evas_Object*obj , void*);
 
     std::unique_ptr<AutoFillFormManager> m_autoFillManager;
     Evas_Object* m_settings_layout;
