@@ -230,6 +230,9 @@ void WebPageUI::switchViewToIncognitoPage()
     m_statesMgr->set(WPUState::MAIN_INCOGNITO_PAGE);
     toIncognito(true);
     setMainContent(m_privateLayout);
+#if PROFILE_MOBILE
+    orientationChanged();
+#endif
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
@@ -366,6 +369,23 @@ void WebPageUI::onYellowKeyPressed()
         lockUrlHistoryList();
     }
 }
+
+#if PROFILE_MOBILE
+void WebPageUI::orientationChanged()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    auto landscape = isLandscape();
+    if (landscape) {
+        if (*landscape)
+            elm_object_signal_emit(m_privateLayout, "show_incognito_landscape", "ui");
+        else
+            elm_object_signal_emit(m_privateLayout, "show_incognito_vertical", "ui");
+    }
+    else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+#endif
 
 void WebPageUI::createLayout()
 {

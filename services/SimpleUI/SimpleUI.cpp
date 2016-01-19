@@ -343,6 +343,7 @@ void SimpleUI::connectUISignals()
 #if PROFILE_MOBILE
     m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
     m_moreMenuUI->isRotated.connect(boost::bind(&SimpleUI::isLandscape, this));
+    m_webPageUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
 #endif
 
     M_ASSERT(m_bookmarkDetailsUI.get());
@@ -982,6 +983,7 @@ void SimpleUI::onRotation()
     m_settingsUI->orientationChanged();
     resizeWindowOnIME(m_wvIMEStatus);
     m_bookmarkManagerUI->orientationChanged();
+    m_webPageUI->orientationChanged();
 }
 //TODO: end of a workaround
 
