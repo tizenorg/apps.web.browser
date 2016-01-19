@@ -83,6 +83,7 @@ public:
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
+    void incognitoOrientation();
 #endif
 
     boost::signals2::signal<void ()> backPage;
@@ -92,6 +93,7 @@ public:
     boost::signals2::signal<void ()> showTabUI;
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> hideMoreMenu;
+    boost::signals2::signal<bool ()> isRotated;
 #endif
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;

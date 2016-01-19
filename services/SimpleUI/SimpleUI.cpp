@@ -342,6 +342,7 @@ void SimpleUI::connectUISignals()
 #if PROFILE_MOBILE
     m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
     m_moreMenuUI->isRotated.connect(boost::bind(&SimpleUI::isRotated, this));
+    m_webPageUI->isRotated.connect(boost::bind(&SimpleUI::isRotated, this));
 #endif
 
     M_ASSERT(m_bookmarkDetailsUI.get());
@@ -980,6 +981,7 @@ void SimpleUI::onRotation()
     m_bookmarkFlowUI->resetContent();
     resizeWindowOnIME(m_wvIMEStatus);
     m_bookmarkManagerUI->orientationChanged();
+    m_webPageUI->incognitoOrientation();
 }
 //TODO: end of a workaround
 

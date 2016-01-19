@@ -369,6 +369,20 @@ void WebPageUI::onYellowKeyPressed()
     }
 }
 
+void WebPageUI::incognitoOrientation()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::optional<bool> rotated = isRotated();
+    if(rotated){
+        if (*rotated)
+            elm_object_signal_emit(m_privateLayout, "show_incognito_landscape", "ui");
+        else
+            elm_object_signal_emit(m_privateLayout, "show_incognito_vertical", "ui");
+    }
+    else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+
 void WebPageUI::createLayout()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -443,6 +457,8 @@ void WebPageUI::createPrivateLayout()
     evas_object_show(m_bookmarkManagerButton);
 
     elm_object_part_content_set(m_privateLayout, "bookmarkmanager_click", m_bookmarkManagerButton);
+
+    incognitoOrientation();
 }
 
 void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
