@@ -45,6 +45,7 @@ public:
 
     void setTitle(const std::string& title);
     void setMessage(const std::string& message);
+    void setAcceptRightLeft(bool right_left);
     void setLeftButton(const PopupButtons& button);
     void setRightButton(const PopupButtons& button);
     void createLayout();
@@ -58,15 +59,16 @@ private:
 
     Evas_Object* m_parent;
     Evas_Object* m_layout;
-    Evas_Object* m_left_button;
-    Evas_Object* m_right_button;
+    Evas_Object* m_buttons_box;
+    Evas_Object* m_button_left;
+    Evas_Object* m_button_right;
     PopupButtons m_left_button_type;
     PopupButtons m_right_button_type;
     std::string m_title;
     std::string m_message;
     static void _left_response_cb(void* data, Evas_Object* obj, void* event_info);
     static void _right_response_cb(void* data, Evas_Object* obj, void* event_info);
-    std::string edjFilePath;
+    std::string m_edjFilePath;
 };
 
 }
