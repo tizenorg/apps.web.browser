@@ -24,16 +24,17 @@ TextPopup* TextPopup::createPopup(Evas_Object* parent,
 TextPopup::~TextPopup()
 {
     buttonClicked.disconnect_all_slots();
-    evas_object_del(m_left_button);
-    evas_object_del(m_right_button);
+    evas_object_del(m_button_right);
+    evas_object_del(m_button_left);
+    evas_object_del(m_buttons_box);
     evas_object_del(m_layout);
 }
 
 TextPopup::TextPopup(Evas_Object* parent) : m_parent(parent)
 {
-    edjFilePath = EDJE_DIR;
-    edjFilePath.append("SimpleUI/TextPopup.edj");
-    elm_theme_extension_add(nullptr, edjFilePath.c_str());
+    m_edjFilePath = EDJE_DIR;
+    m_edjFilePath.append("SimpleUI/TextPopup.edj");
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
 }
 
 TextPopup::TextPopup(Evas_Object* parent,
@@ -43,9 +44,9 @@ TextPopup::TextPopup(Evas_Object* parent,
     , m_title(title)
     , m_message(message)
 {
-    edjFilePath = EDJE_DIR;
-    edjFilePath.append("SimpleUI/TextPopup.edj");
-    elm_theme_extension_add(nullptr, edjFilePath.c_str());
+    m_edjFilePath = EDJE_DIR;
+    m_edjFilePath.append("SimpleUI/TextPopup.edj");
+    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
 }
 
 void TextPopup::show()
@@ -109,30 +110,44 @@ void TextPopup::createLayout()
 
     m_layout = elm_layout_add(m_parent);
     elm_object_tree_focus_allow_set(m_layout, EINA_FALSE);
-    elm_layout_file_set(m_layout, edjFilePath.c_str(), "text_popup_layout");
-    evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "text_popup_layout");
+    evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, 0);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_layout_text_set(m_layout, "popup_title", m_title.c_str());
-    elm_layout_text_set(m_layout, "popup_text", m_message.c_str());
-    elm_layout_text_set(m_layout,
-                        "ok_button_text",
-                        buttonsTranslations[m_right_button_type].c_str());
-    elm_layout_text_set(m_layout,
-                        "cancel_button_text",
-                        buttonsTranslations[m_left_button_type].c_str());
+    elm_object_translatable_part_text_set(m_layout, "title_text", m_title.c_str());
+    elm_object_translatable_text_set(m_layout, m_message.c_str());
 
-    m_right_button = elm_button_add(m_layout);
-    elm_object_style_set(m_right_button, "invisible_button");
-    evas_object_smart_callback_add(m_right_button, "clicked", _right_response_cb, this);
-    elm_layout_content_set(m_layout, "ok_button_click", m_right_button);
+    m_buttons_box = elm_box_add(m_layout);
+    elm_box_horizontal_set(m_buttons_box, EINA_TRUE);
+    evas_object_size_hint_weight_set(m_buttons_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_buttons_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    m_left_button = elm_button_add(m_layout);
-    elm_object_style_set(m_left_button, "invisible_button");
-    evas_object_smart_callback_add(m_left_button, "clicked", _left_response_cb, this);
-    elm_layout_content_set(m_layout, "cancel_button_click", m_left_button);
+    m_button_left = elm_button_add(m_buttons_box);
+    elm_object_style_set(m_button_left, "text-popup-button");
+    evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(m_button_left, "elm.text", buttonsTranslations[m_left_button_type].c_str());
+    elm_box_pack_end(m_buttons_box, m_button_left);
+    evas_object_smart_callback_add(m_button_left, "clicked", _left_response_cb, (void*)this);
+
+    evas_object_show(m_button_left);
+
+    m_button_right = elm_button_add(m_buttons_box);
+    elm_object_style_set(m_button_right, "text-popup-button");
+    evas_object_size_hint_weight_set(m_button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(m_button_right, "elm.text", buttonsTranslations[m_right_button_type].c_str());
+    elm_box_pack_end(m_buttons_box, m_button_right);
+    evas_object_smart_callback_add(m_button_right, "clicked", _right_response_cb, (void*)this);
+
+    evas_object_show(m_button_right);
+    elm_object_signal_emit(m_button_right, "visible", "ui");
+
+    evas_object_show(m_buttons_box);
+    elm_object_part_content_set(m_layout, "buttons_swallow", m_buttons_box);
 
     evas_object_show(m_layout);
+    elm_object_part_content_set(m_parent, "popup_content", m_layout);
 }
 }
 
