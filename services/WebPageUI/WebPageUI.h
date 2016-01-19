@@ -21,6 +21,7 @@
 #include <boost/signals2/signal.hpp>
 #include "AbstractService.h"
 #include "AbstractUIComponent.h"
+#include "AbstractRotatable.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "ButtonBar.h"
@@ -36,7 +37,13 @@ typedef std::shared_ptr<const WebPageUIStatesManager> WPUStatesManagerPtrConst;
 class UrlHistoryList;
 typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
 
-class BROWSER_EXPORT WebPageUI : public tizen_browser::core::AbstractService, public tizen_browser::interfaces::AbstractUIComponent {
+class BROWSER_EXPORT WebPageUI
+        : public tizen_browser::core::AbstractService
+        , public tizen_browser::interfaces::AbstractUIComponent
+#if PROFILE_MOBILE
+        , public tizen_browser::interfaces::AbstractRotatable
+#endif
+{
 public:
     WebPageUI();
     virtual ~WebPageUI();
@@ -46,6 +53,9 @@ public:
     UrlHistoryPtr getUrlHistoryList();
     virtual void showUI();
     virtual void hideUI();
+#if PROFILE_MOBILE
+    virtual void orientationChanged() override ;
+#endif
     void loadStopped();
     void loadStarted();
     void progressChanged(double progress);
