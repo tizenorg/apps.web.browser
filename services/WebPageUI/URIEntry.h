@@ -36,6 +36,12 @@ public:
         , IconTypeDoc
         , IconTypeFav
     };
+    // Enumerate whether we should keep selected txt
+    // TODO It is temporary solution. Remove when input events will be fixed
+    enum class SelectionState {
+        SELECTION_KEEP
+        , SELECTION_NONE
+    };
     URIEntry();
     ~URIEntry();
     void init(Evas_Object* parent);
@@ -101,6 +107,7 @@ private:
     static void unfocused(void* data, Evas_Object* obj, void* event_info);
 
     void editingCompleted();
+    // TODO This method should be removed when input events will be fixed
     void selectionTool();
     void setUrlGuideText(const char* txt) const;
 
@@ -113,6 +120,8 @@ private:
     static void _uri_entry_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_double_clicked(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_selection_changed(void* data, Evas_Object* obj, void* event_info);
+    static void _uri_entry_longpressed(void* data, Evas_Object* obj, void* event_info);
 #if PROFILE_MOBILE
     static void _uri_cancel_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     void showCancelIcon();
@@ -125,15 +134,13 @@ private:
     Evas_Object* m_entry;
     Evas_Object* m_favicon;
     Evas_Object* m_entry_layout;
-    unsigned m_entryClickCounter;
+    SelectionState m_entrySelectionState;
     std::string m_oryginalEntryText;
     std::string m_pageTitle;
     std::string m_URI;
+    bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
 
-#if !PROFILE_MOBILE
-    Evas_Object* m_entryBtn;
-#endif
 };
 
 
