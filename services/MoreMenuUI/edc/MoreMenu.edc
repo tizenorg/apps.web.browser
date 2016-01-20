@@ -873,12 +873,12 @@ group { name: "elm/gengrid/item/menu_item/default";
 	}
    styles {
       style { name: "textblock_white";
-         base: "font=Sans font_size="20" color=#5c5c5c";
+         base: "font=Sans font_size="20" color=#5c5c5c ellipsis=1.0";
       }
    }
    styles {
       style { name: "textblock_white_bold";
-         base: "font=Sans:style=Bold font_size="20" color=#5c5c5c";
+         base: "font=Sans:style=Bold font_size="20" color=#5c5c5c ellipsis=1.0";
       }
    }
 	parts {
