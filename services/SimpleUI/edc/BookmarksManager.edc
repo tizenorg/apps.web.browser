@@ -554,7 +554,7 @@ collections {
     group { name: "elm/label/base/bookmarks_manager_label";
        styles {
           style { name: "label_style";
-             base: "font="FNBD" font_size=30 text_class=tb_plain align=center color=#d3d3d3ff";
+             base: "font="FNBD" font_size=30 text_class=tb_plain align=center color=#d3d3d3ff ellipsis=1.0";
              tag: "br" "\n";
              tag: "hilight" "+ font="FNBD" color=#d3d3d3ff text_class=tb_plain";
              tag: "b" "+ font="FNBD" color=#d3d3d3ff text_class=tb_light";

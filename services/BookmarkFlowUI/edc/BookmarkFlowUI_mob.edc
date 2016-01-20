@@ -302,80 +302,50 @@ collections {
     group { name: "button_with_background";
             styles {
                 style { name: "button_style";
-                        base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0";
+                        base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.5 valign=0.5 ellipsis=1.0";
                       }
                 style { name: "button_style_dissabled";
-                        base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0";
+                        base: "font=Tizen:style=Regular font_size=30 color=#969696 align=0.5 valign=0.5 ellipsis=1.0";
                       }
             }
             parts {
-                rect { name: "corner_spacer_0";
-                       scale: 1;
-                       description { state: "default" 0.0;
-                                     visible: DEVELOPMENT;
-                                     color: 255 255 255 127;
-                                     min: BUTTON_BG_OFFSET_X BUTTON_BG_OFFSET_Y;
-                                     max: BUTTON_BG_OFFSET_X BUTTON_BG_OFFSET_Y;
-                                     fixed: 1 1;
-                                     align: 0.0 0.0;
-                                     rel1.relative: 0 0;
-                                     rel2.relative: 1 1;
-                                   }
-                     }
-                rect { name: "corner_spacer_1";
-                       scale: 1;
-                       description { state: "default" 0.0;
-                                     visible: DEVELOPMENT;
-                                     color: 255 255 255 127;
-                                     min: BUTTON_BG_OFFSET_X BUTTON_BG_OFFSET_Y;
-                                     max: BUTTON_BG_OFFSET_X BUTTON_BG_OFFSET_Y;
-                                     fixed: 1 1;
-                                     align: 0.0 0.0;
-                                     rel1 { relative: 1.0 1.0;
-                                            to: "elm.text";
-                                          }
-                                     rel2.relative: 1 1;
-                                   }
-                     }
-                rect { name: "bg";
-                       scale: 1;
-                       description { state: "default" 0.0;
-                                     visible: 0;
-                                     color: 224 237 251 255;
-                                     rel1 { relative: 0 0;
-                                            to: "corner_spacer_0";
-                                          }
-                                     rel2 { relative: 1 1;
-                                            to: "corner_spacer_1";
-                                          }
-                                   }
-                       description { state: "visible" 0.0;
-                                     inherit: "default";
-                                     visible: 1;
-                                   }
-                     }
+                rect {
+                    name: "bg";
+                    scale: 1;
+                    description {
+                        visible: DEVELOPMENT;
+                        color: 0 0 0 127;
+                        fixed: 1 1;
+                        min: 103 108;
+                        max: 143 108;
+                        rel1.relative: 0 0;
+                        rel2.relative: 1 1;
+                    }
+                }
                 part { name: "elm.text";
-                       scale: 1;
-                       type: TEXTBLOCK;
-                       description { state: "default" 0.0;
-                                     visible: 1;
-                                     min: 0 40;
-                                     max: -1 40;
-                                     fixed: 0 0;
-                                     align: 0.0 0.0;
-                                     rel1 { relative: 1 1;
-                                            to: "corner_spacer_0";
-                                          }
-                                     rel2.relative: 1 1;
-                                     text { style: "button_style";
-                                            align: 0 0;
-                                          }
-                                   }
-                       description { state: "dissabled" 0.0;
-                                     inherit: "default";
-                                     text.style: "button_style_dissabled";
-                                   }
-                     }
+                    scale: 1;
+                    type: TEXTBLOCK;
+                    description {
+                        state: "default" 0.0;
+                        visible: 1;
+                        min: 143 108;
+                        max: 143 108;
+                        fixed: 0 0;
+                        align: 0 0.5;
+                        rel1 { relative: 0 0; to: "bg";}
+                        rel2.relative: 1 1;
+                        text {
+                            style: "button_style";
+                            align: 0.5 0.5;
+                        }
+                    }
+                    description {
+                        state: "dissabled" 0.0;
+                        inherit: "default";
+                        text.style: "button_style_dissabled";
+                    }
+
+                 }
                 part { name: "button_click";
                        type: SWALLOW;
                        scale: 1;
@@ -426,19 +396,7 @@ collections {
         styles {
             style {
                 name: "title_area_text_style";
-                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5";
-            }
-            style {
-                name: "title_area_cancel_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0";
-            }
-            style {
-                name: "title_area_save_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=1.0";
-            }
-            style {
-                name: "title_area_save_dissabled";
-                base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0";
+                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5 ellipsis=1.0";
             }
         }
         parts {
@@ -449,122 +407,82 @@ collections {
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: 0 TITLE_AREA_HEIGHT;
-                    max: -1 TITLE_AREA_HEIGHT;
-                    fixed: 0 1;
                     visible: 1;
-                    color: 255 255 255 255;
+                    min: 720 108;
+                    max: -1 108;
+                    color: 0 0 0 0;
                     rel1.relative: 0.0 0.0;
                     rel2.relative: 1.0 1.0;
                 }
             }
-            rect {
+            part {
                 name: "cancel_spacer";
                 scale: 1;
+                type: RECT;
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    min: TITLE_AREA_CANCEL_CLICK_OFFSET_X TITLE_AREA_CANCEL_CLICK_OFFSET_Y;
-                    max: TITLE_AREA_CANCEL_CLICK_OFFSET_X TITLE_AREA_CANCEL_CLICK_OFFSET_Y;
+                    color: 255 0 0 255;
+                    min: 16 108;
+                    max: 16 108;
                     fixed: 1 1;
                     align: 0.0 0.0;
-                    rel1 {
-                        to: "title_area_bg";
-                        relative: 0.0 0.0;
-                    }
-                    rel2.relative: 1.0 1.0;
+                    rel1 { relative: 0 0; to: "title_area_bg";}
+                    rel2 { relative: 1 1; to: "title_area_bg";}
                 }
             }
-            part { name: "cancel_swallow";
-                   type: SWALLOW;
-                   scale: 1;
-                   mouse_events: 1;
-                   description { state: "default" 0.0;
-                                 align: 0.0 0.0;
-                                 min: TITLE_AREA_CANCEL_WIDTH TITLE_AREA_CANCEL_HEIGHT;
-                                 max: TITLE_AREA_CANCEL_WIDTH -1;
-                                 fixed: 0 0;
-                                 visible: 1;
-                                 rel1 { relative: 1.0 1.0;
-                                        to: "cancel_spacer";
-                                 }
-                                 rel2 { relative: 1.0 1.0;
-                                        to: "title_area_bg";
-                                      }
-                               }
-                 }
-            rect { name: "save_spacer_0";
-                   scale: 1;
-                   description { state: "default" 0.0;
-                                 align: 0 0;
-                                 min: 0 TITLE_AREA_SAVE_CLICK_OFFSET_Y;
-                                 max: 0 TITLE_AREA_SAVE_CLICK_OFFSET_Y;
-                                 fixed: 1 1;
-                                 visible: DEVELOPMENT;
-                                 color: 255 255 255 127;
-                                 rel1 { relative: 0 0;
-                                        to: "title_area_bg";
-                                      }
-                                 rel2 { relative: 1 1;
-                                        to: "title_area_bg";
-                                      }
-                               }
-                 }
-            rect { name: "save_spacer_1";
-                   scale: 1;
-                   description { state: "default" 0.0;
-                                 align: 1.0 1.0;
-                                 min: TITLE_AREA_SAVE_CLICK_OFFSET_X 0;
-                                 max: TITLE_AREA_SAVE_CLICK_OFFSET_X 0;
-                                 fixed: 1 1;
-                                 visible: DEVELOPMENT;
-                                 color: 255 255 255 127;
-                                 rel1 { relative: 0.0 0.0;
-                                        to: "title_area_bg";
-                                      }
-                                 rel2 { relative: 1.0 1.0;
-                                        to: "title_area_bg";
-                                      }
-                               }
-                 }
-            part { name: "save_swallow";
-                   type: SWALLOW;
-                   scale: 1;
-                   mouse_events: 1;
-                   description { state: "default" 0.0;
-                                 align: 1 1;
-                                 min: TITLE_AREA_CANCEL_WIDTH TITLE_AREA_CANCEL_HEIGHT;
-                                 max: TITLE_AREA_CANCEL_WIDTH -1;
-                                 fixed: 0 0;
-                                 visible: 1;
-                                 rel1 { relative: 1.0 1.0;
-                                        to: "save_spacer_0";
-                                 }
-                                 rel2 { relative: 0.0 0.0;
-                                        to: "save_spacer_1";
-                                      }
-                               }
-                 }
-            part { name: "text_bg_spacer";
-                   type: RECT;
-                   scale: 1;
-                   description { state: "default" 0.0;
-                                 align: 0 0;
-                                 min: 0 TITLE_AREA_TEXT_OFFSET_Y;
-                                 max: 0 TITLE_AREA_TEXT_OFFSET_Y;
-                                 fixed: 1 1;
-                                 visible: DEVELOPMENT;
-                                 color: 255 255 255 127;
-                                 rel1 { relative: 0 0;
-                                        to: "title_area_bg";
-                                      }
-                                 rel2 { relative: 1 1;
-                                        to : "title_area_bg";
-                                      }
-                               }
-                 }
+            part {
+                name: "cancel_swallow";
+                scale: 1;
+                type: SWALLOW;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 0 255 0 255;
+                    min: 103 108;
+                    max: 143 108;
+                    fixed: 1 1;
+                    align: 0 0;
+                    rel1 { relative: 1 0; to: "cancel_spacer";}
+                    rel2 { relative: 1 1; to: "cancel_spacer";}
+                }
+            }
+            part {
+                name: "save_spacer";
+                scale: 1;
+                type: RECT;
+                mouse_events: 0;
+                description {
+                    state: "default" 0.0;
+                    visible: DEVELOPMENT;
+                    color: 0 0 255 255;
+                    min: 16 108;
+                    max: 16 108;
+                    fixed: 1 1;
+                    align: 1.0 1.0;
+                    rel1 { relative: 0 0; to: "title_area_bg";}
+                    rel2 { relative: 1 1; to: "title_area_bg";}
+                }
+            }
+            part {
+                name: "save_swallow";
+                scale: 1;
+                type: SWALLOW;
+                mouse_events: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    color: 0 255 255 255;
+                    min: 103 108;
+                    max: 143 108;
+                    fixed: 1 1;
+                    align: 1 1;
+                    rel1 { relative: 0 0; to: "title_area_bg";}
+                    rel2 { relative: 0 1; to: "save_spacer";}
+                }
+            }
             part {
                 name: "text_bg";
                 type: RECT;
@@ -572,16 +490,16 @@ collections {
                 mouse_events: 0;
                 description {
                     state: "default" 0.0;
-                    align: 0.5 0.0;
-                    min: TITLE_AREA_TEXT_WIDTH TITLE_AREA_TEXT_HEIGHT;
-                    max: TITLE_AREA_TEXT_WIDTH -1;
-                    fixed: 1 0;
+                    align: 0.5 0;
+                    min: 360 108;
+                    max: 360 108;
+                    fixed: 1 1;
                     visible: DEVELOPMENT;
                     color: 210 180 140 255; //tan
-                    rel1 { relative: 1.0 1.0;
-                           to: "text_bg_spacer";
+                    rel1 { relative: 0 0;
+                           to: "title_area_bg";
                     }
-                    rel2 { relative: 1.0 1.0;
+                    rel2 { relative: 1 1;
                            to: "title_area_bg";
                          }
                 }
@@ -594,18 +512,18 @@ collections {
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    align: 0.0 0.0;
+                    align: 0 0;
                     fixed: 0 0;
                     rel1 {
                         to: "text_bg";
-                        relative: 0.0 0.0;
+                        relative: 0 0;
                     }
                     rel2 {
                         to: "text_bg";
-                        relative: 1.0 1.0;
+                        relative: 1 1;
                     }
                     text { style: "title_area_text_style";
-                           align: 0 0;
+                           align: 0.5 0.5;
                          }
                 }
             }
@@ -624,19 +542,19 @@ collections {
         styles {
             style {
                 name: "site_title_style";
-                base: "font=Tizen:style=Regular font_size=38 color=#333333 align=0.0";
+                base: "font=Tizen:style=Regular font_size=38 color=#333333 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "site_url_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#696f76 align=0.0 ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=30 color=#696f76 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "remove_style";
-                base: "font=Tizen:style=Regular font_size=34 color=#ffffff align=0.5";
+                base: "font=Tizen:style=Regular font_size=34 color=#ffffff align=0.5 ellipsis=1.0";
             }
             style {
                 name: "dropdown_style";
-                base: "font=Tizen:style=Regular font_size=40 color=#0a84e5 align=0.0 ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=40 color=#0a84e5 align=0.0 ellipsis=1.0";
             }
         }
         parts {
@@ -2165,7 +2083,7 @@ collections {
         styles {
             style {
                 name: "folder_text_normal";
-                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#333333 align=0.0  ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#333333 align=0.0 ellipsis=1";
             }
         }
         parts {
