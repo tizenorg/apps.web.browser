@@ -64,7 +64,7 @@ if (${PROFILE} MATCHES "mobile")    # mobile profile
         RightButtonBar_mob.edc
         URIEntry_mob.edc
         PrivateMode_mob.edc
-        UrlHistoryList_mob.edc
+        UrlHistoryList.edc
         )
 else (${PROFILE} MATCHES "mobile")  # tv profile
     set(edcFiles

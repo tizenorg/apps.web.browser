@@ -21,6 +21,7 @@
 #include "UrlMatchesStyler.h"
 #include "GenlistItemsManager.h"
 #include "Config.h"
+#include <EflTools.h>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -92,10 +93,7 @@ Evas_Object* GenlistManager::createWidget(Evas_Object* parentLayout)
     if (!widgetExists()) {
         m_parentLayout = parentLayout;
         m_genlist = elm_genlist_add(parentLayout);
-        evas_object_size_hint_weight_set(m_genlist, EVAS_HINT_EXPAND,
-        EVAS_HINT_EXPAND);
-        evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL,
-        EVAS_HINT_FILL);
+        tools::EflTools::setExpandHints(m_genlist);
         elm_scroller_bounce_set(m_genlist, EINA_FALSE, EINA_FALSE);
         elm_scroller_movement_block_set(m_genlist,
                 ELM_SCROLLER_MOVEMENT_BLOCK_HORIZONTAL);
@@ -226,6 +224,7 @@ Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
         const char* part)
 {
     Evas_Object* layout = elm_layout_add(obj);
+    tools::EflTools::setExpandHints(layout);
     if (strcmp(part, "matched_url") == 0) {
         const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
         if (item) {
@@ -233,10 +232,6 @@ Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
             edjFilePath.append("WebPageUI/UrlHistoryList.edj");
             elm_layout_file_set(layout, edjFilePath.c_str(), "layoutMatchedUrl");
             elm_object_text_set(layout, item->urlHighlighted.c_str());
-            evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND,
-            EVAS_HINT_EXPAND);
-            evas_object_size_hint_align_set(layout, EVAS_HINT_FILL,
-            EVAS_HINT_FILL);
         }
     }
     return layout;

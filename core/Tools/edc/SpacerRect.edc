@@ -11,6 +11,8 @@ color_classes{
 #define SPACER_RECT(NAME, VISIBLE, ALIGNX, ALIGNY, MINW, MINH, MAXW, MAXH) \
 rect { NAME; \
        scale: 1; \
+       mouse_events: 1; \
+       repeat_events: 1; \
        desc { "default"; \
               visible: VISIBLE; color_class: "colorSpacer"; \
               align: ALIGNX ALIGNY; \

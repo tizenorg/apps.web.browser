@@ -104,10 +104,10 @@ private:
     int ITEMS_NUMBER_MAX;
     // the minimum length of the keyword used to search matches
     int KEYWORD_LENGTH_MIN;
-    Evas_Object* m_parent = nullptr;
+    Evas_Object* m_parent;
     // entry widget from which change signals are received
-    Evas_Object* m_entry = nullptr;
-    Evas_Object* m_layout = nullptr;
+    Evas_Object* m_entry;
+    Evas_Object* m_layout;
     string m_edjFilePath;
 
     // content of the edited entry, needed to restore edited value
@@ -115,7 +115,7 @@ private:
     // content of the entry before edition: needed to restore original URL value
     string m_entryURLContent;
 
-    bool m_widgetFocused = false;
+    bool m_widgetFocused;
     static Ecore_Timer* m_widgetFocusChangeDelayedTimer;
 
 };
