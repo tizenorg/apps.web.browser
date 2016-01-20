@@ -226,6 +226,7 @@ collections {
                 visible: 1;
             }
         }
+        #include "WebPageUIUrlHistoryList.edc"
         part {
             name: "popup_bg";
             type: RECT;

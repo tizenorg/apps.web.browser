@@ -6,6 +6,8 @@
 #define BACKGROUND_COVER(TARGET, VISIBLE, COLOR_CLASS) \
 rect { \
     scale: 1; \
+    mouse_events: 1; \
+    repeat_events: 1; \
     desc { "default"; \
            visible: VISIBLE; color_class: COLOR_CLASS; \
            rel1 { relative: 0.0 0.0; to: TARGET; } \

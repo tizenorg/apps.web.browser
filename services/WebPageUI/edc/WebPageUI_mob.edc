@@ -303,6 +303,7 @@ collections {
                     visible: 1;
                 }
             }
+            #include "WebPageUIUrlHistoryList.edc"
             part {
                 name: "moremenu_dimmed_bg";
                 type: RECT;
