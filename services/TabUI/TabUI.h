@@ -26,6 +26,9 @@
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
 #include "TabIdTypedef.h"
+#if PROFILE_MOBILE
+#include "AbstractRotatable.h"
+#endif
 
 namespace tizen_browser{
 namespace base_ui{
@@ -33,6 +36,9 @@ namespace base_ui{
 class BROWSER_EXPORT TabUI
         : public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
+#if PROFILE_MOBILE
+        , public tizen_browser::interfaces::AbstractRotatable
+#endif
 {
 public:
     TabUI();
@@ -48,6 +54,9 @@ public:
     void addTabItems(std::vector<basic_webengine::TabContentPtr> items);
     bool isEditMode();
     void onBackKey();
+#if PROFILE_MOBILE
+    virtual void orientationChanged() override;
+#endif
 
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void ()> newTabClicked;
@@ -90,6 +99,7 @@ private:
     void addTabItem(basic_webengine::TabContentPtr);
 
     Evas_Object *m_tab_layout;
+    Evas_Object* m_gengrid_layout;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
     bool editMode;
@@ -99,6 +109,16 @@ private:
     std::map<std::string,Elm_Object_Item*> m_map_tab_views;
     bool m_gengridSetup;
     std::string m_edjFilePath;
+
+#if PROFILE_MOBILE
+    const unsigned int GENGRID_ITEM_WIDTH = 674;
+    const unsigned int GENGRID_ITEM_HEIGHT = 468;
+    const unsigned int GENGRID_ITEM_WIDTH_LANDSCAPE = 308;
+    const unsigned int GENGRID_ITEM_HEIGHT_LANDSCAPE = 326;
+#else
+    const unsigned int GENGRID_ITEM_WIDTH = 364;
+    const unsigned int GENGRID_ITEM_HEIGHT = 320;
+#endif
 };
 
 }

@@ -305,6 +305,7 @@ void SimpleUI::connectUISignals()
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
     m_tabUI->isIncognito.connect(boost::bind(&SimpleUI::isIncognito, this, _1));
 #if PROFILE_MOBILE
+    m_tabUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
     bool desktop_ua = false;
 #else
     bool desktop_ua = true;
@@ -982,6 +983,7 @@ void SimpleUI::onRotation()
     m_settingsUI->orientationChanged();
     resizeWindowOnIME(m_wvIMEStatus);
     m_bookmarkManagerUI->orientationChanged();
+    m_tabUI->orientationChanged();
 }
 //TODO: end of a workaround
 
