@@ -302,10 +302,10 @@ collections {
     group { name: "button_with_background";
             styles {
                 style { name: "button_style";
-                        base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0";
+                        base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0 ellipsis=1.0";
                       }
                 style { name: "button_style_dissabled";
-                        base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0";
+                        base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0 ellipsis=1.0";
                       }
             }
             parts {
@@ -426,19 +426,19 @@ collections {
         styles {
             style {
                 name: "title_area_text_style";
-                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5";
+                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5 ellipsis=1.0";
             }
             style {
                 name: "title_area_cancel_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0";
+                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "title_area_save_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=1.0";
+                base: "font=Tizen:style=Regular font_size=30 color=#0e2a47 align=1.0 ellipsis=1.0";
             }
             style {
                 name: "title_area_save_dissabled";
-                base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0";
+                base: "font=Tizen:style=Regular font_size=30 color=#969696 align=1.0 ellipsis=1.0";
             }
         }
         parts {
@@ -624,19 +624,19 @@ collections {
         styles {
             style {
                 name: "site_title_style";
-                base: "font=Tizen:style=Regular font_size=38 color=#333333 align=0.0";
+                base: "font=Tizen:style=Regular font_size=38 color=#333333 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "site_url_style";
-                base: "font=Tizen:style=Regular font_size=30 color=#696f76 align=0.0 ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=30 color=#696f76 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "remove_style";
-                base: "font=Tizen:style=Regular font_size=34 color=#ffffff align=0.5";
+                base: "font=Tizen:style=Regular font_size=34 color=#ffffff align=0.5 ellipsis=1.0";
             }
             style {
                 name: "dropdown_style";
-                base: "font=Tizen:style=Regular font_size=40 color=#0a84e5 align=0.0 ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=40 color=#0a84e5 align=0.0 ellipsis=1.0";
             }
         }
         parts {
@@ -2165,7 +2165,7 @@ collections {
         styles {
             style {
                 name: "folder_text_normal";
-                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#333333 align=0.0  ellipsis=1";
+                base: "font=Tizen:style=Regular font_size=27 wrap=none color=#333333 align=0.0 ellipsis=1";
             }
         }
         parts {

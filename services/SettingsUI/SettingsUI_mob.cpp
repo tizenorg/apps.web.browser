@@ -323,6 +323,8 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_clicked_cb, this);
     elm_layout_content_set(layout, "reset_most_visited_click", reset_mv_button);
 
+    elm_object_translatable_part_text_set(layout, "reset_most_visited_sub_text", "You can delete all items of Most Visited Site");
+
     return layout;
 }
 
@@ -343,6 +345,8 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     elm_object_style_set(reset_browser_button, "basic_button");
     evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_clicked_cb, this);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
+
+    elm_object_translatable_part_text_set(layout, "reset_browser_sub_text", "You can delete all data and return to initial setting");
 
     return layout;
 }

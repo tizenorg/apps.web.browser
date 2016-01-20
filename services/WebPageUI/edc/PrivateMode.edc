@@ -4,11 +4,11 @@ collections {
     styles {
         style {
             name: "message_style";
-            base: "font=Sans font_size=36 color=#676767 wrap=word align=0.5";
+            base: "font=Sans font_size=36 color=#676767 wrap=word align=0.5 ellipsis=1.0";
         }
         style {
             name: "message_hint_style";
-            base: "font=Sans font_size=28 color=#676767 wrap=word align=0.0";
+            base: "font=Sans font_size=28 color=#676767 wrap=word align=0.0 ellipsis=1.0";
         }
     }
     group {

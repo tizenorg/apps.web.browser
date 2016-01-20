@@ -137,7 +137,7 @@ collections {
         styles {
             style {
                 name: "styleDate";
-                base: "font=Tizen:style=Regular font_size=20 color=#999999 align=0.0 valign=0.5";
+                base: "font=Tizen:style=Regular font_size=20 color=#999999 align=0.0 valign=0.5 ellipsis=1.0";
             }
         }
         parts {

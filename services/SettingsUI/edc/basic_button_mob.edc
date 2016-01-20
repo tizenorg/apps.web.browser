@@ -194,11 +194,11 @@ collections
         name: "elm/button/base/sign_in_button";
         styles {
             style { name: "title_text";
-                    base: "font=Sans:style=Regular font_size="64" color=#808080 color_class=T024D text_class=T024D wrap=none";
+                    base: "font=Sans:style=Regular font_size=64 color=#808080 wrap=none ellipsis=1.0";
                     STYLE_TAGS
             }
             style { name: "sub_title_text";
-                    base: "font=Sans:style=Regular font_size="38" color=#696F76 color_class=T024D text_class=T024D wrap=mixed align=0.5";
+                    base: "font=Sans:style=Regular font_size=38 color=#696F76 wrap=word align=0.5";
                     STYLE_TAGS
             }
         }
