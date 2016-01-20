@@ -149,15 +149,15 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
         styles {
             style {
                 name: "title_area_text_style_menu";
-                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 ellipsis=1.0";
             }
             style {
                 name: "title_area_text_style_user";
-                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=1.0";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=1.0 ellipsis=1.0";
             }
             style {
                 name: "title_area_button_style";
-                base: "font=Tizen:style=Regular font_size=34 color=#389ae9 align=0.5";
+                base: "font=Tizen:style=Regular font_size=34 color=#389ae9 align=0.5 ellipsis=1.0";
             }
         }
         parts {
@@ -601,7 +601,7 @@ RESOURCE_IMAGE_LOSSY("moremenu_ic_07.png")
         styles {
             style {
                 name: "thumbnail_text_style";
-                base: "font=Tizen:style=Regular font_size=28 color=#696f76 linegap=2 wrap=mixed align=0.5";
+                base: "font=Tizen:style=Regular font_size=28 color=#696f76 linegap=2 wrap=mixed align=0.5 ellipsis=1.0";
             }
         }
         parts {

@@ -37,7 +37,7 @@ collections {
         styles {
             style {
                 name: "more_shadow_style";
-                base: "font=Tizen:style=Regular font_size=30 wrap=none color=#333333 align=0.0 valign=0.5";
+                base: "font=Tizen:style=Regular font_size=30 wrap=none color=#333333 align=0.0 valign=0.5 ellipsis=1.0";
             }
         }
         parts {
@@ -228,7 +228,7 @@ collections {
         styles {
             style {
                 name: "more_style";
-                base: "font=Tizen:style=Regular font_size=30 wrap=none color=#333333 align=0.0 valign=0.5";
+                base: "font=Tizen:style=Regular font_size=30 wrap=none color=#333333 align=0.0 valign=0.5 ellipsis=1.0";
             }
         }
         parts {
@@ -405,15 +405,15 @@ collections {
         styles {
             style {
                 name: "title_area_cancel";
-                base: "font=Tizen:style=Regular font_size=24 color=#0e2a47 align=0.0 valign=1.0"; //30
+                base: "font=Tizen:style=Regular font_size=24 color=#0e2a47 align=0.0 valign=1.0 ellipsis=1.0"; //30
             }
             style {
                 name: "title_area_remove";
-                base: "font=Tizen:style=Regular font_size=24 color=#0e2a47 align=1.0 valign=1.0"; //30
+                base: "font=Tizen:style=Regular font_size=24 color=#0e2a47 align=1.0 valign=1.0 ellipsis=1.0"; //30
             }
             style {
                 name: "title_area_remove_dissabled";
-                base: "font=Tizen:style=Regular font_size=24 color=#969696 align=1.0 valign=1.0"; //30
+                base: "font=Tizen:style=Regular font_size=24 color=#969696 align=1.0 valign=1.0 ellipsis=1.0"; //30
             }
         }
         parts {

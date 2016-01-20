@@ -128,7 +128,7 @@ collections {
         styles {
             style {
                 name: "styleMatchedUrl";
-                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 valign=1.0";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 valign=1.0 ellipsis=1.0";
             }
         }
         parts {

@@ -46,17 +46,22 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 56 0;
-                fixed: 1 0;
-                align: 0 0;
-                color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "title_bg";}
-                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                min: 550 104;
+                max: 550 104;
+                visible: 1;
+                fixed: 1 1;
+                align: .5 .5;
+                color: 51 51 51 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg"; }
+                rel2 { relative: 1.0 1.0; to: "title_bg"; }
                 text {
-                    text: "Auto Fill Delete";
+                    min: 0 1;
+                    max: 1 1;
                     font: "Sans";
-                    size: 40;
+                    size: 44;
+                    text: "Auto Fill Delete";
                     align: 0.5 0.5;
+                    ellipsis: 0.0;
                 }
             }
         }
@@ -377,17 +382,22 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 56 0;
-                fixed: 1 0;
-                align: 0 0;
-                color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "title_bg";}
-                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                min: 550 104;
+                max: 550 104;
+                visible: 1;
+                fixed: 1 1;
+                align: .5 .5;
+                color: 51 51 51 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg"; }
+                rel2 { relative: 1.0 1.0; to: "title_bg"; }
                 text {
-                    text: "Auto Fill Compose";
+                    min: 0 1;
+                    max: 1 1;
                     font: "Sans";
-                    size: 40;
+                    size: 44;
+                    text: "Auto Fill Compose";
                     align: 0.5 0.5;
+                    ellipsis: 0.0;
                 }
             }
         }
@@ -797,17 +807,21 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 56 0;
-                fixed: 1 0;
-                align: 0 0;
-                color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "title_bg";}
-                rel2 { relative: 1.0 1.0; to: "title_bg";}
+                min: 600 104;
+                max: 600 104;
+                visible: 1;
+                fixed: 1 1;
+                align: .5 .5;
+                color: 51 51 51 255;
+                rel1 { relative: 0.0 0.0; to: "title_bg"; }
+                rel2 { relative: 1.0 1.0; to: "title_bg"; }
                 text {
-                    text: "Auto Fill Forms";
+                    min: 0 1;
+                    max: 1 1;
                     font: "Sans";
-                    size: 40;
+                    size: 44;
                     align: 0.5 0.5;
+                    ellipsis: 0.0;
                 }
             }
         }

@@ -21,7 +21,7 @@ collections {
         styles {
             style {
                 name: "title_text_style";
-                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5";
+                base: "font=Tizen:style=Regular font_size=45 color=#333333 align=0.5 ellipsis=1.0";
             }
         }
         parts {
