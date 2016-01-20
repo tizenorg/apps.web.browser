@@ -569,11 +569,11 @@ collections {
         styles {
             style {
                 name: "folder_name";
-                base: "font=Sans:style=Light font_size=25 linegap=10 wrap=mixed color=#333333 align=0.5 valign=1.0"; //32
+                base: "font=Sans:style=Light font_size=25 linegap=10 wrap=mixed color=#333333 align=0.5 valign=1.0 ellipsis=1.0"; //32
             }
             style {
                 name: "folder_name_focus";
-                base: "font=Sans:style=Light font_size=25 linegap=10 wrap=mixed color=#ffffff align=0.5 valign=1.0"; //32
+                base: "font=Sans:style=Light font_size=25 linegap=10 wrap=mixed color=#ffffff align=0.5 valign=1.0 ellipsis=1.0"; //32
             }
         }
         parts {

@@ -187,11 +187,11 @@ group { name: "settings_items";
 	}
 	styles {
 		style { name: "title_text";
-			base: "font=Sans:style=Bold font_size="30" color=#808080 color_class=T024D text_class=T024D wrap=none";
+                        base: "font=Sans:style=Bold font_size="30" color=#808080 color_class=T024D text_class=T024D wrap=none ellipsis=1.0";
 			STYLE_TAGS
 		}
         style { name: "sub_title_text";
-			base: "font=Sans:style=Regular font_size="28" color=#808080 color_class=T024D text_class=T024D wrap=mixed";
+                        base: "font=Sans:style=Regular font_size="28" color=#808080 color_class=T024D text_class=T024D wrap=mixed ellipsis=1.0";
 			STYLE_TAGS
 		}
 	}

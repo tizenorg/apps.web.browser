@@ -6,11 +6,11 @@ collections {
     styles {
         style {
             name: "mssage_style";
-            base: "font=Sans font_size=35 color=#d3d3d3 wrap=word align=0.5";
+            base: "font=Sans font_size=35 color=#d3d3d3 wrap=word align=0.5 ellipsis=1.0";
         }
         style {
             name: "mssage_hint_style";
-            base: "font=Sans font_size=24 color=#868686 wrap=word align=0.5";
+            base: "font=Sans font_size=24 color=#868686 wrap=word align=0.5 ellipsis=1.0";
         }
     }
     group{

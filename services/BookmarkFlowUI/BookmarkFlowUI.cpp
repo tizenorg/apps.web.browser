@@ -700,7 +700,7 @@ void BookmarkFlowUI::createTitleArea()
     elm_layout_file_set(m_cancel, m_edjFilePath.c_str(), "button_with_background");
     evas_object_size_hint_weight_set(m_cancel, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_cancel, 0, 0);
-    elm_object_translatable_text_set(m_cancel, _("IDS_TPLATFORM_ACBUTTON_CANCEL_ABB"));
+    elm_object_translatable_text_set(m_cancel, _("IDS_BR_SK_CANCEL"));
     elm_box_pack_end(m_cancel_box, m_cancel);
     evas_object_show(m_cancel);
 

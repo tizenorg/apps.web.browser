@@ -748,7 +748,7 @@ group {
     styles {
         style {
             name: "bottom_style";
-            base: "font=Sans font_size=22 color=#000000 align=0.0 valign=0.5"; //28
+            base: "font=Sans font_size=22 color=#000000 align=0.0 valign=0.5 ellipsis=1.0"; //28
         }
     }
     parts {

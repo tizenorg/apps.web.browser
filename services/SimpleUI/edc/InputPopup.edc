@@ -87,11 +87,11 @@ collections{
         styles {
             style {
                 name: "input_text_style";
-                base: "font=BreezeSans:style=Light font_size=50 wrap=none color=#333333 align=0.0 valign=0.5"; //68
+                base: "font=BreezeSans:style=Light font_size=50 wrap=none color=#333333 align=0.0 valign=0.5 ellipsis=1.0"; //68
             }
             style {
                 name: "guide_text_style";
-                base: "font=BreezeSans:style=Light font_size=50 wrap=none color=#969696 align=0.0 valign=0.5"; //68
+                base: "font=BreezeSans:style=Light font_size=50 wrap=none color=#969696 align=0.0 valign=0.5 ellipsis=1.0"; //68
             }
         }
         data {
@@ -213,7 +213,7 @@ collections{
         styles {
             style {
                 name: "title_text_style";
-                base: "font=BreezeSans:style=Light font_size=34 wrap=none color=#333333 align=0.5 valign=1.0";
+                base: "font=BreezeSans:style=Light font_size=34 wrap=none color=#333333 align=0.5 valign=1.0 ellipsis=1.0";
             }
         }
         parts {
@@ -408,11 +408,11 @@ collections{
         styles {
             style {
                 name: "message_text_normal_style";
-                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#686868 align=0.5 valign=1.0";
+                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#686868 align=0.5 valign=1.0 ellipsis=1.0";
             }
             style {
                 name: "message_text_highlight_style";
-                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#686868 align=0.5 valign=1.0";
+                base: "font=Tizen:style=Regular font_size=25 wrap=none color=#686868 align=0.5 valign=1.0 ellipsis=1.0";
             }
         }
         parts {
@@ -580,11 +580,11 @@ collections{
         styles {
             style {
                 name: "button_text_style_normal";
-                base: "font=BreezeSans:style=Light font_size=29 wrap=none color=#575757 align=0.5 valign=0.5"; //36
+                base: "font=BreezeSans:style=Light font_size=29 wrap=none color=#575757 align=0.5 valign=0.5 ellipsis=1.0"; //36
             }
             style {
                 name: "button_text_style_focused";
-                base: "font=BreezeSans:style=Light font_size=29 wrap=none color=#ffffff align=0.5 valign=0.5"; //36
+                base: "font=BreezeSans:style=Light font_size=29 wrap=none color=#ffffff align=0.5 valign=0.5 ellipsis=1.0"; //36
             }
             style {
                 name: "button_text_style_dissabled";
