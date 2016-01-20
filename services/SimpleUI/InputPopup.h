@@ -70,7 +70,6 @@ private:
     static void _entry_unfocused(void * data, Evas_Object *, void*);
     static void _entry_focused(void * data, Evas_Object *, void*);
     static void _input_cancel_clicked(void * data, Evas_Object *, void *);
-    static Eina_Bool dismissSlower(void* data);
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
@@ -87,7 +86,6 @@ private:
     std::string m_cancel_button_text;
     std::vector<std::string> m_bad_words;
     bool m_accept_right_left;
-    Ecore_Timer *m_timer; // Workaround for too fast removal of callbacks
 };
 
 }

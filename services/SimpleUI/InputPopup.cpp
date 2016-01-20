@@ -28,7 +28,6 @@ InputPopup::~InputPopup()
     evas_object_del(m_button_right);
     evas_object_del(m_button_left);
     evas_object_del(m_buttons_box);
-    ecore_timer_del(m_timer);
     evas_object_del(m_layout);
     button_clicked.disconnect_all_slots();
     popupDismissed.disconnect_all_slots();
@@ -104,19 +103,7 @@ void InputPopup::show()
 void InputPopup::dismiss()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_focus_allow_set(m_input_cancel, EINA_FALSE);
-    elm_object_signal_emit(m_input_area, "entry_unfocused", "ui");
-    elm_object_signal_emit(m_entry, "unfocused", "ui");
-    // TODO Workaround for too fast deleted callbacks. If there will be a better solution
-    // timer should be removed.
-    m_timer = ecore_timer_add(0.2, dismissSlower, this);
-}
-
-Eina_Bool InputPopup::dismissSlower(void* data) {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    InputPopup* ip = static_cast<InputPopup*>(data);
-    ip->popupDismissed(ip);
-    return EINA_TRUE;
+    popupDismissed(this);
 }
 
 void InputPopup::onBackPressed()
