@@ -1,62 +1,22 @@
-#define LIST_OFFSET_X_QUICKACCESS 10
-#define LIST_OFFSET_X_WEBPAGE 255
-#define LIST_OFFSET_Y 104
-#define URI_INPUTBOX_LENGTH_QUICKACCESS 1720
-#define URI_INPUTBOX_LENGTH_WEBPAGE 1460
 #define HISTORY_ITEM_H 82
+#include "../../../core/Tools/edc/SpacerRect.edc"
 
 collections {
     group {
         name: "url_history_list";
         parts
         {
+            SPACER_RECT_VERTICAL("spacerTop", 0, 16, 0.0)
             part {
                 name: "list_swallow";
                 type: SWALLOW;
+                scale: 1;
                 description {
                     state: "default" 0.0;
-                    color: 255 0 0 150;
-                    min: URI_INPUTBOX_LENGTH_QUICKACCESS 0;
-                    max: -1 -1;
                     visible: 1;
                     align: 0.0 0.0;
-                    rel1 {
-                        relative: 0 0;
-                        offset: LIST_OFFSET_X_QUICKACCESS LIST_OFFSET_Y;
-                    }
-                    rel2 {
-                        relative: 1.0 0.5;
-                    }
+                    rel1 { relative: 0.0 1.0; to: "spacerTop"; }
                 }
-                description {
-                    state: "view_quickaccess" 0.0;
-                    inherit: "default" 0.0;
-                }
-                description {
-                    state: "view_webpage";
-                    inherit: "default" 0.0;
-                    min: URI_INPUTBOX_LENGTH_WEBPAGE 0;
-                    rel1 {
-                        relative: 0 0;
-                        offset: LIST_OFFSET_X_WEBPAGE LIST_OFFSET_Y;
-                    }
-                }
-            }
-        }
-        programs {
-            program {
-                name: "switch_view_quickaccess";
-                signal: "switch_view_quickaccess";
-                source: "ui";
-                action: STATE_SET "view_quickaccess" 0.0;
-                target: "list_swallow";
-            }
-            program {
-                name: "switch_view_webpage";
-                signal: "switch_view_webpage";
-                source: "ui";
-                action: STATE_SET "view_webpage" 0.0;
-                target: "list_swallow";
             }
         }
     }
@@ -68,11 +28,11 @@ collections {
             part {
                 name: "bg";
                 type: RECT;
-                mouse_events: 1;
+                scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: URI_INPUTBOX_LENGTH_QUICKACCESS HISTORY_ITEM_H;
-                    max: -1 -1;
+                    min: 0 HISTORY_ITEM_H;
+                    max: -1 HISTORY_ITEM_H;
                     visible: 1;
                     color: 255 255 255 255;
                     align: 0.0 0.0;
@@ -94,12 +54,9 @@ collections {
                     align: 0.0 0.0;
                     rel1 {
                         to: "bg";
-                        relative: 0.0 0.0;
-                        offset: 48 0;
                     }
                     rel2 {
                         to: "bg";
-                        relative: 1.0  1.0;
                     }
 
                 }
@@ -128,10 +85,12 @@ collections {
         styles {
             style {
                 name: "styleMatchedUrl";
-                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 valign=1.0";
+                base: "font=Tizen:style=Regular font_size=34 color=#333333 align=0.0 valign=1.0 ellipsis=1.0";
             }
         }
         parts {
+            SPACER_RECT_HORIZONTAL("spacerLeft", 0, 48, 0.0)
+            SPACER_RECT_HORIZONTAL("spacerRight", 0, 48, 1.0)
             part {
                 name: "elm.text";
                 type: TEXTBLOCK;
@@ -141,10 +100,12 @@ collections {
                     align: 0.0 0.0;
                     visible: 1;
                     rel1 {
-                        relative: 0.0 0.0;
+                        relative: 1.0 0.0;
+                        to: "spacerLeft";
                     }
                     rel2 {
-                        relative: 1.0 1.0;
+                        relative: 0.0 1.0;
+                        to: "spacerRight";
                     }
                     text {
                         style: "styleMatchedUrl";

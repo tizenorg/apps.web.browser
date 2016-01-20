@@ -22,6 +22,7 @@
 #include "GenlistItemsManager.h"
 #include "WebPageUI/WebPageUIStatesManager.h"
 #include "Config.h"
+#include <EflTools.h>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -31,7 +32,10 @@ Ecore_Timer* UrlHistoryList::m_widgetFocusChangeDelayedTimer = nullptr;
 UrlHistoryList::UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr)
     : m_genlistManager(make_shared<GenlistManager>())
     , m_webPageUiStatesMgr(webPageUiStatesMgr)
+    , m_parent(nullptr)
+    , m_entry(nullptr)
     , m_layout(nullptr)
+    , m_widgetFocused(false)
 {
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("WebPageUI/UrlHistoryList.edj");
@@ -67,6 +71,7 @@ void UrlHistoryList::createLayout(Evas_Object* parentLayout)
         return;
 
     m_layout = elm_layout_add(parentLayout);
+    tools::EflTools::setExpandHints(m_layout);
     elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
     Evas_Object* widgetList = m_genlistManager->createWidget(m_layout);
     m_genlistManager->hideWidget();
