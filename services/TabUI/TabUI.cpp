@@ -86,6 +86,7 @@ void TabUI::showUI()
 #if PROFILE_MOBILE
     evas_object_show(elm_layout_content_get(m_tab_layout, "tab_gengrid"));
     evas_object_show(elm_layout_content_get(m_tab_layout, "bottom_bar"));
+    orientationChanged();
 #else
     elm_object_focus_next_object_set(elm_layout_content_get(elm_object_part_content_get(m_tab_layout, "top_bar"), "openedtabs_click"),
                                      elm_object_part_content_get(elm_object_part_content_get(m_tab_layout, "action_bar"), "closetabs_click"),
@@ -149,16 +150,16 @@ void TabUI::createTabUILayout()
     elm_object_part_content_set(m_tab_layout, "action_bar", buttonBar);
 
 #if PROFILE_MOBILE
-    Evas_Object* gengridLayout = elm_layout_add(m_tab_layout);
-    elm_layout_file_set(gengridLayout, m_edjFilePath.c_str(), "gengrid_layout");
-    evas_object_size_hint_weight_set(gengridLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(gengridLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(gengridLayout);
+    m_gengrid_layout = elm_layout_add(m_tab_layout);
+    elm_layout_file_set(m_gengrid_layout, m_edjFilePath.c_str(), "gengrid_layout");
+    evas_object_size_hint_weight_set(m_gengrid_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_gengrid_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(m_gengrid_layout);
 
-    m_gengrid = createGengrid(gengridLayout);
-    elm_object_part_content_set(gengridLayout, "gengrid_swallow", m_gengrid);
+    m_gengrid = createGengrid(m_gengrid_layout);
+    elm_object_part_content_set(m_gengrid_layout, "gengrid_swallow", m_gengrid);
 
-    elm_object_part_content_set(m_tab_layout, "tab_gengrid", gengridLayout);
+    elm_object_part_content_set(m_tab_layout, "tab_gengrid", m_gengrid_layout);
 
     buttonBar = createBottomBar(m_tab_layout);
     elm_object_part_content_set(m_tab_layout, "bottom_bar", buttonBar);
@@ -175,31 +176,40 @@ Evas_Object* TabUI::createBottomBar(Evas_Object* parent)
 {
     M_ASSERT(parent);
 
-    Evas_Object* bottomBar = elm_layout_add(parent);
-    elm_layout_file_set(bottomBar, m_edjFilePath.c_str(), "bottom_bar_layout");
-    evas_object_size_hint_weight_set(bottomBar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bottomBar, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_show(bottomBar);
+    Evas_Object* box = elm_box_add(parent);
+    elm_box_horizontal_set(box, EINA_TRUE);
+    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    Evas_Object* button = elm_button_add(bottomBar);
-    elm_object_style_set(button, "tab_button");
-    evas_object_smart_callback_add(button, "clicked", _newincognitotab_clicked, this);
-    elm_object_part_content_set(bottomBar, "newincognitotab_click", button);
+    Evas_Object* button_left = elm_button_add(box);
+    elm_object_style_set(button_left, "tab_button");
+    evas_object_size_hint_weight_set(button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(button_left, "elm.text", "New Tab");
+    elm_box_pack_end(box, button_left);
+    evas_object_smart_callback_add(button_left, "clicked", _newtab_clicked, this);
 
-    button = elm_button_add(bottomBar);
-    elm_object_style_set(button, "tab_button");
-    evas_object_smart_callback_add(button, "clicked", _newtab_clicked, this);
-    elm_object_part_content_set(bottomBar, "newtab_click", button);
+    evas_object_show(button_left);
 
-    return bottomBar;
+    Evas_Object* button_right = elm_button_add(box);
+    elm_object_style_set(button_right, "tab_button");
+    evas_object_size_hint_weight_set(button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(button_right, "elm.text", "New incognito Tab");
+    elm_box_pack_end(box, button_right);
+    evas_object_smart_callback_add(button_right, "clicked", _newincognitotab_clicked, this);
+    elm_object_signal_emit(button_right, "visible", "ui");
+
+    evas_object_show(button_right);
+
+    evas_object_show(box);
+    return box;
 }
 
 Evas_Object* TabUI::createGengrid(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
-
-    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
 
     Evas_Object* gengrid = elm_gengrid_add(parent);
     elm_gengrid_align_set(gengrid, 0, 0);
@@ -209,15 +219,14 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
 #if PROFILE_MOBILE
     elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
     elm_scroller_page_size_set(gengrid, 720, 0);
-    elm_gengrid_item_size_set(gengrid, 656 * efl_scale, 450 * efl_scale);
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-
     elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
     elm_scroller_propagate_events_set(gengrid, EINA_FALSE);
 #else
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
     elm_gengrid_horizontal_set(gengrid, EINA_TRUE);
     elm_scroller_page_size_set(gengrid, 0, 327);
-    elm_gengrid_item_size_set(gengrid, 364 * efl_scale, 320 * efl_scale);
+    elm_gengrid_item_size_set(gengrid, GENGRID_ITEM_WIDTH * efl_scale, GENGRID_ITEM_HEIGHT * efl_scale);
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
     evas_object_event_callback_add(gengrid, EVAS_CALLBACK_MOUSE_IN, _focus_in, this);
 #endif
@@ -242,24 +251,24 @@ Evas_Object* TabUI::createActionBar(Evas_Object* parent)
     Evas_Object* button = elm_button_add(actionBarLayout);
 
 #if !PROFILE_MOBILE
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _closetabs_clicked, this);
     elm_object_part_content_set(actionBarLayout, "closetabs_click", button);
 
     button = elm_button_add(actionBarLayout);
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _newincognitotab_clicked, this);
     elm_object_part_content_set(actionBarLayout, "newincognitotab_click", button);
 
     button = elm_button_add(actionBarLayout);
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _newtab_clicked, this);
     elm_object_part_content_set(actionBarLayout, "newtab_click", button);
 
     button = elm_button_add(actionBarLayout);
 #endif
 
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _close_clicked, this);
     elm_object_part_content_set(actionBarLayout, "close_click", button);
 
@@ -284,6 +293,27 @@ void TabUI::onBackKey()
     elm_layout_text_set(elm_layout_content_get(m_tab_layout, "action_bar"), "closetabs_text", "Close Tabs");
 }
 
+#if PROFILE_MOBILE
+void TabUI::orientationChanged()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    double efl_scale = elm_config_scale_get() / elm_app_base_scale_get();
+    boost::optional<bool> landscape = isLandscape();
+    if (landscape) {
+        if (*landscape) {
+            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH_LANDSCAPE * efl_scale,
+                                      GENGRID_ITEM_HEIGHT_LANDSCAPE * efl_scale);
+            elm_object_signal_emit(m_gengrid_layout, "switch_landscape", "ui");
+        } else {
+            elm_gengrid_item_size_set(m_gengrid, GENGRID_ITEM_WIDTH * efl_scale,
+                                      GENGRID_ITEM_HEIGHT * efl_scale);
+            elm_object_signal_emit(m_gengrid_layout, "switch_vertical", "ui");
+        }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+#endif
+
 Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -295,13 +325,13 @@ Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
     evas_object_size_hint_align_set(topLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     Evas_Object *button = elm_button_add(topLayout);
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _openedtabs_clicked, this);
     evas_object_show(button);
     elm_layout_content_set(topLayout, "openedtabs_click", button);
 
     button = elm_button_add(topLayout);
-    elm_object_style_set(button, "tab_button");
+    elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _onotherdevices_clicked, this);
     evas_object_show(button);
     elm_layout_content_set(topLayout, "onotherdevices_click", button);
@@ -384,7 +414,7 @@ void TabUI::addTabItem(basic_webengine::TabContentPtr hi)
     itemData->item = hi;
     itemData->tabUI = std::shared_ptr<tizen_browser::base_ui::TabUI>(this);
     Elm_Object_Item* tabView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _thumbSelected, itemData);
-    m_map_tab_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getTitle(),tabView));
+    m_map_tab_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getTitle(), tabView));
     // unselect by default
     elm_gengrid_item_selected_set(tabView, EINA_FALSE);
     setEmptyGengrid(false);
@@ -441,7 +471,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         }
         if (!strncmp(part_name2, part, part_name2_len)) {
             Evas_Object* button = elm_button_add(obj);
-            elm_object_style_set(button, "tab_button");
+            elm_object_style_set(button, "invisible_button");
             evas_object_smart_callback_add(button, "clicked", _close_tab_clicked, data);
             return button;
         }
@@ -462,7 +492,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         }
         if (!strncmp(part_name4, part, part_name4_len)) {
             Evas_Object* button = elm_button_add(obj);
-            elm_object_style_set(button, "tab_button");
+            elm_object_style_set(button, "invisible_button");
             evas_object_smart_callback_add(button, "clicked", _itemSelected, data);
             return button;
         }
