@@ -453,7 +453,7 @@ collections{
         styles {
             style {
                 name: "message_text_style";
-                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#141414 align=0.0";
+                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#141414 align=0.0 ellipsis=1.0";
             }
         }
         images {
@@ -940,11 +940,11 @@ collections{
         styles {
             style {
                 name: "button_text_style";
-                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#141414 align=0.5";
+                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#141414 align=0.5 ellipsis=1.0";
             }
             style {
                 name: "button_text_style_dissabled";
-                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#C0C0C0 align=0.5";
+                base: "font=Tizen:style=Regular font_size=40 wrap=none color=#C0C0C0 align=0.5 ellipsis=1.0";
             }
         }
         parts {
