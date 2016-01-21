@@ -188,17 +188,24 @@ Evas_Object* QuickAccess::createQuickAccessLayout(Evas_Object* parent)
     elm_object_part_content_set(layout, "view", m_horizontalScroller);
     evas_object_smart_callback_add(m_horizontalScroller, "scroll", _horizontalScroller_scroll, this);
 
-    m_box = elm_box_add(m_horizontalScroller);
-    elm_box_horizontal_set(m_box, EINA_TRUE);
-    elm_object_content_set(m_horizontalScroller, m_box);
-    evas_object_show(m_box);
-
-    m_mostVisitedView = createMostVisitedView(m_box);
-    elm_box_pack_end(m_box, m_mostVisitedView);
-    m_bookmarksView   = createBookmarksView  (m_box);
-    elm_box_pack_end(m_box, m_bookmarksView);
+    m_box = createBox(m_horizontalScroller);
 
     return layout;
+}
+
+Evas_Object* QuickAccess::createBox(Evas_Object* parent)
+{
+    Evas_Object* box = elm_box_add(parent);
+    elm_box_horizontal_set(box, EINA_TRUE);
+    elm_object_content_set(parent, box);
+    evas_object_show(box);
+
+    m_mostVisitedView = createMostVisitedView(box);
+    elm_box_pack_end(box, m_mostVisitedView);
+    m_bookmarksView   = createBookmarksView(box);
+    elm_box_pack_end(box, m_bookmarksView);
+
+    return box;
 }
 
 Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
@@ -206,12 +213,21 @@ Evas_Object* QuickAccess::createMostVisitedView(Evas_Object * parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object* mostVisitedLayout = elm_layout_add(parent);
+#if !PROFILE_MOBILE
     elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "page_layout");
     evas_object_size_hint_weight_set(mostVisitedLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (mostVisitedLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(mostVisitedLayout);
+#else
+    auto portrait = isPortrait();
+    if (!*portrait)
+        elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "page_layout");
+    else
+        elm_layout_file_set(mostVisitedLayout, edjFilePath.c_str(), "page_layout_landscape");
+    evas_object_size_hint_weight_set(mostVisitedLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set (mostVisitedLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(mostVisitedLayout);
 
-#if PROFILE_MOBILE
     m_verticalScroller = elm_scroller_add(mostVisitedLayout);
     evas_object_size_hint_weight_set(m_verticalScroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set (m_verticalScroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -236,6 +252,7 @@ Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *bookmarkViewLayout = elm_layout_add(parent);
+#if !PROFILE_MOBILE
     elm_layout_file_set(bookmarkViewLayout, edjFilePath.c_str(), "page_layout");
     evas_object_size_hint_weight_set(bookmarkViewLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bookmarkViewLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -244,6 +261,20 @@ Evas_Object* QuickAccess::createBookmarksView (Evas_Object * parent)
     m_bookmarkGengrid = createBookmarkGengrid(bookmarkViewLayout);
     elm_object_part_content_set(bookmarkViewLayout, "elm.swallow.grid", m_bookmarkGengrid);
     evas_object_show(m_bookmarkGengrid);
+#else
+    auto portrait = isPortrait();
+    if (!*portrait)
+        elm_layout_file_set(bookmarkViewLayout, edjFilePath.c_str(), "page_layout");
+    else
+        elm_layout_file_set(bookmarkViewLayout, edjFilePath.c_str(), "page_layout_landscape");
+    evas_object_size_hint_weight_set(bookmarkViewLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bookmarkViewLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(bookmarkViewLayout);
+
+    m_bookmarkGengrid = createBookmarkGengrid(bookmarkViewLayout);
+    elm_object_part_content_set(bookmarkViewLayout, "center_swallow", m_bookmarkGengrid);
+    evas_object_show(m_bookmarkGengrid);
+#endif
 
     return bookmarkViewLayout;
 }
@@ -444,6 +475,11 @@ void QuickAccess::addMostVisitedItem(std::shared_ptr<services::HistoryItem> hi)
     evas_object_show(tile);
 #if PROFILE_MOBILE
     elm_object_part_content_set(m_centerLayout, TILES_NAMES[tileNumber].c_str(), tile);
+    auto landscape = isPortrait();
+    if (*landscape)
+        elm_object_signal_emit(tile, "set_landscape", "ui");
+    else
+        elm_object_signal_emit(tile, "set_portrait", "ui");
 #else
     elm_object_part_content_set(m_mostVisitedView, TILES_NAMES[tileNumber].c_str(), tile);
 #endif
@@ -473,6 +509,7 @@ void QuickAccess::setMostVisitedItems(std::shared_ptr<services::HistoryItemVecto
         setEmptyView(false);
 
 #if PROFILE_MOBILE
+    m_mostVisitedItems = items;
     if (items->size() > FIXED_SIZE_TILES_NUMBER) {
         elm_object_signal_emit(m_centerLayout, "set_fixed_size", "ui");
     } else {
@@ -495,6 +532,7 @@ void QuickAccess::setBookmarksItems(std::vector<std::shared_ptr<tizen_browser::s
     clearBookmarkGengrid();
 #if PROFILE_MOBILE
     addBookmarkManagerTile();
+    m_bookmarkItems = items;
 #endif
     for (auto it = items.begin(); it != items.end(); ++it) {
          addBookmarkItem(*it);
@@ -513,6 +551,19 @@ void QuickAccess::setIndexPage(const uintptr_t page) const
     if (it != NULL) {
         elm_index_item_selected_set(it, EINA_TRUE);
     }
+}
+
+void QuickAccess::orientationChanged() {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_box = createBox(m_horizontalScroller);
+    setBookmarksItems(m_bookmarkItems);
+    setMostVisitedItems(m_mostVisitedItems);
+    auto landscape = isPortrait();
+    if (*landscape)
+        elm_object_signal_emit(m_centerLayout, "set_landscape", "ui");
+    else
+        elm_object_signal_emit(m_centerLayout, "set_portrait", "ui");
 }
 #endif
 

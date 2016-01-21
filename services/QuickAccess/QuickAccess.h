@@ -25,6 +25,7 @@
 
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
+#include "AbstractRotatable.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
@@ -36,6 +37,9 @@ namespace base_ui{
 
 class BROWSER_EXPORT QuickAccess
         : public tizen_browser::core::AbstractService
+#if PROFILE_MOBILE
+        , public interfaces::AbstractRotatable
+#endif
 {
 public:
     QuickAccess();
@@ -55,6 +59,9 @@ public:
     void backButtonClicked();
     inline bool isMostVisitedActive() const;
     void refreshFocusChain();
+#if PROFILE_MOBILE
+    void orientationChanged();
+#endif
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
@@ -84,6 +91,7 @@ private:
     Evas_Object* createBottomButton(Evas_Object *parent);
 #endif
 
+    Evas_Object* createBox(Evas_Object* parent);
     Evas_Object* createQuickAccessLayout(Evas_Object *parent);
     Evas_Object* createMostVisitedView(Evas_Object *parent);
     Evas_Object* createBookmarksView(Evas_Object *parent);
@@ -141,6 +149,8 @@ private:
     Evas_Object* m_centerLayout;
     Elm_Gengrid_Item_Class * m_bookmarkManagerTileclass;
     static const int FIXED_SIZE_TILES_NUMBER = 3;
+    std::shared_ptr<services::HistoryItemVector> m_mostVisitedItems;
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > m_bookmarkItems;
 #endif
 };
 
