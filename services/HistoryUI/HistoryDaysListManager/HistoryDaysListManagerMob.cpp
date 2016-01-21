@@ -93,12 +93,14 @@ void HistoryDaysListManagerMob::addHistoryItems(
     HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
             > (toString(period), historyItems);
     appendDayItem(dayItem);
+    showNoHistoryMessage(isHistoryDayListEmpty());
 }
 
 void HistoryDaysListManagerMob::clear()
 {
     elm_box_clear(m_boxDays);
     m_dayItems.clear();
+    showNoHistoryMessage(isHistoryDayListEmpty());
 }
 
 HistoryDayItemMobPtr HistoryDaysListManagerMob::getItem(
@@ -134,6 +136,16 @@ void HistoryDaysListManagerMob::appendDayItem(HistoryDayItemDataPtr dayItemData)
     Evas_Object* dayItemLayout = item->init(m_parent, m_edjeFiles);
     elm_box_pack_end(m_boxDays, dayItemLayout);
 }
+
+void HistoryDaysListManagerMob::showNoHistoryMessage(bool show)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (show)
+        elm_object_signal_emit(m_layoutScrollerDays, "show_empty_message", "ui");
+    else
+        elm_object_signal_emit(m_layoutScrollerDays, "hide_empty_message", "ui");
+}
+
 void HistoryDaysListManagerMob::onHistoryDayItemButtonClicked(
         const HistoryDayItemDataPtrConst clickedItem, bool remove)
 {
@@ -178,6 +190,7 @@ void HistoryDaysListManagerMob::removeItem(
     // remove day item from vector, destructor will clear efl objects
     remove(item);
     elm_box_unpack(m_boxDays, item->getLayoutMain());
+    showNoHistoryMessage(isHistoryDayListEmpty());
 }
 
 void HistoryDaysListManagerMob::removeItem(

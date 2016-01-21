@@ -1,6 +1,6 @@
 color_classes {
     color_class { name: "colorMainBg";
-                  color: 230 230 230 255;
+                  color: 244 244 244 255;
                 }
     color_class { name: "backgroundGreen";
                   color: 0 255 0 150;

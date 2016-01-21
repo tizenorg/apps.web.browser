@@ -197,7 +197,13 @@ void HistoryUI::_clearHistory_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!data) return;
     HistoryUI *historyUI = static_cast<HistoryUI*>(data);
+#if PROFILE_MOBILE
+    historyUI->clearItems();
+    historyUI->clearHistoryClicked();
+#else
     historyUI->getHistoryDeleteManager()->toggleDeleteMode();
+#endif
+
 }
 
 void HistoryUI::addHistoryItems(std::shared_ptr<services::HistoryItemVector> items,

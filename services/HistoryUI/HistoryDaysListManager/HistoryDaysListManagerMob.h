@@ -55,6 +55,8 @@ public:
 private:
     void connectSignals();
     void appendDayItem(HistoryDayItemDataPtr dayItemData);
+    void showNoHistoryMessage(bool show);
+    bool isHistoryDayListEmpty() {return m_dayItems.empty();}
 
     /**
      * @brief remove item from view and from vector
