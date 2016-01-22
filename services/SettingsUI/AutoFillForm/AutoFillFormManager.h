@@ -73,7 +73,6 @@ public:
     void seeAllData(void);
 private:
     Evas_Object* m_parent;
-    static void profiles_updated_cb(void* data);
     std::vector<AutoFillFormItem *> m_AutoFillFormItemList;
     AutoFillFormListView *m_listView;
     AutoFillFormComposeView *m_composer;

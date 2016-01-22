@@ -33,7 +33,6 @@ AutoFillFormManager::AutoFillFormManager(void)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_AutoFillFormItemList = loadEntireItemList();
-    ewk_context_form_autofill_profile_changed_callback_set(profiles_updated_cb, this);
 }
 
 AutoFillFormManager::~AutoFillFormManager(void)
@@ -51,15 +50,6 @@ AutoFillFormManager::~AutoFillFormManager(void)
     if(m_composer)
         delete m_composer;
     m_composer = NULL;
-
-    ewk_context_form_autofill_profile_changed_callback_set(NULL, this);
-}
-
-void AutoFillFormManager::profiles_updated_cb(void* data)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    AutoFillFormManager *formManager = static_cast<AutoFillFormManager*>(data);
-    formManager->refreshListView();
 }
 
 void AutoFillFormManager::refreshListView()
