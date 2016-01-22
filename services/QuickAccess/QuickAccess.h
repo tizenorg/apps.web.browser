@@ -25,6 +25,7 @@
 
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
+#include "AbstractRotatable.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "services/HistoryService/HistoryItem.h"
@@ -36,6 +37,9 @@ namespace base_ui{
 
 class BROWSER_EXPORT QuickAccess
         : public tizen_browser::core::AbstractService
+#if PROFILE_MOBILE
+        , public interfaces::AbstractRotatable
+#endif
 {
 public:
     QuickAccess();
@@ -55,6 +59,9 @@ public:
     void backButtonClicked();
     inline bool isMostVisitedActive() const;
     void refreshFocusChain();
+#if PROFILE_MOBILE
+    void orientationChanged();
+#endif
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
@@ -79,17 +86,21 @@ private:
 #if PROFILE_MOBILE
     void addBookmarkManagerTile();
     void setIndexPage(const uintptr_t page) const;
+    bool isOrientationLandscape() const;
+    static void _bookmark_tile_realized(void * data, Evas_Object * obj, void * event_info);
 #else
     Evas_Object* createTopButtons(Evas_Object *parent);
     Evas_Object* createBottomButton(Evas_Object *parent);
 #endif
 
-    Evas_Object* createQuickAccessLayout(Evas_Object *parent);
-    Evas_Object* createMostVisitedView(Evas_Object *parent);
-    Evas_Object* createBookmarksView(Evas_Object *parent);
+    void createBox(Evas_Object* parent);
+    void createQuickAccessLayout(Evas_Object *parent);
+    void createMostVisitedView(Evas_Object *parent);
+    void createBookmarksView(Evas_Object *parent);
 
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
+    static void _grid_bookmark_del(void *data, Evas_Object *obj);
     static void _thumbBookmarkClicked(void * data, Evas_Object * obj, void * event_info);
     static void _thumbMostVisitedClicked(void * data, Evas_Object * obj, void * event_info);
     void setEmptyView(bool empty);
@@ -122,7 +133,7 @@ private:
     int m_currPage;
     Elm_Gengrid_Item_Class * m_bookmark_item_class;
     DetailPopup m_detailPopup;
-    services::HistoryItemVector m_historyItems;
+    std::shared_ptr<services::HistoryItemVector> m_mostVisitedItems;
     bool m_gengridSetup;
     std::string edjFilePath;
     bool m_desktopMode;
@@ -140,7 +151,12 @@ private:
     Evas_Object* m_verticalScroller;
     Evas_Object* m_centerLayout;
     Elm_Gengrid_Item_Class * m_bookmarkManagerTileclass;
+    std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> > m_bookmarkItems;
     static const int FIXED_SIZE_TILES_NUMBER = 3;
+    static const int BOOKMARK_ITEM_WIDTH = 337;
+    static const int BOOKAMRK_ITEM_HEIGHT = 379;
+    static const int BOOKMARK_ITEM_WIDTH_LANDSCAPE = 308;
+    static const int BOOKAMRK_ITEM_HEIGHT_LANDSCAPE = 326;
 #endif
 };
 
