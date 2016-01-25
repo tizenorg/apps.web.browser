@@ -519,7 +519,7 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
     m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
     m_platformInputManager->mouseClicked.connect(
-            boost::bind(&SimpleUI::onMouseClick, this));
+            boost::bind(&SimpleUI::onMouseClick, this, _1, _2));
     m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
     m_platformInputManager->yellowPressed.connect(boost::bind(&SimpleUI::onYellowKeyPressed, this));
 
@@ -1085,9 +1085,9 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
     m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
 
-void SimpleUI::onMouseClick()
+void SimpleUI::onMouseClick(int x, int y)
 {
-    m_webPageUI->getUrlHistoryList()->onMouseClick();
+    m_webPageUI->getUrlHistoryList()->onMouseClick(x, y);
 }
 
 void SimpleUI::onRedKeyPressed()
