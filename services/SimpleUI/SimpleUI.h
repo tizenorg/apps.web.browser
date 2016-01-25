@@ -298,9 +298,11 @@ private:
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
+    void settingsOverrideUseragent(const std::string& userAgent);
     void onDeleteSelectedDataButton(const std::string &dataText);
     void onDeleteMostVisitedButton(std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void onOverrideUseragentButton(const std::string& str);
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
     int tabsCount();
 
