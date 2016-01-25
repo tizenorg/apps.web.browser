@@ -8,6 +8,7 @@ set(WebPageUI_SRCS
     UrlHistoryList/UrlHistoryList.cpp
     UrlHistoryList/GenlistManager.cpp
     UrlHistoryList/GenlistManagerCallbacks.cpp
+    UrlHistoryList/TimerCallbacks.cpp
     UrlHistoryList/UrlMatchesStyler.cpp
     UrlHistoryList/GenlistItemsManager.cpp
     )
