@@ -327,9 +327,9 @@ void WebPageUI::lockUrlHistoryList()
 {
     elm_object_focus_custom_chain_unset(m_mainLayout);
     elm_object_focus_custom_chain_append(m_mainLayout,
-            getUrlHistoryList()->getContent(), NULL);
-    getUrlHistoryList()->listWidgetFocusChangeTimerStart();
-    elm_object_focus_set(getUrlHistoryList()->getContent(), EINA_TRUE);
+            getUrlHistoryList()->getLayout(), NULL);
+    getUrlHistoryList()->listWidgetFocusedFromUri();
+    elm_object_focus_set(getUrlHistoryList()->getLayout(), EINA_TRUE);
 }
 
 void WebPageUI::unlockUrlHistoryList()
@@ -357,13 +357,9 @@ void WebPageUI::onYellowKeyPressed()
 {
     if (!isWebPageUIvisible())
         return;
-
-    Eina_Bool listVisible = evas_object_visible_get(
-            getUrlHistoryList()->getGenlist());
-    if(!listVisible) return;
-
-    bool listFocused = getUrlHistoryList()->widgetFocused();
-    if (listFocused) {
+    if (!getUrlHistoryList()->getGenlistVisible())
+        return;
+    if (getUrlHistoryList()->getWidgetFocused()) {
         unlockUrlHistoryList();
     } else {
         lockUrlHistoryList();
@@ -429,7 +425,7 @@ void WebPageUI::createLayout()
 
     elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
     m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
-    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getContent());
+    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getLayout());
 
     connectActions();
 

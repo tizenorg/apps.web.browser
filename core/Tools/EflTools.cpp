@@ -312,13 +312,24 @@ Evas_Object * getEvasPNG(Evas_Object * parent, const void * buffer, int length)
     return image;
 }
 
-void setExpandHints(Evas_Object* toSet) {
+void setExpandHints(Evas_Object* toSet)
+{
     evas_object_size_hint_weight_set(toSet, EVAS_HINT_EXPAND,
     EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(toSet, EVAS_HINT_FILL,
     EVAS_HINT_FILL);
 }
 
+bool pointInObject(Evas_Object* object, int px, int py)
+{
+    if (!object) {
+        BROWSER_LOGE("@@ [%s:%d] null object", __func__, __LINE__);
+        return false;
+    }
+    Evas_Coord x, y, w, h;
+    evas_object_geometry_get(object, &x, &y, &w, &h);
+    return (px >= x && px <= x + w && py >= y && py <= y + h);
+}
 
 } /* end of EflTools */
 } /* end of namespace tools */

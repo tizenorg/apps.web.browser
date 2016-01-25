@@ -65,7 +65,6 @@ Config::Config()
 #else
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT] = 82;
 #endif
-    m_keysValues[CONFIG_KEY::URLHISTORYLIST_SHOW_SCROLLBAR] = false;
 
     m_keysValues[CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES] = true;

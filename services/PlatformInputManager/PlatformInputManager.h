@@ -66,7 +66,7 @@ public:
     boost::signals2::signal<void ()> rotateCounterClockwise;
     //TODO: end of workaround
 #endif
-    boost::signals2::signal<void ()> mouseClicked;
+    boost::signals2::signal<void (int, int)> mouseClicked;
 
     /**
      * @brief Returns current service's name.
