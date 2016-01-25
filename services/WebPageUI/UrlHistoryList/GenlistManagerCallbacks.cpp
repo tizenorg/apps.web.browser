@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include "BrowserLogger.h"
 #include "GenlistManagerCallbacks.h"
 #include "GenlistItemsManager.h"
 #include <Ecore_Input.h>
@@ -32,20 +31,6 @@ GenlistManagerCallbacks::~GenlistManagerCallbacks()
 {
 }
 
-void GenlistManagerCallbacks::_genlist_mouse_in(void* data, Evas* /*e*/,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    auto manager = static_cast<GenlistManager*>(data);
-    manager->onMouseFocusChange(true);
-}
-
-void GenlistManagerCallbacks::_genlist_mouse_out(void* data, Evas* /*e*/,
-        Evas_Object* /*obj*/, void* /*event_info*/)
-{
-    auto manager = static_cast<GenlistManager*>(data);
-    manager->onMouseFocusChange(false);
-}
-
 void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
         void* /*event_info*/)
 {
@@ -53,7 +38,7 @@ void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
     if (item) {
         if (genlistManager) {
             genlistManager->signalItemSelected(item->urlOriginal);
-            genlistManager->hideWidget();
+            genlistManager->hide();
         }
     }
 }
