@@ -30,27 +30,18 @@ public:
     GenlistManagerCallbacks();
     virtual ~GenlistManagerCallbacks();
 
-    static void _genlist_mouse_in(void* data, Evas* e, Evas_Object* obj,
-            void* event_info);
-    static void _genlist_mouse_out(void* data, Evas* e, Evas_Object* obj,
-            void* event_info);
-
     /**
      * Handles keyboard events: up and down keys.
      */
     static Eina_Bool _object_event(void* data, Evas_Object* obj,
             Evas_Object* src, Evas_Callback_Type type, void* event_info);
-
     static void _item_selected(void* data, Evas_Object* obj, void* event_info);
-
     static void setGenlistManager(GenlistManager* genlistManager)
     {
         GenlistManagerCallbacks::genlistManager = genlistManager;
     }
-
 private:
     static GenlistManager* genlistManager;
-
 };
 
 } /* namespace base_ui */

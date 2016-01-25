@@ -20,6 +20,8 @@
 #include <Elementary.h>
 #include "services/HistoryService/HistoryItemTypedef.h"
 #include <boost/signals2/signal.hpp>
+#include "Tools/EcoreTimerCaller.h"
+#include "TimerCallbacks.h"
 
 using namespace std;
 
@@ -52,21 +54,18 @@ class GenlistManager
 public:
     GenlistManager();
     ~GenlistManager();
-
-    Evas_Object* createWidget(Evas_Object* parentLayout);
-    Evas_Object* getWidget();
+    void setParentLayout(Evas_Object* parentLayout);
+    Evas_Object* getGenlist();
     GenlistItemsManagerPtr getItemsManager();
-
-    void showWidget(const string& editedUrl,
+    void show(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    void hideWidget();
-
-    void onMouseClick();
+    void hide();
+    void onMouseClick(int, int);
 
     /**
-     * Clear all elements from a genlist.
+     * Clear genlist elements, delete genlist.
      */
-    void clearWidget();
+    void clear();
     /**
      * When set to true, the next hide attempt will be blocked. E.g. widget
      * should not be hidden on a mouse click, when cursor is inside widget.
@@ -74,62 +73,40 @@ public:
     void setSingleBlockHide(bool block);
     bool getSingleBlockHide();
 
-    boost::signals2::signal<void(string)> signalItemSelected;
-    boost::signals2::signal<void()> signalItemFocusChange;
-
     /**
      * Get url from item of a given type.
      * @param types The types of list items: url will be searched in these item types.
      * @return Url from the first item from the list, which has valid url. Empty if neither of items has url assigned.
      */
     string getItemUrl(std::initializer_list<GenlistItemType> types) const;
+    boost::signals2::signal<void(string)> signalItemSelected;
+    boost::signals2::signal<void()> signalItemFocusChange;
 
-    void clearTimerMouseClickHandle();
-    bool isMouseInsideWidget();
-
+    /// sent to UrlHistoryList.
+    boost::signals2::signal<void(Evas_Object*)> signalGenlistCreated;
 private:
+    Evas_Object* createGenlist(Evas_Object* parentLayout);
     static Evas_Object* m_itemClassContentGet(void *data, Evas_Object *obj,
             const char *part);
-
-    bool widgetExists() {return m_genlist != nullptr;}
-
     void prepareUrlsVector(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
 
-    /**
-     * Cursor focus change. Needed to indicate, if widget should be hidden on
-     * a mouse click.
-     */
-    void onMouseFocusChange(bool mouseInsideWidget);
+    AdjustGenlistHeight m_adjustHeightCallback;
+    tools::EflTools::EcoreTimerCaller<AdjustGenlistHeight> m_timerAdjustHeight;
+    Evas_Object* m_parentLayout;
+    Evas_Object* m_genlist;
 
-    /**
-     * Adjust widget's height to item's number.
-     */
-    void adjustWidgetHeight();
-
-    static Eina_Bool timerMouseClickHandle(void *data);
-
-    Evas_Object* m_parentLayout = nullptr;
-    Evas_Object* m_genlist = nullptr;
-
-    bool GENLIST_SHOW_SCROLLBAR;
     // don't know how to get from edc:
-    int ITEM_H;
-    int ITEMS_VISIBLE_NUMBER_MAX;
+    int m_ITEM_H;
+    int m_ITEMS_VISIBLE_NUMBER_MAX;
     // currently visible items number
     int m_historyItemsVisibleCurrent;
 
     /**
      * Used in setSingleBlockHide().
      */
-    bool m_singleHideBlock = false;
-    /**
-     * Used in onMouseFocusChange().
-     */
-    bool m_mouseInsideWidget = false;
-
+    bool m_singleHideBlock;
     Elm_Gengrid_Item_Class* m_historyItemClass;
-
     GenlistItemsManagerPtr m_itemsManager;
 
     /*
@@ -141,12 +118,6 @@ private:
      */
     vector<shared_ptr<UrlPair>> m_readyUrlPairs;
     UrlMatchesStylerPtr m_urlMatchesStyler;
-
-    /**
-     * Used to invoke timerMouseClickHandle()
-     */
-    Ecore_Timer* m_timerMouseClickHandle = nullptr;
-
 };
 
 } /* namespace base_ui */
