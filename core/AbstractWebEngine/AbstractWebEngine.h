@@ -76,6 +76,16 @@ public:
     virtual std::string getTitle(void) const = 0;
 
     /**
+     * @return Current UserAgent string of the browser.
+     */
+    virtual std::string getUserAgent(void) const = 0;
+
+    /**
+     * @return Override Browser's UserAgent.
+     */
+    virtual void setUserAgent(const std::string& ua) = 0;
+
+    /**
      * Suspend current webview.
      */
     virtual void suspend(void) = 0;

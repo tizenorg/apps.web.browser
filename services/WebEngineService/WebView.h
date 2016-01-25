@@ -76,6 +76,9 @@ public:
 
     std::string getTitle(void);
 
+    std::string getUserAgent(void);
+    void setUserAgent(const std::string& ua);
+
     void suspend(void);
     void resume(void);
     bool isSuspended(void) const { return m_suspended; }
