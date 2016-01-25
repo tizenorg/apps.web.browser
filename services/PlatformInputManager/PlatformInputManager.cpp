@@ -156,7 +156,9 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
 
         BROWSER_LOGD("Released key: %s", ev->keyname);
     } else if (type == ECORE_EVENT_MOUSE_BUTTON_DOWN) {
-        self->mouseClicked();
+        M_ASSERT(event);
+        Ecore_Event_Mouse_Button *ev = static_cast<Ecore_Event_Mouse_Button *>(event);
+        self->mouseClicked(ev->x, ev->y);
     }
     return EINA_TRUE;
 }
