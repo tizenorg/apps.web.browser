@@ -301,6 +301,10 @@ private:
     void onDeleteSelectedDataButton(const std::string &dataText);
     void onDeleteMostVisitedButton(std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
+#if PROFILE_MOBILE
+    void settingsOverrideUseragent(const std::string& userAgent);
+    void onOverrideUseragentButton(const std::string& str);
+#endif
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
     int tabsCount();
 

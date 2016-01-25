@@ -145,6 +145,22 @@ group
                 }
             }
             description {
+                state: "developerSettings" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                text {
+                    text: "Developer Options";
+                }
+            }
+            description {
+                state: "overrideUASettings" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+                text {
+                    text: "Override UserAgent";
+                }
+            }
+            description {
                 state: "highlight" 0.0;
                 inherit: "default" 0.0;
                 color_class: focusBgColor1;
@@ -321,6 +337,22 @@ group
                 signal: "switch,privacy,Settings";
                 source: "del_but";
                 action: STATE_SET "privacySettings" 0.0;
+                target: "settings_title";
+                after: "backIconChange";
+            }
+            program {
+                name: "toDeveloperSettings";
+                signal: "switch,developer,options";
+                source: "del_but";
+                action: STATE_SET "developerSettings" 0.0;
+                target: "settings_title";
+                after: "backIconChange";
+            }
+            program {
+                name: "toOverrideUASettings";
+                signal: "switch,override_ua,Settings";
+                source: "del_but";
+                action: STATE_SET "overrideUASettings" 0.0;
                 target: "settings_title";
                 after: "backIconChange";
             }
