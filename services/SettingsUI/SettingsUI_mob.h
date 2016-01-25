@@ -65,10 +65,12 @@ public:
     Evas_Object* createRemoveBrowserDataMobilePage(Evas_Object* settings_layout);
     Evas_Object* createContentSettingsPage(Evas_Object* settings_layout);
     Evas_Object* createPrivacyPage(Evas_Object* settings_layout);
+    Evas_Object* createDeveloperOptionsMobilePage(Evas_Object* settings_layout);
 
     boost::signals2::signal<void ()> resetBrowserClicked;
     boost::signals2::signal<void ()> resetMostVisitedClicked;
     boost::signals2::signal<void (std::string&)> deleteSelectedDataClicked;
+    boost::signals2::signal<void ()> overrideUseragentClicked;
     boost::signals2::signal<void ()> closeSettingsUIClicked;
     boost::signals2::signal<bool (basic_webengine::WebEngineSettings)> getWebEngineSettingsParam;
     boost::signals2::signal<void (basic_webengine::WebEngineSettings, bool)> setWebEngineSettingsParam;
@@ -99,6 +101,9 @@ private:
     static void _content_settings_menu_clicked_cb(void* data, Evas_Object* obj, void* event_info);
 
     static void _privacy_menu_clicked_cb(void* data, Evas_Object* obj, void * event_info);
+
+    static void _override_useragent_clicked_cb(void* data, Evas_Object* obj, void * event_info);
+    static void _developer_menu_clicked_cb(void* data, Evas_Object* obj, void* event_info);
 
     static char* _gengrid_item_text_get(void* /*data*/, Evas_Object* obj, const char* /*part*/);
     static void _language_changed(void *data, Evas_Object*obj , void*);
