@@ -22,6 +22,8 @@
 
 #include "services/HistoryService/HistoryItemTypedef.h"
 #include <boost/signals2/signal.hpp>
+#include "Tools/EcoreTimerCaller.h"
+#include "TimerCallbacks.h"
 
 using namespace std;
 
@@ -42,11 +44,9 @@ class UrlHistoryList
 public:
     UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr);
     virtual ~UrlHistoryList();
-
     void setMembers(Evas_Object* parent, Evas_Object* chainObject);
-    Evas_Object* getContent();
-    Evas_Object* getEditedEntry();
-    Evas_Object* getGenlist();
+    Evas_Object* getLayout();
+    bool getGenlistVisible();
 
     /**
      * On uri entry widget "changed,user" signal.
@@ -55,69 +55,60 @@ public:
      */
     void onURLEntryEditedByUser(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-
-    /**
-     * On genlist's item focus change.
-     */
-    void onItemFocusChange();
-    void onMouseClick();
-
+    void onMouseClick(int, int);
     void hideWidget();
+    void onBackPressed();
 
     /**
      * @return True if widget is focused.
      */
-    bool widgetFocused() const;
+    bool getWidgetFocused() const;
     void onListWidgetFocusChange(bool focused);
-    void listWidgetFocusChangeTimerStart();
-
+    void listWidgetFocusedFromUri();
     void saveEntryAsEditedContent();
     void saveEntryAsURLContent();
     void restoreEntryEditedContent();
     void restoreEntryURLContent();
-
+    int getItemsNumberMax() const;
+    int getKeywordLengthMin() const;
     boost::signals2::signal<void (const std::string&)> openURLInNewTab;
     boost::signals2::signal<void (const std::string&)> uriChanged;
-
-    int getItemsNumberMax() const
-    {
-        return ITEMS_NUMBER_MAX;
-    }
-
-    int getKeywordLengthMin() const
-    {
-        return KEYWORD_LENGTH_MIN;
-    }
 
 private:
     void createLayout(Evas_Object* parentLayout);
     void onItemSelect(std::string content);
 
-    static Eina_Bool onListWidgetFocusChangeDelayed(void *data);
+    /**
+     * On genlist's item focus change.
+     */
+    void onItemFocusChange();
+
+    /**
+     * Main layout is not setting genlist as a swallow in the beginnging,
+     * because it will cover view in WebPageUi.
+     */
+    void onGenlistCreated(Evas_Object*);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_unfocused(void* data, Evas_Object* obj, void* event_info);
 
     GenlistManagerPtr m_genlistManager;
     WPUStatesManagerPtrConst m_webPageUiStatesMgr;
-
     // the maximum items number on a list
-    int ITEMS_NUMBER_MAX;
+    const int m_ITEMS_NUMBER_MAX;
     // the minimum length of the keyword used to search matches
-    int KEYWORD_LENGTH_MIN;
+    const int m_KEYWORD_LENGTH_MIN;
     Evas_Object* m_parent;
     // entry widget from which change signals are received
     Evas_Object* m_entry;
     Evas_Object* m_layout;
     string m_edjFilePath;
-
     // content of the edited entry, needed to restore edited value
     string m_entryEditedContent;
     // content of the entry before edition: needed to restore original URL value
     string m_entryURLContent;
-
     bool m_widgetFocused;
-    static Ecore_Timer* m_widgetFocusChangeDelayedTimer;
-
+    GenlistFocused m_genlistFocusedCallback;
+    tools::EflTools::EcoreTimerCaller<GenlistFocused> m_timerGenlistFocused;
 };
 
 } /* namespace base_ui */
