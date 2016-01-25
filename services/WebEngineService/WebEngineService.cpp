@@ -174,6 +174,17 @@ std::string WebEngineService::getTitle() const
         return std::string("");
 }
 
+std::string WebEngineService::getUserAgent() const
+{
+    M_ASSERT(m_currentWebView);
+    return m_currentWebView->getUserAgent();
+}
+
+void WebEngineService::setUserAgent(const std::string& ua)
+{
+    m_currentWebView->setUserAgent(ua);
+}
+
 void WebEngineService::suspend()
 {
     if(tabsCount()>0) {
