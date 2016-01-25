@@ -278,6 +278,16 @@ std::string WebView::getTitle(void)
     return m_title;
 }
 
+std::string WebView::getUserAgent()
+{
+    return fromChar(ewk_view_user_agent_get(m_ewkView));
+}
+
+void WebView::setUserAgent(const std::string& ua)
+{
+    ewk_view_user_agent_set(m_ewkView, ua.c_str());
+}
+
 void WebView::suspend()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
