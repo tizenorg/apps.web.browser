@@ -7,18 +7,26 @@
 #define URL_HISTORY_ITEMS_VISIBLE_MAX 5
 #define URL_HISTORY_LIST_MAX_H HISTORY_ITEM_H*HISTORY_ITEMS_VISIBLE_MAX
 #define LAYOUT_WIDTH 720
+#define LAYOUT_WIDTH_LANDSCAPE 1280
 #define LAYOUT_HEIGHT 1120
+#define LAYOUT_HEIGHT_LANDSCAPE 612
 
 #define BIG_TILE_WIDTH 656
+#define BIG_TILE_WIDTH_LANDSCAPE 598
 #define BIG_TILE_HEIGHT 450
+#define BIG_TILE_HEIGHT_LANDSCAPE 634
 #define SMALL_TILE_WIDTH 319
+#define SMALL_TILE_WIDTH_LANDSCAPE 290
 #define SMALL_TILE_HEIGHT 361
-#define TILE_SEPARATOR 36
+#define SMALL_TILE_HEIGHT_LANDSCAPE 308
+#define TILE_SEPARATOR 18
 #define TILE_LABEL_BG_HEIGHT 100
 #define TOTAL_TILES_HEIGHT 1264
-
+#define TOTAL_TILES_HEIGHT_LANDSCAPE 675
 #define PAGE_INDICATOR_WIDTH 74
 #define PAGE_INDICATOR_HEIGHT 14
+
+#define DEVELOPMENT 0
 
 # define SMALL_TILE \
     data.item: "texts" "page_title page_url";               \
@@ -29,18 +37,19 @@
             scale: 1;       \
             mouse_events: 0;        \
             description { state: "default" 0.0;     \
-                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;        \
-                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;        \
                 visible: 1;     \
                 color: 231 231 231 255;     \
                 align: 0.5 0.0;     \
-                rel1 {      \
-                    relative: 0.0  0.0;     \
-                }       \
-                rel2 {      \
-                    relative: 1.0  1.0;     \
-                }       \
+                rel1.relative: 0.0  0.0;     \
+                rel2.relative: 1.0  1.0;     \
+                min: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;   \
+                max: SMALL_TILE_WIDTH SMALL_TILE_HEIGHT;      \
             }       \
+            description { state: "landscape" 0.0;   \
+                inherit: "default" 0.0;         \
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;    \
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;    \
+            }   \
         }       \
                 \
         part { name: "elm.thumbnail";       \
@@ -49,7 +58,6 @@
             description { state: "default" 0.0;     \
                 fixed: 1 0;     \
                 align: 0.0 0.0;     \
-                color : 231 231 231 255;        \
                 min: SMALL_TILE_WIDTH 261;   \
                 max: SMALL_TILE_WIDTH 261;      \
                 rel1 {      \
@@ -62,6 +70,11 @@
             description { state: "selected";        \
                 inherit: "default" 0.0;     \
             }       \
+            description { state: "landscape" 0.0;   \
+                inherit: "default" 0.0;         \
+                min: SMALL_TILE_WIDTH_LANDSCAPE 208;    \
+                max: SMALL_TILE_WIDTH_LANDSCAPE 208;    \
+            }   \
         }       \
                 \
         part { name: "border_top";      \
@@ -140,10 +153,10 @@
             type: RECT;     \
             scale: 1;       \
             description { state: "default" 0.0;     \
-                min: SMALL_TILE_WIDTH 100;      \
-                max: SMALL_TILE_WIDTH 100;      \
+                min: SMALL_TILE_WIDTH TILE_LABEL_BG_HEIGHT;      \
+                max: SMALL_TILE_WIDTH TILE_LABEL_BG_HEIGHT;      \
                 align: 0.0 0.0;     \
-                color: 113 128 147 255;     \
+                color_class: "lbBgColor";   \
                 visible: 1;     \
                 rel1 {      \
                     to: "elm.thumbnail";       \
@@ -155,9 +168,18 @@
                 }       \
             }       \
             description { state: "selected" 0.0;        \
-                inherit: "default" 0.0;     \
-                color: 0 119 246 255;       \
+                inherit: "default" 0.0;                 \
+                color_class: "focusBgColor";            \
             }       \
+            description { state: "landscape" 0.0;   \
+                inherit: "default" 0.0;         \
+                min: SMALL_TILE_WIDTH_LANDSCAPE TILE_LABEL_BG_HEIGHT;   \
+                max: SMALL_TILE_WIDTH_LANDSCAPE TILE_LABEL_BG_HEIGHT;   \
+            }   \
+            description { state: "selected_landscape" 0.0;              \
+                inherit: "landscape" 0.0;                               \
+                color_class: "focusBgColor";                            \
+            }                                                           \
         }       \
                 \
         ADD_SPACER_OVER("title_spacer", "lb_bg", 36, 27) \
@@ -201,24 +223,40 @@
     }       \
                 \
     programs {      \
-        program { name: "mouse_in";     \
-            signal: "mouse,in";     \
-            source: "over";     \
-            action: STATE_SET "selected" 0.0;       \
-            target: "lb_bg";        \
-            target: "border_top";       \
-            target: "border_left";      \
-            target: "border_right";     \
-        }       \
-        program { name: "mouse_out";        \
-            signal: "mouse,out";        \
-            source: "over";     \
-            action: STATE_SET "default" 0.0;        \
-            target: "lb_bg";        \
-            target: "border_top";       \
-            target: "border_left";      \
-            target: "border_right";     \
-        }       \
+        program { name: "mouse_in";                                     \
+            signal: "mouse,in";                                         \
+            source: "over";                                             \
+            script {                                                    \
+                new cur_state_helper[31];                               \
+                new Float:index;                                        \
+                get_state(PART:"lb_bg", cur_state_helper, 30, index);   \
+                if (!strcmp(cur_state_helper,"default")) {              \
+                    set_state(PART:"lb_bg", "selected", 0.0);           \
+                } else {                                                \
+                    set_state(PART:"lb_bg", "selected_landscape", 0.0); \
+            }                                                           \
+                set_state(PART:"border_top", "selected", 0.0);          \
+                set_state(PART:"border_left", "selected", 0.0);         \
+                set_state(PART:"border_right", "selected", 0.0);        \
+            }                                                           \
+        }                                                               \
+        program { name: "mouse_out";                                    \
+            signal: "mouse,out";                                        \
+            source: "over";                                             \
+            script {                                                    \
+                new cur_state_helper[31];                               \
+                new Float:index;                                        \
+                get_state(PART:"lb_bg", cur_state_helper, 30, index);   \
+                if(!strcmp(cur_state_helper,"selected")){               \
+                    set_state(PART:"lb_bg", "default", 0.0);            \
+                } else {                                                \
+                    set_state(PART:"lb_bg", "landscape", 0.0);          \
+                }                                                       \
+                set_state(PART:"border_top", "default", 0.0);           \
+                set_state(PART:"border_left", "default", 0.0);          \
+                set_state(PART:"border_right", "default", 0.0);         \
+            }                                                           \
+        }                                                               \
         program {       \
             name: "mouse_click";        \
             signal: "mouse,clicked,1";      \
@@ -227,9 +265,40 @@
                 emit("elm,action,click", "");       \
             }       \
         }       \
+        program { name: "set_landscape";            \
+            signal: "set,landscape";                \
+            source: "ui";                           \
+            action: STATE_SET "landscape" 0.0;      \
+            target: "bg";                           \
+            target: "elm.thumbnail";                \
+            target: "lb_bg";                        \
+        }                                           \
+        program { name: "set_portrait";             \
+            signal: "set,portrait";                 \
+            source: "ui";                           \
+            action: STATE_SET "default" 0.0;        \
+            target: "bg";                           \
+            target: "elm.thumbnail";                \
+            target: "lb_bg";                        \
+        }                                           \
     }
 
 collections {
+    
+color_classes{
+    color_class{
+        name: "lbBgColor";
+        color: 113 128 147 255;
+    }
+    color_class{
+        name: "focusBgColor";
+        color: 0 119 246 255;
+    }
+    color_class{
+        name: "transparent";
+        color: 0 0 0 0;
+    }
+}
 
 group {
     name: "elm/button/base/thumbButton";
@@ -292,7 +361,7 @@ group {
                 state: "default" 0.0;
                 align: 0.0 0.0;
                 min: LAYOUT_WIDTH 116;
-                max: LAYOUT_WIDTH 116;
+                max: -1 116;
                 rel1.relative: 0 0;
                 rel2.relative: 1 1;
             }
@@ -371,16 +440,6 @@ group { name: "page_layout";
     data {
         item: "focus_highlight" "off";
     }
-    color_classes{
-        color_class{
-            name: "focusBgColor";
-            color: 0 119 246 255;
-        }
-        color_class{
-            name: "transparent";
-            color: 0 0 0 0;
-        }
-    }
 
     parts {
         part { name: "bg";
@@ -391,7 +450,7 @@ group { name: "page_layout";
                 color: 244 244 244 255;
                 align: 0.0 0.0;
                 fixed: 0 0;
-                min: LAYOUT_WIDTH 1160;
+                min: LAYOUT_WIDTH LAYOUT_HEIGHT;
                 max: LAYOUT_WIDTH -1;
                 visible: 1;
                 rel1 {
@@ -401,28 +460,19 @@ group { name: "page_layout";
                     relative: 1 1;
                 }
             }
-            description { state: "empty" 0.0;
-                inherit: "default" 0.0;
-                color: 244 244 244 255;
-            }
         }
 
-        part { name: "elm.swallow.grid";
-            type: SWALLOW;
+        rect { name: "top_margin";
             scale: 1;
             description { state: "default" 0.0;
-                align: 0.0 0.0;
-                fixed: 0 0;
-                visible: 1;
-                min: LAYOUT_WIDTH 1150;
-                max: LAYOUT_WIDTH 1150;
+                visible: DEVELOPMENT;
+                color: 100 0 0 255;
+                align: 0 0;
+                min: 0 38;
+                max: 0 38;
                 rel1 {
-                    to: "bg";
                     relative: 0 0;
-                }
-                rel2 {
                     to: "bg";
-                    relative: 1 1;
                 }
             }
         }
@@ -434,8 +484,8 @@ group { name: "page_layout";
                 align: 0 0;
                 visible: 1;
                 rel1 {
-                    to: "bg";
-                    relative: 0 0;
+                    to: "top_margin";
+                    relative: 1 1;
                 }
                 rel2 {
                     to: "bg";
@@ -483,7 +533,6 @@ group { name: "page_layout";
             source: "quickaccess";
             action:  STATE_SET "empty" 0.0;
             target: "elm.text.empty";
-            target: "bg";
             target: "center_swallow";
         }
         program { name: "not_empty";
@@ -491,7 +540,116 @@ group { name: "page_layout";
             source: "quickaccess";
             action:  STATE_SET "default" 0.0;
             target: "elm.text.empty";
-            target: "bg";
+            target: "center_swallow";
+        }
+    }
+}
+
+// We need another group for landscape because scroller
+// doesn't react on content size change and need to be
+// recreated with new layout
+group { name: "page_layout_landscape";
+    parts {
+        part { name: "bg";
+            type: RECT;
+            scale: 1;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+                color: 244 244 244 255;
+                align: 0.0 0.0;
+                fixed: 0 0;
+                min: LAYOUT_WIDTH_LANDSCAPE 0;
+                max: LAYOUT_WIDTH_LANDSCAPE -1;
+                visible: 1;
+                rel1 {
+                    relative: 0 0;
+                }
+                rel2{
+                    relative: 1 1;
+                }
+            }
+        }
+
+        rect { name: "top_margin";
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: DEVELOPMENT;
+                color: 100 0 0 255;
+                align: 0 0;
+                min: 0 38;
+                max: 0 38;
+                rel1 {
+                    relative: 0 0;
+                    to: "bg";
+                }
+            }
+        }
+
+        part { name: "center_swallow";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+                align: 0 0;
+                visible: 1;
+                min: LAYOUT_WIDTH_LANDSCAPE TOTAL_TILES_HEIGHT_LANDSCAPE;
+                max: LAYOUT_WIDTH_LANDSCAPE TOTAL_TILES_HEIGHT_LANDSCAPE;
+                rel1 {
+                    to: "top_margin";
+                    relative: 1 1;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+
+        part { name: "elm.text.empty";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: 0;
+                align: 0.5 0.5;
+                color: 0 0 0 179;
+                text {
+                    text: "empty";
+                    font: "Sans";
+                    size: 32;
+                    align: 0.5 0.5;
+                }
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1 1;
+                }
+            }
+            description { state: "empty" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+    }
+
+    programs {
+        program { name: "empty";
+            signal: "empty,view";
+            source: "quickaccess";
+            action:  STATE_SET "empty" 0.0;
+            target: "elm.text.empty";
+            target: "center_swallow";
+        }
+        program { name: "not_empty";
+            signal: "not,empty,view";
+            source: "quickaccess";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.text.empty";
             target: "center_swallow";
         }
     }
@@ -520,6 +678,29 @@ group { name: "center_layout";
                 min: 0 TOTAL_TILES_HEIGHT;
                 max: -1 TOTAL_TILES_HEIGHT;
             }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+            }
+        }
+
+        rect { name: "top_left_margin";
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: DEVELOPMENT;
+                color: 100 0 0 255;
+                align: 0 0;
+                min: 32 0;
+                max: 32 0;
+                rel1 {
+                    relative: 0 0;
+                    to: "bg";
+                }
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: 33 0;
+                max: 33 0;
+            }
         }
 
         part { name: "elm.swallow.big";
@@ -528,21 +709,50 @@ group { name: "center_layout";
             description { state: "default" 0.0;
                 min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
                 max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
-                align: 0.5 0.0;
+                align: 0 0;
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "bg";
-                    relative: 0 0;
-                    offset: 0 76;
+                    relative: 1 1;
+                    to: "top_left_margin";
                 }
                 rel2 {
                     relative: 1 1;
+                    to: "bg";
                 }
             }
             description { state: "empty" 0.0;
                 inherit: "default" 0.0;
                 visible: 0;
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: BIG_TILE_WIDTH_LANDSCAPE BIG_TILE_HEIGHT_LANDSCAPE;
+                max: BIG_TILE_WIDTH_LANDSCAPE BIG_TILE_HEIGHT_LANDSCAPE;
+            }
+        }
+
+        rect { name: "swallow_big_margin";
+            scale: 1;
+            description { state: "default" 0.0;
+                visible: DEVELOPMENT;
+                color: 100 0 0 255;
+                align: 0 0;
+                min: 0 TILE_SEPARATOR;
+                max: 0 TILE_SEPARATOR;
+                rel1 {
+                    relative: 0 1;
+                    to: "elm.swallow.big";
+                }
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: TILE_SEPARATOR 0;
+                max: TILE_SEPARATOR 0;
+                rel1 {
+                    relative: 1 0;
+                    to: "elm.swallow.big";
+                }
             }
         }
 
@@ -556,9 +766,8 @@ group { name: "center_layout";
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "elm.swallow.big";
-                    relative: 0 1;
-                    offset: 0 TILE_SEPARATOR;
+                    to: "swallow_big_margin";
+                    relative: 1 1;
                 }
                 rel2{
                     to: "bg";
@@ -569,7 +778,14 @@ group { name: "center_layout";
                 inherit: "default" 0.0;
                 visible: 0;
             }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+            }
         }
+
+        ADD_SPACER_NEXT_TO("first_margin", "elm.swallow.small_first", TILE_SEPARATOR, 0);
 
         part { name: "elm.swallow.small_second";
             type: SWALLOW;
@@ -581,9 +797,8 @@ group { name: "center_layout";
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "elm.swallow.small_first";
+                    to: "first_margin";
                     relative: 1 0;
-                    offset: TILE_SEPARATOR 0;
                 }
                 rel2{
                     to: "bg";
@@ -594,8 +809,15 @@ group { name: "center_layout";
                 inherit: "default" 0.0;
                 visible: 0;
             }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+            }
         }
 
+        ADD_SPACER_BELOW("second_margin", "elm.swallow.small_first", 0, TILE_SEPARATOR);
+        
         part { name: "elm.swallow.small_third";
             type: SWALLOW;
             scale: 1;
@@ -606,9 +828,8 @@ group { name: "center_layout";
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "elm.swallow.small_first";
+                    to: "second_margin";
                     relative: 0 1;
-                    offset: 0 TILE_SEPARATOR;
                 }
                 rel2 {
                     to: "bg";
@@ -619,7 +840,14 @@ group { name: "center_layout";
                 inherit: "default" 0.0;
                 visible: 0;
             }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+            }
         }
+
+        ADD_SPACER_NEXT_TO("third_margin", "elm.swallow.small_third", TILE_SEPARATOR, 0);
 
         part { name: "elm.swallow.small_fourth";
             type: SWALLOW;
@@ -631,9 +859,8 @@ group { name: "center_layout";
                 fixed: 1 1;
                 visible: 1;
                 rel1 {
-                    to: "elm.swallow.small_third";
+                    to: "third_margin";
                     relative: 1 0;
-                    offset: TILE_SEPARATOR 0;
                 }
                 rel2 {
                     to: "bg";
@@ -643,6 +870,11 @@ group { name: "center_layout";
             description { state: "empty" 0.0;
                 inherit: "default" 0.0;
                 visible: 0;
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
             }
         }
     }
@@ -662,6 +894,28 @@ group { name: "center_layout";
             action:  STATE_SET "fixed_size" 0.0;
             target:  "bg";
         }
+        program {
+            name: "set_portrait";
+            signal: "set,portrait";
+            source: "ui";
+            action: STATE_SET "default" 0.0;
+            target: "top_left_margin";
+            target: "elm.swallow.big";
+        }
+        program {
+            name: "set_landscape";
+            signal: "set,landscape";
+            source: "ui";
+            action: STATE_SET "landscape" 0.0;
+            target: "bg";
+            target: "top_left_margin";
+            target: "elm.swallow.big";
+            target: "swallow_big_margin";
+            target: "elm.swallow.small_first";
+            target: "elm.swallow.small_second";
+            target: "elm.swallow.small_third";
+            target: "elm.swallow.small_fourth";
+        }
     }
 }
 
@@ -674,12 +928,8 @@ group { name: "elm/button/base/big_tile";
             scale: 1;
             mouse_events: 0;
             description { state: "default" 0.0;
-                rel1 {
-                    relative: 0.0  0.0; to: "bg";
-                }
-                rel2 {
-                    relative: 1.0  1.0; to: "bg";
-                }
+                rel1.relative: 0.0  0.0;
+                rel2.relative: 1.0  1.0;
                 visible: 1;
                 color: 231 231 231 255;
             }
@@ -691,7 +941,6 @@ group { name: "elm/button/base/big_tile";
             description { state: "default" 0.0;
                 fixed: 1 1;
                 align: 0.0 0.0;
-                color : 231 231 231 255;
                 min: BIG_TILE_WIDTH BIG_TILE_HEIGHT;   // size adjusted to max thubnail with and height
                 max: BIG_TILE_WIDTH BIG_TILE_HEIGHT;
                 rel1 {
@@ -703,6 +952,11 @@ group { name: "elm/button/base/big_tile";
             }
             description { state: "selected";
                 inherit: "default" 0.0;
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: BIG_TILE_WIDTH_LANDSCAPE BIG_TILE_HEIGHT_LANDSCAPE;
+                max: BIG_TILE_WIDTH_LANDSCAPE BIG_TILE_HEIGHT_LANDSCAPE;
             }
         }
 
@@ -785,7 +1039,7 @@ group { name: "elm/button/base/big_tile";
                 min: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
                 max: BIG_TILE_WIDTH TILE_LABEL_BG_HEIGHT;
                 align: 0.0 1.0;
-                color: 113 128 147 255;
+                color_class: "lbBgColor";
                 visible: 1;
                 rel1 {
                     to: "elm.thumbnail";
@@ -798,7 +1052,17 @@ group { name: "elm/button/base/big_tile";
             }
             description { state: "selected" 0.0;
                 inherit: "default" 0.0;
-                color: 0 119 246 255;
+                color_class: focusBgColor;
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: BIG_TILE_WIDTH_LANDSCAPE TILE_LABEL_BG_HEIGHT;
+                max: BIG_TILE_WIDTH_LANDSCAPE TILE_LABEL_BG_HEIGHT;
+                //color: 255 0 0 255;
+            }
+            description { state: "selected_landscape" 0.0;
+                inherit: "landscape" 0.0;
+                color_class: focusBgColor;
             }
         }
 
@@ -854,20 +1118,36 @@ group { name: "elm/button/base/big_tile";
         program { name: "mouse_in";
             signal: "mouse,in";
             source: "over";
-            action:  STATE_SET "selected" 0.0;
-            target:  "lb_bg";
-            target: "border_top";
-            target: "border_left";
-            target: "border_right";
+            script {
+                new cur_state_helper[31];
+                new Float:index;
+                get_state(PART:"lb_bg", cur_state_helper, 30, index);
+                if(!strcmp(cur_state_helper,"default")){
+                    set_state(PART:"lb_bg", "selected", 0.0);
+                } else {
+                    set_state(PART:"lb_bg", "selected_landscape", 0.0);
+                }
+                set_state(PART:"border_top", "selected", 0.0);
+                set_state(PART:"border_left", "selected", 0.0);
+                set_state(PART:"border_right", "selected", 0.0);
+            }
         }
         program { name: "mouse_out";
             signal: "mouse,out";
             source: "over";
-            action:  STATE_SET "default" 0.0;
-            target:  "lb_bg";
-            target: "border_top";
-            target: "border_left";
-            target: "border_right";
+            script {
+                new cur_state_helper[31];
+                new Float:index;
+                get_state(PART:"lb_bg", cur_state_helper, 30, index);
+                if(!strcmp(cur_state_helper,"selected")){
+                    set_state(PART:"lb_bg", "default", 0.0);
+                } else {
+                    set_state(PART:"lb_bg", "landscape", 0.0);
+                }
+                set_state(PART:"border_top", "default", 0.0);
+                set_state(PART:"border_left", "default", 0.0);
+                set_state(PART:"border_right", "default", 0.0);
+            }
         }
         program {
             name: "mouse_click";
@@ -876,6 +1156,20 @@ group { name: "elm/button/base/big_tile";
             script {
                 emit("elm,action,click", "");
             }
+        }
+        program { name: "set_landscape";
+            signal: "set,landscape";
+            source: "ui";
+            action: STATE_SET "landscape" 0.0;
+            target: "elm.thumbnail";
+            target: "lb_bg";
+        }
+        program { name: "set_portrait";
+            signal: "set,portrait";
+            source: "ui";
+            action: STATE_SET "default" 0.0;
+            target: "elm.thumbnail";
+            target: "lb_bg";
         }
     }
 }
@@ -909,9 +1203,31 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
                     relative: 1.0  1.0;
                 }
             }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+                max: SMALL_TILE_WIDTH_LANDSCAPE SMALL_TILE_HEIGHT_LANDSCAPE;
+            }
         }
 
-        ADD_SPACER_OVER("img_spacer", "bg", 0, 72)
+        rect { name: "img_spacer";
+            scale: 1;
+            description { state: "default" 0.0;
+                align: 0.0 0.0;
+                visible: DEVELOPMENT;
+                min: 0 72;
+                max: 0 72;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0 0.0;
+                }
+            }
+            description { state: "landscape" 0.0;
+                inherit: "default" 0.0;
+                min: 0 32;
+                max: 0 32;
+            }
+        }
 
         part {
             name: "img";
@@ -936,7 +1252,23 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
             }
         }
 
-        ADD_SPACER_OVER("text_spacer", "bg", 0, 224)
+        rect { name: "bottom_spacer1";
+            scale: 1;
+            description {
+                visible: DEVELOPMENT;
+                min: 0 72;
+                max: 0 72;
+                align: 1.0 1.0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0  0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+            }
+        }
 
         part { name: "label1";
             type: TEXT;
@@ -944,15 +1276,15 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
             description { state: "default" 0.0;
                 min: 199 34;
                 max: 199 34;
-                align: 0.5 0.0;
+                align: 0.5 1.0;
                 color:  51 51 51 255;
                 rel1 {
-                    to: "text_spacer";
-                    relative: 0.0 1.0;
+                    to: "bg";
+                    relative: 0.0 0.0;
                 }
                 rel2 {
-                    to: "bg";
-                    relative: 1.0  1.0;
+                    to: "bottom_spacer1";
+                    relative: 0.0  0.0;
                 }
                 text {
                     text: "Bookmark";
@@ -963,7 +1295,23 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
             }
         }
 
-        ADD_SPACER_OVER("text_spacer2", "bg", 0, 268)
+        rect { name: "bottom_spacer2";
+            scale: 1;
+            description {
+                visible: DEVELOPMENT;
+                min: 0 32;
+                max: 0 32;
+                align: 1.0 1.0;
+                rel1 {
+                    to: "bg";
+                    relative: 0.0  0.0;
+                }
+                rel2 {
+                    to: "bg";
+                    relative: 1.0  1.0;
+                }
+            }
+        }
 
         part { name: "label2";
             type: TEXT;
@@ -971,15 +1319,15 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
             description { state: "default" 0.0;
                 min: 199 34;
                 max: 199 34;
-                align: 0.5 0.0;
+                align: 0.5 1.0;
                 color:  51 51 51 255;
                 rel1 {
-                    to: "text_spacer2";
-                    relative: 0.0 1.0;
+                    to: "bg";
+                    relative: 0.0 0.0;
                 }
                 rel2 {
-                    to: "bg";
-                    relative: 1.0  1.0;
+                    to: "bottom_spacer2";
+                    relative: 0.0  0.0;
                 }
                 text {
                     text: "manager";
@@ -1116,6 +1464,13 @@ group { name: "elm/gengrid/item/bookmark_manager/default";
             target: "border_left";
             target: "border_right";
             target: "border_bottom";
+        }
+        program { name: "set_landscape";
+            signal: "set,landscape";
+            source: "ui";
+            action: STATE_SET "landscape" 0.0;
+            target: "bg";
+            target: "img_spacer";
         }
     }
 }
