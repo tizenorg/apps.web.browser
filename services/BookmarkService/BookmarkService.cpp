@@ -287,6 +287,9 @@ bool BookmarkService::delete_by_id(int id)
         return false;
     else {
         bp_bookmark_adaptor_publish_notification();
+        bp_bookmark_info_fmt* info = nullptr;
+        if(!bp_bookmark_adaptor_get_info(id, BP_BOOKMARK_O_ALL, info))
+            bp_bookmark_adaptor_easy_free(info);
         return true;
     }
 }

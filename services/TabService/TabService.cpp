@@ -48,7 +48,7 @@ int TabService::createTabId(int tabId) const
     bp_tab_info_fmt info;
     std::memset(&info, 0, sizeof(bp_tab_info_fmt));
 
-    if (bp_tab_adaptor_easy_create(&adaptorId, &info) < 0) {
+    if (!bp_tab_adaptor_easy_create(&adaptorId, &info)) {
         errorPrint("bp_tab_adaptor_create");
     }
     return adaptorId;
@@ -120,6 +120,9 @@ void TabService::clearThumb(const basic_webengine::TabId& tabId)
     BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
     clearFromDatabase(tabId);
     clearFromCache(tabId);
+    bp_tab_info_fmt* info = nullptr;
+    if(!bp_tab_adaptor_get_info(tabId.get(), BP_TAB_O_ALL, info))
+        bp_tab_adaptor_easy_free(info);
 }
 
 void TabService::fillThumbs(
