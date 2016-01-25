@@ -58,6 +58,11 @@ namespace EflTools
 
     void setExpandHints(Evas_Object* toSet);
 
+    /**
+     * Check if coordinates are inside of a given object.
+     */
+    bool pointInObject(Evas_Object* object, int x, int y);
+
 } /* end of namespace EflTools */
 } /* end of namespace tools */
 } /* end of namespace tizen_browser */
