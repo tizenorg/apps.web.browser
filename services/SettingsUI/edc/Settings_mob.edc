@@ -7,6 +7,7 @@
 #include "ResetMostVisited_mob.edc"
 #include "ContentSettings_mob.edc"
 #include "Privacy_mob.edc"
+#include "DeveloperOptions_mob.edc"
 
 collections
 {

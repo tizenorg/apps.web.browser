@@ -324,6 +324,7 @@ void SimpleUI::connectUISignals()
     m_settingsUI->resetMostVisitedClicked.connect(boost::bind(&SimpleUI::settingsResetMostVisited, this));
     m_settingsUI->resetBrowserClicked.connect(boost::bind(&SimpleUI::settingsResetBrowser, this));
 #if PROFILE_MOBILE
+    m_settingsUI->overrideUseragentClicked.connect(boost::bind(&SimpleUI::settingsOverrideUseragent, this));
     m_settingsUI->getWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
     m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&storage::SettingsStorage::setParam, &m_storageService->getSettingsStorage(), _1, _2));
@@ -1610,6 +1611,39 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
 
         popup->dismiss();
     }
+}
+
+void SimpleUI::settingsOverrideUseragent()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
+        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+        popup->show("Open a webpage to perform this operation.");
+        popup->dismiss();
+        return;
+    }
+
+    std::string currentUserAgent = m_webEngine->getUserAgent();
+    InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "Override UserAgent", "",
+                                                        currentUserAgent, _("IDS_BR_SK_DONE"), _("IDS_BR_SK_CANCEL_ABB"), true);
+    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onOverrideUseragentButton, this, _1));
+    inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    inputPopup->show();
+}
+
+void SimpleUI::onOverrideUseragentButton(const std::string& newUA)
+{
+    BROWSER_LOGD("[%s]: Overriding useragent", __func__);
+    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+    if (!newUA.empty()) {
+        m_webEngine->setUserAgent(newUA);
+        popup->show("UserAgent updated..");
+    }
+    else {
+        popup->show("UserAgent string cannot be empty.");
+    }
+    popup->dismiss();
 }
 
 void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/)

@@ -36,7 +36,8 @@ enum SettingsOptions {
     RESET_BRO,
     AUTO_FILL,
     CONTENT,
-    PRIVACY
+    PRIVACY,
+    DEVELOPER
 };
 
 EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
@@ -94,12 +95,16 @@ void SettingsUI::updateButtonMap() {
     ItemData privacy;
     privacy.buttonText="Privacy";
 
+    ItemData developer;
+    developer.buttonText="Developer options";
+
     m_buttonsMap[SettingsOptions::DEL_WEB_BRO]=deleteWebBrowsing;
     m_buttonsMap[SettingsOptions::RESET_MOST_VIS]=resetMostVisited;
     m_buttonsMap[SettingsOptions::RESET_BRO]=resetBrowser;
     m_buttonsMap[SettingsOptions::AUTO_FILL]=autoFill;
     m_buttonsMap[SettingsOptions::CONTENT]=content;
     m_buttonsMap[SettingsOptions::PRIVACY]=privacy;
+    m_buttonsMap[SettingsOptions::DEVELOPER]=developer;
 }
 
 Evas_Object* SettingsUI::getContent()
@@ -250,6 +255,7 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::AUTO_FILL], _auto_fill_data_menu_clicked_cb, this);
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::CONTENT], _content_settings_menu_clicked_cb, this);
     elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::PRIVACY], _privacy_menu_clicked_cb, this);
+    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEVELOPER], _developer_menu_clicked_cb, this);
 
     elm_object_part_content_set(layout, "options_swallow", scroller);
     evas_object_show(scroller);
@@ -395,6 +401,29 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
 
     elm_object_translatable_part_text_set(layout, "reset_browser_sub_text", "You can delete all data and return to initial setting");
+
+    return layout;
+}
+
+Evas_Object* SettingsUI::createDeveloperOptionsMobilePage(Evas_Object* settings_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    Evas_Object* layout = elm_layout_add(settings_layout);
+    elm_layout_file_set(layout, m_edjFilePath.c_str(), "developer_options");
+    elm_object_part_content_set(settings_layout, "settings_swallow", layout);
+    evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    elm_object_signal_emit(m_actionBar,"switch,developer,options", "del_but");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+
+    Evas_Object *override_ua_button = elm_button_add(layout);
+    elm_object_style_set(override_ua_button, "basic_button");
+    evas_object_smart_callback_add(override_ua_button, "clicked", _override_useragent_clicked_cb, this);
+    elm_layout_content_set(layout, "override_useragent_click", override_ua_button);
+
+    elm_object_translatable_part_text_set(layout, "developer_options_sub_text", "You can override the Browser's UserAgent to desired string.");
 
     return layout;
 }
@@ -700,6 +729,28 @@ void SettingsUI::_privacy_menu_clicked_cb(void* data, Evas_Object*, void*)
         self->resetItemsLayoutContent();
         self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
         self->m_subpage_layout = self->createPrivacyPage(self->m_settings_layout);
+        self->orientationChanged();
+    }
+}
+
+void SettingsUI::_developer_menu_clicked_cb(void *data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetItemsLayoutContent();
+        self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+        self->m_subpage_layout = self->createDeveloperOptionsMobilePage(self->m_settings_layout);
+        self->orientationChanged();
+    }
+}
+
+void SettingsUI::_override_useragent_clicked_cb(void *data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->overrideUseragentClicked();
         self->orientationChanged();
     }
 }
