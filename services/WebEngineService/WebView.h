@@ -20,6 +20,7 @@
 #include <boost/signals2/signal.hpp>
 #include <string>
 #include <Evas.h>
+#include <ecore-1/Ecore.h>
 
 #include <ewk_chromium.h>
 #include "browser_config.h"
@@ -248,6 +249,8 @@ public:
     boost::signals2::signal<void ()> loadError;
     boost::signals2::signal<void (double)> loadProgress;
 
+    boost::signals2::signal<void (TabId)> ready;
+
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
 
@@ -288,6 +291,11 @@ private:
     static void __loadFinished(void * data, Evas_Object * obj, void * event_info);
     static void __loadProgress(void * data, Evas_Object * obj, void * event_info);
     static void __loadError(void* data, Evas_Object* obj, void *ewkError);
+
+    // Ready
+    // TODO: delete workaround function _ready when ewk_view sends "ready" signal
+    static Eina_Bool _ready(void *data);
+    static void __ready(void* data, Evas_Object* obj, void *event_info);
 
     static void __titleChanged(void * data, Evas_Object * obj, void * event_info);
     static void __urlChanged(void * data, Evas_Object * obj, void * event_info);
@@ -335,6 +343,10 @@ private:
     std::map<AuthenticationConfirmationPtr, Ewk_Auth_Challenge *> m_confirmationAuthenticationMap;
 
     static const std::string COOKIES_PATH;
+
+    //TODO: delete this lines when "ready" signal is supported by ewk_view
+    Ecore_Timer *m_timer;
+    const double TIMER_INTERVAL = 5.0;
 };
 
 } /* namespace webengine_service */
