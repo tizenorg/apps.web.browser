@@ -80,6 +80,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_suspended(false)
     , m_private(incognitoMode)
     , m_fullscreen(false)
+    , m_timer(nullptr)
 {
 }
 
@@ -164,7 +165,7 @@ void __vibration_cb(uint64_t vibration_time, void * /*data*/)
 
     const uint64_t duration = vibration_time;
     device_haptic_vibrate(m_haptic_handle, duration, 100, &m_haptic_effect);
-    double in = (double)((double)(duration) / (double)(1000));	
+    double in = (double)((double)(duration) / (double)(1000));
     m_haptic_timer_id = ecore_timer_add(in, __vibration_timeout_cb, NULL);
 }
 
@@ -183,6 +184,9 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "load,finished", __loadFinished, this);
     evas_object_smart_callback_add(m_ewkView, "load,progress", __loadProgress, this);
     evas_object_smart_callback_add(m_ewkView, "load,error", __loadError, this);
+
+    //TODO: uncomment this line when "ready" signal is supported by ewk_view
+    //evas_object_smart_callback_add(m_ewkView, "ready", __ready, this);
 
     evas_object_smart_callback_add(m_ewkView, "title,changed", __titleChanged, this);
     evas_object_smart_callback_add(m_ewkView, "url,changed", __urlChanged, this);
@@ -603,15 +607,19 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
 
     self->loadFinished();
     self->loadProgress(self->m_loadProgress);
+
+    //TODO: delete this line when "ready" signal is supported by ewk_view
+    self->m_timer =  ecore_timer_add(self->TIMER_INTERVAL, _ready, self);
 }
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
     if (!self->isLoading())
         return;
+
     self->m_loadProgress = *(double *)event_info;
     self->loadProgress(self->m_loadProgress);
 }
@@ -640,6 +648,25 @@ void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)
         self->loadError();
         self->m_loadError=true;
     }
+}
+
+Eina_Bool WebView::_ready(void *data)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    WebView * self = reinterpret_cast<WebView *>(data);
+    ecore_timer_del(self->m_timer);
+    self->__ready(data, nullptr, nullptr);
+
+    return ECORE_CALLBACK_CANCEL;
+}
+
+void WebView::__ready(void* data, Evas_Object * /*obj*/, void* /*event_info*/)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    WebView *self = reinterpret_cast<WebView*>(data);
+    self->ready(self->getTabId());
 }
 
 void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_info */)
@@ -1058,7 +1085,7 @@ void WebView::setZoomFactor(double zoomFactor)
     if(m_ewkView) {
         //using zoomFactor = 0 sets zoom "fit to screen"
 
-        if(zoomFactor != getZoomFactor()) 
+        if(zoomFactor != getZoomFactor())
             ewk_view_page_zoom_set(m_ewkView, zoomFactor);
     }
 }

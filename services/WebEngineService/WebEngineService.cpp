@@ -91,6 +91,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
     webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
     webView->loadProgress.connect(boost::bind(&WebEngineService::_loadProgress, this, _1));
+    webView->ready.connect(boost::bind(&WebEngineService::_ready, this, _1));
     webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
     webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
@@ -297,6 +298,11 @@ void WebEngineService::_backwardEnableChanged(bool enable)
 void WebEngineService::_loadProgress(double d)
 {
     loadProgress(d);
+}
+
+void WebEngineService::_ready(TabId id)
+{
+    ready(id);
 }
 
 void WebEngineService::_confirmationRequest(WebConfirmationPtr c)

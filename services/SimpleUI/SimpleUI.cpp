@@ -497,6 +497,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadStopped, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
+    m_webEngine->ready.connect(boost::bind(&SimpleUI::ready, this, _1));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
@@ -847,7 +848,8 @@ void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
     const int THUMB_HEIGHT = boost::any_cast<int>(
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
-    m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, true);
+    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, false);
+    m_tabService->onThumbGenerated(tabId, snapshotImage);
 }
 
 void SimpleUI::onCreateTabId()
@@ -1016,14 +1018,6 @@ void SimpleUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_historyService->addHistoryItem(m_webEngine->getURI(),
-                                         m_webEngine->getTitle(),
-                                         m_webEngine->getFavicon(),
-                                         m_webEngine->getSnapshotData(
-                                            QuickAccess::MAX_THUMBNAIL_WIDTH,
-                                            QuickAccess::MAX_THUMBNAIL_HEIGHT));
-    m_tabService->updateThumb(m_webEngine->currentTabId());
     m_webPageUI->loadFinished();
 }
 
@@ -1043,6 +1037,20 @@ void SimpleUI::loadError()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->switchViewToErrorPage();
+}
+
+void SimpleUI::ready(basic_webengine::TabId id)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (!m_webEngine->isPrivateMode(id))
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                         m_webEngine->getTitle(),
+                                         m_webEngine->getFavicon(),
+                                         m_webEngine->getSnapshotData(
+                                            QuickAccess::MAX_THUMBNAIL_WIDTH,
+                                            QuickAccess::MAX_THUMBNAIL_HEIGHT));
+    m_tabService->updateThumb(id);
 }
 
 void SimpleUI::filterURL(const std::string& url)
