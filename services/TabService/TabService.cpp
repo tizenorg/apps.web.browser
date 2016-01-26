@@ -75,11 +75,6 @@ void TabService::errorPrint(std::string method) const
 
 tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
 {
-        auto imageCache = getThumbCache(tabId);
-        if(imageCache) {
-            return *imageCache;
-        }
-
         auto imageDatabase = getThumbDatabase(tabId);
         if(imageDatabase) {
             saveThumbCache(tabId, *imageDatabase);
@@ -87,9 +82,12 @@ tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
         }
 
         BROWSER_LOGD("%s [%d] generating thumb", __FUNCTION__, tabId.get());
+        clearThumb(tabId);
         generateThumb(tabId);
 
-        imageCache = getThumbCache(tabId);
+        if (m_thumbMapSave[tabId.get()])
+            return NULL;
+        auto imageCache = getThumbCache(tabId);
         if (!imageCache) {
             // error, something went wrong and TabService didn't receive thumb
             // for desired ID through onThumbGenerated() slot
@@ -111,6 +109,7 @@ boost::optional<tools::BrowserImagePtr> TabService::getThumbCache(
 void TabService::updateThumb(const basic_webengine::TabId& tabId)
 {
     BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
+    m_thumbMapSave[tabId.get()] = true;
     clearThumb(tabId);
     getThumb(tabId);
 }
@@ -127,6 +126,7 @@ void TabService::fillThumbs(
 {
     for (auto& tc : tabsContents) {
         auto thumbPtr = getThumb(tc->getId());
+        m_thumbMapSave.insert(std::pair<int, bool>(tc->getId().get(), false));
         tc->setThumbnail(thumbPtr);
     }
 }
@@ -134,12 +134,14 @@ void TabService::fillThumbs(
 void TabService::onThumbGenerated(const basic_webengine::TabId& tabId,
         tools::BrowserImagePtr imagePtr)
 {
-    if(!thumbInDatabase(tabId)) {
-        // prepare adaptor id before saving in db
-        createTabId(tabId.get());
+    if (m_thumbMapSave[tabId.get()]) {
+        if(!thumbInDatabase(tabId)) {
+            // prepare adaptor id before saving in db
+            createTabId(tabId.get());
+        }
+        // TODO (m.kawonczyk) getBlobPNG() works fast on Z3. It should be improved for N4
+        saveThumbDatabase(tabId, imagePtr);
     }
-    // TODO (Gajendra.N) Enable after getBlobPNG() is improved
-    // saveThumbDatabase(tabId, imagePtr);
     saveThumbCache(tabId, imagePtr);
 }
 
