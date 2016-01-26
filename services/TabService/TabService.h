@@ -143,6 +143,13 @@ private:
      * Map caching images. Keys: tab ids, values: thumb images.
      */
     std::map<int, tools::BrowserImagePtr> m_thumbMap;
+
+    /**
+     * Map caching if thumb should be saved in database.
+     * Only thumb generated after website fully loaded should be saved.
+     * Keys: tab ids, values: false/true
+     */
+    std::map<int, bool> m_thumbMapSave;
 };
 
 } /* namespace base_ui */

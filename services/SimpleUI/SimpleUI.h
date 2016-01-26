@@ -46,6 +46,7 @@
 #endif
 #include "QuickAccess.h"
 #include "TabUI.h"
+#include "TabId.h"
 #include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
@@ -105,8 +106,9 @@ private:
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();
-
     void loadError();
+    void ready(basic_webengine::TabId id);
+
     void setErrorButtons();
 
     void bookmarkAdded();

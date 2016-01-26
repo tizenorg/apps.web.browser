@@ -416,6 +416,11 @@ public:
     boost::signals2::signal<void ()> loadError;
 
     /**
+     * Page is fully loaded.
+     */
+    boost::signals2::signal<void (TabId)> ready;
+
+    /**
      * Current tab changed
      * \param TabId of new tab
      */
