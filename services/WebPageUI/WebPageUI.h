@@ -115,9 +115,12 @@ private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
     static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
+#if PROFILE_MOBILE
+    static void _more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*);
+#endif
 #if PROFILE_MOBILE && GESTURE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
-    static void _geasture_finished(void *data, Evas_Object *obj, const char *emission, const char *source);
+    static void _gesture_finished(void *data, Evas_Object *obj, const char *emission, const char *source);
 #endif
 
     void createLayout();
@@ -135,8 +138,8 @@ private:
     std::string edjePath(const std::string& file);
     void refreshFocusChain();
 #if PROFILE_MOBILE && GESTURE
-    void geastureUp();
-    void geastureDown();
+    void gestureUp();
+    void gestureDown();
 #endif
 
     // wrappers to call singal as a reaction to other signal
@@ -170,7 +173,7 @@ private:
     sharedAction m_showMoreMenu;
 
 #if PROFILE_MOBILE && GESTURE
-    Evas_Object* m_geastureLayer;
+    Evas_Object* m_gestureLayer;
     bool m_uriBarHidden;
     static const int SINGLE_FINGER = 1;
     static const int SWIPE_MOMENTUM_TRESHOLD = 400;
