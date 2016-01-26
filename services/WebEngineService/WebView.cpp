@@ -462,17 +462,16 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
     }
 }
 
-std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targetHeight, bool async)
+tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeight, bool async)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
     M_ASSERT(targetWidth);
     M_ASSERT(targetHeight);
     Evas_Coord vw, vh;
-    std::shared_ptr<BrowserImage> noImage = std::make_shared<BrowserImage>();
     evas_object_geometry_get(m_ewkView, nullptr, nullptr, &vw, &vh);
     if (vw == 0 || vh == 0)
-        return noImage;
+        return std::make_shared<BrowserImage>();
 
     Eina_Rectangle area;
     double snapshotProportions = (double)(targetWidth) /(double)(targetHeight);
@@ -491,7 +490,7 @@ std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targ
         area.h = vw*getZoomFactor()/snapshotProportions;
     }
     if (area.w == 0 || area.h == 0)
-        return noImage;
+        return std::make_shared<BrowserImage>();
 
     BROWSER_LOGD("[%s:%d] Before snapshot (screenshot) - look at the time of taking snapshot below",__func__, __LINE__);
 
@@ -504,10 +503,10 @@ std::shared_ptr<BrowserImage> WebView::captureSnapshot(int targetWidth, int targ
         Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
         BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
         if (snapshot)
-            return EflTools::getBrowserImage(snapshot);
+            return std::make_shared<tools::BrowserImage>(snapshot);
     }
 
-    return noImage;
+    return std::make_shared<BrowserImage>();
 }
 
 void WebView::__screenshotCaptured(Evas_Object* image, void* data)
@@ -515,7 +514,7 @@ void WebView::__screenshotCaptured(Evas_Object* image, void* data)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     WebView * self = reinterpret_cast<WebView *>(data);
-    self->snapshotCaptured(EflTools::getBrowserImage(image));
+    self->snapshotCaptured(std::make_shared<tools::BrowserImage>(image));
 }
 
 void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
@@ -677,7 +676,8 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
         Evas_Object * favicon = ewk_context_icon_database_icon_object_add(self->m_ewkContext, ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
         if (favicon && self->isLoading()) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
-            self->faviconImage = EflTools::getBrowserImage(favicon);
+            self->faviconImage = std::make_shared<tools::BrowserImage>(favicon);
+            // TODO according to documentation object should be deleted not unref
             evas_object_unref(favicon);
             self->favIconChanged(self->faviconImage);
         }
@@ -1143,19 +1143,16 @@ const TabId& WebView::getTabId() {
 }
 
 
-std::shared_ptr<BrowserImage> WebView::getFavicon()
+tools::BrowserImagePtr WebView::getFavicon()
 {
     BROWSER_LOGD("%s:%d, TabId: %s", __PRETTY_FUNCTION__, __LINE__, m_tabId.toString().c_str());
     M_ASSERT(m_ewkContext);
     Evas_Object * favicon = ewk_context_icon_database_icon_object_add(m_ewkContext, ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
-    faviconImage = EflTools::getBrowserImage(favicon);
+    faviconImage = std::make_shared<tools::BrowserImage>(favicon);
+    // TODO according to documentation object should be deleted not unref
     evas_object_unref(favicon);
 
-    if(faviconImage.get())
-        return faviconImage;
-
-    BROWSER_LOGD("[%s:%d] Returned favicon is empty!",  __PRETTY_FUNCTION__, __LINE__);
-    return std::make_shared<BrowserImage>();
+    return faviconImage;
 }
 
 void WebView::clearCache()

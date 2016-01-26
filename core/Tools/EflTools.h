@@ -38,23 +38,8 @@ namespace tools
 
 namespace EflTools
 {
-    std::shared_ptr<BrowserImage> getBrowserImage(Evas_Object * eo_image);
-
-    /**
-     * Create BrowserImage based on data e.g. from bp_history_info_fmt.
-     */
-    std::shared_ptr<BrowserImage> createBrowserImage(const int width,
-        const int height, const int length,
-        const unsigned char* const imageData);
-
-    Evas_Object * getEvasImage(std::shared_ptr<BrowserImage> b_image, Evas_Object * parent);
-
-    std::vector< uint8_t > rawEvasImageData(std::shared_ptr<BrowserImage> browserImage);
-    std::vector< uint8_t > rawEvasImageData(Evas_Object * eo_image);
-
     std::unique_ptr<Blob> getBlobPNG(std::shared_ptr<BrowserImage> browserImage, int level = 9);
     void * getBlobPNG(int width, int height, void * image_data, int * length, int level = 9);
-    Evas_Object * getEvasPNG(Evas_Object * parent, const void * buffer, int length);
 
     void setExpandHints(Evas_Object* toSet);
 
