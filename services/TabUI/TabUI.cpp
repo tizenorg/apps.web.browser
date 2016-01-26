@@ -462,7 +462,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         static const int part_name4_len = strlen(part_name4);
         if (!strncmp(part_name1, part, part_name1_len)) {
             if (itemData->item->getThumbnail()) {
-                return tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->tabUI->m_parent);
+                return itemData->item->getThumbnail()->getEvasImage(itemData->tabUI->m_parent);
             }
         }
         if (!strncmp(part_name2, part, part_name2_len)) {
@@ -498,6 +498,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
 
 void TabUI::_del_item(void* /*data*/, Evas_Object* obj)
 {
+    // TODO release data
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_del(elm_object_part_content_get(obj, "tab_thumbnail"));
     evas_object_smart_callback_del(elm_object_part_content_get(obj, "tab_thumbButton"), "clicked", _close_tab_clicked);

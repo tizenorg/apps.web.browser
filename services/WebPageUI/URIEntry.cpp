@@ -120,9 +120,9 @@ void URIEntry::changeUri(const std::string& newUri)
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
 {
-    BROWSER_LOGD("[%s:%d] faviconType:%d ", __PRETTY_FUNCTION__, __LINE__, favicon->imageType);
-    if (favicon->imageType != tools::BrowserImage::ImageTypeNoImage) {
-        m_favicon = tizen_browser::tools::EflTools::getEvasImage(favicon, m_entry_layout);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (favicon->getSize() > 0) {
+        m_favicon = favicon->getEvasImage(m_entry_layout);
         evas_object_image_fill_set(m_favicon, 0, 0, 36, 36);
         evas_object_resize(m_favicon, 36, 36);
         elm_object_part_content_set(m_entry_layout, "fav_icon", m_favicon);

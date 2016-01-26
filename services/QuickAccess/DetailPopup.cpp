@@ -93,7 +93,7 @@ void DetailPopup::createLayout()
     elm_object_part_content_set(m_layout, "history_list", m_historyList);
 
     if (m_item->getThumbnail()) {
-        Evas_Object * thumb = tools::EflTools::getEvasImage(m_item->getThumbnail(), m_layout);
+        Evas_Object * thumb = m_item->getThumbnail()->getEvasImage(m_layout);
         elm_object_part_content_set(m_layout, "thumbnail", thumb);
     }
 

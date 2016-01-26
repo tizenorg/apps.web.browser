@@ -125,17 +125,17 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
     // max sequence
     ret = bp_bookmark_adaptor_set_sequence(id, -1);
 
-    if(thumbnail)
+    if(thumbnail->getSize() > 0)
     {
         std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
         unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-        bp_bookmark_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength());
+        bp_bookmark_adaptor_set_snapshot(id, thumbnail->getWidth(), thumbnail->getHeight(), thumb, thumb_blob->getLength());
     }
-    if(favicon)
+    if(favicon->getSize() > 0)
     {
         std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
         unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
-        bp_bookmark_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength());
+        bp_bookmark_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength());
     }
     std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(address, title, note, dirId, id);
     bookmark->setThumbnail(thumbnail);
@@ -237,26 +237,22 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
             std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(url, title, std::string(""),(int) bookmark_info.parent, ids[i]);
 
             if (bookmark_info.thumbnail_length != -1) {
-                std::shared_ptr<tizen_browser::tools::BrowserImage> bi = std::make_shared<tizen_browser::tools::BrowserImage>();
-                bi->imageType = tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
-                bi->width = bookmark_info.thumbnail_width;
-                bi->height = bookmark_info.thumbnail_height;
-                bi->dataSize = bookmark_info.thumbnail_length;
-                bi->imageData = (void*)malloc(bookmark_info.thumbnail_length);
-                memcpy(bi->imageData, (void*)bookmark_info.thumbnail, bookmark_info.thumbnail_length);
+                tools::BrowserImagePtr bi = std::make_shared<tizen_browser::tools::BrowserImage>(
+                        bookmark_info.thumbnail_width,
+                        bookmark_info.thumbnail_height,
+                        bookmark_info.thumbnail_length);
+                bi->setData((void*)bookmark_info.thumbnail, false, tools::ImageType::ImageTypePNG);
                 bookmark->setThumbnail(bi);
             } else {
                 BROWSER_LOGD("bookmark thumbnail size is -1");
             }
 
             if (bookmark_info.favicon_length != -1) {
-                std::shared_ptr<tizen_browser::tools::BrowserImage> fav = std::make_shared<tizen_browser::tools::BrowserImage>();
-                unsigned char *image_bytes;
-                bp_bookmark_adaptor_get_icon(ids[i], &fav->width, &fav->height, &image_bytes, &fav->dataSize);
-                fav->imageType = tizen_browser::tools::BrowserImage::ImageType::ImageTypePNG;
-
-                fav->imageData = (void*)malloc(bookmark_info.favicon_length);
-                memcpy(fav->imageData, (void*)image_bytes, bookmark_info.favicon_length);
+                tools::BrowserImagePtr fav = std::make_shared<tools::BrowserImage>(
+                        bookmark_info.favicon_width,
+                        bookmark_info.favicon_height,
+                        bookmark_info.favicon_length);
+                fav->setData((void*)bookmark_info.favicon, false, tools::ImageType::ImageTypePNG);
                 bookmark->setFavicon(fav);
             } else {
                 BROWSER_LOGD("bookmark favicon size is -1");
