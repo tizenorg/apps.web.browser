@@ -48,7 +48,9 @@ int TabService::createTabId(int tabId) const
     bp_tab_info_fmt info;
     std::memset(&info, 0, sizeof(bp_tab_info_fmt));
 
-    if (bp_tab_adaptor_easy_create(&adaptorId, &info) < 0) {
+    auto ret = bp_tab_adaptor_easy_create(&adaptorId, &info);
+    bp_tab_adaptor_easy_free(&info);
+    if (ret) {
         errorPrint("bp_tab_adaptor_create");
     }
     return adaptorId;

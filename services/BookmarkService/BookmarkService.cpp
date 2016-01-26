@@ -119,9 +119,9 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
 
     if (bp_bookmark_adaptor_easy_create(&id, &info) < 0) {
         errorPrint("bp_bookmark_adaptor_easy_create");
+        bp_bookmark_adaptor_easy_free(&info);
         return std::make_shared<BookmarkItem>();
     }
-
     // max sequence
     ret = bp_bookmark_adaptor_set_sequence(id, -1);
 
@@ -265,6 +265,7 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
         } else {
             BROWSER_LOGD("bp_bookmark_adaptor_get_easy_all error");
         }
+        bp_bookmark_adaptor_easy_free(&bookmark_info);
     }
     free(ids);
     return m_bookmarks;
@@ -325,7 +326,7 @@ bool BookmarkService::delete_by_uri(const char *uri)
     bool result = false;
     if (ret >= 0 && ids_count > 0)
     {
-        delete_by_id_notify(ids[0]);
+        result = delete_by_id_notify(ids[0]);
         free(ids);
     }
 
@@ -390,6 +391,7 @@ int BookmarkService::update_bookmark(int id, const char *title, const char *uri,
         return 1;
     }
     int errcode = bp_bookmark_adaptor_get_errorcode();
+    bp_bookmark_adaptor_easy_free(&info);
     BROWSER_LOGD("bp_bookmark_adaptor_easy_create is failed[%d]", errcode);
     return -1;
 }
