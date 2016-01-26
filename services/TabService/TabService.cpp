@@ -76,26 +76,27 @@ void TabService::errorPrint(std::string method) const
 
 tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
 {
-        auto imageDatabase = getThumbDatabase(tabId);
-        if(imageDatabase) {
-            saveThumbCache(tabId, *imageDatabase);
-            return *imageDatabase;
-        }
+    // TODO Check for improvements - low cache usage
+    auto imageDatabase = getThumbDatabase(tabId);
+    if(imageDatabase) {
+        saveThumbCache(tabId, *imageDatabase);
+        return *imageDatabase;
+    }
 
-        BROWSER_LOGD("%s [%d] generating thumb", __FUNCTION__, tabId.get());
-        clearThumb(tabId);
-        generateThumb(tabId);
+    BROWSER_LOGD("%s [%d] generating thumb", __FUNCTION__, tabId.get());
+    clearThumb(tabId);
+    generateThumb(tabId);
 
-        if (m_thumbMapSave[tabId.get()])
-            return std::make_shared<tools::BrowserImage>();
-        auto imageCache = getThumbCache(tabId);
-        if (!imageCache) {
-            // error, something went wrong and TabService didn't receive thumb
-            // for desired ID through onThumbGenerated() slot
-            BROWSER_LOGE("%s error: no thumb generated", __PRETTY_FUNCTION__);
-            return std::make_shared<tools::BrowserImage>();
-        }
-        return *imageCache;
+    if (m_thumbMapSave[tabId.get()])
+        return std::make_shared<tools::BrowserImage>();
+    auto imageCache = getThumbCache(tabId);
+    if (!imageCache) {
+        // error, something went wrong and TabService didn't receive thumb
+        // for desired ID through onThumbGenerated() slot
+        BROWSER_LOGE("%s error: no thumb generated", __PRETTY_FUNCTION__);
+        return std::make_shared<tools::BrowserImage>();
+    }
+    return *imageCache;
 }
 
 boost::optional<tools::BrowserImagePtr> TabService::getThumbCache(
@@ -174,12 +175,12 @@ void TabService::clearFromDatabase(const basic_webengine::TabId& tabId)
 void TabService::saveThumbDatabase(const basic_webengine::TabId& tabId,
         tools::BrowserImagePtr imagePtr)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     std::unique_ptr<tools::Blob> thumb_blob = tools::EflTools::getBlobPNG(
             imagePtr);
-    unsigned char* thumbData = std::move(
-            (unsigned char*) thumb_blob->getData());
-    if (bp_tab_adaptor_set_snapshot(tabId.get(), imagePtr->width,
-            imagePtr->height, thumbData, thumb_blob->getLength()) < 0) {
+    unsigned char* thumbData = std::move((unsigned char*) thumb_blob->getData());
+    if (bp_tab_adaptor_set_snapshot(tabId.get(), imagePtr->getWidth(),
+            imagePtr->getHeight(), thumbData, thumb_blob->getLength()) < 0) {
         errorPrint("bp_tab_adaptor_set_snapshot");
     }
 }
@@ -209,24 +210,25 @@ bool TabService::thumbInDatabase(const basic_webengine::TabId& tabId) const
 boost::optional<tools::BrowserImagePtr> TabService::getThumbDatabase(
         const basic_webengine::TabId& tabId)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!thumbInDatabase(tabId)) {
         return boost::none;
     }
 
-    auto image = std::make_shared<tools::BrowserImage>();
-    unsigned char *image_data;
-    if (bp_tab_adaptor_get_snapshot(tabId.get(), &image->width, &image->height,
-            &image_data, &image->dataSize) < 0) {
+    int w = 0, h = 0, l = 0;
+    unsigned char *v = nullptr;
+    if (bp_tab_adaptor_get_snapshot(tabId.get(), &w, &h, &v, &l)) {
         errorPrint("bp_tab_adaptor_get_snapshot");
         return boost::none;
     }
-    if (image->dataSize == 0) {
+
+    tools::BrowserImagePtr image = std::make_shared<tools::BrowserImage>(w, h, l);
+    // TODO check if we can use shared memory here
+    image->setData((void*)v, false, tools::ImageType::ImageTypeEvasObject);
+
+    if (image->getSize() <= 0) {
         return boost::none;
     }
-
-    image->imageType = tools::BrowserImage::ImageType::ImageTypePNG;
-    image->imageData = (void*)malloc(image->dataSize);
-    memcpy(image->imageData, (void*)image_data, image->dataSize);
 
     return image;
 }

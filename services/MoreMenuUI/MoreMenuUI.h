@@ -26,6 +26,7 @@
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
+#include "BrowserImageTypedef.h"
 
 #include "BookmarkItem.h"
 #include "services/HistoryService/HistoryItem.h"
@@ -84,7 +85,7 @@ public:
 
     void showCurrentTab();
     virtual std::string getName();
-    void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
+    void setFavIcon(tools::BrowserImagePtr favicon);
     void setWebTitle(const std::string& title);
     void setURL(const std::string& url);
     void setHomePageInfo();
