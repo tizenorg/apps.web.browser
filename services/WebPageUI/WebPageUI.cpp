@@ -43,7 +43,7 @@ WebPageUI::WebPageUI()
     , m_webviewLocked(false)
     , m_WebPageUIvisible(false)
 #if PROFILE_MOBILE && GESTURE
-    , m_geastureLayer(nullptr)
+    , m_gestureLayer(nullptr)
     , m_uriBarHidden(false)
 #endif
 {
@@ -99,10 +99,10 @@ void WebPageUI::showUI()
     elm_object_event_callback_add(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_add(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE && GESTURE
-    elm_gesture_layer_cb_add(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
-    elm_gesture_layer_line_min_length_set(m_geastureLayer, SWIPE_MOMENTUM_TRESHOLD);
-    elm_gesture_layer_line_distance_tolerance_set(m_geastureLayer, SWIPE_MOMENTUM_TRESHOLD);
-    elm_object_signal_callback_add(m_mainLayout,  "animation_finished", "ui", _geasture_finished, this);
+    elm_gesture_layer_cb_add(m_gestureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
+    elm_gesture_layer_line_min_length_set(m_gestureLayer, SWIPE_MOMENTUM_TRESHOLD);
+    elm_gesture_layer_line_distance_tolerance_set(m_gestureLayer, SWIPE_MOMENTUM_TRESHOLD);
+    elm_object_signal_callback_add(m_mainLayout,  "animation_finished", "ui", _gesture_finished, this);
 #endif
 }
 
@@ -129,8 +129,8 @@ void WebPageUI::hideUI()
     elm_object_event_callback_del(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_del(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE && GESTURE
-    elm_gesture_layer_cb_del(m_geastureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
-    elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _geasture_finished);
+    elm_gesture_layer_cb_del(m_gestureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
+    elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _gesture_finished);
 #endif
 #if PROFILE_MOBILE
     hideMoreMenu();
@@ -209,6 +209,9 @@ void WebPageUI::setMainContent(Evas_Object* content)
     M_ASSERT(content);
     hideWebView();
     elm_object_part_content_set(m_mainLayout, "web_view", content);
+#if PROFILE_MOBILE && GESTURE
+    elm_gesture_layer_attach(m_gestureLayer, content);
+#endif
     evas_object_show(content);
 }
 
@@ -426,6 +429,9 @@ void WebPageUI::createLayout()
     elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_right", m_rightButtonBar->getContent());
 
     elm_layout_signal_callback_add(m_URIEntry->getContent(), "slide_websearch", "elm", faviconClicked, this);
+#if PROFILE_MOBILE
+    edje_object_signal_callback_add(elm_layout_edje_get(m_mainLayout), "mouse,clicked,1", "moremenu_dimmed_bg", _more_menu_background_clicked, this);
+#endif
 
     elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
     m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
@@ -434,8 +440,8 @@ void WebPageUI::createLayout()
     connectActions();
 
 #if PROFILE_MOBILE && GESTURE
-    m_geastureLayer = elm_gesture_layer_add(m_mainLayout);
-    elm_gesture_layer_attach(m_geastureLayer, m_mainLayout);
+    // will be attatch on every 'setMainContent'
+    m_gestureLayer = elm_gesture_layer_add(m_mainLayout);
 #endif
 }
 
@@ -470,6 +476,15 @@ void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
     WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
     webpageUI->bookmarkManagerClicked();
 }
+
+#if PROFILE_MOBILE
+void WebPageUI::_more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*)
+{
+    BROWSER_LOGD("@@ [%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    WebPageUI*  webPageUI = static_cast<WebPageUI*>(data);
+    webPageUI->hideMoreMenu();
+}
+#endif
 
 void WebPageUI::createActions()
 {
@@ -609,19 +624,18 @@ Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
     if (info->momentum.n == WebPageUI::SINGLE_FINGER) {
         if ((info->angle > 330 || info->angle < 30) && info->momentum.my < -WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {    // top direction
             auto self = static_cast<WebPageUI*>(data);
-            self->geastureUp();
+            self->gestureUp();
         } else if (info->angle > 150 && info->angle < 210 && info->momentum.my > WebPageUI::SWIPE_MOMENTUM_TRESHOLD) {    // bottom direction
             auto self = static_cast<WebPageUI*>(data);
-            self->geastureDown();
+            self->gestureDown();
         }
     }
 
     return EVAS_EVENT_FLAG_NONE;
 }
 
-void WebPageUI::geastureUp()
+void WebPageUI::gestureUp()
 {
-    hideMoreMenu();
     if (!m_uriBarHidden) {
         m_uriBarHidden = true;
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -632,7 +646,7 @@ void WebPageUI::geastureUp()
     }
 }
 
-void WebPageUI::geastureDown()
+void WebPageUI::gestureDown()
 {
     if (m_uriBarHidden) {
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -644,7 +658,7 @@ void WebPageUI::geastureDown()
     }
 }
 
-void WebPageUI::_geasture_finished(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
+void WebPageUI::_gesture_finished(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     auto self = reinterpret_cast<WebPageUI*>(data);
