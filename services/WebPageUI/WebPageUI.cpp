@@ -384,6 +384,10 @@ void WebPageUI::orientationChanged()
     }
     else
         BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+
+    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+        qaOrientationChanged();
+    }
 }
 #endif
 
@@ -673,6 +677,7 @@ void WebPageUI::mobileEntryUnfocused()
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
 }
+
 #endif
 
 }   // namespace tizen_browser
