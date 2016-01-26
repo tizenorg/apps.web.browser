@@ -654,6 +654,13 @@ void WebPageUI::mobileEntryUnfocused()
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
 }
+
+void WebPageUI::orientationChanged() {
+    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+        qaOrientationChanged();
+    }
+}
+
 #endif
 
 }   // namespace tizen_browser
