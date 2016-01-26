@@ -234,7 +234,7 @@ Evas_Object * BookmarkDetailsUI::_grid_bookmark_content_get(void *data, Evas_Obj
             std::shared_ptr<tizen_browser::tools::BrowserImage> image = itemData->item->getThumbnail();
             if (image)
             {
-                return tizen_browser::tools::EflTools::getEvasImage(image, itemData->bookmarkDetailsUI->m_parent);
+                return image->getEvasImage(itemData->bookmarkDetailsUI->m_parent);
             }
         }
     }

@@ -62,24 +62,21 @@ BOOST_AUTO_TEST_CASE(bookm_item_favicon_thumb)
 {
     BROWSER_LOGI("[UT] BookmarkItem - bookm_item_favicon_thumb - START --> ");
 
+    int width = 10, height = 10, size = 500;
     std::unique_ptr<tizen_browser::services::BookmarkItem>
-	  bitem(new tizen_browser::services::BookmarkItem());
+        bitem(new tizen_browser::services::BookmarkItem());
     std::shared_ptr<tizen_browser::tools::BrowserImage> bimg
-	  = std::make_shared<tizen_browser::tools::BrowserImage>();
-
-    bimg->width = 10;
-    bimg->height = 10;
-    bimg->dataSize = 500;
+        = std::make_shared<tizen_browser::tools::BrowserImage>(width, height, size);
 
     bitem->setFavicon(bimg);
-    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->width);
-    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->height);
-    BOOST_CHECK_EQUAL(500, bitem->getFavicon()->dataSize);
+    BOOST_CHECK_EQUAL(width, bitem->getFavicon()->getWidth());
+    BOOST_CHECK_EQUAL(height, bitem->getFavicon()->getHeight());
+    BOOST_CHECK_EQUAL(size, bitem->getFavicon()->getSize());
 
     bitem->setThumbnail(bimg);
-    BOOST_CHECK_EQUAL(10, bitem->getThumbnail()->width);
-    BOOST_CHECK_EQUAL(10, bitem->getThumbnail()->height);
-    BOOST_CHECK_EQUAL(500, bitem->getThumbnail()->dataSize);
+    BOOST_CHECK_EQUAL(width, bitem->getThumbnail()->width);
+    BOOST_CHECK_EQUAL(height, bitem->getThumbnail()->height);
+    BOOST_CHECK_EQUAL(size, bitem->getThumbnail()->dataSize);
 
     BROWSER_LOGI("[UT] --> END - BookmarkItem - bookm_item_favicon_thumb");
 }

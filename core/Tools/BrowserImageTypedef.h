@@ -24,7 +24,7 @@ namespace tizen_browser
 namespace tools
 {
 
-struct BrowserImage;
+class BrowserImage;
 typedef std::shared_ptr<BrowserImage> BrowserImagePtr;
 typedef std::shared_ptr<const BrowserImage> BrowserImagePtrConst;
 
