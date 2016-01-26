@@ -122,10 +122,10 @@ BOOST_AUTO_TEST_CASE(storage_bookmark)
 
     storageManager->init(true);
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> bi = std::make_shared<tizen_browser::tools::BrowserImage>();
-    bi->imageType = tizen_browser::tools::BrowserImage::ImageTypeNoImage;
-    bi->id = 1;
-    bi->url = "URL1";
+//    std::shared_ptr<tizen_browser::tools::BrowserImage> bi = std::make_shared<tizen_browser::tools::BrowserImage>();
+//    bi->imageType = tizen_browser::tools::BrowserImage::ImageTypeNoImage;
+//    bi->id = 1;
+//    bi->url = "URL1";
 
     /*storageManager->addThumbnail(1, bi, tizen_browser::tools::BrowserImage::ImageTypeNoImage);
 

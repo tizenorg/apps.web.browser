@@ -451,7 +451,7 @@ void QuickAccess::addMostVisitedItem(std::shared_ptr<services::HistoryItem> hi)
 
     elm_layout_text_set(tile, "page_title", hi->getTitle().c_str());
     elm_layout_text_set(tile, "page_url", hi->getUrl().c_str());
-    Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(hi->getThumbnail(), m_parent);
+    Evas_Object * thumb = hi->getThumbnail()->getEvasImage(m_parent);
     elm_object_part_content_set(tile, "elm.thumbnail", thumb);
     evas_object_smart_callback_add(tile, "clicked", _thumbMostVisitedClicked, itemData);
 
@@ -535,7 +535,7 @@ Evas_Object * QuickAccess::_grid_bookmark_content_get(void *data, Evas_Object*, 
 
     if (!strcmp(part, "elm.thumbnail")) {
         if (itemData->item->getThumbnail()) {
-                Evas_Object * thumb = tizen_browser::tools::EflTools::getEvasImage(itemData->item->getThumbnail(), itemData->quickAccess->m_parent);
+                Evas_Object * thumb = itemData->item->getThumbnail()->getEvasImage(itemData->quickAccess->m_parent);
                 return thumb;
         }
         else {

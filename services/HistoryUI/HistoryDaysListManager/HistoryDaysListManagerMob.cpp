@@ -83,7 +83,7 @@ void HistoryDaysListManagerMob::addHistoryItems(
         for (auto& hi : itemPair.second) {
             pageViewItems.push_back(
                     std::make_shared<WebsiteVisitItemData>(hi));
-            if (!websiteFavicon && hi->getFavIcon()->imageData)
+            if (!websiteFavicon && hi->getFavIcon()->getSize() > 0)
                 websiteFavicon = hi->getFavIcon();
         }
         historyItems.push_back(

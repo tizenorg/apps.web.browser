@@ -219,13 +219,11 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
 
         //thumbnail
         if (history_info.thumbnail_length != -1) {
-            std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>();
-            hi->imageType = tools::BrowserImage::ImageTypePNG;
-            hi->width = history_info.thumbnail_width;
-            hi->height = history_info.thumbnail_height;
-            hi->dataSize = history_info.thumbnail_length;
-            hi->imageData = (void*)malloc(history_info.thumbnail_length);
-            memcpy(hi->imageData, (void*)history_info.thumbnail, history_info.thumbnail_length);
+            std::shared_ptr<tizen_browser::tools::BrowserImage> hi = std::make_shared<tizen_browser::tools::BrowserImage>(
+                    history_info.thumbnail_width,
+                    history_info.thumbnail_height,
+                    history_info.thumbnail_length);
+            hi->setData((void*)history_info.thumbnail, false, tools::ImageType::ImageTypePNG);
             history->setThumbnail(hi);
         } else {
             BROWSER_LOGD("history thumbnail lenght is -1");
@@ -335,7 +333,7 @@ void HistoryService::addHistoryItem(const std::string & url,
     if (thumbnail) {
        std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
        unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-       if (bp_history_adaptor_set_snapshot(id, thumbnail->width, thumbnail->height, thumb, thumb_blob->getLength()) < 0) {
+       if (bp_history_adaptor_set_snapshot(id, thumbnail->getWidth(), thumbnail->getHeight(), thumb, thumb_blob->getLength()) < 0) {
            errorPrint("bp_history_adaptor_set_snapshot");
         }
     }
@@ -343,7 +341,7 @@ void HistoryService::addHistoryItem(const std::string & url,
     if (favicon) {
        std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
        unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
-       if (bp_history_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength()) < 0) {
+       if (bp_history_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength()) < 0) {
            errorPrint("bp_history_adaptor_set_icon");
         }
     }
@@ -429,12 +427,16 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     history->setUrl(std::string(history_info.url ? history_info.url : ""));
     history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
-    auto thumbnail = tools::EflTools::createBrowserImage(
-            history_info.thumbnail_width, history_info.thumbnail_height,
-            history_info.thumbnail_length, history_info.thumbnail);
-    auto favIcon = tools::EflTools::createBrowserImage(
-            history_info.favicon_width, history_info.favicon_height,
-            history_info.favicon_length, history_info.favicon);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail = std::make_shared<tizen_browser::tools::BrowserImage>(
+            history_info.thumbnail_width,
+            history_info.thumbnail_height,
+            history_info.thumbnail_length);
+    thumbnail->setData((void*)history_info.thumbnail, false, tools::ImageType::ImageTypePNG);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> favIcon = std::make_shared<tizen_browser::tools::BrowserImage>(
+            history_info.favicon_width,
+            history_info.favicon_height,
+            history_info.favicon_length);
+    favIcon->setData((void*)history_info.favicon, false, tools::ImageType::ImageTypePNG);
     history->setThumbnail(thumbnail);
     history->setFavIcon(favIcon);
 
