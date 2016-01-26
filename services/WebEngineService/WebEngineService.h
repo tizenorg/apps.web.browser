@@ -224,6 +224,7 @@ private:
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
+    void _ready(TabId id);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
