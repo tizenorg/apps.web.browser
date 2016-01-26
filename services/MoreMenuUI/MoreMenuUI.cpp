@@ -23,8 +23,7 @@
 #include "MoreMenuUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
-#include "Tools/EflTools.h"
-#include "../Tools/BrowserImage.h"
+#include "BrowserImage.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -244,14 +243,14 @@ void MoreMenuUI::showCurrentTab()
     createFocusVector();
 }
 
-void MoreMenuUI::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon)
+void MoreMenuUI::setFavIcon(tools::BrowserImagePtr favicon)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if(favicon && favicon->imageType != tools::BrowserImage::ImageTypeNoImage) {
+    if(favicon && favicon->getSize() > 0) {
         if(m_icon)
             evas_object_del(m_icon);
 
-        m_icon = tizen_browser::tools::EflTools::getEvasImage(favicon, m_current_tab_bar);
+        m_icon = favicon->getEvasImage(m_current_tab_bar);
         if(m_icon) {
             evas_object_size_hint_weight_set(m_icon, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
             evas_object_size_hint_align_set(m_icon, EVAS_HINT_FILL, EVAS_HINT_FILL);

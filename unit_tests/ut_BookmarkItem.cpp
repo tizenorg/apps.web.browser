@@ -65,16 +65,16 @@ BOOST_AUTO_TEST_CASE(bookm_item_favicon_thumb)
     std::unique_ptr<tizen_browser::services::BookmarkItem>
 	  bitem(new tizen_browser::services::BookmarkItem());
     std::shared_ptr<tizen_browser::tools::BrowserImage> bimg
-	  = std::make_shared<tizen_browser::tools::BrowserImage>();
+	  = std::make_shared<tizen_browser::tools::BrowserImage>(10, 10, 500);
 
-    bimg->width = 10;
-    bimg->height = 10;
-    bimg->dataSize = 500;
+//    bimg->width = 10;
+//    bimg->height = 10;
+//    bimg->dataSize = 500;
 
     bitem->setFavicon(bimg);
-    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->width);
-    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->height);
-    BOOST_CHECK_EQUAL(500, bitem->getFavicon()->dataSize);
+    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->getWidth());
+    BOOST_CHECK_EQUAL(10, bitem->getFavicon()->getHeight());
+    BOOST_CHECK_EQUAL(500, bitem->getFavicon()->getSize());
 
     bitem->setThumbnail(bimg);
     BOOST_CHECK_EQUAL(10, bitem->getThumbnail()->width);

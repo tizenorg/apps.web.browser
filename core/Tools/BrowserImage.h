@@ -17,30 +17,74 @@
 #ifndef __BROWSER_IMAGE_H__
 #define __BROWSER_IMAGE_H__
 
-#include <string>
-//#include <Evas.h>
+#include <Evas.h>
 namespace tizen_browser
 {
 namespace tools
 {
 
-struct BrowserImage
+enum class ImageType {
+    ImageTypeNoImage,
+    ImageTypeSerializedEvas,
+    ImageTypeEvasObject,
+    ImageTypePNG
+};
+
+class BrowserImage
 {
-    enum ImageType{
-        ImageTypeNoImage = 1,
-        ImageTypeSerializedEvas = 2,
-        ImageTypeEvasObject = 3,
-        ImageTypePNG = 4
-    };
+public:
     BrowserImage();
+    BrowserImage(const int& w, const int& h, const long& s);
+    BrowserImage(Evas_Object* image);
+    BrowserImage(const BrowserImage& copy);
     ~BrowserImage();
-    int id;
-    std::string url;
-    int width;
-    int height;
-    int dataSize;
-    ImageType imageType;
-    void * imageData;
+
+    /**
+     * Sets image raw data pointer, type and memory share
+     *
+     * If isSharedData is true that means data is in shared memory
+     * and it will not be released, otherwise data will be copied
+     * and free in object destructor
+     *
+     * @param[in] data pointer to image data
+     * @param[in] isSharedData true if @p data points to shared memory
+     * @param[in] type Image type
+     */
+    void setData(void* data, bool isSharedData, ImageType type);
+
+    /**
+     * @return image data pointer, should not be released
+     */
+    void* getData() const { return m_imageData; };
+    ImageType getImageType() const { return m_imageType; };
+    void setWidth(const int& w) { m_width = w; };
+    int getWidth() const { return m_width; };
+    void setHeight(const int& h) { m_height = h; };
+    int getHeight() const { return m_height; };
+    void setSize(const long& s) { m_dataSize = s; };
+    long getSize() const { return m_dataSize; };
+    bool isSharedData() const { return m_isSharedData; };
+    Evas_Colorspace getColorSpace() const { return m_colorSpace; };
+
+    /**
+     * Function create new Evas_Object* representing stored image
+     *
+     * @param[in] parent parent view
+     * @return new Evas_Object* representing image or nullptr on fail
+     */
+    Evas_Object* getEvasImage(Evas_Object* parent) const;
+
+private:
+    Evas_Object* getEvas(Evas_Object* parent) const;
+    Evas_Object* getPng(Evas_Object* parent) const;
+
+    int m_width;
+    int m_height;
+    long m_dataSize;
+    bool m_isSharedData;
+    ImageType m_imageType;
+    void * m_imageData;
+    Evas_Colorspace m_colorSpace;
 };
 
 
