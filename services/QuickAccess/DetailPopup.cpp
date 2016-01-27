@@ -120,7 +120,9 @@ void DetailPopup::hide()
     evas_object_hide(m_layout);
     evas_object_del(m_layout);
     m_layout = nullptr;
+#if !PROFILE_MOBILE
     m_quickAccess->refreshFocusChain();
+#endif
 }
 
 void DetailPopup::_bg_click(void* data, Evas_Object*, const char*, const char*)
