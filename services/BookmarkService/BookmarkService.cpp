@@ -372,28 +372,16 @@ int BookmarkService::update_bookmark(int id, const char *title, const char *uri,
             return 0;
         }
     }
-    bp_bookmark_info_fmt info;
 
-    std::memset(&info, 0, sizeof(bp_bookmark_info_fmt));
-    info.type = -1;
-    info.parent = parent_id;
-    info.sequence = order;
-    info.editable = -1;
+    bp_bookmark_adaptor_set_parent_id(id, parent_id);
+    bp_bookmark_adaptor_set_sequence(id, order);
     if (is_URI_exist)
-        info.url = (char *)uri;
+        bp_bookmark_adaptor_set_url(id, uri);
     if (is_title_exist)
-        info.title = (char *)title;
+        bp_bookmark_adaptor_set_title(id, title);
+    bp_bookmark_adaptor_publish_notification();
 
-    ret = bp_bookmark_adaptor_easy_create(&id, &info);
-    if (ret == 0) {
-        BROWSER_LOGD("bp_bookmark_adaptor_easy_create is success");
-        bp_bookmark_adaptor_publish_notification();
-        return 1;
-    }
-    int errcode = bp_bookmark_adaptor_get_errorcode();
-    bp_bookmark_adaptor_easy_free(&info);
-    BROWSER_LOGD("bp_bookmark_adaptor_easy_create is failed[%d]", errcode);
-    return -1;
+    return 1;
 }
 
 int BookmarkService::update_bookmark_notify(int id, const char *title, const char *uri, int parent_id, int order,
