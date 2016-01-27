@@ -878,8 +878,6 @@ void SimpleUI::setwvIMEStatus(bool status)
 void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
-
-    m_webPageUI->getUrlHistoryList()->onBackPressed();
 #if !PROFILE_MOBILE
     if (m_zoomUI->isVisible()) {
         m_zoomUI->escapeZoom();
