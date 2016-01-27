@@ -6,11 +6,11 @@ collections {
     styles {
         style {
             name: "mssage_style";
-            base: "font=Sans font_size=35 color=#d3d3d3 wrap=word align=0.5 ellipsis=1.0";
+            base: "font=Sans font_size=35 color=#d3d3d3 wrap=word align=0.5";
         }
         style {
             name: "mssage_hint_style";
-            base: "font=Sans font_size=24 color=#868686 wrap=word align=0.5 ellipsis=1.0";
+            base: "font=Sans font_size=24 color=#868686 wrap=word align=0.5";
         }
     }
     group{
@@ -39,9 +39,9 @@ collections {
                 description{
                     state: "default" 0.0;
                     visible: 1;
-                    min: 1582 730;
-                    max: 1582 730;
-                    fixed: 1 1;
+                    min: 1 1;
+                    max: -1 -1;
+                    fixed: 0 0;
                 align: 0.5 0.5;
                 color: 30 38 50 153;
             }
@@ -86,10 +86,9 @@ collections {
             description{
                 state: "default" 0.0;
                 visible: 1;
-                fixed: 1 1;
-                min: 1502 96;
-                max: 1502 96;
-                //color: 211 211 211 255;
+                fixed: 0 1;
+                min: 500 96;
+                max: -1 96;
                 align: 0.5 0;
                 rel1{
                     relative: 0 1;
@@ -103,10 +102,6 @@ collections {
                 text{
                     style: "mssage_style";
                     text: "Server not found.<br/>Please check the followings:";
-                    //min: 0 0;
-                    //max: 1 1;
-                    //align: 1 0;
-                    //size: 35;
                 }
             }
             description{
@@ -121,9 +116,9 @@ collections {
             description{
                 state: "default" 0.0;
                 visible: 1;
-                fixed: 1 1;
-                min: 1502 117;
-                max: 1502 117;
+                fixed: 0 1;
+                min: 1 117;
+                max: -1 117;
                 color: 134 134 134 255;
                 align: 0.5 0;
                 rel1{
