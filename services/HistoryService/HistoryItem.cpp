@@ -121,6 +121,17 @@ boost::posix_time::ptime HistoryItem::getLastVisit() const
     return m_lastVisit;
 }
 
+// TODO Replace with std::time_t to_time_t(ptime pt) from boost/date_time/posix_time/conversion.hpp after migration
+// to boost ver. 1.58
+time_t HistoryItem::getLastVisitAsTimeT() const
+{
+    const boost::posix_time::ptime epoch(boost::gregorian::date(1970,1,1));
+    const boost::posix_time::time_duration::sec_type x = (m_lastVisit - epoch).total_seconds();
+    std::time_t rawtime(x);
+
+    return rawtime;
+}
+
 void HistoryItem::setVisitCounter(int visitCounter)
 {
     m_visitCounter = visitCounter;

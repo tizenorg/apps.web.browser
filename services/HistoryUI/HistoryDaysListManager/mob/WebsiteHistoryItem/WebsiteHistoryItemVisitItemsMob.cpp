@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "WebsiteHistoryItemVisitItemsMob.h"
-#include "../../HistoryDayItemData.h"
 #include <EflTools.h>
+
 #include "app_i18n.h"
+#include "../../HistoryDayItemData.h"
+#include "WebsiteHistoryItemVisitItemsMob.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -128,8 +128,12 @@ Evas_Object* WebsiteHistoryItemVisitItemsMob::createLayoutContent(Evas_Object* p
     elm_object_part_text_set(layoutContent, "textUrl",
             websiteVisitItemData->historyItem->getUrl().c_str());
 
-    elm_object_part_text_set(layoutContent, "textTime",
-            "00:00 AM");
+    // TODO Replace with std::time_t to_time_t(ptime pt) in the future
+    std::time_t rawtime(websiteVisitItemData->historyItem->getLastVisitAsTimeT());
+    char buffer[80];
+    std::strftime(buffer,80,"%R",std::localtime(&rawtime));
+
+    elm_object_part_text_set(layoutContent, "textTime", buffer);
 
     Evas_Object* buttonSelect = elm_button_add(parent);
     elm_object_part_content_set(layoutContent, "buttonSelect", buttonSelect);
@@ -140,6 +144,7 @@ Evas_Object* WebsiteHistoryItemVisitItemsMob::createLayoutContent(Evas_Object* p
 
     return layoutContent;
 }
+
 Evas_Object* WebsiteHistoryItemVisitItemsMob::createLayoutButtonDelete(Evas_Object* parent,
         const std::string& edjeFilePath)
 {
