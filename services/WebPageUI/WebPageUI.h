@@ -102,6 +102,7 @@ public:
     boost::signals2::signal<void ()> showTabUI;
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> hideMoreMenu;
+    boost::signals2::signal<void ()> qaOrientationChanged;
 #endif
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
@@ -172,7 +173,7 @@ private:
     Evas_Object* m_geastureLayer;
     bool m_uriBarHidden;
     static const int SINGLE_FINGER = 1;
-    static const int SWIPE_MOMENTUM_TRESHOLD = 500;
+    static const int SWIPE_MOMENTUM_TRESHOLD = 400;
 #endif
 };
 
