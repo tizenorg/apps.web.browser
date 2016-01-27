@@ -282,6 +282,7 @@ void SimpleUI::connectUISignals()
     m_webPageUI->hideMoreMenu.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_webPageUI->getURIEntry().mobileEntryFocused.connect(boost::bind(&WebPageUI::mobileEntryFocused, m_webPageUI));
     m_webPageUI->getURIEntry().mobileEntryUnfocused.connect(boost::bind(&WebPageUI::mobileEntryUnfocused, m_webPageUI));
+    m_webPageUI->qaOrientationChanged.connect(boost::bind(&QuickAccess::orientationChanged, m_quickAccess));
 #endif
 
     M_ASSERT(m_quickAccess.get());
@@ -292,6 +293,9 @@ void SimpleUI::connectUISignals()
     m_quickAccess->getBookmarksItems.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this));
     m_quickAccess->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_quickAccess->switchViewToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
+#if PROFILE_MOBILE
+    m_quickAccess->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
+#endif
 
     M_ASSERT(m_tabUI.get());
     m_tabUI->closeTabUIClicked.connect(boost::bind(&SimpleUI::closeTabUI, this));
