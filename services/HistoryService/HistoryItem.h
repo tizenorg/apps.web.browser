@@ -57,6 +57,7 @@ public:
 
 	void setLastVisit(boost::posix_time::ptime visitDate);
 	boost::posix_time::ptime getLastVisit() const;
+    time_t getLastVisitAsTimeT() const;
 
 	void setVisitCounter(int visitCounter);
 	int getVisitCounter();
