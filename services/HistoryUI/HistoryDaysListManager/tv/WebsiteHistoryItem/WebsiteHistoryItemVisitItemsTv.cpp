@@ -141,13 +141,18 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createImageClear(Evas_Object* paren
 
 Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemDate(
         Evas_Object* parent, const std::string& edjeFilePath,
-        WebsiteVisitItemDataPtr /*websiteVisitItemData*/)
+        WebsiteVisitItemDataPtr websiteVisitItemData)
 {
     Evas_Object* layoutDate = elm_layout_add(parent);
     elm_layout_file_set(layoutDate, edjeFilePath.c_str(),
             "layoutWebsiteHistoryVisitItemDate");
-    // TODO: timestamp conversion
-    elm_object_text_set(layoutDate, "00:00");
+
+    // TODO Replace with std::time_t to_time_t(ptime pt) in the future
+    std::time_t rawtime(websiteVisitItemData->historyItem->getLastVisitAsTimeT());
+    char buffer[80];
+    std::strftime(buffer,80,"%R",std::localtime(&rawtime));
+
+    elm_object_text_set(layoutDate, buffer);
     return layoutDate;
 }
 
