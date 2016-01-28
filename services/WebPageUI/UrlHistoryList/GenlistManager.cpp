@@ -22,19 +22,19 @@
 #include "Config.h"
 #include <EflTools.h>
 
+// Right now base scale in edc is 2.6, hence using 2.6 here to calculate proper
+// ITEM_H value. Probably assumptions will change and ITEM_H will have to be
+// calculated in a different way.
+#define ELM_SCALE_SIZE_Z3(x) (int)(((double)(x) * elm_config_scale_get()) / 2.6)
+
 namespace tizen_browser {
 namespace base_ui {
 
 GenlistManager::GenlistManager()
     : m_parentLayout(nullptr)
     , m_genlist(nullptr)
-    , ITEM_H(boost::any_cast<int>(tizen_browser::config::Config::
-            getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT))
-#if PROFILE_MOBILE
-            * boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale"))) // m_ITEM_H
-#else
-            ) // m_ITEM_H
-#endif
+    , ITEM_H(ELM_SCALE_SIZE_Z3(boost::any_cast<int>(tizen_browser::config::Config::
+            getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT))))
     , ITEMS_VISIBLE_NUMBER_MAX(boost::any_cast<int>(tizen_browser::config::Config::
             getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX)))
     , m_historyItemsVisibleCurrent(0)
