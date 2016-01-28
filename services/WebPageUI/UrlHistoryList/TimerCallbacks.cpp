@@ -49,11 +49,6 @@ void AdjustGenlistHeight::operator()() const
     int historyItemsVisibleCurrent = m_items_visible_number_max;
     if (LIST_ITEMS_NUMBER < historyItemsVisibleCurrent)
         historyItemsVisibleCurrent = LIST_ITEMS_NUMBER;
-#if PROFILE_MOBILE
-    // Don't know why, on mobile list is clipped from the bottom. Hence resizing
-    // list little more.
-    historyItemsVisibleCurrent++;
-#endif
     Evas_Coord w, h;
     evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, nullptr);
     h = m_item_h * historyItemsVisibleCurrent;

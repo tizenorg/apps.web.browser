@@ -1,2 +1,2 @@
-#define HISTORY_ITEM_H 82
+#define HISTORY_ITEM_H 74
 #include "UrlHistoryListBase.edc"
