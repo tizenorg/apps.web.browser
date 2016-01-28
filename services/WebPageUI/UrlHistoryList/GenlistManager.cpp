@@ -28,13 +28,8 @@ namespace base_ui {
 GenlistManager::GenlistManager()
     : m_parentLayout(nullptr)
     , m_genlist(nullptr)
-    , ITEM_H(boost::any_cast<int>(tizen_browser::config::Config::
-            getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT))
-#if PROFILE_MOBILE
-            * boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale"))) // m_ITEM_H
-#else
-            ) // m_ITEM_H
-#endif
+    , ITEM_H(ELM_SCALE_SIZE(boost::any_cast<int>(tizen_browser::config::Config::
+            getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEM_HEIGHT))))
     , ITEMS_VISIBLE_NUMBER_MAX(boost::any_cast<int>(tizen_browser::config::Config::
             getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX)))
     , m_historyItemsVisibleCurrent(0)
