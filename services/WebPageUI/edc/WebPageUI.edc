@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define URI_LENGTH 1720
 #define URI_LENGTH_SHORT 1460
 #define URI_WIDTH 82
@@ -16,7 +17,7 @@ scale:1;                                                            \
             rel2 { to: over_part; relative: 1 1; }                  \
         }                                                           \
     }
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE
     group {
         name: "main_layout";
         images {

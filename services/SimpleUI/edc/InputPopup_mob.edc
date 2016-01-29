@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
 #define DEVELOPMENT 0
@@ -36,7 +37,7 @@
 #define CANCEL_BUTTON_WIDTH 98
 
 collections{
-    base_scale: 2.6;
+    BROWSER_BASE_SCALE
     group {
         name: "elm/entry/selection/browser_entry";
         parts {

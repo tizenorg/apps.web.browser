@@ -1,6 +1,7 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "ImageButton.edc"
 #include "../../../core/Tools/edc/Spacer.edc"
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
     FOUR_STATE_IMAGE_BUTTON("browser/toolbar_tab", 64, 64, "btn_bar_manager_nor.png", 224, 237, 251)
     FOUR_STATE_IMAGE_BUTTON("browser/toolbar_setting", 64, 64, "btn_bar_more_nor.png", 224, 237, 251)
     group {

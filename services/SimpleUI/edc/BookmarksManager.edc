@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define WIDTH 473
 #define HEIGHT 490
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
@@ -45,7 +46,7 @@ color_classes{
         color: 255 255 255 255;
     }
 }
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE
     group{ name: "elm/genlist/base/bookmarks_manager";
         min: 473 426;
         max: 473 426;

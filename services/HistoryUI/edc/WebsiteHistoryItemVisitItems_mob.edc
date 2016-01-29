@@ -1,7 +1,8 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "ButtonDelete.edc"
 #define VISITITEM_HEIGHT 150
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
     group {
         name: "layoutWebsiteHistoryItemVisitItems";
         parts {

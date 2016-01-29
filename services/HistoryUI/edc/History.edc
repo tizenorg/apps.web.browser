@@ -1,6 +1,7 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "history_ico_btn.edc"
 
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE
     group {
         name: "history-layout";
         parts {

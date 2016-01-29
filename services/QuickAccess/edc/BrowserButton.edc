@@ -1,6 +1,7 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/BrowserTextButton.edc"
 
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE
     group {
         name: "bottom_button";
         parts {

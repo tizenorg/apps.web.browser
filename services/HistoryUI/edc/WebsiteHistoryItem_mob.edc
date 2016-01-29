@@ -1,8 +1,9 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/SpacerRect.edc"
 #include "../../../core/Tools/edc/Background.edc"
 #include "colorClasses.edc"
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
     group { name: "layoutWebsiteHistoryItem";
             parts {
                 BACKGROUND_COVER("boxMainVertical", 1, "colorWebsiteHistoryItem")

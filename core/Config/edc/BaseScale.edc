@@ -1,0 +1,7 @@
+#if PROFILE_MOBILE
+    #define BASE_SCALE_VALUE 2.6
+#else
+    #define BASE_SCALE_VALUE 2.0
+#endif
+
+#define BROWSER_BASE_SCALE base_scale: BASE_SCALE_VALUE;

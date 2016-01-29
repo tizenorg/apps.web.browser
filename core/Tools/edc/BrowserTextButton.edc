@@ -1,11 +1,5 @@
-collections {
-
-#if PROFILE_MOBILE
-    base_scale: 2.6;
-#else
-    base_scale: 2.0;
-#endif
-
+#include "../../Config/edc/BaseScale.edc"
+collections { BROWSER_BASE_SCALE
     group {
         name: "elm/button/base/browser_text_button";
         data.item: "text" "btn_txt";

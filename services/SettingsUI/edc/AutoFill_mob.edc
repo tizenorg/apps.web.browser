@@ -1,6 +1,7 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "basic_button_mob.edc"
 #include "custom_check_mob.edc"
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
 
 group {
     name: "affdv-layout";

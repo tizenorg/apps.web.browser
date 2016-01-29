@@ -1,9 +1,10 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "ButtonDelete.edc"
 
 #define ELEMENTS_HORIZONTAL_SPACER 38
 #define TITLE_HEIGHT 150
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
     group { name: "groupImageFaviconMask";
             images.image: "favicon_mask.png" COMP;
             parts {

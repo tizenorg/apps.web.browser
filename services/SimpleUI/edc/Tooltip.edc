@@ -1,4 +1,5 @@
-collections { base_scale: 2.0;
+#include "../../../core/Config/edc/BaseScale.edc"
+collections { BROWSER_BASE_SCALE
     group { name: "elm/label/base/tooltip";
         styles {
             style { name: "tooltip_style";

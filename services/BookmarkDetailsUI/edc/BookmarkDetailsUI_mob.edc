@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
 #define DEVELOPMENT 0
@@ -29,7 +30,7 @@
 #define REMOVE_CHECKBOX_OFFSET_Y 14
 #define REMOVE_CHECKBOX_SIZE 48
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE
     group {
         name: "elm/button/base/more-shadow-button";
         min: MORE_SWALLOW_WIDTH+SHADOW_SIZE MORE_ITEM_HEIGHT+SHADOW_SIZE;
