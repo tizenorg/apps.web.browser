@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define SETTINGS_LINE_BEFORE(line_name, relative_to)                \
     part {                                                          \
         name: line_name;                                            \
@@ -34,7 +35,7 @@
         }                                                           \
     }
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE;
     group { name: "elm/check/base/custom_check";
             images {
                 image: "check_box_off.png" COMP;

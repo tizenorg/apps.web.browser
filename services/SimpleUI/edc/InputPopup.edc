@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
 #define DEVELOPMENT 0
@@ -28,13 +29,7 @@
 #define INPUT_TEXT_HEIGHT 68
 
 collections{
-
-#if PROFILE_MOBILE
-    base_scale: 2.6;
-#else
-    base_scale: 2.0;
-#endif
-
+    BROWSER_BASE_SCALE;
     group {
         name: "elm/entry/selection/browser_entry";
         parts {

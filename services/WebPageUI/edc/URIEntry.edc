@@ -1,7 +1,8 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define URI_INPUTBOX_LENGTH 1720
 #define URI_INPUTBOX_LENGTH_SMALL 1460
 #define URI_INPUTBOX_WIDTH 82
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE;
     group {
         name: "elm/entry/selection/browser_entry";
         parts {

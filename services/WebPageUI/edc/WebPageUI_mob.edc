@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define URI_LENGTH 518
 #define URI_WIDTH 64
 #define URI_BG_HEIGHT 108
@@ -8,7 +9,7 @@
 #define FINDONPAGE_WIDTH 720
 #include "../../../core/Tools/edc/Spacer.edc"
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE;
     group {
         name: "main_layout";
         images {

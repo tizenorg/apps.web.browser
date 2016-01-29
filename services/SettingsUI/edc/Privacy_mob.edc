@@ -1,6 +1,7 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 collections
 {
-    base_scale: 2.6;
+    BROWSER_BASE_SCALE;
     group {
         name: "privacy_mobile";
 

@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define DEBUG_RECT_OVER(over_part, r, g, b)                         \
     part { name: __CONCAT("dbg_rect_at_", __stringify(__LINE__));   \
                                                                     \
@@ -21,7 +22,7 @@ scale:1;                                                            \
 
 collections
 {
-base_scale: 2.6;
+BROWSER_BASE_SCALE;
 group {
     name: "reset_browser";
     images {

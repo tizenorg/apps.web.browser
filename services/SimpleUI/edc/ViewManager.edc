@@ -22,10 +22,11 @@
 #      Author: m.lapinski@samsung.com
 #
 
+#include "../../../core/Config/edc/BaseScale.edc"
 #define IME_PORTRAIT_HEIGHT 435
 #define IME_LANDSCAPE_HEIGHT 0   //TODO: Change it when landscape IME will be available
 
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE;
     group {
         name: "main_layout";
         parts {

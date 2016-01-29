@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 #include "../../../core/Tools/edc/Spacer.edc"
 #include "BrowserPageControl_mob.edc"
@@ -283,7 +284,7 @@
         }                                           \
     }
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE;
 
 color_classes{
     color_class{

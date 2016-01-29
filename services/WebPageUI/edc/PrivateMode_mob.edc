@@ -1,3 +1,4 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define PARAGRAPH_SPACER(NAME, RELATIVE_TO, HEIGHT)                 \
 part {  name: NAME;                                                 \
         type: SPACER;                                               \
@@ -28,7 +29,7 @@ part {  name: NAME;                                                 \
             }                                                       \
     }
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE;
     styles {
         style {
             name: "message_style";

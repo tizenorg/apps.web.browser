@@ -1,9 +1,10 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 #include "CategoryMenu.edc"
 #include "BrowserButton.edc"
 
 collections {
-    base_scale: 2.0;
+    BROWSER_BASE_SCALE;
 #define WIDTH 1920
 #define HEIGHT 181
 #define ITEM_WIDTH 374

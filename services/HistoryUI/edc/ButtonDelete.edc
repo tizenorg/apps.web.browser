@@ -1,9 +1,10 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #include "../../../core/Tools/edc/SpacerRect.edc"
 #include "../../../core/Tools/edc/Background.edc"
 #include "../../../core/Tools/edc/InvisibleButtonSwallow.edc"
 #include "colorClasses.edc"
 
-collections { base_scale: 2.0;
+collections { BROWSER_BASE_SCALE;
     group { name: "layoutButtonDelete";
             styles {
                 style {

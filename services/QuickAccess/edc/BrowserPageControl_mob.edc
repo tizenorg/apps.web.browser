@@ -1,7 +1,8 @@
+#include "../../../core/Config/edc/BaseScale.edc"
 #define INDEX_PAGECONTROL_IND_INC 30 14
 #define INDEX_PAGECONTROL_IND_MIN_INC 14 14
 
-collections { base_scale: 2.6;
+collections { BROWSER_BASE_SCALE;
 	group {
         name: "elm/index/base/vertical/browser_pagecontrol";
         alias: "elm/index/base/horizontal/browser_pagecontrol";
