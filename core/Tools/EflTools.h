@@ -23,23 +23,19 @@
 #ifndef __EFL_TOOLS_H__
 #define __EFL_TOOLS_H__ 1
 
-#include <string>
-#include <memory>
 #include <Evas.h>
-#include <png.h>
-#include <vector>
+/* Need for COMPRESSION_LEVEL */
+#include <zlib.h>
+#include "BrowserImageTypedef.h"
 #include "BrowserImage.h"
 #include "Blob.h"
 
-namespace tizen_browser
-{
-namespace tools
-{
+namespace tizen_browser {
+namespace tools {
+namespace EflTools {
 
-namespace EflTools
-{
-    std::unique_ptr<Blob> getBlobPNG(std::shared_ptr<BrowserImage> browserImage, int level = 9);
-    void * getBlobPNG(int width, int height, void * image_data, int * length, int level = 9);
+    std::unique_ptr<Blob> getBlobPNG(BrowserImagePtr browserImage, int level = Z_DEFAULT_COMPRESSION);
+    void * getBlobPNG(int width, int height, void * image_data, int * length, int level = Z_DEFAULT_COMPRESSION);
 
     void setExpandHints(Evas_Object* toSet);
 

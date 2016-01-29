@@ -19,13 +19,13 @@
  * Created on: May, 2014
  *     Author: k.dobkowski
  */
+#include <png.h>
+#include <BrowserAssert.h>
 
 #include "browser_config.h"
-#include <BrowserAssert.h>
 #include "BrowserLogger.h"
 #include "EflTools.h"
-#include <Evas.h>
-#include <cstring>
+
 
 namespace tizen_browser {
 namespace tools {
