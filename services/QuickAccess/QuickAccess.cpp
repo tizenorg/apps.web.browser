@@ -157,6 +157,8 @@ void QuickAccess::createQuickAccessLayout(Evas_Object* parent)
     evas_object_size_hint_align_set (m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(m_layout);
 
+    evas_object_event_callback_add(m_layout, EVAS_CALLBACK_RESIZE, _layout_resize_cb, this);
+
 #if !PROFILE_MOBILE
     Evas_Object* topButtons = createTopButtons(m_layout);
     elm_object_part_content_set(m_layout, "buttons", topButtons);
@@ -227,7 +229,7 @@ void QuickAccess::createMostVisitedView(Evas_Object * parent)
     else
         elm_layout_file_set(m_mostVisitedView, edjFilePath.c_str(), "page_layout_landscape");
     evas_object_size_hint_weight_set(m_mostVisitedView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set (m_mostVisitedView, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_align_set (m_mostVisitedView, 0, 0);
     evas_object_show(m_mostVisitedView);
 
     m_verticalScroller = elm_scroller_add(m_mostVisitedView);
@@ -265,17 +267,14 @@ void QuickAccess::createBookmarksView (Evas_Object * parent)
     elm_object_part_content_set(m_bookmarksView, "elm.swallow.grid", m_bookmarkGengrid);
     evas_object_show(m_bookmarkGengrid);
 #else
-    if (!isOrientationLandscape())
-        elm_layout_file_set(m_bookmarksView, edjFilePath.c_str(), "page_layout");
-    else
-        elm_layout_file_set(m_bookmarksView, edjFilePath.c_str(), "page_layout_landscape");
+    elm_layout_theme_set(m_bookmarksView, "layout", "application", "default");
     evas_object_size_hint_weight_set(m_bookmarksView, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_bookmarksView, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_show(m_bookmarksView);
 
     m_bookmarkGengrid = createBookmarkGengrid(m_bookmarksView);
     evas_object_smart_callback_add(m_bookmarkGengrid, "realized", _bookmark_tile_realized, this);
-    elm_object_part_content_set(m_bookmarksView, "center_swallow", m_bookmarkGengrid);
+    elm_object_part_content_set(m_bookmarksView, "elm.swallow.content", m_bookmarkGengrid);
     if (isOrientationLandscape())
         evas_object_size_hint_min_set(m_bookmarkGengrid, ELM_SCALE_SIZE(1150), ELM_SCALE_SIZE(720));
     else
@@ -590,6 +589,13 @@ void QuickAccess::_bookmark_tile_realized(void* data, Evas_Object*, void* event_
             _bookmark_clicked(data, nullptr, nullptr);
         }
     }
+}
+
+void QuickAccess::_layout_resize_cb(void* data, Evas* /*e*/, Evas_Object* obj, void* /*event_info*/) {
+    int w, h;
+    auto self = static_cast<QuickAccess*>(data);
+    evas_object_geometry_get(obj, NULL, NULL, &w, &h);
+    evas_object_size_hint_min_set(self->m_mostVisitedView, w, ELM_SCALE_SIZE(1120));// TODO stała
 }
 #endif
 
