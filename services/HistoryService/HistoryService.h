@@ -46,6 +46,8 @@ public:
                         const std::string & title,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
+    void updateHistoryItemFavicon(const std::string & url,
+                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void clearAllHistory();
     void clearURLHistory(const std::string & url);
     void deleteHistoryItem(int id);

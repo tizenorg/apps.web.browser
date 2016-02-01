@@ -350,6 +350,21 @@ void HistoryService::addHistoryItem(const std::string & url,
     historyAdded(his);
 }
 
+void HistoryService::updateHistoryItemFavicon(const std::string & url, std::shared_ptr<tools::BrowserImage> favicon)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    int id = getHistoryId(url);
+    if (id!=0) {
+        if (favicon) {
+           std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
+           unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
+           if (bp_history_adaptor_set_icon(id, favicon->width, favicon->height, fav, favicon_blob->getLength()) < 0) {
+               errorPrint("bp_history_adaptor_set_icon");
+            }
+        }
+    }
+}
+
 void HistoryService::clearAllHistory()
 {
     bp_history_adaptor_reset();
