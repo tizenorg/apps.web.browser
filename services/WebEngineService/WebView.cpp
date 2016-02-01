@@ -93,6 +93,10 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
+    if (m_timer) {
+        ecore_timer_del(m_timer);
+        m_timer = nullptr;
+    }
     delete m_downloadControl;
 }
 
@@ -665,6 +669,7 @@ Eina_Bool WebView::_ready(void *data)
 
     WebView * self = reinterpret_cast<WebView *>(data);
     ecore_timer_del(self->m_timer);
+    self->m_timer = nullptr;
     self->__ready(data, nullptr, nullptr);
 
     return ECORE_CALLBACK_CANCEL;
