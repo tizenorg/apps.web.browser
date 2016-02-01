@@ -67,7 +67,7 @@ int HistoryService::getHistoryItemsCount(){
     int *ids = nullptr;
     int count=0;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
+    conds.limit = -1;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
     conds.order_offset =BP_HISTORY_O_DATE_CREATED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
@@ -88,7 +88,7 @@ bool HistoryService::isDuplicate(const char* url) const
     int *ids=nullptr;
     int count=0;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
+    conds.limit = -1;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
     conds.order_offset =BP_HISTORY_O_DATE_CREATED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
@@ -450,7 +450,7 @@ std::shared_ptr<HistoryItem> HistoryService::getCurrentTab()
     int *ids=nullptr;
     int count = -1;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
+    conds.limit = -1;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
     conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
@@ -471,7 +471,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     int *ids=nullptr;
     int count=-1;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 20;  //no of rows to get negative means no limitation
+    conds.limit = -1;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
     conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
