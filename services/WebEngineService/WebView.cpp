@@ -93,6 +93,10 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
+    if (m_timer) {
+        ecore_timer_del(m_timer);
+        m_timer = nullptr;
+    }
     delete m_downloadControl;
 }
 
@@ -618,7 +622,10 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
     self->loadProgress(self->m_loadProgress);
 
     //TODO: delete this line when "ready" signal is supported by ewk_view
-    self->m_timer =  ecore_timer_add(self->TIMER_INTERVAL, _ready, self);
+    if (self->m_timer)
+        ecore_timer_reset(self->m_timer);
+    else
+        self->m_timer =  ecore_timer_add(self->TIMER_INTERVAL, _ready, self);
 }
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)
@@ -665,6 +672,7 @@ Eina_Bool WebView::_ready(void *data)
 
     WebView * self = reinterpret_cast<WebView *>(data);
     ecore_timer_del(self->m_timer);
+    self->m_timer = nullptr;
     self->__ready(data, nullptr, nullptr);
 
     return ECORE_CALLBACK_CANCEL;
