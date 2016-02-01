@@ -30,6 +30,9 @@
 #include "BrowserImage.h"
 #include "Blob.h"
 
+// counts size exactly as is in Z3 device
+#define Z3_SCALE_SIZE(x) (int)(((double)(x) * elm_config_scale_get()) / 2.6)
+
 namespace tizen_browser {
 namespace tools {
 namespace EflTools {
