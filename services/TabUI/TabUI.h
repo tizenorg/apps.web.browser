@@ -106,8 +106,6 @@ private:
     bool onOtherDevicesSwitch;
 
     Elm_Gengrid_Item_Class * m_item_class;
-    std::map<std::string,Elm_Object_Item*> m_map_tab_views;
-    bool m_gengridSetup;
     std::string m_edjFilePath;
 
 #if PROFILE_MOBILE

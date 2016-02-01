@@ -60,7 +60,7 @@ TabUI::~TabUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_item_class_free(m_item_class);
-    evas_object_del(m_gengrid);
+    evas_object_del(m_tab_layout);
 }
 
 void TabUI::createTabItemClass()
@@ -106,7 +106,6 @@ void TabUI::hideUI()
     M_ASSERT(m_tab_layout);
 
     elm_gengrid_clear(m_gengrid);
-    m_map_tab_views.clear();
     evas_object_hide(m_tab_layout);
     evas_object_hide(elm_layout_content_get(m_tab_layout, "action_bar"));
     evas_object_hide(elm_layout_content_get(m_tab_layout, "top_bar"));
@@ -221,7 +220,6 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
     elm_scroller_page_size_set(gengrid, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(0));
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
-    elm_scroller_propagate_events_set(gengrid, EINA_FALSE);
 #else
     elm_gengrid_horizontal_set(gengrid, EINA_TRUE);
     elm_scroller_page_size_set(gengrid, ELM_SCALE_SIZE(0), ELM_SCALE_SIZE(327));
@@ -410,10 +408,12 @@ void TabUI::addTabItem(basic_webengine::TabContentPtr hi)
     itemData->item = hi;
     itemData->tabUI = std::shared_ptr<tizen_browser::base_ui::TabUI>(this);
     Elm_Object_Item* tabView = elm_gengrid_item_append(m_gengrid, m_item_class, itemData, _thumbSelected, itemData);
-    m_map_tab_views.insert(std::pair<std::string,Elm_Object_Item*>(hi->getTitle(), tabView));
-    // unselect by default
-    elm_gengrid_item_selected_set(tabView, EINA_FALSE);
-    setEmptyGengrid(false);
+    // Check if item_object was created successfully
+    if (tabView) {
+        // unselect by default
+        elm_gengrid_item_selected_set(tabView, EINA_FALSE);
+        setEmptyGengrid(false);
+    }
 }
 
 void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
@@ -498,9 +498,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
 
 void TabUI::_del_item(void* /*data*/, Evas_Object* obj)
 {
-    // TODO release data
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_del(elm_object_part_content_get(obj, "tab_thumbnail"));
     evas_object_smart_callback_del(elm_object_part_content_get(obj, "tab_thumbButton"), "clicked", _close_tab_clicked);
     evas_object_smart_callback_del(elm_object_part_content_get(obj, "tab_selectedButton"), "clicked", _itemSelected);
 }
@@ -536,12 +534,9 @@ void TabUI::_close_tab_clicked(void *data, Evas_Object*, void*)
 
         Elm_Object_Item* it = elm_gengrid_selected_item_get(itemData->tabUI->m_gengrid);
         elm_object_item_del(it);
-        elm_gengrid_item_update(it);
         elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
 
         itemData->tabUI->closeTabsClicked(itemData->item->getId());
-        int tabsNumber = *(itemData->tabUI->tabsCount());
-        BROWSER_LOGD("[%s:%d] items: %d", __PRETTY_FUNCTION__, __LINE__, tabsNumber);
     }
 }
 
