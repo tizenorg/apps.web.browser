@@ -714,8 +714,7 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
         if (favicon && self->isLoading()) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
             self->faviconImage = std::make_shared<tools::BrowserImage>(favicon);
-            // TODO according to documentation object should be deleted not unref
-            evas_object_unref(favicon);
+            evas_object_del(favicon);
             self->favIconChanged(self->faviconImage);
         }
     }
@@ -1186,8 +1185,7 @@ tools::BrowserImagePtr WebView::getFavicon()
     M_ASSERT(m_ewkContext);
     Evas_Object * favicon = ewk_context_icon_database_icon_object_add(m_ewkContext, ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
     faviconImage = std::make_shared<tools::BrowserImage>(favicon);
-    // TODO according to documentation object should be deleted not unref
-    evas_object_unref(favicon);
+    evas_object_del(favicon);
 
     return faviconImage;
 }
