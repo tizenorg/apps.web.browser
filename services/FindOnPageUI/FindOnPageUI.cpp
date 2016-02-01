@@ -128,77 +128,71 @@ Evas_Object* FindOnPageUI::createFindOnPageUILayout()
 
     // Find on page layout.
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-    Evas_Object *layout = elm_layout_add(m_parent);
-    if (!layout) {
+    m_fop_layout = elm_layout_add(m_parent);
+    if (!m_fop_layout) {
         BROWSER_LOGD("elm_layout_add failed");
         return NULL;
     }
-    elm_layout_file_set(layout, m_edjFilePath.c_str(), "find-on-page-layout");
-    evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    elm_object_part_content_set(m_parent, "findonpage", m_fop_layout);
+    elm_layout_file_set(m_fop_layout, m_edjFilePath.c_str(), "find-on-page-layout");
+    evas_object_size_hint_weight_set(m_fop_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
     // Entry.
-    Evas_Object *entry = elm_entry_add(layout);
-    elm_object_style_set(entry, "fop_entry");
-    elm_entry_single_line_set(entry, EINA_TRUE);
-    elm_entry_scrollable_set(entry, EINA_TRUE);
-    elm_entry_autocapital_type_set(entry, ELM_AUTOCAPITAL_TYPE_NONE);
-    elm_entry_cnp_mode_set(entry, ELM_CNP_MODE_PLAINTEXT);
-    elm_entry_input_panel_enabled_set(entry, EINA_TRUE);
-    elm_entry_input_panel_return_key_type_set(entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_SEARCH);
+    m_entry = elm_entry_add(m_fop_layout);
+    elm_object_style_set(m_entry, "fop_entry");
+    elm_entry_single_line_set(m_entry, EINA_TRUE);
+    elm_entry_scrollable_set(m_entry, EINA_TRUE);
+    elm_entry_autocapital_type_set(m_entry, ELM_AUTOCAPITAL_TYPE_NONE);
+    elm_entry_cnp_mode_set(m_entry, ELM_CNP_MODE_PLAINTEXT);
+    elm_entry_input_panel_enabled_set(m_entry, EINA_TRUE);
+    elm_entry_input_panel_return_key_type_set(m_entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_SEARCH);
 
-    evas_object_size_hint_weight_set(entry, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_weight_set(m_entry, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    evas_object_smart_callback_add(entry, "activated", __enter_key_cb, this);
-    evas_object_smart_callback_add(entry, "changed", __entry_changed_cb, this);
+    evas_object_smart_callback_add(m_entry, "activated", __enter_key_cb, this);
+    evas_object_smart_callback_add(m_entry, "changed", __entry_changed_cb, this);
 
-    elm_object_translatable_part_text_set(entry, "elm.guide", "IDS_BR_OPT_FIND_ON_PAGE");
+    elm_object_translatable_part_text_set(m_entry, "elm.guide", "IDS_BR_OPT_FIND_ON_PAGE");
 
-    Evas_Object *access = elm_access_object_get(elm_entry_textblock_get(entry));
+    Evas_Object *access = elm_access_object_get(elm_entry_textblock_get(m_entry));
     elm_access_info_set(access, ELM_ACCESS_TYPE, _("IDS_BR_BODY_TEXT_FIELD_T_TTS"));
-    elm_entry_text_style_user_push(entry, FIND_ON_PAGE_ENTRY_STYLE);
+    elm_entry_text_style_user_push(m_entry, FIND_ON_PAGE_ENTRY_STYLE);
 
     static Elm_Entry_Filter_Limit_Size limit_filter_data;
     limit_filter_data.max_byte_count = 0;
     limit_filter_data.max_char_count = FIND_ON_PAGE_MAX_TEXT;
-    elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
+    elm_entry_markup_filter_append(m_entry, elm_entry_filter_limit_size, &limit_filter_data);
 
-    elm_object_part_content_set(layout, "elm.swallow.entry", entry);
+    elm_object_part_content_set(m_fop_layout, "elm.swallow.entry", m_entry);
 
     // Clear button
-    Evas_Object *clear_button = elm_button_add(layout);
-    elm_object_style_set(clear_button, "basic_button");
-    elm_access_info_set(clear_button, ELM_ACCESS_INFO, _("IDS_BR_OPT_CLEAR_ALL"));
-    evas_object_smart_callback_add(clear_button, "clicked", __clear_clicked_cb, this);
-    elm_object_part_content_set(layout, "clear_button_click", clear_button);
+    m_clear_button = elm_button_add(m_fop_layout);
+    elm_object_style_set(m_clear_button, "basic_button");
+    elm_access_info_set(m_clear_button, ELM_ACCESS_INFO, _("IDS_BR_OPT_CLEAR_ALL"));
+    evas_object_smart_callback_add(m_clear_button, "clicked", __clear_clicked_cb, this);
+    elm_object_part_content_set(m_fop_layout, "clear_button_click", m_clear_button);
 
     // Down button.
-    Evas_Object *down_button = elm_button_add(layout);
-    elm_object_style_set(down_button, "basic_button");
-    elm_access_info_set(down_button, ELM_ACCESS_INFO, _("IDS_BR_SK_NEXT"));
-    evas_object_smart_callback_add(down_button, "clicked", __down_clicked_cb, this);
-    elm_object_part_content_set(layout, "down_button_click", down_button);
+    m_down_button = elm_button_add(m_fop_layout);
+    elm_object_style_set(m_down_button, "basic_button");
+    elm_access_info_set(m_down_button, ELM_ACCESS_INFO, _("IDS_BR_SK_NEXT"));
+    evas_object_smart_callback_add(m_down_button, "clicked", __down_clicked_cb, this);
+    elm_object_part_content_set(m_fop_layout, "down_button_click", m_down_button);
 
     // Up button.
-    Evas_Object *up_button = elm_button_add(layout);
-    elm_object_style_set(up_button, "basic_button");
-    elm_access_info_set(up_button, ELM_ACCESS_INFO, _("IDS_BR_SK_PREVIOUS"));
-    evas_object_smart_callback_add(up_button, "clicked", __up_clicked_cb, this);
-    elm_object_part_content_set(layout, "up_button_click", up_button);
+    m_up_button = elm_button_add(m_fop_layout);
+    elm_object_style_set(m_up_button, "basic_button");
+    elm_access_info_set(m_up_button, ELM_ACCESS_INFO, _("IDS_BR_SK_PREVIOUS"));
+    evas_object_smart_callback_add(m_up_button, "clicked", __up_clicked_cb, this);
+    elm_object_part_content_set(m_fop_layout, "up_button_click", m_up_button);
 
-    Evas_Object *close_click = elm_button_add(layout);
+    Evas_Object *close_click = elm_button_add(m_fop_layout);
     elm_object_style_set(close_click, "basic_button");
     evas_object_smart_callback_add(close_click, "clicked", __close_clicked_cb, this);
-    elm_object_part_content_set(layout, "close_click", close_click);
+    elm_object_part_content_set(m_fop_layout, "close_click", close_click);
 
-    m_entry = entry;
-    m_clear_button = clear_button;
-    m_down_button = down_button;
-    m_up_button = up_button;
-    m_fop_layout = layout;
-
+    elm_object_part_content_set(m_parent, "findonpage", m_fop_layout);
     _set_count(0, 0);
-    return layout;
+    return m_fop_layout;
 }
 
 void FindOnPageUI::showUI()
