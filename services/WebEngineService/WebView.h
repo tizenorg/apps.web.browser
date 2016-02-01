@@ -27,6 +27,13 @@
 #include "BrowserImage.h"
 #include "AbstractWebEngine/TabId.h"
 #include "AbstractWebEngine/WebConfirmation.h"
+
+#if PROFILE_MOBILE
+#include "DownloadControl/DownloadControl.h"
+#include <app_control.h>
+#include <app.h>
+#endif
+
 #if PROFILE_MOBILE
 typedef enum _context_menu_type {
     TEXT_ONLY = 0,
@@ -317,6 +324,12 @@ private:
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
 
+#if PROFILE_MOBILE
+    // downloads
+    static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __download_request_cb(const char *download_uri, void *data);
+#endif
+
     // Screenshot capture
     static void __screenshotCaptured(Evas_Object* image, void* user_data);
 private:
@@ -344,9 +357,14 @@ private:
 
     static const std::string COOKIES_PATH;
 
+#if PROFILE_MOBILE
+    int m_status_code;
+    Eina_Bool m_is_error_page;
+#endif
     //TODO: delete this lines when "ready" signal is supported by ewk_view
     Ecore_Timer *m_timer;
     const double TIMER_INTERVAL = 5.0;
+    DownloadControl *m_downloadControl;
 };
 
 } /* namespace webengine_service */

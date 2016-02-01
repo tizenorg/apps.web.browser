@@ -85,6 +85,10 @@ if(TIZEN_BUILD)
         ${tizen_pkgs_list}
         capi-system-device
         capi-system-system-settings
+        capi-content-media-content
+        capi-appfw-app-manager
+        notification
+        appsvc
     )
     endif (${PROFILE} MATCHES "mobile")
 
@@ -144,7 +148,12 @@ ENDIF(BUILD_UT)
 configure_file(${CMAKE_SOURCE_DIR}/cmakeconfig.h.cmake ${CMAKE_BINARY_DIR}/cmakeconfig.h)
 
 if(TIZEN_BUILD)
+if (${PROFILE} MATCHES "mobile")
+configure_file(${CMAKE_SOURCE_DIR}/manifest.xml.in.mb ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}.xml)
+else (${PROFILE} MATCHES "mobile")
 configure_file(${CMAKE_SOURCE_DIR}/manifest.xml.in ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}.xml)
+endif (${PROFILE} MATCHES "mobile")
+
 install(FILES ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}.xml DESTINATION ${MANIFESTDIR})
 # install desktop file & icon
 install(FILES ${CMAKE_SOURCE_DIR}/org.tizen.browser.png DESTINATION ${ICONDIR})

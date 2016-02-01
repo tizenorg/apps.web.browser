@@ -81,6 +81,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_private(incognitoMode)
     , m_fullscreen(false)
     , m_timer(nullptr)
+    , m_downloadControl(nullptr)
 {
 }
 
@@ -92,6 +93,7 @@ WebView::~WebView()
         unregisterCallbacks();
         evas_object_del(m_ewkView);
     }
+    delete m_downloadControl;
 }
 
 void WebView::init(bool desktopMode, Evas_Object*)
@@ -123,6 +125,10 @@ void WebView::init(bool desktopMode, Evas_Object*)
 
     setupEwkSettings();
     registerCallbacks();
+#if PROFILE_MOBILE
+    ewk_context_did_start_download_callback_set(ewk_view_context_get(m_ewkView), __download_request_cb, this);
+#endif
+    m_downloadControl = new DownloadControl();
     resume();
 }
 
@@ -195,7 +201,9 @@ void WebView::registerCallbacks()
 
     evas_object_smart_callback_add(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_add(m_ewkView, "close,window", __closeWindowRequest, this);
-
+#if PROFILE_MOBILE
+    evas_object_smart_callback_add(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+#endif
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
@@ -232,7 +240,9 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "create,window", __newWindowRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "close,window", __closeWindowRequest, this);
-
+#if PROFILE_MOBILE
+    evas_object_smart_callback_del_full(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+#endif
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
@@ -1251,6 +1261,106 @@ void WebView::switchToMobileMode() {
 bool WebView::isDesktopMode() const {
     return m_desktopMode;
 }
+#if PROFILE_MOBILE
+
+void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    WebView *wv = (WebView *)data;
+
+    Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
+    Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
+
+    wv->m_status_code = ewk_policy_decision_response_status_code_get(policy_decision);
+
+    const char *uri = ewk_policy_decision_url_get(policy_decision);
+    const char *content_type = ewk_policy_decision_response_mime_get(policy_decision);
+    const Eina_Hash *headers = ewk_policy_decision_response_headers_get(policy_decision);
+
+    wv->m_is_error_page = EINA_FALSE;
+
+    switch (policy_type) {
+    case EWK_POLICY_DECISION_USE:
+        BROWSER_LOGD("[%s:%d] policy_use", __PRETTY_FUNCTION__, __LINE__);
+        ewk_policy_decision_use(policy_decision);
+        break;
+
+    case EWK_POLICY_DECISION_DOWNLOAD: {
+        BROWSER_LOGD("[%s:%d] policy_download", __PRETTY_FUNCTION__, __LINE__);
+        app_control_h app_control = NULL;
+        if (app_control_create(&app_control) < 0) {
+            BROWSER_LOGE("[%s:%d] Fail to app_control_create", __PRETTY_FUNCTION__, __LINE__);
+            return;
+         }
+
+        if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_VIEW) < 0) {
+            BROWSER_LOGE("[%s:%d] Fail to app_control_set_operation", __PRETTY_FUNCTION__, __LINE__);
+            app_control_destroy(app_control);
+            return;
+         }
+
+        BROWSER_LOGD("[%s:%d] uri: %s", __PRETTY_FUNCTION__, __LINE__, uri);
+        if (app_control_set_uri(app_control, uri) < 0) {
+            BROWSER_LOGE("[%s:%d] Fail to app_control_set_uri", __PRETTY_FUNCTION__, __LINE__);
+            app_control_destroy(app_control);
+            return;
+         }
+
+        BROWSER_LOGD("[%s:%d] content_type: %s", __PRETTY_FUNCTION__, __LINE__, content_type);
+        if (app_control_set_mime(app_control, content_type) < 0) {
+            BROWSER_LOGE("[%s:%d] Fail to app_control_set_mime", __PRETTY_FUNCTION__, __LINE__);
+            app_control_destroy(app_control);
+            return;
+         }
+
+        const char *content_dispotision = (const char *)eina_hash_find(headers, "Content-Disposition");
+        BROWSER_LOGD("[%s:%d] Content-disposition: %s", __PRETTY_FUNCTION__, __LINE__, content_dispotision);
+        if (content_dispotision && (strstr(content_dispotision, "attachment") != NULL)){
+            wv->m_downloadControl->handle_download_request(uri, content_type);
+            app_control_destroy(app_control);
+            ewk_policy_decision_ignore(policy_decision);
+            break;
+         }
+
+        if (app_control_send_launch_request(app_control, NULL, NULL) == APP_CONTROL_ERROR_APP_NOT_FOUND) {
+            BROWSER_LOGD("[%s:%d] app_control_send_launch_request returns APP_CONTROL_ERROR_APP_NOT_FOUND", __PRETTY_FUNCTION__, __LINE__);
+            wv->m_downloadControl->handle_download_request(uri, content_type);
+         }
+        app_control_destroy(app_control);
+        ewk_policy_decision_ignore(policy_decision);
+        break;
+    }
+    case EWK_POLICY_DECISION_IGNORE:
+    default:
+        BROWSER_LOGD("[%s:%d] policy_ignore", __PRETTY_FUNCTION__, __LINE__);
+        ewk_policy_decision_ignore(policy_decision);
+        break;
+    }
+}
+
+void WebView::__download_request_cb(const char *download_uri, void *data)
+{
+    BROWSER_LOGD("[%s:%d] download_uri= [%s]", __PRETTY_FUNCTION__, __LINE__, download_uri);
+
+    WebView *wv = (WebView *)data;
+
+    if (!strncmp(download_uri, "data:", strlen("data:"))){
+        BROWSER_LOGD("[%s:%d] popup1", __PRETTY_FUNCTION__, __LINE__);
+        if (wv->m_downloadControl->handle_data_scheme(download_uri) == EINA_TRUE){
+            BROWSER_LOGD("[%s:%d] popup2", __PRETTY_FUNCTION__, __LINE__);
+         }
+        else{
+            BROWSER_LOGD("[%s:%d] popup3", __PRETTY_FUNCTION__, __LINE__);
+         }
+    } else if (strncmp(download_uri, "http://", strlen("http://")) && strncmp(download_uri, "https://", strlen("https://"))) {
+        BROWSER_LOGD("[%s:%d] Only http or https URLs can be downloaded", __PRETTY_FUNCTION__, __LINE__);
+        BROWSER_LOGD("[%s:%d] popup4", __PRETTY_FUNCTION__, __LINE__);
+        return;
+    } else {
+        wv->m_downloadControl->launch_download_app(download_uri);
+    }
+}
+#endif
 
 } /* namespace webengine_service */
 } /* end of basic_webengine */
