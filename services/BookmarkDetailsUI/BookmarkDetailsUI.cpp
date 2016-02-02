@@ -228,20 +228,33 @@ Evas_Object * BookmarkDetailsUI::_grid_bookmark_content_get(void *data, Evas_Obj
         BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
         const char *part_name1 = "elm.thumbnail";
         static const int part_name1_len = strlen(part_name1);
-        const char *part_name2 = "remove_checkbox_swallow";
-        static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name1, part, part_name1_len)) {
             std::shared_ptr<tizen_browser::tools::BrowserImage> image = itemData->item->getThumbnail();
             if (image)
                 return image->getEvasImage(itemData->bookmarkDetailsUI->m_parent);
         }
+#if PROFILE_MOBILE
+        const char *part_name2 = "remove_checkbox_swallow";
+        static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name2, part, part_name2_len)) {
-            Evas_Object* box = elm_layout_add(obj);
+            Evas_Object* box = elm_check_add(obj);
             elm_object_style_set(box, "custom_check");
-            elm_layout_content_set(obj, "remove_checkbox_swallow", box);
-            elm_check_state_set(box, EINA_TRUE);
+            evas_object_propagate_events_set(box, EINA_FALSE);
+            elm_check_state_set(box, itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()]
+                    ? EINA_TRUE : EINA_FALSE);
+            if (itemData->bookmarkDetailsUI->m_remove_bookmark_mode) {
+                evas_object_show(box);
+                elm_object_item_signal_emit(itemData->bookmarkDetailsUI->
+                                                m_map_bookmark[itemData->item->getId()],
+                                            "check_box_visible", "ui");
+            }
+            else
+                elm_object_item_signal_emit(itemData->bookmarkDetailsUI->
+                                                m_map_bookmark[itemData->item->getId()],
+                                            "check_box_invisible", "ui");
             return box;
         }
+#endif
     }
     return nullptr;
 }
@@ -253,13 +266,15 @@ void BookmarkDetailsUI::_bookmark_item_clicked(void* data, Evas_Object*, void*)
         BookmarkItemData * itemData = static_cast<BookmarkItemData*>(data);
 #if PROFILE_MOBILE
         if (itemData->bookmarkDetailsUI->m_remove_bookmark_mode) {
-            itemData->bookmarkDetailsUI->m_delete_count -= itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getAddress()] ? 1 : -1;
-            itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getAddress()] =
-                    !itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getAddress()];
-            elm_object_item_signal_emit(itemData->bookmarkDetailsUI->
-                                    m_map_bookmark[itemData->item->getId()], "check_box_click", "ui");
-            elm_object_part_text_set(itemData->bookmarkDetailsUI->m_top_content, "title_text", (boost::format("%d %s")
-                                    % itemData->bookmarkDetailsUI->m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
+            itemData->bookmarkDetailsUI->m_delete_count -= itemData->bookmarkDetailsUI->
+                    m_map_delete[itemData->item->getId()] ? 1 : -1;
+            itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()] =
+                    !itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()];
+            elm_object_part_text_set(itemData->bookmarkDetailsUI->m_top_content,
+                    "title_text", (boost::format("%d %s") % itemData->bookmarkDetailsUI->
+                m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
+            elm_gengrid_item_update(itemData->bookmarkDetailsUI->
+                    m_map_bookmark[itemData->item->getId()]);
         }
         else
             itemData->bookmarkDetailsUI->bookmarkItemClicked(itemData->item);
@@ -541,8 +556,14 @@ void BookmarkDetailsUI::createMenuDetails()
 
 void BookmarkDetailsUI::resetRemovalMode(bool clear)
 {
-    if (clear)
+    if (clear) {
+        for (auto it = m_map_delete.begin(); it != m_map_delete.end(); ++it)
+            if (it->second) {
+                it->second = false;
+                elm_gengrid_item_update(m_map_bookmark[it->first]);
+            }
         m_map_delete.clear();
+    }
     m_delete_count = 0;
     m_remove_bookmark_mode = false;
     elm_object_signal_emit(m_top_content, "default_mode", "ui");

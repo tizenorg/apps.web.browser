@@ -1,3 +1,9 @@
+#define STYLE_TAGS \
+   tag:  "br" "\n";\
+   tag:  "ps" "ps";\
+   tag:  "tab" "\t";\
+   tag:  "b" "+ font_weight=Bold";
+
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 #include "../../SettingsUI/edc/custom_check_mob.edc"
 
