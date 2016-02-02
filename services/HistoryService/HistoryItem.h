@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "BrowserImage.h"
+#include "BrowserImageTypedef.h"
 
 namespace tizen_browser {
 namespace services {
@@ -32,44 +33,44 @@ public:
     HistoryItem(int id,
                 const std::string & url,
                 const std::string & title,
-                std::shared_ptr<tools::BrowserImage> favicon,
-                std::shared_ptr<tools::BrowserImage> thumbnail = std::make_shared<tools::BrowserImage>());
-	HistoryItem(HistoryItem && other) throw();
-	HistoryItem(int id, const std::string& url);
-	HistoryItem(const HistoryItem& source);
-	virtual ~HistoryItem();
+                tools::BrowserImagePtr favicon,
+                tools::BrowserImagePtr thumbnail = std::make_shared<tools::BrowserImage>());
+    HistoryItem(HistoryItem && other) throw();
+    HistoryItem(int id, const std::string& url);
+    HistoryItem(const HistoryItem& source);
+    virtual ~HistoryItem();
 
-	HistoryItem & operator=(HistoryItem && other) throw();
+    HistoryItem & operator=(HistoryItem && other) throw();
 
-       /**
-	* @brief compares two HisoryItems, only "url" are checked no other elements are checked.
-	*
-	* @return bool
-	*/
-	bool operator==(const HistoryItem& other);
-	bool operator!=(const HistoryItem& other);
+    /**
+    * @brief compares two HisoryItems, only "url" are checked no other elements are checked.
+    *
+    * @return bool
+    */
+    bool operator==(const HistoryItem& other);
+    bool operator!=(const HistoryItem& other);
 
-	void setUrl(const std::string & url);
-	std::string getUrl() const;
+    void setUrl(const std::string & url);
+    std::string getUrl() const;
 
-	void setTitle(const std::string & title);
-	std::string getTitle() const;
+    void setTitle(const std::string & title);
+    std::string getTitle() const;
 
-	void setLastVisit(boost::posix_time::ptime visitDate);
-	boost::posix_time::ptime getLastVisit() const;
+    void setLastVisit(boost::posix_time::ptime visitDate);
+    boost::posix_time::ptime getLastVisit() const;
     time_t getLastVisitAsTimeT() const;
 
-	void setVisitCounter(int visitCounter);
-	int getVisitCounter();
+    void setVisitCounter(int visitCounter);
+    int getVisitCounter();
 
-	void setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
-        std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const ;
+    void setThumbnail(tools::BrowserImagePtr thumbnail);
+    tools::BrowserImagePtr getThumbnail() const;
 
-        void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favIcon);
-	std::shared_ptr<tizen_browser::tools::BrowserImage> getFavIcon();
+    void setFavIcon(tools::BrowserImagePtr favIcon);
+    tools::BrowserImagePtr getFavIcon();
 
-	void setUriFavicon(const std::string & uri);
-	std::string getUriFavicon();
+    void setUriFavicon(const std::string & uri);
+    std::string getUriFavicon();
 
     int getId() const { return m_primaryKey; };
 private:
@@ -78,8 +79,8 @@ private:
     std::string m_title;
     boost::gregorian::date m_visitDate;
     boost::posix_time::ptime m_lastVisit;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> m_favIcon;
+    tools::BrowserImagePtr m_thumbnail;
+    tools::BrowserImagePtr m_favIcon;
     std::string m_urifavicon;
     int m_visitCounter;
 };

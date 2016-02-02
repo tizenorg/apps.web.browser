@@ -29,8 +29,8 @@ HistoryItem::HistoryItem(HistoryItem && other) throw()
 HistoryItem::HistoryItem(int id,
                          const std::string & url,
                          const std::string & title,
-                        std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
-                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
+                         tools::BrowserImagePtr favicon,
+                         tools::BrowserImagePtr thumbnail)
     : m_primaryKey(id)
     , m_url(url)
     , m_title(title)
@@ -142,22 +142,22 @@ int HistoryItem::getVisitCounter()
     return m_visitCounter;
 }
 
-void HistoryItem::setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favIcon)
+void HistoryItem::setFavIcon(tools::BrowserImagePtr favIcon)
 {
     m_favIcon = favIcon;
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> HistoryItem::getFavIcon()
+tools::BrowserImagePtr HistoryItem::getFavIcon()
 {
     return m_favIcon;
 }
 
-void HistoryItem::setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
+void HistoryItem::setThumbnail(tools::BrowserImagePtr thumbnail)
 {
     m_thumbnail = thumbnail;
 };
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> HistoryItem::getThumbnail() const
+tools::BrowserImagePtr HistoryItem::getThumbnail() const
 {
 
     return m_thumbnail;
