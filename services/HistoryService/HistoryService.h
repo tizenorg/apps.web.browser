@@ -45,8 +45,8 @@ public:
     int getHistoryId(const std::string & url);
     void addHistoryItem(const std::string & url,
                         const std::string & title,
-                        std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
-                        std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
+                        tools::BrowserImagePtr favicon,
+                        tools::BrowserImagePtr thumbnail);
     void updateHistoryItemFavicon(const std::string & url,
                                   tools::BrowserImagePtr favicon);
     void clearAllHistory();
