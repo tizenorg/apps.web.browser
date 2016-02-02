@@ -130,6 +130,7 @@ private:
     void connectActions();
     void showProgressBar();
     void hideProgressBar();
+    void hideFindOnPage();
     void hideWebView();
     void setErrorButtons();
     void setPrivateButtons();
