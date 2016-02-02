@@ -350,6 +350,21 @@ void HistoryService::addHistoryItem(const std::string & url,
     historyAdded(his);
 }
 
+void HistoryService::updateHistoryItemFavicon(const std::string & url, tools::BrowserImagePtr favicon)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    int id = getHistoryId(url);
+    if (id!=0) {
+        if (favicon) {
+           std::unique_ptr<tools::Blob> favicon_blob = tools::EflTools::getBlobPNG(favicon);
+           unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
+           if (bp_history_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength()) < 0) {
+               errorPrint("bp_history_adaptor_set_icon");
+            }
+        }
+    }
+}
+
 void HistoryService::clearAllHistory()
 {
     bp_history_adaptor_reset();

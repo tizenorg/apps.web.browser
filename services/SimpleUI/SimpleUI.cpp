@@ -174,6 +174,13 @@ void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
     }
 }
 
+void SimpleUI::faviconChanged(tools::BrowserImagePtr favicon)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_historyService->updateHistoryItemFavicon(m_webEngine->getURI(), favicon);
+
+}
+
 void SimpleUI::restoreLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -509,6 +516,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
+    m_webEngine->favIconChanged.connect(boost::bind(&SimpleUI::faviconChanged, this, _1));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
