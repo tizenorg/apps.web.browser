@@ -21,6 +21,7 @@
 #include <memory>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/signals2/signal.hpp>
+#include "BrowserImageTypedef.h"
 
 #include "ServiceFactory.h"
 #include "service_macros.h"
@@ -46,6 +47,8 @@ public:
                         const std::string & title,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> favicon,
                         std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
+    void updateHistoryItemFavicon(const std::string & url,
+                                  tools::BrowserImagePtr favicon);
     void clearAllHistory();
     void clearURLHistory(const std::string & url);
     void deleteHistoryItem(int id);

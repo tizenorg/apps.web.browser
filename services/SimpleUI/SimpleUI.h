@@ -94,6 +94,7 @@ private:
     void initUIServices();
     void connectModelSignals();
     void titleChanged(const std::string& title, const std::string& tabId);
+    void faviconChanged(tools::BrowserImagePtr favicon);
     void restoreLastSession();
     Evas_Object* createWebLayout(Evas_Object* parent);
     Evas_Object* createErrorLayout(Evas_Object* parent);
