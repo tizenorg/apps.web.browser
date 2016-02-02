@@ -360,11 +360,11 @@ private:
 #if PROFILE_MOBILE
     int m_status_code;
     Eina_Bool m_is_error_page;
+    DownloadControl *m_downloadControl;
 #endif
     //TODO: delete this lines when "ready" signal is supported by ewk_view
     Ecore_Timer *m_timer;
     const double TIMER_INTERVAL = 5.0;
-    DownloadControl *m_downloadControl;
 };
 
 } /* namespace webengine_service */
