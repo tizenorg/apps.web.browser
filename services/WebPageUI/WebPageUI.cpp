@@ -134,6 +134,7 @@ void WebPageUI::hideUI()
 #endif
 #if PROFILE_MOBILE
     hideMoreMenu();
+    hideFindOnPage();
 #endif
 }
 
@@ -544,6 +545,12 @@ void WebPageUI::hideProgressBar()
     elm_progressbar_value_set(m_progressBar, 0.0);
     elm_object_part_content_unset(m_mainLayout, "progress_bar");
     evas_object_hide(m_progressBar);
+}
+
+void WebPageUI::hideFindOnPage()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(m_mainLayout, "hide_findonpage", "ui");
 }
 
 void WebPageUI::hideWebView()
