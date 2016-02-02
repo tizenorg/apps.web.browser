@@ -81,7 +81,9 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_private(incognitoMode)
     , m_fullscreen(false)
     , m_timer(nullptr)
+#if PROFILE_MOBILE
     , m_downloadControl(nullptr)
+#endif
 {
 }
 
@@ -97,7 +99,9 @@ WebView::~WebView()
         ecore_timer_del(m_timer);
         m_timer = nullptr;
     }
+#if PROFILE_MOBILE
     delete m_downloadControl;
+#endif
 }
 
 void WebView::init(bool desktopMode, Evas_Object*)
@@ -131,8 +135,8 @@ void WebView::init(bool desktopMode, Evas_Object*)
     registerCallbacks();
 #if PROFILE_MOBILE
     ewk_context_did_start_download_callback_set(ewk_view_context_get(m_ewkView), __download_request_cb, this);
-#endif
     m_downloadControl = new DownloadControl();
+#endif
     resume();
 }
 
