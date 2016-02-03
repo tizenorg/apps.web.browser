@@ -277,10 +277,10 @@ private:
     void registerHWKeyCallback();
     void unregisterHWKeyCallback();
 
-    void onRotateClockwisePressed();
-    void onRotateCounterClockwisePressed();
     void onRotation();
     bool isLandscape();
+    static void __orientation_changed(app_event_info_h event_info, void *data);
+    static void __after_rotation(void *data, Elm_Transit *transit);
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -345,7 +345,9 @@ private:
     Evas_Object *main_window;
 #if PROFILE_MOBILE
     Evas_Object *m_conformant;
-    int angle = 0;
+    int m_current_angle;
+    int m_temp_angle;
+    Elm_Transit *m_rotation_transit;
 #endif
 };
 

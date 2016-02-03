@@ -73,6 +73,11 @@ SimpleUI::SimpleUI()
     , m_tabUI()
     , m_initialised(false)
     , m_wvIMEStatus(false)
+#if PROFILE_MOBILE
+    , m_current_angle(0)
+    , m_temp_angle(0)
+    , m_rotation_transit(nullptr)
+#endif
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_init(0, nullptr);
@@ -87,6 +92,12 @@ SimpleUI::SimpleUI()
 
     elm_win_resize_object_add(main_window, m_viewManager.getContent());
     evas_object_show(main_window);
+
+#if PROFILE_MOBILE
+    app_event_handler_h rotation_handler;
+    ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
+                             __orientation_changed, this);
+#endif
 }
 
 SimpleUI::~SimpleUI() {
@@ -539,10 +550,6 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
-    //TODO: This is a rotation workaround. Please delete this when proper rotation is implemented
-    m_platformInputManager->rotateClockwise.connect(boost::bind(&SimpleUI::onRotateClockwisePressed, this));
-    m_platformInputManager->rotateCounterClockwise.connect(boost::bind(&SimpleUI::onRotateCounterClockwisePressed, this));
-    //TODO: end of workaround
     m_webEngine->registerHWKeyCallback.connect(boost::bind(&SimpleUI::registerHWKeyCallback, this));
     m_webEngine->unregisterHWKeyCallback.connect(boost::bind(&SimpleUI::unregisterHWKeyCallback, this));
 #endif
@@ -964,35 +971,64 @@ void SimpleUI::onMenuButtonPressed()
     showMoreMenu();
 }
 
-//TODO: This is a rotation workaround. Those functions should be connected to proper callback.
-void SimpleUI::onRotateClockwisePressed()
+void SimpleUI::__after_rotation(void *data, Elm_Transit */*transit*/)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    angle -= 90;
-    onRotation();
-}
-
-void SimpleUI::onRotateCounterClockwisePressed()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    angle += 90;
-    onRotation();
+    SimpleUI* simpleUI = static_cast<SimpleUI*>(data);
+    simpleUI->m_rotation_transit = nullptr;
+    elm_win_rotation_with_resize_set(simpleUI->main_window, simpleUI->m_current_angle);
+    simpleUI->m_bookmarkDetailsUI->setLandscape((simpleUI->m_current_angle % 180) == 0);
+    simpleUI->m_moreMenuUI->resetContent();
+    simpleUI->m_bookmarkFlowUI->resetContent();
+    simpleUI->m_settingsUI->orientationChanged();
+    simpleUI->m_bookmarkManagerUI->orientationChanged();
+    simpleUI->m_webPageUI->orientationChanged();
+    simpleUI->m_tabUI->orientationChanged();
+    //TODO: ewk_view_orientation_send for an active web_view, when you change tab or create new one.
 }
 
 void SimpleUI::onRotation()
 {
-    if (angle == 360 || angle == -360)
-        angle = 0;
-    elm_win_rotation_with_resize_set(main_window, angle);
-    m_bookmarkDetailsUI->setLandscape((angle % 180) == 0);
-    m_moreMenuUI->resetContent();
-    m_bookmarkFlowUI->resetContent();
-    m_settingsUI->orientationChanged();
-    m_bookmarkManagerUI->orientationChanged();
-    m_webPageUI->orientationChanged();
-    m_tabUI->orientationChanged();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_rotation_transit) {
+        //Situation when we get additional signal while animation is still not finished.
+        elm_transit_del(m_rotation_transit);
+        m_rotation_transit = nullptr;
+    }
+
+    m_rotation_transit = elm_transit_add();
+    int to_degree = 0;
+    int diff_degree = m_temp_angle - m_current_angle;
+    elm_transit_object_add(m_rotation_transit, m_viewManager.getContent());
+
+    if (diff_degree == 270)
+        to_degree = 90;
+    else if (diff_degree == -270)
+        to_degree = -90;
+    else
+        to_degree = diff_degree * -1;
+
+    elm_transit_effect_rotation_add(m_rotation_transit, 0, to_degree);
+    elm_transit_duration_set(m_rotation_transit, 0.25);
+
+    elm_transit_del_cb_set(m_rotation_transit, __after_rotation, this);
+    elm_transit_objects_final_state_keep_set(m_rotation_transit, EINA_FALSE);
+    elm_transit_go(m_rotation_transit);
+
+    m_current_angle = m_temp_angle;
 }
-//TODO: end of a workaround
+
+void SimpleUI::__orientation_changed(app_event_info_h event_info, void* data)
+{
+    SimpleUI* simpleUI = static_cast<SimpleUI*>(data);
+    app_device_orientation_e event_angle = APP_DEVICE_ORIENTATION_0;
+    app_event_get_device_orientation(event_info, &event_angle);
+    if (simpleUI->m_current_angle != event_angle) {
+        simpleUI->m_temp_angle = event_angle;
+        BROWSER_LOGD("[%s:%d] previous angle: [%d] event angle: [%d]", __PRETTY_FUNCTION__, __LINE__,
+                        simpleUI->m_current_angle, simpleUI->m_temp_angle);
+        simpleUI->onRotation();
+    }
+}
 
 bool SimpleUI::isLandscape()
 {

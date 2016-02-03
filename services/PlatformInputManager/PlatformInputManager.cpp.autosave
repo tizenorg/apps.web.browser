@@ -109,7 +109,7 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
         const std::string keyName = ev->keyname;
 
         /**
-         * Because MENU button launches org.tizen.menu
+         * Because MENU button launches ./bu    org.tizen.menu
          * we use blue 'D' button on remote control or F4 on keyboard as substitution of MENU button
          */
         if(!keyName.compare("KEY_MENU") || !keyName.compare("KEY_BLUE")) {
