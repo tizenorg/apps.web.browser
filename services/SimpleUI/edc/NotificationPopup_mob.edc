@@ -1,8 +1,5 @@
 collections { base_scale: 2.6;
 
-#define WIDTH 720
-#define HEIGHT 1280
-
    styles {
       style {
          name: "text_style";
@@ -23,8 +20,9 @@ collections { base_scale: 2.6;
                     state: "default" 0.0;
                     color: 0 0 0 102;
                     visible: 1;
-                    min: WIDTH HEIGHT;
-                    max: WIDTH HEIGHT;
+                    fixed: 0 0;
+                    min: 0 0;
+                    max: -1 -1;
                     align: 0.0 0.0;
                     rel1 {relative: 0.0 0.0;}
                     rel2 {relative: 1.0 1.0;}
@@ -39,9 +37,10 @@ collections { base_scale: 2.6;
                 description {
                     state: "default" 0.0;
                     color: 255 255 255 255;
-                    min: 720 150;
-                    max: 720 150;
                     visible: 1;
+                    fixed: 0 0;
+                    min: 720 150;
+                    max: -1 150;
                     align: 0.5 1.0;
                     rel2 {
                         to: "bg";
@@ -58,7 +57,7 @@ collections { base_scale: 2.6;
                     min: 150 150;
                     max: 150 150;
                     visible: 1;
-                    fixed: 1 1;
+                    fixed: 0 0;
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0.0 0.0;

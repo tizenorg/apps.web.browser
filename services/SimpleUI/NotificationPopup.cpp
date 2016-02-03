@@ -64,6 +64,7 @@ void NotificationPopup::dismiss()
         ecore_timer_reset(m_timer);
     }
     else {
+        elm_object_part_content_unset(m_parent, "popup_content");
         evas_object_hide(m_layout);
         ecore_timer_del(m_timer);
     }
@@ -73,6 +74,7 @@ Eina_Bool NotificationPopup::_hide_cb(void *data)
 {
     BROWSER_LOGD("[%s,%d]", __func__, __LINE__);
     NotificationPopup * np = static_cast<NotificationPopup*>(data);
+    elm_object_part_content_unset(np->m_parent, "popup_content");
     evas_object_hide(np->m_layout);
     ecore_timer_del(np->m_timer);
     delete np;
@@ -88,6 +90,7 @@ void NotificationPopup::createLayout()
     elm_layout_file_set(m_layout, edjFilePath.c_str(), "notification_popup_layout");
     evas_object_size_hint_weight_set(m_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_content_set(m_parent, "popup_content", m_layout);
     elm_layout_text_set(m_layout, "popup_text", m_message.c_str());
 
     m_progress = elm_progressbar_add(m_layout);
