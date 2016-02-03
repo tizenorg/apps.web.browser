@@ -63,7 +63,9 @@ void WebEngineService::destroyTabs()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_tabs.clear();
-    m_currentWebView.reset();
+    if (m_currentWebView) {
+        m_currentWebView.reset();
+    }
 }
 
 Evas_Object * WebEngineService::getLayout()
