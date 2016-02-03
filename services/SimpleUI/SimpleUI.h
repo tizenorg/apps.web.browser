@@ -281,6 +281,7 @@ private:
     void onRotateCounterClockwisePressed();
     void onRotation();
     bool isLandscape();
+    static void __orientation_changed(app_event_info_h event_info, void* data);
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();

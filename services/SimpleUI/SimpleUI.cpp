@@ -87,6 +87,12 @@ SimpleUI::SimpleUI()
 
     elm_win_resize_object_add(main_window, m_viewManager.getContent());
     evas_object_show(main_window);
+
+#if PROFILE_MOBILE
+    app_event_handler_h rotation_handler;
+    ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
+                             __orientation_changed, this);
+#endif
 }
 
 SimpleUI::~SimpleUI() {
@@ -991,6 +997,16 @@ void SimpleUI::onRotation()
     m_bookmarkManagerUI->orientationChanged();
     m_webPageUI->orientationChanged();
     m_tabUI->orientationChanged();
+}
+
+void SimpleUI::__orientation_changed(app_event_info_h /*event_info*/, void* data)
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+//    if (data != nullptr) {
+        SimpleUI* simpleUI = reinterpret_cast<SimpleUI*>(data);
+        simpleUI->onRotateClockwisePressed();
+//    } else
+//        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 //TODO: end of a workaround
 
