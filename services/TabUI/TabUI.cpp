@@ -458,7 +458,7 @@ Evas_Object * TabUI::_tab_grid_content_get(void *data, Evas_Object *obj, const c
         static const int part_name4_len = strlen(part_name4);
         if (!strncmp(part_name1, part, part_name1_len)) {
             if (itemData->item->getThumbnail()) {
-                return itemData->item->getThumbnail()->getEvasImage(itemData->tabUI->m_parent);
+                return itemData->item->getThumbnail()->getEvasImage(obj);
             }
         }
         if (!strncmp(part_name2, part, part_name2_len)) {
