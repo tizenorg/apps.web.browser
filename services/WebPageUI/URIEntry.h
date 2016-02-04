@@ -140,6 +140,7 @@ private:
     std::string m_URI;
     bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
+    bool m_first_click;
 
 };
 

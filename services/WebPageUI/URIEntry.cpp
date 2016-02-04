@@ -46,6 +46,7 @@ URIEntry::URIEntry()
     , m_entry_layout(NULL)
     , m_entrySelectionState(SelectionState::SELECTION_NONE)
     , m_entryContextMenuOpen(false)
+    , m_first_click(true)
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("WebPageUI/URIEntry.edj");
@@ -263,6 +264,8 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
         self->mobileEntryUnfocused();
 #endif
     }
+    self->m_first_click = true;
+    elm_entry_select_none(self->m_entry);
 }
 
 void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info */)
@@ -278,6 +281,11 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
 #endif
     } else {
         self->m_entryContextMenuOpen = false;
+    }
+    if(self->m_first_click) {
+        elm_entry_select_all(self->m_entry);
+        self->m_first_click = false;
+        self->m_entrySelectionState = SelectionState::SELECTION_NONE;
     }
 }
 
