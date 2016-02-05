@@ -15,19 +15,15 @@
  */
 
 #include <Elementary.h>
-#include <boost/concept_check.hpp>
 #include <vector>
-#include <string>
 #include <string.h>
 #include <AbstractMainWindow.h>
 
 #include "app_i18n.h"
-#include "TabId.h"
 #include "TabUI.h"
-#include "ServiceManager.h"
+#include "TabId.h"
 #include "BrowserLogger.h"
-#include "Tools/EflTools.h"
-#include "../Tools/BrowserImage.h"
+#include "BrowserImage.h"
 
 
 namespace tizen_browser{
