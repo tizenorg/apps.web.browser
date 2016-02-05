@@ -298,7 +298,7 @@ private:
     void settingsDeleteSelectedData(const std::string& str);
     void settingsResetMostVisited();
     void settingsResetBrowser();
-    void onDeleteSelectedDataButton(const std::string &dataText);
+    void onDeleteSelectedDataButton(const PopupButtons& button, const std::string &dataText);
     void onDeleteMostVisitedButton(std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
