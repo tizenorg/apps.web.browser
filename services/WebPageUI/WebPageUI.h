@@ -117,6 +117,7 @@ private:
     static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
 #if PROFILE_MOBILE
     static void _more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*);
+    static void _content_clicked(void * data, Evas_Object *, void *);
 #endif
 #if PROFILE_MOBILE && GESTURE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
