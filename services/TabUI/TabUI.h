@@ -24,7 +24,6 @@
 #include "AbstractService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
-#include "services/HistoryService/HistoryItem.h"
 #include "TabIdTypedef.h"
 #if PROFILE_MOBILE
 #include "AbstractRotatable.h"
