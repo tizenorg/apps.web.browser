@@ -213,6 +213,7 @@ void WebPageUI::setMainContent(Evas_Object* content)
 #if PROFILE_MOBILE && GESTURE
     elm_gesture_layer_attach(m_gestureLayer, content);
 #endif
+    evas_object_smart_callback_add(content, "mouse,in", _content_clicked, this);
     evas_object_show(content);
 }
 
@@ -476,6 +477,16 @@ void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
     webpageUI->bookmarkManagerClicked();
+}
+
+void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
+    if(webpageUI->getURIEntry().hasFocus()){
+        webpageUI->getURIEntry().clearFocus();
+        webpageUI->mobileEntryUnfocused();
+    }
 }
 
 #if PROFILE_MOBILE
