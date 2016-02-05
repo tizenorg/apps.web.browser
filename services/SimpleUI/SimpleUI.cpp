@@ -1568,26 +1568,39 @@ void SimpleUI::settingsDeleteSelectedData(const std::string& str)
        (str.find("HISTORY")  != std::string::npos)  ||
        (str.find("PASSWORD") != std::string::npos)  ||
        (str.find("FORMDATA") != std::string::npos)) {
-        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-        popup->show("Delete Web Browsing Data");
-        onDeleteSelectedDataButton(str);
-        popup->dismiss();
+           TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
+           popup->setRightButton(OK);
+           popup->setLeftButton(CANCEL);
+           popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteSelectedDataButton, this, _1, str));
+
+           popup->setTitle("Delete");
+           popup->setMessage("the selected web browsing data will be deleted");
+           popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+           popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+           popup->show();
     }
 }
 
-void SimpleUI::onDeleteSelectedDataButton(const std::string& dataText)
+void SimpleUI::onDeleteSelectedDataButton(const PopupButtons& button, const std::string& dataText)
 {
     BROWSER_LOGD("[%s]: TYPE : %s", __func__, dataText.c_str());
-    if (dataText.find("CACHE") != std::string::npos)
-        m_webEngine->clearCache();
-    if (dataText.find("COOKIES") != std::string::npos)
-        m_webEngine->clearCookies();
-    if (dataText.find("HISTORY") != std::string::npos)
-        m_historyService->clearAllHistory();
-    if (dataText.find("PASSWORD") != std::string::npos)
-        m_webEngine->clearPasswordData();
-    if (dataText.find("FORMDATA") != std::string::npos)
-        m_webEngine->clearFormData();
+    if(button == OK){
+        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+        popup->show("Delete Web Browsing Data");
+
+        if (dataText.find("CACHE") != std::string::npos)
+            m_webEngine->clearCache();
+        if (dataText.find("COOKIES") != std::string::npos)
+            m_webEngine->clearCookies();
+        if (dataText.find("HISTORY") != std::string::npos)
+            m_historyService->clearAllHistory();
+        if (dataText.find("PASSWORD") != std::string::npos)
+            m_webEngine->clearPasswordData();
+        if (dataText.find("FORMDATA") != std::string::npos)
+            m_webEngine->clearFormData();
+
+        popup->dismiss();
+    }
 }
 
 void SimpleUI::settingsResetMostVisited()

@@ -6,12 +6,6 @@ Group:      Applications/Web
 License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
 
-# Excluded tizen v3.0 wayland on tv profile build
-# TODO: Please remove following code block once wayland build is supported.
-#%if "%{?_with_wayland}" == "1"
-#ExcludeArch: armv7l i586 i686 x86_64 aarch64
-#%endif
-
 %if "%{?_with_wayland}" == "1"
 BuildRequires: pkgconfig(ecore-wayland)
 %else
