@@ -223,7 +223,7 @@ private:
     void _loadError();
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
-    void _loadProgress(double);
+    void _loadProgress(double, TabId, bool);
     void _ready(TabId id);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);

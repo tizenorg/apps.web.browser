@@ -105,7 +105,7 @@ private:
 
     void loadStopped();
     void loadFinished();
-    void progressChanged(double progress);
+    void progressChanged(double progress, basic_webengine::TabId id, bool first);
     void loadStarted();
     void loadError();
     void webEngineReady(basic_webengine::TabId id);

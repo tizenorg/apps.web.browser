@@ -365,6 +365,21 @@ void HistoryService::updateHistoryItemFavicon(const std::string & url, tools::Br
     }
 }
 
+void HistoryService::updateHistoryItemSnapshot(const std::string & url, tools::BrowserImagePtr snapshot)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    int id = getHistoryId(url);
+    if (id != 0) {
+        if (snapshot) {
+           std::unique_ptr<tools::Blob> snapshot_blob = tools::EflTools::getBlobPNG(snapshot);
+           unsigned char * snap = std::move((unsigned char*)snapshot_blob->getData());
+           if (bp_history_adaptor_set_snapshot(id, snapshot->getWidth(), snapshot->getHeight(), snap, snapshot_blob->getLength()) < 0) {
+               errorPrint("bp_history_adaptor_set_snapshot");
+            }
+        }
+    }
+}
+
 void HistoryService::clearAllHistory()
 {
     bp_history_adaptor_reset();
