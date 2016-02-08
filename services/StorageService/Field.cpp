@@ -23,11 +23,16 @@ namespace tizen_browser {
 namespace storage {
 
 Field::Field()
+    : sqlInt(0)
+    , sqlDouble(0)
 {
     this->type = SQLITE_NULL;
 }
 
-/*private*/Field::Field(const Field &)
+/*private*/Field::Field(const Field& f)
+    : type(f.getType())
+    , sqlInt(f.getInt())
+    , sqlDouble(f.getDouble())
 {
 }
 /*private*/Field & Field::operator=(const Field &)
@@ -36,15 +41,17 @@ Field::Field()
 }
 
 Field::Field(int sqlInt)
+    : type(SQLITE_INTEGER)
+    , sqlInt(sqlInt)
+    , sqlDouble(0)
 {
-    this->sqlInt = sqlInt;
-    this->type = SQLITE_INTEGER;
 }
 
 Field::Field(double sqlDouble)
+    : type(SQLITE_FLOAT)
+    , sqlInt(0)
+    , sqlDouble(sqlDouble)
 {
-    this->sqlDouble = sqlDouble;
-    this->type = SQLITE_FLOAT;
 }
 
 Field::Field(const std::string & sqlText)

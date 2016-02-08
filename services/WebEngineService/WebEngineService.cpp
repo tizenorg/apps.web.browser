@@ -39,6 +39,7 @@ WebEngineService::WebEngineService()
     , m_guiParent(nullptr)
     , m_stopped(false)
     , m_currentTabId(TabId::NONE)
+    , m_tabIdCreated(-1)
 {
     m_mostRecentTab.clear();
     m_tabs.clear();

@@ -35,6 +35,7 @@ namespace base_ui{
 
 ViewManager::ViewManager()
    : m_mainLayout(nullptr)
+   , m_conformant(nullptr)
    , m_parentWindow(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
