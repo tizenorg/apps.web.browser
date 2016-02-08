@@ -236,12 +236,14 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
             || (entry.find("https://") == 0)
             || (entry.find(".") != std::string::npos)) {
         self->setDocIcon();
-    } else {//if(entry.find(" ") != std::string::npos){
+    } else {
         self->setSearchIcon();
     }
 #if PROFILE_MOBILE
     self->showCancelIcon();
 #endif
+    if(entry.find(" ") != std::string::npos)
+        return;
     self->uriEntryEditingChangedByUser(std::make_shared<std::string>(entry));
 }
 
