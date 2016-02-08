@@ -29,6 +29,7 @@ namespace interfaces
 class AbstractRotatable
 {
 public:
+	virtual ~AbstractRotatable(){};
     /**
      * @brief Abstract method for receiving orientation change event.
      */

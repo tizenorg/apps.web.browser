@@ -25,8 +25,9 @@ namespace base_ui{
 
 AutoProfileDeleteView::AutoProfileDeleteView(AutoFillFormManager* manager)
     : m_manager(manager)
-    , m_mainLayout(NULL)
-    , m_genlist(NULL)
+    , m_mainLayout(nullptr)
+    , m_genlist(nullptr)
+    , m_itemClass(nullptr)
     , m_checked_count(0)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

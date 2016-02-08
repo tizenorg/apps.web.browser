@@ -37,6 +37,7 @@ struct ItemData {
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)
+    , m_actionBar(nullptr)
     , m_scroller(nullptr)
     , m_items_layout(nullptr)
     , m_parent(nullptr)

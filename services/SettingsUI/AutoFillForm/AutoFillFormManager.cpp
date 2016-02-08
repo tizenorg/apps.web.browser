@@ -88,7 +88,7 @@ Eina_Bool AutoFillFormManager::addItemToList(AutoFillFormItem *item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_AutoFillFormItemList.push_back(item);
-    return EINA_TRUE;;
+    return EINA_TRUE;
 }
 
 void AutoFillFormManager::rotateLandscape(){

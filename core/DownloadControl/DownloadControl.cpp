@@ -35,7 +35,8 @@
 static const char *sdp_mime = "application/sdp";
 
 DownloadControl::DownloadControl(void)
-    :m_download_uri()
+    : m_download_uri()
+    , m_parent(nullptr)
 {
 }
 

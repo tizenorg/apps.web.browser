@@ -36,6 +36,9 @@ BookmarkItem::BookmarkItem()
 , m_note()
 , m_thumbnail(std::make_shared<tizen_browser::tools::BrowserImage>())
 , m_favicon(std::make_shared<tizen_browser::tools::BrowserImage>())
+, m_directory(0)
+, m_is_folder(false)
+, m_is_editable(true)
 {
 }
 

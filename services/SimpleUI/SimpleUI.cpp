@@ -72,6 +72,8 @@ SimpleUI::SimpleUI()
     , m_settingsUI()
     , m_tabUI()
     , m_initialised(false)
+    , m_tabLimit(0)
+    , m_favoritesLimit(0)
     , m_wvIMEStatus(false)
 #if PROFILE_MOBILE
     , m_current_angle(0)

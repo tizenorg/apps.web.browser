@@ -124,7 +124,6 @@ public:
     int get_count(void);
     bool get_id(const char *uri, int *bookmark_id);
     bool is_in_bookmark(const char *uri);
-    bool get_memory_full(void) { return m_memory_full; }
 
 private:
     /**
@@ -137,8 +136,6 @@ private:
         , ALL_TYPE = -1
     };
     std::vector<BookmarkItem *> m_bookmark_list;
-    bool m_memory_full;
-    bool m_bookmark_adaptor_initialize;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
     std::vector<std::shared_ptr<BookmarkItem> > m_bookmarks;
 ///    \todo Need to change getBookmarkId function for finding stored bookmark - check getBookmarkExists function

@@ -35,6 +35,8 @@ EXPORT_SERVICE(ZoomUI, "org.tizen.browser.zoomui")
 ZoomUI::ZoomUI()
     : m_layout(nullptr)
     , m_zoom_slider(nullptr)
+    , m_zoom_menu(nullptr)
+    , m_parent(nullptr)
     , m_current_translation_x(0)
     , m_current_translation_y(0)
 {
