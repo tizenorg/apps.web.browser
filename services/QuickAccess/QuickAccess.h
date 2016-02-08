@@ -90,6 +90,7 @@ private:
     void setIndexPage(const uintptr_t page) const;
     bool isOrientationLandscape() const;
     static void _bookmark_tile_realized(void * data, Evas_Object * obj, void * event_info);
+    static void _layout_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info);
 #else
     Evas_Object* createTopButtons(Evas_Object *parent);
     Evas_Object* createBottomButton(Evas_Object *parent);
@@ -160,6 +161,7 @@ private:
     static const int BOOKAMRK_ITEM_HEIGHT = 379;
     static const int BOOKMARK_ITEM_WIDTH_LANDSCAPE = 308;
     static const int BOOKAMRK_ITEM_HEIGHT_LANDSCAPE = 326;
+    static const int HEADER_HEIGHT = 116+38;
 #endif
 };
 
