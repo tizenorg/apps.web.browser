@@ -402,8 +402,10 @@ public:
     /**
      * Load progress changed
      * \param double 0..1 of progress
+     * \param TabId of a tab
+     * \param bool true if first load progress, false otherwise
      */
-    boost::signals2::signal<void (double)> loadProgress;
+    boost::signals2::signal<void (double, TabId, bool)> loadProgress;
 
     /**
      * Page load stopped.
