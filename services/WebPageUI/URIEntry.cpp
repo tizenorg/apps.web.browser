@@ -41,11 +41,13 @@ const std::string keynameEsc = "XF86Back";
 
 URIEntry::URIEntry()
     : m_parent(nullptr)
+    , m_currentIconType(IconTypeSearch)
     , m_entry(NULL)
     , m_favicon(0)
     , m_entry_layout(NULL)
     , m_entrySelectionState(SelectionState::SELECTION_NONE)
     , m_entryContextMenuOpen(false)
+    , m_searchTextEntered(false)
     , m_first_click(true)
 {
     std::string edjFilePath = EDJE_DIR;

@@ -28,6 +28,7 @@ namespace interfaces
 class AbstractUIComponent
 {
 public:
+    virtual ~AbstractUIComponent(){};
 /**
  * @brief Sets the parent which will be used when getContent is used.
  */

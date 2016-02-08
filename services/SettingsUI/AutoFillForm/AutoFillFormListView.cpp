@@ -25,8 +25,9 @@ namespace base_ui{
 
 AutoFillFormListView::AutoFillFormListView(AutoFillFormManager *affm)
     : m_manager(affm)
-    , m_mainLayout(NULL)
-    , m_genlist(NULL)
+    , m_mainLayout(nullptr)
+    , m_genlist(nullptr)
+    , m_itemClass(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;

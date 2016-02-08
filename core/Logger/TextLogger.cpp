@@ -27,12 +27,16 @@ namespace logger
 {
 
 TextLogger::TextLogger()
+    : m_fb(nullptr)
+    , m_output(nullptr)
 {
 	m_shallRelease = false;
 	m_filename.clear();
 }
 
 TextLogger::TextLogger(const char *name)
+    : m_fb(nullptr)
+    , m_output(nullptr)
 {
 	m_shallRelease = false;
 	m_filename = name;

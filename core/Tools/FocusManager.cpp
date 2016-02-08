@@ -20,6 +20,8 @@
 FocusManager::FocusManager()
     : _rowTracker(0)
     , _prevRowTracker(0)
+    , handlerDown(nullptr)
+    , _gen(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }

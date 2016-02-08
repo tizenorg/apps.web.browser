@@ -5,7 +5,14 @@ namespace base_ui {
 
 InputPopup::InputPopup() :
     m_parent(nullptr),
-    m_layout(nullptr)
+    m_layout(nullptr),
+    m_buttons_box(nullptr),
+    m_button_left(nullptr),
+    m_button_right(nullptr),
+    m_input_area(nullptr),
+    m_input_cancel(nullptr),
+    m_entry(nullptr),
+    m_accept_right_left(false)
 {
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SimpleUI/InputPopup.edj");
