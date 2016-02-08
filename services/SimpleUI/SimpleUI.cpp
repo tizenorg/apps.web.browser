@@ -515,7 +515,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
-    m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
+    m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1, _2, _3));
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadStopped, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
@@ -1055,15 +1055,19 @@ void SimpleUI::loadStarted()
     m_webPageUI->loadStarted();
 }
 
-void SimpleUI::progressChanged(double progress)
+void SimpleUI::progressChanged(double progress, basic_webengine::TabId id, bool first)
 {
+    if (first && !m_webEngine->isPrivateMode(id))
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                         m_webEngine->getTitle(),
+                                         m_webEngine->getFavicon(),
+                                         std::make_shared<tizen_browser::tools::BrowserImage>());
     m_webPageUI->progressChanged(progress);
 }
 
 void SimpleUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
     m_webPageUI->loadFinished();
 }
 
@@ -1088,14 +1092,8 @@ void SimpleUI::loadError()
 void SimpleUI::webEngineReady(basic_webengine::TabId id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    if (!m_webEngine->isPrivateMode(id))
-        m_historyService->addHistoryItem(m_webEngine->getURI(),
-                                         m_webEngine->getTitle(),
-                                         m_webEngine->getFavicon(),
-                                         m_webEngine->getSnapshotData(
-                                            QuickAccess::MAX_THUMBNAIL_WIDTH,
-                                            QuickAccess::MAX_THUMBNAIL_HEIGHT));
+    m_historyService->updateHistoryItemSnapshot(m_webEngine->getURI(), m_webEngine->getSnapshotData(
+            QuickAccess::MAX_THUMBNAIL_WIDTH, QuickAccess::MAX_THUMBNAIL_HEIGHT));
     m_tabService->updateThumb(id);
 }
 

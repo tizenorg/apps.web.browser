@@ -49,6 +49,8 @@ public:
                         tools::BrowserImagePtr thumbnail);
     void updateHistoryItemFavicon(const std::string & url,
                                   tools::BrowserImagePtr favicon);
+    void updateHistoryItemSnapshot(const std::string & url,
+                                   tools::BrowserImagePtr snapshot);
     void clearAllHistory();
     void clearURLHistory(const std::string & url);
     void deleteHistoryItem(int id);
