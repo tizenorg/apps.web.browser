@@ -285,6 +285,7 @@ private:
     void _show_context_menu_text_link(Ewk_Context_Menu *menu);
     void _show_context_menu_image_only(Ewk_Context_Menu *menu);
     void _show_context_menu_image_link(Ewk_Context_Menu *menu);
+    void _show_context_menu_text_image_link(Ewk_Context_Menu *menu);
     void _show_context_menu_text_only(Ewk_Context_Menu *menu);
 
     static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
