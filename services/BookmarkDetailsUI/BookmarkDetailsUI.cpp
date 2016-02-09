@@ -52,6 +52,18 @@ typedef struct
     std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkDetailsUI;
 } BookmarkItemData;
 
+typedef struct
+{
+    Evas_Object* image;
+#if PROFILE_MOBILE
+    Evas_Object* checkbox;
+#endif
+    char* title;
+    char* address;
+    unsigned int id;
+
+} BookmarkGengridData;
+
 BookmarkDetailsUI::BookmarkDetailsUI()
     : m_parent(nullptr)
     , m_layout(nullptr)
@@ -602,8 +614,20 @@ void BookmarkDetailsUI::addBookmarkItem(std::shared_ptr<tizen_browser::services:
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkDetailsUI.reset(this);
+
+    BookmarkGengridData *gengridData = new BookmarkGengridData();
+    gengridData->id = hi->getId();
+    gengridData->address = strdup(hi->getAddress().c_str());
+    gengridData->title = strdup(hi->getTitle().c_str());
+    gengridData->image = hi->getThumbnail()->getEvasImage(m_parent);
+#if PROFILE_MOBILE
+    gengridData->checkbox = elm_check_add(m_gengrid);
+    elm_object_style_set(gengridData->checkbox, "custom_check");
+    evas_object_propagate_events_set(gengridData->checkbox, EINA_FALSE);
+#endif
+
     Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_bookmark_item_class,
-                                                            itemData, _bookmark_item_clicked, itemData);
+            itemData, _bookmark_item_clicked, itemData);
 #if PROFILE_MOBILE
     m_map_bookmark.insert(std::pair<unsigned int,Elm_Object_Item*>(hi->getId(), bookmarkView));
 #endif
