@@ -95,6 +95,8 @@ private:
 #endif
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
+    static void _grid_bookmark_del(void *data, Evas_Object *obj);
+    static void _gengrid_item_unrealized(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_item_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _bookmark_thumbSelected(void * data, Evas_Object *, void *);
     static void _close_button_clicked(void *data, Evas_Object *, void *);

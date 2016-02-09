@@ -52,6 +52,19 @@ typedef struct
     std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkDetailsUI;
 } BookmarkItemData;
 
+typedef struct
+{
+#if PROFILE_MOBILE
+    std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkDetailsUI;
+    Evas_Object* checkbox;
+    unsigned int id;
+#endif
+    Evas_Object* image;
+    char* title;
+    char* address;
+
+} BookmarkGengridData;
+
 BookmarkDetailsUI::BookmarkDetailsUI()
     : m_parent(nullptr)
     , m_layout(nullptr)
@@ -122,7 +135,7 @@ void BookmarkDetailsUI::createGengridItemClasses()
     m_bookmark_item_class->func.text_get = _grid_bookmark_text_get;
     m_bookmark_item_class->func.content_get =  _grid_bookmark_content_get;
     m_bookmark_item_class->func.state_get = nullptr;
-    m_bookmark_item_class->func.del = nullptr;
+    m_bookmark_item_class->func.del = _grid_bookmark_del;
 }
 
 void BookmarkDetailsUI::init(Evas_Object* parent)
@@ -200,24 +213,25 @@ void BookmarkDetailsUI::resetContent()
 }
 #endif
 
+void BookmarkDetailsUI::_grid_bookmark_del(void */*data*/, Evas_Object* /*obj*/)
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+}
+
 char* BookmarkDetailsUI::_grid_bookmark_text_get(void *data, Evas_Object *, const char *part)
 {
     if ((data != nullptr) && (part != nullptr))
     {
         BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
-        BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
+        BookmarkGengridData *gengridData = static_cast<BookmarkGengridData*>(data);
         const char *part_name1 = "page_title";
         const char *part_name2 = "page_url";
         static const int part_name1_len = strlen(part_name1);
         static const int part_name2_len = strlen(part_name2);
         if (!strncmp(part_name1, part, part_name1_len))
-        {
-            return strdup(itemData->item->getTitle().c_str());
-        }
+            return gengridData->title;
         else if (!strncmp(part_name2, part, part_name2_len))
-        {
-            return strdup(itemData->item->getAddress().c_str());
-        }
+            return gengridData->address;
     }
     return strdup("");
 }
@@ -227,31 +241,31 @@ Evas_Object * BookmarkDetailsUI::_grid_bookmark_content_get(void *data, Evas_Obj
     if ((data != nullptr) && (obj != nullptr) && (part != nullptr))
     {
         BROWSER_LOGD("[%s:%d] part=%s", __PRETTY_FUNCTION__, __LINE__, part);
-        BookmarkItemData *itemData = static_cast<BookmarkItemData*>(data);
+        BookmarkGengridData *gengridData = static_cast<BookmarkGengridData*>(data);
         const char *part_name1 = "elm.thumbnail";
         static const int part_name1_len = strlen(part_name1);
         if (!strncmp(part_name1, part, part_name1_len)) {
-            std::shared_ptr<tizen_browser::tools::BrowserImage> image = itemData->item->getThumbnail();
-            if (image)
-                return image->getEvasImage(itemData->bookmarkDetailsUI->m_parent);
+
+            return gengridData->image;
         }
 #if PROFILE_MOBILE
         const char *part_name2 = "remove_checkbox_swallow";
         static const int part_name2_len = strlen(part_name2);
-        if (!strncmp(part_name2, part, part_name2_len)) {
-            if (itemData->bookmarkDetailsUI->m_remove_bookmark_mode) {
-                Evas_Object* box = elm_check_add(obj);
-                elm_object_style_set(box, "custom_check");
-                evas_object_propagate_events_set(box, EINA_FALSE);
-                elm_check_state_set(box, itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()]
-                        ? EINA_TRUE : EINA_FALSE);
-                evas_object_show(box);
-                return box;
+        if (!strncmp(part_name2, part, part_name2_len))
+            if (gengridData->bookmarkDetailsUI->m_remove_bookmark_mode) {
+                elm_check_state_set(gengridData->checkbox, gengridData->bookmarkDetailsUI->
+                        m_map_delete[gengridData->id] ? EINA_TRUE : EINA_FALSE);
+                evas_object_show(gengridData->checkbox);
+                return gengridData->checkbox;
             }
-        }
 #endif
     }
     return nullptr;
+}
+
+void BookmarkDetailsUI::_gengrid_item_unrealized(void* , Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void BookmarkDetailsUI::_bookmark_item_clicked(void* data, Evas_Object*, void*)
@@ -490,6 +504,8 @@ void BookmarkDetailsUI::createGengrid()
     elm_gengrid_horizontal_set(m_gengrid, EINA_TRUE);
     elm_gengrid_item_size_set(m_gengrid, ELM_SCALE_SIZE(404), ELM_SCALE_SIZE(320));
 #endif
+
+    evas_object_smart_callback_add(m_gengrid, "unrealized", _gengrid_item_unrealized, this);
 }
 
 #if PROFILE_MOBILE
@@ -602,8 +618,21 @@ void BookmarkDetailsUI::addBookmarkItem(std::shared_ptr<tizen_browser::services:
     BookmarkItemData *itemData = new BookmarkItemData();
     itemData->item = hi;
     itemData->bookmarkDetailsUI.reset(this);
+
+    BookmarkGengridData *gengridData = new BookmarkGengridData();
+    gengridData->address = strdup(hi->getAddress().c_str());
+    gengridData->title = strdup(hi->getTitle().c_str());
+    gengridData->image = hi->getThumbnail()->getEvasImage(m_parent);
+#if PROFILE_MOBILE
+    gengridData->bookmarkDetailsUI.reset(this);
+    gengridData->checkbox = elm_check_add(m_gengrid);
+    elm_object_style_set(gengridData->checkbox, "custom_check");
+    evas_object_propagate_events_set(gengridData->checkbox, EINA_FALSE);
+    gengridData->id = hi->getId();
+#endif
+
     Elm_Object_Item* bookmarkView = elm_gengrid_item_append(m_gengrid, m_bookmark_item_class,
-                                                            itemData, _bookmark_item_clicked, itemData);
+            gengridData, _bookmark_item_clicked, itemData);
 #if PROFILE_MOBILE
     m_map_bookmark.insert(std::pair<unsigned int,Elm_Object_Item*>(hi->getId(), bookmarkView));
 #endif
