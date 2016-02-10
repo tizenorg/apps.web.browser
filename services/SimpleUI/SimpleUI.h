@@ -341,7 +341,7 @@ private:
     std::string m_folder_name;
 
     //helper object used to view management
-    ViewManager m_viewManager;
+    //ViewManager m_viewManager;
     Evas_Object *main_window;
 #if PROFILE_MOBILE
     Evas_Object *m_conformant;
