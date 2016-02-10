@@ -56,6 +56,7 @@
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "StorageService.h"
+#include "BookmarkService.h"
 
 // other
 #include "Action.h"
@@ -316,11 +317,11 @@ private:
 
     std::shared_ptr<WebPageUI> m_webPageUI;
     std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
-    std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
+    //std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
-    std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
+    //std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
@@ -331,7 +332,7 @@ private:
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
-    std::shared_ptr<services::StorageService> m_storageService;
+    //std::shared_ptr<services::StorageService> m_storageService;
     storage::Session m_currentSession;
     std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     bool m_initialised;
@@ -341,7 +342,7 @@ private:
     std::string m_folder_name;
 
     //helper object used to view management
-    ViewManager m_viewManager;
+    //ViewManager m_viewManager;
     Evas_Object *main_window;
 #if PROFILE_MOBILE
     Evas_Object *m_conformant;

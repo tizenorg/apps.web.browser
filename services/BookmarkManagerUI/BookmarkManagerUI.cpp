@@ -25,6 +25,10 @@
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
+#include "../SimpleUI/ViewManager.h"
+#include "../BookmarkDetailsUI/BookmarkDetailsUI.h"
+#include "../BookmarkService/BookmarkService.h"
+#include "../StorageService/StorageService.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -361,8 +365,10 @@ void BookmarkManagerUI::_bookmarkCustomFolderClicked(void * data , Evas_Object *
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         FolderData * itemData = (FolderData*)(data);
-        BROWSER_LOGD("Folder Name: %s" , itemData->name.c_str());
-        itemData->bookmarkManagerUI->customFolderClicked(itemData->folder_id);
+        ViewManager::getInstance().pushViewToStack(&BookmarkDetailsUI::getInstance());
+        BookmarkDetailsUI::getInstance().addBookmarks(services::BookmarkService::getInstance().getBookmarks(itemData->folder_id),
+                services::StorageService::getInstance().getFoldersStorage().getFolderName(itemData->folder_id));
+        BookmarkDetailsUI::getInstance().showUI();
     }
 }
 #if PROFILE_MOBILE
@@ -380,8 +386,12 @@ void BookmarkManagerUI::_bookmarkAllFolderClicked(void * data , Evas_Object *, v
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
-        FolderData * itemData = (FolderData*)(data);
-        itemData->bookmarkManagerUI->allFolderClicked();
+        ViewManager::getInstance().pushViewToStack(&BookmarkDetailsUI::getInstance());
+        BookmarkDetailsUI::getInstance().addBookmarks(
+                services::BookmarkService::getInstance().getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
+                        services::StorageService::getInstance().getFoldersStorage().getFolderName(
+                                services::StorageService::getInstance().getFoldersStorage().AllFolder));
+        BookmarkDetailsUI::getInstance().showUI();
     }
 }
 
@@ -389,8 +399,11 @@ void BookmarkManagerUI::_bookmarkMobileFolderClicked(void * data, Evas_Object *,
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
-        FolderData * itemData = (FolderData*)(data);
-        itemData->bookmarkManagerUI->specialFolderClicked();
+        ViewManager::getInstance().pushViewToStack(&BookmarkDetailsUI::getInstance());
+        unsigned int id = services::StorageService::getInstance().getFoldersStorage().SpecialFolder;
+        BookmarkDetailsUI::getInstance().addBookmarks(services::BookmarkService::getInstance().getBookmarks(id),
+                services::StorageService::getInstance().getFoldersStorage().getFolderName(id));
+        BookmarkDetailsUI::getInstance().showUI();
     }
 }
 

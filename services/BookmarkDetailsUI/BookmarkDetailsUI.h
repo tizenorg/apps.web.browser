@@ -46,8 +46,20 @@ class BROWSER_EXPORT BookmarkDetailsUI
         , public tizen_browser::core::AbstractService
 {
 public:
+
+    static BookmarkDetailsUI& getInstance();
+
     BookmarkDetailsUI();
     ~BookmarkDetailsUI();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    BookmarkDetailsUI(BookmarkDetailsUI const&) = delete;
+    void operator=(BookmarkDetailsUI const&) = delete;
+
     //AbstractUIComponent interface methods
     void init(Evas_Object *parent);
     void showUI();

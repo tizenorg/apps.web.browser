@@ -8,6 +8,7 @@ include(Coreheaders)
 include(EFLHelpers)
 
 include_directories(${CMAKE_SOURCE_DIR}/services/FavoriteService)
+include_directories(${CMAKE_SOURCE_DIR}/services/StorageService)
 
 add_library(${PROJECT_NAME} SHARED ${BookmarkManagerUI_SRCS})
 

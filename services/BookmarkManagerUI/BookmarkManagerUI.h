@@ -62,11 +62,7 @@ public:
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
-    boost::signals2::signal<void (int)> customFolderClicked;
-    boost::signals2::signal<void ()> allFolderClicked;
     //Special folder - Bookmark Bar on tv and Mobile on odroid
-    boost::signals2::signal<void ()> specialFolderClicked;
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> newFolderItemClicked;
 #endif
