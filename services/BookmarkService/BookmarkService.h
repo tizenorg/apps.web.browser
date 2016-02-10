@@ -41,8 +41,20 @@ class BROWSER_EXPORT BookmarkService
         : public tizen_browser::interfaces::AbstractFavoriteService
 {
 public:
+
+    static BookmarkService& getInstance();
+
     BookmarkService();
     virtual ~BookmarkService();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    BookmarkService(BookmarkService const&) = delete;
+    void operator=(BookmarkService const&) = delete;
+
     virtual std::string getName();
 
     /**
@@ -126,6 +138,7 @@ public:
     bool is_in_bookmark(const char *uri);
 
 private:
+
     /**
      * Help method printing last bp_bookmark_error_defs error.
      */

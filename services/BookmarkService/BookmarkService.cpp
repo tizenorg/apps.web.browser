@@ -44,6 +44,12 @@ namespace services{
 
 EXPORT_SERVICE(BookmarkService, "org.tizen.browser.favoriteservice")
 
+BookmarkService& BookmarkService::getInstance()
+{
+    static BookmarkService instance;
+    return instance;
+}
+
 BookmarkService::BookmarkService()
 {
     if(bp_bookmark_adaptor_initialize() < 0) {

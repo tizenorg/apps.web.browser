@@ -24,6 +24,12 @@ namespace services
 
 EXPORT_SERVICE(StorageService, DOMAIN_STORAGE_SERVICE)
 
+StorageService& StorageService::getInstance()
+{
+    static StorageService instance;
+    return instance;
+}
+
 StorageService::StorageService()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

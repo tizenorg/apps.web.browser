@@ -52,6 +52,12 @@ typedef struct
     std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkDetailsUI;
 } BookmarkItemData;
 
+BookmarkDetailsUI& BookmarkDetailsUI::getInstance()
+{
+    static BookmarkDetailsUI instance;
+    return instance;
+}
+
 BookmarkDetailsUI::BookmarkDetailsUI()
     : m_parent(nullptr)
     , m_layout(nullptr)
