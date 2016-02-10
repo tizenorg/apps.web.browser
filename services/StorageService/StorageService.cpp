@@ -22,7 +22,13 @@ namespace tizen_browser
 namespace services
 {
 
-EXPORT_SERVICE(StorageService, DOMAIN_STORAGE_SERVICE)
+//EXPORT_SERVICE(StorageService, DOMAIN_STORAGE_SERVICE)
+
+StorageService& StorageService::getInstance()
+{
+    static StorageService instance;
+    return instance;
+}
 
 StorageService::StorageService()
 {

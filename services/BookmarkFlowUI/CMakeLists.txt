@@ -7,6 +7,10 @@ set(BookmarkFlowUI_SRCS
 include(Coreheaders)
 include(EFLHelpers)
 
+include_directories(${CMAKE_SOURCE_DIR}/services/BookmarkService)
+include_directories(${CMAKE_SOURCE_DIR}/services/StorageService)
+include_directories(${CMAKE_SOURCE_DIR}/services/WebEngineService)
+
 add_library(${PROJECT_NAME} SHARED ${BookmarkFlowUI_SRCS})
 
 if(TIZEN_BUILD)

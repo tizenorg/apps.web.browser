@@ -29,13 +29,19 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(TabUI, "org.tizen.browser.tabui")
+//EXPORT_SERVICE(TabUI, "org.tizen.browser.tabui")
 
 typedef struct _TabItemData
 {
     basic_webengine::TabContentPtr item;
     std::shared_ptr<tizen_browser::base_ui::TabUI> tabUI;
 } TabItemData;
+
+TabUI& TabUI::getInstance()
+{
+    static TabUI instance;
+    return instance;
+}
 
 TabUI::TabUI()
     : m_tab_layout(nullptr)

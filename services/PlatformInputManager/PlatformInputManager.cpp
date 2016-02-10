@@ -40,7 +40,13 @@ namespace tizen_browser
 namespace services
 {
 
-EXPORT_SERVICE(PlatformInputManager, "org.tizen.browser.platforminputmanager")
+//EXPORT_SERVICE(PlatformInputManager, "org.tizen.browser.platforminputmanager")
+
+PlatformInputManager& PlatformInputManager::getInstance()
+{
+    static PlatformInputManager instance;
+    return instance;
+}
 
 PlatformInputManager::PlatformInputManager()
 #if PROFILE_MOBILE

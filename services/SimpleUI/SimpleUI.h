@@ -27,35 +27,37 @@
 #include <Evas.h>
 
 #include "AbstractMainWindow.h"
-#include "AbstractService.h"
-#include "AbstractFavoriteService.h"
+//#include "AbstractService.h"
+//#include "AbstractFavoriteService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
 
 // components
-#include "WebPageUI.h"
+#include "../WebPageUI/WebPageUI.h"
 #include "AbstractWebEngine.h"
-#include "MoreMenuUI.h"
-#include "HistoryUI.h"
+#include "../MoreMenuUI/MoreMenuUI.h"
+#include "../HistoryUI/HistoryUI.h"
 #if PROFILE_MOBILE
-#include "FindOnPageUI.h"
-#include "SettingsUI_mob.h"
+#include "../FindOnPageUI/FindOnPageUI.h"
+#include "../SettingsUI/SettingsUI_mob.h"
 #include "TextPopup_mob.h"
 #else
-#include "SettingsUI.h"
+#include "../SettingsUI/SettingsUI.h"
 #endif
-#include "QuickAccess.h"
-#include "TabUI.h"
+#include "../QuickAccess/QuickAccess.h"
+#include "../TabUI/TabUI.h"
 #include "TabId.h"
-#include "ZoomUI.h"
-#include "HistoryService.h"
-#include "TabServiceTypedef.h"
-#include "BookmarkDetailsUI.h"
-#include "BookmarkFlowUI.h"
-#include "BookmarkManagerUI.h"
-#include "PlatformInputManager.h"
-#include "SessionStorage.h"
-#include "StorageService.h"
+#include "../ZoomUI/ZoomUI.h"
+#include "../HistoryService/HistoryService.h"
+#include "../TabService/TabServiceTypedef.h"
+#include "../BookmarkDetailsUI/BookmarkDetailsUI.h"
+#include "../BookmarkFlowUI/BookmarkFlowUI.h"
+#include "../BookmarkManagerUI/BookmarkManagerUI.h"
+#include "../PlatformInputManager/PlatformInputManager.h"
+#include "../StorageService/SessionStorage.h"
+#include "../StorageService/StorageService.h"
+#include "../BookmarkService/BookmarkService.h"
+#include "../WebEngineService/WebEngineService.h"
 
 // other
 #include "Action.h"
@@ -77,15 +79,25 @@ void AbstractMainWindow<Evas_Object>::setMainWindow(Evas_Object * rawPtr)
 class BROWSER_EXPORT SimpleUI : public AbstractMainWindow<Evas_Object>
 {
 public:
-    SimpleUI(/*Evas_Object *window*/);
+    static SimpleUI& getInstance();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    SimpleUI(SimpleUI const&) = delete;
+    void operator=(SimpleUI const&) = delete;
+
     virtual ~SimpleUI();
     virtual int exec(const std::string& url);
     virtual std::string getName();
-    void suspend() {m_webEngine->suspend();}
-    void resume() {m_webEngine->resume();}
+    void suspend() {basic_webengine::webengine_service::WebEngineService::getInstance().suspend();}
+    void resume() {basic_webengine::webengine_service::WebEngineService::getInstance().resume();}
 
     void destroyUI();
 private:
+    SimpleUI(/*Evas_Object *window*/);
     // setup functions
     void loadUIServices();
     void connectUISignals();
@@ -314,26 +326,26 @@ private:
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
 
-    std::shared_ptr<WebPageUI> m_webPageUI;
-    std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
-    std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
-    std::shared_ptr<services::HistoryService> m_historyService;
-    services::TabServicePtr m_tabService;
-    std::shared_ptr<MoreMenuUI> m_moreMenuUI;
-    std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
+//    std::shared_ptr<WebPageUI> m_webPageUI;
+//    std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
+    //std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
+    //std::shared_ptr<services::HistoryService> m_historyService;
+//    services::TabServicePtr m_tabService;
+//    std::shared_ptr<MoreMenuUI> m_moreMenuUI;
+    //std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
 #if PROFILE_MOBILE
-    std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
-    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
+//    std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
+//    std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
-    std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
-    std::shared_ptr<QuickAccess> m_quickAccess;
-    std::shared_ptr<HistoryUI> m_historyUI;
-    std::shared_ptr<SettingsUI> m_settingsUI;
-    std::shared_ptr<TabUI> m_tabUI;
-    std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
-    std::shared_ptr<services::StorageService> m_storageService;
+//    std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
+//    std::shared_ptr<QuickAccess> m_quickAccess;
+    //std::shared_ptr<HistoryUI> m_historyUI;
+//    std::shared_ptr<SettingsUI> m_settingsUI;
+//    std::shared_ptr<TabUI> m_tabUI;
+//    std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
+    //std::shared_ptr<services::StorageService> m_storageService;
     storage::Session m_currentSession;
-    std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
+//    std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     bool m_initialised;
     int m_tabLimit;
     int m_favoritesLimit;
@@ -341,7 +353,7 @@ private:
     std::string m_folder_name;
 
     //helper object used to view management
-    ViewManager m_viewManager;
+    //ViewManager m_viewManager;
     Evas_Object *main_window;
 #if PROFILE_MOBILE
     Evas_Object *m_conformant;

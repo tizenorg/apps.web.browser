@@ -31,8 +31,10 @@ namespace services {
 class BROWSER_EXPORT StorageService : public tizen_browser::core::AbstractService
 {
 public:
-    StorageService();
-    virtual ~StorageService();
+
+    static StorageService& getInstance();
+    ~StorageService();
+
     virtual std::string getName();
 
     storage::SettingsStorage& getSettingsStorage() { return m_settingsStorage; }
@@ -40,6 +42,8 @@ public:
     storage::FoldersStorage& getFoldersStorage() { return m_foldersStorage; }
 
 private:
+    StorageService();
+
     storage::SettingsStorage m_settingsStorage;
     storage::FoldersStorage m_foldersStorage;
 };

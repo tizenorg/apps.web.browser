@@ -35,10 +35,15 @@ namespace services
 class BROWSER_EXPORT PlatformInputManager : public tizen_browser::core::AbstractService
 {
 public:
-    /**
-     * @brief Default constructor with variable initialization.
-     */
-    PlatformInputManager();
+
+    static PlatformInputManager& getInstance();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    PlatformInputManager(PlatformInputManager const&) = delete;
+    void operator=(PlatformInputManager const&) = delete;
 
     /**
      * @brief Initialization of the object, adding event filter, setting cursor to be always visible.
@@ -75,6 +80,12 @@ public:
 #endif
 
 private:
+
+    /**
+     * @brief Default constructor with variable initialization.
+     */
+    PlatformInputManager();
+
     /**
      * @brief Struct holding parameters of mouse movement.
      * It is used in pointer mode to simulate mouse move after pressing arrows.

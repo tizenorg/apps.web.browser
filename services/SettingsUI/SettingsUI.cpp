@@ -28,12 +28,18 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
+//EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
 
 struct ItemData {
     tizen_browser::base_ui::SettingsUI* settingsUI;
     Elm_Object_Item * e_item;
 };
+
+SettingsUI& SettingsUI::getInstance()
+{
+    static SettingsUI instance;
+    return instance;
+}
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)

@@ -45,8 +45,17 @@ class BROWSER_EXPORT WebPageUI
 #endif
 {
 public:
-    WebPageUI();
-    virtual ~WebPageUI();
+    static WebPageUI& getInstance();
+    ~WebPageUI();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    WebPageUI(WebPageUI const&) = delete;
+    void operator=(WebPageUI const&) = delete;
+
     virtual std::string getName();
     virtual void init(Evas_Object* parent);
     virtual Evas_Object* getContent();
@@ -112,6 +121,8 @@ public:
     boost::signals2::signal<void (bool enabled)> setWebViewTouchEvents;
 
 private:
+    WebPageUI();
+
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
     static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
     static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);

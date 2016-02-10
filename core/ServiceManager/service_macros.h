@@ -60,18 +60,15 @@
     class name : public tizen_browser::core::ServiceFactory \
     { \
     public: \
-        name(){}; \
-        ~name(){}; \
         virtual std::string serviceName() const{return std::string(ifaceName);}; \
-        tizen_browser::core::AbstractService* create(){ return new serviceClass();}; \
+        static name& getInstance() {static name instance; return instance;}; \
+        name(name const&) = delete; \
+        void operator=(name const&) = delete; \
+        /*tizen_browser::core::AbstractService* create(){ return new serviceClass();};*/ \
+    private: \
+        name() {}; \
+        ~name() {}; \
     };
-
-#define SERVICE_INSTANCE(name) \
-    EXTERN_C BROWSER_EXPORT void* service_factory_instance() \
-    { \
-        static name _instance; \
-        return reinterpret_cast<void*>(&_instance); \
-    }
 
 #define SERVICE_STRING_INSTANCE(IMPLCLASS,SERVICEIFACE) \
     inline std::string IMPLCLASS::getName(){return std::string(SERVICEIFACE);}

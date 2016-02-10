@@ -27,7 +27,6 @@
 #include "service_macros.h"
 #include "BrowserImage.h"
 #include "HistoryItemTypedef.h"
-#include "StorageService.h"
 #include <web/web_history.h>
 #define DOMAIN_HISTORY_SERVICE "org.tizen.browser.historyservice"
 
@@ -39,8 +38,17 @@ namespace services
 class BROWSER_EXPORT HistoryService: public tizen_browser::core::AbstractService
 {
 public:
-    HistoryService();
-    virtual ~HistoryService();
+
+    static HistoryService& getInstance();
+    ~HistoryService();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    HistoryService(HistoryService const&) = delete;
+    void operator=(HistoryService const&) = delete;
+
     virtual std::string getName();
     int getHistoryId(const std::string & url);
     void addHistoryItem(const std::string & url,
@@ -96,9 +104,11 @@ public:
     boost::signals2::signal<void ()> historyAllDeleted;
 
 private:
+    HistoryService();
+
     bool m_testDbMod;;
     std::vector<std::shared_ptr<HistoryItem>> history_list;
-    std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
+    //std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
 
     /**
      * Help method printing last bp_history_error_defs error.

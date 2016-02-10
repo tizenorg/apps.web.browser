@@ -19,7 +19,8 @@ set(HistoryUI_SRCS
 include(Coreheaders)
 include(EFLHelpers)
 
-include_directories(${CMAKE_SOURCE_DIR}/services/FavoriteService)
+#include_directories(${CMAKE_SOURCE_DIR}/services/BookmarkService)
+#include_directories(${CMAKE_SOURCE_DIR}/servcies/HistoryService)
 
 add_library(${PROJECT_NAME} SHARED ${HistoryUI_SRCS})
 

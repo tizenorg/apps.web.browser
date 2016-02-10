@@ -40,10 +40,17 @@ class BROWSER_EXPORT FindOnPageUI
     , public tizen_browser::core::AbstractService
 {
 public:
-    virtual std::string getName();
+    static FindOnPageUI& getInstance();
+    ~FindOnPageUI();
 
-    FindOnPageUI();
-    ~FindOnPageUI(void);
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    FindOnPageUI(FindOnPageUI const&) = delete;
+    void operator=(FindOnPageUI const&) = delete;
+    virtual std::string getName();
 
     Evas_Object* getContent();
     void init(Evas_Object* parent);
@@ -63,6 +70,8 @@ public:
     boost::signals2::signal<void (const struct FindData& )> startFindingWord;
 
 private:
+    FindOnPageUI();
+
     void _set_count(int index, int total);
     void _disable_down_button(Eina_Bool disable);
     void _disable_up_button(Eina_Bool disable);

@@ -7,7 +7,8 @@ set(MoreMenuUI_SRCS
 include(Coreheaders)
 include(EFLHelpers)
 
-include_directories(${CMAKE_SOURCE_DIR}/services/FavoriteService)
+include_directories(${CMAKE_SOURCE_DIR}/services/StorageService)
+include_directories(${CMAKE_SOURCE_DIR}/services/BookmarkService)
 
 add_library(${PROJECT_NAME} SHARED ${MoreMenuUI_SRCS})
 

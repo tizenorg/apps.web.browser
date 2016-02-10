@@ -26,6 +26,7 @@ include_directories(${CMAKE_SOURCE_DIR}/services/MoreMenuUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/QuickAccess)
 include_directories(${CMAKE_SOURCE_DIR}/services/SettingsUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
+include_directories(${CMAKE_SOURCE_DIR}/services/WebPageUI)
 
 
 include(FindPkgConfig)

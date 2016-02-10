@@ -32,7 +32,13 @@ namespace tizen_browser {
 namespace basic_webengine {
 namespace webengine_service {
 
-EXPORT_SERVICE(WebEngineService, "org.tizen.browser.webengineservice")
+//EXPORT_SERVICE(WebEngineService, "org.tizen.browser.webengineservice")
+
+WebEngineService& WebEngineService::getInstance()
+{
+    static WebEngineService instance;
+    return instance;
+}
 
 WebEngineService::WebEngineService()
     : m_initialised(false)
@@ -82,42 +88,42 @@ void WebEngineService::init(void * guiParent)
     }
 }
 
-void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
+void WebEngineService::connectSignals(std::shared_ptr<WebView> /*webView*/)
 {
-    M_ASSERT(webView);
-    webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
-    webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
-    webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
-    webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
-    webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
-    webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
-    webView->loadProgress.connect(boost::bind(&WebEngineService::_loadProgress, this, _1, _2, _3));
-    webView->ready.connect(boost::bind(&WebEngineService::_ready, this, _1));
-    webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
-    webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
-    webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
-    webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
-    webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
+//    M_ASSERT(webView);
+//    webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
+//    webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+//    webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
+//    webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
+//    webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
+//    webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
+//    webView->loadProgress.connect(boost::bind(&WebEngineService::_loadProgress, this, _1, _2, _3));
+//    webView->ready.connect(boost::bind(&WebEngineService::_ready, this, _1));
+//    webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
+//    webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
+//    webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
+//    webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+//    webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
+//    webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
+//    webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
 }
 
-void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
+void WebEngineService::disconnectSignals(std::shared_ptr<WebView> /*webView*/)
 {
-    M_ASSERT(webView);
-    webView->favIconChanged.disconnect(boost::bind(&WebEngineService::_favIconChanged, this));
-    webView->titleChanged.disconnect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
-    webView->uriChanged.disconnect(boost::bind(&WebEngineService::_uriChanged, this, _1));
-    webView->loadFinished.disconnect(boost::bind(&WebEngineService::_loadFinished, this));
-    webView->loadStarted.disconnect(boost::bind(&WebEngineService::_loadStarted, this));
-    webView->loadStop.disconnect(boost::bind(&WebEngineService::_loadStop, this));
-    webView->loadProgress.disconnect(boost::bind(&WebEngineService::_loadProgress, this, _1, _2, _3));
-    webView->loadError.disconnect(boost::bind(&WebEngineService::_loadError, this));
-    webView->forwardEnableChanged.disconnect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
-    webView->backwardEnableChanged.disconnect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
-    webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
-    webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
+//    M_ASSERT(webView);
+//    webView->favIconChanged.disconnect(boost::bind(&WebEngineService::_favIconChanged, this));
+//    webView->titleChanged.disconnect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+//    webView->uriChanged.disconnect(boost::bind(&WebEngineService::_uriChanged, this, _1));
+//    webView->loadFinished.disconnect(boost::bind(&WebEngineService::_loadFinished, this));
+//    webView->loadStarted.disconnect(boost::bind(&WebEngineService::_loadStarted, this));
+//    webView->loadStop.disconnect(boost::bind(&WebEngineService::_loadStop, this));
+//    webView->loadProgress.disconnect(boost::bind(&WebEngineService::_loadProgress, this, _1, _2, _3));
+//    webView->loadError.disconnect(boost::bind(&WebEngineService::_loadError, this));
+//    webView->forwardEnableChanged.disconnect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
+//    webView->backwardEnableChanged.disconnect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
+//    webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
+//    webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
+//    webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
 }
 
 void WebEngineService::disconnectCurrentWebViewSignals()
@@ -126,7 +132,7 @@ void WebEngineService::disconnectCurrentWebViewSignals()
         disconnectSignals(m_currentWebView);
 }
 
-int WebEngineService::createTabId()
+int WebEngineService::createTabIdFunc()
 {
     m_tabIdCreated = -1;
     AbstractWebEngine::createTabId();
@@ -347,7 +353,7 @@ TabId WebEngineService::addTab(const std::string & uri,
         newAdaptorId = *tabId;
     } else {
         // searching for next available tabId
-        newAdaptorId = createTabId();
+        newAdaptorId = createTabIdFunc();
     }
     TabId newTabId(newAdaptorId);
 
@@ -501,7 +507,7 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getFavicon
         return std::make_shared<tizen_browser::tools::BrowserImage>();
 }
 
-void WebEngineService::webViewClicked()
+void WebEngineService::webViewClickedFunc()
 {
     AbstractWebEngine::webViewClicked();
 }

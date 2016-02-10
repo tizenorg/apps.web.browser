@@ -30,7 +30,7 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(ZoomUI, "org.tizen.browser.zoomui")
+//EXPORT_SERVICE(ZoomUI, "org.tizen.browser.zoomui")
 
 ZoomUI::ZoomUI()
     : m_layout(nullptr)

@@ -33,6 +33,12 @@
 namespace tizen_browser{
 namespace base_ui{
 
+ViewManager& ViewManager::getInstance()
+{
+    static ViewManager instance;
+    return instance;
+}
+
 ViewManager::ViewManager()
    : m_mainLayout(nullptr)
    , m_conformant(nullptr)

@@ -38,7 +38,31 @@ class ServiceFactory
 {
 public:
 
+    static ServiceFactory& getInstance();
 
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    ServiceFactory(ServiceFactory const&) = delete;
+    void operator=(ServiceFactory const&) = delete;
+
+    /**
+     * \brief Returns service name.
+     *
+     * You can use this method to retrieve service name.
+     * \returns Name of the service
+     */
+    virtual std::string serviceName() const = 0;
+
+//    /**
+//     * \brief Returns object instance
+//     * \returns Ready to use service object.
+//     */
+//    virtual AbstractService *create()=0;
+
+private:
     /**
      * \brief Creates a factory for a service.
      *
@@ -50,21 +74,6 @@ public:
      * \brief This destroys the ServiceFactory
      */
     virtual ~ServiceFactory();
-
-    /**
-     * \brief Returns service name.
-     *
-     * You can use this method to retrieve service name.
-     * \returns Name of the service
-     */
-    virtual std::string serviceName() const = 0;
-
-    /**
-     * \brief Returns object instance
-     * \returns Ready to use service object.
-     */
-    virtual AbstractService *create()=0;
-
 };
 
 } /* end of namespace core */

@@ -38,8 +38,18 @@ namespace services {
 class BROWSER_EXPORT TabService: public tizen_browser::core::AbstractService
 {
 public:
-    TabService();
-    virtual ~TabService();
+
+    static TabService& getInstance();
+    ~TabService();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    TabService(TabService const&) = delete;
+    void operator=(TabService const&) = delete;
+
     virtual std::string getName();
 
     /**
@@ -84,6 +94,9 @@ public:
     boost::signals2::signal<void(basic_webengine::TabId)> generateThumb;
 
 private:
+
+    TabService();
+
     /**
      * Help method printing last bp_tab_error_defs error.
      */

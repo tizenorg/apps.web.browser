@@ -30,7 +30,7 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(QuickAccess, "org.tizen.browser.quickaccess")
+//EXPORT_SERVICE(QuickAccess, "org.tizen.browser.quickaccess")
 
 const int QuickAccess::MAX_TILES_NUMBER = 5;
 const int QuickAccess::MAX_THUMBNAIL_WIDTH = 840;
@@ -58,6 +58,12 @@ typedef struct _BookmarkItemData
         std::shared_ptr<tizen_browser::services::BookmarkItem> item;
         QuickAccess* quickAccess;
 } BookmarkItemData;
+
+QuickAccess& QuickAccess::getInstance()
+{
+    static QuickAccess instance;
+    return instance;
+}
 
 QuickAccess::QuickAccess()
     : m_parent(nullptr)

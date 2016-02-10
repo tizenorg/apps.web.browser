@@ -471,11 +471,6 @@ public:
     boost::signals2::signal<void ()> switchToWebPage;
 
     /**
-     * Signal to switch to window after it is created
-     */
-    boost::signals2::signal<void ()> windowCreated;
-
-    /**
      * Generate id for the new tab.
      */
     boost::signals2::signal<void()> createTabId;

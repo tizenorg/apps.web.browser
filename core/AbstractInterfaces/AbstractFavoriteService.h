@@ -29,7 +29,6 @@
 #include "service_macros.h"
 #include "BookmarkItem.h"
 #include "BrowserImage.h"
-#include "StorageService.h"
 
 namespace tizen_browser{
 namespace interfaces{

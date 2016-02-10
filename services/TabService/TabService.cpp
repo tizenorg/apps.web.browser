@@ -26,7 +26,13 @@
 namespace tizen_browser {
 namespace services {
 
-EXPORT_SERVICE(TabService, DOMAIN_TAB_SERVICE)
+//EXPORT_SERVICE(TabService, DOMAIN_TAB_SERVICE)
+
+TabService& TabService::getInstance()
+{
+    static TabService instance;
+    return instance;
+}
 
 TabService::TabService()
 {

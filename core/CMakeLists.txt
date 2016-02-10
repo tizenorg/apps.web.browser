@@ -11,6 +11,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${PNG_INCLUDE_DIRS}
     )
+include_directories(${CMAKE_SOURCE_DIR}/services/SimpleUI)
 
 ### browserCore library
 ### current platform CMake desn't support clean o build
