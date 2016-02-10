@@ -93,20 +93,19 @@ ServiceManager& ServiceManager::getInstance(void)
         return instance;
 }
 
-std::shared_ptr< AbstractService > ServiceManager::getService(const std::string& service)
-{
-    static std::unordered_map<std::string, std::shared_ptr<AbstractService>> cache;
-    static std::mutex mut;
-
-
-    std::lock_guard<std::mutex> hold(mut);
-    auto sp = cache[service];
-
-    if(!sp){
-        cache[service] = sp = std::shared_ptr<AbstractService>(d->servicesMap[service]->create());
-    }
-    return sp;
-}
+//std::shared_ptr< AbstractService > ServiceManager::getService(const std::string& service)
+//{
+//    static std::unordered_map<std::string, std::shared_ptr<AbstractService>> cache;
+//    static std::mutex mut;
+//
+//    std::lock_guard<std::mutex> hold(mut);
+//    auto sp = cache[service];
+//
+//    if(!sp){
+//        cache[service] = sp = std::shared_ptr<AbstractService>(d->servicesMap[service]->create());
+//    }
+//    return sp;
+//}
 
 
 } /* end of namespace core */

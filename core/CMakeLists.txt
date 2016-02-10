@@ -11,6 +11,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${PNG_INCLUDE_DIRS}
     )
+include_directories(${CMAKE_SOURCE_DIR}/services/SimpleUI)
 
 ### browserCore library
 ### current platform CMake desn't support clean o build
@@ -41,6 +42,7 @@ set(browserCore_SRCS
     Tools/FeedChannel.cpp
     Tools/FocusManager.cpp
     Tools/StringTools.cpp
+    ../services/SimpleUI/SimpleUI.cpp
     )
 
 if(${PROFILE} MATCHES "mobile")

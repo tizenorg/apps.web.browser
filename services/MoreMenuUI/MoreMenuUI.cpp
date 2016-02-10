@@ -25,10 +25,18 @@
 #include "BrowserLogger.h"
 #include "BrowserImage.h"
 
+#include "../HistoryUI/HistoryUI.h"
+#include "../HistoryService/HistoryService.h"
+#include "../BookmarkManagerUI/BookmarkManagerUI.h"
+#include "../BookmarkService/BookmarkService.h"
+#include "../SimpleUI/ViewManager.h"
+#include "../BookmarkFlowUI/BookmarkFlowUI.h"
+#include "../WebEngineService/WebEngineService.h"
+
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(MoreMenuUI, "org.tizen.browser.moremenuui")
+//EXPORT_SERVICE(MoreMenuUI, "org.tizen.browser.moremenuui")
 
 struct ItemData{
         tizen_browser::base_ui::MoreMenuUI * m_moreMenu;
@@ -41,6 +49,12 @@ typedef struct _MoreItemData
     ItemType item;
     std::shared_ptr<tizen_browser::base_ui::MoreMenuUI> moreMenuUI;
 } MoreMenuItemData;
+
+MoreMenuUI& MoreMenuUI::getInstance()
+{
+    static MoreMenuUI instance;
+    return instance;
+}
 
 MoreMenuUI::MoreMenuUI()
     : m_current_tab_bar(nullptr)
@@ -656,13 +670,13 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
                 //TODO: Implement share mode
                 break;
             case HISTORY:
-                itemData->moreMenuUI->historyUIClicked();
+                HistoryUI::getInstance().prepare();
                 break;
             case SETTINGS:
                 itemData->moreMenuUI->settingsClicked();
                 break;
             case BOOKMARK_MANAGER:
-                itemData->moreMenuUI->bookmarkManagerClicked();
+                BookmarkManagerUI::getInstance().prepare();
                 break;
 #if PROFILE_MOBILE
             case FIND_ON_PAGE:
@@ -672,7 +686,7 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             case ADD_TO_BOOKMARK:
                 if (!itemData->moreMenuUI->m_blockThumbnails) {
                     elm_object_focus_allow_set(itemData->moreMenuUI->m_gengrid, EINA_FALSE);
-                    itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_TRUE);
+                    BookmarkFlowUI::getInstance().prepare(itemData->moreMenuUI->m_isBookmark == EINA_TRUE);
                 }
                 break;
             case READER_MODE:

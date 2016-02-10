@@ -38,9 +38,15 @@ namespace tizen_browser
 namespace services
 {
 
-EXPORT_SERVICE(HistoryService, DOMAIN_HISTORY_SERVICE)
+//EXPORT_SERVICE(HistoryService, DOMAIN_HISTORY_SERVICE)
 
 const int SEARCH_LIKE = 1;
+
+HistoryService& HistoryService::getInstance()
+{
+    static HistoryService instance;
+    return instance;
+}
 
 HistoryService::HistoryService() : m_testDbMod(false)
 {

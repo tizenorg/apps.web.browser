@@ -39,7 +39,13 @@ enum SettingsOptions {
     PRIVACY
 };
 
-EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
+//EXPORT_SERVICE(SettingsUI, "org.tizen.browser.settingsui")
+
+SettingsUI& SettingsUI::getInstance()
+{
+    static SettingsUI instance;
+    return instance;
+}
 
 SettingsUI::SettingsUI()
     : m_settings_layout(nullptr)

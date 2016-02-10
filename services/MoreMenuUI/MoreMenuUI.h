@@ -72,8 +72,16 @@ class BROWSER_EXPORT MoreMenuUI
         , public tizen_browser::core::AbstractService
 {
 public:
-    MoreMenuUI();
+
+    static MoreMenuUI& getInstance();
     ~MoreMenuUI();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    MoreMenuUI(MoreMenuUI const&) = delete;
+    void operator=(MoreMenuUI const&) = delete;
 
     //AbstractUIComponent interface methods
     void init(Evas_Object* parent);
@@ -114,6 +122,8 @@ public:
     boost::signals2::signal<bool ()> isBookmark;
     boost::signals2::signal<void (bool)> bookmarkFlowClicked;
 private:
+    MoreMenuUI();
+
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();
 #if PROFILE_MOBILE

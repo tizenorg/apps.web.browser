@@ -31,7 +31,8 @@
 // for tests...
 #include "Lifecycle.h"
 #include "ServiceManager.h"
-#include "BasicUI/AbstractMainWindow.h"
+//#include "BasicUI/AbstractMainWindow.h"
+#include "SimpleUI.h"
 
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
@@ -50,15 +51,6 @@ static bool app_create(void * /*app_data*/)
     elm_config_focus_highlight_enabled_set(EINA_TRUE);
 #endif
 
-    /// \todo: clean casts, depends on ServiceManager
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-
     //mainUi->exec("");
     return true;
 }
@@ -66,14 +58,7 @@ static bool app_create(void * /*app_data*/)
 static void app_terminate(void */*app_data*/)
 {
     BROWSER_LOGD("%s\n", __func__);
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->destroyUI();
+    tizen_browser::base_ui::SimpleUI::getInstance().destroyUI();
 }
 
 static void app_control(app_control_h app_control, void */*app_data*/){
@@ -108,44 +93,20 @@ static void app_control(app_control_h app_control, void */*app_data*/){
     free(request_mime_type);
     free(operation);
 
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
+    tizen_browser::base_ui::SimpleUI::getInstance().exec(uri);
 
-    mainUi->exec(uri);
-
-    evas_object_show(mainUi->getMainWindow().get());
-    elm_win_activate(mainUi->getMainWindow().get());
+    evas_object_show(tizen_browser::base_ui::SimpleUI::getInstance().getMainWindow().get());
+    elm_win_activate(tizen_browser::base_ui::SimpleUI::getInstance().getMainWindow().get());
 }
 
 static void app_pause(void *){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
-
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->suspend();
+    tizen_browser::base_ui::SimpleUI::getInstance().suspend();
 }
 
 static void app_resume(void *){
     BROWSER_LOGD("%s", __PRETTY_FUNCTION__);
-
-    std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
-    std::dynamic_pointer_cast
-    <
-        tizen_browser::base_ui::AbstractMainWindow<Evas_Object>,
-        tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-    mainUi->resume();
+    tizen_browser::base_ui::SimpleUI::getInstance().resume();
 }
 
 #if PROFILE_MOBILE
@@ -178,8 +139,8 @@ int main(int argc, char* argv[])try
 //#endif
 
 	BROWSER_LOGD("BROWSER IS SAYING HELLO");
-	BROWSER_LOGD("BROWSER TAG: %s",tizen_browser::logger::Logger::getInstance().getLogTag().c_str());
-	BROWSER_LOGD("BROWSER REGISTERED LOGGERS COUNT: %d",tizen_browser::logger::Logger::getInstance().getLoggersCount());
+	BROWSER_LOGD("BROWSER TAG: %s", tizen_browser::logger::Logger::getInstance().getLogTag().c_str());
+	BROWSER_LOGD("BROWSER REGISTERED LOGGERS COUNT: %d", tizen_browser::logger::Logger::getInstance().getLoggersCount());
 
     // TODO: Enable it after video black screen issue is resolved.
     // setenv("COREGL_FASTPATH", "1", 1);

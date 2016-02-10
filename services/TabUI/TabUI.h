@@ -40,8 +40,16 @@ class BROWSER_EXPORT TabUI
 #endif
 {
 public:
-    TabUI();
+    static TabUI& getInstance();
     ~TabUI();
+    /**
+     * @brief Prevents accidental copies of singleton.
+     * Deleted functions should generally be public as it results in better error messages
+     * due to the compilers behavior to check accessibility before deleted status.
+     */
+    TabUI(TabUI const&) = delete;
+    void operator=(TabUI const&) = delete;
+
     //AbstractUIComponent interface implementation
     void showUI();
     void hideUI();
@@ -68,6 +76,7 @@ public:
     boost::signals2::signal<bool (const tizen_browser::basic_webengine::TabId& )> isIncognito;
 
 private:
+    TabUI();
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object * _tab_grid_content_get(void *data, Evas_Object *obj, const char *part);

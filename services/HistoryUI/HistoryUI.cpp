@@ -18,7 +18,6 @@
 #include <boost/concept_check.hpp>
 #include <vector>
 #include <string>
-#include <string.h>
 #include <AbstractMainWindow.h>
 
 #include "HistoryUI.h"
@@ -32,10 +31,13 @@
 #include "HistoryUIFocusManager.h"
 #include "HistoryDeleteManager.h"
 
+#include  "../HistoryService/HistoryService.h"
+#include  "../SimpleUI/ViewManager.h"
+
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(HistoryUI, "org.tizen.browser.historyui")
+//EXPORT_SERVICE(HistoryUI, "org.tizen.browser.historyui")
 
 typedef struct _HistoryItemData
 {
@@ -49,6 +51,12 @@ struct ItemData{
 };
 
 static std::vector<HistoryItemData*> _history_item_data;
+
+HistoryUI& HistoryUI::getInstance()
+{
+    static HistoryUI instance;
+    return instance;
+}
 
 HistoryUI::HistoryUI()
     : m_parent(nullptr)
@@ -114,6 +122,20 @@ Evas_Object* HistoryUI::getContent()
 {
     M_ASSERT(m_main_layout);
     return m_main_layout;
+}
+
+void HistoryUI::prepare()
+{
+    ViewManager::getInstance().pushViewToStack(this);
+    addHistoryItems(services::HistoryService::getInstance().getHistoryToday(),
+            HistoryPeriod::HISTORY_TODAY);
+    addHistoryItems(services::HistoryService::getInstance().getHistoryYesterday(),
+            HistoryPeriod::HISTORY_YESTERDAY);
+    addHistoryItems(services::HistoryService::getInstance().getHistoryLastWeek(),
+            HistoryPeriod::HISTORY_LASTWEEK);
+    addHistoryItems(services::HistoryService::getInstance().getHistoryLastMonth(),
+            HistoryPeriod::HISTORY_LASTMONTH);
+    showUI();
 }
 
 void HistoryUI::createHistoryUILayout(Evas_Object* parent)

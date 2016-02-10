@@ -42,6 +42,10 @@
 #include "GeneralTools.h"
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
+
+#include "WebEngineService.h"
+#include "../WebPageUI/WebPageUI.h"
+
 #if PROFILE_MOBILE
 #include <device/haptic.h>
 #include <Ecore.h>
@@ -560,41 +564,33 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
     WebView * self = reinterpret_cast<WebView *>(data);
     BROWSER_LOGD("[%s:%d] self=%p", __PRETTY_FUNCTION__, __LINE__, self);
     BROWSER_LOGD("Window creating in tab: %s", self->getTabId().toString().c_str());
-    std::shared_ptr<basic_webengine::AbstractWebEngine<Evas_Object>>  m_webEngine;
-    m_webEngine = std::dynamic_pointer_cast
-    <
-        basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService
-    >
-    (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
-    M_ASSERT(m_webEngine);
-
+    M_ASSERT(&WebEngineService::getInstance());
     /// \todo: Choose newly created tab.
     TabId id(TabId::NONE);
-    if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(),
+    if (WebEngineService::getInstance().currentTabId() != (id = WebEngineService::getInstance().addTab(std::string(),
                                                                  &self->getTabId(),
                                                                  boost::none,
                                                                  std::string(),
                                                                  self->isDesktopMode(),
                                                                  self->isPrivateMode()))) {
         BROWSER_LOGD("Created tab: %s", id.toString().c_str());
-        Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
+        Evas_Object* tab_ewk_view = WebEngineService::getInstance().getTabView(id);
         *static_cast<Evas_Object**>(out) = tab_ewk_view;
     }
 
     // switch to a new tab
-    m_webEngine->switchToTab(id);
-    m_webEngine->windowCreated();
+    WebEngineService::getInstance().switchToTab(id);
+    if(self->isSuspended())
+         WebEngineService::getInstance().resume();
+    base_ui::WebPageUI::getInstance().switchViewToWebPage(WebEngineService::getInstance().getLayout(), WebEngineService::getInstance().getURI(), WebEngineService::getInstance().getTitle());
+    base_ui::WebPageUI::getInstance().toIncognito(WebEngineService::getInstance().isPrivateMode(WebEngineService::getInstance().currentTabId()));
 }
 
 void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebView * self = reinterpret_cast<WebView *>(data);
-    std::shared_ptr<AbstractWebEngine<Evas_Object>> m_webEngine =
-                std::dynamic_pointer_cast
-                <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
-                (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
-    m_webEngine->closeTab(self->getTabId());
+    WebEngineService::getInstance().closeTab(self->getTabId());
 }
 
 void WebView::__loadStarted(void * data, Evas_Object * /* obj */, void * /* event_info */)
