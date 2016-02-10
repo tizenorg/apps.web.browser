@@ -38,11 +38,22 @@ class WebView;
 
 typedef std::shared_ptr<WebView> WebViewPtr;
 
-class BROWSER_EXPORT WebEngineService: public AbstractWebEngine<Evas_Object>, boost::noncopyable
+class BROWSER_EXPORT WebEngineService: public AbstractWebEngine<Evas_Object>
+//, boost::noncopyable
 {
 public:
-    WebEngineService();
+
+    static WebEngineService& getInstance();
     virtual ~WebEngineService();
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    WebEngineService(WebEngineService const&) = delete;
+    void operator=(WebEngineService const&) = delete;
+
     virtual std::string getName();
 
     Evas_Object * getLayout();
@@ -173,6 +184,8 @@ public:
      */
     void backButtonClicked();
 
+    void disconnectCurrentWebViewSignals();
+
 #if PROFILE_MOBILE
     void moreKeyPressed();
 #endif
@@ -213,6 +226,8 @@ public:
     void setSettingsParam(WebEngineSettings param, bool value) override;
 #endif
 private:
+    WebEngineService();
+
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
     void _titleChanged(const std::string&, const std::string&);
@@ -228,7 +243,7 @@ private:
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
-    void webViewClicked();
+    void webViewClickedFunc();
 #if PROFILE_MOBILE
     void setWebViewSettings(std::shared_ptr<WebView> webView);
 #endif
@@ -239,7 +254,7 @@ private:
      */
     void disconnectSignals(WebViewPtr);
 
-    void disconnectCurrentWebViewSignals();
+
 
     /**
      * connect signals of specified WebView
@@ -247,7 +262,7 @@ private:
      */
     void connectSignals(WebViewPtr);
 
-    int createTabId();
+    int createTabIdFunc();
 
 private:
     bool m_initialised;

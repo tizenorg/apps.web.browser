@@ -37,7 +37,7 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(BookmarkDetailsUI, "org.tizen.browser.bookmarkdetailsui")
+//EXPORT_SERVICE(BookmarkDetailsUI, "org.tizen.browser.bookmarkdetailsui")
 
 struct ItemData
 {
@@ -51,6 +51,12 @@ typedef struct
     std::shared_ptr<tizen_browser::services::BookmarkItem> item;
     std::shared_ptr<tizen_browser::base_ui::BookmarkDetailsUI> bookmarkDetailsUI;
 } BookmarkItemData;
+
+BookmarkDetailsUI& BookmarkDetailsUI::getInstance()
+{
+    static BookmarkDetailsUI instance;
+    return instance;
+}
 
 BookmarkDetailsUI::BookmarkDetailsUI()
     : m_parent(nullptr)

@@ -42,10 +42,16 @@ namespace base_ui{
 class ViewManager
 {
 public:
+
+    static ViewManager& getInstance();
+
 /**
- * @brief constructor.
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
  */
-    ViewManager();
+    ViewManager(ViewManager const&) = delete;
+    void operator=(ViewManager const&) = delete;
 
 /**
  * @brief initialization method
@@ -53,12 +59,6 @@ public:
  * @param A window which will contatin ViewManager's main layout.
  */
     void init(Evas_Object* parentWindow);
-
-/**
- * @brief destructor
- *
- */
-    ~ViewManager();
 
 /**
  * @brief Pops stack to specified view. Hides actual view (if there is any) and
@@ -107,8 +107,20 @@ public:
     boost::signals2::signal<bool ()> isLandscape;
 
 private:
-    void updateLayout(interfaces::AbstractUIComponent* previousView);
+/**
+ * @brief constructor.
+ */
+    ViewManager();
+
+/**
+ * @brief destructor
+ *
+ */
+    ~ViewManager();
+
 private:
+    void updateLayout(interfaces::AbstractUIComponent* previousView);
+
     Evas_Object* m_mainLayout;
     Evas_Object* m_conformant;
     Evas_Object* m_parentWindow;

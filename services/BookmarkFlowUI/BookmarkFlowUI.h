@@ -61,8 +61,19 @@ class BROWSER_EXPORT BookmarkFlowUI
         , public tizen_browser::core::AbstractService
 {
 public:
-    BookmarkFlowUI();
+
+    static BookmarkFlowUI& getInstance();
     ~BookmarkFlowUI();
+    void prepare(bool isBookmark);
+
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    BookmarkFlowUI(BookmarkFlowUI const&) = delete;
+    void operator=(BookmarkFlowUI const&) = delete;
+
     //AbstractUIComponent interface methods
     void init(Evas_Object *parent);
     Evas_Object *getContent();
@@ -97,6 +108,8 @@ public:
 #endif
 
 private:
+    BookmarkFlowUI();
+
     typedef struct
     {
         std::string name;

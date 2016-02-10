@@ -33,8 +33,15 @@ class BROWSER_EXPORT ZoomUI
         , public tizen_browser::core::AbstractService
 {
 public:
-    ZoomUI();
+    static ZoomUI& getInstance();
     ~ZoomUI();
+    /**
+     * @brief Prevents accidental copies of singleton.
+     * Deleted functions should generally be public as it results in better error messages
+     * due to the compilers behavior to check accessibility before deleted status.
+     */
+    ZoomUI(ZoomUI const&) = delete;
+    void operator=(ZoomUI const&) = delete;
 
     //AbstractUIComponent interface methods
     void init(Evas_Object* parent);
@@ -53,6 +60,7 @@ public:
     boost::signals2::signal<int ()> getZoom;
     boost::signals2::signal<void (const int&, const int&)> scrollView;
 private:
+    ZoomUI();
     void createLayout(Evas_Object* parent);
     void createZoomSlider();
     int calculateSliderValue(int zoom);

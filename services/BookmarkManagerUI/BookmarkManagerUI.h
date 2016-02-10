@@ -43,8 +43,17 @@ class BROWSER_EXPORT BookmarkManagerUI
 #endif
 {
 public:
-    BookmarkManagerUI();
+
+    static BookmarkManagerUI& getInstance();
     ~BookmarkManagerUI();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    BookmarkManagerUI(BookmarkManagerUI const&) = delete;
+    void operator=(BookmarkManagerUI const&) = delete;
+
     //AbstractUIComponent interface methods
     void init(Evas_Object *parent);
     void showUI();
@@ -52,6 +61,8 @@ public:
     void hide();
     Evas_Object *getContent();
     virtual std::string getName();
+
+    void prepare();
 
     void setFoldersId(unsigned int all, unsigned int special);
 #if PROFILE_MOBILE
@@ -62,16 +73,14 @@ public:
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
-    boost::signals2::signal<void (int)> customFolderClicked;
-    boost::signals2::signal<void ()> allFolderClicked;
     //Special folder - Bookmark Bar on tv and Mobile on odroid
-    boost::signals2::signal<void ()> specialFolderClicked;
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> newFolderItemClicked;
 #endif
 
 private:
+    BookmarkManagerUI();
+
     typedef struct
     {
         std::string name;

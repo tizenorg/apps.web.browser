@@ -174,3 +174,18 @@ message(STATUS "Building Unit tests      (BUILD_UT)        :" ${BUILD_UT})
 message(STATUS "Code Coverage statistics (COVERAGE_STATS)  :" ${COVERAGE_STATS})
 message(STATUS "Device profile           (PROFILE)         :" ${PROFILE})
 message(STATUS "------------------------------------------")
+
+### browser binary
+add_executable(${BIN_NAME} main.cpp)
+add_dependencies(${BIN_NAME} browserCore)
+target_link_libraries(${BIN_NAME} browserCore)
+target_link_libraries(${BIN_NAME} ${EFL_LDFLAGS})
+target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
+
+
+if(TIZEN_BUILD)
+    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS})
+endif(TIZEN_BUILD)
+
+
+install(TARGETS ${BIN_NAME} RUNTIME DESTINATION bin)

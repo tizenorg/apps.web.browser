@@ -43,8 +43,17 @@ class BROWSER_EXPORT HistoryUI
     , public tizen_browser::core::AbstractService
 {
 public:
-    HistoryUI();
+
+    static HistoryUI& getInstance();
     ~HistoryUI();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    HistoryUI(HistoryUI const&) = delete;
+    void operator=(HistoryUI const&) = delete;
+
     void init(Evas_Object *parent);
     Evas_Object* getContent();
     void showUI();
@@ -60,7 +69,11 @@ public:
     boost::signals2::signal<void ()> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<const std::vector<int>> itemIds)> signalDeleteHistoryItems;
     boost::signals2::signal<void (std::string& url, std::string& title)> signalHistoryItemClicked;
+
+    void prepare();
 private:
+    HistoryUI();
+
     void clearItems();
     void createHistoryUILayout(Evas_Object* parent);
 

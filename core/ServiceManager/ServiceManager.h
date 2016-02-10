@@ -114,7 +114,7 @@ public:
      * @param args Currently no used, may by omitted.
      * @return std::shared_ptr< tizen_browser::core::AbstractService >
      */
-    std::shared_ptr<AbstractService> getService(const std::string& service);
+//    std::shared_ptr<AbstractService> getService(const std::string& service);
 
 private:
     /**

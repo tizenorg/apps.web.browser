@@ -33,8 +33,16 @@ class BROWSER_EXPORT SettingsUI
         , public tizen_browser::core::AbstractService
 {
 public:
-    SettingsUI();
+    static SettingsUI& getInstance();
     ~SettingsUI();
+    /**
+     * @brief Prevents accidental copies of singleton.
+     * Deleted functions should generally be public as it results in better error messages
+     * due to the compilers behavior to check accessibility before deleted status.
+     */
+    SettingsUI(SettingsUI const&) = delete;
+    void operator=(SettingsUI const&) = delete;
+
     void init(Evas_Object* parent);
     Evas_Object* getContent();
     void showUI();
@@ -50,6 +58,8 @@ public:
     boost::signals2::signal<void ()> closeSettingsUIClicked;
 
 private:
+    SettingsUI();
+
     Evas_Object* createSettingsUILayout(Evas_Object* parent);
     static Evas_Object* listActionBarContentGet(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* listSettingsGenlistContentGet(void *data, Evas_Object *obj, const char *part);

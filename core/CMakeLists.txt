@@ -6,11 +6,9 @@ include(EWebKitHelpers)
 
 find_package(PNG REQUIRED)
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}
-    ${PNG_INCLUDE_DIRS}
-    )
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_BINARY_DIR})
+include_directories(${PNG_INCLUDE_DIRS})
 
 ### browserCore library
 ### current platform CMake desn't support clean o build
@@ -88,18 +86,16 @@ install(TARGETS browserCore
 
 
 ### browser binary
-add_executable(${BIN_NAME} main.cpp)
-add_dependencies(${BIN_NAME} browserCore)
-target_link_libraries(${BIN_NAME} browserCore)
-target_link_libraries(${BIN_NAME} ${EFL_LDFLAGS})
-target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
-
-
-if(TIZEN_BUILD)
-    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS})
-endif(TIZEN_BUILD)
-
-install(TARGETS ${BIN_NAME} RUNTIME DESTINATION bin)
+#add_executable(${BIN_NAME} main.cpp)
+#add_dependencies(${BIN_NAME} browserCore)
+#target_link_libraries(${BIN_NAME} browserCore)
+#target_link_libraries(${BIN_NAME} ${EFL_LDFLAGS})
+#target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
+#
+#
+#if(TIZEN_BUILD)
+#    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS})
+#endif(TIZEN_BUILD)
 
 
 

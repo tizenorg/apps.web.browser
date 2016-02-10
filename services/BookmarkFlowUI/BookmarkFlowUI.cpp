@@ -33,10 +33,59 @@
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
 
+#include  "../SimpleUI/ViewManager.h"
+#include  "../BookmarkService/BookmarkService.h"
+#include  "../StorageService/StorageService.h"
+#include "../WebEngineService/WebEngineService.h"
+
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(BookmarkFlowUI, BOOKMARK_FLOW_SERVICE)
+//EXPORT_SERVICE(BookmarkFlowUI, BOOKMARK_FLOW_SERVICE)
+
+BookmarkFlowUI& BookmarkFlowUI::getInstance()
+{
+    static BookmarkFlowUI instance;
+    return instance;
+}
+
+void BookmarkFlowUI::prepare(bool isBookmark)
+{
+#if !PROFILE_MOBILE
+    if (isBookmark) {
+        std::string uri = services::WebEngineService::getInstance().getURI();
+        tizen_browser::services::BookmarkItem item;
+        if (services::BookmarkService::getInstance().bookmarkExists(uri) && services::BookmarkService::getInstance().getItem(uri, &item))
+            services::StorageService::getInstance().getFoldersStorage().removeNumberInFolder(item.getDir());
+        services::BookmarkService::getInstance().deleteBookmark(uri);
+        return;
+    }
+#endif
+#if PROFILE_MOBILE
+    ViewManager::getInstance().pushViewToStack(&BookmarkFlowUI::getInstance());
+    std::string uri = basic_webengine::webengine_service::WebEngineService::getInstance().getURI();
+    BookmarkFlowUI::getInstance().setURL(uri);
+    BookmarkFlowUI::getInstance().setState(isBookmark);
+    services::BookmarkItem item;
+    if(services::BookmarkService::getInstance().bookmarkExists(uri) && services::BookmarkService::getInstance().getItem(uri, &item))
+        BookmarkFlowUI::getInstance().setTitle(item.getTitle());
+    else
+        BookmarkFlowUI::getInstance().setTitle(basic_webengine::webengine_service::WebEngineService::getInstance().getTitle());
+    BookmarkFlowUI::getInstance().addCustomFolders(services::StorageService::getInstance().getFoldersStorage().getFolders());
+    unsigned int id = isBookmark ? item.getDir() : services::StorageService::getInstance().getFoldersStorage().SpecialFolder;
+    BookmarkFlowUI::getInstance().setFolder(id, services::StorageService::getInstance().getFoldersStorage().getFolderName(id));
+#else
+    BookmarkFlowUI *bookmarkFlow = BookmarkFlowUI::createPopup(ViewManager::getInstance().getContent());
+    //TODO: connect signals
+//    bookmarkFlow->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+//    bookmarkFlow->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+//    bookmarkFlow->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
+//    bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
+    bookmarkFlow->show();
+    bookmarkFlow->addNewFolder();
+    bookmarkFlow->addCustomFolders(services::StorageService::getInstance().getFoldersStorage().getFolders());
+#endif
+}
 
 BookmarkFlowUI::BookmarkFlowUI()
     : m_parent(nullptr)

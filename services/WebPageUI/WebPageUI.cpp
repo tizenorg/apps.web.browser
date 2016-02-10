@@ -28,7 +28,13 @@
 namespace tizen_browser {
 namespace base_ui {
 
-EXPORT_SERVICE(WebPageUI, "org.tizen.browser.webpageui")
+//EXPORT_SERVICE(WebPageUI, "org.tizen.browser.webpageui")
+
+WebPageUI& WebPageUI::getInstance()
+{
+    static WebPageUI instance;
+    return instance;
+}
 
 WebPageUI::WebPageUI()
     : m_parent(nullptr)

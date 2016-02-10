@@ -42,8 +42,17 @@ class BROWSER_EXPORT QuickAccess
 #endif
 {
 public:
-    QuickAccess();
+
+    static QuickAccess& getInstance();
     ~QuickAccess();
+/**
+ * @brief Prevents accidental copies of singleton.
+ * Deleted functions should generally be public as it results in better error messages
+ * due to the compilers behavior to check accessibility before deleted status.
+ */
+    QuickAccess(QuickAccess const&) = delete;
+    void operator=(QuickAccess const&) = delete;
+
     void init(Evas_Object *main_layout);
     Evas_Object* getContent();
     void setMostVisitedItems(std::shared_ptr<services::HistoryItemVector> vec);
@@ -75,6 +84,8 @@ public:
     static const int MAX_THUMBNAIL_HEIGHT;
 
 private:
+    QuickAccess();
+
     void createItemClasses();
     void addMostVisitedItem(std::shared_ptr<services::HistoryItem>);
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);

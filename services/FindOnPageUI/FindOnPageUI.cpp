@@ -34,7 +34,13 @@
 namespace tizen_browser{
 namespace base_ui{
 
-EXPORT_SERVICE(FindOnPageUI, "org.tizen.browser.findonpageui")
+//EXPORT_SERVICE(FindOnPageUI, "org.tizen.browser.findonpageui")
+
+FindOnPageUI& FindOnPageUI::getInstance()
+{
+    static FindOnPageUI instance;
+    return instance;
+}
 
 FindOnPageUI::FindOnPageUI()
     : m_fop_layout(NULL)
