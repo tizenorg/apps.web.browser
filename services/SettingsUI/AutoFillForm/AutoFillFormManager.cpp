@@ -25,9 +25,9 @@ namespace tizen_browser{
 namespace base_ui{
 
 AutoFillFormManager::AutoFillFormManager(void)
-    : m_listView(NULL)
-    , m_composer(NULL)
-    , m_deleteView(NULL)
+    : m_listView(nullptr)
+    , m_composer(nullptr)
+    , m_deleteView(nullptr)
     , m_ewkContext(ewk_context_default_get())
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -41,15 +41,15 @@ AutoFillFormManager::~AutoFillFormManager(void)
 
     if (m_listView)
         delete m_listView;
-    m_listView = NULL;
+    m_listView = nullptr;
 
     if (m_deleteView)
         delete m_deleteView;
-    m_deleteView = NULL;
+    m_deleteView = nullptr;
 
     if(m_composer)
         delete m_composer;
-    m_composer = NULL;
+    m_composer = nullptr;
 }
 
 void AutoFillFormManager::refreshListView()
@@ -68,8 +68,8 @@ std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)
 
     Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(m_ewkContext);
 
-    Eina_List *list = NULL;
-    void *item_data = NULL;
+    Eina_List *list = nullptr;
+    void *item_data = nullptr;
 
     EINA_LIST_FOREACH(entire_item_list, list, item_data) {
         if (item_data) {
@@ -89,24 +89,6 @@ Eina_Bool AutoFillFormManager::addItemToList(AutoFillFormItem *item)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_AutoFillFormItemList.push_back(item);
     return EINA_TRUE;
-}
-
-void AutoFillFormManager::rotateLandscape(){
-    if(m_listView)
-        m_listView->rotateLandscape();
-    if(m_composer)
-        m_composer->rotateLandscape();
-    if(m_deleteView)
-        m_deleteView->rotateLandscape();
-}
-
-void AutoFillFormManager::rotatePortrait(){
-    if(m_listView)
-        m_listView->rotatePortrait();
-    if(m_composer)
-        m_composer->rotatePortrait();
-    if(m_deleteView)
-        m_deleteView->rotatePortrait();
 }
 
 Eina_Bool AutoFillFormManager::deleteAutoFillFormItem(AutoFillFormItem *item)
@@ -131,8 +113,8 @@ Eina_Bool AutoFillFormManager::deleteAllAutoFillFormItems(void)
 
     Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(m_ewkContext);
 
-    Eina_List *list = NULL;
-    void *item_data = NULL;
+    Eina_List *list = nullptr;
+    void *item_data = nullptr;
 
     EINA_LIST_FOREACH(entire_item_list, list, item_data) {
         if (item_data) {
@@ -153,14 +135,14 @@ unsigned int AutoFillFormManager::getAutoFillFormItemCount(void)
 AutoFillFormItem *AutoFillFormManager::createNewAutoFillFormItem(Ewk_Autofill_Profile *profile)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    AutoFillFormItem *item = NULL;
+    AutoFillFormItem *item = nullptr;
     if (!profile)
-        item = new AutoFillFormItem(NULL);
+        item = new AutoFillFormItem(nullptr);
     else {
         AutoFillFormItemData *item_data = new AutoFillFormItemData;
         if (!item_data) {
             BROWSER_LOGE("Malloc failed to get item_data");
-            return NULL;
+            return nullptr;
         }
         memset(item_data, 0x00, sizeof(AutoFillFormItemData));
         item_data->profile_id = ewk_autofill_profile_id_get(profile);
@@ -184,52 +166,50 @@ AutoFillFormItem *AutoFillFormManager::createNewAutoFillFormItem(Ewk_Autofill_Pr
     return item;
 }
 
-AutoFillFormListView *AutoFillFormManager::showListView(void)
+Evas_Object* AutoFillFormManager::showListView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (m_listView)
-        delete m_listView;
+        deleteListView();
 
     m_listView = new AutoFillFormListView(this);
-    m_listView->show(m_parent);
-
-    return m_listView;
+    elm_object_signal_emit(m_action_bar,"back,icon,change", "del_but");
+    return m_listView->show(m_parent, m_action_bar);
 }
 
-AutoFillFormComposeView *AutoFillFormManager::showComposer(AutoFillFormItem *item)
+Evas_Object* AutoFillFormManager::showComposeView(AutoFillFormItem *item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (m_composer)
-        delete m_composer;
+        deleteComposer();
 
     m_composer = new AutoFillFormComposeView(this, item);
-    m_composer->show(m_parent);
 
-    return m_composer;
+    return m_composer->show(m_parent, m_action_bar);
 }
 
-AutoProfileDeleteView *AutoFillFormManager::showDeleteView(void)
+Evas_Object* AutoFillFormManager::showDeleteView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     if (m_deleteView)
-        delete m_deleteView;
+        deleteDeleteView();
 
+    elm_object_signal_emit(m_action_bar,"back,icon,change", "del_but");
     m_deleteView = new AutoProfileDeleteView(this);
-    m_deleteView->show(m_parent);
 
-    return m_deleteView;
+    return m_deleteView->show(m_parent, m_action_bar);
 }
 
 Eina_Bool AutoFillFormManager::deleteListView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_listView)
+    if (m_listView) {
         delete m_listView;
-    m_listView = NULL;
-
+        m_listView = nullptr;
+    }
     return EINA_TRUE;
 }
 
@@ -237,20 +217,21 @@ Eina_Bool AutoFillFormManager::deleteComposer(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (m_composer)
+    if (m_composer) {
         delete m_composer;
-    m_composer = NULL;
-
+        m_composer = nullptr;
+    }
     return EINA_TRUE;
 }
 
 Eina_Bool AutoFillFormManager::deleteDeleteView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_deleteView)
+    if (m_deleteView) {
         delete m_deleteView;
-    m_deleteView = NULL;
-
+        m_deleteView = nullptr;
+    }
+    elm_object_signal_emit(m_action_bar, "back,icon,change", "del_but");
     return EINA_TRUE;
 }
 

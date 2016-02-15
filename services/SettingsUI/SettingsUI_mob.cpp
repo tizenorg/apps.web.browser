@@ -157,18 +157,14 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 
 void SettingsUI::orientationChanged(){
     auto rot = isLandscape();
-    if(rot && *rot) {
+    if (rot && *rot) {
         elm_object_signal_emit(m_actionBar,"rotation,landscape", "rot");
         elm_object_signal_emit(m_items_layout,"rotation,landscape", "rot");
         elm_object_signal_emit(m_subpage_layout,"rotation,landscape", "rot");
-        if(m_autoFillManager)
-            m_autoFillManager->rotateLandscape();
     } else {
         elm_object_signal_emit(m_actionBar,"rotation,portrait", "rot");
         elm_object_signal_emit(m_items_layout,"rotation,portrait", "rot");
         elm_object_signal_emit(m_subpage_layout,"rotation,portrait", "rot");
-        if(m_autoFillManager)
-            m_autoFillManager->rotatePortrait();
     }
 }
 
@@ -210,7 +206,7 @@ Evas_Object* SettingsUI::createBackActionBar(Evas_Object* settings_layout)
 char* SettingsUI::_gengrid_item_text_get(void* data, Evas_Object* /*obj*/, const char* part)
 {
    M_ASSERT(data);
-   if(!data)
+   if (!data)
        return nullptr;
 
    ItemData* it = static_cast<ItemData*>(data);
@@ -297,7 +293,7 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
-    elm_object_signal_emit(m_actionBar,"switch,delete,web,data", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete browsing data");
 
     createInfoField("info_field", "You can delete web browsing data optionally.", main);
 
@@ -376,7 +372,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_object_signal_emit(m_actionBar,"switch,reset,most,visited", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete browsing data");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *reset_mv_button = elm_button_add(layout);
@@ -400,6 +396,7 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     elm_object_signal_emit(m_actionBar,"switch,reset,browser", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Reset browser");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *reset_browser_button = elm_button_add(layout);
@@ -422,7 +419,7 @@ Evas_Object* SettingsUI::createDeveloperOptionsMobilePage(Evas_Object* settings_
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_object_signal_emit(m_actionBar,"switch,developer,options", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Developer Options");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *override_ua_button = elm_button_add(layout);
@@ -452,7 +449,7 @@ void SettingsUI::__checkbox_label_click_cb(void *data, Evas_Object*, const char*
     if (data) {
         SettingsUI* self = static_cast<SettingsUI*>(data);
 
-        if(strcmp(source, "cache_cb_text_bg") == 0 ){
+        if (strcmp(source, "cache_cb_text_bg") == 0 ){
             Evas_Object *cache_check = elm_layout_content_get(self->m_checkbox_layout, "cache_cb");
             elm_check_state_set(cache_check, !elm_check_state_get(cache_check));
         }
@@ -484,7 +481,7 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
-    elm_object_signal_emit(m_actionBar,"switch,content,Settings", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Content Settings");
 
     createInfoField("info_field", "Choose web page content", main);
 
@@ -519,7 +516,7 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
-    elm_object_signal_emit(m_actionBar,"switch,privacy,Settings", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Privacy");
 
     createInfoField("info_field", "Choose privacy settings", main);
 
@@ -548,7 +545,7 @@ void SettingsUI::__checkbox_content_settings_label_click_cb(void* data, Evas_Obj
     if (data) {
         auto self = static_cast<SettingsUI*>(data);
 
-        if(strcmp(source, "overview_cb_text_bg") == 0 ) {
+        if (strcmp(source, "overview_cb_text_bg") == 0 ) {
             Evas_Object *checkbox = elm_layout_content_get(self->m_checkbox_layout, "overview_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
@@ -576,7 +573,7 @@ void SettingsUI::__checkbox_privacy_label_click_cb(void* data, Evas_Object*, con
     if (data) {
         auto self = static_cast<SettingsUI*>(data);
 
-        if(strcmp(source, "form_data_cb_text_bg") == 0 ) {
+        if (strcmp(source, "form_data_cb_text_bg") == 0 ) {
             Evas_Object *checkbox = elm_layout_content_get(self->m_checkbox_layout, "form_data_cb");
             Eina_Bool value = !elm_check_state_get(checkbox);
             elm_check_state_set(checkbox, value);
@@ -616,18 +613,24 @@ void SettingsUI::initializeAutoFillManager()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_parent);
-    if (!m_autoFillManager) {
-         m_autoFillManager = std::unique_ptr<AutoFillFormManager>(new AutoFillFormManager());
-         m_autoFillManager->listViewBackClicked.connect(boost::bind(&SettingsUI::destroyAutoFillManager, this));
-         m_autoFillManager->init(m_parent);
-         m_autoFillManager->showListView();
-    }
+    resetItemsLayoutContent();
+
+    m_actionBar = createBackActionBar(m_settings_layout);
+    auto main = createMainView(m_settings_layout);
+    m_autoFillManager = std::unique_ptr<AutoFillFormManager>(new AutoFillFormManager());
+    m_autoFillManager->listViewBackClicked.connect(boost::bind(&SettingsUI::destroyAutoFillManager, this));
+    m_autoFillManager->init(main, m_actionBar);
+
+    m_subpage_layout = m_autoFillManager->showListView();
 }
 
 void SettingsUI::destroyAutoFillManager()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_autoFillManager.reset();
+    if (m_autoFillManager) {
+        m_autoFillManager.reset();
+        m_autoFillManager = nullptr;
+    }
 }
 
 void SettingsUI::_auto_fill_data_menu_clicked_cb(void* data, Evas_Object*, void*)
@@ -774,7 +777,7 @@ Evas_Object* SettingsUI::createUserAgentGenList(Evas_Object* settings_layout)
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_object_signal_emit(m_actionBar,"switch,override_ua,Settings", "del_but");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Override UserAgent");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *genlist = elm_genlist_add(layout);
@@ -831,6 +834,7 @@ void SettingsUI::resetItemsLayoutContent()
     evas_object_del(this->m_items_layout);
     evas_object_del(this->m_subpage_layout);
     evas_object_del(this->m_checkbox_layout);
+    this->destroyAutoFillManager();
     this->m_subpage_layout = nullptr;
     this->m_checkbox_layout = nullptr;
     this->m_items_layout = nullptr;

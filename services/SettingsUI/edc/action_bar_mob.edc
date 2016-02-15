@@ -23,12 +23,6 @@ group
                 rel1 { relative: 0.0 0.0;}
                 rel2 { relative: 1.0 1.0;}
             }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1280 108;
-                max: -1 108;
-            }
         }
         part {
             name: "settings_bg";
@@ -44,12 +38,6 @@ group
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; to: "bg_clipper";}
                 color : 255 255 255 255;
-            }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default" 0.0;
-                min: 1280 108;
-                max: -1 108;
             }
         }
         part {
@@ -76,6 +64,7 @@ group
                 state: "default" 0.0;
                 visible: 1;
                 fixed: 0 1;
+                max: 550 -1;
                 align: .5 .5;
                 color: 51 51 51 255;
                 rel1 { relative: 0.0 0.0; to: "settings_title_bg"; }
@@ -87,77 +76,6 @@ group
                     font: "Sans";
                     size: 44;
                     align: 0.5 0.5;
-                }
-            }
-            description {
-                state: "delBroData" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    min: 0 1;
-                    max: 1 1;
-                    text: "Delete browsing data";
-                    font: "Sans";
-                    size: 44;
-                    align: 0.5 0.5;
-                }
-            }
-            description {
-                state: "resBrowser" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    min: 0 1;
-                    max: 1 1;
-                    text: "Reset browser";
-                    font: "Sans";
-                    size: 44;
-                    align: 0.5 0.5;
-                }
-            }
-            description {
-                state: "resMostVisited" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    min: 0 1;
-                    max: 1 1;
-                    text: "Reset Most Visited Site";
-                    font: "Sans";
-                    size: 44;
-                    align: 0.5 0.5;
-                }
-            }
-            description {
-                state: "contentSettings" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    text: "Content Settings";
-                }
-            }
-            description {
-                state: "privacySettings" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    text: "Privacy";
-                }
-            }
-            description {
-                state: "developerSettings" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    text: "Developer Options";
-                }
-            }
-            description {
-                state: "overrideUASettings" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-                text {
-                    text: "Override UserAgent";
                 }
             }
             description {
@@ -203,6 +121,144 @@ group
             }
         }
         part {
+            name: "cancel_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                fixed: 1 1;
+                align: 0 0.5;
+                min: 128 64;
+                max: 128 64;
+                rel1 { relative: 0.01 0.0; to: "bg_clipper";}
+                rel2 { relative: 1.0 1.0; to: "bg_clipper";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "cancel_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 128 0;
+                fixed: 1 0;
+                visible: 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+                rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+                text {
+                    text: "Cancel";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.5 0.5;
+                }
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "cancel_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "cancel_bg";}
+                rel2 { relative: 1.0 1.0; to: "cancel_bg";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "done_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                fixed: 1 1;
+                align: 1 0.5;
+                min: 128 64;
+                max: 128 64;
+                rel2 { relative: 1.0 0.99; to: "bg_clipper";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "done_text";
+            type: TEXT;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                min: 96 0;
+                fixed: 1 0;
+                visible: 0;
+                align: 0 0;
+                color: 64 64 64 255;
+                rel1 { relative: 0.0 0.0; to: "done_bg";}
+                rel2 { relative: 1.0 1.0; to: "done_bg";}
+                text {
+                    text: "Done";
+                    font: "Sans";
+                    size: 30;
+                    align: 0.5 0.5;
+                }
+            }
+            description {
+                state: "dim" 0.0;
+                inherit: "default" 0.0;
+                color: 207 207 207 255;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "done_button";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                rel1 { relative: 0.0 0.0; to: "done_bg";}
+                rel2 { relative: 1.0 1.0; to: "done_bg";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
             name: "close_icon";
             type: IMAGE;
             scale: 1;
@@ -232,6 +288,11 @@ group
                 state: "focus" 0.0;
                 inherit: "highlight" 0.0;
             }
+            description {
+                state: "hidden" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
         }
         part {
             name: "close_over";
@@ -247,6 +308,11 @@ group
                 rel1 { relative: 0.0 0.0; to: "close_bg";}
                 rel2 { relative: 1.0 1.0; to: "close_bg";}
                 color_class: transparent;
+            }
+            description {
+                state: "hidden" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
             }
         }
         part {
@@ -264,8 +330,107 @@ group
                 rel2 { relative: 1.0 1.0; to: "close_over";}
                 color_class: transparent;
             }
+            description {
+                state: "hidden" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+        part {
+            name: "close_autofill_del_icon";
+            type: IMAGE;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                fixed: 1 1;
+                align: 0 0;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.0 0.0; to: "close_bg"; offset: 16 0;}
+                rel2 { relative: 1.0 1.0; to: "close_bg";}
+                image.normal: "navi_ic_back_nor.png";
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "close_autofill_del_over";
+            scale:1;
+            type: RECT;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.0 0.0; to: "close_bg";}
+                rel2 { relative: 1.0 1.0; to: "close_bg";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
+        }
+        part {
+            name: "close_autofill_del_click";
+            scale:1;
+            type: SWALLOW;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.0 0.0; to: "close_over";}
+                rel2 { relative: 1.0 1.0; to: "close_over";}
+                color_class: transparent;
+            }
+            description {
+                state: "visible" 0.0;
+                inherit: "default" 0.0;
+                visible: 1;
+            }
         }
         programs{
+            program {
+                name: "hide_buttons";
+                signal: "hide,buttons,signal";
+                source: "but_vis";
+                action: STATE_SET "default" 0.0;
+                target: "done_bg";
+                target: "done_text";
+                target: "done_button";
+                target: "cancel_bg";
+                target: "cancel_text";
+                target: "cancel_button";
+            }
+            program {
+                name: "show_buttons";
+                signal: "show,buttons,signal";
+                source: "but_vis";
+                action: STATE_SET "visible" 0.0;
+                target: "done_bg";
+                target: "done_text";
+                target: "done_button";
+                target: "cancel_bg";
+                target: "cancel_text";
+                target: "cancel_button";
+            }
+            program {
+                name: "dim_done_button";
+                signal: "dim,done,button,signal";
+                source: "but_vis";
+                action: STATE_SET "dim" 0.0;
+                target: "done_text";
+            }
             program {
                 name: "mouse_in_close_click";
                 signal: "mouse,in";
@@ -301,62 +466,6 @@ group
                 target: "close_icon";
             }
             program {
-                name: "toDelBrodata";
-                signal: "switch,delete,web,data";
-                source: "del_but";
-                action: STATE_SET "delBroData" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toResMostVisited";
-                signal: "switch,reset,most,visited";
-                source: "del_but";
-                action: STATE_SET "resMostVisited" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toResBrowser";
-                signal: "switch,reset,browser";
-                source: "del_but";
-                action: STATE_SET "resBrowser" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toContentSettings";
-                signal: "switch,content,Settings";
-                source: "del_but";
-                action: STATE_SET "contentSettings" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toPrivacySettings";
-                signal: "switch,privacy,Settings";
-                source: "del_but";
-                action: STATE_SET "privacySettings" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toDeveloperSettings";
-                signal: "switch,developer,options";
-                source: "del_but";
-                action: STATE_SET "developerSettings" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
-                name: "toOverrideUASettings";
-                signal: "switch,override_ua,Settings";
-                source: "del_but";
-                action: STATE_SET "overrideUASettings" 0.0;
-                target: "settings_title";
-                after: "backIconChange";
-            }
-            program {
                 name: "backIconChange";
                 signal: "back,icon,change";
                 source: "del_but";
@@ -364,20 +473,40 @@ group
                 target: "close_icon";
             }
             program {
-                name: "landscapeMode";
-                signal: "rotation,landscape";
-                source: "rot";
-                action: STATE_SET "landscape" 0.0;
-                target: "bg_clipper";
-                target: "settings_bg";
+                name: "backIconHide";
+                signal: "hide,close,icon";
+                source: "del_but";
+                action: STATE_SET "hidden" 0.0;
+                target: "close_icon";
+                target: "close_click";
+                target: "close_over";
             }
             program {
-                name: "portraitMode";
-                signal: "rotation,portrait";
-                source: "rot";
+                name: "backIconShow";
+                signal: "show,close,icon";
+                source: "del_but";
                 action: STATE_SET "default" 0.0;
-                target: "bg_clipper";
-                target: "settings_bg";
+                target: "close_icon";
+                target: "close_click";
+                target: "close_over";
+            }
+            program {
+                name: "backAutofillIconHide";
+                signal: "hide,autofill,close,icon";
+                source: "del_but";
+                action: STATE_SET "default" 0.0;
+                target: "close_autofill_del_icon";
+                target: "close_autofill_del_click";
+                target: "close_autofill_del_over";
+            }
+            program {
+                name: "backAutofillIconShow";
+                signal: "show,autofill,close,icon";
+                source: "del_but";
+                action: STATE_SET "visible" 0.0;
+                target: "close_autofill_del_icon";
+                target: "close_autofill_del_click";
+                target: "close_autofill_del_over";
             }
         }
     }
