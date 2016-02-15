@@ -31,7 +31,7 @@ public:
     AutoFillFormListView(AutoFillFormManager *affm);
     ~AutoFillFormListView(void);
 
-    Eina_Bool show(Evas_Object *parent);
+    Evas_Object* show(Evas_Object *parent, Evas_Object* action_bar = nullptr);
     void hide();
     void refreshView(void);
     void rotateLandscape();
@@ -58,8 +58,12 @@ private:
     static void __delete_profile_button_cb(void* data, Evas_Object* obj, void* event_info);
 
     AutoFillFormManager *m_manager;
+    Evas_Object *m_parent;
     Evas_Object *m_mainLayout;
+    Evas_Object *m_add_btn;
+    Evas_Object *m_del_btn;
     Evas_Object *m_genlist;
+    Evas_Object *m_action_bar;
     Elm_Genlist_Item_Class *m_itemClass;
     std::string m_edjFilePath;
 };

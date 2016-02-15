@@ -46,17 +46,17 @@ public:
     AutoFillFormManager(void);
     ~AutoFillFormManager(void);
 
-    void init(Evas_Object* parent) { m_parent = parent; }
+    void init(Evas_Object* parent, Evas_Object* action_bar) { m_parent = parent; m_action_bar = action_bar;}
     void refreshListView();
     Eina_Bool saveAutoFillFormItem(AutoFillFormItemData *item_data);
     Eina_Bool deleteAutoFillFormItem(AutoFillFormItem *item);
     Eina_Bool deleteAllAutoFillFormItems(void);
     unsigned int getAutoFillFormItemCount(void);
     AutoFillFormItem *createNewAutoFillFormItem(Ewk_Autofill_Profile *profile = NULL);
-    AutoFillFormListView *showListView(void);
-    AutoProfileDeleteView *showDeleteView(void);
+    Evas_Object* showListView(void);
+    Evas_Object* showDeleteView(void);
+    Evas_Object* showComposeView(AutoFillFormItem *item = NULL);
     AutoFillFormListView *getListView(void) { return m_listView; }
-    AutoFillFormComposeView *showComposer(AutoFillFormItem *item = NULL);
     AutoFillFormComposeView *getComposeView(void) { return m_composer; }
     Eina_Bool deleteListView(void);
     Eina_Bool deleteDeleteView(void);
@@ -73,6 +73,7 @@ public:
     void seeAllData(void);
 private:
     Evas_Object* m_parent;
+    Evas_Object* m_action_bar;
     std::vector<AutoFillFormItem *> m_AutoFillFormItemList;
     AutoFillFormListView *m_listView;
     AutoFillFormComposeView *m_composer;

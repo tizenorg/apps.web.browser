@@ -58,6 +58,7 @@ public:
     Evas_Object* createBackActionBar(Evas_Object* settings_layout);
     Evas_Object* createSettingsMobilePage(Evas_Object* settings_layout);
     Evas_Object* createMainView(Evas_Object* settings_layout);
+    Evas_Object* createMainView2(Evas_Object* settings_layout);
     Evas_Object* createInfoField(const char* name, const char* text, Evas_Object* parent);
     Evas_Object* createDelDataMobilePage(Evas_Object* settings_layout);
     Evas_Object* createDelDataMobileCheckBoxes(Evas_Object* parent);

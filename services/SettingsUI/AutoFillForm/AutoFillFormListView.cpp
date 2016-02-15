@@ -25,18 +25,25 @@ namespace base_ui{
 
 AutoFillFormListView::AutoFillFormListView(AutoFillFormManager *affm)
     : m_manager(affm)
+    , m_parent(nullptr)
     , m_mainLayout(nullptr)
+    , m_add_btn(nullptr)
+    , m_del_btn(nullptr)
     , m_genlist(nullptr)
+    , m_action_bar(nullptr)
     , m_itemClass(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
-    m_edjFilePath.append("SettingsUI/AutoFillMobileUI.edj");
+    m_edjFilePath.append("SettingsUI/SettingsMobileUI.edj");
 }
 
 AutoFillFormListView::~AutoFillFormListView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    evas_object_smart_callback_del(m_add_btn, "clicked", __add_profile_button_cb);
+    evas_object_smart_callback_del(m_del_btn, "clicked", __delete_profile_button_cb);
 
     if (m_genlist) {
         elm_genlist_clear(m_genlist);
@@ -46,41 +53,42 @@ AutoFillFormListView::~AutoFillFormListView(void)
         evas_object_hide(m_mainLayout);
         evas_object_del(m_mainLayout);
     }
+    m_mainLayout = nullptr;
+    m_genlist = nullptr;
 }
 
-Eina_Bool AutoFillFormListView::show(Evas_Object* parent)
+Evas_Object* AutoFillFormListView::show(Evas_Object* parent, Evas_Object* action_bar)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+
+    m_action_bar = action_bar;
+    elm_object_translatable_part_text_set(m_action_bar, "settings_title", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
+
     m_mainLayout = createMainLayout(parent);
+    evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_mainLayout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     if (!m_mainLayout) {
         BROWSER_LOGE("createMainLayout failed");
         return EINA_FALSE;
     }
 
-    Evas_Object* back_button = elm_button_add(m_mainLayout);
-    if (!back_button) {
-        BROWSER_LOGE("Failed to create back_button");
-        return EINA_FALSE;
-    }
-    elm_object_style_set(back_button, "basic_button");
-    evas_object_smart_callback_add(back_button, "clicked", __back_button_cb, this);
-    elm_object_part_content_set(m_mainLayout, "back_button", back_button);
+    m_add_btn = elm_button_add(m_mainLayout);
+    elm_object_style_set(m_add_btn, "basic_button");
+    evas_object_smart_callback_add(m_add_btn, "clicked", __add_profile_button_cb, this);
+    elm_object_part_content_set(m_mainLayout, "add_profile_button", m_add_btn);
 
-    Evas_Object *add_btn = elm_button_add(m_mainLayout);
-    elm_object_style_set(add_btn, "basic_button");
-    evas_object_smart_callback_add(add_btn, "clicked", __add_profile_button_cb, this);
-    elm_object_part_content_set(m_mainLayout, "add_profile_button", add_btn);
-
-    Evas_Object *del_btn = elm_button_add(m_mainLayout);
-    elm_object_style_set(del_btn, "basic_button");
-    evas_object_smart_callback_add(del_btn, "clicked", __delete_profile_button_cb, this);
-    elm_object_part_content_set(m_mainLayout, "delete_profile_button", del_btn);
+    m_del_btn = elm_button_add(m_mainLayout);
+    elm_object_style_set(m_del_btn, "basic_button");
+    evas_object_smart_callback_add(m_del_btn, "clicked", __delete_profile_button_cb, this);
+    elm_object_part_content_set(m_mainLayout, "delete_profile_button", m_del_btn);
 
     evas_object_show(m_mainLayout);
+    elm_layout_content_set(parent, "autofill_sub_swallow", m_mainLayout);
+    m_parent = parent;
 
-    return EINA_TRUE;
+    return m_mainLayout;
 }
 
 void AutoFillFormListView::refreshView(void)
@@ -88,18 +96,6 @@ void AutoFillFormListView::refreshView(void)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_genlist_clear(m_genlist);
     appendGenlist(m_genlist);
-}
-
-void AutoFillFormListView::rotateLandscape()
-{
-    if(m_mainLayout)
-        elm_object_signal_emit(m_mainLayout,"rotation,landscape", "rot");
-}
-
-void AutoFillFormListView::rotatePortrait()
-{
-    if(m_mainLayout)
-        elm_object_signal_emit(m_mainLayout,"rotation,portrait", "rot");
 }
 
 Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
@@ -127,7 +123,6 @@ Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
     }
     evas_object_show(m_genlist);
     elm_object_part_content_set(layout, "afflv_genlist", m_genlist);
-
     return layout;
 }
 
@@ -136,6 +131,8 @@ Evas_Object *AutoFillFormListView::createGenlist(Evas_Object *parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     Evas_Object *genlist = elm_genlist_add(parent);
+    evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
     if (!genlist) {
         BROWSER_LOGE("elm_genlist_add failed");
         return NULL;
@@ -179,12 +176,16 @@ Eina_Bool AutoFillFormListView::appendGenlist(Evas_Object *genlist)
             item_callback_data->it = elm_genlist_item_append(genlist, m_itemClass,
             item_callback_data, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_clicked_cb, item_callback_data);
         }
-        elm_object_signal_emit(m_mainLayout, "show,del,button,signal", "");
-        elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), false);
+        if (m_mainLayout) {
+            elm_object_signal_emit(m_mainLayout, "show,del,button,signal", "");
+            elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), false);
+        }
     }
     else {
-        elm_object_signal_emit(m_mainLayout, "dim,del,button,signal", "");
-        elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), true);
+    	if (m_mainLayout) {
+            elm_object_signal_emit(m_mainLayout, "dim,del,button,signal", "");
+            elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), true);
+    	}
     }
 
     return EINA_TRUE;
@@ -212,7 +213,7 @@ void AutoFillFormListView::__add_profile_button_cb(void* data, Evas_Object* /*ob
 
     /* create new profile */
     AutoFillFormListView *list_view = static_cast<AutoFillFormListView*>(data);
-    list_view->m_manager->showComposer();
+    list_view->m_manager->showComposeView();
 }
 
 void AutoFillFormListView::__delete_profile_button_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
@@ -227,7 +228,6 @@ void AutoFillFormListView::__back_button_cb(void* data, Evas_Object* /*obj*/, vo
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     AutoFillFormListView *list_view = static_cast<AutoFillFormListView*>(data);
     list_view->hide();
-    list_view->m_manager->listViewBackClicked();
 }
 
 void AutoFillFormListView::__genlist_item_clicked_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
@@ -238,12 +238,13 @@ void AutoFillFormListView::__genlist_item_clicked_cb(void* data, Evas_Object* /*
     AutoFillFormListView *view = static_cast<AutoFillFormListView*>(callback_data->user_data);
 
     elm_genlist_item_selected_set(callback_data->it, EINA_FALSE);
-    view->m_manager->showComposer((view->m_manager->getItemList())[callback_data->menu_index]);
+    view->m_manager->showComposeView((view->m_manager->getItemList())[callback_data->menu_index]);
 }
 
 void AutoFillFormListView::hide()
 {
     evas_object_hide(m_mainLayout);
+    m_manager->listViewBackClicked();
 }
 
 }

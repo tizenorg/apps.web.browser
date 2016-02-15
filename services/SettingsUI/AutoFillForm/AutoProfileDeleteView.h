@@ -26,10 +26,8 @@ class AutoProfileDeleteView {
 public:
     AutoProfileDeleteView(AutoFillFormManager* manager);
     ~AutoProfileDeleteView(void);
-    void show(Evas_Object *parent);
+    Evas_Object* show(Evas_Object *parent, Evas_Object* action_bar = nullptr);
     void hide();
-    void rotateLandscape();
-    void rotatePortrait();
 
 private:
     typedef struct _genlistCallbackData{
@@ -54,8 +52,13 @@ private:
     static void __checkbox_changed_cb(void* data, Evas_Object* obj, void* event_info);
 
     AutoFillFormManager* m_manager;
+    Evas_Object *m_parent;
+    Evas_Object *m_back_button;
+    Evas_Object *m_del_button;
+    Evas_Object *m_checkbox;
     Evas_Object *m_mainLayout;
     Evas_Object *m_genlist;
+    Evas_Object *m_action_bar;
     Elm_Genlist_Item_Class *m_itemClass;
     unsigned m_checked_count;
 
