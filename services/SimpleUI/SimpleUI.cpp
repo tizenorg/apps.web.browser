@@ -1614,7 +1614,7 @@ void SimpleUI::settingsResetMostVisited()
 {
     BROWSER_LOGD("[%s]: Deleting most visited sites", __func__);
     NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-    popup->show("Delete Web Browsing Data");
+    popup->show("Resetting most visited sites...");
     onDeleteMostVisitedButton(nullptr);
     popup->dismiss();
 }
