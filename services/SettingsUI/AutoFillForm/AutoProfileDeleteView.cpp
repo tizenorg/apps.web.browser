@@ -25,8 +25,13 @@ namespace base_ui{
 
 AutoProfileDeleteView::AutoProfileDeleteView(AutoFillFormManager* manager)
     : m_manager(manager)
+    , m_parent(nullptr)
+    , m_back_button(nullptr)
+    , m_del_button(nullptr)
+    , m_checkbox(nullptr)
     , m_mainLayout(nullptr)
     , m_genlist(nullptr)
+    , m_action_bar(nullptr)
     , m_itemClass(nullptr)
     , m_checked_count(0)
 {
@@ -38,6 +43,14 @@ AutoProfileDeleteView::AutoProfileDeleteView(AutoFillFormManager* manager)
 AutoProfileDeleteView::~AutoProfileDeleteView(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    evas_object_smart_callback_del(m_back_button, "clicked", __back_button_cb);
+    evas_object_smart_callback_del(m_del_button, "clicked", __delete_button_cb);
+    evas_object_smart_callback_del(m_checkbox, "clicked", __select_all_checkbox_changed_cb);
+
+    elm_object_signal_emit(m_action_bar, "hide,autofill,close,icon", "del_but");
+    elm_object_signal_emit(m_action_bar, "show,close,icon", "del_but");
+
     if (m_genlist) {
         elm_genlist_clear(m_genlist);
         evas_object_del(m_genlist);
@@ -46,38 +59,43 @@ AutoProfileDeleteView::~AutoProfileDeleteView(void)
         evas_object_hide(m_mainLayout);
         evas_object_del(m_mainLayout);
     }
+    m_mainLayout = nullptr;
+    m_genlist = nullptr;
 }
 
-void AutoProfileDeleteView::show(Evas_Object* parent)
+Evas_Object* AutoProfileDeleteView::show(Evas_Object* parent, Evas_Object* action_bar)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
+
+    m_action_bar = action_bar;
+    elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Auto Fill Delete");
+
     m_mainLayout = createMainLayout(parent);
     if (!m_mainLayout) {
         BROWSER_LOGE("createMainLayout failed");
-        return;
+        return nullptr;
     }
 
-    Evas_Object* back_button = elm_button_add(m_mainLayout);
-    if (!back_button) {
-        BROWSER_LOGE("Failed to create back_button");
-        return;
-    }
-    elm_object_style_set(back_button, "basic_button");
-    evas_object_smart_callback_add(back_button, "clicked", __back_button_cb, this);
-    elm_object_part_content_set(m_mainLayout, "back_button", back_button);
+    m_back_button = elm_button_add(m_mainLayout);
+    elm_object_style_set(m_back_button, "basic_button");
+    evas_object_smart_callback_add(m_back_button, "clicked", __back_button_cb, this);
+    elm_object_part_content_set(m_action_bar, "close_autofill_del_click", m_back_button);
+    elm_object_signal_emit(m_action_bar, "hide,close,icon", "del_but");
+    elm_object_signal_emit(m_action_bar, "show,autofill,close,icon", "del_but");
 
-    Evas_Object *del_btn = elm_button_add(m_mainLayout);
-    elm_object_style_set(del_btn, "basic_button");
-    evas_object_smart_callback_add(del_btn, "clicked", __delete_button_cb, this);
-    elm_object_part_content_set(m_mainLayout, "del_button", del_btn);
-
+    m_del_button = elm_button_add(m_mainLayout);
+    elm_object_style_set(m_del_button, "basic_button");
+    evas_object_smart_callback_add(m_del_button, "clicked", __delete_button_cb, this);
+    elm_object_part_content_set(m_mainLayout, "del_button", m_del_button);
     elm_object_signal_emit(m_mainLayout, "dim,del,button,signal", "");
-    elm_object_disabled_set(del_btn, true);
+    elm_object_disabled_set(m_del_button, true);
 
     evas_object_show(m_mainLayout);
+    elm_layout_content_set(parent, "autofill_del_swallow", m_mainLayout);
+    m_parent = parent;
+    return m_mainLayout;
 }
 
 Evas_Object *AutoProfileDeleteView::createMainLayout(Evas_Object *parent)
@@ -87,7 +105,7 @@ Evas_Object *AutoProfileDeleteView::createMainLayout(Evas_Object *parent)
     Evas_Object *layout = elm_layout_add(parent);
     if (!layout) {
         BROWSER_LOGD("elm_layout_add failed");
-        return NULL;
+        return nullptr;
     }
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "affdv-layout");
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -99,7 +117,7 @@ Evas_Object *AutoProfileDeleteView::createMainLayout(Evas_Object *parent)
     Evas_Object* checkbox = elm_check_add(layout);
     if (!checkbox) {
         BROWSER_LOGE("Failed to add check");
-        return NULL;
+        return nullptr;
     }
     elm_object_style_set(checkbox, "custom_check");
     Eina_Bool checked = false;
@@ -107,19 +125,19 @@ Evas_Object *AutoProfileDeleteView::createMainLayout(Evas_Object *parent)
     evas_object_propagate_events_set(checkbox, EINA_FALSE);
     elm_object_part_content_set(layout, "select_all_checkbox", checkbox);
 
-    Evas_Object* button = elm_button_add(layout);
-    if (!button) {
+    m_checkbox = elm_button_add(layout);
+    if (!m_checkbox) {
         BROWSER_LOGE("Failed to add button");
-        return NULL;
+        return nullptr;
     }
-    elm_object_style_set(button, "basic_button");
-    evas_object_smart_callback_add(button, "clicked", __select_all_checkbox_changed_cb, this);
-    elm_object_part_content_set(layout, "select_all_checkbox_button", button);
+    elm_object_style_set(m_checkbox, "basic_button");
+    evas_object_smart_callback_add(m_checkbox, "clicked", __select_all_checkbox_changed_cb, this);
+    elm_object_part_content_set(layout, "select_all_checkbox_button", m_checkbox);
 
     m_genlist = createGenlist(layout);
     if (!m_genlist) {
         BROWSER_LOGE("elm_genlist_add failed");
-        return NULL;
+        return nullptr;
     }
     evas_object_show(m_genlist);
     elm_object_part_content_set(layout, "affdv_genlist", m_genlist);
@@ -134,13 +152,13 @@ Evas_Object *AutoProfileDeleteView::createGenlist(Evas_Object *parent)
     Evas_Object *genlist = elm_genlist_add(parent);
     if (!genlist) {
         BROWSER_LOGE("elm_genlist_add failed");
-        return NULL;
+        return nullptr;
     }
 
     m_itemClass = elm_genlist_item_class_new();
     if (!m_itemClass) {
         BROWSER_LOGE("elm_genlist_item_class_new for description_item_class failed");
-        return EINA_FALSE;
+        return nullptr;
     }
     m_itemClass->item_style = "affdv_item";
     m_itemClass->func.content_get = __content_get_cb;
@@ -208,6 +226,7 @@ void AutoProfileDeleteView::__back_button_cb(void* data, Evas_Object* /*obj*/, v
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     AutoProfileDeleteView *view = static_cast<AutoProfileDeleteView*>(data);
+    elm_object_translatable_part_text_set(view->m_action_bar, "settings_title", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
     view->hide();
 }
 
@@ -244,7 +263,7 @@ void AutoProfileDeleteView::__genlist_item_selected_cb(void* data, Evas_Object* 
     }
 }
 
-void AutoProfileDeleteView::__delete_button_cb(void* data,Evas_Object* /*obj*/,void* /*event_info*/)
+void AutoProfileDeleteView::__delete_button_cb(void* data, Evas_Object* /*obj*/,void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     AutoProfileDeleteView *apdv = static_cast<AutoProfileDeleteView*>(data);
@@ -259,7 +278,6 @@ void AutoProfileDeleteView::deleteAllItems(void)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_manager->deleteAllAutoFillFormItems();
-    hide();
     m_manager->refreshListView();
 }
 
@@ -267,10 +285,10 @@ void AutoProfileDeleteView::deleteSelectedItems(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    genlistCallbackData *cb_data = NULL;
+    genlistCallbackData *cb_data = nullptr;
     Elm_Object_Item *it = elm_genlist_first_item_get(m_genlist);
     Evas_Object *checkbox;
-    int del_count =0;
+    int del_count = 0;
 
     while (it) {
         checkbox = elm_object_item_part_content_get(it, "checkbox");
@@ -283,7 +301,6 @@ void AutoProfileDeleteView::deleteSelectedItems(void)
         it = elm_genlist_item_next_get(it);
     }
     BROWSER_LOGD("Total items deleted %d",del_count);
-    hide();
     m_manager->refreshListView();
 }
 
@@ -332,19 +349,8 @@ Evas_Object *AutoProfileDeleteView::__content_get_cb(void* /*data*/, Evas_Object
 void AutoProfileDeleteView::hide(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    evas_object_hide(m_mainLayout);
-}
-
-void AutoProfileDeleteView::rotateLandscape()
-{
-    if(m_mainLayout)
-        elm_object_signal_emit(m_mainLayout,"rotation,landscape", "rot");
-}
-
-void AutoProfileDeleteView::rotatePortrait()
-{
-    if(m_mainLayout)
-        elm_object_signal_emit(m_mainLayout,"rotation,portrait", "rot");
+    if (m_manager)
+        m_manager->deleteDeleteView();
 }
 
 }

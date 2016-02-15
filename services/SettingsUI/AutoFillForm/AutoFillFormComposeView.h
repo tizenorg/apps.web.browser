@@ -28,7 +28,7 @@ public:
     AutoFillFormComposeView(AutoFillFormManager* manager, AutoFillFormItem *item = NULL);
     ~AutoFillFormComposeView(void);
 
-    void show(Evas_Object *parent);
+    Evas_Object* show(Evas_Object *parent, Evas_Object* action_bar = nullptr);
     void hide();
     void rotateLandscape();
     void rotatePortrait();
@@ -76,6 +76,7 @@ private:
     AutoFillFormManager *m_manager;
 
     Evas_Object *m_mainLayout;
+    Evas_Object *m_parent;
     Evas_Object *m_genlist;
     Evas_Object *m_doneButton;
     Evas_Object *m_cancelButton;
@@ -89,6 +90,7 @@ private:
     Evas_Object *m_entryCountry;
     Evas_Object *m_entryPhone;
     Evas_Object *m_entryEmail;
+    Evas_Object *m_action_bar;
 
     profileEditErrorcode m_editErrorcode;
     profileSaveErrorcode m_saveErrorcode;
