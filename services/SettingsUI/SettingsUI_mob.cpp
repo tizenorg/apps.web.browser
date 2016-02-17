@@ -85,13 +85,13 @@ void SettingsUI::init(Evas_Object* parent)
 void SettingsUI::updateButtonMap() {
     ItemData deleteWebBrowsing;
     //TODO Add translation API
-    deleteWebBrowsing.buttonText="Delete Web browsing data";
+    deleteWebBrowsing.buttonText="Delete Web Browsing Data";
 
     ItemData resetMostVisited;
-    resetMostVisited.buttonText="Reset most visited site";
+    resetMostVisited.buttonText="Reset Most Visited Site";
 
     ItemData resetBrowser;
-    resetBrowser.buttonText="Reset browser";
+    resetBrowser.buttonText="Reset Browser";
 
     ItemData autoFill;
     autoFill.buttonText=_("IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
@@ -293,9 +293,9 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
-    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete browsing data");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete Web Browsing Data");
 
-    createInfoField("info_field", "You can delete web browsing data optionally.", main);
+    createInfoField("info_field", "You can delete Web Browsing Data optionally.", main);
 
     auto check_boxes = createDelDataMobileCheckBoxes(main);
 
@@ -372,7 +372,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete browsing data");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete Web Browsing Data");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *reset_mv_button = elm_button_add(layout);
