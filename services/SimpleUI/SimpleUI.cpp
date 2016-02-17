@@ -1371,6 +1371,8 @@ void SimpleUI::showHistoryUI()
             HistoryPeriod::HISTORY_LASTWEEK);
     m_historyUI->addHistoryItems(m_historyService->getHistoryLastMonth(),
             HistoryPeriod::HISTORY_LASTMONTH);
+    m_historyUI->addHistoryItems(m_historyService->getHistoryOlder(),
+            HistoryPeriod::HISTORY_OLDER);
     m_viewManager.pushViewToStack(m_historyUI.get());
 }
 
