@@ -360,7 +360,7 @@ std::string URIEntry::rewriteURI(const std::string& url)
 
 void URIEntry::editingCanceled()
 {
-    BROWSER_LOGD("[%s:%d] oryinal URL: %s ", __PRETTY_FUNCTION__, __LINE__, m_oryginalEntryText.c_str());
+    BROWSER_LOGD("[%s:%d] oryginal URL: %s ", __PRETTY_FUNCTION__, __LINE__, m_oryginalEntryText.c_str());
     if (!m_oryginalEntryText.empty()) {
         elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_oryginalEntryText.c_str()));
         m_oryginalEntryText = "";
