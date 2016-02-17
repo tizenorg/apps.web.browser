@@ -64,11 +64,6 @@ void BookmarkService::errorPrint(std::string method) const
             tools::capiWebError::bookmarkErrorToString(error_code).c_str());
 }
 
-void BookmarkService::synchronizeBookmarks()
-{
-    m_bookmarks.clear();
-}
-
 std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
                                                 const std::string & address,
                                                 const std::string & title,
@@ -143,7 +138,6 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
 #if PROFILE_MOBILE
     bookmark->set_folder_flag(EINA_FALSE);
 #endif
-    m_bookmarks.push_back(bookmark);
     bookmarkAdded(bookmark);
     return bookmark;
 }
@@ -170,11 +164,6 @@ bool BookmarkService::getItem(const std::string &url, BookmarkItem *item)
     if ((id = getBookmarkId(url)) == 0)
         return false;
     return get_item_by_id(id, item);
-}
-
-int BookmarkService::countBookmarks()
-{
-    return m_bookmarks.size();
 }
 
 bool BookmarkService::bookmarkExists(const std::string & url)
@@ -211,6 +200,7 @@ int BookmarkService::getBookmarkId(const std::string & url)
 std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int folder_id)
 {
     BROWSER_LOGD("[%s:%d] folder_id = %d", __func__, __LINE__, folder_id);
+    std::vector<std::shared_ptr<BookmarkItem> > bookmarks;
     int *ids = nullptr;
     int ids_count = 0;
 #if PROFILE_MOBILE
@@ -223,8 +213,6 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
         errorPrint("bp_bookmark_adaptor_get_ids_p");
         return std::vector<std::shared_ptr<BookmarkItem>>();
     }
-
-    m_bookmarks.clear();
     BROWSER_LOGD("Bookmark items: %d", ids_count);
 
     for(int i = 0; i<ids_count; i++)
@@ -257,21 +245,20 @@ std::vector<std::shared_ptr<BookmarkItem> > BookmarkService::getBookmarks(int fo
             } else {
                 BROWSER_LOGD("bookmark favicon size is -1");
             }
-            m_bookmarks.push_back(bookmark);
+            bookmarks.push_back(bookmark);
         } else {
             BROWSER_LOGD("bp_bookmark_adaptor_get_easy_all error");
         }
         bp_bookmark_adaptor_easy_free(&bookmark_info);
     }
     free(ids);
-    return m_bookmarks;
+    return bookmarks;
 }
 
 bool BookmarkService::deleteAllBookmarks()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     bp_bookmark_adaptor_reset();
-    m_bookmarks.clear();
     bookmarksDeleted();
     return true;
 }

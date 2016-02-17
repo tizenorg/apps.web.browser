@@ -501,7 +501,6 @@ void SimpleUI::initModelServices()
 #endif
 
     M_ASSERT(m_favoriteService);
-    m_favoriteService->synchronizeBookmarks();
     m_favoriteService->getBookmarks();
 
     M_ASSERT(m_platformInputManager);
@@ -833,6 +832,7 @@ void SimpleUI::onRemoveFoldersClicked(std::vector<std::shared_ptr<tizen_browser:
         m_storageService->getFoldersStorage().removeNumberInFolder((*it)->getDir());
         m_favoriteService->deleteBookmark((*it)->getAddress());
     }
+    items.clear();
 }
 
 void SimpleUI::onEditFolderPopupClicked(const std::string& newName)

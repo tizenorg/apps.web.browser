@@ -522,6 +522,7 @@ void QuickAccess::setBookmarksItems(std::vector<std::shared_ptr<tizen_browser::s
     for (auto it = items.begin(); it != items.end(); ++it) {
          addBookmarkItem(*it);
     }
+    items.clear();
 }
 
 #if PROFILE_MOBILE
