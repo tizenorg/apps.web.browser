@@ -72,11 +72,11 @@ public:
      * @param[in] parent parent view
      * @return new Evas_Object* representing image or nullptr on fail
      */
-    Evas_Object* getEvasImage(Evas_Object* parent) const;
+    Evas_Object* getEvasImage(Evas_Object* parent);
 
 private:
-    Evas_Object* getEvas(Evas_Object* parent) const;
-    Evas_Object* getPng(Evas_Object* parent) const;
+    Evas_Object* getEvas(Evas_Object* parent);
+    Evas_Object* getPng(Evas_Object* parent);
 
     int m_width;
     int m_height;

@@ -93,6 +93,7 @@ private:
     static void _cancel_top_button_clicked(void *data, Evas_Object *, void *);
     static void _remove_top_button_clicked(void *data, Evas_Object *, void *);
 #endif
+    static void _grid_content_delete(void *data, Evas_Object *obj);
     static char* _grid_bookmark_text_get(void *data, Evas_Object *obj, const char *part);
     static Evas_Object* _grid_bookmark_content_get(void *data, Evas_Object *obj, const char *part);
     static void _bookmark_item_clicked(void * data, Evas_Object * obj, void * event_info);

@@ -57,11 +57,6 @@ public:
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  unsigned int dirId = 0) = 0;
-   /**
-     * @brief Counts bookmarks
-     * @return Number of bookmarks
-     */
-    virtual int countBookmarks() = 0;
 
     /** \todo Need to change this callback function for finding stored bookmark, check getBookmarkId function
      * @brief Check if bookmark exists
@@ -107,8 +102,6 @@ public:
      * @return true if success, false on error of not found bookmark
      */
     virtual bool getItem(const std::string & url, tizen_browser::services::BookmarkItem *item) = 0;
-
-    virtual void synchronizeBookmarks() = 0;
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkAdded;
     boost::signals2::signal<void (const std::string& uri)> bookmarkDeleted;

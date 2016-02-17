@@ -63,7 +63,6 @@ public:
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail=std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  unsigned int dirId = 0);
-    int countBookmarks();
 
     /** \todo Need to change this callback function for finding stored bookmark, check getBookmarkId function
      * @brief Check if bookmark exists
@@ -110,8 +109,6 @@ public:
      */
     bool getItem(const std::string & url, BookmarkItem *item);
 
-    void synchronizeBookmarks();
-
     bool delete_by_id(int id);
     bool delete_by_id_notify(int id);
     bool delete_by_uri(const char *uri);
@@ -137,7 +134,6 @@ private:
     };
     std::vector<BookmarkItem *> m_bookmark_list;
     std::shared_ptr<tizen_browser::services::StorageService> m_storageManager;
-    std::vector<std::shared_ptr<BookmarkItem> > m_bookmarks;
 ///    \todo Need to change getBookmarkId function for finding stored bookmark - check getBookmarkExists function
     int getBookmarkId(const std::string & url);
 };
