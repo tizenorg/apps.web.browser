@@ -77,7 +77,7 @@ private:
         std::string name;
         int count;
         unsigned int folder_id;
-        std::shared_ptr<tizen_browser::base_ui::BookmarkManagerUI> bookmarkManagerUI;
+        BookmarkManagerUI* bookmarkManagerUI;
     } FolderData;
 
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
@@ -99,6 +99,7 @@ private:
     static void _bookmarkNewFolderClicked(void * data, Evas_Object *, void *);
 #endif
     static Evas_Object* listItemContentGet(void *data, Evas_Object *obj, const char *part);
+    static void _grid_content_delete(void *data, Evas_Object *obj);
     static char* _grid_folder_title_text_get(void *data, Evas_Object *obj, const char *part);
 
     std::map<std::string,Elm_Object_Item*> m_map_bookmark;

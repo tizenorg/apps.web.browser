@@ -149,9 +149,7 @@ Evas_Object* BrowserImage::getPng(Evas_Object * parent) const
     if(m_dataSize && m_imageData && m_imageType == ImageType::ImageTypePNG) {
         Evas * e = evas_object_evas_get(parent);
         Evas_Object * image = evas_object_image_filled_add(e);
-
         char png_format[] = "png";
-
         evas_object_image_memfile_set(image, m_imageData, m_dataSize, png_format, NULL);
         Evas_Load_Error error = evas_object_image_load_error_get(image);
         if (EINA_UNLIKELY(error != EVAS_LOAD_ERROR_NONE)) {
@@ -168,6 +166,7 @@ BrowserImage::~BrowserImage()
 {
     if (m_imageData && !m_isSharedData) {
         free(m_imageData);
+        m_imageData = nullptr;
     }
 }
 
