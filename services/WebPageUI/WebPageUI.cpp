@@ -379,11 +379,18 @@ void WebPageUI::orientationChanged()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     auto landscape = isLandscape();
+
     if (landscape) {
-        if (*landscape)
+        if (*landscape) {
             elm_object_signal_emit(m_privateLayout, "show_incognito_landscape", "ui");
-        else
+            if (m_uriBarHidden)
+                elm_object_signal_emit(m_mainLayout, "hide_uri_bar_landscape", "ui");
+        }
+        else {
             elm_object_signal_emit(m_privateLayout, "show_incognito_vertical", "ui");
+            if (m_uriBarHidden)
+                elm_object_signal_emit(m_mainLayout, "hide_uri_bar_vertical", "ui");
+        }
     }
     else
         BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
@@ -661,7 +668,16 @@ void WebPageUI::gestureUp()
     if (!m_uriBarHidden) {
         m_uriBarHidden = true;
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        elm_object_signal_emit(m_mainLayout, "hide_uri_bar", "ui");
+
+        boost::optional<bool> landscape = isLandscape();
+
+        if (landscape) {
+            if (*landscape)
+                elm_object_signal_emit(m_mainLayout, "hide_uri_bar_landscape", "ui");
+            else
+                elm_object_signal_emit(m_mainLayout, "hide_uri_bar_vertical", "ui");
+        } else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
         if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
             setWebViewTouchEvents(false);
         }

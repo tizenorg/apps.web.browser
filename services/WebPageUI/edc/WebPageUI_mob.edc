@@ -43,9 +43,16 @@ collections { base_scale: 2.6;
                     rel2 {relative: 1.0 0.0; to:"bg";}
                 }
                 description {
-                    state: "hidden" 0.0;
+                    state: "hidden_vertical" 0.0;
                     inherit: "default" 0.0;
+                    //TODO: Investigate denomicator after Indicator area is implemented properly
                     rel1 {relative: 0.0 -URI_BG_HEIGHT/1228; to:"bg";}
+                }
+                description {
+                    state: "hidden_landscape" 0.0;
+                    inherit: "default" 0.0;
+                    //TODO: Investigate denomicator after Indicator area is implemented properly
+                    rel1 {relative: 0.0 -URI_BG_HEIGHT/668; to:"bg";}
                 }
             }
             ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 16, URI_BG_HEIGHT)
@@ -458,11 +465,21 @@ collections { base_scale: 2.6;
                 action: SIGNAL_EMIT "animation_finished" "ui";
             }
             program {
-                name: "hide_uri_bar";
-                signal: "hide_uri_bar";
+                name: "hide_uri_bar_landscape";
+                signal: "hide_uri_bar_landscape";
                 source: "ui";
                 in: 0.01 0.0;
-                action: STATE_SET "hidden" 0.0;
+                action: STATE_SET "hidden_landscape" 0.0;
+                target: "uri_bar_bg";
+                transition: LINEAR 0.15;
+                after: "hide_uri_bar_finished";
+            }
+            program {
+                name: "hide_uri_bar_vertical";
+                signal: "hide_uri_bar_vertical";
+                source: "ui";
+                in: 0.01 0.0;
+                action: STATE_SET "hidden_vertical" 0.0;
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
                 after: "hide_uri_bar_finished";
@@ -481,12 +498,6 @@ collections { base_scale: 2.6;
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
                 after: "show_uri_bar_finished";
-            }
-            program {
-                name: "enlarge_webview";
-                signal: "enlarge_webview";
-                source: "ui";
-                after: "hide_uri_bar";
             }
             program {
                 name: "hide_moremenu";
