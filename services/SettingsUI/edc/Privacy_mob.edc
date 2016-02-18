@@ -14,7 +14,7 @@ collections
                     state: "default" 0.0;
                     fixed: 0 0;
                     align: 0 0;
-                    min: 720 1228;
+                    min: 0 0;
                     max: -1 -1;
                     color: 244 244 244 255;
                     visible: 1;
@@ -22,11 +22,11 @@ collections
             }
 
             TEXT_WITH_CHBOX_FIRST("form_data", "Remember form data");
-            TEXT_WITH_CHBOX("passwords",  "form_data_spacer", "Remember passwords");
+            TEXT_WITH_CHBOX("passwords",  "form_data_cb_text_bg", "Remember passwords");
 
-            SETTINGS_LINE_BEFORE("line1", "form_data_spacer")
-            SETTINGS_LINE_AFTER("line2", "form_data_spacer")
-            SETTINGS_LINE_AFTER("line3", "passwords_spacer")
+            SETTINGS_LINE_BEFORE("line1", "form_data_cb_text_bg")
+            SETTINGS_LINE_AFTER("line2", "form_data_cb_text_bg")
+            SETTINGS_LINE_AFTER("line3", "passwords_cb_text_bg")
         }
     }
 }

@@ -38,16 +38,10 @@ group {
                 state: "default" 0.0;
                 fixed: 0 0;
                 align: 0 0;
-                min: 720 1228;
+                min: 1 1;
                 max: -1 -1;
                 visible: 1;
                 color: 244 244 244 255;
-            }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1280 720-52;
-                max: -1 -1;
             }
         }
         part {
@@ -130,7 +124,7 @@ group {
             description {
                 state: "default" 0.0;
                 fixed: 0 0;
-                min: 720 54;
+                min: 1 54;
                 max: -1 54;
                 fixed: 1 1;
                 align: 0.5 0;
@@ -276,16 +270,10 @@ group {
                 state: "default" 0.0;
                 fixed: 0 0;
                 align: 0 0;
-                min: 720 1228;
+                min: 1 1;
                 max: -1 -1;
                 visible: 1;
                 color: 244 244 244 255;
-            }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1280 720-52;
-                max: -1 -1;
             }
         }
         part {
@@ -294,38 +282,14 @@ group {
             type: SWALLOW;
             description {
                 state: "default" 0.0;
-                fixed: 1 1;
+                fixed: 0 0;
                 align: 0 0;
-                min: 720 1228;
+                min: 1 1;
                 max: -1 -1;
                 visible: 1;
                 color: 244 244 244 255;
                 rel1 { relative: 0.0 0.0; to: "bg";}
             }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1280 720-52;
-                max: -1 -1;
-            }
-        }
-    }
-    programs{
-        program {
-            name: "landscapeMode";
-            signal: "rotation,landscape";
-            source: "rot";
-            action: STATE_SET "landscape" 0.0;
-            target: "bg";
-            target: "ua_genlist_swallow";
-        }
-        program {
-            name: "portraitMode";
-            signal: "rotation,portrait";
-            source: "rot";
-            action: STATE_SET "default" 0.0;
-            target: "bg";
-            target: "ua_genlist_swallow";
         }
     }
 }
@@ -342,17 +306,11 @@ group {
                 state: "default" 0.0;
                 visible: 1;
                 align: 0 0;
-                min: 720 100;
+                min: 1 100;
                 max: -1 100;
                 color: 255 255 255 255;
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
-            }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1250 100;
-                max: -1 100;
             }
         }
 
@@ -362,9 +320,9 @@ group {
             scale: 1;
             description {
                 state: "default" 0.0;
-                min: 720 100;
-                max: 720 100;
-                fixed: 1 0;
+                min: 1 100;
+                max: -1 100;
+                fixed: 0 1;
                 align: 0.1 0;
                 color: 64 64 64 255;
                 rel1 { relative: 0.0 0.0; to: "item_bg";}
@@ -376,12 +334,6 @@ group {
                     align: 0.02 0.5;
                 }
             }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1250 100;
-                max: 1250 100;
-            }
         }
         part {
             name: "line";
@@ -389,7 +341,7 @@ group {
             type : RECT;
             description {
                 state: "default" 0.0;
-                min: 720 1;
+                min: 1 1;
                 max: -1 1;
                 visible: 1;
                 align: 0.0 0.0;
@@ -397,32 +349,6 @@ group {
                 rel1 { relative: 0.0 1.0; to: "item_bg"; offset: 0 -1;}
                 rel2 { relative: 1.0 1.0; to: "item_bg";}
             }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1250 1;
-                max: -1 1;
-            }
-        }
-    }
-    programs{
-        program {
-            name: "landscapeMode";
-            signal: "rotation,landscape";
-            source: "rot";
-            action: STATE_SET "landscape" 0.0;
-            target: "item_bg";
-            target: "item_title";
-            target: "line";
-        }
-        program {
-            name: "portraitMode";
-            signal: "rotation,portrait";
-            source: "rot";
-            action: STATE_SET "default" 0.0;
-            target: "item_bg";
-            target: "item_title";
-            target: "line";
         }
     }
 }

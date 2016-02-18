@@ -485,10 +485,17 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
 
     createInfoField("info_field", "Choose web page content", main);
 
-    m_checkbox_layout = elm_layout_add(main);
-    elm_layout_file_set(m_checkbox_layout, m_edjFilePath.c_str(), "content_settings_mobile");
+    auto box = elm_box_add(main);
+    elm_box_horizontal_set(box, EINA_FALSE);
+    elm_object_content_set(main, box);
+    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(box);
+
+    m_checkbox_layout = elm_layout_add(box);
     evas_object_size_hint_weight_set(m_checkbox_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_checkbox_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_layout_file_set(m_checkbox_layout, m_edjFilePath.c_str(), "content_settings_mobile");
 
     boost::optional<bool> sig = getWebEngineSettingsParam(basic_webengine::WebEngineSettings::PAGE_OVERVIEW);
     Eina_Bool flag = (sig && *sig) ? EINA_TRUE : EINA_FALSE;
@@ -505,7 +512,21 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
     Evas_Object* javascript_checkbox = createCheckBox(m_checkbox_layout, "javascript", __checkbox_content_settings_label_click_cb, this);
     elm_check_state_set(javascript_checkbox, flag);
 
-    elm_layout_content_set(main, "options_swallow", m_checkbox_layout);
+    evas_object_show(m_checkbox_layout);
+    elm_box_pack_end(box, m_checkbox_layout);
+
+    auto scroller = elm_scroller_add(main);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_TRUE);
+    elm_scroller_loop_set(scroller, EINA_FALSE, EINA_FALSE);
+    elm_scroller_propagate_events_set(scroller, EINA_TRUE);
+    elm_scroller_page_relative_set(scroller, 0, 1);
+    elm_object_content_set(scroller, box);
+    evas_object_show(scroller);
+
+    elm_object_part_content_set(main, "options_swallow", scroller);
 
     return main;
 }
@@ -520,7 +541,14 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
 
     createInfoField("info_field", "Choose privacy settings", main);
 
-    m_checkbox_layout = elm_layout_add(main);
+    auto box = elm_box_add(main);
+    elm_box_horizontal_set(box, EINA_FALSE);
+    elm_object_content_set(main, box);
+    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_show(box);
+
+    m_checkbox_layout = elm_layout_add(box);
     elm_layout_file_set(m_checkbox_layout, m_edjFilePath.c_str(), "privacy_mobile");
     evas_object_size_hint_weight_set(m_checkbox_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_checkbox_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -535,7 +563,21 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
     Evas_Object* passwd_checkbox = createCheckBox(m_checkbox_layout, "passwords", __checkbox_privacy_label_click_cb, this);
     elm_check_state_set(passwd_checkbox, flag);
 
-    elm_layout_content_set(main, "options_swallow", m_checkbox_layout);
+    evas_object_show(m_checkbox_layout);
+    elm_box_pack_end(box, m_checkbox_layout);
+
+    auto scroller = elm_scroller_add(main);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_TRUE);
+    elm_scroller_loop_set(scroller, EINA_FALSE, EINA_FALSE);
+    elm_scroller_propagate_events_set(scroller, EINA_TRUE);
+    elm_scroller_page_relative_set(scroller, 0, 1);
+    elm_object_content_set(scroller, box);
+    evas_object_show(scroller);
+
+    elm_object_part_content_set(main, "options_swallow", scroller);
 
     return main;
 }
