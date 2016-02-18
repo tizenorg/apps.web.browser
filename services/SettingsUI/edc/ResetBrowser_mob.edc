@@ -38,16 +38,10 @@ group {
                 state: "default" 0.0;
                 fixed: 0 0;
                 align: 0 0;
-                min: 720 1228;
+                min: 1 1;
                 max: -1 -1;
                 visible: 1;
                 color: 244 244 244 255;
-            }
-            description {
-                state: "landscape" 0.0;
-                inherit: "default";
-                min: 1280 720-52;
-                max: -1 -1;
             }
         }
         part {
@@ -130,7 +124,7 @@ group {
             description {
                 state: "default" 0.0;
                 fixed: 0 0;
-                min: 720 54;
+                min: 1 54;
                 max: -1 54;
                 fixed: 1 1;
                 align: 0.5 0;
@@ -226,7 +220,6 @@ group {
                 signal: "rotation,landscape";
                 source: "rot";
                 action: STATE_SET "landscape" 0.0;
-                target: "bg";
                 target: "reset_browser_text_spacer";
             }
             program {
@@ -234,7 +227,6 @@ group {
                 signal: "rotation,portrait";
                 source: "rot";
                 action: STATE_SET "default" 0.0;
-                target: "bg";
                 target: "reset_browser_text_spacer";
             }
             program {

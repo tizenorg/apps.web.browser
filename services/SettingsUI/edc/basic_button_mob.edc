@@ -25,19 +25,6 @@ scale:1;                                                            \
 
 #define TEXT_WITH_CHBOX_FIRST(twc_name, twc_text)                                     \
     part{                                                                       \
-        name: __CONCAT(twc_name, "_spacer");                                    \
-        type: SPACER;                                                           \
-        scale: 1;                                                               \
-        description {                                                           \
-            state: "default" 0.0;                                               \
-            min: 32 120;                                                        \
-            max: 32 120;                                                        \
-            align: 0 0;                                                         \
-            rel1 { relative: 0.0 0.0; }                                         \
-            rel2 { relative: 1.0 1.0; }                                         \
-        }                                                                       \
-    }                                                                           \
-    part{                                                                       \
         name: __CONCAT(twc_name, "_cb_text_bg");                                \
         type: RECT;                                                             \
         scale: 1;                                                               \
@@ -46,7 +33,7 @@ scale:1;                                                            \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
             fixed: 0 0;                                                         \
-            min: 720 120;                                                       \
+            min: 1 120;                                                       \
             max: -1 120;                                                        \
             align: 0 0.0;                                                       \
             rel1 { relative: 0.0 0.0; }                                         \
@@ -62,11 +49,11 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
-            min: 608 120;                                                       \
-            max: 608 120;                                                       \
+            min: 1 120;                                                       \
+            max: -1 120;                                                       \
             align: 0 0.5;                                                       \
-            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_spacer");}       \
-            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_spacer");}       \
+            rel1 { relative: 0.04 0.0; to: __CONCAT(twc_name, "_cb_text_bg");}       \
+            rel2 { relative: 0.84 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}       \
             text {                                                              \
                 min: 0 1;                                                       \
                 max: 1 1;                                                       \
@@ -85,26 +72,13 @@ scale:1;                                                            \
             align: 0.5 0.5;                                                     \
             min: 48 48;                                                         \
             max: 48 48;                                                         \
-            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_cb_text");}      \
+            rel1 { relative: 0.84 0.0; to: __CONCAT(twc_name, "_cb_text_bg");}      \
             rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}   \
             color_class: transparent;                                           \
         }                                                                       \
     }
 
 #define TEXT_WITH_CHBOX(twc_name, rel_to_part, twc_text)                        \
-    part{                                                                       \
-        name: __CONCAT(twc_name, "_spacer");                                    \
-        type: SPACER;                                                           \
-        scale: 1;                                                               \
-        description {                                                           \
-            state: "default" 0.0;                                               \
-            min: 32 120;                                                        \
-            max: 32 120;                                                        \
-            align: 0 0;                                                         \
-            rel1 { relative: 0.0 1.0; to: rel_to_part;}                         \
-            rel2 { relative: 1.0 1.0; }                                         \
-        }                                                                       \
-    }                                                                           \
     part{                                                                       \
         name: __CONCAT(twc_name, "_cb_text_bg");                                \
         type: RECT;                                                             \
@@ -114,7 +88,7 @@ scale:1;                                                            \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
             fixed: 0 1;                                                         \
-            min: 720 120;                                                       \
+            min: 1 120;                                                       \
             max: -1 120;                                                        \
             align: 0 0.0;                                                       \
             rel1 { relative: 0.0 1.0; to: rel_to_part;}                         \
@@ -130,11 +104,11 @@ scale:1;                                                            \
         description {                                                           \
             state: "default" 0.0;                                               \
             visible: 1;                                                         \
-            min: 608 120;                                                       \
-            max: 608 120;                                                       \
+            min: 1 120;                                                       \
+            max: -1 120;                                                       \
             align: 0 0.5;                                                       \
-            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_spacer");}       \
-            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_spacer");}       \
+            rel1 { relative: 0.04 0.0; to: __CONCAT(twc_name, "_cb_text_bg");}       \
+            rel2 { relative: 0.84 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}       \
             text {                                                              \
                 min: 0 1;                                                       \
                 max: 1 1;                                                       \
@@ -153,8 +127,8 @@ scale:1;                                                            \
             align: 0.5 0.5;                                                     \
             min: 48 48;                                                         \
             max: 48 48;                                                         \
-            rel1 { relative: 1.0 0.0; to: __CONCAT(twc_name, "_cb_text");}      \
-            rel2 { relative: 1.0 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}   \
+            rel1 { relative: 0.84 0.0; to: __CONCAT(twc_name, "_cb_text_bg");}      \
+            rel2 { relative: 1.00 1.0; to: __CONCAT(twc_name, "_cb_text_bg");}   \
             color_class: transparent;                                           \
         }                                                                       \
     }
@@ -168,7 +142,7 @@ scale:1;                                                            \
             state: "default" 0.0;                                   \
             visible: 1;                                             \
             fixed: 0 1;                                             \
-            min: 720 2;                                             \
+            min: 1 2;                                             \
             max: -1 2;                                              \
             align: 0 0;                                             \
             rel1 { relative: 0.0 0.0; to: relative_to;}             \
@@ -186,7 +160,7 @@ scale:1;                                                            \
             state: "default" 0.0;                                   \
             visible: 1;                                             \
             fixed: 0 1;                                             \
-            min: 720 2;                                             \
+            min: 1 2;                                             \
             max: -1 2;                                              \
             align: 0 0;                                             \
             rel1 { relative: 0.0 1.0; to: relative_to;}             \
@@ -451,7 +425,7 @@ collections
                 description {
                     state: "default" 0.0;
                     fixed: 0 1;
-                    min: 720 120;
+                    min: 1 120;
                     max: -1 120;
                     align: 0 0;
                     visible: 1;
@@ -465,7 +439,7 @@ collections
                 description {
                     state: "default" 0.0;
                     fixed: 0 1;
-                    min: 720 120;
+                    min: 1 120;
                     max: -1 120;
                     align: 0 0;
                     visible: 0;
@@ -572,7 +546,7 @@ collections
                 description {
                     state: "default" 0.0;
                     fixed: 0 1;
-                    min: 720 80;
+                    min: 1 80;
                     max: -1 80;
                     align: 0 0;
                     rel1 { relative: 0.0 0.0; to: "bg";}

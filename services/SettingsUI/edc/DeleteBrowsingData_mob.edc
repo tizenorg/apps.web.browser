@@ -21,17 +21,17 @@ group {
             }
 
         TEXT_WITH_CHBOX_FIRST("cache", "Cache");
-        TEXT_WITH_CHBOX("cookies",  "cache_spacer", "Cookies");
-        TEXT_WITH_CHBOX("history",  "cookies_spacer", "History");
-        TEXT_WITH_CHBOX("password",  "history_spacer", "Password");
-        TEXT_WITH_CHBOX("formdata",  "password_spacer", "Form data");
+        TEXT_WITH_CHBOX("cookies",  "cache_cb_text_bg", "Cookies");
+        TEXT_WITH_CHBOX("history",  "cookies_cb_text_bg", "History");
+        TEXT_WITH_CHBOX("password",  "history_cb_text_bg", "Password");
+        TEXT_WITH_CHBOX("formdata",  "password_cb_text_bg", "Form data");
 
-        SETTINGS_LINE_BEFORE("before_cache", cache_spacer);
-        SETTINGS_LINE_BEFORE("before_cookies", cookies_spacer);
-        SETTINGS_LINE_BEFORE("before_history", history_spacer);
-        SETTINGS_LINE_BEFORE("before_password", password_spacer);
-        SETTINGS_LINE_BEFORE("before_formdata", formdata_spacer);
-        SETTINGS_LINE_AFTER("after_formdata", formdata_spacer);
+        SETTINGS_LINE_BEFORE("before_cache", cache_cb_text_bg);
+        SETTINGS_LINE_BEFORE("before_cookies", cookies_cb_text_bg);
+        SETTINGS_LINE_BEFORE("before_history", history_cb_text_bg);
+        SETTINGS_LINE_BEFORE("before_password", password_cb_text_bg);
+        SETTINGS_LINE_BEFORE("before_formdata", formdata_cb_text_bg);
+        SETTINGS_LINE_AFTER("after_formdata", formdata_cb_text_bg);
     }
 }
 group {
