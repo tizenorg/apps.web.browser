@@ -48,7 +48,6 @@ public:
     Evas_Object* getContent();
     Evas_Object* getEntryWidget();
 
-
     void changeUri(const std::string&);
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
@@ -64,10 +63,6 @@ public:
     void setCurrentFavIcon();
     void setSearchIcon();
     void setDocIcon();
-    void setPageTitle(const std::string& title);
-    void setPageTitleFromURI();
-    void setURI(const std::string& uri);
-    void showPageTitle();
     IconType getCurrentIconTyep();
     /**
      * \brief Adds Action to URI bar.

@@ -74,11 +74,10 @@ public:
     bool isWebPageUIvisible() { return m_WebPageUIvisible; }
     void toIncognito(bool);
     void switchViewToErrorPage();
-    void switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title);
+    void switchViewToWebPage(Evas_Object* content, const std::string uri);
     void switchViewToIncognitoPage();
     void switchViewToQuickAccess(Evas_Object* content);
     URIEntry& getURIEntry() const { return *m_URIEntry.get(); }
-    void setPageTitle(const std::string& title);
     void setTabsNumber(int tabs);
     void setBackButtonEnabled(bool enabled) { m_back->setEnabled(enabled); }
     void setForwardButtonEnabled(bool enabled) { m_forward->setEnabled(enabled); }
