@@ -90,8 +90,6 @@ void WebPageUI::showUI()
 
     if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
         showQuickAccess();
-    else
-        m_URIEntry->showPageTitle();
 
     m_WebPageUIvisible = true;
 
@@ -171,22 +169,13 @@ void WebPageUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_signal_emit(m_mainLayout, "hide_progressbar_bg", "ui");
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-    m_URIEntry->showPageTitle();
 }
 
 void WebPageUI::loadStopped()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-    m_URIEntry->setPageTitleFromURI();
-    m_URIEntry->showPageTitle();
     hideProgressBar();
-}
-
-void WebPageUI::setPageTitle(const std::string& title)
-{
-     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-     m_URIEntry->setPageTitle(title);
 }
 
 void WebPageUI::toIncognito(bool incognito)
@@ -249,7 +238,7 @@ void WebPageUI::switchViewToIncognitoPage()
     m_URIEntry->setFocus();
 }
 
-void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri, const std::string title)
+void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
@@ -259,8 +248,6 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri,
     }
     setMainContent(content);
     updateURIBar(uri);
-    m_URIEntry->setPageTitle(title);
-    m_URIEntry->showPageTitle();
     refreshFocusChain();
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
@@ -605,7 +592,6 @@ void WebPageUI::updateURIBar(const std::string& uri)
     BROWSER_LOGD("[%s:%d] URI:%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     m_URIEntry->changeUri(uri);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-    m_URIEntry->setURI(uri);
 
     m_stopLoading->setEnabled(true);
     m_reload->setEnabled(true);

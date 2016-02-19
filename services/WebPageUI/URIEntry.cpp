@@ -115,10 +115,10 @@ void URIEntry::changeUri(const std::string& newUri)
 {
     BROWSER_LOGD("%s: newUri=%s", __func__, newUri.c_str());
     m_URI = newUri;
-    if (m_URI.empty()) {
+    if (!m_URI.empty())
+        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
+    else
         elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
-        m_pageTitle = std::string();
-    }
 }
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
@@ -151,37 +151,6 @@ void URIEntry::setDocIcon()
 {
     m_currentIconType = IconTypeDoc;
     elm_object_signal_emit(m_entry_layout, "set_doc_icon", "model");
-}
-
-void URIEntry::setPageTitle(const std::string& title)
-{
-    BROWSER_LOGD("%s", __func__);
-    m_pageTitle = title;
-    elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
-}
-
-void URIEntry::setPageTitleFromURI()
-{
-    BROWSER_LOGD("%s", __func__);
-    m_pageTitle = m_URI;
-    elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
-}
-
-void URIEntry::setURI(const std::string& uri)
-{
-    BROWSER_LOGD("%s, URI: %s", __func__, uri.c_str());
-    m_URI = uri;
-}
-
-void URIEntry::showPageTitle()
-{
-    BROWSER_LOGD("%s, Page title: %s", __func__, m_pageTitle.c_str());
-    if (!m_pageTitle.empty())
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_pageTitle.c_str()));
-    else if (!m_URI.empty())
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
-    else
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
 }
 
 URIEntry::IconType URIEntry::getCurrentIconTyep()
@@ -262,7 +231,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
     self->setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
     elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
     if (!self->m_entryContextMenuOpen) {
-        elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_pageTitle.c_str()));
+        elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
 #if PROFILE_MOBILE
         self->mobileEntryUnfocused();
