@@ -32,6 +32,7 @@
 #include "DownloadControl/DownloadControl.h"
 #include <app_control.h>
 #include <app.h>
+#include "AbstractRotatable.h"
 #endif
 
 #if PROFILE_MOBILE
@@ -65,11 +66,18 @@ namespace basic_webengine {
 namespace webengine_service {
 
 class WebView
+#if PROFILE_MOBILE
+        : public tizen_browser::interfaces::AbstractRotatable
+#endif
 {
 public:
     WebView(Evas_Object *, TabId, const std::string& title, bool incognitoMode);
     virtual ~WebView();
     void init(bool desktopMode, Evas_Object * view = NULL);
+
+#if PROFILE_MOBILE
+    virtual void orientationChanged() override;
+#endif
 
     void setURI(const std::string &);
     std::string getURI(void);

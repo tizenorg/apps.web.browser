@@ -368,6 +368,11 @@ public:
      * @brief Set bool settings param value.
      */
     virtual void setSettingsParam(WebEngineSettings param, bool value) = 0;
+
+    /**
+     * @brief Informs WebEngine that device orientation is changed.
+     */
+    virtual void orientationChanged() = 0;
 #endif
 
     /**
@@ -505,6 +510,11 @@ public:
      * Unregister H/W back key callback for the current webview
      */
     boost::signals2::signal<void()> unregisterHWKeyCallback;
+
+    /**
+     * Gets rotation angle value.
+     */
+    boost::signals2::signal<int()> getRotation;
 #endif
 };
 

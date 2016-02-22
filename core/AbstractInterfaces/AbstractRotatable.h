@@ -41,6 +41,13 @@ public:
      * @returns True if rotation is portrait, false if rotation is landscape.
      */
     boost::signals2::signal<bool ()> isLandscape;
+
+    /**
+     * @brief Boost signal, get what is current rotation angle.
+     * Class which implements AbstractRotatable has to connect this signal in SimpleUI class.
+     * @returns rotation angle.
+     */
+    boost::signals2::signal<int ()> getRotation;
 };
 
 }//namespace interfaces
