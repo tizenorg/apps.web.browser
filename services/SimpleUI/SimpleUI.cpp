@@ -533,6 +533,9 @@ void SimpleUI::connectModelSignals()
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
+#if PROFILE_MOBILE
+    m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
+#endif
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
     m_favoriteService->bookmarkDeleted.connect(boost::bind(&SimpleUI::onBookmarkRemoved, this, _1));
@@ -986,7 +989,7 @@ void SimpleUI::__after_rotation(void *data, Elm_Transit */*transit*/)
     simpleUI->m_bookmarkManagerUI->orientationChanged();
     simpleUI->m_webPageUI->orientationChanged();
     simpleUI->m_tabUI->orientationChanged();
-    //TODO: ewk_view_orientation_send for an active web_view, when you change tab or create new one.
+    simpleUI->m_webEngine->orientationChanged();
 }
 
 void SimpleUI::onRotation()
@@ -1036,6 +1039,11 @@ void SimpleUI::__orientation_changed(app_event_info_h event_info, void* data)
 bool SimpleUI::isLandscape()
 {
     return elm_win_rotation_get(main_window) % 180;
+}
+
+int SimpleUI::getRotation()
+{
+    return elm_win_rotation_get(main_window);
 }
 #endif
 
