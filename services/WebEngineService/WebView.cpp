@@ -137,11 +137,24 @@ void WebView::init(bool desktopMode, Evas_Object*)
 #if PROFILE_MOBILE
     ewk_context_did_start_download_callback_set(ewk_view_context_get(m_ewkView), __download_request_cb, this);
     m_downloadControl = new DownloadControl();
+    orientationChanged();
 #endif
     resume();
 }
 
 #if PROFILE_MOBILE
+void WebView::orientationChanged()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::optional<int> signal = getRotation();
+    if (signal && *signal != -1) {
+        int angle = *signal;
+        if (angle == 270)
+            angle = -90;
+        ewk_view_orientation_send(m_ewkView, angle);
+    }
+}
+
 void cancel_vibration()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

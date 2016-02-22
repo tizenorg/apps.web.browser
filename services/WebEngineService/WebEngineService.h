@@ -38,7 +38,7 @@ class WebView;
 
 typedef std::shared_ptr<WebView> WebViewPtr;
 
-class BROWSER_EXPORT WebEngineService: public AbstractWebEngine<Evas_Object>, boost::noncopyable
+class BROWSER_EXPORT WebEngineService : public AbstractWebEngine<Evas_Object>, boost::noncopyable
 {
 public:
     WebEngineService();
@@ -178,6 +178,7 @@ public:
 
 #if PROFILE_MOBILE
     void moreKeyPressed();
+    void orientationChanged();
 #endif
 
     void switchToMobileMode();
@@ -233,6 +234,7 @@ private:
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void webViewClicked();
 #if PROFILE_MOBILE
+    int _getRotation();
     void setWebViewSettings(std::shared_ptr<WebView> webView);
 #endif
 
