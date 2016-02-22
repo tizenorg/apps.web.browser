@@ -40,6 +40,7 @@ public:
     Evas_Object* createDaysList(Evas_Object* parent) override;
     void addHistoryItems(const std::map<std::string, services::HistoryItemVector>&,
             HistoryPeriod period) override;
+    void sortDayItems(std::vector<WebsiteHistoryItemDataPtr>& historyItems);
     void clear() override;
     void setFocusChain(Evas_Object* /*obj*/) override {}
 
