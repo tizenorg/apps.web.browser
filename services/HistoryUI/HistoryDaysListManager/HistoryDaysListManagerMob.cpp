@@ -90,10 +90,50 @@ void HistoryDaysListManagerMob::addHistoryItems(
                 std::make_shared<WebsiteHistoryItemData>
         (itemPair.first, itemPair.first, websiteFavicon, pageViewItems));
     }
+
+    sortDayItems(historyItems);
     HistoryDayItemDataPtr dayItem = std::make_shared < HistoryDayItemData
             > (toString(period), historyItems);
     appendDayItem(dayItem);
     showNoHistoryMessage(isHistoryDayListEmpty());
+}
+
+void HistoryDaysListManagerMob::sortDayItems(std::vector<WebsiteHistoryItemDataPtr>& historyItems)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    std::vector<std::pair<time_t, WebsiteHistoryItemDataPtr>> sitesWithTime;
+
+    for(auto& domainGroup : historyItems) {
+        std::vector<time_t>times;
+        times.push_back(0);
+
+        // Get time determinant from multiple URLs inside one domain group
+        std::vector<WebsiteVisitItemDataPtr> visitedURLs = domainGroup.get()->websiteVisitItems;
+        for(auto& item : visitedURLs) {
+            time_t visitTime = item.get()->historyItem.get()->getLastVisitAsTimeT();
+            if(visitTime > times.back())
+                times.push_back(visitTime);
+        }
+        time_t lastVisitTimeOfDomain = times.back();
+        auto pair = std::make_pair(lastVisitTimeOfDomain, domainGroup);
+        sitesWithTime.push_back(pair);
+    }
+
+    // time ascending order
+    //std::sort(sites.begin(), sites.end());
+
+    //time descending order
+    std::sort(sitesWithTime.begin(), sitesWithTime.end(), [](
+              const std::pair<time_t, WebsiteHistoryItemDataPtr>& lhs,
+              const std::pair<time_t, WebsiteHistoryItemDataPtr>& rhs){
+        return lhs.first > rhs.first;
+    });
+
+    historyItems.clear();
+    for(auto& item : sitesWithTime) {
+        historyItems.push_back(item.second);
+    }
 }
 
 void HistoryDaysListManagerMob::clear()
