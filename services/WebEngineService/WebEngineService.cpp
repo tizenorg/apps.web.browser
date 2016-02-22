@@ -100,6 +100,9 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
+#if PROFILE_MOBILE
+    webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
+#endif
 }
 
 void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
@@ -118,6 +121,9 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
+#if PROFILE_MOBILE
+    webView->getRotation.disconnect(boost::bind(&WebEngineService::_getRotation, this));
+#endif
 }
 
 void WebEngineService::disconnectCurrentWebViewSignals()
@@ -411,6 +417,9 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
     backwardEnableChanged(m_currentWebView->isBackEnabled());
     favIconChanged(m_currentWebView->getFavicon());
     currentTabChanged(m_currentTabId);
+#if PROFILE_MOBILE
+    m_currentWebView->orientationChanged();
+#endif
 
     return true;
 }
@@ -526,6 +535,12 @@ void WebEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
     webView->ewkSettingsAutofillPasswordFormEnabledSet(m_settings[WebEngineSettings::REMEMBER_PASSWORDS]);
     webView->ewkSettingsFormProfileDataEnabledSet(m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA]);
 }
+
+void WebEngineService::orientationChanged()
+{
+    if (m_currentWebView)
+        m_currentWebView->orientationChanged();
+}
 #endif
 
 int WebEngineService::getZoomFactor() const
@@ -593,6 +608,16 @@ void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::B
 }
 
 #if PROFILE_MOBILE
+int WebEngineService::_getRotation()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    boost::optional<int> signal = getRotation();
+    if (signal)
+        return *signal;
+    else
+        return -1;
+}
+
 void WebEngineService::moreKeyPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
