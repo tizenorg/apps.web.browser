@@ -68,8 +68,6 @@
 			<mime name="application/x-shockwave-flash" />
 			<mime name="image/svg+xml" />
 			<mime name="text/html" />
-			<mime name="http.uri" />
-			<mime name="file.uri" />
 			<mime name="application/xml" />
 		</application-service>
     </ui-application>

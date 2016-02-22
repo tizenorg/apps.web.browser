@@ -75,16 +75,6 @@
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
             <uri name="http" />
-            <mime name="http.uri" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="http" />
-            <mime name="file.uri" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="http" />
             <mime name="application/xml" />
         </app-control>
         <app-control>
@@ -105,16 +95,6 @@
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
             <uri name="https" />
-            <mime name="http.uri" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="https" />
-            <mime name="file.uri" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="https" />
             <mime name="application/xml" />
         </app-control>
         <app-control>
@@ -131,16 +111,6 @@
             <operation name="http://tizen.org/appcontrol/operation/view" />
             <uri name="file" />
             <mime name="text/html" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
-            <mime name="http.uri" />
-        </app-control>
-        <app-control>
-            <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
-            <mime name="file.uri" />
         </app-control>
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
