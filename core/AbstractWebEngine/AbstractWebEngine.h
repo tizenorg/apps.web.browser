@@ -420,7 +420,7 @@ public:
      * \param TabId of a tab
      * \param bool true if first load progress, false otherwise
      */
-    boost::signals2::signal<void (double, TabId, bool)> loadProgress;
+    boost::signals2::signal<void (double)> loadProgress;
 
     /**
      * Page load stopped.

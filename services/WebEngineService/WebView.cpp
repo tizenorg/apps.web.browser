@@ -84,7 +84,6 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_downloadControl(nullptr)
 #endif
     , m_timer(nullptr)
-    , m_first_progress(true)
 {
 }
 
@@ -301,7 +300,6 @@ void WebView::setURI(const std::string & uri)
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     ewk_view_url_set(m_ewkView, uri.c_str());
     m_loadError = false;
-    m_first_progress = true;
 }
 
 std::string WebView::getURI(void)
@@ -368,14 +366,12 @@ void WebView::back(void)
 {
     m_loadError = false;
     ewk_view_back(m_ewkView);
-    m_first_progress = true;
 }
 
 void WebView::forward(void)
 {
     m_loadError = false;
     ewk_view_forward(m_ewkView);
-    m_first_progress = true;
 }
 
 bool WebView::isBackEnabled(void)
@@ -650,9 +646,7 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
     self->m_loadProgress = 1;
 
     self->loadFinished();
-    self->loadProgress(self->m_loadProgress, self->getTabId(), self->m_first_progress);
-    if (self->m_first_progress)
-        self->m_first_progress = false;
+    self->loadProgress(self->m_loadProgress);
 
     //TODO: delete this line when "ready" signal is supported by ewk_view
     if (self->m_timer)
@@ -670,9 +664,7 @@ void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_
         return;
 
     self->m_loadProgress = *(double *)event_info;
-    self->loadProgress(self->m_loadProgress, self->getTabId(), self->m_first_progress);
-    if (self->m_first_progress)
-        self->m_first_progress = false;
+    self->loadProgress(self->m_loadProgress);
 }
 
 void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)

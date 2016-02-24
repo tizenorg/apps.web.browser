@@ -183,6 +183,10 @@ void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
     m_moreMenuUI->setWebTitle(title);
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
         m_currentSession.updateItem(tabId, m_webEngine->getURI(), title);
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                                 m_webEngine->getTitle(),
+                                                 m_webEngine->getFavicon(),
+                                                 std::make_shared<tizen_browser::tools::BrowserImage>());
     }
 }
 
@@ -516,7 +520,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
-    m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1, _2, _3));
+    m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadStopped, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
@@ -1064,13 +1068,8 @@ void SimpleUI::loadStarted()
     m_webPageUI->loadStarted();
 }
 
-void SimpleUI::progressChanged(double progress, basic_webengine::TabId id, bool first)
+void SimpleUI::progressChanged(double progress)
 {
-    if (first && !m_webEngine->isPrivateMode(id))
-        m_historyService->addHistoryItem(m_webEngine->getURI(),
-                                         m_webEngine->getTitle(),
-                                         m_webEngine->getFavicon(),
-                                         std::make_shared<tizen_browser::tools::BrowserImage>());
     m_webPageUI->progressChanged(progress);
 }
 
