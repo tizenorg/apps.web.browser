@@ -265,7 +265,7 @@ public:
     boost::signals2::signal<void ()> loadStarted;
     boost::signals2::signal<void ()> loadStop;
     boost::signals2::signal<void ()> loadError;
-    boost::signals2::signal<void (double, TabId, bool)> loadProgress;
+    boost::signals2::signal<void (double)> loadProgress;
 
     boost::signals2::signal<void (TabId)> ready;
 
@@ -377,7 +377,6 @@ private:
     //TODO: delete this lines when "ready" signal is supported by ewk_view
     Ecore_Timer *m_timer;
     const double TIMER_INTERVAL = 5.0;
-    bool m_first_progress;
 };
 
 } /* namespace webengine_service */
