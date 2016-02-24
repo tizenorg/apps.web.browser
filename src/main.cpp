@@ -338,9 +338,6 @@ static void __br_app_pause(void *app_data)
 	device_display_get_state(&state);
 	BROWSER_LOGD("state: %d", state);
 	if (state != DISPLAY_STATE_SCREEN_OFF) {
-		if(ad->browser_instance->get_app_control_launched() == EINA_TRUE){
-			ad->browser_instance->set_app_control_launched(EINA_FALSE);
-		}
 		ad->browser_instance->pause();
 		ug_pause();
 	} else {
@@ -442,9 +439,6 @@ static void __br_app_reset(app_control_h app_control, void *app_data)
 			free(homepage);
 		}
 	} else {
-		if( (operation && !strcmp(operation, "http://tizen.org/appcontrol/operation/view")) && (request_uri != NULL)){
-			ad->browser_instance->set_app_control_launched(EINA_TRUE);
-		}
 		if (_supported_mime_type(request_mime_type)) {
 			ad->browser_instance->launch(request_uri);
 		} else if (request_uri) {

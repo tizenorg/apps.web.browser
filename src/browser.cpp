@@ -80,7 +80,6 @@ browser::browser(Evas_Object *main_window)
 	, m_history_listener_list()
 	, m_bookmark_listener_list()
 	, m_referer_header(NULL)
-	, m_is_app_control(EINA_FALSE)
 {
 	/* Set browser_object's main window to share the window */
 	m_window = main_window;
@@ -562,14 +561,8 @@ void browser::rotate(int degree)
 	if (m_bookmark_view)
 		m_bookmark_view->rotate();
 
-	if (m_tab_manager_view){
-		if (degree == 0 || degree == 180) {
-			m_tab_manager_view->on_rotate(EINA_FALSE);
-		}else{
-			m_tab_manager_view->on_rotate(EINA_TRUE);
-		}
-	}
-
+	if (m_tab_manager_view)
+		m_tab_manager_view->on_rotate();
 }
 
 void browser::launch(const char *uri)

@@ -129,8 +129,6 @@ public:
 	void launch_for_searching(const char *keyword);
 	void set_developer_mode(Eina_Bool mode) { m_developer_mode = mode; }
 	Eina_Bool get_developer_mode(void) { return m_developer_mode; }
-	void set_app_control_launched(Eina_Bool mode) { m_is_app_control = mode; }
-	Eina_Bool get_app_control_launched(void) { return m_is_app_control; }
 	Eina_Bool get_app_paused(void) const { return m_app_paused; }
 	void set_app_paused(Eina_Bool paused) { m_app_paused = paused; }
 	Eina_Bool get_app_paused_by_display_off(void) const { return m_app_paused_by_display_off; }
@@ -176,7 +174,6 @@ private:
 	std::vector<history_listener *> m_history_listener_list;
 	std::vector<bookmark_listener * > m_bookmark_listener_list;
 	char *m_referer_header;
-	Eina_Bool m_is_app_control;
 };
 
 #endif /* BROWSER_H */

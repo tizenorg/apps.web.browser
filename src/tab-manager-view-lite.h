@@ -33,7 +33,7 @@ public:
 	tab_manager_view_lite(void);
 	~tab_manager_view_lite(void);
 	void show();
-	void on_rotate(Eina_Bool);
+	void on_rotate(void);
 	void delete_tab(webview *deleted_wv);
 	void gengrid_item_access_disable(void);
 private:

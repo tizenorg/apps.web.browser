@@ -1134,6 +1134,7 @@ Eina_Bool browser_view::__naviframe_pop_cb(void *data, Elm_Object_Item *it)
 	if (wv && m_browser->get_full_screen_enable()) {
 		// Exit fullscreen mode.
 		wv->exit_fullscreen_mode();
+
 		return EINA_FALSE;
 	}
 
@@ -1160,14 +1161,9 @@ Eina_Bool browser_view::__naviframe_pop_cb(void *data, Elm_Object_Item *it)
 			bv->set_notipopup_check(EINA_TRUE);
 		}
 		else {
-			if (wv->get_requested_webview() == EINA_TRUE || m_browser->get_app_control_launched() == EINA_TRUE) {
+			if (wv->get_requested_webview() == EINA_TRUE) {
 				BROWSER_LOGD("requested webview");
 				elm_win_lower(m_window);
-				if(m_browser->get_app_control_launched() == EINA_TRUE){
-						wv->set_requested_webview(EINA_FALSE);
-						BROWSER_LOGD("app control launched exit");
-						return EINA_FALSE;
-				}
 			}
 
 			webview *replace_wv = m_browser->get_webview_list()->delete_webview(wv);

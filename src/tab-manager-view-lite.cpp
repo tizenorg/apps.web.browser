@@ -90,31 +90,18 @@ void tab_manager_view_lite::__more_cb(void *data, Evas_Object *obj, void *event_
 	tbv->_show_more_context_popup();
 }
 
-void tab_manager_view_lite::on_rotate(Eina_Bool landscape)
+void tab_manager_view_lite::on_rotate(void)
 {
 	BROWSER_LOGD("");
 
 	RET_MSG_IF(!m_main_layout, "m_main_layout is NULL");
 	RET_MSG_IF(!m_gengrid, "m_gengrid is NULL");
-
-	Eina_List* list = elm_gengrid_realized_items_get(m_gengrid);
-	Eina_List *l = NULL;
-	void *data = NULL;
-	EINA_LIST_FOREACH(list, l, data){
-		tab_view_item_lite *item = (tab_view_item_lite *)elm_object_item_data_get((Elm_Object_Item*)data);
-		Evas_Object *content_layout = item->m_container_layout;
-		if(landscape){
-			elm_object_signal_emit(content_layout, "landscape,signal", "");
-		}else{
-			elm_object_signal_emit(content_layout, "portrait,signal", "");
-		}
-	}
-
-	if(landscape){
+	if (m_browser->get_browser_view()->is_landscape()) {
 		elm_gengrid_item_size_set(m_gengrid, TAB_MANAGER_LANDSCAPE_ITEM_WIDTH, TAB_MANAGER_LANDSCAPE_ITEM_HEIGHT);
 	} else {
 		elm_gengrid_item_size_set(m_gengrid, TAB_MANAGER_ITEM_WIDTH, TAB_MANAGER_ITEM_HEIGHT);
 	}
+	elm_gengrid_realized_items_update(m_gengrid);
 }
 
 void tab_manager_view_lite::__rotate_ctxpopup_cb(void *data, Evas_Object *obj, void *event_info)
@@ -431,7 +418,7 @@ Evas_Object *tab_manager_view_lite::_create_gengrid(Evas_Object *parent)
 		webview *wv = m_browser->get_webview_list()->get_webview(i);
 		if (wv){
 			tab_view_item_lite *item = new tab_view_item_lite(wv, __item_delete_cb, this, current_wv == wv);
-
+		
 			Elm_Object_Item *it = elm_gengrid_item_append(gengrid, m_multiwindow_gengrid_ic, item, __item_selected_cb, this);
 			item->set_gengrid_item(it);
 			m_tabview_item_list.push_back(item);

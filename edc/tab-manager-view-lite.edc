@@ -198,6 +198,25 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 					rel2 { relative: 1.0 1.0; }
 				}
 			}
+			part { name: "left_top_padding";
+				type: SPACER;
+				scale : 1;
+				description { state: "default" 0.0;
+					min: TAB_MANAGER_ITEM_LEFT_PADDING TAB_MANAGER_ITEM_TOP_PADDING_POTRAIT;
+					max: TAB_MANAGER_ITEM_LEFT_PADDING TAB_MANAGER_ITEM_TOP_PADDING_POTRAIT;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1.to: "bg";
+					rel2 { relative: 0.0 0.0; to:"bg"; }
+
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: TAB_MANAGER_ITEM_LEFT_RIGHT_PADDING_LANDSCAPE TAB_MANAGER_ITEM_TOP_PADDING_LANDSCAPE;
+					max: TAB_MANAGER_ITEM_LEFT_RIGHT_PADDING_LANDSCAPE TAB_MANAGER_ITEM_TOP_PADDING_LANDSCAPE;
+				}
+			}
 			part {
 				name: "item_bg";
 				scale : 1;
@@ -206,13 +225,31 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 					state: "default" 0.0;
 					align: 0.0 0.0;
 					fixed: 1 1;
-					rel1.to: "bg";
+					rel1 { relative: 1.0 1.0; to:"left_top_padding"; }
 					rel2.to: "bg";
 					image.normal: TAB_MANAGER_TAB_BG;
 				}
 				description {
 					state: "landscape" 0.0;
 					inherit: "default" 0.0;
+				}
+			}
+			part { name: "right_bottom_padding";
+				type: SPACER;
+				scale: 1;
+				description { state: "default" 0.0;
+					min: TAB_MANAGER_ITEM_RIGHT_PADDING TAB_MANAGER_ITEM_BOTTOM_PADDING;
+					max: TAB_MANAGER_ITEM_RIGHT_PADDING TAB_MANAGER_ITEM_BOTTOM_PADDING;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 { relative: 1.0 1.0; to:"item_bg"; }
+					rel2.to: "item_bg";
+				}
+				description {
+					state: "landscape" 0.0;
+					inherit: "default" 0.0;
+					min: TAB_MANAGER_ITEM_LEFT_RIGHT_PADDING_LANDSCAPE TAB_MANAGER_ITEM_BOTTOM_PADDING_LANDSCAPE;
+					max: TAB_MANAGER_ITEM_LEFT_RIGHT_PADDING_LANDSCAPE TAB_MANAGER_ITEM_BOTTOM_PADDING_LANDSCAPE;
 				}
 			}
 			part { name: "title_bg";
@@ -226,8 +263,8 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 					max: -1 TAB_MANAGER_TITLE_HEIGHT;
 					fixed: 1 1;
 					color: TITLE_BG_COLOR_UNFOCUSED_ITEM;
-					rel1 { relative: 0.02 0.07; to: "item_bg"; }
-					rel2 { relative: 0.98 1.0; to: "item_bg"; }
+					rel1 { relative: 0.01 0.01; to: "item_bg"; }
+					rel2 { relative: 0.99 1.0; to: "item_bg"; }
 				}
 				description {
 					state: "selected_item" 0.0;
@@ -366,54 +403,6 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 					}
 				}
 			}
-			part { name: "top_padding";
-                                type: RECT;
-                                scale : 1;
-                                description { state: "default" 0.0;
-                                        fixed: 1 1;
-                                        align: 0.0 0.0;
-                                        color: TAB_MANAGER_BG_COLOR;
-                                        rel1 { relative: 0.0 0.0; to:"item_bg"; }
-                                        rel2 { relative: 1.0 0.05; to:"item_bg"; }
-
-                                }
-                        }
-                        part { name: "bottom_padding";
-                                type: RECT;
-                                scale : 1;
-                                description { state: "default" 0.0;
-                                        fixed: 1 1;
-                                        align: 0.0 0.0;
-                                        color: TAB_MANAGER_BG_COLOR;
-                                        rel1 { relative: 0.0 0.99; to:"item_bg"; }
-                                        rel2 { relative: 1.0 1.0; to:"item_bg"; }
-
-                                }
-                        }
-                        part { name: "left_padding";
-                                type: RECT;
-                                scale : 1;
-                                description { state: "default" 0.0;
-                                        fixed: 1 1;
-                                        align: 0.0 0.0;
-                                        color: TAB_MANAGER_BG_COLOR;
-                                        rel1 { relative: 0.0 0.0; to:"item_bg"; }
-                                        rel2 { relative: 0.01 1.0; to:"item_bg"; }
-
-                                }
-                        }
-                        part { name: "right_padding";
-                                type: RECT;
-                                scale : 1;
-                                description { state: "default" 0.0;
-                                        fixed: 1 1;
-                                        align: 0.0 0.0;
-                                        color: TAB_MANAGER_BG_COLOR;
-                                        rel1 { relative: 0.99 0.0; to:"item_bg"; }
-                                        rel2 { relative: 1.0 1.0; to:"item_bg"; }
-
-                                }
-                        }
 		}
 		programs{
 			program { name: "selected_item";
@@ -432,7 +421,7 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 				target: "title_bg";
 				target: "elm.swallow.title_text";
 			}
-			/*program {
+			program {
 					name: "portrait";
 					signal: "portrait,signal";
 					action: STATE_SET "default" 0.0;
@@ -447,7 +436,7 @@ RESOURCE_IMAGE_LOSSY("I01_icon_default_internet.png")
 					target: "item_bg";
 					target: "left_top_padding";
 					target: "right_bottom_padding";
-			}*/
+			}
 		}
 	}
 }

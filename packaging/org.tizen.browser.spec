@@ -5,7 +5,7 @@
 
 Name:       org.tizen.browser
 Summary:    reference browser
-Version: 5.5.0
+Version: 5.4.3
 Release:   0
 Group:      misc
 License:    Flora-1.1 and Apache-2.0
