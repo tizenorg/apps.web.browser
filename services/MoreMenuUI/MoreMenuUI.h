@@ -43,7 +43,9 @@ class SimpleUI;
 enum ItemType {
 #if PROFILE_MOBILE
     ADD_TO_BOOKMARK,
+#ifdef READER_MODE_ENABLED
     READER_MODE,
+#endif
     SHARE,
     HISTORY,
     BOOKMARK_MANAGER,
