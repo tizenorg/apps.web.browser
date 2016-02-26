@@ -445,9 +445,11 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             case ADD_TO_BOOKMARK:
                 item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to bookmark";
                 break;
+#ifdef READER_MODE_ENABLED
             case READER_MODE:
                 item_name = _("IDS_BR_OPT_READER_MODE_TTS");
                 break;
+#endif
             case SHARE:
                 item_name = (std::string(_("IDS_BR_OPT_SHARE")) + "<br>").c_str();
                 break;
@@ -509,9 +511,11 @@ static const char* getImageFileNameForType(ItemType type, bool focused, Eina_Boo
         case ADD_TO_BOOKMARK:
             file_name = bookmarked == EINA_TRUE ? "moremenu_ic_01_edit.png" : "moremenu_ic_01.png";
             break;
+#ifdef READER_MODE_ENABLED
         case READER_MODE:
             file_name = "moremenu_ic_02.png";
             break;
+#endif
         case SHARE:
             file_name = "moremenu_ic_03.png";
             break;
@@ -675,9 +679,11 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
                     itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_TRUE);
                 }
                 break;
+#ifdef READER_MODE_ENABLED
             case READER_MODE:
                 //TODO: Implement reader mode
                 break;
+#endif
 #else
 #ifdef READER_MODE_ENABLED
             case READER_MODE:
