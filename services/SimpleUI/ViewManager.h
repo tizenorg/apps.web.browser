@@ -92,6 +92,13 @@ public:
     Evas_Object* getContent();
 
 /**
+ * @brief Function returns conformant used in view management.
+ *
+ * @return ViewManager's conformant.
+ */
+    Evas_Object* getConformant();
+
+/**
  * @brief Returns actual top of stack which is dispalyed. It stack is empty
  * returns null.
  *

@@ -47,6 +47,7 @@ void ViewManager::init(Evas_Object* parentWindow)
     M_ASSERT(parentWindow);
 
     m_conformant = elm_conformant_add(parentWindow);
+    elm_win_indicator_mode_set(parentWindow, ELM_WIN_INDICATOR_SHOW);
     evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_show(m_conformant);
     elm_win_resize_object_add(parentWindow, m_conformant);
@@ -158,6 +159,9 @@ Evas_Object* ViewManager::getContent()
     return m_mainLayout;
 }
 
+Evas_Object* ViewManager::getConformant() {
+    return m_conformant;
+}
 
 interfaces::AbstractUIComponent* ViewManager::topOfStack()
 {
