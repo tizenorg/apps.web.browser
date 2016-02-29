@@ -281,7 +281,6 @@ private:
     bool isLandscape();
     int getRotation();
     static void __orientation_changed(app_event_info_h event_info, void *data);
-    static void __after_rotation(void *data, Elm_Transit *transit);
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -355,7 +354,6 @@ private:
     Evas_Object *m_conformant;
     int m_current_angle;
     int m_temp_angle;
-    Elm_Transit *m_rotation_transit;
 #endif
 };
 
