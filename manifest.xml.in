@@ -76,5 +76,6 @@
        <privilege>http://tizen.org/privilege/web-history.admin</privilege>
        <privilege>http://tizen.org/privilege/haptic</privilege>
        <privilege>http://tizen.org/privilege/camera</privilege>
+       <privilege>http://tizen.org/privilege/call</privilege>
     </privileges>
 </manifest>
