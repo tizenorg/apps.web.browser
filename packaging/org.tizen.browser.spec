@@ -107,13 +107,6 @@ cd %{_build_dir}
 
 %post
 
-mkdir -p /opt/usr/data/webkit/storage
-mkdir -p /opt/usr/data/webkit/favicon
-
-#Change ownership and privileges
-chown -R 5000:5000 /opt/usr/data/webkit
-chmod -R 660 /opt/usr/data/webkit
-
 %files
 %manifest org.tizen.browser.manifest
 %{_icondir}/org.tizen.browser.png
