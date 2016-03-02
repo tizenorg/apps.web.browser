@@ -33,6 +33,7 @@
 #include <Elementary.h>
 #include <Evas.h>
 
+#include "URIschemes.h"
 #include "app_i18n.h"
 #include "AbstractWebEngine/AbstractWebEngine.h"
 #include "app_common.h"
@@ -224,6 +225,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "close,window", __closeWindowRequest, this);
 #if PROFILE_MOBILE
     evas_object_smart_callback_add(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+    evas_object_smart_callback_add(m_ewkView, "policy,navigation,decide", __policy_navigation_decide_cb, this);
 #endif
     evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -263,6 +265,7 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "close,window", __closeWindowRequest, this);
 #if PROFILE_MOBILE
     evas_object_smart_callback_del_full(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
+    evas_object_smart_callback_del_full(m_ewkView, "policy,navigation,decide", __policy_navigation_decide_cb, this);
 #endif
     evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
     evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
@@ -289,6 +292,178 @@ void WebView::setupEwkSettings()
     Ewk_Settings * settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_uses_keypad_without_user_action_set(settings, EINA_FALSE);
 }
+
+#if PROFILE_MOBILE
+Eina_Bool WebView::handle_scheme(const char *uri)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (!strncmp(uri, HTTP_SCHEME, strlen(HTTP_SCHEME)))
+        return EINA_FALSE;
+    else if (!strncmp(uri, HTTPS_SCHEME, strlen(HTTPS_SCHEME)))
+        return EINA_FALSE;
+    else if (!strncmp(uri, FILE_SCHEME, strlen(FILE_SCHEME)))
+        return EINA_FALSE;
+    else if (!strncmp(uri, TIZENSTORE_SCHEME, strlen(TIZENSTORE_SCHEME))) {
+        launch_tizenstore(uri);
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, MAILTO_SCHEME, strlen(MAILTO_SCHEME))) {
+        launch_email(uri);
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, TEL_SCHEME, strlen(TEL_SCHEME))) {
+        launch_dialer(uri);
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, TELTO_SCHEME, strlen(TELTO_SCHEME))) {
+        std::string request_uri = std::string(TEL_SCHEME) + std::string(uri + strlen(TELTO_SCHEME));
+        launch_dialer(request_uri.c_str());
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, CALLTO_SCHEME, strlen(CALLTO_SCHEME))) {
+        std::string request_uri = std::string(TEL_SCHEME) + std::string(uri + strlen(CALLTO_SCHEME));
+        launch_dialer(request_uri.c_str());
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, SMS_SCHEME, strlen(SMS_SCHEME))) {
+        launch_message(uri);
+        return EINA_TRUE;
+    }
+    else if (!strncmp(uri, SMSTO_SCHEME, strlen(SMSTO_SCHEME))) {
+        std::string request_uri = std::string(SMS_SCHEME) + std::string(uri + strlen(SMSTO_SCHEME));
+        launch_message(request_uri.c_str());
+        return EINA_TRUE;
+    }
+
+    return EINA_FALSE;
+}
+
+Eina_Bool WebView::launch_email(const char *uri)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    app_control_h app_control = NULL;
+    if (app_control_create(&app_control) < 0) {
+        BROWSER_LOGE("[%s:%d] Fail to app_control_create", __PRETTY_FUNCTION__, __LINE__);
+        return EINA_FALSE;
+    }
+    if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_COMPOSE) < 0) {
+        BROWSER_LOGE("Fail to app_control_set_operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_uri(app_control, uri) < 0) {
+        BROWSER_LOGE("Fail to app_control_set_uri");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
+        BROWSER_LOGE("Fail to app_control_send_launch_request");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    app_control_destroy(app_control);
+
+    return EINA_TRUE;
+}
+
+Eina_Bool WebView::launch_dialer(const char *uri)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    app_control_h app_control = NULL;
+    if (app_control_create(&app_control) < 0) {
+        BROWSER_LOGE("Fail to create app_control handle");
+        return EINA_FALSE;
+    }
+    if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_DIAL) < 0) {
+        BROWSER_LOGE("Fail to app_control_set_operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_uri(app_control, uri) < 0) {
+        BROWSER_LOGE("app_control_add_extra_data is failed.");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
+        BROWSER_LOGE("Fail to launch app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    app_control_destroy(app_control);
+
+    return EINA_TRUE;
+}
+
+Eina_Bool WebView::launch_message(const char *uri)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    app_control_h app_control = NULL;
+    if (app_control_create(&app_control) < 0) {
+        BROWSER_LOGE("Fail to create app_control handle");
+        return EINA_FALSE;
+    }
+    if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_COMPOSE) < 0) {
+        BROWSER_LOGE("Fail to set app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_uri(app_control, uri) < 0) {
+        BROWSER_LOGE("Fail to set extra data");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
+        BROWSER_LOGE("Fail to launch app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    app_control_destroy(app_control);
+
+    return EINA_TRUE;
+}
+
+Eina_Bool WebView::launch_tizenstore(const char *uri)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    app_control_h app_control = NULL;
+    if (app_control_create(&app_control) < 0) {
+        BROWSER_LOGE("Fail to create app_control handle");
+        return EINA_FALSE;
+    }
+    if (!app_control) {
+        BROWSER_LOGE("Fail to create app_control handle");
+        return EINA_FALSE;
+    }
+    if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_VIEW) < 0) {
+        BROWSER_LOGE("Fail to set app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_uri(app_control, uri) < 0) {
+        BROWSER_LOGE("Fail to set uri operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_app_id(app_control, TIZENSTORE_APP_ID) < 0) {
+        BROWSER_LOGE("Fail to app_control_set_app_id");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
+        BROWSER_LOGE("Fail to launch app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    app_control_destroy(app_control);
+
+    return EINA_TRUE;
+}
+#endif
 
 Evas_Object * WebView::getLayout()
 {
@@ -1418,6 +1593,27 @@ void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, v
         ewk_policy_decision_ignore(policy_decision);
         break;
     }
+}
+
+void WebView::__policy_navigation_decide_cb(void *data, Evas_Object * /*obj*/, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    WebView *wv = (WebView *)data;
+
+    Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
+    const char *uri = ewk_policy_decision_url_get(policy_decision);
+    BROWSER_LOGD("uri = [%s]", uri);
+
+    Eina_Bool is_scheme_handled = wv->handle_scheme(uri);
+
+    if (is_scheme_handled) {
+        BROWSER_LOGD("Scheme handled");
+        ewk_policy_decision_ignore(policy_decision);
+        if (!wv->isBackEnabled())
+            wv = NULL;
+        return;
+    }
+    ewk_policy_decision_use(policy_decision);
 }
 
 void WebView::__download_request_cb(const char *download_uri, void *data)

@@ -302,6 +302,12 @@ private:
     static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_enter_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_exit_cb(void *data, Evas_Object *obj, void *event_info);
+
+    Eina_Bool handle_scheme(const char *uri);
+    Eina_Bool launch_email(const char *uri);
+    Eina_Bool launch_dialer(const char *uri);
+    Eina_Bool launch_message(const char *uri);
+    Eina_Bool launch_tizenstore(const char *uri);
 #endif
 
     // Load
@@ -339,6 +345,7 @@ private:
 #if PROFILE_MOBILE
     // downloads
     static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __policy_navigation_decide_cb(void *data, Evas_Object *obj, void *event_info);
     static void __download_request_cb(const char *download_uri, void *data);
 #endif
 
