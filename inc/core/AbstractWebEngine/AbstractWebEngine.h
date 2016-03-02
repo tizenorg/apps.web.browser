@@ -1,0 +1,524 @@
+/*
+ * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef __ABSTRACT_WEBENGINE_H__
+#define __ABSTRACT_WEBENGINE_H__ 1
+
+#include <boost/signals2/signal.hpp>
+#include <boost/optional.hpp>
+#include <memory>
+#include <Evas.h>
+
+#include "core/Tools/BrowserImage.h"
+#include "core/ServiceManager/Debug/Lifecycle.h"
+#include "core/ServiceManager/AbstractService.h"
+
+#include "core/AbstractWebEngine/TabId.h"
+#include "core/AbstractWebEngine/WebConfirmation.h"
+#include "core/AbstractWebEngine/WebEngineSettings.h"
+
+namespace tizen_browser {
+namespace basic_webengine {
+/***
+ * AbstractWebEngine defines interface for WebEngine object.
+ * It is designed for multiple tabs operations.
+ * It is designed to be only way for communication with WebEngine. It should NOT return WebEngine object.
+ */
+template<typename T>
+#ifndef NDEBUG
+class AbstractWebEngine : public tizen_browser::core::AbstractService, ShowLifeCycle<AbstractWebEngine<T>>
+#else
+class AbstractWebEngine: public tizen_browser::core::AbstractService
+#endif
+{
+public:
+    /**
+     * \todo this function should return nonEFL object in future
+     * Remember that there must be at least 1 tab created to return layout
+     * @return pointer Evas_Object for current WebView.
+     */
+    virtual T * getLayout() = 0;
+
+    /**
+     * Initialize WebEngine.
+     * @param guiParent GUI parent object (now should pass Evas_Object)
+     * \todo make guiParent nonEFL object
+     */
+    virtual void init(void * guiParent) = 0;
+
+    /**
+     * Set URI address for current tab.
+     * @param uri
+     */
+    virtual void setURI(const std::string & uri) = 0;
+
+    /**
+     * @return uri address for current tab.
+     */
+    virtual std::string getURI(void) const = 0;
+
+    /**
+     * @return title of page opened in current tab.
+     */
+    virtual std::string getTitle(void) const = 0;
+
+    /**
+     * @return Current UserAgent string of the browser.
+     */
+    virtual std::string getUserAgent(void) const = 0;
+
+    /**
+     * @return Override Browser's UserAgent.
+     */
+    virtual void setUserAgent(const std::string& ua) = 0;
+
+    /**
+     * Suspend current webview.
+     */
+    virtual void suspend(void) = 0;
+
+    /**
+     * Resume current webview.
+     */
+    virtual void resume(void) = 0;
+
+    /**
+     * @return true if current webview is suspended, false otherwise
+     */
+    virtual bool isSuspended(void) const = 0;
+
+    /**
+     * Stop loading current page.
+     */
+    virtual void stopLoading(void) = 0;
+
+    /**
+     * Reload current page.
+     */
+    virtual void reload(void) = 0;
+
+    /**
+     * Go to previous page (if possible)
+     */
+    virtual void back(void) = 0;
+
+    /**
+     * Go to next page (if possible)
+     */
+    virtual void forward(void) = 0;
+
+    /**
+     * @return true if it is possible to go back, false otherwise
+     */
+    virtual bool isBackEnabled(void) const = 0;
+
+    /**
+     * @return true if it is possible to go forward, false otherwise
+     */
+    virtual bool isForwardEnabled(void) const = 0;
+
+    /**
+     * @return true if page is still loading, false otherwise
+     */
+    virtual bool isLoading() const = 0;
+
+    /**
+     * @return number of tabs
+     */
+    virtual int tabsCount() const = 0;
+
+    /**
+     * @return TabId of current tab
+     */
+    virtual TabId currentTabId() const = 0;
+
+    /**
+     * Destroy active WebViews.
+     */
+    virtual void destroyTabs() = 0;
+
+    /**
+     *  @return vector of metadata for all opened tabs
+     */
+    virtual std::vector<std::shared_ptr<TabContent>> getTabContents() const = 0;
+
+    /**
+     * Adds new tab. If it first tab in WebEngine switch to this tab.
+     * @param uri if not empty opens specified uri
+     * @param openerId id of the tab which content (Evas_Object) should be set
+     * for the created tab
+     * @param tabId Tab id of the new tab. If boost::none, tab's id will be
+     * generated
+     * @param desktopMode true if desktop mode, false if mobile mode
+     * @param incognitoMode true if incognito mode, false if not
+     * @return TabId of created tab
+     */
+    virtual TabId addTab(
+            const std::string& uri = std::string(),
+            const TabId* openerId = NULL,
+            const boost::optional<int> tabId = boost::none,
+            const std::string& title = std::string(),
+            bool desktopMode = true,
+            bool incognitoMode = false) = 0;
+
+    /**
+     * @param tab id
+     * @return returns underlaying UI component
+     */
+    virtual T* getTabView(TabId id) = 0;
+
+    /**
+     * Switch current tab for tab with tabId
+     * @param tabId of tab
+     * @return true if tab changed, false otherwise
+     */
+    virtual bool switchToTab(TabId tabId) = 0;
+
+    /**
+     * Close current tab. Switch tab to other (not defined which).
+     * Should NOT close last tab (there should be only at least 1 tab)
+     * @return true if tab closed successfully, false otherwise
+     */
+    virtual bool closeTab() = 0;
+
+    /**
+     * Close tab specified with id parameter. Switch tab to other (not defined which).
+     * Should NOT close last tab (there should be only at least 1 tab)
+     * @return true if tab closed successfully, false otherwise
+     */
+    virtual bool closeTab(TabId id) = 0;
+
+    /**
+     * Process confirmation result
+     * \param web confirmation with request and result value
+     */
+    virtual void confirmationResult(WebConfirmationPtr) = 0;
+
+    /**
+     * Gets snapshot data as void* for current tab
+     */
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width = 324, int height = 177) = 0;
+
+    /**
+     * Gets snapshot data as void* for tab provided as parameter
+     */
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, bool async) = 0;
+
+    /**
+     * Get the state of private mode for a specific tab
+     *
+     * /param id of snapshot
+     * /return state of private mode
+     */
+    virtual bool isPrivateMode(const TabId&) = 0;
+
+    virtual bool isLoadError() const = 0;
+
+    /**
+     * \brief Sets Focus to URI entry.
+     */
+    virtual void setFocus()=0;
+
+    /**
+     * @brief Remove focus form URI
+     */
+    virtual void clearFocus()=0;
+
+    /**
+     * @brief check if URI is focused
+     */
+    virtual bool hasFocus() const = 0;
+
+    /**
+     * @brief return current zoom factor in percentage.
+     *
+     * @return real zoom, also for "fit to screen" mode
+     */
+    virtual int getZoomFactor()const = 0;
+
+
+    /**
+     * @brief Sets zoom factor in percentage
+     *
+     * @param zoomFactor in percentage of default zoom, 0 means autofit
+     */
+    virtual void setZoomFactor(int zoomFactor) = 0;
+
+    /**
+     * @brief Clear cache of WebView
+     */
+
+    virtual void clearCache() = 0;
+
+    /**
+     * @brief Clear cookies of WebView
+     */
+    virtual void clearCookies() = 0;
+
+    /**
+     * @brief Clear private data of WebView
+     */
+    virtual void clearPrivateData() = 0;
+    /**
+     * @brief Clear saved Password of WebView
+     */
+    virtual void clearPasswordData() = 0;
+
+    /**
+    * @brief Clear Form Data of WebView
+    */
+    virtual void clearFormData() = 0;
+
+    virtual void disconnectCurrentWebViewSignals() = 0;
+
+    /**
+     * @brief Search string on searchOnWebsite
+     *
+     * @param string to search on searchOnWebsite
+     * @param flags for search options
+     */
+    virtual void searchOnWebsite(const std::string &, int flags) = 0;
+
+    /**
+     * @brief Get favicon of current page loaded
+     */
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon() = 0;
+
+    /**
+     * @brief back or exit when back key is pressed
+     */
+    virtual void backButtonClicked() = 0;
+
+#if PROFILE_MOBILE
+    /**
+     * @brief clear text selection or exit full screen when more key is pressed
+     */
+    virtual void moreKeyPressed() = 0;
+#endif
+
+    /**
+     * @brief Switch current view to mobile mode
+     */
+    virtual void switchToMobileMode() = 0;
+
+    /**
+     * @brief Switch current view to desktop mode
+     */
+    virtual void switchToDesktopMode() = 0;
+
+    /**
+     * @brief Check if desktop mode is enabled for current view
+     *
+     * @return true if desktop mode is enabled
+     */
+    virtual bool isDesktopMode() const = 0;
+
+    /**
+     * Sets an absolute scroll of the given view.
+     *
+     * Both values are from zero to the contents size minus the viewport
+     * size.
+     *
+     * @param x horizontal position to scroll
+     * @param y vertical position to scroll
+     */
+    virtual void scrollView(const int& dx, const int& dy) = 0;
+
+    /**
+     * Slot to which generated tab's id is passed.
+     */
+    virtual void onTabIdCreated(int tabId) = 0;
+
+#if PROFILE_MOBILE
+    /**
+     * @brief Searches for word in the current page.
+     *
+     * @param enabled The input word entered by user in Find on page entry.
+     * @param forward If true, search forward, else search backward.
+     * @param found_cb Callback function invoked when "text,found" event is triggered.
+     * @param data User data.
+     */
+    virtual void findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data) = 0;
+    /**
+     * @brief Enable or disable touch events for current web view
+     *
+     * @param enabled True if touch event have to be enabled, false else.
+     */
+    virtual void setTouchEvents(bool enabled) = 0;
+
+    /**
+     * @brief Get settings param.
+     */
+    virtual bool getSettingsParam(WebEngineSettings param) = 0;
+
+    /**
+     * @brief Set bool settings param value.
+     */
+    virtual void setSettingsParam(WebEngineSettings param, bool value) = 0;
+
+    /**
+     * @brief Informs WebEngine that device orientation is changed.
+     */
+    virtual void orientationChanged() = 0;
+#endif
+
+    /**
+     * FavIcon of current page changed
+     */
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
+
+    /**
+     * Title of current page changed
+     * \param new title
+     */
+    boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
+
+    /**
+     * URI of current page changed
+     * \param new URI
+     */
+    boost::signals2::signal<void (const std::string &)> uriChanged;
+
+    /**
+     * Possibility of go forward changed
+     * \param bool true if it is possible to go forward, false otherwise
+     */
+    boost::signals2::signal<void (bool)> forwardEnableChanged;
+
+    /**
+     * Possibility of go back changed
+     * \param bool true if it is possible to go back, false otherwise
+     */
+    boost::signals2::signal<void (bool)> backwardEnableChanged;
+
+    /**
+     * Page load finished
+     */
+    boost::signals2::signal<void ()> loadFinished;
+
+    /**
+     * Page load started
+     */
+    boost::signals2::signal<void ()> loadStarted;
+
+    /**
+     * Load progress changed
+     * \param double 0..1 of progress
+     * \param TabId of a tab
+     * \param bool true if first load progress, false otherwise
+     */
+    boost::signals2::signal<void (double, TabId, bool)> loadProgress;
+
+    /**
+     * Page load stopped.
+     */
+    boost::signals2::signal<void ()> loadStop;
+
+    /**
+     * Page load error.
+     */
+    boost::signals2::signal<void ()> loadError;
+
+    /**
+     * Page is fully loaded.
+     */
+    boost::signals2::signal<void (TabId)> ready;
+
+    /**
+     * Current tab changed
+     * \param TabId of new tab
+     */
+    boost::signals2::signal<void (TabId)> currentTabChanged;
+
+    /**
+    * New tab was created. It could be explicit call (by user) or tab could be opened from JavaScript.
+    */
+    boost::signals2::signal<void ()> tabCreated;
+
+    /**
+    * Checks if tab can be created.
+    */
+    boost::signals2::signal<bool ()> checkIfCreate;
+
+    /**
+     * Tab closed
+     * \param TabId of closed tab
+     */
+    boost::signals2::signal<void (TabId)> tabClosed;
+
+    /**
+     * Confirmation Request
+     */
+    boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;
+
+    /**
+     * Web Engine area clicked
+     */
+    boost::signals2::signal<void ()> webViewClicked;
+
+    /**
+     * All links to RSS/Atom channels were gathered from webpage.
+     */
+    boost::signals2::signal<void (std::vector<std::string>)> gotFeedLinks;
+
+    /**
+     * Status of IME
+     * \param bool true if IME is opened, false otherwise
+     */
+    boost::signals2::signal<void (bool)> IMEStateChanged;
+
+    /**
+     * Switch view to actual web page
+     */
+    boost::signals2::signal<void ()> switchToWebPage;
+
+    /**
+     * Signal to switch to window after it is created
+     */
+    boost::signals2::signal<void ()> windowCreated;
+
+    /**
+     * Generate id for the new tab.
+     */
+    boost::signals2::signal<void()> createTabId;
+
+    /**
+     * Async signal to save snapshot after it is generated.
+     */
+    boost::signals2::signal<void(std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
+
+#if PROFILE_MOBILE
+    /**
+     * Register H/W back key callback for the current webview
+     */
+    boost::signals2::signal<void()> registerHWKeyCallback;
+
+    /**
+     * Unregister H/W back key callback for the current webview
+     */
+    boost::signals2::signal<void()> unregisterHWKeyCallback;
+
+    /**
+     * Gets rotation angle value.
+     */
+    boost::signals2::signal<int()> getRotation;
+#endif
+};
+
+} /* end of basic_webengine */
+} /* end of tizen_browser */
+
+#endif /* __ABSTRACT_WEBENGINE_H__ */
