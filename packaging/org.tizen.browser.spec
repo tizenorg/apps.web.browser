@@ -63,12 +63,14 @@ BuildRequires:  pkgconfig(chromium-efl)
 BuildRequires:	pkgconfig(dlog)
 %endif
 
-%define _appdir /usr/apps/%{name}
+BuildRequires:  pkgconfig(libtzplatform-config)
+
+%define _appdir %{TZ_SYS_RO_APP}/%{name}
 %define _bindir %{_appdir}/bin
 %define COVERAGE_STATS %{?coverage_stats:ON}%{!?coverage_stats:OFF}
 
-%define _manifestdir /usr/share/packages
-%define _icondir /usr/share/icons/default/small
+%define _manifestdir %{TZ_SYS_RO_PACKAGES}
+%define _icondir %{TZ_SYS_RO_ICONS}/default/small
 
 %description
 WebKit browser with EFL for Tizen TV Platform.
@@ -92,6 +94,8 @@ cmake .. \
     -DBUILD_UT=%{BUILD_UT} \
     -DCOVERAGE_STATS=%{COVERAGE_STATS} \
     -DPROFILE=%{profile} \
+    -DTZ_SYS_RO_PACKAGES=%{TZ_SYS_RO_PACKAGES} \
+    -DTZ_SYS_RO_ICONS=%{TZ_SYS_RO_ICONS} \
 %if "%{?_with_wayland}" == "1"
     -DWAYLAND_SUPPORT=On
 %else
