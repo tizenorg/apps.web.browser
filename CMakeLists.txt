@@ -24,10 +24,6 @@ if(NOT DEFINED ICONDIR)
     SET(ICONDIR "/usr/share/icons/default/small/")
 endif(NOT DEFINED ICONDIR)
 
-if(NOT DEFINED DEMODIR)
-    SET(DEMODIR "/usr/apps/org.tizen.browser/res/demo/")
-endif(NOT DEFINED DEMODIR)
-
 option(BUILD_UT "Build Unit tests" OFF)
 option(TIZEN_BUILD "Build for Tizen. Default ON" ON)
 option(DYN_INT_LIBS "Buils internal libs as dynamic" ON)
@@ -157,11 +153,6 @@ install(FILES ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}.xml DESTINATION ${MANIFESTDIR}
 # install desktop file & icon
 install(FILES ${CMAKE_SOURCE_DIR}/org.tizen.browser.png DESTINATION ${ICONDIR})
 install(FILES ${CMAKE_SOURCE_DIR}/apps_img_web_default_4x2.png DESTINATION ${ICONDIR})
-# install demo files
-install(FILES ${CMAKE_SOURCE_DIR}/demo/b.htm DESTINATION ${DEMODIR})
-install(FILES ${CMAKE_SOURCE_DIR}/demo/Widget.htm DESTINATION ${DEMODIR})
-install(FILES ${CMAKE_SOURCE_DIR}/demo/header.jpg DESTINATION ${DEMODIR})
-install(FILES ${CMAKE_SOURCE_DIR}/demo/main_bg.jpg DESTINATION ${DEMODIR})
 # install certs
 INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/certs/ DESTINATION ${CERTS_DIR})
 endif(TIZEN_BUILD)
