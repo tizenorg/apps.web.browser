@@ -450,9 +450,6 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = _("IDS_BR_OPT_READER_MODE_TTS");
                 break;
 #endif
-            case SHARE:
-                item_name = (std::string(_("IDS_BR_OPT_SHARE")) + "<br>").c_str();
-                break;
             case FIND_ON_PAGE:
                 item_name = _("IDS_BR_OPT_FIND_ON_PAGE");
                 break;
@@ -478,9 +475,6 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 break;
             case VIEW_DESKTOP_WEB:
                 item_name = "View Desktop Web";
-                break;
-            case SHARE:
-                item_name = _("IDS_BR_OPT_SHARE");
                 break;
             case SETTINGS:
                 item_name = _("IDS_BR_BUTTON_SETTINGS_ABB");
@@ -516,9 +510,6 @@ static const char* getImageFileNameForType(ItemType type, bool focused, Eina_Boo
             file_name = "moremenu_ic_02.png";
             break;
 #endif
-        case SHARE:
-            file_name = "moremenu_ic_03.png";
-            break;
         case HISTORY:
             file_name = "moremenu_ic_04.png";
             break;
@@ -556,9 +547,6 @@ static const char* getImageFileNameForType(ItemType type, bool focused, Eina_Boo
             break;
         case VIEW_DESKTOP_WEB:
             file_name = focused ? "ic_more_desktopview_foc.png" : "ic_more_desktopview_nor.png";
-            break;
-        case SHARE:
-            file_name = focused ? "ic_more_share_foc.png" : "ic_more_share_nor.png";
             break;
         case SETTINGS:
             file_name = focused ? "ic_more_setting_foc.png" : "ic_more_setting_nor.png";
@@ -656,9 +644,6 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
     BROWSER_LOGD("type: %d", itemData->item);
         switch (itemData->item) {
-            case SHARE:
-                //TODO: Implement share mode
-                break;
             case HISTORY:
                 itemData->moreMenuUI->historyUIClicked();
                 break;

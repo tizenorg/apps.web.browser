@@ -46,7 +46,6 @@ enum ItemType {
 #ifdef READER_MODE_ENABLED
     READER_MODE,
 #endif
-    SHARE,
     HISTORY,
     BOOKMARK_MANAGER,
     SETTINGS,
@@ -63,7 +62,6 @@ enum ItemType {
 #endif
     VIEW_MOBILE_WEB,
     VIEW_DESKTOP_WEB,
-    SHARE,
     SETTINGS,
     EXIT_BROWSER
 #endif
