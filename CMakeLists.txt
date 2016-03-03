@@ -17,11 +17,11 @@ if(NOT DEFINED PACKAGE_NAME)
 endif(NOT DEFINED PACKAGE_NAME)
 
 if(NOT DEFINED MANIFESTDIR)
-    SET(MANIFESTDIR "/usr/share/packages")
+    SET(MANIFESTDIR ${TZ_SYS_RO_PACKAGES})
 endif(NOT DEFINED MANIFESTDIR)
 
 if(NOT DEFINED ICONDIR)
-    SET(ICONDIR "/usr/share/icons/default/small/")
+    SET(ICONDIR "${TZ_SYS_RO_ICONS}/default/small/")
 endif(NOT DEFINED ICONDIR)
 
 option(BUILD_UT "Build Unit tests" OFF)
