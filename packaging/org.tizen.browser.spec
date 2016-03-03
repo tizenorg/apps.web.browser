@@ -69,7 +69,6 @@ BuildRequires:	pkgconfig(dlog)
 
 %define _manifestdir /usr/share/packages
 %define _icondir /usr/share/icons/default/small
-%define _demodir /usr/apps/org.tizen.browser/res/demo
 
 %description
 WebKit browser with EFL for Tizen TV Platform.
@@ -111,7 +110,6 @@ cd %{_build_dir}
 %manifest org.tizen.browser.manifest
 %{_icondir}/org.tizen.browser.png
 %{_icondir}/apps_img_web_default_4x2.png
-%{_demodir}/*
 %{_manifestdir}/%{name}.xml
 %defattr(-,root,root,-)
 %{_appdir}/bin/browser
