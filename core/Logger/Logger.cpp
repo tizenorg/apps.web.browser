@@ -155,8 +155,7 @@ std::string Logger::timeStamp() {
 
 	char buf[80];
 //	strftime(buf, sizeof(buf), "%d/%m/%y,%T ", brokenTime, detail_time.tv_usec/1000);
-    sprintf(buf, "[%d/%d/%d,%d:%d:%d.%ld]", b->tm_year, b->tm_mon, b->tm_mday, b->tm_hour, b->tm_min, b->tm_sec, detail_time.tv_usec/1000);
-
+        snprintf(buf,  sizeof(buf),"[%d/%d/%d,%d:%d:%d.%ld]", b->tm_year, b->tm_mon, b->tm_mday, b->tm_hour, b->tm_min, b->tm_sec, detail_time.tv_usec/1000);
 	return std::string(buf);
 }
 
