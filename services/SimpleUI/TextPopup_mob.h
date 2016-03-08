@@ -64,6 +64,8 @@ private:
     Evas_Object* m_button_right;
     PopupButtons m_left_button_type;
     PopupButtons m_right_button_type;
+    bool m_left_button_initialized;
+    bool m_right_button_initialized;
     std::string m_title;
     std::string m_message;
     static void _left_response_cb(void* data, Evas_Object* obj, void* event_info);
