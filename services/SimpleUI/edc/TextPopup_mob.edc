@@ -4,7 +4,7 @@
 
 #define BUTTON_HEIGHT 120
 #define TITLE_HEIGHT 101
-#define TITLE_TEXT_OFFSET_X 100
+#define TITLE_TEXT_OFFSET_X 44
 #define TITLE_TEXT_OFFSET_Y 44
 #define TITLE_TEXT_HEIGHT 45
 #define MESSAGE_OFFSET_X 44
@@ -21,7 +21,7 @@ collections { base_scale: 2.6;
         styles {
             style {
                 name: "message_style";
-                base: "font=Tizen:style=Regular font_size=38 color=#333333 wrap=mixed align=left text_clas=tizen";
+                base: "font=Tizen:style=Regular font_size=38 color=#333333 wrap=mixed align=middle text_class=tizen";
                 tag: "br" "\n";
                 tag: "tab" "\t";
             }
