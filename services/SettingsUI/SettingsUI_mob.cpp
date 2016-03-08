@@ -293,6 +293,7 @@ Evas_Object* SettingsUI::createDelDataMobilePage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete Web Browsing Data");
 
     createInfoField("info_field", "You can delete Web Browsing Data optionally.", main);
@@ -372,6 +373,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete Web Browsing Data");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
@@ -395,7 +397,7 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    elm_object_signal_emit(m_actionBar,"switch,reset,browser", "del_but");
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Reset browser");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
@@ -419,6 +421,7 @@ Evas_Object* SettingsUI::createDeveloperOptionsMobilePage(Evas_Object* settings_
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Developer Options");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
@@ -481,6 +484,7 @@ Evas_Object* SettingsUI::createContentSettingsPage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Content Settings");
 
     createInfoField("info_field", "Choose web page content", main);
@@ -537,6 +541,7 @@ Evas_Object* SettingsUI::createPrivacyPage(Evas_Object* settings_layout)
 
     auto main = createMainView(settings_layout);
 
+    elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
     elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Privacy");
 
     createInfoField("info_field", "Choose privacy settings", main);
