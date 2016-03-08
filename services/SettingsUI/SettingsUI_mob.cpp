@@ -374,7 +374,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
-    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Delete Web Browsing Data");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Reset Most Visited Sites");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *reset_mv_button = elm_button_add(layout);
