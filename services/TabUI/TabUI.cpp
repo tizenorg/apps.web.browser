@@ -24,7 +24,7 @@
 #include "TabId.h"
 #include "BrowserLogger.h"
 #include "BrowserImage.h"
-
+#include "Config/Config.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -38,7 +38,9 @@ typedef struct _TabItemData
 } TabItemData;
 
 TabUI::TabUI()
-    : m_tab_layout(nullptr)
+    : m_button_left(nullptr)
+    , m_button_right(nullptr)
+    , m_tab_layout(nullptr)
     , m_gengrid(nullptr)
     , m_parent(nullptr)
     , m_item_class(nullptr)
@@ -176,26 +178,30 @@ Evas_Object* TabUI::createBottomBar(Evas_Object* parent)
     evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    Evas_Object* button_left = elm_button_add(box);
-    elm_object_style_set(button_left, "tab_button");
-    evas_object_size_hint_weight_set(button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_object_part_text_set(button_left, "elm.text", "New Tab");
-    elm_box_pack_end(box, button_left);
-    evas_object_smart_callback_add(button_left, "clicked", _newtab_clicked, this);
+    m_button_left = elm_button_add(box);
+    elm_object_style_set(m_button_left, "tab_button");
+    evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(m_button_left, "elm.text", "New Tab");
+    elm_box_pack_end(box, m_button_left);
+    evas_object_smart_callback_add(m_button_left, "clicked", _newtab_clicked, this);
+#if PROFILE_MOBILE
+    elm_object_signal_emit(m_button_left, "enabled", "ui");
+#endif
+    evas_object_show(m_button_left);
 
-    evas_object_show(button_left);
-
-    Evas_Object* button_right = elm_button_add(box);
-    elm_object_style_set(button_right, "tab_button");
-    evas_object_size_hint_weight_set(button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_object_part_text_set(button_right, "elm.text", "New incognito Tab");
-    elm_box_pack_end(box, button_right);
-    evas_object_smart_callback_add(button_right, "clicked", _newincognitotab_clicked, this);
-    elm_object_signal_emit(button_right, "visible", "ui");
-
-    evas_object_show(button_right);
+    m_button_right = elm_button_add(box);
+    elm_object_style_set(m_button_right, "tab_button");
+    evas_object_size_hint_weight_set(m_button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(m_button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(m_button_right, "elm.text", "New incognito Tab");
+    elm_box_pack_end(box, m_button_right);
+    evas_object_smart_callback_add(m_button_right, "clicked", _newincognitotab_clicked, this);
+    elm_object_signal_emit(m_button_right, "visible", "ui");
+#if PROFILE_MOBILE
+    elm_object_signal_emit(m_button_right, "enabled", "ui");
+#endif
+    evas_object_show(m_button_right);
 
     evas_object_show(box);
     return box;
@@ -420,6 +426,16 @@ void TabUI::addTabItems(std::vector<basic_webengine::TabContentPtr> items)
     for (auto it = items.begin(); it < items.end(); ++it) {
         addTabItem(*it);
     }
+
+#if PROFILE_MOBILE
+    if (tabsCount() >= boost::any_cast<int>(tizen_browser::config::Config::getInstance().get("TAB_LIMIT"))) {
+        elm_object_signal_emit(m_button_left, "dissabled", "ui");
+        elm_object_signal_emit(m_button_right, "dissabled", "ui");
+    } else {
+        elm_object_signal_emit(m_button_left, "enabled", "ui");
+        elm_object_signal_emit(m_button_right, "enabled", "ui");
+    }
+#endif
 }
 
 char* TabUI::_grid_text_get(void *data, Evas_Object*, const char *part)
@@ -533,6 +549,11 @@ void TabUI::_close_tab_clicked(void *data, Evas_Object*, void*)
         elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
 
         itemData->tabUI->closeTabsClicked(itemData->item->getId());
+
+#if PROFILE_MOBILE
+        elm_object_signal_emit(itemData->tabUI->m_button_left, "enabled", "ui");
+        elm_object_signal_emit(itemData->tabUI->m_button_right, "enabled", "ui");
+#endif
     }
 }
 
