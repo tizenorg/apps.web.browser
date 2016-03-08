@@ -305,8 +305,10 @@ private:
 #if PROFILE_MOBILE
     void settingsOverrideUseragent(const std::string& userAgent);
     void onOverrideUseragentButton(const std::string& str);
-#endif
+    void tabLimitPopupButtonClicked(PopupButtons button);
+#else
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
+#endif
     int tabsCount();
 
     void onReturnPressed(MenuButton *m);
