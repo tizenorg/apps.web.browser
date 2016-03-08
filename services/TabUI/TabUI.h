@@ -97,6 +97,8 @@ private:
     void closeAllTabs();
     void addTabItem(basic_webengine::TabContentPtr);
 
+    Evas_Object* m_button_left;
+    Evas_Object* m_button_right;
     Evas_Object *m_tab_layout;
     Evas_Object* m_gengrid_layout;
     Evas_Object *m_gengrid;

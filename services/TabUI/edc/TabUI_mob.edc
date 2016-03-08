@@ -6,7 +6,11 @@ collections { base_scale: 2.6;
         styles {
             style {
                 name: "tab_button_style";
-                base: "font=Tizen:style=Regular font_size=38 wrap=none color=#141414 align=0.5";
+                base: "font=Tizen:style=Regular font_size=38 wrap=none color=#141414 align=0.5 ellipsis=1.0";
+            }
+            style {
+                name: "tab_button_style_dissabled";
+                base: "font=Tizen:style=Regular font_size=38 wrap=none color=#C0C0C0 align=0.5 ellipsis=1.0";
             }
         }
         parts {
@@ -87,6 +91,11 @@ collections { base_scale: 2.6;
                         align: 0 0.5;
                     }
                 }
+                description {
+                    state: "dissabled" 0.0;
+                    inherit: "default";
+                    text.style: "tab_button_style_dissabled";
+                }
             }
             rect {
                 name: "over";
@@ -106,6 +115,11 @@ collections { base_scale: 2.6;
                     }
                     color: 0 0 0 0;
                 }
+                description {
+                    state: "dissabled" 0.0;
+                    inherit: "default";
+                    visible: 0;
+                }
             }
         }
         programs {
@@ -115,6 +129,22 @@ collections { base_scale: 2.6;
                 signal: "visible";
                 action: STATE_SET "visible" 0.0;
                 target: "divider_vertical";
+            }
+            program {
+                name: "dissabled";
+                source: "ui";
+                signal: "dissabled";
+                action: STATE_SET "dissabled" 0.0;
+                target: "elm.text";
+                target: "over";
+            }
+            program {
+                name: "enabled";
+                source: "ui";
+                signal: "enabled";
+                action: STATE_SET "default" 0.0;
+                target: "elm.text";
+                target: "over";
             }
             program {
                 name: "down";

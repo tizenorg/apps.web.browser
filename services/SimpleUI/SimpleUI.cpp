@@ -1720,7 +1720,11 @@ void SimpleUI::onOverrideUseragentButton(const std::string& newUA)
 }
 #endif
 
-void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/)
+#if PROFILE_MOBILE
+void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button)
+#else
+void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData */)
+#endif
 {
     if (button == CLOSE_TAB) {
         BROWSER_LOGD("[%s]: CLOSE TAB", __func__);
@@ -1739,11 +1743,17 @@ bool SimpleUI::checkIfCreate()
     int tabs = m_webEngine->tabsCount();
 
     if (tabs >= m_tabLimit) {
+#if PROFILE_MOBILE
+        TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
+        popup->setRightButton(OK);
+        popup->buttonClicked.connect(boost::bind(&SimpleUI::tabLimitPopupButtonClicked, this, _1));
+#else
         SimplePopup *popup = SimplePopup::createPopup(m_viewManager.getContent());
-        popup->setTitle("Maximum tab count reached.");
         popup->addButton(OK);
-        popup->setMessage("Close other tabs to open another new tab");
         popup->buttonClicked.connect(boost::bind(&SimpleUI::tabLimitPopupButtonClicked, this, _1, _2));
+#endif
+        popup->setTitle(_("Maximum tab count reached"));
+        popup->setMessage("Close other tabs to open another new tab");
         popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
         popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
         popup->show();
