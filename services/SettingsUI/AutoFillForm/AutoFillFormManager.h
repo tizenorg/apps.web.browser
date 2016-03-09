@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include <boost/signals2/signal.hpp>
-
+#include <Ecore.h>
 #include <Elementary.h>
 #include <Evas.h>
 
@@ -67,6 +67,8 @@ public:
     void rotateLandscape();
     void rotatePortrait();
 
+    static Eina_Bool load_list_timer(void *data);
+
     boost::signals2::signal<void ()> listViewBackClicked;
 
     /* test */
@@ -79,6 +81,7 @@ private:
     AutoFillFormComposeView *m_composer;
     AutoProfileDeleteView *m_deleteView;
     Ewk_Context* m_ewkContext;
+    Ecore_Timer* m_timer;
 };
 
 }

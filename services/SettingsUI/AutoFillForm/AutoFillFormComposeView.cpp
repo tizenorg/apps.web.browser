@@ -457,18 +457,15 @@ void AutoFillFormComposeView::__done_button_cb(void* data, Evas_Object* /*obj*/,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(data);
-
-    if (elm_entry_is_empty(view->m_entryFullName)) {
-        elm_object_focus_set(view->m_cancelButton, EINA_TRUE); // Closing virtual keyboard by changing the focus
-        return;
-    }
-
     if (view->applyEntryData() == EINA_FALSE)
         return;
 
+#if !PROFILE_MOBILE
     elm_object_focus_set(view->m_cancelButton, EINA_TRUE);
     evas_object_hide(view->m_mainLayout);
+#endif
     view->m_manager->refreshListView();
+    view->hide_action_bar();
 }
 
 void AutoFillFormComposeView::__cancel_button_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
@@ -476,11 +473,16 @@ void AutoFillFormComposeView::__cancel_button_cb(void* data, Evas_Object* /*obj*
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(data);
-    elm_object_signal_emit(view->m_action_bar, "hide,buttons,signal", "but_vis");
-    elm_object_signal_emit(view->m_action_bar, "show,close,icon", "del_but");
-    elm_object_signal_emit(view->m_action_bar,"back,icon,change", "del_but");
-    elm_object_translatable_part_text_set(view->m_action_bar, "settings_title", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
-    view->hide();
+    view->hide_action_bar();
+}
+
+void AutoFillFormComposeView::hide_action_bar()
+{
+    elm_object_signal_emit(m_action_bar, "hide,buttons,signal", "but_vis");
+    elm_object_signal_emit(m_action_bar, "show,close,icon", "del_but");
+    elm_object_signal_emit(m_action_bar, "back,icon,change", "del_but");
+    elm_object_translatable_part_text_set(m_action_bar, "settings_title", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
+    hide();
 }
 
 void AutoFillFormComposeView::__entry_changed_cb(void* data, Evas_Object* obj, void* /*event_info*/)
