@@ -148,15 +148,19 @@ int Logger::registerLogger(AbstractLogger *l) {
 }
 
 std::string Logger::timeStamp() {
-	time_t initializer = time(NULL);
-	tm *b = localtime(&initializer);
-    struct timeval detail_time;
-    gettimeofday(&detail_time,NULL);
+        time_t initializer = time(NULL);
+        struct tm b;
+        if(localtime_r(&initializer,&b)==NULL){
+            return std::string("");
+        }
 
-	char buf[80];
+        struct timeval detail_time;
+        gettimeofday(&detail_time,NULL);
+
+        char buf[80];
 //	strftime(buf, sizeof(buf), "%d/%m/%y,%T ", brokenTime, detail_time.tv_usec/1000);
-        snprintf(buf,  sizeof(buf),"[%d/%d/%d,%d:%d:%d.%ld]", b->tm_year, b->tm_mon, b->tm_mday, b->tm_hour, b->tm_min, b->tm_sec, detail_time.tv_usec/1000);
-	return std::string(buf);
+        snprintf(buf,  sizeof(buf),"[%d/%d/%d,%d:%d:%d.%ld]", b.tm_year, b.tm_mon, b.tm_mday, b.tm_hour, b.tm_min, b.tm_sec, detail_time.tv_usec/1000);
+        return std::string(buf);
 }
 
 } /* end namespace logger */
