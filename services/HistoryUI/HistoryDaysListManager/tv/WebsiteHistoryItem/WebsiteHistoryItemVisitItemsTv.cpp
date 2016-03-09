@@ -150,7 +150,12 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemDate(
     // TODO Replace with std::time_t to_time_t(ptime pt) in the future
     std::time_t rawtime(websiteVisitItemData->historyItem->getLastVisitAsTimeT());
     char buffer[80];
-    std::strftime(buffer,80,"%R",std::localtime(&rawtime));
+    struct tm ts_ret;
+
+    if(localtime_r(&rawtime, &ts_ret)==NULL){
+        return NULL;
+    }
+    std::strftime(buffer,80,"%R",&ts_ret);
 
     elm_object_text_set(layoutDate, buffer);
     return layoutDate;
