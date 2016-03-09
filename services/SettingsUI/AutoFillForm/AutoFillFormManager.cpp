@@ -55,9 +55,27 @@ AutoFillFormManager::~AutoFillFormManager(void)
 void AutoFillFormManager::refreshListView()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    loadEntireItemList();
-    if (m_listView)
-        m_listView->refreshView();
+    m_timer =  ecore_timer_add(0.2, load_list_timer, this);
+//    TODO: Delete above workaround and uncomment bellow when task is fixed.
+//    http://165.213.149.170/jira/browse/TWF-471
+//    http://165.213.149.170/jira/browse/TWF-541
+
+//    loadEntireItemList();
+//    if (m_listView)
+//        m_listView->refreshView();
+}
+
+Eina_Bool AutoFillFormManager::load_list_timer(void *data)
+{
+    BROWSER_LOGD("[%s,%d]", __func__, __LINE__);
+    AutoFillFormManager * aff = static_cast<AutoFillFormManager*>(data);
+
+    aff->loadEntireItemList();
+    if (aff->m_listView)
+        aff->m_listView->refreshView();
+
+    ecore_timer_del(aff->m_timer);
+    return ECORE_CALLBACK_CANCEL;
 }
 
 std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)

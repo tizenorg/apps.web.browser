@@ -72,6 +72,7 @@ private:
     static void __entry_clicked_cb(void* data, Evas_Object* obj, void* event_info);
     static void __entry_clear_button_clicked_cb(void* data, Evas_Object* obj, void* event_info);
     static void __editfield_changed_cb(void* data, Evas_Object* obj, void* event_info);
+    void hide_action_bar();
     AutoFillFormItem *m_itemForCompose;
     AutoFillFormManager *m_manager;
 
