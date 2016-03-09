@@ -153,7 +153,8 @@ Evas_Object* WebsiteHistoryItemVisitItemsTv::createLayoutVisitItemDate(
     struct tm ts_ret;
 
     if(localtime_r(&rawtime, &ts_ret)==NULL){
-        return NULL;
+        BROWSER_LOGD("[%s:%d] Warning: Unhandled localtime_r", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
     std::strftime(buffer,80,"%R",&ts_ret);
 

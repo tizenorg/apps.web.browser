@@ -438,7 +438,9 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     time_t item_time = (time_t) date;
     struct tm item_time_info;
     if(localtime_r(&item_time,&item_time_info)==NULL){
-        return NULL;
+        BROWSER_LOGE("[%s:%d] History localtime_r error ",
+                __PRETTY_FUNCTION__, __LINE__);
+        return std::shared_ptr<HistoryItem>();
     }
 
     int m_year = item_time_info.tm_year;

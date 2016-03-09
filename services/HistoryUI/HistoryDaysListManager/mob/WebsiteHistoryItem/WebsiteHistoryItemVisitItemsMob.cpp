@@ -18,6 +18,7 @@
 #include "app_i18n.h"
 #include "../../HistoryDayItemData.h"
 #include "WebsiteHistoryItemVisitItemsMob.h"
+#include "BrowserLogger.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -134,7 +135,8 @@ Evas_Object* WebsiteHistoryItemVisitItemsMob::createLayoutContent(Evas_Object* p
     struct tm ts_ret;
 
     if(localtime_r(&rawtime, &ts_ret)==NULL){
-        return NULL;
+        BROWSER_LOGE("[%s:%d] Warning: Unhandled localtime_r", __PRETTY_FUNCTION__, __LINE__);
+        return  nullptr;
     }
     std::strftime(buffer,80,"%R",&ts_ret);
 
