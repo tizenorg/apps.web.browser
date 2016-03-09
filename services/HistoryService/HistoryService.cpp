@@ -435,16 +435,20 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     int date;
     bp_history_adaptor_get_date_created(ids[idNumber], &date);
 
-    struct tm *item_time_info;
     time_t item_time = (time_t) date;
-    item_time_info = localtime(&item_time);
+    struct tm item_time_info;
+    if(localtime_r(&item_time,&item_time_info)==NULL){
+        BROWSER_LOGE("[%s:%d] History localtime_r error ",
+                __PRETTY_FUNCTION__, __LINE__);
+        return std::shared_ptr<HistoryItem>();
+    }
 
-    int m_year = item_time_info->tm_year;
-    int m_month = item_time_info->tm_mon + 1;
-    int m_month_day = item_time_info->tm_mday;
-    int min = item_time_info->tm_min;
-    int hour = item_time_info->tm_hour;
-    int sec = item_time_info->tm_sec;
+    int m_year = item_time_info.tm_year;
+    int m_month = item_time_info.tm_mon + 1;
+    int m_month_day = item_time_info.tm_mday;
+    int min = item_time_info.tm_min;
+    int hour = item_time_info.tm_hour;
+    int sec = item_time_info.tm_sec;
 
     m_year = 2000 + m_year % 100;
 
