@@ -55,9 +55,27 @@ AutoFillFormManager::~AutoFillFormManager(void)
 void AutoFillFormManager::refreshListView()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    loadEntireItemList();
-    if (m_listView)
-        m_listView->refreshView();
+    m_timer =  ecore_timer_add(0.1, load_list_timer, this);
+//    TODO: Delete above workaround and uncomment bellow when task is fixed.
+//    http://165.213.149.170/jira/browse/TWF-471
+//    http://165.213.149.170/jira/browse/TWF-541
+
+//    loadEntireItemList();
+//    if (m_listView)
+//        m_listView->refreshView();
+}
+
+Eina_Bool AutoFillFormManager::load_list_timer(void *data)
+{
+    BROWSER_LOGD("[%s,%d]", __func__, __LINE__);
+    AutoFillFormManager * aff = static_cast<AutoFillFormManager*>(data);
+
+    aff->loadEntireItemList();
+    if (aff->m_listView)
+        aff->m_listView->refreshView();
+
+    ecore_timer_del(aff->m_timer);
+    return ECORE_CALLBACK_CANCEL;
 }
 
 std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)
@@ -71,7 +89,9 @@ std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)
     Eina_List *list = nullptr;
     void *item_data = nullptr;
 
+    int count = 0;
     EINA_LIST_FOREACH(entire_item_list, list, item_data) {
+        count++;
         if (item_data) {
             Ewk_Autofill_Profile *profile = static_cast<Ewk_Autofill_Profile*>(item_data);
             AutoFillFormItem *item = createNewAutoFillFormItem(profile);
@@ -80,7 +100,7 @@ std::vector<AutoFillFormItem *> AutoFillFormManager::loadEntireItemList(void)
         }
     }
 
-    BROWSER_LOGD("----------- List size : [%d] ---------",  m_AutoFillFormItemList.size());
+    BROWSER_LOGD("----------- List size : [%d] --------- %d",  m_AutoFillFormItemList.size(), count);
     return m_AutoFillFormItemList;
 }
 
