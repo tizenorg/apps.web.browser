@@ -285,12 +285,6 @@ private:
     void unregisterCallbacks();
     void setupEwkSettings();
 
-    Eina_Bool handle_scheme(const char *uri);
-    Eina_Bool launch_email(const char *uri);
-    Eina_Bool launch_dialer(const char *uri);
-    Eina_Bool launch_message(const char *uri);
-    Eina_Bool launch_tizenstore(const char *uri);
-
     static std::string securityOriginToUri(const Ewk_Security_Origin *);
     static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
     static void __newWindowRequest(void * data, Evas_Object *, void *out);
@@ -345,7 +339,6 @@ private:
 #if PROFILE_MOBILE
     // downloads
     static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
-    static void __policy_navigation_decide_cb(void *data, Evas_Object *obj, void *event_info);
     static void __download_request_cb(const char *download_uri, void *data);
 #endif
 
