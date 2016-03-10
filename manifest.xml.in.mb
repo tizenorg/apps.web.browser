@@ -60,6 +60,18 @@
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
             <uri name="http" />
+        </app-control>
+        <app-control>
+            <operation name="http://tizen.org/appcontrol/operation/view" />
+            <uri name="https" />
+        </app-control>
+        <app-control>
+            <operation name="http://tizen.org/appcontrol/operation/view" />
+            <uri name="file" />
+        </app-control>
+        <app-control>
+            <operation name="http://tizen.org/appcontrol/operation/view" />
+            <uri name="http" />
             <mime name="application/x-shockwave-flash" />
         </app-control>
         <app-control>
