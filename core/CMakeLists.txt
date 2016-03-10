@@ -24,7 +24,6 @@ set(browserCore_SRCS
     Logger/TextLogger.cpp
     Logger/Useloggers.cpp
     ServiceManager/Debug/BrowserAssert.cpp
-    ServiceManager/Debug/Type.cpp
     ServiceManager/ServiceFactory.cpp
     ServiceManager/ServiceLib.cpp
     ServiceManager/ServiceLoader.cpp

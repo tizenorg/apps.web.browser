@@ -21,7 +21,6 @@
 #include <typeinfo>
 
 #include "BrowserLogger.h"
-#include "Type.h"
 
 #ifndef NDEBUG
 
