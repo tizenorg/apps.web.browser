@@ -263,6 +263,13 @@ void AutoProfileDeleteView::__genlist_item_selected_cb(void* data, Evas_Object* 
     }
 }
 
+void AutoProfileDeleteView::refreshView(void)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_genlist_clear(m_genlist);
+    appendGenlist(m_genlist);
+}
+
 void AutoProfileDeleteView::__delete_button_cb(void* data, Evas_Object* /*obj*/,void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

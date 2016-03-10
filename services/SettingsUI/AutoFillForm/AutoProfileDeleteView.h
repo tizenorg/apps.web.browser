@@ -27,6 +27,7 @@ public:
     AutoProfileDeleteView(AutoFillFormManager* manager);
     ~AutoProfileDeleteView(void);
     Evas_Object* show(Evas_Object *parent, Evas_Object* action_bar = nullptr);
+    void refreshView(void);
     void hide();
 
 private:
