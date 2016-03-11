@@ -1167,9 +1167,9 @@ void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
         ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY, _("IDS_BR_OPT_COPY"), true);
     }
     /* Share*/
-    if (text_selected == true) {
-        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, _("IDS_BR_OPT_SHARE"), true);
-    }
+   // if (text_selected == true) {
+   //      ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SMART_LINKS, _("IDS_BR_OPT_SHARE"), true);
+   //  }
 }
 
 void WebView::_show_context_menu_image_only(Ewk_Context_Menu *menu)
