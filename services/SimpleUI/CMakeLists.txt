@@ -6,10 +6,14 @@ set(SimpleUI_SRCS
     SimplePopup.cpp
     NotificationPopup.cpp
     ViewManager.cpp
+    CertificateContents.cpp
     )
 
 if (${PROFILE} MATCHES "mobile")
-set(SimpleUI_SRCS ${SimpleUI_SRCS} TextPopup_mob.cpp)
+set(SimpleUI_SRCS ${SimpleUI_SRCS}
+    TextPopup_mob.cpp
+    MobilePopup_mob.cpp
+    )
 endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)
@@ -96,19 +100,24 @@ include(EDCCompile)
 if (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
+    CertificatePopup.edc
     InputPopup_mob.edc
     NotificationPopup_mob.edc
     Tooltip.edc
     ViewManager.edc
     TextPopup_mob.edc
+    ContentPopup.edc
+    MobilePopup_mob.edc
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
     AuthenticationPopup.edc
+    CertificatePopup.edc
     InputPopup.edc
     NotificationPopup.edc
     Tooltip.edc
     ViewManager.edc
+    ContentPopup.edc
     )
 endif (${PROFILE} MATCHES "mobile")
 
