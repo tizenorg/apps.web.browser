@@ -103,6 +103,8 @@ public:
     bool isLoading();
     bool isLoadError() const;
 
+    std::map<std::string, std::vector<std::string> > parse_uri(const char *uriToParse);
+
     Evas_Object * getLayout();
 
     void confirmationResult(WebConfirmationPtr);
