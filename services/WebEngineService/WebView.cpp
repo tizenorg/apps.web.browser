@@ -293,6 +293,62 @@ void WebView::setupEwkSettings()
     ewk_settings_uses_keypad_without_user_action_set(settings, EINA_FALSE);
 }
 
+std::map<std::string, std::vector<std::string> > WebView::parse_uri(const char *uriToParse)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::string uri = uriToParse;
+    std::map<std::string, std::vector<std::string> > uri_parts;
+    std::string::size_type mainDelimiter;
+    mainDelimiter = uri.find_first_of("?");
+    if (mainDelimiter != std::string::npos) {
+        uri_parts["protocol"].push_back(uri.substr(0, mainDelimiter));
+        std::string argsString = uri.substr(mainDelimiter+1, std::string::npos);
+        const char *delimiter = "&";
+        std::vector<std::string> argsVector;
+        auto i = 0;
+        auto pos = argsString.find(delimiter);
+        if (pos != std::string::npos) {
+            while (pos != std::string::npos) {
+                argsVector.push_back(argsString.substr(i, pos-i));
+                i = ++pos;
+                pos = argsString.find(delimiter, pos);
+                if (pos == std::string::npos)
+                 argsVector.push_back(argsString.substr(i, argsString.length()));
+            }
+        }
+        else
+            argsVector.push_back(argsString.substr(i, argsString.length()));
+
+        const char *valueDelimiter = "=";
+        const char *itemsDelimiter = ";";
+        for (auto item : argsVector) {
+            pos = item.find(valueDelimiter);
+            if (pos != std::string::npos) {
+                std::string key = item.substr(0, pos);
+                std::string value = item.substr(pos+1, std::string::npos);
+
+                auto pos2 = value.find(itemsDelimiter);
+                auto j = 0;
+                if (pos2 != std::string::npos) {
+                    while (pos2 != std::string::npos) {
+                      uri_parts[key].push_back(value.substr(j, pos2-j));
+                      j = ++pos2;
+                      pos2 = value.find(itemsDelimiter, pos2);
+                      if (pos2 == std::string::npos)
+                        uri_parts[key].push_back(value.substr(j, value.length()));
+                    }
+                }
+                else
+                    uri_parts[key].push_back(value);
+            }
+        }
+    }
+    else {
+        uri_parts["protocol"].push_back(uri.substr(0, mainDelimiter));
+    }
+    return uri_parts;
+}
+
 #if PROFILE_MOBILE
 Eina_Bool WebView::handle_scheme(const char *uri)
 {
@@ -342,6 +398,7 @@ Eina_Bool WebView::handle_scheme(const char *uri)
 Eina_Bool WebView::launch_email(const char *uri)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::map<std::string, std::vector<std::string> >uri_parts = this->parse_uri(uri);
 
     app_control_h app_control = NULL;
     if (app_control_create(&app_control) < 0) {
@@ -353,10 +410,62 @@ Eina_Bool WebView::launch_email(const char *uri)
         app_control_destroy(app_control);
         return EINA_FALSE;
     }
-    if (app_control_set_uri(app_control, uri) < 0) {
-        BROWSER_LOGE("Fail to app_control_set_uri");
-        app_control_destroy(app_control);
+    auto it = uri_parts.find("protocol");
+    if (it != uri_parts.end()) {
+        if (app_control_set_uri(app_control, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_set_uri");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    else
         return EINA_FALSE;
+
+    it = uri_parts.find("subject");
+    if (it != uri_parts.end()) {
+        if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_SUBJECT, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    it = uri_parts.find("body");
+    if (it != uri_parts.end()) {
+        if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_TEXT, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    it = uri_parts.find("cc");
+    if (it != uri_parts.end()) {
+        size_t size = it->second.size();
+        const char* cc[size];
+        int i = 0;
+        for(auto item : it->second) {
+            cc[i] = item.c_str();
+            ++i;
+        }
+        if (app_control_add_extra_data_array(app_control, APP_CONTROL_DATA_CC, cc, size) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data_array");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    it = uri_parts.find("bcc");
+    if (it != uri_parts.end()) {
+        size_t size = it->second.size();
+        const char* bcc[size];
+        int i = 0;
+        for(auto item : it->second) {
+            bcc[i] = item.c_str();
+            ++i;
+        }
+        if (app_control_add_extra_data_array(app_control, APP_CONTROL_DATA_BCC, bcc, size) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data_array");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
     }
     if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
         BROWSER_LOGE("Fail to app_control_send_launch_request");
@@ -383,7 +492,7 @@ Eina_Bool WebView::launch_dialer(const char *uri)
         return EINA_FALSE;
     }
     if (app_control_set_uri(app_control, uri) < 0) {
-        BROWSER_LOGE("app_control_add_extra_data is failed.");
+        BROWSER_LOGE("app_control_set_uri is failed.");
         app_control_destroy(app_control);
         return EINA_FALSE;
     }
@@ -400,6 +509,7 @@ Eina_Bool WebView::launch_dialer(const char *uri)
 Eina_Bool WebView::launch_message(const char *uri)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::map<std::string, std::vector<std::string> >uri_parts = this->parse_uri(uri);
 
     app_control_h app_control = NULL;
     if (app_control_create(&app_control) < 0) {
@@ -411,10 +521,32 @@ Eina_Bool WebView::launch_message(const char *uri)
         app_control_destroy(app_control);
         return EINA_FALSE;
     }
-    if (app_control_set_uri(app_control, uri) < 0) {
-        BROWSER_LOGE("Fail to set extra data");
-        app_control_destroy(app_control);
+    auto it = uri_parts.find("protocol");
+    if (it != uri_parts.end()) {
+        if (app_control_set_uri(app_control, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_set_uri");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    else
         return EINA_FALSE;
+
+    it = uri_parts.find("subject");
+    if (it != uri_parts.end()) {
+        if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_SUBJECT, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
+    }
+    it = uri_parts.find("body");
+    if (it != uri_parts.end()) {
+        if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_TEXT, it->second.front().c_str()) < 0) {
+            BROWSER_LOGE("Fail to app_control_add_extra_data");
+            app_control_destroy(app_control);
+            return EINA_FALSE;
+        }
     }
     if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
         BROWSER_LOGE("Fail to launch app_control operation");
