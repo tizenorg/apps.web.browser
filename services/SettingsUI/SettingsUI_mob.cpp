@@ -148,7 +148,7 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 
     m_actionBar = createActionBar(settings_layout);
     m_items_layout = createSettingsMobilePage(settings_layout);
-    elm_object_tree_focus_allow_set(settings_layout, EINA_FALSE);
+    elm_object_tree_focus_allow_set(settings_layout, EINA_TRUE);
 
     orientationChanged();
 
