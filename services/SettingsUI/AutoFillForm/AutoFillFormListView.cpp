@@ -150,7 +150,7 @@ Evas_Object *AutoFillFormListView::createGenlist(Evas_Object *parent)
     m_itemClass->func.state_get = NULL;
     m_itemClass->func.del = NULL;
 
-    appendGenlist(genlist);
+    m_manager->refreshListView();
 
     return genlist;
 }
