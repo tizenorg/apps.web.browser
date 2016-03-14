@@ -338,24 +338,23 @@ Evas_Object *AutoFillFormComposeView::__content_get_cb(void* data, Evas_Object* 
 
     if (!strcmp(part, "entry_swallow")) {
 
-        Evas_Object *editfield = elm_layout_add(obj);
-        elm_layout_file_set(editfield, view->m_edjFilePath.c_str(), "edit-field");
-        evas_object_size_hint_align_set(editfield, EVAS_HINT_FILL, 0.0);
-        evas_object_size_hint_weight_set(editfield, EVAS_HINT_EXPAND, 0.0);
+        cb_data->editfield = elm_layout_add(obj);
+        elm_layout_file_set(cb_data->editfield, view->m_edjFilePath.c_str(), "edit-field");
+        evas_object_size_hint_align_set(cb_data->editfield, EVAS_HINT_FILL, 0.0);
+        evas_object_size_hint_weight_set(cb_data->editfield, EVAS_HINT_EXPAND, 0.0);
 
-        Evas_Object *entry = elm_entry_add(editfield);
+        Evas_Object *entry = elm_entry_add(cb_data->editfield);
         elm_object_style_set(entry, "entry_style");
         elm_entry_single_line_set(entry, EINA_TRUE);
         elm_entry_scrollable_set(entry, EINA_TRUE);
         elm_entry_cnp_mode_set(entry, ELM_CNP_MODE_PLAINTEXT);
-        elm_entry_text_style_user_push(entry, "DEFAULT='font_size=30 color=#404040 ellipsis=1'");
 
 #if defined(HW_MORE_BACK_KEY)
         eext_entry_selection_back_event_allow_set(entry, EINA_TRUE);
 #endif
         evas_object_smart_callback_add(entry, "preedit,changed", __entry_changed_cb, cb_data);
         evas_object_smart_callback_add(entry, "changed", __entry_changed_cb, cb_data);
-        evas_object_smart_callback_add(entry, "changed", __editfield_changed_cb, editfield);
+        evas_object_smart_callback_add(entry, "changed", __editfield_changed_cb, cb_data->editfield);
         evas_object_smart_callback_add(entry, "activated", __entry_next_key_cb, cb_data);
         evas_object_smart_callback_add(entry, "clicked", __entry_clicked_cb, cb_data);
         elm_entry_input_panel_return_key_type_set(entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_NEXT);
@@ -423,19 +422,19 @@ Evas_Object *AutoFillFormComposeView::__content_get_cb(void* data, Evas_Object* 
             view->m_entryEmail = cb_data->entry = entry;
         }
 
-        elm_object_part_content_set(editfield, "editfield_entry", entry);
+        elm_object_part_content_set(cb_data->editfield, "editfield_entry", entry);
 
-        Evas_Object *button = elm_button_add(editfield);
+        Evas_Object *button = elm_button_add(cb_data->editfield);
         elm_object_style_set(button, "basic_button");
         evas_object_smart_callback_add(button, "clicked", __entry_clear_button_clicked_cb, entry);
-        elm_object_part_content_set(editfield, "entry_clear_button", button);
+        elm_object_part_content_set(cb_data->editfield, "entry_clear_button", button);
 
         if (!elm_entry_is_empty(entry)) {
             BROWSER_LOGE("entry is empty");
-            elm_object_signal_emit(editfield, "show,clear,button,signal", "");
+            elm_object_signal_emit(cb_data->editfield, "show,clear,button,signal", "");
         }
 
-        return editfield;
+        return cb_data->editfield;
     }
 
     return nullptr;
@@ -493,10 +492,10 @@ void AutoFillFormComposeView::__entry_changed_cb(void* data, Evas_Object* obj, v
     AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(cb_data->user_data);
     const char* text = elm_entry_entry_get(obj);
     if (text && strlen(text) > 0) {
-        elm_object_signal_emit(cb_data->it, "show,clear,button,signal", "");
+        elm_object_signal_emit(cb_data->editfield, "show,clear,button,signal", "");
     }
     else {
-        elm_object_signal_emit(cb_data->it, "hide,clear,button,signal", "");
+        elm_object_signal_emit(cb_data->editfield, "hide,clear,button,signal", "");
     }
 
     if (!elm_entry_is_empty(view->m_entryFullName)) {
