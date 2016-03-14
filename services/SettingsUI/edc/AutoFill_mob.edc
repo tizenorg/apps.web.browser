@@ -109,7 +109,7 @@ group {
             }
         }
         part {
-            name: "del_bg";
+            name: "del_bg_border";
             type: RECT;
             mouse_events: 1;
             scale: 1;
@@ -120,9 +120,26 @@ group {
                 align: 0 0.5;
                 min: 1 100;
                 max: -1 100;
-                color: 255 255 255 255;
+                color: 0 0 0 77;
                 rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
                 rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
+            name: "del_bg";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 0 0;
+                align: 0.5 0.5;
+                min: 1 1;
+                max: -1 -1;
+                color: 255 255 255 255;
+                rel1 { relative: 0+(1/720) 0+(1/100); to: "del_bg_border";}
+                rel2 { relative: 1-(1/720) 1-(1/100); to: "del_bg_border";}
             }
         }
         part {
@@ -603,6 +620,23 @@ group {
             }
         }
         part {
+            name: "add_profile_bg_border";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 0 1;
+                align: 0 0;
+                min: 1 100;
+                max: -1 100;
+                color: 0 0 0 77;
+                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 0.5 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
             name: "add_profile_bg";
             type: RECT;
             mouse_events: 1;
@@ -610,13 +644,13 @@ group {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                fixed: 1 1;
-                align: 0 0;
-                min: 1 100;
-                max: -1 100;
+                fixed: 0 0;
+                align: 0 0.5;
+                min: 1 1;
+                max: -1 -1;
                 color: 255 255 255 255;
-                rel1 { relative: 0.0 0.0; to: "bottom_bar_bg";}
-                rel2 { relative: 0.5 1.0; to: "bottom_bar_bg";}
+                rel1 { relative: 0+(1/720) 0+(1/100); to: "add_profile_bg_border";}
+                rel2 { relative: 1-(1/720) 1-(1/100); to: "add_profile_bg_border";}
             }
         }
         part {
@@ -657,6 +691,23 @@ group {
             }
         }
         part {
+            name: "delete_profile_bg_border";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                fixed: 0 1;
+                align: 0 0;
+                min: 1 100;
+                max: -1 100;
+                color: 0 0 0 77;
+                rel1 { relative: 0.5 0.0; to: "bottom_bar_bg";}
+                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+            }
+        }
+        part {
             name: "delete_profile_bg";
             type: RECT;
             mouse_events: 1;
@@ -664,13 +715,13 @@ group {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                fixed: 1 1;
-                align: 0 0;
-                min: 1 100;
-                max: -1 100;
+                fixed: 0 0;
+                align: 1 0.5;
+                min: 1 1;
+                max: -1 -1;
                 color: 255 255 255 255;
-                rel1 { relative: 0.5 0.0; to: "bottom_bar_bg";}
-                rel2 { relative: 1.0 1.0; to: "bottom_bar_bg";}
+                rel1 { relative: 0+(1/720) 0+(1/100); to: "delete_profile_bg_border";}
+                rel2 { relative: 1-(1/720) 1-(1/100); to: "delete_profile_bg_border";}
             }
         }
         part {
