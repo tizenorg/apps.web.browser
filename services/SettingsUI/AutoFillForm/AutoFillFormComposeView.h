@@ -52,6 +52,7 @@ private:
     typedef struct _genlistCallbackData {
         menu_type type;
         void *user_data;
+        Evas_Object* editfield;
         Evas_Object *entry;
         Elm_Object_Item *it;
     } genlistCallbackData;
