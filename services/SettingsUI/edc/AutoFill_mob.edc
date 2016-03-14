@@ -457,6 +457,14 @@ group {
                 rel1 { relative: 0.0 0.0; }
                 rel2 { relative: 1.0 1.0; }
             }
+            description {
+                state: "show" 0.0;
+                inherit: "default";
+                rel2 {
+                    relative: 0.0 1.0;
+                    to: "clear_icon";
+                }
+            }
         }
         part {
             name: "clear_icon";
@@ -467,11 +475,11 @@ group {
                 state: "default" 0.0;
                 visible: 0;
                 fixed: 1 1;
-                align: 0 0.5;
+                align: 1 0.5;
                 min: 56 56;
                 max: 56 56;
-                rel1 { relative: 0.9 0.0; to: "editfield_entry";}
-                rel2 { relative: 1.0 1.0; to: "editfield_entry";}
+                rel1 { relative: 0.0 0.0;}
+                rel2 { relative: 1.0 1.0;}
                 image.normal: "btn_bar_stop_nor.png";
             }
             description {
@@ -508,6 +516,7 @@ group {
             action: STATE_SET "show" 0.0;
             target: "clear_icon";
             target: "entry_clear_button";
+            target: "editfield_entry";
         }
         program {
             name: "hide_clear_button";
@@ -516,6 +525,7 @@ group {
             action: STATE_SET "default" 0.0;
             target: "clear_icon";
             target: "entry_clear_button";
+            target: "editfield_entry";
         }
     }
 }
