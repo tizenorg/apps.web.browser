@@ -669,6 +669,7 @@ void SettingsUI::initializeAutoFillManager()
     m_autoFillManager->init(main, m_actionBar);
 
     m_subpage_layout = m_autoFillManager->showListView();
+    elm_object_tree_focus_allow_set(m_settings_layout, EINA_TRUE);
 }
 
 void SettingsUI::destroyAutoFillManager()
@@ -678,6 +679,7 @@ void SettingsUI::destroyAutoFillManager()
         m_autoFillManager.reset();
         m_autoFillManager = nullptr;
     }
+    elm_object_tree_focus_allow_set(m_settings_layout, EINA_FALSE);
 }
 
 void SettingsUI::_auto_fill_data_menu_clicked_cb(void* data, Evas_Object*, void*)

@@ -105,7 +105,7 @@ Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
     Evas_Object *layout = elm_layout_add(parent);
     if (!layout) {
         BROWSER_LOGD("elm_layout_add failed");
-        return NULL;
+        return nullptr;
     }
     elm_layout_file_set(layout, m_edjFilePath.c_str(), "afflv-layout");
     evas_object_size_hint_weight_set(layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -119,7 +119,7 @@ Evas_Object *AutoFillFormListView::createMainLayout(Evas_Object *parent)
     m_genlist = createGenlist(layout);
     if (!m_genlist) {
         BROWSER_LOGE("elm_genlist_add failed");
-        return NULL;
+        return nullptr;
     }
     evas_object_show(m_genlist);
     elm_object_part_content_set(layout, "afflv_genlist", m_genlist);
@@ -135,7 +135,7 @@ Evas_Object *AutoFillFormListView::createGenlist(Evas_Object *parent)
     evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
     if (!genlist) {
         BROWSER_LOGE("elm_genlist_add failed");
-        return NULL;
+        return nullptr;
     }
 
     m_itemClass = elm_genlist_item_class_new();
@@ -144,13 +144,13 @@ Evas_Object *AutoFillFormListView::createGenlist(Evas_Object *parent)
         return EINA_FALSE;
     }
     m_itemClass->item_style = "afflv_item";
-    m_itemClass->func.content_get = NULL;
+    m_itemClass->func.content_get = nullptr;
 
     m_itemClass->func.text_get = __text_get_cb;
-    m_itemClass->func.state_get = NULL;
-    m_itemClass->func.del = NULL;
+    m_itemClass->func.state_get = nullptr;
+    m_itemClass->func.del = nullptr;
 
-    appendGenlist(genlist);
+    m_manager->refreshListView();
 
     return genlist;
 }
@@ -158,7 +158,7 @@ Evas_Object *AutoFillFormListView::createGenlist(Evas_Object *parent)
 const char *AutoFillFormListView::getEachItemFullName(unsigned int index)
 {
     if (m_manager->getAutoFillFormItemCount() == 0)
-        return NULL;
+        return nullptr;
     return (m_manager->getItemList())[index]->getName();
 }
 
@@ -178,13 +178,13 @@ Eina_Bool AutoFillFormListView::appendGenlist(Evas_Object *genlist)
         }
         if (m_mainLayout) {
             elm_object_signal_emit(m_mainLayout, "show,del,button,signal", "");
-            elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), false);
+            elm_object_disabled_set(m_del_btn, false);
         }
     }
     else {
         if (m_mainLayout) {
             elm_object_signal_emit(m_mainLayout, "dim,del,button,signal", "");
-            elm_object_disabled_set(elm_object_part_content_get(m_mainLayout, "del_button"), true);
+            elm_object_disabled_set(m_del_btn, true);
         }
     }
 
@@ -203,7 +203,7 @@ char *AutoFillFormListView::__text_get_cb(void* data, Evas_Object* /*obj*/, cons
         if (item_full_name)
            return strdup(item_full_name);
     }
-    return NULL;
+    return nullptr;
 
 }
 
