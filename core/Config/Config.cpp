@@ -26,13 +26,6 @@ namespace tizen_browser
 namespace config
 {
 
-const int SCALE_FACTOR =
-#if PROFILE_MOBILE
-        720;
-#else
-        1920;
-#endif
-
 Config::Config()
 {
     m_data["main_service_name"] = std::string("org.tizen.browser.base_UI");
@@ -50,11 +43,6 @@ Config::Config()
 #   include "ConfigValues.h"
 
     m_data["resourcedb/dir"] = std::string(app_get_data_path());
-
-    int width;
-    ecore_wl_screen_size_get(&width, nullptr);
-    double config_scale_value = (double)(width)/SCALE_FACTOR;
-    m_data["scale"] = static_cast<double>(elm_config_scale_get()/config_scale_value);
 
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
     m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
