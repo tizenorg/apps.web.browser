@@ -82,6 +82,10 @@ WebKit browser with EFL for Tizen TV Platform.
 mkdir -p %{_build_dir}
 cd %{_build_dir}
 
+export CFLAGS="$(echo $CFLAGS | sed 's/-Wl,--as-needed//g')"
+export CXXFLAGS="$(echo $CXXFLAGS | sed 's/-Wl,--as-needed//g')"	  
+export FFLAGS="$(echo $FFLAGS | sed 's/-Wl,--as-needed//g')"
+
 cmake .. \
     -DCMAKE_BUILD_TYPE=%{?build_type}%{!?build_type:RELEASE} \
     -DCMAKE_INSTALL_PREFIX=%{_appdir} \
