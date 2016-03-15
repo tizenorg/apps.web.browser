@@ -38,8 +38,6 @@ const std::string DEFAULT_URL = "";
 
 static bool app_create(void * /*app_data*/)
 {
-    elm_app_base_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
-
     elm_config_accel_preference_set("opengl:depth24:stencil8");
 
     elm_config_focus_move_policy_set(ELM_FOCUS_MOVE_POLICY_CLICK);
@@ -58,8 +56,7 @@ static bool app_create(void * /*app_data*/)
         tizen_browser::core::AbstractService
     >
     (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.simpleui"));
-
-    //mainUi->exec("");
+    elm_app_base_scale_set(boost::any_cast<double>(tizen_browser::config::Config::getInstance().get("scale")));
     return true;
 }
 

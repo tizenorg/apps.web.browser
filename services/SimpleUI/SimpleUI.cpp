@@ -58,6 +58,13 @@ const std::string HomePageURL = "about:home";
 const std::string ResetBrowserPopupMsg = "Do you really want to reset browser?" \
                                          " If you press reset, delete all data" \
                                          " and return to initial setting.";
+const int SCALE_FACTOR =
+#if PROFILE_MOBILE
+        720;
+#else
+        1920;
+#endif
+
 SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_webPageUI()
@@ -85,6 +92,13 @@ SimpleUI::SimpleUI()
     elm_init(0, nullptr);
 
     main_window = elm_win_util_standard_add("browserApp", "browserApp");
+
+    int width;
+    elm_win_screen_size_get(main_window, nullptr, nullptr, &width, nullptr);
+    double config_scale_value = (double)(width)/SCALE_FACTOR;
+    tizen_browser::config::Config::getInstance().set(
+            "scale", static_cast<double>(elm_config_scale_get()/config_scale_value));
+
     elm_win_conformant_set(main_window, EINA_TRUE);
     if (main_window == nullptr)
         BROWSER_LOGE("Failed to create main window");
@@ -94,7 +108,6 @@ SimpleUI::SimpleUI()
 
     elm_win_resize_object_add(main_window, m_viewManager.getContent());
     evas_object_show(main_window);
-
 #if PROFILE_MOBILE
     app_event_handler_h rotation_handler;
     ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
