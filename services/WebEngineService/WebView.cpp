@@ -1049,7 +1049,7 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
     {
         WebView * self = static_cast<WebView *>(data);
         Evas_Object * favicon = ewk_context_icon_database_icon_object_add(self->m_ewkContext, ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
-        if (favicon && self->isLoading()) {
+        if (favicon) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
             self->faviconImage = std::make_shared<tools::BrowserImage>(favicon);
             evas_object_del(favicon);
