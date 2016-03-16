@@ -100,6 +100,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
+    webView->redirectedWebPage.connect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
 #endif
@@ -121,6 +122,7 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
+    webView->redirectedWebPage.disconnect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     webView->getRotation.disconnect(boost::bind(&WebEngineService::_getRotation, this));
 #endif
@@ -605,6 +607,11 @@ void WebEngineService::_IMEStateChanged(bool enable)
 void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> image)
 {
     snapshotCaptured(image);
+}
+
+void WebEngineService::_redirectedWebPage(const std::string& oldUrl, const std::string& newUrl)
+{
+    redirectedWebPage(oldUrl, newUrl);
 }
 
 #if PROFILE_MOBILE

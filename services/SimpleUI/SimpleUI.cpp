@@ -549,6 +549,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
+    m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
 #endif
@@ -1539,6 +1540,12 @@ void SimpleUI::showBookmarkManagerUI()
     m_bookmarkManagerUI->showUI();
 }
 
+void SimpleUI::redirectedWebPage(const std::string& oldUrl, const std::string& newUrl)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("Redirect from %s to %s", oldUrl.c_str(), newUrl.c_str());
+    m_historyService->clearURLHistory(oldUrl);
+}
 
 void SimpleUI::onBookmarkAllFolderClicked()
 {
