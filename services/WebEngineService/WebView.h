@@ -282,6 +282,12 @@ public:
 
     boost::signals2::signal<void ()> switchToWebPage;
 
+    boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
+
+protected:
+    std::string getRedirectedURL() {return m_redirectedURL;};
+    void setRedirectedURL(std::string url){m_redirectedURL = url;};
+
 private:
     void registerCallbacks();
     void unregisterCallbacks();
@@ -335,6 +341,10 @@ private:
     static void __IMEClosed(void * data, Evas_Object *obj, void *event_info);
     static void __IMEOpened(void * data, Evas_Object *obj, void *event_info);
 
+    // redirect
+    static void __started(void* data, Evas_Object*, void*);
+    static void __redirect(void* data, Evas_Object*, void*);
+
     // confirmation requests
     static void __geolocationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __usermediaPermissionRequest(void * data, Evas_Object * obj, void * event_info);
@@ -360,6 +370,7 @@ private:
     // ewk context of this web view
     Ewk_Context * m_ewkContext;
     std::string m_title;
+    std::string m_redirectedURL;
     std::shared_ptr<tizen_browser::tools::BrowserImage> faviconImage;
     bool m_isLoading;
     double m_loadProgress;

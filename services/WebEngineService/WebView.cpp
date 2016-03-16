@@ -76,6 +76,7 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
     , m_ewkView(nullptr)
     , m_ewkContext(nullptr)
     , m_title(title)
+    , m_redirectedURL("")
     , m_isLoading(false)
     , m_loadError(false)
     , m_suspended(false)
@@ -239,6 +240,9 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
 
+    evas_object_smart_callback_add(m_ewkView, "load,provisional,started", __started, this);
+    evas_object_smart_callback_add(m_ewkView, "load,provisional,redirect", __redirect, this);
+
 #if PROFILE_MOBILE
     evas_object_smart_callback_add(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
@@ -278,6 +282,9 @@ void WebView::unregisterCallbacks()
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,opened", __IMEOpened, this);
+
+    evas_object_smart_callback_del_full(m_ewkView, "load,provisional,started", __started, this);
+    evas_object_smart_callback_del_full(m_ewkView, "load,provisional,redirect", __redirect, this);
 
 #if PROFILE_MOBILE
     evas_object_smart_callback_del_full(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb,this);
@@ -1071,7 +1078,21 @@ void WebView::__IMEOpened(void* data, Evas_Object*, void*)
     WebView * self = reinterpret_cast<WebView *>(data);
     self->IMEStateChanged(true);
 }
-
+void WebView::__started(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("%s", __func__);
+    WebView * self = reinterpret_cast<WebView*>(data);
+    if(self->getRedirectedURL().empty())
+        self->setRedirectedURL(self->getURI());
+}
+void WebView::__redirect(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("%s", __func__);
+    WebView * self = reinterpret_cast<WebView*>(data);
+    if(!self->getRedirectedURL().empty())
+        self->redirectedWebPage(self->getRedirectedURL(), self->getURI());
+    self->setRedirectedURL("");
+}
 std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
 {
     std::string protocol = fromChar(ewk_security_origin_protocol_get(origin));
