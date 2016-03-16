@@ -232,6 +232,7 @@ private:
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
+    void _redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
     void webViewClicked();
 #if PROFILE_MOBILE
     int _getRotation();
