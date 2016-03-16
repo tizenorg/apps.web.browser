@@ -498,6 +498,11 @@ public:
      */
     boost::signals2::signal<void(std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
 
+    /**
+     * Async signal to inform the redirection has started.
+     */
+    boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
+
 #if PROFILE_MOBILE
     /**
      * Register H/W back key callback for the current webview

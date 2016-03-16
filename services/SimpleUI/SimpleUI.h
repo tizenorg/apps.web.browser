@@ -286,6 +286,7 @@ private:
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
+    void redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
     void onBookmarkCustomFolderClicked(int);
     void onBookmarkAllFolderClicked();
     void onBookmarkSpecialFolderClicked();
