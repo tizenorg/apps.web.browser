@@ -62,7 +62,9 @@ public:
     boost::signals2::signal<void ()> newIncognitoTabClicked;
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> closeTabsClicked;
     boost::signals2::signal<void (const std::string & )> openedTabsClicked;
+#if ON_OTHER_DEVICES
     boost::signals2::signal<void (const std::string & )> onOtherDevicesClicked;
+#endif
     boost::signals2::signal<void ()> closeTabUIClicked;
     boost::signals2::signal<int () > tabsCount;
     boost::signals2::signal<bool (const tizen_browser::basic_webengine::TabId& )> isIncognito;
@@ -84,7 +86,9 @@ private:
     static void _newincognitotab_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _closetabs_clicked(void * data, Evas_Object * obj, void * event_info);
     static void _close_tab_clicked(void *data, Evas_Object*, void*);
+#if ON_OTHER_DEVICES
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
+#endif
     static void _focus_in(void * data, Evas*, Evas_Object * obj, void * event_info);
 
     void createTabUILayout();

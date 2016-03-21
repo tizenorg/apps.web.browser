@@ -1,5 +1,7 @@
 #include "../../../core/Tools/edc/InvisibleButton.edc"
 
+#define ON_OTHER_DEVICE 0
+
 collections { base_scale: 2.6;
     group {
         name: "elm/button/base/tab_button";
@@ -572,10 +574,14 @@ collections { base_scale: 2.6;
                     max: 327 68;
                     visible: 1;
                     color: 51 51 15 102;
-                    align: 0.0 0.0;
+                    align: (1 - ON_OTHER_DEVICE)/2 0.0;
                     rel1 {
                         relative: 1.0 1.0;
                         to: "opened_tab_border_spacer";
+                    }
+                    rel2 {
+                        relative: 1.0 1.0;
+                        to: "buttons_bg";
                     }
                 }
                 description {
@@ -683,13 +689,13 @@ collections { base_scale: 2.6;
                 type: RECT;
                 description {
                     state: "default" 0.0;
-                    visible: 1;
+                    visible: 0;
                     min: 2 68;
                     max: 2 68;
                     color: 56 154 233 255;
                     align: 0.0 0.0;
                     rel1 {
-                        relative: 1.0 0.0;
+                        relative: ON_OTHER_DEVICE 0.0;
                         to: "opened_tab_border";
                     }
                 }
@@ -703,7 +709,7 @@ collections { base_scale: 2.6;
                     state: "default" 0.0;
                     min: 327 68;
                     max: 327 68;
-                    visible: 1;
+                    visible: ON_OTHER_DEVICE;
                     color: 51 51 15 102;
                     align: 0.0 0.0;
                     rel1 {
@@ -725,7 +731,7 @@ collections { base_scale: 2.6;
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    visible: 1;
+                    visible: ON_OTHER_DEVICE;
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0.0 0.0;
@@ -765,7 +771,7 @@ collections { base_scale: 2.6;
                     min: 325 64;
                     max: 325 64;
                     align: 0.0 0.0;
-                    visible: 1;
+                    visible: ON_OTHER_DEVICE;
                     color: 244 244 244 255;
                     rel1 {
                         relative: 1.0 1.0;
@@ -786,7 +792,7 @@ collections { base_scale: 2.6;
                 type: TEXT;
                 description {
                     state: "default" 0.0;
-                    visible: 1;
+                    visible: ON_OTHER_DEVICE;
                     fixed: 1 1;
                     color: 51 51 51 255;
                     text {

@@ -326,11 +326,13 @@ Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
     evas_object_show(button);
     elm_layout_content_set(topLayout, "openedtabs_click", button);
 
+#if ON_OTHER_DEVICES
     button = elm_button_add(topLayout);
     elm_object_style_set(button, "invisible_button");
     evas_object_smart_callback_add(button, "clicked", _onotherdevices_clicked, this);
     evas_object_show(button);
     elm_layout_content_set(topLayout, "onotherdevices_click", button);
+#endif
 
     return topLayout;
 }
@@ -361,6 +363,7 @@ void TabUI::_openedtabs_clicked(void* data, Evas_Object*, void*)
     }
 }
 
+#if ON_OTHER_DEVICES
 void TabUI::_onotherdevices_clicked(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -374,6 +377,7 @@ void TabUI::_onotherdevices_clicked(void* data, Evas_Object*, void*)
         }
     }
 }
+#endif
 
 void TabUI::_newincognitotab_clicked(void* data, Evas_Object*, void*)
 {
