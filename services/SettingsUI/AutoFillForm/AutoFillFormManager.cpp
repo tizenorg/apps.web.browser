@@ -180,7 +180,8 @@ AutoFillFormItem *AutoFillFormManager::createNewAutoFillFormItem(Ewk_Autofill_Pr
         item_data->compose_mode = profile_edit;
 
         item = new AutoFillFormItem(item_data);
-        free(item_data);
+        delete item_data;
+        item_data= nullptr;
     }
 
     return item;
