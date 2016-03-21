@@ -29,8 +29,8 @@
 namespace tizen_browser {
 namespace storage {
 
-#define SQL_RETRY_TIME_US		10000
-#define SQL_RETRY_COUNT			200
+#define SQL_RETRY_TIME_US	    100000
+#define SQL_RETRY_COUNT    200
 
 static FieldPtr _null_field(new Field());
 

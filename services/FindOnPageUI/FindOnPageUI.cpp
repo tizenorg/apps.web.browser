@@ -240,7 +240,7 @@ void FindOnPageUI::_set_count(int index, int total)
         elm_object_signal_emit(m_fop_layout, "digit_1,signal", "");
     } else {
         // Change count layout size.
-        sprintf(text_buffer, "digit_%d,signal", digit_count);
+        snprintf(text_buffer,sizeof(text_buffer), "digit_%d,signal", digit_count);
         elm_object_signal_emit(m_fop_layout, text_buffer, "");
     }
 
