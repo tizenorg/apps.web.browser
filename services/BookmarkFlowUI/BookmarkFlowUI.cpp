@@ -92,6 +92,11 @@ BookmarkFlowUI::~BookmarkFlowUI()
     evas_object_del(m_input_cancel_button);
     evas_object_del(m_folder_button);
     evas_object_del(m_contents_area);
+
+    if(m_folder_custom_item_class)
+        elm_gengrid_item_class_free(m_folder_custom_item_class);
+    if(m_folder_selected_item_class)
+        elm_gengrid_item_class_free(m_folder_selected_item_class);
 #else
     if(m_folder_new_item_class)
         elm_gengrid_item_class_free(m_folder_new_item_class);

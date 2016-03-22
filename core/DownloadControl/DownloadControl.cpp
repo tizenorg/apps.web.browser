@@ -122,7 +122,7 @@ void DownloadControl::__sdp_download_finished_cb(const char *file_path, void *da
 char *DownloadControl::get_file_size_str(const char *full_path)
 {
     FILE *fp = NULL;
-    unsigned long long size = 0;
+    long size = 0;
     double size_double = 0.0f;
     char size_str[10 + 1] = {0, };
     std::string size_text;
