@@ -432,6 +432,11 @@ Evas_Object* SettingsUI::createDeveloperOptionsMobilePage(Evas_Object* settings_
 
     elm_object_translatable_part_text_set(layout, "developer_options_sub_text", "You can override the Browser's UserAgent to desired string.");
 
+    Evas_Object *cache_ua_button = elm_button_add(layout);
+    elm_object_style_set(cache_ua_button, "basic_button");
+    evas_object_smart_callback_add(cache_ua_button, "clicked", _change_cache_clicked_cb, this);
+    elm_layout_content_set(layout, "cache_button_click", cache_ua_button);
+
     return layout;
 }
 
@@ -802,6 +807,299 @@ void SettingsUI::_developer_menu_clicked_cb(void *data, Evas_Object*, void*)
         self->m_subpage_layout = self->createDeveloperOptionsMobilePage(self->m_settings_layout);
         self->orientationChanged();
     }
+}
+
+void SettingsUI::_cache_button_clicked_cb(void *data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        elm_config_cache_flush_enabled_set(elm_radio_value_get(self->m_radio_group_enable) == 0 ? EINA_FALSE : EINA_TRUE);
+        elm_config_cache_flush_interval_set(elm_radio_value_get(self->m_radio_group_interval));
+        elm_config_cache_font_cache_size_set(elm_radio_value_get(self->m_radio_group_font));
+        elm_config_cache_image_cache_size_set(elm_radio_value_get(self->m_radio_group_image));
+        elm_config_save();
+    }
+}
+
+void SettingsUI::_change_cache_clicked_cb(void *data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        SettingsUI* self = static_cast<SettingsUI*>(data);
+        self->resetItemsLayoutContent();
+        self->m_actionBar = self->createBackActionBar(self->m_settings_layout);
+        self->m_subpage_layout = self->createCacheSlider(self->m_settings_layout);
+        self->orientationChanged();
+    }
+}
+
+Evas_Object* SettingsUI::createCacheSlider(Evas_Object* settings_layout)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    Evas_Object *layout = elm_layout_add(settings_layout);
+    elm_layout_file_set(layout, m_edjFilePath.c_str(), "useragent_list");
+    elm_object_part_content_set(settings_layout, "settings_swallow", layout);
+    //elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_TRUE);
+    //elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_AUTO);
+
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Change cache parameters");
+    elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
+
+    Evas_Object *box = elm_box_add(layout);
+    elm_box_padding_set(box, ELM_SCALE_SIZE(10), ELM_SCALE_SIZE(10));
+    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+    Evas_Object *label = elm_label_add(box);
+    elm_object_text_set(label, "Enable Cache Flush");
+    evas_object_show(label);
+    elm_box_pack_end(box, label);
+
+    Evas_Object *radio = elm_radio_add(box);
+    elm_object_text_set(radio, "Yes");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 1);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    m_radio_group_enable = radio;
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "No");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 0);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_enable);
+
+    evas_object_show(box);
+    elm_object_part_content_set(layout, "ua_genlist_swallow", box);
+    evas_object_show(layout);
+
+    //interval
+    label = elm_label_add(box);
+    elm_object_text_set(label, "Set interval value");
+    evas_object_show(label);
+    elm_box_pack_end(box, label);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "1028");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 1028);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    m_radio_group_interval = radio;
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "512");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 512);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "256");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 256);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "128");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 128);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "64");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 64);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "32");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 32);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "16");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 16);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_interval);
+
+    //font size
+    label = elm_label_add(box);
+    elm_object_text_set(label, "Set font size");
+    evas_object_show(label);
+    elm_box_pack_end(box, label);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "1028");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 1028);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    m_radio_group_font = radio;
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "512");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 512);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "256");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 256);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "128");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 128);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "64");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 64);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "32");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 32);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "16");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 16);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_font);
+
+    //image size
+    label = elm_label_add(box);
+    elm_object_text_set(label, "Set image size");
+    evas_object_show(label);
+    elm_box_pack_end(box, label);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "8192");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 8192);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    m_radio_group_image = radio;
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "4096");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 4096);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    elm_radio_group_add(radio, m_radio_group_image);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "2056");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 2056);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    elm_radio_group_add(radio, m_radio_group_image);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "1028");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 1028);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)1);
+
+    elm_radio_group_add(radio, m_radio_group_image);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "512");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 512);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_image);
+
+    radio = elm_radio_add(box);
+    elm_object_text_set(radio, "256");
+    evas_object_show(radio);
+    elm_box_pack_end(box, radio);
+    elm_radio_state_value_set(radio, 256);
+    //evas_object_smart_callback_add(radio, "changed", radio_changed_cb, (void *)2);
+
+    elm_radio_group_add(radio, m_radio_group_image);
+
+    Evas_Object *button = elm_button_add(box);
+    evas_object_smart_callback_add(button, "clicked", _cache_button_clicked_cb, this);
+    elm_object_text_set(button, "Change cache parameters");
+    evas_object_show(button);
+    elm_box_pack_end(box, button);
+
+    evas_object_show(box);
+    elm_radio_value_set(m_radio_group_enable, 1);
+    elm_radio_value_set(m_radio_group_interval, 512);
+    elm_radio_value_set(m_radio_group_font, 512);
+    elm_radio_value_set(m_radio_group_image, 4096);
+
+    //scroller
+    Evas_Object* scroller = elm_scroller_add(layout);
+    elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_AUTO);
+    elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_TRUE);
+    elm_object_content_set(scroller, box);
+    evas_object_show(scroller);
+
+    elm_object_part_content_set(layout, "ua_genlist_swallow", scroller);
+    evas_object_show(layout);
+
+    return layout;
 }
 
 void SettingsUI::_override_useragent_clicked_cb(void *data, Evas_Object*, void*)

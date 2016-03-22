@@ -66,6 +66,7 @@ public:
     Evas_Object* createContentSettingsPage(Evas_Object* settings_layout);
     Evas_Object* createPrivacyPage(Evas_Object* settings_layout);
     Evas_Object* createDeveloperOptionsMobilePage(Evas_Object* settings_layout);
+    Evas_Object* createCacheSlider(Evas_Object* settings_layout);
     Evas_Object* createUserAgentGenList(Evas_Object* settings_layout);
 
     boost::signals2::signal<void ()> resetBrowserClicked;
@@ -103,6 +104,8 @@ private:
 
     static void _privacy_menu_clicked_cb(void* data, Evas_Object* obj, void * event_info);
 
+    static void _cache_button_clicked_cb(void* data, Evas_Object* obj, void *event_info);
+    static void _change_cache_clicked_cb(void* data, Evas_Object* obj, void * event_info);
     static void _override_useragent_clicked_cb(void* data, Evas_Object* obj, void * event_info);
     static void _developer_menu_clicked_cb(void* data, Evas_Object* obj, void* event_info);
     static void _useragent_item_clicked_cb(void* data, Evas_Object* obj, void* event_info);
@@ -118,6 +121,10 @@ private:
     Evas_Object* m_items_layout;
     Evas_Object* m_parent;
     Evas_Object* m_checkbox_layout;
+    Evas_Object* m_radio_group_enable;
+    Evas_Object* m_radio_group_interval;
+    Evas_Object* m_radio_group_font;
+    Evas_Object* m_radio_group_image;
 
     std::string m_edjFilePath;
     Elm_Gengrid_Item_Class* m_setting_item_class;
