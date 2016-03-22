@@ -113,6 +113,21 @@ SimpleUI::SimpleUI()
     ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
                              __orientation_changed, this);
 #endif
+
+    Eina_Bool enabled = elm_config_cache_flush_enabled_get();
+    int interval = elm_config_cache_flush_interval_get();
+    int font = elm_config_cache_font_cache_size_get();
+    int image = elm_config_cache_image_cache_size_get();
+    int file = elm_config_cache_edje_file_cache_size_get();
+    int collection = elm_config_cache_edje_collection_cache_size_get();
+
+    BROWSER_LOGD("[%s:%d] KAWA INIT", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] KAWA enabled: [%d]", __PRETTY_FUNCTION__, __LINE__, enabled == EINA_TRUE);
+    BROWSER_LOGD("[%s:%d] KAWA interval: [%d]", __PRETTY_FUNCTION__, __LINE__, interval);
+    BROWSER_LOGD("[%s:%d] KAWA font: [%d]", __PRETTY_FUNCTION__, __LINE__, font);
+    BROWSER_LOGD("[%s:%d] KAWA image: [%d]", __PRETTY_FUNCTION__, __LINE__, image);
+    BROWSER_LOGD("[%s:%d] KAWA file: [%d]", __PRETTY_FUNCTION__, __LINE__, file);
+    BROWSER_LOGD("[%s:%d] KAWA collection: [%d]", __PRETTY_FUNCTION__, __LINE__, collection);
 }
 
 SimpleUI::~SimpleUI() {
