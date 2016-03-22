@@ -72,7 +72,8 @@ SettingsUI::SettingsUI()
 
 SettingsUI::~SettingsUI()
 {
-
+    if(m_setting_item_class)
+        elm_gengrid_item_class_free(m_setting_item_class);
 }
 
 void SettingsUI::init(Evas_Object* parent)
