@@ -234,6 +234,7 @@ private:
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void _redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
     void webViewClicked();
+    void _setCertificatePem(std::string);
 #if PROFILE_MOBILE
     int _getRotation();
     void setWebViewSettings(std::shared_ptr<WebView> webView);
