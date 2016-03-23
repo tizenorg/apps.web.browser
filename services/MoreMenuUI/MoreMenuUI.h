@@ -83,7 +83,7 @@ public:
 
     void setDesktopMode(bool desktopMode) {m_desktopMode = desktopMode;}
 
-    void showCurrentTab();
+    void showCurrentTab(bool isHTTPS = false, bool isUnsecure = false);
     virtual std::string getName();
     void setFavIcon(tools::BrowserImagePtr favicon);
     void setWebTitle(const std::string& title);
@@ -113,6 +113,7 @@ public:
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
     boost::signals2::signal<void (bool)> bookmarkFlowClicked;
+    boost::signals2::signal<void ()> viewCertificateClicked;
 private:
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();
@@ -131,6 +132,7 @@ private:
 
     void setDocIcon();
 
+    static void _viewCertButton_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _bookmarkButton_clicked(void *data, Evas_Object *obj, void *event_info);
     static void _close_clicked(void *data, Evas_Object *obj, void *event_info);
 
@@ -144,6 +146,7 @@ private:
     Evas_Object *m_parent;
     Evas_Object *m_toastPopup;
     Evas_Object *m_icon;
+    Evas_Object *m_certButton;
     Evas_Object *m_bookmarkIcon;
     Evas_Object *m_bookmarkButton;
     Elm_Gengrid_Item_Class * m_item_class;

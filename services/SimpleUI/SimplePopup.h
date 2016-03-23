@@ -42,6 +42,10 @@ struct AuthenticationPopupData : public PopupData {
     Evas_Object *passwordEntry;
 };
 
+struct CertificatePopupData : public PopupData {
+    basic_webengine::CertificateConfirmationPtr cert;
+};
+
 struct EntryPopupData : public PopupData {
     std::string text;
     Evas_Object * entry;
