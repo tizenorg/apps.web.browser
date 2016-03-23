@@ -101,6 +101,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
     webView->redirectedWebPage.connect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
+    webView->setCertificatePem.connect(boost::bind(&WebEngineService::_setCertificatePem, this, _1));
 #if PROFILE_MOBILE
     webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
 #endif
@@ -612,6 +613,12 @@ void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::B
 void WebEngineService::_redirectedWebPage(const std::string& oldUrl, const std::string& newUrl)
 {
     redirectedWebPage(oldUrl, newUrl);
+}
+
+void WebEngineService::_setCertificatePem(std::string pem)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    setCertificatePem(pem);
 }
 
 #if PROFILE_MOBILE
