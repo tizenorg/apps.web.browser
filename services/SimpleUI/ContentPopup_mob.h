@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __TEXT_POPUP_H__
-#define __TEXT_POPUP_H__ 1
+#ifndef __MOBILE_POPUP_H__
+#define __MOBILE_POPUP_H__ 1
 
 #include <Evas.h>
 #include <Elementary.h>
@@ -33,34 +33,35 @@ namespace tizen_browser
 namespace base_ui
 {
 
-class TextPopup : public interfaces::AbstractPopup
+class ContentPopup : public interfaces::AbstractPopup
 {
 public:
-    static TextPopup* createPopup(Evas_Object* parent);
-    static TextPopup* createPopup(Evas_Object* parent, const std::string& title, const std::string& message);
-
     void show();
     void dismiss();
     void onBackPressed();
 
     void setTitle(const std::string& title);
-    void setMessage(const std::string& message);
     void setContent(Evas_Object* content);
     void addButton(const PopupButtons& button, bool dismissOnClick = true);
-    void createLayout();
     boost::signals2::signal<void (PopupButtons)> buttonClicked;
 
-    ~TextPopup();
+    ~ContentPopup();
 
+    Evas_Object* getMainLayout() { return m_scroller; }
+    void setMessage(std::string s) { s += "asdf"; };  //TODO
+    ContentPopup(Evas_Object* parent);
+    ContentPopup(Evas_Object* parent, const std::string& title);
 private:
-    TextPopup(Evas_Object* parent);
-    TextPopup(Evas_Object* parent, const std::string& title, const std::string& message);
+    void createLayout();
+
+    static void _layout_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info);
+    static void _response_cb(void* data, Evas_Object* obj, void* event_info);
 
     struct Button {
-        Button(PopupButtons type, bool dismissOnClick)
+        Button(PopupButtons type, bool dismissOnClick, Evas_Object* object)
             : m_type(type)
             , m_dismissOnClick(dismissOnClick)
-            , m_evasObject(nullptr)
+            , m_evasObject(object)
         {};
         PopupButtons m_type;
         bool m_dismissOnClick;
@@ -70,15 +71,18 @@ private:
     Evas_Object* m_parent;
     Evas_Object* m_layout;
     Evas_Object* m_buttons_box;
+    Evas_Object* m_scroller;
+    Evas_Object* m_content;
     std::vector<Button> m_buttons;
     std::string m_title;
     std::string m_message;
-    static void _response_cb(void* data, Evas_Object* obj, void* event_info);
     std::string m_edjFilePath;
+    static const int MARGIN = 44;
+    static const int MAX_HEIGHT = 799 - 26 - 54;
 };
 
 }
 
 }
 
-#endif //__TEXT_POPUP_H__
+#endif //__MOBILE_POPUP_H__
