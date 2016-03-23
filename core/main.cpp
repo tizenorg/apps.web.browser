@@ -15,6 +15,7 @@
  */
 #include "browser_config.h"
 
+#include <boost/any.hpp>
 #include "BrowserLogger.h"
 #include "Config.h"
 #include <Ecore.h>
@@ -47,6 +48,11 @@ static bool app_create(void * /*app_data*/)
 #else
     elm_config_focus_highlight_enabled_set(EINA_TRUE);
 #endif
+
+    elm_config_cache_flush_enabled_set(boost::any_cast <Eina_Bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_ENABLE_VALUE)));
+    elm_config_cache_flush_interval_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
+    elm_config_cache_font_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
+    elm_config_cache_image_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_IMAGE_VALUE)));
 
     /// \todo: clean casts, depends on ServiceManager
     std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
