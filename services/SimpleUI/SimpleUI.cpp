@@ -113,6 +113,11 @@ SimpleUI::SimpleUI()
     ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
                              __orientation_changed, this);
 #endif
+
+    elm_config_cache_flush_enabled_set(boost::any_cast <Eina_Bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_ENABLE_VALUE)));
+    elm_config_cache_flush_interval_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
+    elm_config_cache_font_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
+    elm_config_cache_image_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_IMAGE_VALUE)));
 }
 
 SimpleUI::~SimpleUI() {
