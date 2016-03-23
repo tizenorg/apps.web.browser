@@ -31,10 +31,6 @@ TextPopup::TextPopup(Evas_Object* parent)
     : m_parent(parent)
     , m_layout(nullptr)
     , m_buttons_box(nullptr)
-    , m_button_left(nullptr)
-    , m_button_right(nullptr)
-    , m_left_button_initialized(false)
-    , m_right_button_initialized(false)
 {
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SimpleUI/TextPopup.edj");
@@ -47,10 +43,6 @@ TextPopup::TextPopup(Evas_Object* parent,
     : m_parent(parent)
     , m_layout(nullptr)
     , m_buttons_box(nullptr)
-    , m_button_left(nullptr)
-    , m_button_right(nullptr)
-    , m_left_button_initialized(false)
-    , m_right_button_initialized(false)
     , m_title(title)
     , m_message(message)
 {
@@ -73,24 +65,25 @@ void TextPopup::onBackPressed(){
     dismiss();
 }
 
-void TextPopup::_left_response_cb(void* data,
-                                  Evas_Object* /*obj*/,
+void TextPopup::_response_cb(void* data,
+                                  Evas_Object* obj,
                                   void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    TextPopup *self = static_cast<TextPopup*>(data);
-    self->buttonClicked(self->m_left_button_type);
-    self->dismiss();
-}
-
-void TextPopup::_right_response_cb(void* data,
-                                   Evas_Object* /*obj*/,
-                                   void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    TextPopup *self = static_cast<TextPopup*>(data);
-    self->buttonClicked(self->m_right_button_type);
-    self->dismiss();
+    auto self = static_cast<TextPopup*>(data);
+    auto it = std::find_if(self->m_buttons.begin(),
+                        self->m_buttons.end(),
+                        [obj] (const Button& i)
+                        { return i.m_evasObject == obj; }
+                        );
+    
+    if (it == self->m_buttons.end()) {
+        BROWSER_LOGW("[%s:%d] Button not found!", __PRETTY_FUNCTION__, __LINE__);
+    } else {
+        self->buttonClicked(it->m_type);
+    }
+    if (it->m_dismissOnClick)
+        self->dismiss();
 }
 
 void TextPopup::setTitle(const std::string& title)
@@ -103,16 +96,14 @@ void TextPopup::setMessage(const std::string& message)
     this->m_message = message;
 }
 
-void TextPopup::setLeftButton(const PopupButtons& button)
+void TextPopup::setContent(Evas_Object* content)
 {
-    this->m_left_button_initialized = true;
-    this->m_left_button_type = button;
+    elm_object_part_content_set(m_layout, "content_swallow", content);
 }
 
-void TextPopup::setRightButton(const PopupButtons& button)
+void TextPopup::addButton(const PopupButtons& button, bool dismissOnClick)
 {
-    this->m_right_button_initialized = true;
-    this->m_right_button_type = button;
+    m_buttons.push_back(Button(button, dismissOnClick));
 }
 
 void TextPopup::createLayout()
@@ -134,29 +125,19 @@ void TextPopup::createLayout()
     evas_object_size_hint_weight_set(m_buttons_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_buttons_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-    if (m_left_button_initialized) {
-        m_button_left = elm_button_add(m_buttons_box);
-        elm_object_style_set(m_button_left, "text-popup-button");
-        evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-        evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
-        elm_object_part_text_set(m_button_left, "elm.text", buttonsTranslations[m_left_button_type].c_str());
-        elm_box_pack_end(m_buttons_box, m_button_left);
-        evas_object_smart_callback_add(m_button_left, "clicked", _left_response_cb, (void*)this);
+    for (size_t i=0; i < m_buttons.size(); ++i) {
+        auto btn = elm_button_add(m_buttons_box);
+        m_buttons[i].m_evasObject = btn;
+        elm_object_style_set(btn, "text-popup-button");
+        evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+        evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+        elm_object_part_text_set(btn, "elm.text", buttonsTranslations[m_buttons[i].m_type].c_str());
+        elm_box_pack_end(m_buttons_box, btn);
+        evas_object_smart_callback_add(btn, "clicked", _response_cb, (void*) this);
 
-        evas_object_show(m_button_left);
-    }
-
-    if (m_right_button_initialized) {
-        m_button_right = elm_button_add(m_buttons_box);
-        elm_object_style_set(m_button_right, "text-popup-button");
-        evas_object_size_hint_weight_set(m_button_right, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-        evas_object_size_hint_align_set(m_button_right, EVAS_HINT_FILL, EVAS_HINT_FILL);
-        elm_object_part_text_set(m_button_right, "elm.text", buttonsTranslations[m_right_button_type].c_str());
-        elm_box_pack_end(m_buttons_box, m_button_right);
-        evas_object_smart_callback_add(m_button_right, "clicked", _right_response_cb, (void*)this);
-
-        evas_object_show(m_button_right);
-        elm_object_signal_emit(m_button_right, "visible", "ui");
+        evas_object_show(btn);
+        if (i > 0)      // separator for more buttons than one
+            elm_object_signal_emit(btn, "visible", "ui");
     }
 
     evas_object_show(m_buttons_box);

@@ -268,6 +268,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     hideProgressBar();
     refreshFocusChain();
     m_URIEntry->changeUri("");
+    m_URIEntry->showSecureIcon(false, false);
     m_URIEntry->setFocus();
     showQuickAccess();
 }
