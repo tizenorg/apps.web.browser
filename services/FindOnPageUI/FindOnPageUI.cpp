@@ -244,7 +244,7 @@ void FindOnPageUI::_set_count(int index, int total)
         elm_object_signal_emit(m_fop_layout, text_buffer, "");
     }
 
-    sprintf(text_buffer, "%d/%d", index, total);
+    snprintf(text_buffer, sizeof(text_buffer),"%d/%d", index, total);
     elm_object_part_text_set(m_fop_layout, "elm.text.count", text_buffer);
 
     if (total <= 1) {
