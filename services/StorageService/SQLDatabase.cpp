@@ -22,7 +22,8 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <chrono>
+#include <thread>
 
 #include <Eina.h>
 
@@ -43,7 +44,7 @@ static inline int sql_prepare(sqlite3 * db, sqlite3_stmt ** stmt, const char * q
         rc = sqlite3_prepare_v2(db, query, -1, stmt, NULL);
         if(rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
             ++retry;
-            usleep(SQL_RETRY_TIME_US);
+            std::this_thread::sleep_for(std::chrono::milliseconds(SQL_RETRY_TIME_US));
         }
     } while(retry < SQL_RETRY_COUNT && (rc == SQLITE_BUSY || rc == SQLITE_LOCKED));
 
@@ -70,10 +71,10 @@ static inline int sql_step(sqlite3_stmt * stmt)
         if(rc == SQLITE_LOCKED) {
             rc = sqlite3_reset(stmt);
             ++retry;
-            usleep(SQL_RETRY_TIME_US);
+            std::this_thread::sleep_for(std::chrono::milliseconds(SQL_RETRY_TIME_US));
         } else if(rc == SQLITE_BUSY) {
             ++retry;
-            usleep(SQL_RETRY_TIME_US);
+            std::this_thread::sleep_for(std::chrono::milliseconds(SQL_RETRY_TIME_US));
         }
     } while(retry < SQL_RETRY_COUNT && (rc == SQLITE_BUSY || rc == SQLITE_LOCKED));
 
