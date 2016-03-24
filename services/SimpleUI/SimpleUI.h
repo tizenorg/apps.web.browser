@@ -61,8 +61,10 @@
 #include "Action.h"
 #include "InputPopup.h"
 #include "SimplePopup.h"
+#include "ContentPopup_mob.h"
 #include "WebConfirmation.h"
 #include "ViewManager.h"
+#include "CertificateContents.h"
 #include "MenuButton.h"
 
 namespace tizen_browser{
@@ -107,6 +109,7 @@ private:
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();
+    void updateSecureIcon();
     void loadError();
     void webEngineReady(basic_webengine::TabId id);
 
@@ -185,6 +188,7 @@ private:
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick(int, int);
@@ -266,8 +270,12 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
+
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
+    typedef CertificateContents::CurrentTabCertificateData TabCertificateData;
+    void showCertificatePopup();
+    void showCertificatePopup(TabCertificateData& data);
     void closeBookmarkFlowUI();
 
     void showFindOnPageUI();
@@ -318,6 +326,12 @@ private:
 
     void searchWebPage(std::string &text, int flags);
 
+    void setCertificatePem(std::string uri, std::string pem);
+    void loadHostCertInfoFromDB();
+    void saveCertificateInfo(const std::string&, const std::string&, CertificateContents::HOST_TYPE type);
+    void deleteAllSavedCertificates(void);
+    void updateCertificateInfo(const std::string&, const std::string&, CertificateContents::HOST_TYPE type);
+
     std::string edjePath(const std::string &);
 
     std::vector<interfaces::AbstractPopup*> m_popupVector;
@@ -333,6 +347,7 @@ private:
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
+    std::shared_ptr<CertificateContents> m_certificateContents;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;

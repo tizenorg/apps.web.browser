@@ -34,6 +34,7 @@ Config::Config()
     m_data["DB_SETTINGS"] = std::string(".browser.settings.db");
     m_data["DB_HISTORY"] = std::string(".browser.history.db");
     m_data["DB_SESSION"] = std::string(".browser.session.db");
+    m_data["DB_CERTIFICATE"] = std::string(".browser.certificate.db");
 
     m_data["TOOLTIP_DELAY"] = 0.05;       // time from mouse in to tooltip show
     m_data["TOOLTIP_HIDE_TIMEOUT"] = 2.0; // time from tooltip show to tooltip hide
