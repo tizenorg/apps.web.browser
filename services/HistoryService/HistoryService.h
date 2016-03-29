@@ -61,7 +61,6 @@ public:
     std::shared_ptr<HistoryItemVector> getHistoryLastWeek();
     std::shared_ptr<HistoryItemVector> getHistoryLastMonth();
     std::shared_ptr<HistoryItemVector> getHistoryOlder();
-    std::shared_ptr<HistoryItem> getCurrentTab();
     std::shared_ptr<HistoryItemVector> getMostVisitedHistoryItems();
     void cleanMostVisitedHistoryItems();
     std::shared_ptr<HistoryItemVector> getHistoryItemsByKeyword(const std::string & keyword, int maxItems);
