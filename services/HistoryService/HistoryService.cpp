@@ -213,8 +213,12 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
             return ret_history_list;
         }
 
+        if (!history_info.url) {
+            BROWSER_LOGW("[%s:%d] history_info.url is empty! Wrong DB entry found! ", __PRETTY_FUNCTION__, __LINE__);
+            continue;
+        }
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[index_array[i]], std::string(history_info.url));
-        history->setUrl(std::string(history_info.url ? history_info.url : ""));
+        history->setUrl(std::string(history_info.url));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
         //thumbnail
