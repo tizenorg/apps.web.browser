@@ -213,8 +213,12 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
             return ret_history_list;
         }
 
+        if (!history_info.url) {
+            BROWSER_LOGW("[%s:%d] history_info.url is empty! Wrong DB entry found! ", __PRETTY_FUNCTION__, __LINE__);
+            continue;
+        }
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[index_array[i]], std::string(history_info.url));
-        history->setUrl(std::string(history_info.url ? history_info.url : ""));
+        history->setUrl(std::string(history_info.url));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
         //thumbnail
@@ -292,6 +296,10 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
             return items;
         }
 
+        if (!history_info.url) {
+            BROWSER_LOGW("[%s:%d] history_info.url is empty! Wrong DB entry found! ", __PRETTY_FUNCTION__, __LINE__);
+            continue;
+        }
         std::shared_ptr<HistoryItem> history = std::make_shared<HistoryItem>(ids[i], std::string(history_info.url));
         history->setTitle(std::string(history_info.title ? history_info.title : ""));
 
@@ -309,6 +317,11 @@ void HistoryService::addHistoryItem(const std::string & url,
                                     tools::BrowserImagePtr thumbnail)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    if (url.empty()) {
+        BROWSER_LOGW("[%s:%d] prevented writing empty history item!", __PRETTY_FUNCTION__, __LINE__);
+        return;
+    }
 
     if (isDuplicate(url.c_str()))
         return;
@@ -429,7 +442,12 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     if (bp_history_adaptor_get_info(ids[idNumber], offset, &history_info) < 0) {
         BROWSER_LOGE("[%s:%d] bp_history_adaptor_get_info error ",
                 __PRETTY_FUNCTION__, __LINE__);
-        return std::make_shared <HistoryItem> (ids[idNumber], "");
+        return std::shared_ptr<HistoryItem>();
+    }
+
+    if (!history_info.url) {
+        BROWSER_LOGW("[%s:%d] history_info.url is empty! Wrong DB entry found! ", __PRETTY_FUNCTION__, __LINE__);
+        return std::shared_ptr<HistoryItem>();
     }
 
     int date;
@@ -477,25 +495,6 @@ std::shared_ptr<HistoryItem> HistoryService::getHistoryItem(int * ids, int idNum
     return history;
 }
 
-std::shared_ptr<HistoryItem> HistoryService::getCurrentTab()
-{
-    int *ids=nullptr;
-    int count = -1;
-    bp_history_rows_cond_fmt conds;
-    conds.limit = -1;  //no of rows to get negative means no limitation
-    conds.offset = -1;   //the first row's index
-    conds.order_offset = BP_HISTORY_O_DATE_VISITED; // property to sort
-    conds.ordering = 1; //way of ordering 0 asc 1 desc
-    conds.period_offset = BP_HISTORY_O_DATE_VISITED;
-    conds.period_type = BP_HISTORY_DATE_TODAY;
-
-    if(bp_history_adaptor_get_cond_ids_p(&ids , &count, &conds, 0, nullptr, 0) < 0) {
-        errorPrint("bp_history_adaptor_get_cond_ids_p");
-    }
-
-    return getHistoryItem(ids);
-}
-
 std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_date_defs period)
 {
     std::shared_ptr<HistoryItemVector> ret_history_list(new HistoryItemVector);
@@ -515,7 +514,11 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItems(bp_history_da
     }
 
     for(int i = 0; i< count; i++) {
-        ret_history_list->push_back(getHistoryItem(ids, i));
+        std::shared_ptr<HistoryItem> item = getHistoryItem(ids, i);
+        if (!item)
+            BROWSER_LOGW("[%s:%d] empty history item! ", __PRETTY_FUNCTION__, __LINE__);
+        else
+            ret_history_list->push_back(item);
     }
     free(ids);
     return ret_history_list;
