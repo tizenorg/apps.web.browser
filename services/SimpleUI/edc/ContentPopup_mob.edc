@@ -1,104 +1,19 @@
-#include "../../../core/Tools/edc/InvisibleButton.edc"
-
 #define DEVELOPMENT 0
 
 #define BUTTON_HEIGHT 120
-#define TITLE_HEIGHT 101
-#define TITLE_TEXT_OFFSET_X 44
+#define TITLE_HEIGHT 127
+#define TITLE_TEXT_OFFSET_X 100
 #define TITLE_TEXT_OFFSET_Y 44
 #define TITLE_TEXT_HEIGHT 45
 #define MESSAGE_OFFSET_X 44
 #define MESSAGE_OFFSET_TOP 26
-#define MESSAGE_OFFSET_BOT 47
+#define MESSAGE_OFFSET_BOT 52
 #define BUTTON_TEXT_OFFSET_X 50
 #define BUTTON_TEXT_OFFSET_Y 40
 #define BUTTON_TEXT_WIDTH 260
 #define BUTTON_TEXT_HEIGHT 40
 
 collections { base_scale: 2.6;
-    group {
-        name: "flexible-text";
-        styles {
-            style {
-                name: "message_style";
-                base: "font=Tizen:style=Regular font_size=38 color=#333333 wrap=mixed align=middle text_class=tizen";
-                tag: "br" "\n";
-                tag: "tab" "\t";
-            }
-        }
-        parts {
-            rect {
-                name: "text_spacer_0";
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    min: MESSAGE_OFFSET_X MESSAGE_OFFSET_TOP;
-                    max: MESSAGE_OFFSET_X MESSAGE_OFFSET_TOP;
-                    fixed: 1 1;
-                    align: 0 0;
-                    rel1.relative: 0 0;
-                    rel2.relative: 1 1;
-                }
-            }
-            rect {
-                name: "text_spacer_1";
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    min: MESSAGE_OFFSET_X MESSAGE_OFFSET_BOT;
-                    max: MESSAGE_OFFSET_X MESSAGE_OFFSET_BOT;
-                    fixed: 1 1;
-                    align: 0 0;
-                    rel1 {
-                        relative: 1 1;
-                        to: "elm.text";
-                    }
-                    rel2.relative: 1 1;
-                }
-            }
-            rect {
-                name: "bg";
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    color: 255 0 255 255;
-                    rel1 {
-                        relative: 0 0;
-                        to: "text_spacer_0";
-                    }
-                    rel2 {
-                        relative: 1 1;
-                        to: "text_spacer_1";
-                    }
-                }
-            }
-            part {
-                name: "elm.text";
-                scale: 1;
-                type: TEXTBLOCK;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    min: 0 38;
-                    fixed: 0 1;
-                    align: 0 0;
-                    rel1 {
-                        relative: 1 1;
-                        to: "text_spacer_0";
-                    }
-                    rel2.relative: 1 1;
-                    text {
-                        style: "message_style";
-                        align: 0 0;
-                        min: 0 1;
-                    }
-                }
-            }
-        }
-    }
 
     group {
         name: "text_popup_layout";
@@ -140,7 +55,7 @@ collections { base_scale: 2.6;
                         to: "title_bg";
                     }
                     rel2 {
-                        relative: 1 1;
+                        relative: 1 0;
                         to: "buttons_bg";
                     }
                 }
@@ -204,6 +119,7 @@ collections { base_scale: 2.6;
                 scale: 1;
                 description {
                     state: "default" 0.0;
+                    color: 50 0 50 255;
                     visible: DEVELOPMENT;
                     min: MESSAGE_OFFSET_X MESSAGE_OFFSET_BOT;
                     max: MESSAGE_OFFSET_X MESSAGE_OFFSET_BOT;
@@ -211,7 +127,6 @@ collections { base_scale: 2.6;
                     align: 1 1;
                     rel1 {
                         relative: 0 0;
-                        //to: "elm.text";
                     }
                     rel2 {
                       relative: 1 0;
@@ -220,14 +135,13 @@ collections { base_scale: 2.6;
                 }
             }
             part {
-                name: "elm.text";
+                name: "content_swallow";
                 scale: 1;
-                type: TEXTBLOCK;
+                type: SWALLOW;
                 description {
                     state: "default" 0.0;
                     visible: 1;
                     min: 0 38;
-                    fixed: 0 1;
                     align: 0.5 1;
                     rel1 {
                         relative: 1 1;
@@ -237,47 +151,24 @@ collections { base_scale: 2.6;
                         relative: 0 0;
                         to: "text_spacer_1";
                     }
-                    text {
-                        style: "message_style";
-                        align: 0 1;
-                        min: 0 1;
-                        max: 0 1;
-                    }
                 }
             }
             rect {
-                name: "popup_spacer_0";
+                name: "title_spacer";
                 scale: 1;
                 description {
                     state: "default" 0.0;
                     visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    min: 0 0;
-                    max: -1 0;
-                    fixed: 0 1;
+                    min: MESSAGE_OFFSET_X 0;
+                    max: MESSAGE_OFFSET_X 0;
+                    fixed: 1 1;
                     align: 0 0;
                     rel1 {
                         relative: 1 0;
-                        to: "elm.text";
+                        to: "content_swallow";
                     }
-                    rel2.relative: 1 1;
-                }
-            }
-            rect {
-                name: "popup_spacer_1";
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: DEVELOPMENT;
-                    color: 255 255 255 127;
-                    min: 0 MESSAGE_OFFSET_TOP;
-                    max: 0 MESSAGE_OFFSET_TOP;
-                    fixed: 1 1;
-                    align: 1 1;
-                    rel1.relative: 0 0;
                     rel2 {
                         relative: 1 1;
-                        to: "popup_spacer_0";
                     }
                 }
             }
@@ -285,20 +176,19 @@ collections { base_scale: 2.6;
                 name: "title_bg";
                 scale: 1;
                 description {
-                    state: "default";
+                    state: "default" 0.0;
                     visible: 1;
                     color: 255 255 255 255;
-                    align: 0.5 1;
+                    align: 0 1;
                     min: 0 TITLE_HEIGHT;
                     max: -1 TITLE_HEIGHT;
-                    fixed: 0 1;
                     rel1 {
                         relative: 0 0;
                         to: "bg";
                     }
                     rel2 {
-                        relative: 0 0;
-                        to: "popup_spacer_1";
+                        relative: 1 0;
+                        to: "title_spacer";
                     }
                 }
             }

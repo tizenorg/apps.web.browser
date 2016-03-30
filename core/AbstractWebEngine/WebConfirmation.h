@@ -122,17 +122,24 @@ typedef std::shared_ptr<CertificateConfirmation> CertificateConfirmationPtr;
 
 class CertificateConfirmation : public WebConfirmation {
 public:
-	CertificateConfirmation(TabId tabId, const std::string & uri, const std::string & msg);
+    CertificateConfirmation(TabId tabId, const std::string & uri, const std::string & msg);
 
     void setPem(const std::string &pem) {
-    	m_pem = pem;
+        m_pem = pem;
     }
     std::string getPem() const {
-    	return m_pem;
+        return m_pem;
+    }
+    void setData(void* data) {
+        m_data = data;
+    }
+    void* getData() const {
+        return m_data;
     }
 
 private:
     std::string m_pem;
+    void* m_data;
 };
 
 class ScriptPrompt;
