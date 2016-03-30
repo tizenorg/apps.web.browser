@@ -1787,6 +1787,7 @@ void WebView::__download_request_cb(const char *download_uri, void *data)
         return;
     } else {
         wv->m_downloadControl->launch_download_app(download_uri);
+        wv->downloadStarted();
     }
 }
 #endif

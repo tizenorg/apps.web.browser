@@ -405,6 +405,11 @@ public:
     boost::signals2::signal<void (bool)> backwardEnableChanged;
 
     /**
+     * File downoad started
+     */
+    boost::signals2::signal<void ()> downloadStarted;
+
+    /**
      * Page load finished
      */
     boost::signals2::signal<void ()> loadFinished;

@@ -88,6 +88,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
     webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
     webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
+    webView->downloadStarted.connect(boost::bind(&WebEngineService::_downloadStarted, this));
     webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
     webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
     webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
@@ -283,6 +284,11 @@ void WebEngineService::_titleChanged(const std::string& title, const std::string
 void WebEngineService::_uriChanged(const std::string & uri)
 {
     uriChanged(uri);
+}
+
+void WebEngineService::_downloadStarted()
+{
+    downloadStarted();
 }
 
 void WebEngineService::_loadFinished()

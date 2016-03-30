@@ -103,6 +103,7 @@ private:
     void stopEnable(bool enable);
     void reloadEnable(bool enable);
 
+    void downloadStarted();
     void loadStopped();
     void loadFinished();
     void progressChanged(double progress);
