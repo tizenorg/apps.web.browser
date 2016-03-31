@@ -529,6 +529,7 @@ void SimpleUI::connectModelSignals()
 
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
+    m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
     m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
@@ -1066,6 +1067,17 @@ int SimpleUI::getRotation()
 void SimpleUI::reloadEnable(bool enable)
 {
     m_webPageUI->setReloadButtonEnabled(enable);
+}
+
+void SimpleUI::downloadStarted(bool status)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+    if (status)
+        popup->show("Starting download", false);
+    else
+        popup->show("Fail to start download", false);
+    popup->dismiss();
 }
 
 void SimpleUI::stopEnable(bool enable)
