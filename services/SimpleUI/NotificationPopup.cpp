@@ -47,11 +47,11 @@ NotificationPopup *NotificationPopup::createNotificationPopup(Evas_Object *paren
     return raw_popup;
 }
 
-void NotificationPopup::show(const std::string& message)
+void NotificationPopup::show(const std::string& message, bool progressVisible)
 {
     BROWSER_LOGD("[%s,%d]", __func__, __LINE__);
     m_message = message;
-    createLayout();
+    createLayout(progressVisible);
     m_timer =  ecore_timer_add(DEFAULT_POPUP_INTERVAL, _hide_cb, this);
 }
 
@@ -81,7 +81,7 @@ Eina_Bool NotificationPopup::_hide_cb(void *data)
     return ECORE_CALLBACK_CANCEL;
 }
 
-void NotificationPopup::createLayout()
+void NotificationPopup::createLayout(bool progressVisible)
 {
     BROWSER_LOGD("[%s,%d]", __func__, __LINE__);
     M_ASSERT(m_parent);
@@ -93,17 +93,19 @@ void NotificationPopup::createLayout()
     elm_object_part_content_set(m_parent, "popup_content", m_layout);
     elm_layout_text_set(m_layout, "popup_text", m_message.c_str());
 
-    m_progress = elm_progressbar_add(m_layout);
-    elm_object_part_content_set(m_layout, "progress_swallow", m_progress);
+    if (progressVisible) {
+        m_progress = elm_progressbar_add(m_layout);
+        elm_object_part_content_set(m_layout, "progress_swallow", m_progress);
 #if PROFILE_MOBILE
-    elm_object_style_set(m_progress, "wheel");
-    elm_progressbar_unit_format_set(m_progress, "");
+        elm_object_style_set(m_progress, "wheel");
+        elm_progressbar_unit_format_set(m_progress, "");
 #endif
-    //TODO: set correct progressbar theme when it will be available.
-    elm_progressbar_horizontal_set(m_progress, EINA_TRUE);
-    elm_progressbar_pulse_set(m_progress, EINA_TRUE);
-    elm_progressbar_pulse(m_progress, EINA_TRUE);
-    evas_object_show(m_progress);
+        //TODO: set correct progressbar theme when it will be available.
+        elm_progressbar_horizontal_set(m_progress, EINA_TRUE);
+        elm_progressbar_pulse_set(m_progress, EINA_TRUE);
+        elm_progressbar_pulse(m_progress, EINA_TRUE);
+        evas_object_show(m_progress);
+    }
     evas_object_show(m_layout);
 }
 

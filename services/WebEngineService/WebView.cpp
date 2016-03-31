@@ -1786,7 +1786,7 @@ void WebView::__download_request_cb(const char *download_uri, void *data)
         BROWSER_LOGD("[%s:%d] popup4", __PRETTY_FUNCTION__, __LINE__);
         return;
     } else {
-        wv->m_downloadControl->launch_download_app(download_uri);
+        wv->downloadStarted(wv->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);
     }
 }
 #endif

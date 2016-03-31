@@ -31,12 +31,12 @@ class NotificationPopup
 public:
     NotificationPopup();
     static NotificationPopup *createNotificationPopup(Evas_Object *parent);
-    void show(const std::string &message);
+    void show(const std::string &message, bool progressVisible = true);
     void dismiss();
     static Eina_Bool _hide_cb(void *data);
 
 private:
-    void createLayout();
+    void createLayout(bool progressVisible);
 
     std::string edjFilePath;
     Evas_Object *m_parent;
