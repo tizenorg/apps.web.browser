@@ -106,7 +106,7 @@ SimpleUI::SimpleUI()
     setMainWindow(main_window);
     m_viewManager.init(main_window);
 
-    elm_win_resize_object_add(main_window, m_viewManager.getContent());
+    elm_win_resize_object_add(main_window, m_viewManager.getConformant());
     evas_object_show(main_window);
 #if PROFILE_MOBILE
     app_event_handler_h rotation_handler;
