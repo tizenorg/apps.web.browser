@@ -68,6 +68,7 @@ namespace tizen_browser {
 namespace basic_webengine {
 namespace webengine_service {
 
+
 const std::string WebView::COOKIES_PATH = "cookies";
 
 WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool incognitoMode)
@@ -233,6 +234,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
     evas_object_smart_callback_add(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
+    evas_object_smart_callback_add(m_ewkView, "notify,certificate,info", __setCertificatePem, this);
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
     evas_object_smart_callback_add(m_ewkView, "icon,received", __faviconChanged, this);
@@ -774,21 +776,20 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
         // The below line doesn't serve any purpose now, but it may become
         // relevant when implementing https://bugs.tizen.org/jira/browse/TT-229
-        // Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
+        Ewk_Certificate_Policy_Decision *request = m_confirmationCertificatenMap[cert];
+        Eina_Bool result;
 
         if (cert->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            //FIXME: do something
-            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+            result = EINA_TRUE;
         else if (cert->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            //FIXME: do something else
-            BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+            result = EINA_FALSE;
         else {
             BROWSER_LOGE("Wrong ConfirmationResult");
             break;
         }
 
         // set certificate confirmation
-        BROWSER_LOGE("NOT IMPLEMENTED: Certificate Confirmation handling!");
+        ewk_certificate_policy_decision_allowed_set(request, result);
         ewk_view_resume(m_ewkView);
 
         // remove from map
@@ -1209,25 +1210,43 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
     WebView * self = reinterpret_cast<WebView *>(data);
 
     Ewk_Certificate_Policy_Decision *request = reinterpret_cast<Ewk_Certificate_Policy_Decision *>(event_info);
-    if (!request)
+    if (!request) {
+        BROWSER_LOGW("[%s:%d] Wrong event_info!", __PRETTY_FUNCTION__, __LINE__);
         return;
+    }
 
     // suspend webview
     ewk_view_suspend(self->m_ewkView);
 
-    std::string url = self->getURI();
+    std::string url = tools::extractDomain(self->m_loadingURL);
 
     ///\todo add translations
     std::string message = (boost::format("There are problems with the security certificate for this site.<br>%1%") % url).str();
 
     CertificateConfirmationPtr c = std::make_shared<CertificateConfirmation>(self->m_tabId, url, message);
-
-    c->setResult(tizen_browser::basic_webengine::WebConfirmation::ConfirmationResult::Confirmed);
+    const char *pem = ewk_certificate_policy_decision_certificate_pem_get(request);
+    c->setPem(std::string(pem));
+    c->setData(reinterpret_cast<void*>(request));
 
     // store
     self->m_confirmationCertificatenMap[c] = request;
 
     self->confirmationRequest(c);
+}
+
+void WebView::__setCertificatePem(void* data , Evas_Object* /* obj */, void* event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = reinterpret_cast<WebView *>(data);
+    Ewk_Certificate_Policy_Decision *request = reinterpret_cast<Ewk_Certificate_Policy_Decision *>(event_info);
+    if (!request) {
+        BROWSER_LOGW("[%s:%d] Wrong event_info!", __PRETTY_FUNCTION__, __LINE__);
+        return;
+    }
+    const char *pem = ewk_certificate_policy_decision_certificate_pem_get(request);
+    int error = ewk_certificate_policy_decision_error_get(request);
+    std::string url = tools::extractDomain(self->getURI());
+    self->setCertificatePem(url, std::string(pem), error >= 0);
 }
 
 #if PROFILE_MOBILE
@@ -1753,6 +1772,7 @@ void WebView::__policy_navigation_decide_cb(void *data, Evas_Object * /*obj*/, v
 
     Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
     const char *uri = ewk_policy_decision_url_get(policy_decision);
+    wv->m_loadingURL = std::string(uri);
     BROWSER_LOGD("uri = [%s]", uri);
 
     Eina_Bool is_scheme_handled = wv->handle_scheme(uri);

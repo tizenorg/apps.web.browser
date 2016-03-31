@@ -57,6 +57,8 @@ public:
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> mobileEntryFocused;
     boost::signals2::signal<void ()> mobileEntryUnfocused;
+    boost::signals2::signal<void ()> secureIconClicked;
+    void showSecureIcon(bool show, bool secure);
 #endif
 
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
@@ -118,7 +120,13 @@ private:
     static void _uri_entry_selection_changed(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_longpressed(void* data, Evas_Object* obj, void* event_info);
 #if PROFILE_MOBILE
-    static void _uri_cancel_icon_clicked(void* data, Evas_Object*, const char*, const char*);
+    enum class RightIconType {
+        NONE,
+        CANCEL,
+        SECURE
+    };
+
+    static void _uri_right_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     void showCancelIcon();
 #endif
 
@@ -136,7 +144,11 @@ private:
     bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
     bool m_first_click;
-
+#if PROFILE_MOBILE
+    RightIconType m_rightIconType;
+    bool m_securePageIcon;
+    bool m_showSecureIcon;
+#endif
 };
 
 
