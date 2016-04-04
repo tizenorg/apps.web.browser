@@ -281,27 +281,6 @@ group
             }
         }
         part {
-            name: "close_over";
-            scale:1;
-            type: RECT;
-            description {
-                state: "default" 0.0;
-                visible: 1;
-                align: 0 0;
-                fixed: 1 1;
-                min: 64 64;
-                max: 64 64;
-                rel1 { relative: 0.0 0.0; to: "close_bg";}
-                rel2 { relative: 1.0 1.0; to: "close_bg";}
-                color_class: transparent;
-            }
-            description {
-                state: "hidden" 0.0;
-                inherit: "default" 0.0;
-                visible: 0;
-            }
-        }
-        part {
             name: "close_click";
             scale:1;
             type: SWALLOW;
@@ -314,6 +293,29 @@ group
                 max: 64 64;
                 rel1 { relative: 0.0 0.0; to: "close_over";}
                 rel2 { relative: 1.0 1.0; to: "close_over";}
+                color_class: transparent;
+            }
+            description {
+                state: "hidden" 0.0;
+                inherit: "default" 0.0;
+                visible: 0;
+            }
+        }
+        part {
+            name: "close_over";
+            scale:1;
+            type: RECT;
+            mouse_events: 1;
+            repeat_events: 1;
+            description {
+                state: "default" 0.0;
+                visible: 1;
+                align: 0 0;
+                fixed: 1 1;
+                min: 64 64;
+                max: 64 64;
+                rel1 { relative: 0.0 0.0; to: "close_bg";}
+                rel2 { relative: 1.0 1.0; to: "close_bg";}
                 color_class: transparent;
             }
             description {
@@ -419,33 +421,17 @@ group
             }
             program {
                 name: "mouse_in_close_click";
-                signal: "mouse,in";
-                source: "close_click";
-                script {
-                    emit("mouse_in_close_click", "");
-                }
-            }
-            program {
-                name: "mouse_out_close_click";
-                signal: "mouse,out";
-                source: "close_click";
-                script {
-                    emit("mouse_out_close_click", "");
-                }
-            }
-            program {
-                name: "mouse_in_close";
-                signal: "mouse_in_close_click";
-                source: "";
+                signal: "mouse,down,*";
+                source: "close_over";
                 action: STATE_SET "highlight" 0.0;
                 target: "close_over";
                 target: "close_bg";
                 target: "close_icon";
             }
             program {
-                name: "mouse_out_close";
-                signal: "mouse_out_close_click";
-                source: "";
+                name: "mouse_out_close_click";
+                signal: "mouse,up,*";
+                source: "close_over";
                 action: STATE_SET "default" 0.0;
                 target: "close_over";
                 target: "close_bg";
