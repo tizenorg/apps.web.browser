@@ -52,7 +52,7 @@
 #define APPLICATION_NAME_FOR_USER_AGENT "Mozilla/5.0 (SMART-TV; Linux; Tizen 2.4.0; hawkp) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 TV safari/537.36"
 
 //TODO: temporary user agent for mobile display, change to proper one
-#define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 3.0; tm1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Mobile safari/537.36"
+#define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 2.4.0; SAMSUNG TM1) AppleWebKit/537.3 (KHTML, like Gecko)SamsungBrowser/1.0 Mobile Safari/537.3"
 
 #if PROFILE_MOBILE
 Ecore_Timer* m_haptic_timer_id =NULL;
@@ -151,7 +151,10 @@ void WebView::orientationChanged()
     if (signal && *signal != -1) {
         int angle = *signal;
         if (angle == 270)
+            angle = 90;
+        else if (angle == 90)
             angle = -90;
+
         ewk_view_orientation_send(m_ewkView, angle);
     }
 }
