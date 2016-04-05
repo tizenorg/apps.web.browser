@@ -39,6 +39,34 @@ group {
                 rel2 { relative: 1.0 1.0; }
             }
         }
+        rect {
+            name: "select_all_text_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+            }
+        }
+        rect {
+            name: "select_all_text_spacer_2";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 1 1;
+                fixed: 1 1;
+                min: 72 0;
+                max: 72 0;
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+            }
+        }
         part {
             name: "select_all_text";
             type: TEXT;
@@ -49,14 +77,28 @@ group {
                 fixed: 1 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
-                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+                rel1 { relative: 1.0 1.0; to: "select_all_text_spacer";}
+                rel2 { relative: 0.0 0.0; to: "select_all_text_spacer_2";}
                 text {
                     text: "Select all";
                     font: "Sans";
                     size: 30;
-                    align: 0.02 0.5;
+                    align: 0.0 0.5;
                 }
+            }
+        }
+        rect {
+            name: "select_all_checkbox_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 1 1;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
+                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
             }
         }
         part {
@@ -67,12 +109,12 @@ group {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                align: 0 0.5;
+                align: 1 0.5;
                 fixed: 1 1;
                 min: 48 48;
                 max: 48 48;
-                rel1 { relative: 0.875 0.0; to: "select_all_bg";}
-                rel2 { relative: 1.0 1.0; to: "select_all_bg";}
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
+                rel2 { relative: 0.0 0.0; to: "select_all_checkbox_spacer";}
             }
         }
         part {
@@ -84,10 +126,10 @@ group {
                 state: "default" 0.0;
                 visible: 1;
                 align: 0 0.5;
-                fixed: 1 1;
-                min: 48 48;
-                max: 48 48;
-                rel1 { relative: 0.875 0.0; to: "select_all_bg";}
+                fixed: 0 0;
+                min: 0 0;
+                max: -1 -1;
+                rel1 { relative: 0.0 0.0; to: "select_all_bg";}
                 rel2 { relative: 1.0 1.0; to: "select_all_bg";}
                 color_class: transparent;
             }
@@ -237,7 +279,34 @@ group {
                 rel2 { relative: 1.0 1.0; }
             }
         }
-
+        rect {
+            name: "item_title_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+            }
+        }
+        rect {
+            name: "select_all_text_spacer_2";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 1 1;
+                fixed: 1 1;
+                min: 72 0;
+                max: 72 0;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+            }
+        }
         part {
             name: "item_title";
             type: TEXT;
@@ -245,18 +314,32 @@ group {
             description {
                 state: "default" 0.0;
                 min: 350 100;
-                max: 350 100;
-                fixed: 1 1;
+                max: -1 -1;
+                fixed: 0 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.05 0.0; to: "item_bg";}
-                rel2 { relative: 0.95 1.0; to: "item_bg";}
+                rel1 { relative: 1.0 1.0; to: "item_title_spacer";}
+                rel2 { relative: 0.0 0.0; to: "select_all_text_spacer_2";}
                 text {
                     text: "First name";
                     font: "Sans";
                     size: 36;
-                    align: 0.02 0.5;
+                    align: 0.0 0.5;
                 }
+            }
+        }
+        rect {
+            name: "checkbox_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 1 1;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
             }
         }
         part {
@@ -266,11 +349,11 @@ group {
             description {
                 state: "default" 0.0;
                 visible: 1;
-                align: 0 0.5;
+                align: 1 0.5;
                 min: 48 48;
                 max: 48 48;
-                rel1 { relative: 0.9 0.0; to: "item_bg";}
-                rel2 { relative: 1.0 1.0; to: "item_bg";}
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 0.0 0.0; to: "checkbox_spacer";}
             }
         }
     }
