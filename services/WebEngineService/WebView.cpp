@@ -150,8 +150,8 @@ void WebView::orientationChanged()
     boost::optional<int> signal = getRotation();
     if (signal && *signal != -1) {
         int angle = *signal;
-        if (angle == 270)
-            angle = -90;
+        if ((angle % 180)== 90)
+            angle -= 180;
         ewk_view_orientation_send(m_ewkView, angle);
     }
 }
