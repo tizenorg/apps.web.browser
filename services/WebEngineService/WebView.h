@@ -282,6 +282,7 @@ public:
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
     boost::signals2::signal<void ()> switchToWebPage;
+    boost::signals2::signal<void (const std::string&, const std::string&, bool)> setCertificatePem;
 
     boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
 
@@ -352,6 +353,7 @@ private:
     static void __notificationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
     static void __authenticationChallenge(void * data, Evas_Object * obj, void * event_info);
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
+    static void __setCertificatePem(void * data, Evas_Object * obj, void * event_info);
 
     static void scriptLinkSearchCallback(Evas_Object *o, const char *value, void *data);
 
@@ -372,6 +374,7 @@ private:
     Ewk_Context * m_ewkContext;
     std::string m_title;
     std::string m_redirectedURL;
+    std::string m_loadingURL;
     std::shared_ptr<tizen_browser::tools::BrowserImage> faviconImage;
     bool m_isLoading;
     double m_loadProgress;
