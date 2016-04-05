@@ -553,6 +553,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
+    m_webEngine->closeFindOnPage.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
 #endif
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
