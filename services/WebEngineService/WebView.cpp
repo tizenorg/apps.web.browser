@@ -151,7 +151,10 @@ void WebView::orientationChanged()
     if (signal && *signal != -1) {
         int angle = *signal;
         if (angle == 270)
+            angle = 90;
+        else if (angle == 90)
             angle = -90;
+
         ewk_view_orientation_send(m_ewkView, angle);
     }
 }
