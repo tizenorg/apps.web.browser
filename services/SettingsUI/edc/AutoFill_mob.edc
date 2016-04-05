@@ -664,8 +664,8 @@ group {
                 visible: 1;
                 fixed: 0 1;
                 align: 0 0;
-                min: 1 56;
-                max: -1 56;
+                min: 1 72;
+                max: -1 72;
                 color: 231 231 231 255;
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; }
@@ -888,6 +888,7 @@ group {
 group {
     name: "elm/genlist/item/afflv_item/default";
     data.item: "texts" "item_title";
+    data.item: "contents" "checkbox";
     parts {
         part {
             name: "item_bg";
@@ -912,11 +913,11 @@ group {
                 state: "default" 0.0;
                 min: 350 100;
                 max: 350 100;
-                fixed: 1 0;
+                fixed: 1 1;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "item_bg";}
-                rel2 { relative: 1.0 1.0; to: "item_bg";}
+                rel1 { relative: 0.05 0.0; to: "item_bg";}
+                rel2 { relative: 0.95 1.0; to: "item_bg";}
                 text {
                     text: "First name";
                     font: "Sans";
