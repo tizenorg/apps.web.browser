@@ -664,11 +664,25 @@ group {
                 visible: 1;
                 fixed: 0 1;
                 align: 0 0;
-                min: 1 56;
-                max: -1 56;
+                min: 1 72;
+                max: -1 72;
                 color: 231 231 231 255;
                 rel1 { relative: 0.0 0.0; to: "bg_clipper";}
                 rel2 { relative: 1.0 1.0; }
+            }
+        }
+        rect {
+            name: "profile_text_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "profile_bg";}
+                rel2 { relative: 1.0 1.0; to: "profile_bg";}
             }
         }
         part {
@@ -681,12 +695,12 @@ group {
                 fixed: 1 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "profile_bg";}
+                rel1 { relative: 1.0 1.0; to: "profile_text_spacer";}
                 rel2 { relative: 1.0 1.0; to: "profile_bg";}
                 text {
                     font: "Sans";
                     size: 30;
-                    align: 0.02 0.5;
+                    align: 0.0 0.5;
                 }
             }
         }
@@ -904,6 +918,34 @@ group {
                 rel2 { relative: 1.0 1.0; }
             }
         }
+        rect {
+            name: "item_title_spacer";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 0 0;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+            }
+        }
+        rect {
+            name: "item_title_spacer_2";
+            scale: 1;
+            description {
+                state: "default" 0.0;
+                visible: 0;
+                align: 1 1;
+                fixed: 1 1;
+                min: 24 0;
+                max: 24 0;
+                rel1 { relative: 0.0 0.0; to: "item_bg";}
+                rel2 { relative: 1.0 1.0; to: "item_bg";}
+            }
+        }
         part {
             name: "item_title";
             type: TEXT;
@@ -911,17 +953,17 @@ group {
             description {
                 state: "default" 0.0;
                 min: 350 100;
-                max: 350 100;
-                fixed: 1 0;
+                max: -1 -1;
+                fixed: 0 0;
                 align: 0 0;
                 color: 64 64 64 255;
-                rel1 { relative: 0.0 0.0; to: "item_bg";}
-                rel2 { relative: 1.0 1.0; to: "item_bg";}
+                rel1 { relative: 1.0 1.0; to: "item_title_spacer";}
+                rel2 { relative: 0.0 0.0; to: "item_title_spacer_2";}
                 text {
                     text: "First name";
                     font: "Sans";
                     size: 36;
-                    align: 0.02 0.5;
+                    align: 0.0 0.5;
                 }
             }
         }
