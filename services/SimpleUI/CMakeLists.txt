@@ -9,7 +9,10 @@ set(SimpleUI_SRCS
     )
 
 if (${PROFILE} MATCHES "mobile")
-set(SimpleUI_SRCS ${SimpleUI_SRCS} TextPopup_mob.cpp)
+set(SimpleUI_SRCS ${SimpleUI_SRCS}
+    TextPopup_mob.cpp
+    ContentPopup_mob.cpp
+    )
 endif (${PROFILE} MATCHES "mobile")
 
 include(Coreheaders)
@@ -36,6 +39,7 @@ include_directories(${CMAKE_SOURCE_DIR}/services/SettingsUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/TabUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/ZoomUI)
 include_directories(${CMAKE_SOURCE_DIR}/services/PlatformInputManager)
+include_directories(${CMAKE_SOURCE_DIR}/services/CertificateService)
 if (${PROFILE} MATCHES "mobile")
     include_directories(${CMAKE_SOURCE_DIR}/services/FindOnPageUI)
 endif (${PROFILE} MATCHES "mobile")
@@ -60,6 +64,7 @@ add_dependencies(${PROJECT_NAME} TabUI)
 add_dependencies(${PROJECT_NAME} SettingsUI)
 add_dependencies(${PROJECT_NAME} ZoomUI)
 add_dependencies(${PROJECT_NAME} PlatformInputManager)
+add_dependencies(${PROJECT_NAME} CertificateService)
 if (${PROFILE} MATCHES "mobile")
     add_dependencies(${PROJECT_NAME} FindOnPageUI)
 endif (${PROFILE} MATCHES "mobile")
@@ -77,6 +82,7 @@ target_link_libraries(${PROJECT_NAME} BookmarkFlowUI)
 target_link_libraries(${PROJECT_NAME} BookmarkManagerUI)
 target_link_libraries(${PROJECT_NAME} ZoomUI)
 target_link_libraries(${PROJECT_NAME} PlatformInputManager)
+target_link_libraries(${PROJECT_NAME} CertificateService)
 if (${PROFILE} MATCHES "mobile")
     target_link_libraries(${PROJECT_NAME} FindOnPageUI)
 endif (${PROFILE} MATCHES "mobile")
@@ -101,6 +107,7 @@ set(edcFiles
     Tooltip.edc
     ViewManager.edc
     TextPopup_mob.edc
+    ContentPopup_mob.edc
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
