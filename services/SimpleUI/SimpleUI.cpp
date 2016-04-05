@@ -1678,7 +1678,7 @@ void SimpleUI::settingsResetBrowser()
     popup->addButton(CANCEL);
     popup->buttonClicked.connect(boost::bind(&SimpleUI::onResetBrowserButton, this, _1, _2));
 #endif
-    popup->setTitle("Reset browser");
+    popup->setTitle("Reset Browser");
     popup->setMessage(ResetBrowserPopupMsg);
     popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
     popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
