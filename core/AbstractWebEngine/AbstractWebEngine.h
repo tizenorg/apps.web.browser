@@ -463,6 +463,11 @@ public:
     boost::signals2::signal<void (TabId)> tabClosed;
 
     /**
+     * Close find on page
+     */
+    boost::signals2::signal<void ()> closeFindOnPage;
+
+    /**
      * Confirmation Request
      */
     boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;

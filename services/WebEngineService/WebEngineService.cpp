@@ -243,6 +243,9 @@ void WebEngineService::back(void)
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->back();
+#if PROFILE_MOBILE
+    closeFindOnPage();
+#endif
 }
 
 void WebEngineService::forward(void)
@@ -250,6 +253,9 @@ void WebEngineService::forward(void)
     M_ASSERT(m_currentWebView);
     m_stopped = false;
     m_currentWebView->forward();
+#if PROFILE_MOBILE
+    closeFindOnPage();
+#endif
 }
 
 bool WebEngineService::isBackEnabled() const
