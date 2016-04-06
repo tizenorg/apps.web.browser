@@ -55,8 +55,8 @@ namespace base_ui{
 EXPORT_SERVICE(SimpleUI, "org.tizen.browser.simpleui")
 
 const std::string HomePageURL = "about:home";
-const std::string ResetBrowserPopupMsg = "Do you really want to reset browser?" \
-                                         " If you press reset, delete all data" \
+const std::string ResetBrowserPopupMsg = "Do you really want to reset Browser?" \
+                                         " If you press Reset, delete all data" \
                                          " and return to initial setting.";
 const int SCALE_FACTOR =
 #if PROFILE_MOBILE
@@ -778,7 +778,7 @@ void SimpleUI::onNewFolderClicked()
                                                           "New Folder #", _("IDS_BR_OPT_ADD"), _("IDS_BR_SK_CANCEL_ABB"), true);
 #else
     InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "New Folder", "Add new folder for adding to bookmark?",
-                                                          "Folder #", _("IDS_BR_SK_CANCEL_ABB"), "Add to bookmark", false);
+                                                          "Folder #", _("IDS_BR_SK_CANCEL_ABB"), "Add to Bookmark", false);
 #endif
     services::SharedBookmarkFolderList badWords = m_storageService->getFoldersStorage().getFolders();
     for (auto it = badWords.begin(); it != badWords.end(); ++it)
@@ -1620,7 +1620,7 @@ void SimpleUI::settingsDeleteSelectedData(const std::string& str)
 #endif
            popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteSelectedDataButton, this, _1, str));
            popup->setTitle("Delete");
-           popup->setMessage("The selected web browsing data will be deleted");
+           popup->setMessage("The selected web browsing data will be deleted.");
            popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
            popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
            popup->show();

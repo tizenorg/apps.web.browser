@@ -104,7 +104,7 @@ void SettingsUI::updateButtonMap() {
     privacy.buttonText="Privacy";
 
     ItemData developer;
-    developer.buttonText="Developer options";
+    developer.buttonText="Developer Options";
 
     m_buttonsMap[SettingsOptions::DEL_WEB_BRO]=deleteWebBrowsing;
     m_buttonsMap[SettingsOptions::RESET_MOST_VIS]=resetMostVisited;
@@ -375,7 +375,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_size_hint_align_set(layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
     elm_object_signal_emit(m_actionBar,"back,icon,change", "del_but");
-    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Reset Most Visited Sites");
+    elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Reset Most Visited Site");
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
     Evas_Object *reset_mv_button = elm_button_add(layout);
@@ -383,7 +383,7 @@ Evas_Object* SettingsUI::createRemoveMostVisitedMobilePage(Evas_Object* settings
     evas_object_smart_callback_add(reset_mv_button, "clicked", _reset_mv_clicked_cb, this);
     elm_layout_content_set(layout, "reset_most_visited_click", reset_mv_button);
 
-    elm_object_translatable_part_text_set(layout, "reset_most_visited_sub_text", "You can delete all items of Most Visited Site");
+    elm_object_translatable_part_text_set(layout, "reset_most_visited_sub_text", "You can delete all items of Most Visited Site.");
 
     return layout;
 }
@@ -407,7 +407,7 @@ Evas_Object* SettingsUI::createRemoveBrowserDataMobilePage(Evas_Object* settings
     evas_object_smart_callback_add(reset_browser_button, "clicked", _reset_browser_clicked_cb, this);
     elm_layout_content_set(layout, "reset_browser_click", reset_browser_button);
 
-    elm_object_translatable_part_text_set(layout, "reset_browser_sub_text", "You can delete all data and return to initial setting");
+    elm_object_translatable_part_text_set(layout, "reset_browser_sub_text", "You can delete all data and return to initial setting.");
 
     return layout;
 }

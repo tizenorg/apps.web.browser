@@ -106,7 +106,7 @@ Evas_Object* BookmarkManagerUI::getContent()
     M_ASSERT(m_parent);
     if (!b_mm_layout)
       b_mm_layout = createBookmarksLayout(m_parent);
-    elm_object_part_text_set(m_topContent, "title_text", "Bookmark manager"); //TODO: add translation
+    elm_object_part_text_set(m_topContent, "title_text", "Bookmark Manager"); //TODO: add translation
 
     return b_mm_layout;
 }
