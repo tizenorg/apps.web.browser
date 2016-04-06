@@ -629,7 +629,7 @@ void BookmarkDetailsUI::addBookmarks(std::vector<std::shared_ptr<tizen_browser::
 #if PROFILE_MOBILE
                             (boost::format("%s(%d)") % m_folder_name.c_str() % items.size()).str().c_str());
 #else
-                            (boost::format("Bookmark manager > %s") % m_folder_name.c_str()).str().c_str());
+                            (boost::format("Bookmark Manager > %s") % m_folder_name.c_str()).str().c_str());
 #endif
     elm_object_part_content_set(m_layout, "elm.swallow.grid", m_gengrid);
 #if PROFILE_MOBILE
