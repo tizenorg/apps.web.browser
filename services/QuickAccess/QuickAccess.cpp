@@ -353,8 +353,8 @@ Evas_Object* QuickAccess::createBottomButton(Evas_Object *parent)
 
     m_bookmarkManagerButton = elm_button_add(layoutBottom);
     elm_object_style_set(m_bookmarkManagerButton, "browser_text_button");
-    // TODO: add translation for Bookmark manager
-    elm_object_translatable_part_text_set(m_bookmarkManagerButton, "btn_txt", "Bookmark manager");
+    // TODO: add translation for Bookmark Manager
+    elm_object_translatable_part_text_set(m_bookmarkManagerButton, "btn_txt", "Bookmark Manager");
     evas_object_event_callback_add(m_bookmarkManagerButton, EVAS_CALLBACK_SHOW, _bookmark_btn_show, (void*) &m_currPage);
     evas_object_smart_callback_add(m_bookmarkManagerButton, "mouse,in", _category_btn_mouse_in, nullptr);
     evas_object_smart_callback_add(m_bookmarkManagerButton, "mouse,out", _category_btn_mouse_out, this);
