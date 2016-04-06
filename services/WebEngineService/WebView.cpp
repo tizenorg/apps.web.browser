@@ -908,11 +908,11 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
         BROWSER_LOGD("Created tab: %s", id.toString().c_str());
         Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
         *static_cast<Evas_Object**>(out) = tab_ewk_view;
-    }
 
-    // switch to a new tab
-    m_webEngine->switchToTab(id);
-    m_webEngine->windowCreated();
+        // switch to a new tab
+        m_webEngine->switchToTab(id);
+        m_webEngine->windowCreated();
+    }
 }
 
 void WebView::__closeWindowRequest(void *data, Evas_Object *, void *)

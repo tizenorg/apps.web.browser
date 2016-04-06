@@ -366,9 +366,7 @@ TabId WebEngineService::addTab(const std::string & uri,
         const TabId * tabInitId, const boost::optional<int> tabId,
         const std::string& title, bool desktopMode, bool incognitoMode)
 {
-    AbstractWebEngine::checkIfCreate();
-
-    if (tabsCount() >= boost::any_cast<int>(tizen_browser::config::Config::getInstance().get("TAB_LIMIT")))
+    if (!(*AbstractWebEngine::checkIfCreate()))
         return currentTabId();
 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
