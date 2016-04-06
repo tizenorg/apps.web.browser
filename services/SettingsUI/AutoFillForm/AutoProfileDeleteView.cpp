@@ -176,6 +176,7 @@ Eina_Bool AutoProfileDeleteView::appendGenlist(Evas_Object *genlist)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_checkbox_delete_state_map.clear();
     unsigned int item_count = m_manager->getAutoFillFormItemCount();
     if (item_count > 0) {
         for (unsigned int i = 0; i < item_count; i++) {
@@ -183,7 +184,9 @@ Eina_Bool AutoProfileDeleteView::appendGenlist(Evas_Object *genlist)
            item_callback_data->menu_index = i;
            item_callback_data->user_data = this;
            item_callback_data->it = elm_genlist_item_append(genlist, m_itemClass,
-                                        item_callback_data, NULL, ELM_GENLIST_ITEM_NONE, __genlist_item_selected_cb, item_callback_data);
+                                        item_callback_data, NULL, ELM_GENLIST_ITEM_NONE,
+                                        __genlist_item_selected_cb, item_callback_data);
+           m_checkbox_delete_state_map.insert(std::pair<Elm_Object_Item*, bool>(item_callback_data->it, false));
         }
     }
 
@@ -195,17 +198,16 @@ void AutoProfileDeleteView::__select_all_checkbox_changed_cb(void* data, Evas_Ob
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     AutoProfileDeleteView *apdv = static_cast<AutoProfileDeleteView*>(data);
     Evas_Object* sel_all_checkbox = elm_object_part_content_get(apdv->m_mainLayout, "select_all_checkbox");
-    Eina_Bool sel_all_state = elm_check_state_get(sel_all_checkbox);
+    bool sel_all_state = elm_check_state_get(sel_all_checkbox) == EINA_TRUE;
     elm_check_state_set(sel_all_checkbox, !sel_all_state);
 
-    Elm_Object_Item *it = elm_genlist_first_item_get(apdv->m_genlist);
-    while (it) {
-         Evas_Object* checkbox = elm_object_item_part_content_get(it, "checkbox");
-         Eina_Bool state = elm_check_state_get(checkbox);
-         if (state == sel_all_state)
-              elm_check_state_set(checkbox, !sel_all_state);
-         it = elm_genlist_item_next_get(it);
-    }
+    for (auto it = apdv->m_checkbox_delete_state_map.begin(); it != apdv->m_checkbox_delete_state_map.end(); ++it)
+        if (it->second == sel_all_state) {
+            it->second = !sel_all_state;
+            elm_genlist_item_update(it->first);
+        }
+
+    elm_genlist_realized_items_update(apdv->m_genlist);
 
     if (sel_all_state)
         apdv->m_checked_count = 0;
@@ -234,32 +236,34 @@ void AutoProfileDeleteView::__genlist_item_selected_cb(void* data, Evas_Object* 
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     genlistCallbackData *callback_data = static_cast<genlistCallbackData*>(data);
-    AutoProfileDeleteView *apdv = static_cast<AutoProfileDeleteView*>(callback_data->user_data);
 
     Elm_Object_Item *item = static_cast<Elm_Object_Item*>(event_info);
     elm_genlist_item_selected_set(item, EINA_FALSE);
     Evas_Object *checkbox = elm_object_item_part_content_get(item, "checkbox");
     Eina_Bool state = elm_check_state_get(checkbox);
     elm_check_state_set(checkbox, !state);
-    if (state)
-        apdv->m_checked_count--;
-    else
-        apdv->m_checked_count++;
+    callback_data->user_data->m_checkbox_delete_state_map[item] = !callback_data->user_data->m_checkbox_delete_state_map[item];
+    elm_genlist_item_update(item);
 
-    BROWSER_LOGD("----Checked count : [%d]---- ", apdv->m_checked_count);
-    Evas_Object* sel_all_checkbox = elm_object_part_content_get(apdv->m_mainLayout, "select_all_checkbox");
-    if (apdv->m_checked_count == elm_genlist_items_count(apdv->m_genlist))
+    if (state)
+        callback_data->user_data->m_checked_count--;
+    else
+        callback_data->user_data->m_checked_count++;
+
+    BROWSER_LOGD("----Checked count : [%d]---- ", callback_data->user_data->m_checked_count);
+    Evas_Object* sel_all_checkbox = elm_object_part_content_get(callback_data->user_data->m_mainLayout, "select_all_checkbox");
+    if (callback_data->user_data->m_checked_count == elm_genlist_items_count(callback_data->user_data->m_genlist))
         elm_check_state_set(sel_all_checkbox, true);
     else
         elm_check_state_set(sel_all_checkbox, false);
 
-    if (apdv->m_checked_count >= 1) {
-        elm_object_signal_emit(apdv->m_mainLayout, "show,del,button,signal", "");
-        elm_object_disabled_set(elm_object_part_content_get(apdv->m_mainLayout, "del_button"), false);
+    if (callback_data->user_data->m_checked_count >= 1) {
+        elm_object_signal_emit(callback_data->user_data->m_mainLayout, "show,del,button,signal", "");
+        elm_object_disabled_set(elm_object_part_content_get(callback_data->user_data->m_mainLayout, "del_button"), false);
     }
     else {
-        elm_object_signal_emit(apdv->m_mainLayout, "dim,del,button,signal", "");
-        elm_object_disabled_set(elm_object_part_content_get(apdv->m_mainLayout, "del_button"), true);
+        elm_object_signal_emit(callback_data->user_data->m_mainLayout, "dim,del,button,signal", "");
+        elm_object_disabled_set(elm_object_part_content_get(callback_data->user_data->m_mainLayout, "del_button"), true);
     }
 }
 
@@ -278,12 +282,14 @@ void AutoProfileDeleteView::__delete_button_cb(void* data, Evas_Object* /*obj*/,
         apdv->deleteAllItems();
     else
         apdv->deleteSelectedItems();
+    elm_genlist_realized_items_update(apdv->m_genlist);
 }
 
 void AutoProfileDeleteView::deleteAllItems(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_checkbox_delete_state_map.clear();
     m_manager->deleteAllAutoFillFormItems();
     m_manager->refreshListView();
 }
@@ -304,6 +310,7 @@ void AutoProfileDeleteView::deleteSelectedItems(void)
             AutoFillFormItem *item = m_manager->getItemList()[cb_data->menu_index - del_count];
             m_manager->deleteAutoFillFormItem(item);
             del_count++;
+            m_checkbox_delete_state_map.erase(it);
         }
         it = elm_genlist_item_next_get(it);
     }
@@ -316,10 +323,10 @@ char *AutoProfileDeleteView::__text_get_cb(void* data, Evas_Object* /*obj*/, con
     BROWSER_LOGD("part[%s]", part);
 
     genlistCallbackData *callback_data = static_cast<genlistCallbackData*>(data);
-    AutoProfileDeleteView *view = static_cast<AutoProfileDeleteView*>(callback_data->user_data);
 
     if (!strcmp(part, "item_title")) {
-        const char *item_full_name = view->getEachItemFullName((unsigned int)callback_data->menu_index);
+        const char *item_full_name = callback_data->user_data->getEachItemFullName(
+                (unsigned int)callback_data->menu_index);
         if (item_full_name)
            return strdup(item_full_name);
     }
@@ -334,7 +341,7 @@ const char *AutoProfileDeleteView::getEachItemFullName(unsigned int index)
     return (m_manager->getItemList())[index]->getName();
 }
 
-Evas_Object *AutoProfileDeleteView::__content_get_cb(void* /*data*/, Evas_Object* obj, const char *part)
+Evas_Object *AutoProfileDeleteView::__content_get_cb(void* data, Evas_Object* obj, const char *part)
 {
     BROWSER_LOGD("part[%s]", part);
 
@@ -344,9 +351,11 @@ Evas_Object *AutoProfileDeleteView::__content_get_cb(void* /*data*/, Evas_Object
             BROWSER_LOGE("Failed to add check");
             return NULL;
         }
+
+        genlistCallbackData *itemData = static_cast<genlistCallbackData*>(data);
         elm_object_style_set(checkbox, "custom_check");
-        Eina_Bool checked = false;
-        elm_check_state_pointer_set(checkbox, &checked);
+        elm_check_state_set(checkbox, itemData->user_data->m_checkbox_delete_state_map[itemData->it]
+                                        ? EINA_TRUE : EINA_FALSE);
         evas_object_propagate_events_set(checkbox, EINA_FALSE);
         return checkbox;
     }
