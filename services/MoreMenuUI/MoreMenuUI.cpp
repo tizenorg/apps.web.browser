@@ -322,7 +322,7 @@ void MoreMenuUI::changeBookmarkStatus(bool data)
     }
     else {
         m_isBookmark = EINA_FALSE;
-        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to bookmarks");
+        elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to Bookmark");
         elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark_new.png");
     }
 }
@@ -436,14 +436,14 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             const char* item_name = NULL;
             switch (itemData->item) {
             case HISTORY:
-                item_name = "History manager";
+                item_name = "History Manager";
                 break;
             case BOOKMARK_MANAGER:
-                item_name = "Bookmark manager";
+                item_name = "Bookmark Manager";
                 break;
 #if PROFILE_MOBILE
             case ADD_TO_BOOKMARK:
-                item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to bookmark";
+                item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to Bookmark";
                 break;
 #ifdef READER_MODE_ENABLED
             case READER_MODE:
