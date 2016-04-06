@@ -33,7 +33,7 @@ public:
 private:
     typedef struct _genlistCallbackData{
         unsigned int menu_index;
-        void *user_data;
+        AutoProfileDeleteView *user_data;
         Elm_Object_Item *it;
     } genlistCallbackData;
 
@@ -62,6 +62,7 @@ private:
     Evas_Object *m_action_bar;
     Elm_Genlist_Item_Class *m_itemClass;
     unsigned m_checked_count;
+    std::map<Elm_Object_Item*, bool> m_checkbox_delete_state_map;
 
     std::string m_edjFilePath;
 };
