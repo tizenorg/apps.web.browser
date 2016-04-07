@@ -25,7 +25,7 @@ namespace base_ui {
 
 boost::signals2::signal<void(const WebsiteVisitItemDataPtr, bool)>
 WebsiteHistoryItemVisitItemsMob::signalButtonClicked;
-const int WebsiteHistoryItemVisitItemsMob::GESTURE_MOMENTUM_MIN = 3000;
+const int WebsiteHistoryItemVisitItemsMob::GESTURE_MOMENTUM_MIN = 2000;
 WebsiteHistoryItemVisitItemsMob::WebsiteHistoryItemVisitItemsMob(
         const std::vector<WebsiteVisitItemDataPtr> websiteVisitItems)
     : m_eflObjectsDeleted(nullptr)
