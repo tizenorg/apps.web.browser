@@ -33,7 +33,7 @@ public:
     void rotateLandscape();
     void rotatePortrait();
 private:
-    typedef enum _menu_type
+    enum menu_type
     {
         profile_composer_title_full_name = 0,
         profile_composer_title_company_name,
@@ -45,27 +45,23 @@ private:
         profile_composer_title_country,
         profile_composer_title_phone,
         profile_composer_title_email,
-
         profile_composer_menu_end
-    } menu_type;
+    };
 
-    typedef struct _genlistCallbackData {
+    struct genlistCallbackData {
         menu_type type;
         void *user_data;
         Evas_Object* editfield;
-        Evas_Object *entry;
-        Elm_Object_Item *it;
-    } genlistCallbackData;
+        Evas_Object* entry;
+        Evas_Object* it;
+    };
 
-    Evas_Object *createMainLayout(Evas_Object *parent);
-    Evas_Object *createGenlist(Evas_Object *parent);
+    Evas_Object* createScroller(Evas_Object* parent);
+    void addItems();
     Eina_Bool isEntryHasOnlySpace(const char *);
     Eina_Bool applyEntryData(void);
+    void createInputLayout(Evas_Object* parent, char* fieldName, genlistCallbackData* cb_data);
 
-    static void __genlist_realized_cb(void* data, Evas_Object* obj, void* event_info);
-    static char *__text_get_cb(void* data, Evas_Object* obj, const char *part);
-    static Eina_Bool __state_get_cb(void*, Evas_Object*, const char*);
-    static Evas_Object *__content_get_cb(void* data, Evas_Object* obj, const char *part);
     static void __done_button_cb(void* data, Evas_Object* obj, void* event_info);
     static void __cancel_button_cb(void* data, Evas_Object* obj, void* event_info);
     static void __entry_changed_cb(void* data, Evas_Object* obj, void* event_info);
@@ -79,19 +75,10 @@ private:
 
     Evas_Object *m_mainLayout;
     Evas_Object *m_parent;
-    Evas_Object *m_genlist;
+    Evas_Object *m_scroller;
+    Evas_Object *m_box;
     Evas_Object *m_doneButton;
     Evas_Object *m_cancelButton;
-    Evas_Object *m_entryFullName;
-    Evas_Object *m_entryCompanyName;
-    Evas_Object *m_entryAddressLine1;
-    Evas_Object *m_entryAddressLine2;
-    Evas_Object *m_entryCityTown;
-    Evas_Object *m_entryCounty;
-    Evas_Object *m_entryPostCode;
-    Evas_Object *m_entryCountry;
-    Evas_Object *m_entryPhone;
-    Evas_Object *m_entryEmail;
     Evas_Object *m_action_bar;
 
     profileEditErrorcode m_editErrorcode;
