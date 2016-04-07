@@ -275,6 +275,7 @@ void BookmarkDetailsUI::_bookmark_item_clicked(void* data, Evas_Object*, void*)
                             m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
             elm_gengrid_item_update(itemData->bookmarkDetailsUI->
                     m_map_bookmark[itemData->item->getId()]);
+            elm_gengrid_realized_items_update(itemData->bookmarkDetailsUI->m_gengrid);
         }
         else
             itemData->bookmarkDetailsUI->bookmarkItemClicked(itemData->item);
