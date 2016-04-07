@@ -1,6 +1,6 @@
 Name:       org.tizen.browser
 Summary:    Tizen TV Open Browser
-Version:    1.1.9
+Version:    1.2.0
 Release:    0
 Group:      Applications/Web
 License:    Apache-2.0
