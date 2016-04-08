@@ -17,6 +17,7 @@ add_subdirectory(TabService)
 add_subdirectory(PlatformInputManager)
 add_subdirectory(BookmarkService)
 add_subdirectory(ZoomUI)
+add_subdirectory(CertificateService)
 if (${PROFILE} MATCHES "mobile")    # mobile profile
     add_subdirectory(FindOnPageUI)
 endif (${PROFILE} MATCHES "mobile")
