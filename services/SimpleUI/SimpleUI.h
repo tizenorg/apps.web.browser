@@ -56,11 +56,13 @@
 #include "PlatformInputManager.h"
 #include "SessionStorage.h"
 #include "StorageService.h"
+#include "CertificateContents.h"
 
 // other
 #include "Action.h"
 #include "InputPopup.h"
 #include "SimplePopup.h"
+#include "ContentPopup_mob.h"
 #include "WebConfirmation.h"
 #include "ViewManager.h"
 #include "MenuButton.h"
@@ -108,6 +110,7 @@ private:
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();
+    void updateSecureIcon();
     void loadError();
     void webEngineReady(basic_webengine::TabId id);
 
@@ -186,6 +189,7 @@ private:
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
+    void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
     void onMouseClick(int, int);
@@ -267,8 +271,11 @@ private:
     void closeHistoryUI();
     void showSettingsUI();
     void closeSettingsUI();
+
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
+    void showCertificatePopup();
+    void showCertificatePopup(const std::string& host, const std::string& pem, services::CertificateContents::HOST_TYPE type);
     void closeBookmarkFlowUI();
 
     void showFindOnPageUI();
@@ -334,6 +341,7 @@ private:
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
 #endif
+    std::shared_ptr<services::CertificateContents> m_certificateContents;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
