@@ -112,6 +112,11 @@ SimpleUI::SimpleUI()
     app_event_handler_h rotation_handler;
     ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
                              __orientation_changed, this);
+
+    // TODO Unify the virtual keyboard behavior. For now webview entry and url entry have the separate ways to
+    // determine if keyboard has been shown. I think it is possible to unify it with below callbacks.
+    evas_object_smart_callback_add(m_viewManager.getConformant(), "virtualkeypad,state,on", onUrlIMEOpened, this);
+    evas_object_smart_callback_add(m_viewManager.getConformant(), "virtualkeypad,state,off",onUrlIMEClosed, this);
 #endif
 }
 
@@ -875,6 +880,22 @@ void SimpleUI::onDeleteFolderPopupClicked(PopupButtons button)
         m_storageService->getFoldersStorage().deleteFolder(id);
         m_bookmarkDetailsUI->onBackPressed();
     }
+}
+
+void SimpleUI::onUrlIMEOpened(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
+    self->setwvIMEStatus(true);
+    self->m_webPageUI->mobileEntryFocused();
+}
+
+void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
+    self->setwvIMEStatus(false);
+    self->m_webPageUI->mobileEntryUnfocused();
 }
 #endif
 
