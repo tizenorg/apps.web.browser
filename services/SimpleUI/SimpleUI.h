@@ -157,6 +157,8 @@ private:
     void onRemoveFoldersClicked(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> items);
     void onEditFolderPopupClicked(const std::string& newName);
     void onDeleteFolderPopupClicked(PopupButtons button);
+    static void onUrlIMEOpened(void* data, Evas_Object*, void*);
+    static void onUrlIMEClosed(void* data, Evas_Object*, void*);
 #endif
     void onBookmarkRemoved(const std::string& uri);
 
