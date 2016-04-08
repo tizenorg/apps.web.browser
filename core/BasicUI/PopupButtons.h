@@ -26,7 +26,8 @@ namespace base_ui
 
     enum PopupButtons
     {
-        OK      = 1 << 1
+        NONE    = 0
+       ,OK      = 1 << 1
        ,CANCEL  = 1 << 2
        ,YES     = 1 << 3
        ,NO      = 1 << 4
@@ -36,6 +37,8 @@ namespace base_ui
        ,CLOSE_TAB = 1 << 8
        ,RESET   = 1 << 9
        ,DELETE  = 1 << 10
+       ,BACK_TO_SAFETY  = 1 << 11
+       ,VIEW_CERTIFICATE  = 1 << 12
     };
 
     static std::map<PopupButtons, std::string> createTranslations()
@@ -51,6 +54,8 @@ namespace base_ui
         m[CLOSE_TAB] = "Close tab";
         m[RESET] = "Reset";
         m[DELETE] = "Delete";
+        m[BACK_TO_SAFETY] = "Back to safety";
+        m[VIEW_CERTIFICATE] = "View Certificate";
 
         return m;
     }

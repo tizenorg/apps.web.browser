@@ -73,6 +73,7 @@ if(TIZEN_BUILD)
         capi-appfw-application
         libpng
         efl-extension
+        libssl
     )
 
    if (${PROFILE} MATCHES "mobile")
