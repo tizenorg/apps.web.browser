@@ -1121,7 +1121,9 @@ void SimpleUI::loadStopped()
 void SimpleUI::loadError()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if !PROFILE_MOBILE
     m_webPageUI->switchViewToErrorPage();
+#endif
 }
 
 void SimpleUI::webEngineReady(basic_webengine::TabId id)
