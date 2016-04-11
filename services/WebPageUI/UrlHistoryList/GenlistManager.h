@@ -20,15 +20,12 @@
 #include <Elementary.h>
 #include "services/HistoryService/HistoryItemTypedef.h"
 #include <boost/signals2/signal.hpp>
-#include "Tools/EcoreTimerCaller.h"
-#include "TimerCallbacks.h"
 
 using namespace std;
 
 namespace tizen_browser {
 namespace base_ui {
 
-class GenlistManagerCallbacks;
 class GenlistItemsManager;
 enum class GenlistItemType;
 typedef shared_ptr<GenlistItemsManager> GenlistItemsManagerPtr;
@@ -50,7 +47,6 @@ typedef struct UrlPair_s
 
 class GenlistManager
 {
-    friend class GenlistManagerCallbacks;
 public:
     GenlistManager();
     ~GenlistManager();
@@ -91,8 +87,6 @@ private:
     void prepareUrlsVector(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
 
-    AdjustGenlistHeight m_adjustHeightCallback;
-    tools::EflTools::EcoreTimerCaller<AdjustGenlistHeight> m_timerAdjustHeight;
     Evas_Object* m_parentLayout;
     Evas_Object* m_genlist;
 

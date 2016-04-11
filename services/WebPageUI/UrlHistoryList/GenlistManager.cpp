@@ -21,6 +21,7 @@
 #include "GenlistItemsManager.h"
 #include "Config.h"
 #include <EflTools.h>
+#include <Edje.h>
 
 // Right now base scale in edc is 2.6, hence using 2.6 here to calculate proper
 // ITEM_H value. Probably assumptions will change and ITEM_H will have to be
@@ -85,14 +86,15 @@ void GenlistManager::show(const string& editedUrl,
 {
     clear();
     m_genlist = createGenlist(m_parentLayout);
-    m_adjustHeightCallback.set(m_genlist, ITEMS_VISIBLE_NUMBER_MAX, ITEM_H);
 
     prepareUrlsVector(editedUrl, matchedEntries);
 
     m_itemsManager->setItems( { GenlistItemType::ITEM_FIRST,
             GenlistItemType::ITEM_LAST }, nullptr);
     Elm_Object_Item* itemAppended = nullptr;
+    int counter = 0;
     for (auto it : m_readyUrlPairs) {
+        counter++;
         itemAppended = elm_genlist_item_append(m_genlist, m_historyItemClass,
                 it.get(), nullptr, ELM_GENLIST_ITEM_NONE,
                 GenlistManagerCallbacks::_item_selected, it.get());
@@ -100,10 +102,20 @@ void GenlistManager::show(const string& editedUrl,
                 itemAppended);
     }
     m_itemsManager->setItems( { GenlistItemType::ITEM_LAST }, itemAppended);
-    evas_object_show(m_genlist);
 
-    // genlist height adjustment has to be invoked in the loop's end
-    m_timerAdjustHeight.addTimer(m_adjustHeightCallback);
+    const int list_items_number = elm_genlist_items_count(m_genlist);
+    printf("KAWA GENLIST: %d PAIRS: %d\n", list_items_number, counter);
+    if (list_items_number != 0) {
+        Edje_Message_Int message;
+        if (list_items_number > ITEMS_VISIBLE_NUMBER_MAX)
+            message.val = ITEMS_VISIBLE_NUMBER_MAX;
+        else
+            message.val = list_items_number;
+        message.val *= ITEM_H;
+        edje_object_message_send(elm_layout_edje_get(m_parentLayout), EDJE_MESSAGE_INT, 0, &message);
+    }
+
+    evas_object_show(m_genlist);
 }
 
 void GenlistManager::hide()
