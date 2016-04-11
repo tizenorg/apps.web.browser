@@ -235,6 +235,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
 #if PROFILE_MOBILE
         self->mobileEntryUnfocused();
+        self->showCancelIcon();
 #endif
     }
     self->m_first_click = true;
