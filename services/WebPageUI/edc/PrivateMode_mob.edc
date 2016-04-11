@@ -63,24 +63,31 @@ collections { base_scale: 2.6;
                     state: "default" 0.0;
                     visible: 1;
                     color: 242 242 242 255;
-                    min: 580 660;
-                    max: 580 660;
-                    fixed: 1 1;
-                    align: 0.5 0.5;
+                    min: 580 0;
+                    max: 580 -1;
+                    align: 0.5 0.0;
+                    rel1 {
+                        to: "message_background";
+                        relative: 0 0.2;
+                    }
+                    rel2 {
+                        to: "message_background";
+                        relative: 1 1;
+                    }
                 }
                 description {
                     state: "landscape" 0.0;
                     inherit: "default";
-                    visible: 1;
                     min: 916 410;
-                    max: 916 410;
+                    max: 916 -1;
+                    rel1 {
+                        to: "message_background";
+                        relative: 0 0.1;
+                    }
                 }
                 description {
                     state: "vertical" 0.0;
                     inherit: "default";
-                    visible: 1;
-                    min: 580 660;
-                    max: 580 660;
                 }
             }
             part {
