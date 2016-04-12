@@ -441,6 +441,9 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
             case BOOKMARK_MANAGER:
                 item_name = "Bookmark Manager";
                 break;
+            case SETTINGS:
+                item_name = _("IDS_BR_OPT_SETTINGS");
+                break;
 #if PROFILE_MOBILE
             case ADD_TO_BOOKMARK:
                 item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to Bookmark";
@@ -452,9 +455,6 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
 #endif
             case FIND_ON_PAGE:
                 item_name = _("IDS_BR_OPT_FIND_ON_PAGE");
-                break;
-            case SETTINGS:
-                item_name = (std::string(_("IDS_BR_BODY_SETTINGS")) + "<br>").c_str();
                 break;
 #else
 #ifdef READER_MODE_ENABLED
@@ -475,9 +475,6 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 break;
             case VIEW_DESKTOP_WEB:
                 item_name = "View Desktop Web";
-                break;
-            case SETTINGS:
-                item_name = _("IDS_BR_BUTTON_SETTINGS_ABB");
                 break;
             case EXIT_BROWSER:
                 item_name = "Exit Browser";
