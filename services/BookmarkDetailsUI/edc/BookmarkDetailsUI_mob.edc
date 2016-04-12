@@ -721,6 +721,10 @@ collections { base_scale: 2.6;
                     inherit: "default" 0.0;
                     visible: 1;
                 }
+                description {
+                    state: "dissabled" 0.0;
+                    inherit: "default";
+                }
             }
             part {
                 name: "back_spacer";
@@ -1041,6 +1045,20 @@ collections { base_scale: 2.6;
                 action: STATE_SET "removal" 0.0;
                 target: "remove_click_2";
                 target: "remove_text_2";
+                after: "removal_mode_base";
+            }
+            program {
+                name: "removal_mode_dissabled";
+                signal: "removal_mode_dissabled";
+                source: "ui";
+                action: STATE_SET "dissabled" 0.0;
+                target: "remove_text_2";
+                target: "remove_click_2";
+                after: "removal_mode_base";
+            }
+            program {
+                name: "removal_mode_base";
+                action: STATE_SET "removal" 0.0;
                 target: "cancel_click_2";
                 target: "cancel_text_2";
                 target: "close_icon";

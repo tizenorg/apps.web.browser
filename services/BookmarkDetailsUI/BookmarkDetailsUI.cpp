@@ -270,6 +270,8 @@ void BookmarkDetailsUI::_bookmark_item_clicked(void* data, Evas_Object*, void*)
                     m_map_delete[itemData->item->getId()] ? 1 : -1;
             itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()] =
                     !itemData->bookmarkDetailsUI->m_map_delete[itemData->item->getId()];
+            elm_object_signal_emit(itemData->bookmarkDetailsUI->m_top_content, itemData->
+                    bookmarkDetailsUI->m_delete_count ? "removal_mode" : "removal_mode_dissabled", "ui");
             elm_object_part_text_set(itemData->bookmarkDetailsUI->m_top_content,
                     "title_text", (boost::format("%d %s") % itemData->bookmarkDetailsUI->
                             m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
@@ -366,7 +368,7 @@ void BookmarkDetailsUI::_remove_button_clicked(void* data, Evas_Object*, void*)
         elm_gengrid_realized_items_update(bookmarkDetailsUI->m_gengrid);
         elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "icon_less", "ui");
         elm_object_signal_emit(bookmarkDetailsUI->m_layout, "hide_menu", "ui");
-        elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "removal_mode", "ui");
+        elm_object_signal_emit(bookmarkDetailsUI->m_top_content, "removal_mode_dissabled", "ui");
         elm_object_part_text_set(bookmarkDetailsUI->m_top_content, "title_text", (boost::format("%d %s")
                         % bookmarkDetailsUI->m_delete_count % _("IDS_BR_OPT_SELECTED")).str().c_str());
         evas_object_hide(bookmarkDetailsUI->m_menu);
