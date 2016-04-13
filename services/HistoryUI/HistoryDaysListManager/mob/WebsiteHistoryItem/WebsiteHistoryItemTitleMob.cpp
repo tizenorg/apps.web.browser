@@ -147,6 +147,18 @@ void WebsiteHistoryItemTitleMob::showButtonDelete(bool show)
         elm_box_unpack(m_boxMain, m_layoutButtonDelete);
 }
 
+void WebsiteHistoryItemTitleMob::_title_mouse_down(void* data, Evas*, Evas_Object*, void*)
+{
+    WebsiteHistoryItemTitleMob* self = static_cast<WebsiteHistoryItemTitleMob*>(data);
+    elm_object_signal_emit(self->m_imageFavIconMask, "favicon_mask_selected", "ui");
+}
+
+void WebsiteHistoryItemTitleMob::_title_mouse_up(void* data, Evas*, Evas_Object*, void*)
+{
+    WebsiteHistoryItemTitleMob* self = static_cast<WebsiteHistoryItemTitleMob*>(data);
+    elm_object_signal_emit(self->m_imageFavIconMask, "favicon_mask_default", "ui");
+}
+
 Evas_Object* WebsiteHistoryItemTitleMob::createLayoutContent(
         Evas_Object* parent, const std::string& edjeFilePath)
 {
@@ -154,6 +166,9 @@ Evas_Object* WebsiteHistoryItemTitleMob::createLayoutContent(
     tools::EflTools::setExpandHints(lay);
     elm_layout_file_set(lay, edjeFilePath.c_str(),
             "layoutMainContent");
+
+    evas_object_event_callback_add(lay, EVAS_CALLBACK_MOUSE_DOWN, _title_mouse_down, this);
+    evas_object_event_callback_add(lay, EVAS_CALLBACK_MOUSE_UP, _title_mouse_up, this);
 
     m_boxContentHorizontal = elm_box_add(parent);
     elm_box_align_set(m_boxContentHorizontal, 0.0, 0.0);
@@ -204,8 +219,8 @@ Evas_Object* WebsiteHistoryItemTitleMob::createLayoutIcon(Evas_Object* parent,
         elm_object_part_content_set(layout, "swallowFavIcon", m_imageFavIcon);
     }
 
-    m_imageFavIconMask = elm_image_add(parent);
-    elm_image_file_set(m_imageFavIconMask, edjeFilePath.c_str(), "groupImageFaviconMask");
+    m_imageFavIconMask = elm_layout_add(parent);
+    elm_layout_file_set(m_imageFavIconMask, edjeFilePath.c_str(), "groupImageFaviconMask");
     elm_object_part_content_set(layout, "swallowFavIconMask",
             m_imageFavIconMask);
 
