@@ -6,6 +6,7 @@
 collections { base_scale: 2.6;
     group { name: "groupImageFaviconMask";
             images.image: "favicon_mask.png" COMP;
+            images.image: "favicon_mask_selected.png" COMP;
             parts {
                 part { name: "image";
                        type: IMAGE;
@@ -14,7 +15,24 @@ collections { base_scale: 2.6;
                        description { state: "default" 0.0;
                                      image.normal: "favicon_mask.png";
                                    }
+                       description { state: "selected" 0.0;
+                                     image.normal: "favicon_mask_selected.png";
+                                   }
                      }
+            }
+            programs {
+                program { name: "favicon_mask_default";
+                          signal: "favicon_mask_default";
+                          source: "ui";
+                          action: STATE_SET "default" 0.0;
+                          target: "image";
+                        }
+                program { name: "favicon_mask_selected";
+                          signal: "favicon_mask_selected";
+                          source: "ui";
+                          action: STATE_SET "selected" 0.0;
+                          target: "image";
+                        }
             }
           }
     group { name: "layoutWebsiteHistoryItemTitle";
