@@ -25,6 +25,7 @@
 #include "BrowserLogger.h"
 #include "Tools/EflTools.h"
 #include "../Tools/BrowserImage.h"
+#include "app_i18n.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -117,7 +118,7 @@ void BookmarkManagerUI::createGengridItemClasses()
 
     m_folder_all_item_class = elm_gengrid_item_class_new();
     m_folder_all_item_class->item_style = "grid_all_item";
-    m_folder_all_item_class->func.text_get = _grid_folder_title_text_get;
+    m_folder_all_item_class->func.text_get = _grid_all_folder_title_text_get;
     m_folder_all_item_class->func.content_get =  nullptr;
     m_folder_all_item_class->func.state_get = nullptr;
     m_folder_all_item_class->func.del = _grid_content_delete;
@@ -154,6 +155,19 @@ void BookmarkManagerUI::_grid_content_delete(void *data, Evas_Object */*obj*/)
         delete itemData;
 }
 
+char* BookmarkManagerUI::_grid_all_folder_title_text_get(void *data, Evas_Object *, const char *part)
+{
+    if ((data != nullptr) && (part != nullptr)) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        FolderData *folderData = (FolderData*)(data);
+        const char *part_name1 = "page_title";
+        const int part_name1_len = strlen(part_name1);
+        if (!strncmp(part_name1, part, part_name1_len))
+            return strdup((boost::format("%s  (%d)") % _("IDS_BR_BODY_ALL") % folderData->count).str().c_str());
+    }
+    return strdup("");
+}
+
 char* BookmarkManagerUI::_grid_folder_title_text_get(void *data, Evas_Object *, const char *part)
 {
     if ((data != nullptr) && (part != nullptr)) {
@@ -161,9 +175,8 @@ char* BookmarkManagerUI::_grid_folder_title_text_get(void *data, Evas_Object *, 
         FolderData *folderData = (FolderData*)(data);
         const char *part_name1 = "page_title";
         const int part_name1_len = strlen(part_name1);
-        if (!strncmp(part_name1, part, part_name1_len)) {
+        if (!strncmp(part_name1, part, part_name1_len))
             return strdup((boost::format("%s  (%d)") % folderData->name.c_str() % folderData->count).str().c_str());
-        }
     }
     return strdup("");
 }
