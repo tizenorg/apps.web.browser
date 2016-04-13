@@ -58,6 +58,8 @@ private:
             const std::string& edjeFilePath);
     void initCallbacks();
 
+    static void _title_mouse_down(void* data, Evas*, Evas_Object* obj, void* event_info);
+    static void _title_mouse_up(void* data, Evas*, Evas_Object* obj, void* event_info);
     static void _buttonSelectClicked(void* data, Evas_Object* obj, 
             void* event_info);
     static void _buttonDeleteClicked(void* data, Evas_Object* obj,
