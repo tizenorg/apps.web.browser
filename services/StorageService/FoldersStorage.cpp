@@ -99,10 +99,11 @@ void FoldersStorage::initDatabaseFolders(const std::string& db_str)
     if (!m_dbFoldersInitialised) {
         try {
             dbtools::checkAndCreateTable(db_str, TABLE_FOLDER, DDL_CREATE_TABLE_FOLDER);
-            if (ifFolderExists(_("IDS_BR_BODY_ALL")))
-                AllFolder = getFolderId(_("IDS_BR_BODY_ALL"));
+            const std::string all = "All";
+            if (ifFolderExists(all))
+                AllFolder = getFolderId(all);
             else
-                AllFolder = addFolder(_("IDS_BR_BODY_ALL"));
+                AllFolder = addFolder(all);
 
 #if PROFILE_MOBILE
             const std::string special = "Mobile"; //TODO: missing translation
