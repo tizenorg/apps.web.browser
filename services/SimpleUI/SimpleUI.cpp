@@ -502,7 +502,7 @@ void SimpleUI::initUIServices()
 #if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
-    m_bookmarkFlowUI->setSpecialFolderId(m_storageService->getFoldersStorage().SpecialFolder);
+    m_bookmarkFlowUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
 
     M_ASSERT(m_findOnPageUI.get());
     m_findOnPageUI->init(m_webPageUI->getContent());
@@ -1709,7 +1709,7 @@ void SimpleUI::onBookmarkAllFolderClicked()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_bookmarkDetailsUI.get());
     m_bookmarkDetailsUI->addBookmarks(m_favoriteService->getBookmarks(tizen_browser::services::ALL_BOOKMARKS_ID),
-                                    m_storageService->getFoldersStorage().getFolderName(m_storageService->getFoldersStorage().AllFolder));
+            _("IDS_BR_BODY_ALL"));
     m_bookmarkDetailsUI->showUI();
 }
 
