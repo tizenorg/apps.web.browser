@@ -75,7 +75,7 @@ public:
     void setTitle(const std::string& title);
     void setURL(const std::string& title);
     void setFolder(unsigned int folder_id, const std::string& folder_name);
-    void setSpecialFolderId(unsigned int special);
+    void setFoldersId(unsigned int all, unsigned int special);
     void resetContent();
 #else
     static BookmarkFlowUI* createPopup(Evas_Object* parent);
@@ -149,6 +149,7 @@ private:
     Elm_Genlist_Item_Class *m_folder_selected_item_class;
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
+    unsigned int m_all_folder_id;
     unsigned int m_special_folder_id;
     unsigned int m_max_items;
     const unsigned int MAX_ITEMS = 4;

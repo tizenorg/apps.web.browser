@@ -140,7 +140,7 @@ void BookmarkFlowUI::addCustomFolders(services::SharedBookmarkFolderList folders
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     for (auto it = folders.begin(); it != folders.end(); ++it) {
-        if ((*it)->getName().compare(_("IDS_BR_BODY_ALL")) == 0)
+        if ((*it)->getId() == m_all_folder_id)
             continue;
         FolderData *folderData = new FolderData();
         folderData->name = (*it)->getName();
@@ -237,8 +237,9 @@ void BookmarkFlowUI::setFolder(unsigned int folder_id, const std::string& folder
     elm_genlist_item_item_class_update(m_map_folders[m_folder_id], m_folder_selected_item_class);
 }
 
-void BookmarkFlowUI::setSpecialFolderId(unsigned int special)
+void BookmarkFlowUI::setFoldersId(unsigned int all, unsigned int special)
 {
+    m_all_folder_id = all;
     m_special_folder_id = special;
 }
 

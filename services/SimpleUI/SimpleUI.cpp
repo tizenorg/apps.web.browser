@@ -499,7 +499,7 @@ void SimpleUI::initUIServices()
 #if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
-    m_bookmarkFlowUI->setSpecialFolderId(m_storageService->getFoldersStorage().SpecialFolder);
+    m_bookmarkFlowUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
 
     M_ASSERT(m_findOnPageUI.get());
     m_findOnPageUI->init(m_webPageUI->getContent());
