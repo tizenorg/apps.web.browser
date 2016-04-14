@@ -290,7 +290,7 @@ private:
     void onRotation();
     bool isLandscape();
     int getRotation();
-    static void __orientation_changed(app_event_info_h event_info, void *data);
+    static void __orientation_changed(void* data, Evas_Object*, void*);
     static void __after_rotation(void *data, Elm_Transit *transit);
 #endif
     void closeBookmarkDetailsUI();
