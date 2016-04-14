@@ -778,9 +778,8 @@ void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::Bookma
     m_viewManager.popStackTo(m_webPageUI.get());
     std::string bookmarkAddress = bookmarkItem->getAddress();
 
-    if(tabsCount() == 0 || !m_webEngine->isPrivateMode(m_webEngine->currentTabId())){
+    if (tabsCount() == 0)
         openNewTab(bookmarkAddress);
-    }
     else {
         std::string bookmarkTitle = bookmarkItem->getTitle();
         m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), bookmarkAddress);
