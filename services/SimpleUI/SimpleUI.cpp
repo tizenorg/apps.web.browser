@@ -109,9 +109,12 @@ SimpleUI::SimpleUI()
     elm_win_resize_object_add(main_window, m_viewManager.getConformant());
     evas_object_show(main_window);
 #if PROFILE_MOBILE
-    app_event_handler_h rotation_handler;
-    ui_app_add_event_handler(&rotation_handler, APP_EVENT_DEVICE_ORIENTATION_CHANGED,
-                             __orientation_changed, this);
+    if (elm_win_wm_rotation_supported_get(main_window)) {
+        static const int rots[] = {0, 90, 180, 270};
+        elm_win_wm_rotation_available_rotations_set(main_window, rots, (sizeof(rots) / sizeof(int)));
+        evas_object_smart_callback_add(main_window, "wm,rotation,changed", __orientation_changed, this);
+    } else
+        BROWSER_LOGW("[%s:%d] Device does not support rotation.", __PRETTY_FUNCTION__, __LINE__);
 
     // TODO Unify the virtual keyboard behavior. For now webview entry and url entry have the separate ways to
     // determine if keyboard has been shown. I think it is possible to unify it with below callbacks.
@@ -1070,13 +1073,13 @@ void SimpleUI::onRotation()
     elm_transit_object_add(m_rotation_transit, m_viewManager.getContent());
 
     if (diff_degree == 270)
-        to_degree = 90;
-    else if (diff_degree == -270)
         to_degree = -90;
+    else if (diff_degree == -270)
+        to_degree = 90;
     else
-        to_degree = diff_degree * -1;
+        to_degree = diff_degree;
 
-    elm_transit_effect_rotation_add(m_rotation_transit, 0, to_degree);
+    elm_transit_effect_rotation_add(m_rotation_transit, to_degree, 0);
     elm_transit_duration_set(m_rotation_transit, 0.25);
 
     elm_transit_del_cb_set(m_rotation_transit, __after_rotation, this);
@@ -1086,11 +1089,10 @@ void SimpleUI::onRotation()
     m_current_angle = m_temp_angle;
 }
 
-void SimpleUI::__orientation_changed(app_event_info_h event_info, void* data)
+void SimpleUI::__orientation_changed(void* data, Evas_Object*, void*)
 {
     SimpleUI* simpleUI = static_cast<SimpleUI*>(data);
-    app_device_orientation_e event_angle = APP_DEVICE_ORIENTATION_0;
-    app_event_get_device_orientation(event_info, &event_angle);
+    int event_angle = elm_win_rotation_get(simpleUI->main_window);
     if (simpleUI->m_current_angle != event_angle) {
         simpleUI->m_temp_angle = event_angle;
         BROWSER_LOGD("[%s:%d] previous angle: [%d] event angle: [%d]", __PRETTY_FUNCTION__, __LINE__,
