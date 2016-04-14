@@ -2,8 +2,8 @@ Name:       org.tizen.browser
 Summary:    Tizen TV Open Browser
 Version:    1.2.2
 Release:    0
-Group:      Applications/Web
 License:    Apache-2.0
+Group:      Applications/Web
 Source0:    %{name}-%{version}.tar.gz
 
 %if "%{?_with_wayland}" == "1"
