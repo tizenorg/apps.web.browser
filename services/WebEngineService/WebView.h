@@ -42,8 +42,8 @@ typedef enum _context_menu_type {
     TEXT_LINK,
     IMAGE_ONLY,
     IMAGE_LINK,
-    EMAIL_SCHEME,
-    TEL_SCHEME,
+    EMAIL_LINK,
+    TEL_LINK,
     TEXT_IMAGE_LINK,
     UNKNOWN_MENU
 } context_menu_type;
@@ -304,6 +304,8 @@ private:
     context_menu_type _get_menu_type(Ewk_Context_Menu *menu);
     void _customize_context_menu(Ewk_Context_Menu *menu);
     void _show_context_menu_text_link(Ewk_Context_Menu *menu);
+    void _show_context_menu_email_address(Ewk_Context_Menu *menu);
+    void _show_context_menu_call_number(Ewk_Context_Menu *menu);
     void _show_context_menu_image_only(Ewk_Context_Menu *menu);
     void _show_context_menu_image_link(Ewk_Context_Menu *menu);
     void _show_context_menu_text_image_link(Ewk_Context_Menu *menu);

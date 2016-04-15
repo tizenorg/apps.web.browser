@@ -1254,10 +1254,22 @@ context_menu_type WebView::_get_menu_type(Ewk_Context_Menu *menu)
     bool link = false;
     bool image = false;
     bool selection_mode = false;
+    bool call_number = false;
+    bool email_address = false;
     for (int i = 0 ; i < count ; i++) {
         Ewk_Context_Menu_Item *item = ewk_context_menu_nth_item_get(menu, i);
         Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+        const char *link_url = ewk_context_menu_item_image_url_get(item);
         BROWSER_LOGD("tag=%d", tag);
+
+        if (link_url && !strncmp(MAILTO_SCHEME, link_url, strlen(MAILTO_SCHEME)))
+            email_address = true;
+        if (link_url && (!strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME)) ||
+                         !strncmp(TELTO_SCHEME, link_url, strlen(TELTO_SCHEME)) ||
+                         !strncmp(CALLTO_SCHEME, link_url, strlen(CALLTO_SCHEME)) ||
+                         !strncmp(SMS_SCHEME, link_url, strlen(SMS_SCHEME)) ||
+                         !strncmp(SMSTO_SCHEME, link_url, strlen(SMSTO_SCHEME))))
+            call_number = true;
         if (tag == EWK_CONTEXT_MENU_ITEM_TAG_TEXT_SELECTION_MODE)
             selection_mode = true;
         if (tag == EWK_CONTEXT_MENU_ITEM_TAG_CLIPBOARD)
@@ -1270,6 +1282,10 @@ context_menu_type WebView::_get_menu_type(Ewk_Context_Menu *menu)
             image = true;
     }
 
+    if (email_address && selection_mode)
+        return EMAIL_LINK;
+    if (call_number && selection_mode)
+        return TEL_LINK;
     if (text && !link)
         return TEXT_ONLY;
     if (link && !image)
@@ -1307,6 +1323,46 @@ void WebView::_show_context_menu_text_link(Ewk_Context_Menu *menu)
     //ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);                     //TODO: missing translation
     /* Save link */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, _("IDS_BR_OPT_SAVE_LINK"), true);
+}
+
+void WebView::_show_context_menu_email_address(Ewk_Context_Menu *menu)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    int count = ewk_context_menu_item_count(menu);
+
+    for (int i = 0 ; i < count ; i++) {
+        Ewk_Context_Menu_Item * item = ewk_context_menu_nth_item_get(menu, 0);
+        ewk_context_menu_item_remove(menu, item);
+    }
+
+    /* Send email */
+    ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL, "Send email", true);  //TODO: missing translation
+    /* Add to contact */
+    ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT, "Add to contacts", true);  //TODO: missing translation
+    /* Copy link address */
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_LINK_URL"), true);  //TODO: missing translation
+}
+
+void WebView::_show_context_menu_call_number(Ewk_Context_Menu *menu)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    int count = ewk_context_menu_item_count(menu);
+
+    for (int i = 0 ; i < count ; i++) {
+        Ewk_Context_Menu_Item * item = ewk_context_menu_nth_item_get(menu, 0);
+        ewk_context_menu_item_remove(menu, item);
+    }
+
+    /* Call */
+    ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_CALL, "Call", true);  //TODO: missing translation
+    /* Send message */
+    ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SEND_MESSAGE, "Send message", true);  //TODO: missing translation
+    /* Add to contact */
+    ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT, "Add to contacts", true);  //TODO: missing translation
+    /* Copy link address */
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_LINK_URL"), true);  //TODO: missing translation
 }
 
 void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
@@ -1439,6 +1495,14 @@ void WebView::_customize_context_menu(Ewk_Context_Menu *menu)
 
         case TEXT_LINK:
             _show_context_menu_text_link(menu);
+        break;
+
+        case EMAIL_LINK:
+            _show_context_menu_email_address(menu);
+        break;
+
+        case TEL_LINK:
+            _show_context_menu_call_number(menu);
         break;
 
         case IMAGE_ONLY:
