@@ -55,7 +55,6 @@ public:
      */
     void onURLEntryEditedByUser(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
-    void onMouseClick(int, int);
     void hideWidget();
     void onBackPressed();
 
@@ -89,7 +88,6 @@ private:
      */
     void onGenlistCreated(Evas_Object*);
     static void _uri_entry_editing_changed_user(void* data, Evas_Object* obj, void* event_info);
-    static void _uri_entry_unfocused(void* data, Evas_Object* obj, void* event_info);
 
     GenlistManagerPtr m_genlistManager;
     WPUStatesManagerPtrConst m_webPageUiStatesMgr;

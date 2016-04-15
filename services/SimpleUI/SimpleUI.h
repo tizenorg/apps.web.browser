@@ -194,7 +194,6 @@ private:
     void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
-    void onMouseClick(int, int);
     void onRedKeyPressed();
     void onYellowKeyPressed();
 #if PROFILE_MOBILE

@@ -44,9 +44,9 @@ GenlistManager::GenlistManager()
     , ITEMS_VISIBLE_NUMBER_MAX(boost::any_cast<int>(tizen_browser::config::Config::
             getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX)))
     , m_historyItemsVisibleCurrent(0)
-    , m_singleHideBlock(false)
     , m_historyItemClass(nullptr)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_urlMatchesStyler = make_shared<UrlMatchesStyler>();
     m_itemsManager = make_shared<GenlistItemsManager>();
     m_historyItemClass = elm_genlist_item_class_new();
@@ -61,16 +61,19 @@ GenlistManager::GenlistManager()
 
 GenlistManager::~GenlistManager()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_genlist_item_class_free(m_historyItemClass);
 }
 
 void GenlistManager::setParentLayout(Evas_Object* parentLayout)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_parentLayout = parentLayout;
 }
 
 Evas_Object* GenlistManager::getGenlist()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_genlist)
         m_genlist = createGenlist(m_parentLayout);
     return m_genlist;
@@ -84,6 +87,7 @@ GenlistItemsManagerPtr GenlistManager::getItemsManager()
 void GenlistManager::show(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     clear();
     m_genlist = createGenlist(m_parentLayout);
 
@@ -117,44 +121,20 @@ void GenlistManager::show(const string& editedUrl,
 
 void GenlistManager::hide()
 {
-    if (getSingleBlockHide()) {
-        setSingleBlockHide(false);
-        return;
-    }
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_hide(m_genlist);
     clear();
 }
 
-void GenlistManager::onMouseClick(int x, int y)
-{
-    if (!m_genlist)
-        return;
-    Evas_Coord w, h;
-    evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, &h);
-    if (!tools::EflTools::pointInObject(m_genlist, x, y))
-        hide();
-    else
-        setSingleBlockHide(true);
-}
-
 void GenlistManager::clear()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_genlist && elm_genlist_items_count(m_genlist)) {
         elm_genlist_clear(m_genlist);
         evas_object_del(m_genlist);
         m_genlist = nullptr;
+        m_itemsManager->clear();
     }
-    m_itemsManager->clear();
-}
-
-void GenlistManager::setSingleBlockHide(bool block)
-{
-    m_singleHideBlock = block;
-}
-
-bool GenlistManager::getSingleBlockHide()
-{
-    return m_singleHideBlock;
 }
 
 string GenlistManager::getItemUrl(
@@ -176,6 +156,7 @@ string GenlistManager::getItemUrl(
 
 Evas_Object* GenlistManager::createGenlist(Evas_Object* parentLayout)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Object* genlist = elm_genlist_add(parentLayout);
     evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND,
     0.0);
@@ -195,6 +176,7 @@ Evas_Object* GenlistManager::createGenlist(Evas_Object* parentLayout)
 Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
         const char* part)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     Evas_Object* layout = elm_layout_add(obj);
     tools::EflTools::setExpandHints(layout);
     if (strcmp(part, "matched_url") == 0) {
@@ -213,6 +195,7 @@ Evas_Object* GenlistManager::m_itemClassContentGet(void* data, Evas_Object* obj,
 void GenlistManager::prepareUrlsVector(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     // free previously used urls. IMPORTANT: it has to be assured that previous
     // genlist items are not using these pointers.
     m_readyUrlPairs.clear();

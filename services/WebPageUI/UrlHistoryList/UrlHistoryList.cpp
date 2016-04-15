@@ -39,6 +39,7 @@ UrlHistoryList::UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr)
     , m_layout(nullptr)
     , m_widgetFocused(false)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("WebPageUI/UrlHistoryList.edj");
     m_genlistManager->signalItemSelected.connect(
@@ -52,20 +53,21 @@ UrlHistoryList::UrlHistoryList(WPUStatesManagerPtrConst webPageUiStatesMgr)
 
 UrlHistoryList::~UrlHistoryList()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void UrlHistoryList::setMembers(Evas_Object* parent, Evas_Object* editedEntry)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_parent = parent;
     m_entry = editedEntry;
     evas_object_smart_callback_add(m_entry, "changed,user",
             UrlHistoryList::_uri_entry_editing_changed_user, this);
-    evas_object_smart_callback_add(m_entry, "unfocused",
-            UrlHistoryList::_uri_entry_unfocused, this);
 }
 
 void UrlHistoryList::createLayout(Evas_Object* parentLayout)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_layout = elm_layout_add(parentLayout);
     tools::EflTools::setExpandHints(m_layout);
     elm_layout_file_set(m_layout, m_edjFilePath.c_str(), "url_history_list");
@@ -74,6 +76,7 @@ void UrlHistoryList::createLayout(Evas_Object* parentLayout)
 
 Evas_Object* UrlHistoryList::getLayout()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (!m_layout)
         createLayout(m_parent);
     return m_layout;
@@ -81,11 +84,13 @@ Evas_Object* UrlHistoryList::getLayout()
 
 void UrlHistoryList::saveEntryAsEditedContent()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_entryEditedContent = elm_entry_entry_get(m_entry);
 }
 
 void UrlHistoryList::restoreEntryEditedContent()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_entry_entry_set(m_entry, m_entryEditedContent.c_str());
     elm_entry_cursor_end_set(m_entry);
 }
@@ -102,18 +107,20 @@ int UrlHistoryList::getKeywordLengthMin() const
 
 bool UrlHistoryList::getGenlistVisible()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     return evas_object_visible_get(m_genlistManager->getGenlist());
 }
 
 void UrlHistoryList::hideWidget()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_genlistManager->hide();
 }
 
 void UrlHistoryList::onBackPressed()
 {
-    m_genlistManager->setSingleBlockHide(false);
-    m_genlistManager->hide();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    hideWidget();
 }
 
 bool UrlHistoryList::getWidgetFocused() const
@@ -124,35 +131,32 @@ bool UrlHistoryList::getWidgetFocused() const
 void UrlHistoryList::onURLEntryEditedByUser(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (matchedEntries->size() == 0) {
-        m_genlistManager->setSingleBlockHide(false);
-        m_genlistManager->hide();
+        hideWidget();
     } else {
         m_genlistManager->show(editedUrl, matchedEntries);
         evas_object_show(m_layout);
     }
 }
 
-void UrlHistoryList::onMouseClick(int x, int y)
-{
-    m_genlistManager->onMouseClick(x, y);
-}
-
 void UrlHistoryList::onItemFocusChange()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_entry_entry_set(m_entry, m_genlistManager->getItemUrl( {
             GenlistItemType::ITEM_CURRENT }).c_str());
 }
 
 void UrlHistoryList::onGenlistCreated(Evas_Object* genlist)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_part_content_set(m_layout, "list_swallow", genlist);
     evas_object_show(m_layout);
 }
 
 void UrlHistoryList::onItemSelect(std::string content)
 {
-    hideWidget();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_webPageUiStatesMgr->equals(WPUState::QUICK_ACCESS)) {
         openURLInNewTab(content);
     } else {
@@ -162,6 +166,7 @@ void UrlHistoryList::onItemSelect(std::string content)
 
 void UrlHistoryList::onListWidgetFocusChange(bool focused)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_widgetFocused = focused;
     if (focused) {
         string itemUrl = m_genlistManager->getItemUrl( {
@@ -174,25 +179,17 @@ void UrlHistoryList::onListWidgetFocusChange(bool focused)
 
 void UrlHistoryList::listWidgetFocusedFromUri()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_widgetFocused = true;
-    // list is hiding on every uri entry 'unfocus'. in this case it's blocked
-    m_genlistManager->setSingleBlockHide(true);
     m_timerGenlistFocused.addTimer(m_genlistFocusedCallback);
 }
 
 void UrlHistoryList::_uri_entry_editing_changed_user(void* data,
         Evas_Object* /* obj */, void* /* event_info */)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     UrlHistoryList* self = reinterpret_cast<UrlHistoryList*>(data);
     self->saveEntryAsEditedContent();
-}
-
-void UrlHistoryList::_uri_entry_unfocused(void* data, Evas_Object* /* obj */,
-        void* /* event_info */)
-{
-    UrlHistoryList* self = reinterpret_cast<UrlHistoryList*>(data);
-    // widget will not be hidden, if focus from uri entry is passed to the list
-    self->hideWidget();
 }
 
 }/* namespace base_ui */
