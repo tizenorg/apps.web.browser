@@ -737,7 +737,13 @@ void SimpleUI::onOpenURLInNewTab(const std::string& url, const std::string& titl
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.popStackTo(m_webPageUI.get());
-    openNewTab(url, title, boost::none, desktopMode);
+    if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+        openNewTab(url, title, boost::none, desktopMode);
+    else {
+        m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
+        m_webEngine->setURI(url);
+        m_webPageUI->getURIEntry().clearFocus();
+    }
 }
 
 void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)
