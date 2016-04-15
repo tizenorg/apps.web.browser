@@ -166,15 +166,15 @@ private:
     void onBookmarkRemoved(const std::string& uri);
 
     void onHistoryRemoved(const std::string& uri);
-    void onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
+    void onOpenURL(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
     /**
      * @brief Handles 'openUrlInNewTab' signals. Uses QuickAccess to indicate
      * desktop/mobile mode.
      * TODO: desktop mode should be checked in WebView or QuickAcces (depends
      * on which view is active)
      */
-    void onOpenURLInNewTab(const std::string& url);
-    void onOpenURLInNewTab(const std::string& url, const std::string& title, bool desktopMode);
+    void onOpenURL(const std::string& url);
+    void onOpenURL(const std::string& url, const std::string& title, bool desktopMode);
     void onMostVisitedTileClicked(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, int itemsNumber);
     void onClearHistoryAllClicked();
     void onDeleteHistoryItems(std::shared_ptr<const std::vector<int>> itemIds);

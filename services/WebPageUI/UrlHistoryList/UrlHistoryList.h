@@ -71,7 +71,7 @@ public:
     void restoreEntryURLContent();
     int getItemsNumberMax() const;
     int getKeywordLengthMin() const;
-    boost::signals2::signal<void (const std::string&)> openURLInNewTab;
+    boost::signals2::signal<void (const std::string&)> openURL;
     boost::signals2::signal<void (const std::string&)> uriChanged;
 
 private:

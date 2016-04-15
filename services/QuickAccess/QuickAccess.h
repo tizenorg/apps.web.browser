@@ -65,7 +65,7 @@ public:
 #endif
 
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, int)> mostVisitedTileClicked;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURLInNewTab;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>, bool)> openURL;
     boost::signals2::signal<void ()> getMostVisitedItems;
     boost::signals2::signal<void ()> getBookmarksItems;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
