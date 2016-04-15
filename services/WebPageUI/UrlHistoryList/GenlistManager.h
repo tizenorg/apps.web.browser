@@ -56,18 +56,11 @@ public:
     void show(const string& editedUrl,
             shared_ptr<services::HistoryItemVector> matchedEntries);
     void hide();
-    void onMouseClick(int, int);
 
     /**
      * Clear genlist elements, delete genlist.
      */
     void clear();
-    /**
-     * When set to true, the next hide attempt will be blocked. E.g. widget
-     * should not be hidden on a mouse click, when cursor is inside widget.
-     */
-    void setSingleBlockHide(bool block);
-    bool getSingleBlockHide();
 
     /**
      * Get url from item of a given type.
@@ -96,10 +89,6 @@ private:
     // currently visible items number
     int m_historyItemsVisibleCurrent;
 
-    /**
-     * Used in setSingleBlockHide().
-     */
-    bool m_singleHideBlock;
     Elm_Gengrid_Item_Class* m_historyItemClass;
     GenlistItemsManagerPtr m_itemsManager;
 

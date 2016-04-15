@@ -17,6 +17,7 @@
 #include "GenlistManagerCallbacks.h"
 #include "GenlistItemsManager.h"
 #include <Ecore_Input.h>
+#include "BrowserLogger.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -34,6 +35,7 @@ GenlistManagerCallbacks::~GenlistManagerCallbacks()
 void GenlistManagerCallbacks::_item_selected(void* data, Evas_Object* /*obj*/,
         void* /*event_info*/)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     const UrlPair* const item = reinterpret_cast<UrlPair*>(data);
     if (item) {
         if (genlistManager) {
@@ -47,6 +49,7 @@ Eina_Bool GenlistManagerCallbacks::_object_event(void* /*data*/,
         Evas_Object* /*obj*/, Evas_Object* /*src*/, Evas_Callback_Type type,
         void* event_info)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(type != EVAS_CALLBACK_KEY_UP)
         return EINA_FALSE;
 
