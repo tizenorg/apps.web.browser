@@ -305,7 +305,7 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
-    m_webPageUI->getUrlHistoryList()->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1));
+    m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
     m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
@@ -328,8 +328,8 @@ void SimpleUI::connectUISignals()
 #endif
 
     M_ASSERT(m_quickAccess.get());
-    m_quickAccess->getDetailPopup().openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
-    m_quickAccess->openURLInNewTab.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2));
+    m_quickAccess->getDetailPopup().openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2));
+    m_quickAccess->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2));
     m_quickAccess->mostVisitedTileClicked.connect(boost::bind(&SimpleUI::onMostVisitedTileClicked, this, _1, _2));
     m_quickAccess->getMostVisitedItems.connect(boost::bind(&SimpleUI::onMostVisitedClicked, this));
     m_quickAccess->getBookmarksItems.connect(boost::bind(&SimpleUI::onBookmarkButtonClicked, this));
@@ -358,7 +358,7 @@ void SimpleUI::connectUISignals()
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryAllClicked, this));
     m_historyUI->signalDeleteHistoryItems.connect(boost::bind(&SimpleUI::onDeleteHistoryItems, this, _1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURLInNewTab, this, _1, _2, desktop_ua));
+    m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2, desktop_ua));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
@@ -721,23 +721,29 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
     }
 }
 
-void SimpleUI::onOpenURLInNewTab(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
+void SimpleUI::onOpenURL(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
 {
-    onOpenURLInNewTab(historyItem->getUrl(), historyItem->getTitle(), desktopMode);
+    onOpenURL(historyItem->getUrl(), historyItem->getTitle(), desktopMode);
 }
 
-void SimpleUI::onOpenURLInNewTab(const std::string& url)
+void SimpleUI::onOpenURL(const std::string& url)
 {
     // TODO: desktop mode should be checked in WebView or QuickAcces
     // (depends on which view is active)
-    onOpenURLInNewTab(url, "", m_quickAccess->isDesktopMode());
+    onOpenURL(url, "", m_quickAccess->isDesktopMode());
 }
 
-void SimpleUI::onOpenURLInNewTab(const std::string& url, const std::string& title, bool desktopMode)
+void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.popStackTo(m_webPageUI.get());
-    openNewTab(url, title, boost::none, desktopMode);
+    if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+        openNewTab(url, title, boost::none, desktopMode);
+    else {
+        m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
+        m_webEngine->setURI(url);
+        m_webPageUI->getURIEntry().clearFocus();
+    }
 }
 
 void SimpleUI::onMostVisitedTileClicked(std::shared_ptr< services::HistoryItem > historyItem, int itemsNumber)

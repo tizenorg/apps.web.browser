@@ -628,7 +628,7 @@ void QuickAccess::_thumbBookmarkClicked(void * data, Evas_Object * , void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
-    itemData->quickAccess->openURLInNewTab(itemData->item, itemData->quickAccess->isDesktopMode());
+    itemData->quickAccess->openURL(itemData->item, itemData->quickAccess->isDesktopMode());
     itemData->quickAccess->m_after_history_thumb = false;
 }
 
@@ -637,7 +637,7 @@ void QuickAccess::_thumbMostVisitedClicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HistoryItemData * itemData = reinterpret_cast<HistoryItemData *>(data);
 #if PROFILE_MOBILE
-    itemData->quickAccess->openURLInNewTab(itemData->item, false);
+    itemData->quickAccess->openURL(itemData->item, false);
 #else
     itemData->quickAccess->mostVisitedTileClicked(itemData->item, DetailPopup::HISTORY_ITEMS_NO);
     itemData->quickAccess->m_after_history_thumb = true;

@@ -154,7 +154,7 @@ void UrlHistoryList::onItemSelect(std::string content)
 {
     hideWidget();
     if (m_webPageUiStatesMgr->equals(WPUState::QUICK_ACCESS)) {
-        openURLInNewTab(content);
+        openURL(content);
     } else {
         uriChanged(content);
     }
