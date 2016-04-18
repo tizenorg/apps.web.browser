@@ -42,7 +42,7 @@ group {
             type: SWALLOW;
             description {
                 state: "default" 0.0;
-                visible: 1;
+                visible: 0;
                 align: 0 0;
                 fixed: 0 0;
                 min: 1 285;
@@ -52,10 +52,21 @@ group {
                 color_class: transparent;
             }
             description {
+                state: "sub" 0.0;
+                inherit: "default";
+                visible: 1;
+            }
+            description {
                 state: "landscape" 0.0;
                 inherit: "default";
+                visible: 1;
                 min: 1 1;
-                max: 560 560;
+                max: 560 -1;
+            }
+            description {
+                state: "land_main" 0.0;
+                inherit: "landscape";
+                visible: 0;
             }
         }
         part {
@@ -69,15 +80,21 @@ group {
                 fixed: 0 0;
                 min: 1 1;
                 max: -1 -1;
-                rel1 { relative: 0.0 1.0; to: "info_swallow";}
+                rel1 { relative: 0.0 0.0; to: "bg";}
                 rel2 { relative: 1.0 1.0;}
                 color_class: defaultListColor;
+            }
+            description {
+                state: "sub" 0.0;
+                inherit: "default";
+                rel1 { relative: 0.0 1.0; to: "info_swallow";}
+                rel2 { relative: 1.0 1.0;}
             }
             description {
                 state: "landscape" 0.0;
                 inherit: "default";
                 min: 1 1;
-                max: -1 560;
+                max: -1 -1;
                 rel1 { relative: 1.0 0.0; to: "info_swallow";}
                 rel2 { relative: 1.0 1.0;}
             }
@@ -127,16 +144,32 @@ group {
     }
     programs {
         program {
-            name: "landscapeSignIn";
-            signal: "rotation,landscape";
+            name: "land_main";
+            signal: "rotation,landscape,main";
+            source: "rot";
+            action: STATE_SET "land_main" 0.0;
+            target: "info_swallow";
+            target: "options_swallow";
+        }
+        program {
+            name: "port_sub";
+            signal: "rotation,portrait,sub";
+            source: "rot";
+            action: STATE_SET "sub" 0.0;
+            target: "info_swallow";
+            target: "options_swallow";
+        }
+        program {
+            name: "land_sub";
+            signal: "rotation,landscape,sub";
             source: "rot";
             action: STATE_SET "landscape" 0.0;
             target: "info_swallow";
             target: "options_swallow";
         }
         program {
-            name: "portraitMode";
-            signal: "rotation,portrait";
+            name: "port_main";
+            signal: "rotation,portrait,main";
             source: "rot";
             action: STATE_SET "default" 0.0;
             target: "info_swallow";

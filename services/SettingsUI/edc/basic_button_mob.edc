@@ -519,10 +519,10 @@ collections
                 description {
                     state: "default" 0.0;
                     fixed: 1 1;
-                    min: 28 120;
-                    max: 28 120;
-                    align: 0.5 0;
-                    rel1 { relative: 1.0 0.0;to: "button_text";}
+                    min: 22 120;
+                    max: 21 120;
+                    align: 1 0;
+                    rel1 { relative: 0.0 0.0;to: "bg";}
                     rel2 { relative: 1.0 1.0;}
                 }
             }
@@ -536,10 +536,9 @@ collections
                     fixed: 1 1;
                     min: 38 38;
                     max: 38 38;
-                    align: 0.5 0.5;
+                    align: 1 0.5;
                     image.normal: "list_ic_arrow.png";
-                    rel1 { relative: 1.0 0.0;to: "arrow_spacer";}
-                    rel2 { relative: 1.0 1.0;to: "arrow_spacer";}
+                    rel2 { relative: 0.0 1.0;to: "arrow_spacer";}
                 }
             }
             //SETTINGS_LINE_BEFORE("before", bg)

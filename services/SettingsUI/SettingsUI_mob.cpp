@@ -159,13 +159,23 @@ Evas_Object* SettingsUI::createSettingsUILayout(Evas_Object* parent)
 void SettingsUI::orientationChanged(){
     auto rot = isLandscape();
     if (rot && *rot) {
-        elm_object_signal_emit(m_actionBar,"rotation,landscape", "rot");
-        elm_object_signal_emit(m_items_layout,"rotation,landscape", "rot");
-        elm_object_signal_emit(m_subpage_layout,"rotation,landscape", "rot");
+        if (m_actionBar)
+            elm_object_signal_emit(m_actionBar,"rotation,landscape", "rot");
+        if (m_items_layout) {
+            elm_gengrid_item_size_set(elm_object_part_content_get(m_items_layout, "options_swallow"), ELM_SCALE_SIZE(1280), ELM_SCALE_SIZE(120));
+            elm_object_signal_emit(m_items_layout, "rotation,landscape,main", "rot");
+        }
+        if (m_subpage_layout)
+            elm_object_signal_emit(m_subpage_layout,"rotation,landscape,sub", "rot");
     } else {
-        elm_object_signal_emit(m_actionBar,"rotation,portrait", "rot");
-        elm_object_signal_emit(m_items_layout,"rotation,portrait", "rot");
-        elm_object_signal_emit(m_subpage_layout,"rotation,portrait", "rot");
+        if (m_actionBar)
+            elm_object_signal_emit(m_actionBar,"rotation,portrait", "rot");
+        if (m_items_layout) {
+            elm_gengrid_item_size_set(elm_object_part_content_get(m_items_layout, "options_swallow"), ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(120));
+            elm_object_signal_emit(m_items_layout,"rotation,portrait,main", "rot");
+        }
+        if (m_subpage_layout)
+            elm_object_signal_emit(m_subpage_layout, "rotation,portrait,sub", "rot");
     }
 }
 
@@ -238,8 +248,6 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
     Evas_Object* layout = createMainView(settings_layout);
 
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
-
-    createInfoField("sign_in_button", "Sign in", layout);
 
     Evas_Object* scroller = elm_gengrid_add(layout);
     evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
