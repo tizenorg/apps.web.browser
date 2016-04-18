@@ -107,7 +107,7 @@ void ContentPopup::addButton(const PopupButtons& button, bool dismissOnClick)
     elm_object_style_set(btn, "text-popup-button");
     evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_object_part_text_set(btn, "elm.text", buttonsTranslations[button].c_str());
+    elm_object_part_text_set(btn, "elm.text", _(buttonsTranslations[button].c_str()));
     elm_box_pack_end(m_buttons_box, btn);
     evas_object_smart_callback_add(btn, "clicked", _response_cb, (void*) this);
 

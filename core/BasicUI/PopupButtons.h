@@ -18,6 +18,7 @@
 #define __POPUP_BUTTONS_H__ 1
 
 #include <map>
+#include "app_i18n.h"
 
 namespace tizen_browser
 {
@@ -44,24 +45,23 @@ namespace base_ui
     static std::map<PopupButtons, std::string> createTranslations()
     {
         std::map<PopupButtons, std::string> m;
-        m[OK] = "Ok";
-        m[CANCEL] = "Cancel";
-        m[YES] = "Yes";
-        m[NO] = "No";
-        m[CLOSE] = "Close";
+        m[OK] = "IDS_BR_SK_OK";
+        m[CANCEL] = "IDS_BR_BUTTON_CANCEL";
+        m[YES] = "IDS_BR_SK_YES";
+        m[NO] = "IDS_BR_SK_NO";
+        m[CLOSE] = "IDS_BR_BUTTON_CLOSE";
         m[CONNECT] = "Connect";
-        m[CONTINUE] = "Continue";
+        m[CONTINUE] = "IDS_BR_BUTTON_CONTINUE";
         m[CLOSE_TAB] = "Close tab";
-        m[RESET] = "Reset";
-        m[DELETE] = "Delete";
+        m[RESET] = "IDS_BR_BUTTON_RESET_ABB";
+        m[DELETE] = "IDS_BR_SK_DELETE_ABB";
         m[BACK_TO_SAFETY] = "Back to safety";
-        m[VIEW_CERTIFICATE] = "View Certificate";
+        m[VIEW_CERTIFICATE] = "IDS_BR_OPT_VIEW_CERTIFICATE";
 
         return m;
     }
 
     static std::map<PopupButtons, std::string> buttonsTranslations = createTranslations();
-
 }
 
 }
