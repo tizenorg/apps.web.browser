@@ -26,7 +26,7 @@ const int UA_ITEMS_COUNT = 20;
 
 UserAgentItem uaList[] = {
     {"Mobile - Kiran", "Mozilla/5.0 (Linux; Tizen 2.3; SAMSUNG SM-Z130H) AppleWebKit/537.3 (KHTML, like Gecko) SamsungBrowser/1.0 Mobile Safari/537.3"},
-    {"Mobile - Firefox", "Mozilla/5.0 (Android; Mobile; rv:29.0) Gecko/29.0 Firefox/29.0"},
+    {"Mobile - Tizen 2.4", "Mozilla/5.0 (Linux; Tizen 2.4.0; SAMSUNG TM1) AppleWebKit/537.3 (KHTML, like Gecko)SamsungBrowser/1.0 Mobile Safari/537.3"},
     {"Mobile - Chrome for android", "Mozilla/5.0 (Linux; Android 4.4.2; SM-G900K Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.122 Mobile Safari/537.36"},
     {"Mobile - Opera", "Mozilla/5.0 (Linux; Android 4.4.2; SM-G900K Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Mobile Safari/537.36 OPR/21.0.1437.74904"},
     {"Mobile - Opera Mini", "Opera/9.80 (Android; Opera Mini/7.5.35199/34.2152; U; en) Presto/2.8.119 Version/11.10"},
