@@ -92,6 +92,7 @@ public:
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
+    static Eina_Bool _hideDelay(void *data);
 #endif
 
     boost::signals2::signal<void ()> backPage;

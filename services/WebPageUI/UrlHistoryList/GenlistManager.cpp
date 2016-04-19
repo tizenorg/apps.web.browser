@@ -44,7 +44,6 @@ GenlistManager::GenlistManager()
     , ITEMS_VISIBLE_NUMBER_MAX(boost::any_cast<int>(tizen_browser::config::Config::
             getInstance().get(CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX)))
     , m_historyItemsVisibleCurrent(0)
-    , m_singleHideBlock(false)
     , m_historyItemClass(nullptr)
 {
     m_urlMatchesStyler = make_shared<UrlMatchesStyler>();
@@ -117,24 +116,8 @@ void GenlistManager::show(const string& editedUrl,
 
 void GenlistManager::hide()
 {
-    if (getSingleBlockHide()) {
-        setSingleBlockHide(false);
-        return;
-    }
     evas_object_hide(m_genlist);
     clear();
-}
-
-void GenlistManager::onMouseClick(int x, int y)
-{
-    if (!m_genlist)
-        return;
-    Evas_Coord w, h;
-    evas_object_geometry_get(m_genlist, nullptr, nullptr, &w, &h);
-    if (!tools::EflTools::pointInObject(m_genlist, x, y))
-        hide();
-    else
-        setSingleBlockHide(true);
 }
 
 void GenlistManager::clear()
@@ -143,18 +126,8 @@ void GenlistManager::clear()
         elm_genlist_clear(m_genlist);
         evas_object_del(m_genlist);
         m_genlist = nullptr;
+        m_itemsManager->clear();
     }
-    m_itemsManager->clear();
-}
-
-void GenlistManager::setSingleBlockHide(bool block)
-{
-    m_singleHideBlock = block;
-}
-
-bool GenlistManager::getSingleBlockHide()
-{
-    return m_singleHideBlock;
 }
 
 string GenlistManager::getItemUrl(

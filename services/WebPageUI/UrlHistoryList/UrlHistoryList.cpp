@@ -60,8 +60,6 @@ void UrlHistoryList::setMembers(Evas_Object* parent, Evas_Object* editedEntry)
     m_entry = editedEntry;
     evas_object_smart_callback_add(m_entry, "changed,user",
             UrlHistoryList::_uri_entry_editing_changed_user, this);
-    evas_object_smart_callback_add(m_entry, "unfocused",
-            UrlHistoryList::_uri_entry_unfocused, this);
 }
 
 void UrlHistoryList::createLayout(Evas_Object* parentLayout)
@@ -112,8 +110,7 @@ void UrlHistoryList::hideWidget()
 
 void UrlHistoryList::onBackPressed()
 {
-    m_genlistManager->setSingleBlockHide(false);
-    m_genlistManager->hide();
+    hideWidget();
 }
 
 bool UrlHistoryList::getWidgetFocused() const
@@ -125,17 +122,11 @@ void UrlHistoryList::onURLEntryEditedByUser(const string& editedUrl,
         shared_ptr<services::HistoryItemVector> matchedEntries)
 {
     if (matchedEntries->size() == 0) {
-        m_genlistManager->setSingleBlockHide(false);
-        m_genlistManager->hide();
+        hideWidget();
     } else {
         m_genlistManager->show(editedUrl, matchedEntries);
         evas_object_show(m_layout);
     }
-}
-
-void UrlHistoryList::onMouseClick(int x, int y)
-{
-    m_genlistManager->onMouseClick(x, y);
 }
 
 void UrlHistoryList::onItemFocusChange()
@@ -152,7 +143,6 @@ void UrlHistoryList::onGenlistCreated(Evas_Object* genlist)
 
 void UrlHistoryList::onItemSelect(std::string content)
 {
-    hideWidget();
     if (m_webPageUiStatesMgr->equals(WPUState::QUICK_ACCESS)) {
         openURL(content);
     } else {
@@ -175,8 +165,6 @@ void UrlHistoryList::onListWidgetFocusChange(bool focused)
 void UrlHistoryList::listWidgetFocusedFromUri()
 {
     m_widgetFocused = true;
-    // list is hiding on every uri entry 'unfocus'. in this case it's blocked
-    m_genlistManager->setSingleBlockHide(true);
     m_timerGenlistFocused.addTimer(m_genlistFocusedCallback);
 }
 
@@ -185,14 +173,6 @@ void UrlHistoryList::_uri_entry_editing_changed_user(void* data,
 {
     UrlHistoryList* self = reinterpret_cast<UrlHistoryList*>(data);
     self->saveEntryAsEditedContent();
-}
-
-void UrlHistoryList::_uri_entry_unfocused(void* data, Evas_Object* /* obj */,
-        void* /* event_info */)
-{
-    UrlHistoryList* self = reinterpret_cast<UrlHistoryList*>(data);
-    // widget will not be hidden, if focus from uri entry is passed to the list
-    self->hideWidget();
 }
 
 }/* namespace base_ui */
