@@ -90,6 +90,7 @@ private:
     static void _onotherdevices_clicked(void * data, Evas_Object * obj, void * event_info);
 #endif
     static void _focus_in(void * data, Evas*, Evas_Object * obj, void * event_info);
+    static Eina_Bool _ready(void *data);
 
     void createTabUILayout();
     Evas_Object* createActionBar(Evas_Object* parent);
@@ -107,6 +108,8 @@ private:
     Evas_Object* m_gengrid_layout;
     Evas_Object *m_gengrid;
     Evas_Object *m_parent;
+    Elm_Object_Item* m_itemToShow;
+    Ecore_Timer* m_timer;
     bool editMode;
     bool onOtherDevicesSwitch;
 
@@ -123,7 +126,6 @@ private:
     const unsigned int GENGRID_ITEM_HEIGHT = 320;
 #endif
 };
-
 }
 }
 
