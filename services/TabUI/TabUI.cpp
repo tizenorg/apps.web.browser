@@ -43,6 +43,8 @@ TabUI::TabUI()
     , m_tab_layout(nullptr)
     , m_gengrid(nullptr)
     , m_parent(nullptr)
+    , m_itemToShow(nullptr)
+    , m_timer(nullptr)
     , m_item_class(nullptr)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -213,13 +215,14 @@ Evas_Object* TabUI::createGengrid(Evas_Object* parent)
     M_ASSERT(parent);
 
     Evas_Object* gengrid = elm_gengrid_add(parent);
-    elm_gengrid_align_set(gengrid, 0, 0);
+    elm_gengrid_align_set(gengrid, 0.5, 0.0);
     elm_gengrid_select_mode_set(gengrid, ELM_OBJECT_SELECT_MODE_ALWAYS);
     elm_gengrid_multi_select_set(gengrid, EINA_FALSE);
 
 #if PROFILE_MOBILE
     elm_gengrid_horizontal_set(gengrid, EINA_FALSE);
     elm_scroller_page_size_set(gengrid, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(0));
+    elm_gengrid_item_size_set(gengrid, ELM_SCALE_SIZE(GENGRID_ITEM_WIDTH), ELM_SCALE_SIZE(GENGRID_ITEM_HEIGHT));
     elm_scroller_policy_set(gengrid, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(gengrid, EINA_FALSE, EINA_FALSE);
 #else
@@ -542,14 +545,41 @@ void TabUI::_thumbSelected(void *data, Evas_Object*, void*)
     }
 }
 
+Eina_Bool TabUI::_ready(void *data)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    auto* self = static_cast<TabUI*>(data);
+
+    elm_gengrid_item_selected_set(self->m_itemToShow, EINA_TRUE);
+    elm_gengrid_item_show(self->m_itemToShow, ELM_GENGRID_ITEM_SCROLLTO_TOP);
+
+    ecore_timer_del(self->m_timer);
+    self->m_itemToShow = nullptr;
+    self->m_timer = nullptr;
+
+    return ECORE_CALLBACK_CANCEL;
+}
+
 void TabUI::_close_tab_clicked(void *data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
-        TabItemData *itemData = static_cast<TabItemData*>(data);
+        TabItemData* itemData = static_cast<TabItemData*>(data);
 
         Elm_Object_Item* it = elm_gengrid_selected_item_get(itemData->tabUI->m_gengrid);
+        auto prev = elm_gengrid_item_prev_get(it);
+        auto next = elm_gengrid_item_next_get(it);
         elm_object_item_del(it);
+
+        if (prev || next) {
+            itemData->tabUI->m_itemToShow = prev ? prev : next;
+            // Timer added because of issue http://suprem.sec.samsung.net/jira/browse/TWF-831
+            // The body of the timer should be added here if elm_object_item_del will be
+            // synchronous or much faster.
+            itemData->tabUI->m_timer = ecore_timer_add(0.1, _ready, itemData->tabUI.get());
+        }
+
         elm_gengrid_realized_items_update(itemData->tabUI->m_gengrid);
 
         itemData->tabUI->closeTabsClicked(itemData->item->getId());
