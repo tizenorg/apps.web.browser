@@ -34,6 +34,11 @@
 #include "ServiceManager.h"
 #include "BasicUI/AbstractMainWindow.h"
 
+// Command line flags for engine
+const char *engineCommandLineFlags[] = {
+  "process-per-tab",
+};
+
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
 
@@ -53,6 +58,9 @@ static bool app_create(void * /*app_data*/)
     elm_config_cache_flush_interval_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
     elm_config_cache_font_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_INTERVAL_VALUE)));
     elm_config_cache_image_cache_size_set(boost::any_cast <int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::CACHE_IMAGE_VALUE)));
+
+    for (auto flag: engineCommandLineFlags)
+        ewk_chromium_append_command_line_flag(flag);
 
     /// \todo: clean casts, depends on ServiceManager
     std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>> mainUi =
