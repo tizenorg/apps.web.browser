@@ -312,11 +312,13 @@ private:
     void _show_context_menu_text_only(Ewk_Context_Menu *menu);
 
     static void __contextmenu_customize_cb(void *data, Evas_Object *obj, void *event_info);
+    static void __contextmenu_selected_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_enter_cb(void *data, Evas_Object *obj, void *event_info);
     static void __fullscreen_exit_cb(void *data, Evas_Object *obj, void *event_info);
 
     Eina_Bool handle_scheme(const char *uri);
     Eina_Bool launch_email(const char *uri);
+    Eina_Bool launch_contact(const char *uri, const char *protocol);
     Eina_Bool launch_dialer(const char *uri);
     Eina_Bool launch_message(const char *uri);
     Eina_Bool launch_tizenstore(const char *uri);
