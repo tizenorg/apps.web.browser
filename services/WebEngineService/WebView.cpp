@@ -246,6 +246,7 @@ void WebView::registerCallbacks()
 
 #if PROFILE_MOBILE
     evas_object_smart_callback_add(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb, this);
+    evas_object_smart_callback_add(m_ewkView, "contextmenu,selected", __contextmenu_selected_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_add(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
     ewk_context_vibration_client_callbacks_set(m_ewkContext, __vibration_cb, __vibration_cancel_cb, this);
@@ -289,6 +290,7 @@ void WebView::unregisterCallbacks()
 
 #if PROFILE_MOBILE
     evas_object_smart_callback_del_full(m_ewkView, "contextmenu,customize", __contextmenu_customize_cb,this);
+    evas_object_smart_callback_del_full(m_ewkView, "contextmenu,selected", __contextmenu_selected_cb, this);
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,enterfullscreen", __fullscreen_enter_cb, this);
     evas_object_smart_callback_del_full(m_ewkView, "fullscreen,exitfullscreen", __fullscreen_exit_cb, this);
     ewk_context_vibration_client_callbacks_set(m_ewkContext, NULL, NULL, this);
@@ -309,7 +311,7 @@ std::map<std::string, std::vector<std::string> > WebView::parse_uri(const char *
     std::string::size_type mainDelimiter;
     mainDelimiter = uri.find_first_of("?");
     if (mainDelimiter != std::string::npos) {
-        uri_parts["protocol"].push_back(uri.substr(0, mainDelimiter));
+        uri_parts["url"].push_back(uri.substr(0, mainDelimiter));
         std::string argsString = uri.substr(mainDelimiter+1, std::string::npos);
         const char *delimiter = "&";
         std::vector<std::string> argsVector;
@@ -349,7 +351,7 @@ std::map<std::string, std::vector<std::string> > WebView::parse_uri(const char *
             }
         }
     } else {
-        uri_parts["protocol"].push_back(uri.substr(0, mainDelimiter));
+        uri_parts["url"].push_back(uri.substr(0, mainDelimiter));
     }
     return uri_parts;
 }
@@ -415,7 +417,7 @@ Eina_Bool WebView::launch_email(const char *uri)
         app_control_destroy(app_control);
         return EINA_FALSE;
     }
-    auto it = uri_parts.find("protocol");
+    auto it = uri_parts.find("url");
     if (it != uri_parts.end()) {
         if (app_control_set_uri(app_control, it->second.front().c_str()) < 0) {
             BROWSER_LOGE("Fail to app_control_set_uri");
@@ -481,6 +483,55 @@ Eina_Bool WebView::launch_email(const char *uri)
     return EINA_TRUE;
 }
 
+Eina_Bool WebView::launch_contact(const char *uri, const char *protocol)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    std::map<std::string, std::vector<std::string> >uri_parts = this->parse_uri(uri);
+
+    app_control_h app_control = NULL;
+    if (app_control_create(&app_control) < 0) {
+        BROWSER_LOGE("Fail to create app_control handle");
+        return EINA_FALSE;
+    }
+    if (app_control_set_operation(app_control, APP_CONTROL_OPERATION_ADD) < 0) {
+        BROWSER_LOGE("Fail to app_control_set_operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    if (app_control_set_mime(app_control, "application/vnd.tizen.contact") < 0) {
+        BROWSER_LOGE("Fail to app_control_set_mime");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    auto it = uri_parts.find("url");
+    if (it != uri_parts.end()) {
+        if (!strcmp(protocol, "tel")) {
+            if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_PHONE,
+                                           it->second.front().c_str()) < 0) {
+                BROWSER_LOGE("Fail to app_control_add_extra_data");
+                app_control_destroy(app_control);
+                return EINA_FALSE;
+            }
+        } else if (strcmp(protocol, "mailto") == 0) {
+            if (app_control_add_extra_data(app_control, APP_CONTROL_DATA_EMAIL,
+                                           it->second.front().c_str()) < 0) {
+                BROWSER_LOGE("Fail to app_control_add_extra_data");
+                app_control_destroy(app_control);
+                return EINA_FALSE;
+            }
+        } else
+            BROWSER_LOGE("Not supported protocol!");
+    }
+    if (app_control_send_launch_request(app_control, NULL, NULL) < 0) {
+        BROWSER_LOGE("Fail to launch app_control operation");
+        app_control_destroy(app_control);
+        return EINA_FALSE;
+    }
+    app_control_destroy(app_control);
+
+    return EINA_TRUE;
+}
+
 Eina_Bool WebView::launch_dialer(const char *uri)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -525,7 +576,7 @@ Eina_Bool WebView::launch_message(const char *uri)
         app_control_destroy(app_control);
         return EINA_FALSE;
     }
-    auto it = uri_parts.find("protocol");
+    auto it = uri_parts.find("url");
     if (it != uri_parts.end()) {
         if (app_control_set_uri(app_control, it->second.front().c_str()) < 0) {
             BROWSER_LOGE("Fail to app_control_set_uri");
@@ -1264,11 +1315,7 @@ context_menu_type WebView::_get_menu_type(Ewk_Context_Menu *menu)
 
         if (link_url && !strncmp(MAILTO_SCHEME, link_url, strlen(MAILTO_SCHEME)))
             email_address = true;
-        if (link_url && (!strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME)) ||
-                         !strncmp(TELTO_SCHEME, link_url, strlen(TELTO_SCHEME)) ||
-                         !strncmp(CALLTO_SCHEME, link_url, strlen(CALLTO_SCHEME)) ||
-                         !strncmp(SMS_SCHEME, link_url, strlen(SMS_SCHEME)) ||
-                         !strncmp(SMSTO_SCHEME, link_url, strlen(SMSTO_SCHEME))))
+        if (link_url && !strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME)))
             call_number = true;
         if (tag == EWK_CONTEXT_MENU_ITEM_TAG_TEXT_SELECTION_MODE)
             selection_mode = true;
@@ -1531,6 +1578,43 @@ void WebView::__contextmenu_customize_cb(void *data, Evas_Object * /* obj */, vo
     WebView * self = reinterpret_cast<WebView *>(data);
 
     self->_customize_context_menu(menu);
+}
+
+void WebView::__contextmenu_selected_cb(void *data, Evas_Object */*obj*/, void *event_info)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    WebView * self = reinterpret_cast<WebView *>(data);
+    Ewk_Context_Menu_Item *item = reinterpret_cast<Ewk_Context_Menu_Item*>(event_info);
+    Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
+
+    const char *link_url = ewk_context_menu_item_link_url_get(item);
+
+    if (tag == CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL) {
+        self->handle_scheme(link_url);
+    } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_CALL) {
+        self->handle_scheme(link_url);
+    } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_SEND_MESSAGE) {
+        if (link_url && !strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME))) {
+            std::string::size_type pos = std::string::npos;
+            std::string source = std::string(link_url);
+            while ((pos = source.find(TEL_SCHEME)) != std::string::npos)
+                source.replace(pos, strlen(TEL_SCHEME), SMS_SCHEME);
+            self->handle_scheme(source.c_str());
+        }
+    } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT) {
+        if (link_url && !strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME))) {
+            self->launch_contact(link_url + strlen(TEL_SCHEME), "tel");
+        } else if (link_url && !strncmp(MAILTO_SCHEME, link_url, strlen(MAILTO_SCHEME))) {
+            size_t source_end_pos = 0;
+            std::string source = std::string(link_url);
+            if (source.find("?") != std::string::npos) {
+                source_end_pos = source.find("?");
+                source = source.substr(0, source_end_pos);
+            }
+            self->launch_contact(source.c_str() + strlen(MAILTO_SCHEME), "mailto");
+        }
+    }
 }
 
 void WebView::__fullscreen_enter_cb(void *data, Evas_Object*, void*) {
