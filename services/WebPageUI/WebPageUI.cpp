@@ -479,14 +479,20 @@ void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 }
 
 #if PROFILE_MOBILE
+void WebPageUI::setContentFocus()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (getURIEntry().hasFocus()) {
+        getURIEntry().clearFocus();
+        mobileEntryUnfocused();
+    }
+}
+
 void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
-    if(webpageUI->getURIEntry().hasFocus()){
-        webpageUI->getURIEntry().clearFocus();
-        webpageUI->mobileEntryUnfocused();
-    }
+    webpageUI->setContentFocus();
 }
 
 void WebPageUI::_more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*)
