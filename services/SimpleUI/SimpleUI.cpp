@@ -907,7 +907,6 @@ void SimpleUI::onUrlIMEOpened(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
     self->setwvIMEStatus(true);
-    self->m_webPageUI->mobileEntryFocused();
 }
 
 void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
@@ -915,7 +914,9 @@ void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
     self->setwvIMEStatus(false);
-    self->m_webPageUI->mobileEntryUnfocused();
+#if PROFILE_MOBILE
+    self->m_webPageUI->setContentFocus();
+#endif
 }
 #endif
 

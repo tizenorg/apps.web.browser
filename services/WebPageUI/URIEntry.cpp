@@ -235,7 +235,7 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-    elm_object_signal_emit(self->m_entry_layout, "mouse,out", "over");
+
     if (!self->m_entryContextMenuOpen) {
         elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
@@ -256,8 +256,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-    self->setUrlGuideText(GUIDE_TEXT_FOCUSED);
-    elm_object_signal_emit(self->m_entry_layout, "mouse,in", "over");
+
     if (!self->m_entryContextMenuOpen) {
         elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
 #if PROFILE_MOBILE

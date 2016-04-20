@@ -92,6 +92,7 @@ public:
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
+    void setContentFocus();
     static Eina_Bool _hideDelay(void *data);
 #endif
 
