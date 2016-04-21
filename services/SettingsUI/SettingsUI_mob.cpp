@@ -32,6 +32,8 @@ namespace tizen_browser{
 namespace base_ui{
 
 enum SettingsOptions {
+    BASIC,
+    ADVANCED,
     DEL_WEB_BRO,
     RESET_MOST_VIS,
     RESET_BRO,
@@ -60,12 +62,19 @@ SettingsUI::SettingsUI()
     m_edjFilePath.append("SettingsUI/SettingsMobileUI.edj");
     elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
 
-    m_setting_item_class = elm_gengrid_item_class_new();
+    m_setting_item_class = elm_genlist_item_class_new();
     m_setting_item_class->item_style = "settings_button";
     m_setting_item_class->func.text_get = _gengrid_item_text_get;
     m_setting_item_class->func.content_get = nullptr;
     m_setting_item_class->func.state_get = nullptr;
     m_setting_item_class->func.del = nullptr;
+
+    m_setting_parent_item_class = elm_genlist_item_class_new();
+    m_setting_parent_item_class->item_style = "settings_parent_button";
+    m_setting_parent_item_class->func.text_get = _gengrid_item_text_get;
+    m_setting_parent_item_class->func.content_get = nullptr;
+    m_setting_parent_item_class->func.state_get = nullptr;
+    m_setting_parent_item_class->func.del = nullptr;
 
     updateButtonMap();
 }
@@ -73,7 +82,7 @@ SettingsUI::SettingsUI()
 SettingsUI::~SettingsUI()
 {
     if(m_setting_item_class)
-        elm_gengrid_item_class_free(m_setting_item_class);
+        elm_genlist_item_class_free(m_setting_item_class);
 }
 
 void SettingsUI::init(Evas_Object* parent)
@@ -106,6 +115,14 @@ void SettingsUI::updateButtonMap() {
     ItemData developer;
     developer.buttonText="Developer Options";
 
+    ItemData basic;
+    basic.buttonText="<b>Basic</b>";
+
+    ItemData advanced;
+    advanced.buttonText="<b>Advanced</b>";
+
+    m_buttonsMap[SettingsOptions::BASIC]=basic;
+    m_buttonsMap[SettingsOptions::ADVANCED]=advanced;
     m_buttonsMap[SettingsOptions::DEL_WEB_BRO]=deleteWebBrowsing;
     m_buttonsMap[SettingsOptions::RESET_MOST_VIS]=resetMostVisited;
     m_buttonsMap[SettingsOptions::RESET_BRO]=resetBrowser;
@@ -162,7 +179,6 @@ void SettingsUI::orientationChanged(){
         if (m_actionBar)
             elm_object_signal_emit(m_actionBar,"rotation,landscape", "rot");
         if (m_items_layout) {
-            elm_gengrid_item_size_set(elm_object_part_content_get(m_items_layout, "options_swallow"), ELM_SCALE_SIZE(1280), ELM_SCALE_SIZE(120));
             elm_object_signal_emit(m_items_layout, "rotation,landscape,main", "rot");
         }
         if (m_subpage_layout)
@@ -171,7 +187,6 @@ void SettingsUI::orientationChanged(){
         if (m_actionBar)
             elm_object_signal_emit(m_actionBar,"rotation,portrait", "rot");
         if (m_items_layout) {
-            elm_gengrid_item_size_set(elm_object_part_content_get(m_items_layout, "options_swallow"), ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(120));
             elm_object_signal_emit(m_items_layout,"rotation,portrait,main", "rot");
         }
         if (m_subpage_layout)
@@ -237,7 +252,7 @@ void SettingsUI::_language_changed(void *data, Evas_Object* obj, void*)
     if (data) {
         SettingsUI* self = static_cast<SettingsUI*>(data);
         self->updateButtonMap();
-        elm_gengrid_realized_items_update(obj);
+        elm_genlist_realized_items_update(obj);
     }
 }
 
@@ -249,25 +264,28 @@ Evas_Object* SettingsUI::createSettingsMobilePage(Evas_Object* settings_layout)
 
     elm_object_focus_set(elm_object_part_content_get(m_actionBar, "close_click"), EINA_TRUE);
 
-    Evas_Object* scroller = elm_gengrid_add(layout);
-    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_gengrid_align_set(scroller, 0, 0);
-    elm_gengrid_select_mode_set(scroller, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_gengrid_multi_select_set(scroller, EINA_FALSE);
-    elm_gengrid_horizontal_set(scroller, EINA_FALSE);
+    Evas_Object* scroller = elm_genlist_add(layout);
+    elm_genlist_homogeneous_set(scroller, EINA_TRUE);
+    elm_scroller_movement_block_set(scroller, ELM_SCROLLER_MOVEMENT_BLOCK_HORIZONTAL);
+
+    evas_object_size_hint_weight_set(scroller, EVAS_HINT_EXPAND, 0.0);
+    evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, 0.0);
+    elm_genlist_select_mode_set(scroller, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_multi_select_set(scroller, EINA_FALSE);
     elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(scroller, EINA_FALSE, EINA_FALSE);
     evas_object_smart_callback_add(scroller, "language,changed", _language_changed, this);
-    elm_gengrid_item_size_set(scroller, ELM_SCALE_SIZE(720), ELM_SCALE_SIZE(120));
 
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], _del_selected_data_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], _reset_mv_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_BRO], _reset_browser_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::AUTO_FILL], _auto_fill_data_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::CONTENT], _content_settings_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::PRIVACY], _privacy_menu_clicked_cb, this);
-    elm_gengrid_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEVELOPER], _developer_menu_clicked_cb, this);
+    auto it = elm_genlist_item_append(scroller, m_setting_parent_item_class, &m_buttonsMap[SettingsOptions::BASIC], nullptr, ELM_GENLIST_ITEM_GROUP, nullptr, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::AUTO_FILL], it, ELM_GENLIST_ITEM_NONE,_auto_fill_data_menu_clicked_cb, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_MOST_VIS], it, ELM_GENLIST_ITEM_NONE, _reset_mv_menu_clicked_cb, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEL_WEB_BRO], it, ELM_GENLIST_ITEM_NONE, _del_selected_data_menu_clicked_cb, this);
+
+    it = elm_genlist_item_append(scroller, m_setting_parent_item_class, &m_buttonsMap[SettingsOptions::ADVANCED], nullptr, ELM_GENLIST_ITEM_GROUP, nullptr, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::PRIVACY], it, ELM_GENLIST_ITEM_NONE,_privacy_menu_clicked_cb, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::CONTENT], it, ELM_GENLIST_ITEM_NONE,_content_settings_menu_clicked_cb, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::RESET_BRO], it, ELM_GENLIST_ITEM_NONE,_reset_browser_menu_clicked_cb, this);
+    elm_genlist_item_append(scroller, m_setting_item_class, &m_buttonsMap[SettingsOptions::DEVELOPER], it, ELM_GENLIST_ITEM_NONE,_developer_menu_clicked_cb, this);
 
     elm_object_part_content_set(layout, "options_swallow", scroller);
     evas_object_show(scroller);
