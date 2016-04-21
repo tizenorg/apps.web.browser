@@ -217,14 +217,14 @@ group {
         programs{
             program {
                 name: "landscapeMode";
-                signal: "rotation,landscape";
+                signal: "rotation,landscape,sub";
                 source: "rot";
                 action: STATE_SET "landscape" 0.0;
                 target: "reset_browser_text_spacer";
             }
             program {
                 name: "portraitMode";
-                signal: "rotation,portrait";
+                signal: "rotation,portrait,sub";
                 source: "rot";
                 action: STATE_SET "default" 0.0;
                 target: "reset_browser_text_spacer";
