@@ -121,6 +121,7 @@ private:
 
     std::string m_edjFilePath;
     Elm_Gengrid_Item_Class* m_setting_item_class;
+    Elm_Gengrid_Item_Class* m_setting_parent_item_class;
     std::map<unsigned, ItemData> m_buttonsMap;
 };
 
