@@ -1556,6 +1556,9 @@ void SimpleUI::showHistoryUI()
 void SimpleUI::closeHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (evas_object_visible_get(m_moreMenuUI->getContent())) {
+        m_moreMenuUI->hideUI();
+    }
     if (m_viewManager.topOfStack() == m_historyUI.get())
         m_viewManager.popTheStack();
 }
