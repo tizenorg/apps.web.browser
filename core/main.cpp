@@ -37,6 +37,7 @@
 // Command line flags for engine
 const char *engineCommandLineFlags[] = {
   "process-per-tab",
+  "allow-file-access-from-files",
 };
 
 ///\note Odroid platform modification
