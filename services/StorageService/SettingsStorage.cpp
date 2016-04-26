@@ -95,6 +95,20 @@ SettingsStorage::~SettingsStorage()
 {
 }
 
+void SettingsStorage::resetSettings()
+{
+    setParam(basic_webengine::WebEngineSettings::PAGE_OVERVIEW, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW)));
+    setParam(basic_webengine::WebEngineSettings::LOAD_IMAGES, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES)));
+    setParam(basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT)));
+    setParam(basic_webengine::WebEngineSettings::REMEMBER_FROM_DATA, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA)));
+    setParam(basic_webengine::WebEngineSettings::REMEMBER_PASSWORDS, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS)));
+}
+
 void SettingsStorage::init(bool testmode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

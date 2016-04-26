@@ -370,6 +370,11 @@ public:
     virtual void setSettingsParam(WebEngineSettings param, bool value) = 0;
 
     /**
+     * @brief Reset WebView settings
+     */
+    virtual void resetSettingsParam() = 0;
+
+    /**
      * @brief Informs WebEngine that device orientation is changed.
      */
     virtual void orientationChanged() = 0;

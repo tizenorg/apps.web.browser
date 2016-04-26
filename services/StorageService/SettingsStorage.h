@@ -33,6 +33,7 @@ public:
     SettingsStorage();
     virtual ~SettingsStorage();
 
+    void resetSettings();
     void setParam(basic_webengine::WebEngineSettings param, bool value) const;
     bool isParamPresent(basic_webengine::WebEngineSettings param) const;
     bool getParamVal(basic_webengine::WebEngineSettings param) const;

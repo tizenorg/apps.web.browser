@@ -1858,6 +1858,8 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
         m_storageService->getCertificateStorage().deleteAllEntries();
 #if PROFILE_MOBILE
         m_certificateContents = make_shared<services::CertificateContents>();
+        m_webEngine->resetSettingsParam();
+        m_storageService->getSettingsStorage().resetSettings();
 #endif
         //TODO: add here any missing functionality that should be cleaned.
 

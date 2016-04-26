@@ -746,6 +746,20 @@ void WebEngineService::setSettingsParam(WebEngineSettings param, bool value) {
         }
     }
 }
+
+void WebEngineService::resetSettingsParam()
+{
+    setSettingsParam(WebEngineSettings::PAGE_OVERVIEW, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_PAGE_OVERVIEW)));
+    setSettingsParam(WebEngineSettings::LOAD_IMAGES, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_LOAD_IMAGES)));
+    setSettingsParam(WebEngineSettings::ENABLE_JAVASCRIPT, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_ENABLE_JAVASCRIPT)));
+    setSettingsParam(WebEngineSettings::REMEMBER_FROM_DATA, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA)));
+    setSettingsParam(WebEngineSettings::REMEMBER_PASSWORDS, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS)));
+}
 #endif
 
 } /* end of webengine_service */

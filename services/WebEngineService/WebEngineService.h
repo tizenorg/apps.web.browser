@@ -215,6 +215,11 @@ public:
      * @brief Set bool settings param value.
      */
     void setSettingsParam(WebEngineSettings param, bool value) override;
+
+    /**
+     * @brief Reset WebView settings
+     */
+    virtual void resetSettingsParam() override;
 #endif
 private:
     // callbacks from WebView
