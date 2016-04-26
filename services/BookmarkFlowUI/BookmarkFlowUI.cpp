@@ -174,6 +174,7 @@ void BookmarkFlowUI::showUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_signal_emit(m_parent, "show_popup", "ui");
     evas_object_show(m_layout);
+    elm_object_signal_emit(m_contents_area, "close_icon_show", "ui");
     resetContent();
 }
 
@@ -212,11 +213,11 @@ void BookmarkFlowUI::setTitle(const std::string& title)
 
     if (title.empty()) {
         elm_object_disabled_set(m_save_button, EINA_TRUE);
-        elm_object_signal_emit(m_title_area, "save_dissabled", "ui");
+        elm_object_signal_emit(m_save, "text_dissabled", "ui");
     }
     else {
         elm_object_disabled_set(m_save_button, EINA_FALSE);
-        elm_object_signal_emit(m_title_area, "save_enabled", "ui");
+        elm_object_signal_emit(m_save, "text_enabled", "ui");
     }
 }
 
@@ -419,8 +420,7 @@ void BookmarkFlowUI::_entry_focused(void * data, Evas_Object *, void *)
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_focus_allow_set(bookmarkFlowUI->m_input_cancel_button, EINA_TRUE);
-        elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "entry_focused", "ui");
-        elm_object_signal_emit(bookmarkFlowUI->m_entry, "focused", "ui");
+        elm_object_signal_emit(bookmarkFlowUI->m_entry, "unfocused", "ui");
     }
 }
 
@@ -430,7 +430,6 @@ void BookmarkFlowUI::_entry_unfocused(void * data, Evas_Object *, void *)
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_focus_allow_set(bookmarkFlowUI->m_input_cancel_button, EINA_FALSE);
-        elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "entry_unfocused", "ui");
         elm_object_signal_emit(bookmarkFlowUI->m_entry, "unfocused", "ui");
     }
 }
@@ -441,12 +440,15 @@ void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         std::string text = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
+
         if (text.empty()) {
+            elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "close_icon_hide", "ui");
             elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_TRUE);
-            elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_dissabled", "ui");
+            elm_object_signal_emit(bookmarkFlowUI->m_save, "text_dissabled", "ui");
         } else {
+            elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "close_icon_show", "ui");
             elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_FALSE);
-            elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_enabled", "ui");
+            elm_object_signal_emit(bookmarkFlowUI->m_save, "text_enabled", "ui");
         }
     }
 }
@@ -458,7 +460,8 @@ void BookmarkFlowUI::_inputCancel_clicked(void * data, Evas_Object *, void *)
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         elm_object_part_text_set(bookmarkFlowUI->m_entry, "elm.text", "");
         elm_object_disabled_set(bookmarkFlowUI->m_save_button, EINA_TRUE);
-        elm_object_signal_emit(bookmarkFlowUI->m_title_area, "save_dissabled", "ui");
+        elm_object_signal_emit(bookmarkFlowUI->m_save, "text_dissabled", "ui");
+        elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "close_icon_hide", "ui");
     }
 }
 
