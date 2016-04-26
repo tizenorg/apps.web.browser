@@ -193,6 +193,8 @@ void InputPopup::createLayout()
         elm_object_disabled_set(m_accept_right_left ? m_button_right : m_button_left, EINA_TRUE);
         elm_object_signal_emit(m_accept_right_left ? m_button_right : m_button_left, "dissabled", "ui");
     }
+
+    elm_object_signal_emit(m_input_area, "close_icon_show", "ui");
 }
 
 void InputPopup::_entry_focused(void* data, Evas_Object *, void *)
@@ -201,7 +203,6 @@ void InputPopup::_entry_focused(void* data, Evas_Object *, void *)
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_TRUE);
-        elm_object_signal_emit(inputPopup->m_input_area, "entry_focused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "focused", "ui");
     }
 }
@@ -212,7 +213,6 @@ void InputPopup::_entry_unfocused(void* data, Evas_Object *, void *)
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         elm_object_focus_allow_set(inputPopup->m_input_cancel, EINA_FALSE);
-        elm_object_signal_emit(inputPopup->m_input_area, "entry_unfocused", "ui");
         elm_object_signal_emit(inputPopup->m_entry, "unfocused", "ui");
     }
 }
@@ -223,6 +223,11 @@ void InputPopup::_entry_changed(void* data, Evas_Object *, void *)
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
         std::string text = elm_object_part_text_get(inputPopup->m_entry, "elm.text");
+
+        if (text.empty())
+            elm_object_signal_emit(inputPopup->m_input_area, "close_icon_hide", "ui");
+        else
+            elm_object_signal_emit(inputPopup->m_input_area, "close_icon_show", "ui");
 
         if (std::find(inputPopup->m_bad_words.begin(), inputPopup->m_bad_words.end(), text)
                 != inputPopup->m_bad_words.end()) {
@@ -249,6 +254,7 @@ void InputPopup::_input_cancel_clicked(void * data, Evas_Object *, void *)
                                                       inputPopup->m_button_left, EINA_TRUE);
         elm_object_signal_emit(inputPopup->m_accept_right_left ? inputPopup->m_button_right :
                                                      inputPopup->m_button_left, "dissabled", "ui");
+        elm_object_signal_emit(inputPopup->m_input_area, "close_icon_hide", "ui");
     }
 }
 

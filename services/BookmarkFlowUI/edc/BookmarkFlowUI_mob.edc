@@ -850,7 +850,7 @@ collections { base_scale: 2.6;
                                         to: "title_input_spacer_1";
                                       }
                    }
-                   description { state: "focused" 0.0;
+                   description { state: "show" 0.0;
                                  inherit: "default";
                                  rel2 { relative: 0 0;
                                         to: "title_input_spacer_2";
@@ -942,7 +942,7 @@ collections { base_scale: 2.6;
                                          border: 0 0 0 0;
                                        }
                                }
-                   description { state: "focused" 0.0;
+                   description { state: "show" 0.0;
                                  inherit: "default";
                                  visible: 1;
                                }
@@ -965,7 +965,7 @@ collections { base_scale: 2.6;
                                         to: "input_area_bg";
                                       }
                                }
-                   description { state: "focused" 0.0;
+                   description { state: "show" 0.0;
                                  inherit: "default";
                                  visible: 1;
                                }
@@ -1974,22 +1974,20 @@ collections { base_scale: 2.6;
                 target: "input_area_bg";
             }
             program {
-                name: "entry_focused";
-                signal: "entry_focused";
+                name: "close_icon_show";
+                signal: "close_icon_show";
                 source: "ui";
-                action: STATE_SET "focused" 0.0;
+                action: STATE_SET "show" 0.0;
                 target: "title_input_bg";
-                target: "title_input_swallow";
                 target: "input_cancel_icon";
                 target: "input_cancel_click";
             }
             program {
-                name: "entry_unfocused";
-                signal: "entry_unfocused";
+                name: "close_icon_hide";
+                signal: "close_icon_hide";
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "title_input_bg";
-                target: "title_input_swallow";
                 target: "input_cancel_icon";
                 target: "input_cancel_click";
             }
