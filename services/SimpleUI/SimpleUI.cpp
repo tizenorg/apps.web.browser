@@ -642,6 +642,10 @@ void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
 void SimpleUI::showQuickAccess()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if PROFILE_MOBILE
+    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+        m_moreMenuUI->hideUI();
+#endif
     m_quickAccess->showUI();
 }
 
