@@ -128,7 +128,6 @@ void WebView::init(bool desktopMode, Evas_Object*)
         switchToMobileMode();
     }
 
-    ewk_view_resume(m_ewkView);
     ewk_context_cache_model_set(m_ewkContext, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
     std::string path = app_get_data_path() + COOKIES_PATH;
     ewk_cookie_manager_persistent_storage_set(ewk_context_cookie_manager_get(m_ewkContext),  path.c_str(), EWK_COOKIE_PERSISTENT_STORAGE_SQLITE);
