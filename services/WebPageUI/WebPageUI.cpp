@@ -88,8 +88,11 @@ void WebPageUI::showUI()
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
-    if(m_statesMgr->equals(WPUState::QUICK_ACCESS))
+    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+        evas_object_hide(m_leftButtonBar->getContent());
+        elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
         showQuickAccess();
+    }
 
     m_WebPageUIvisible = true;
 
