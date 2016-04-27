@@ -1135,9 +1135,6 @@ void SimpleUI::stopEnable(bool enable)
 void SimpleUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
-    m_tabService->clearThumb(m_webEngine->currentTabId());
     m_webPageUI->loadStarted();
 }
 
