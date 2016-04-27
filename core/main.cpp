@@ -23,7 +23,7 @@
 #include <Elementary.h>
 #include <stdexcept>
 #include <app.h>
-#include <ewk_chromium.h>
+#include <ewk_main_internal.h>
 #if PROFILE_MOBILE
 #include <system_settings.h>
 #include <app_common.h>
@@ -34,8 +34,25 @@
 #include "ServiceManager.h"
 #include "BasicUI/AbstractMainWindow.h"
 
+// Command line flags for engine
+const char *engineCommandLineFlags[] = {
+  "process-per-tab",
+  "allow-file-access-from-files",
+};
+
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
+
+static void set_arguments(int argc, char **argv)
+{
+    std::vector<char*> browser_argv;
+    for (int i = 0; i < argc; i++)
+        browser_argv.push_back(argv[i]);
+    for (auto arg: engineCommandLineFlags)
+        browser_argv.push_back(const_cast<char*>(arg));
+
+    ewk_set_arguments(browser_argv.size(), browser_argv.data());
+}
 
 static bool app_create(void * /*app_data*/)
 {
@@ -173,6 +190,7 @@ int main(int argc, char* argv[])try
 {
     BEGIN()
     ewk_init();
+    set_arguments(argc, argv);
 
 //#if !defined(NDEBUG)
     //Initialization of logger module
