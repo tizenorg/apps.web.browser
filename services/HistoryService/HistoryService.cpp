@@ -313,8 +313,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getHistoryItemsByKeyword(
 
 void HistoryService::addHistoryItem(const std::string & url,
                                     const std::string & title,
-                                    tools::BrowserImagePtr favicon,
-                                    tools::BrowserImagePtr thumbnail)
+                                    tools::BrowserImagePtr favicon)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -343,14 +342,6 @@ void HistoryService::addHistoryItem(const std::string & url,
         errorPrint("bp_history_adaptor_set_frequency");
     }
 
-    if (thumbnail) {
-       std::unique_ptr<tools::Blob> thumb_blob = tools::EflTools::getBlobPNG(thumbnail);
-       unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-       if (bp_history_adaptor_set_snapshot(id, thumbnail->getWidth(), thumbnail->getHeight(), thumb, thumb_blob->getLength()) < 0) {
-           errorPrint("bp_history_adaptor_set_snapshot");
-        }
-    }
-
     if (favicon) {
        std::unique_ptr<tools::Blob> favicon_blob = tools::EflTools::getBlobPNG(favicon);
        unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
@@ -358,9 +349,6 @@ void HistoryService::addHistoryItem(const std::string & url,
            errorPrint("bp_history_adaptor_set_icon");
         }
     }
-
-    auto his = std::make_shared<services::HistoryItem>(id, url, title, favicon, thumbnail);
-    historyAdded(his);
 }
 
 void HistoryService::updateHistoryItemFavicon(const std::string & url, tools::BrowserImagePtr favicon)
@@ -375,6 +363,8 @@ void HistoryService::updateHistoryItemFavicon(const std::string & url, tools::Br
                errorPrint("bp_history_adaptor_set_icon");
             }
         }
+    } else {
+        BROWSER_LOGW("Cannot update favicon, there is no such history item!");
     }
 }
 

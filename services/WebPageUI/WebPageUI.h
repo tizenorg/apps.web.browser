@@ -56,7 +56,6 @@ public:
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
 #endif
-    void loadStopped();
     void loadStarted();
     void progressChanged(double progress);
     void loadFinished();

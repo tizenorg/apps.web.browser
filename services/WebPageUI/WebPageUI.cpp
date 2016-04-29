@@ -167,13 +167,6 @@ bool WebPageUI::stateEquals(std::initializer_list<WPUState> states) const
 void WebPageUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_signal_emit(m_mainLayout, "hide_progressbar_bg", "ui");
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-}
-
-void WebPageUI::loadStopped()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     hideProgressBar();
 }
