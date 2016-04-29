@@ -660,6 +660,7 @@ Evas_Object * WebView::getLayout()
 void WebView::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
+    m_faviconImage.reset();
     ewk_view_url_set(m_ewkView, uri.c_str());
     m_loadError = false;
 }
@@ -1018,8 +1019,6 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)
 {
-    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
-
     WebView * self = reinterpret_cast<WebView *>(data);
     if (!self->isLoading())
         return;
@@ -1080,7 +1079,7 @@ void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_inf
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_title = fromChar(ewk_view_title_get(obj));
-    self->titleChanged(self->m_title, self->getTabId().toString());
+    self->titleChanged(self->m_title);
 }
 
 void WebView::__urlChanged(void * data, Evas_Object * /* obj */, void * /* event_info */)
@@ -1109,9 +1108,9 @@ void WebView::__faviconChanged(void* data, Evas_Object*, void*)
         Evas_Object * favicon = ewk_context_icon_database_icon_object_add(self->m_ewkContext, ewk_view_url_get(self->m_ewkView),evas_object_evas_get(self->m_ewkView));
         if (favicon) {
             BROWSER_LOGD("[%s:%d] Favicon received", __PRETTY_FUNCTION__, __LINE__);
-            self->faviconImage = std::make_shared<tools::BrowserImage>(favicon);
+            self->m_faviconImage = std::make_shared<tools::BrowserImage>(favicon);
             evas_object_del(favicon);
-            self->favIconChanged(self->faviconImage);
+            self->favIconChanged(self->m_faviconImage);
         }
     }
 }
@@ -1750,12 +1749,7 @@ const TabId& WebView::getTabId() {
 tools::BrowserImagePtr WebView::getFavicon()
 {
     BROWSER_LOGD("%s:%d, TabId: %s", __PRETTY_FUNCTION__, __LINE__, m_tabId.toString().c_str());
-    M_ASSERT(m_ewkContext);
-    Evas_Object * favicon = ewk_context_icon_database_icon_object_add(m_ewkContext, ewk_view_url_get(m_ewkView),evas_object_evas_get(m_ewkView));
-    faviconImage = std::make_shared<tools::BrowserImage>(favicon);
-    evas_object_del(favicon);
-
-    return faviconImage;
+    return m_faviconImage;
 }
 
 void WebView::clearCache()
@@ -1831,18 +1825,12 @@ bool WebView::isDesktopMode() const {
 
 void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, void *event_info)
 {
-    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     WebView *wv = (WebView *)data;
 
     Ewk_Policy_Decision *policy_decision = (Ewk_Policy_Decision *)event_info;
     Ewk_Policy_Decision_Type policy_type = ewk_policy_decision_type_get(policy_decision);
 
     wv->m_status_code = ewk_policy_decision_response_status_code_get(policy_decision);
-
-    const char *uri = ewk_policy_decision_url_get(policy_decision);
-    const char *content_type = ewk_policy_decision_response_mime_get(policy_decision);
-    const Eina_Hash *headers = ewk_policy_decision_response_headers_get(policy_decision);
-
     wv->m_is_error_page = EINA_FALSE;
 
     switch (policy_type) {
@@ -1853,6 +1841,9 @@ void WebView::__policy_response_decide_cb(void *data, Evas_Object * /* obj */, v
 
     case EWK_POLICY_DECISION_DOWNLOAD: {
         BROWSER_LOGD("[%s:%d] policy_download", __PRETTY_FUNCTION__, __LINE__);
+        const char *uri = ewk_policy_decision_url_get(policy_decision);
+        const char *content_type = ewk_policy_decision_response_mime_get(policy_decision);
+        const Eina_Hash *headers = ewk_policy_decision_response_headers_get(policy_decision);
         app_control_h app_control = NULL;
         if (app_control_create(&app_control) < 0) {
             BROWSER_LOGE("[%s:%d] Fail to app_control_create", __PRETTY_FUNCTION__, __LINE__);

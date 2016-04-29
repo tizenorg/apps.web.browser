@@ -86,7 +86,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
     webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
-    webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+    webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1));
     webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
     webView->downloadStarted.connect(boost::bind(&WebEngineService::_downloadStarted, this, _1));
     webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
@@ -112,7 +112,7 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
 {
     M_ASSERT(webView);
     webView->favIconChanged.disconnect(boost::bind(&WebEngineService::_favIconChanged, this));
-    webView->titleChanged.disconnect(boost::bind(&WebEngineService::_titleChanged, this, _1, _2));
+    webView->titleChanged.disconnect(boost::bind(&WebEngineService::_titleChanged, this, _1));
     webView->uriChanged.disconnect(boost::bind(&WebEngineService::_uriChanged, this, _1));
     webView->loadFinished.disconnect(boost::bind(&WebEngineService::_loadFinished, this));
     webView->loadStarted.disconnect(boost::bind(&WebEngineService::_loadStarted, this));
@@ -274,7 +274,7 @@ bool WebEngineService::isForwardEnabled() const
 bool WebEngineService::isLoading() const
 {
     M_ASSERT(m_currentWebView);
-    return m_currentWebView->isBackEnabled();
+    return m_currentWebView->isLoading();
 }
 
 void WebEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi)
@@ -283,9 +283,9 @@ void WebEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::Bro
     favIconChanged(bi);
 }
 
-void WebEngineService::_titleChanged(const std::string& title, const std::string& tabId)
+void WebEngineService::_titleChanged(const std::string& title)
 {
-    titleChanged(title, tabId);
+    titleChanged(title);
 }
 
 void WebEngineService::_uriChanged(const std::string & uri)
@@ -424,11 +424,10 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
     connectSignals(m_currentWebView);
     resume();
 
-    titleChanged(m_currentWebView->getTitle(), newTabId.toString());
+    titleChanged(m_currentWebView->getTitle());
     uriChanged(m_currentWebView->getURI());
     forwardEnableChanged(m_currentWebView->isForwardEnabled());
     backwardEnableChanged(m_currentWebView->isBackEnabled());
-    favIconChanged(m_currentWebView->getFavicon());
     currentTabChanged(m_currentTabId);
 #if PROFILE_MOBILE
     m_currentWebView->orientationChanged();

@@ -95,7 +95,7 @@ private:
     void initModelServices();
     void initUIServices();
     void connectModelSignals();
-    void titleChanged(const std::string& title, const std::string& tabId);
+    void titleChanged(const std::string& title);
     void faviconChanged(tools::BrowserImagePtr favicon);
     void restoreLastSession();
     Evas_Object* createWebLayout(Evas_Object* parent);
@@ -106,7 +106,6 @@ private:
     void reloadEnable(bool enable);
 
     void downloadStarted(bool status);
-    void loadStopped();
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();

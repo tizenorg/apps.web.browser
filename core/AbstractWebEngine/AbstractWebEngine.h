@@ -389,7 +389,7 @@ public:
      * Title of current page changed
      * \param new title
      */
-    boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
+    boost::signals2::signal<void (const std::string&)> titleChanged;
 
     /**
      * URI of current page changed

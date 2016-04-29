@@ -199,23 +199,16 @@ int SimpleUI::exec(const std::string& _url)
     return 0;
 }
 
-void SimpleUI::titleChanged(const std::string& title, const std::string& tabId)
+void SimpleUI::titleChanged(const std::string& title)
 {
     m_moreMenuUI->setWebTitle(title);
-    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
-        m_currentSession.updateItem(tabId, m_webEngine->getURI(), title);
-        m_historyService->addHistoryItem(m_webEngine->getURI(),
-                                                 m_webEngine->getTitle(),
-                                                 m_webEngine->getFavicon(),
-                                                 std::make_shared<tizen_browser::tools::BrowserImage>());
-    }
 }
 
 void SimpleUI::faviconChanged(tools::BrowserImagePtr favicon)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_historyService->updateHistoryItemFavicon(m_webEngine->getURI(), favicon);
-
+    if (!m_webEngine->isLoading())
+        m_historyService->updateHistoryItemFavicon(m_webEngine->getURI(), favicon);
 }
 
 void SimpleUI::restoreLastSession()
@@ -553,7 +546,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
     m_webEngine->loadProgress.connect(boost::bind(&SimpleUI::progressChanged,this,_1));
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
-    m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadStopped, this));
+    m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
     m_webEngine->ready.connect(boost::bind(&SimpleUI::webEngineReady, this, _1));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
@@ -562,7 +555,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
     m_webEngine->IMEStateChanged.connect(boost::bind(&SimpleUI::setwvIMEStatus, this, _1));
     m_webEngine->switchToWebPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
-    m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1, _2));
+    m_webEngine->titleChanged.connect(boost::bind(&SimpleUI::titleChanged, this, _1));
     m_webEngine->favIconChanged.connect(boost::bind(&SimpleUI::faviconChanged, this, _1));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
@@ -1152,6 +1145,12 @@ void SimpleUI::loadFinished()
     m_webPageUI->loadFinished();
 #if PROFILE_MOBILE
     updateSecureIcon();
+    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
+        m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
+        m_historyService->addHistoryItem(m_webEngine->getURI(),
+                                                 m_webEngine->getTitle(),
+                                                 m_webEngine->getFavicon());
+    }
 }
 
 void SimpleUI::updateSecureIcon()
@@ -1172,18 +1171,6 @@ void SimpleUI::updateSecureIcon()
     }
     m_webPageUI->getURIEntry().showSecureIcon(show, secure);
 #endif
-}
-
-void SimpleUI::loadStopped()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId()))
-        m_historyService->addHistoryItem(m_webEngine->getURI(),
-                                         m_webEngine->getURI(),
-                                         std::make_shared<tizen_browser::tools::BrowserImage>(),
-                                         std::make_shared<tizen_browser::tools::BrowserImage>());
-    m_webPageUI->loadStopped();
 }
 
 void SimpleUI::loadError()
