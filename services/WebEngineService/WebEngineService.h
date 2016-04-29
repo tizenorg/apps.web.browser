@@ -224,7 +224,7 @@ public:
 private:
     // callbacks from WebView
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
-    void _titleChanged(const std::string&, const std::string&);
+    void _titleChanged(const std::string&);
     void _uriChanged(const std::string &);
     void _downloadStarted(bool status);
     void _loadFinished();

@@ -260,7 +260,7 @@ public:
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
-    boost::signals2::signal<void (const std::string&, const std::string&)> titleChanged;
+    boost::signals2::signal<void (const std::string&)> titleChanged;
     boost::signals2::signal<void (const std::string)> uriChanged;
     boost::signals2::signal<void (bool)> downloadStarted;
 
@@ -379,7 +379,7 @@ private:
     std::string m_title;
     std::string m_redirectedURL;
     std::string m_loadingURL;
-    std::shared_ptr<tizen_browser::tools::BrowserImage> faviconImage;
+    std::shared_ptr<tizen_browser::tools::BrowserImage> m_faviconImage;
     bool m_isLoading;
     double m_loadProgress;
     bool m_loadError;

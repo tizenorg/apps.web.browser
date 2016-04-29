@@ -45,8 +45,8 @@ public:
     int getHistoryId(const std::string & url);
     void addHistoryItem(const std::string & url,
                         const std::string & title,
-                        tools::BrowserImagePtr favicon,
-                        tools::BrowserImagePtr thumbnail);
+                        tools::BrowserImagePtr favicon);
+
     void updateHistoryItemFavicon(const std::string & url,
                                   tools::BrowserImagePtr favicon);
     void updateHistoryItemSnapshot(const std::string & url,
@@ -90,7 +90,6 @@ public:
     void setStorageServiceTestMode(bool testmode = true);
 
     boost::signals2::signal<void (bool)>historyEmpty;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::HistoryItem>)> historyAdded;
     boost::signals2::signal<void (const std::string& uri)> historyDeleted;
     boost::signals2::signal<void ()> historyAllDeleted;
 
