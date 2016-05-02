@@ -60,6 +60,11 @@ public:
     virtual void init(void * guiParent) = 0;
 
     /**
+     * Preinitialize WebView parameters.
+     */
+    virtual void preinitializeWebViewCache() = 0;
+
+    /**
      * Set URI address for current tab.
      * @param uri
      */
@@ -134,6 +139,11 @@ public:
      * @return true if page is still loading, false otherwise
      */
     virtual bool isLoading() const = 0;
+
+    /**
+     * @return true if web view was initialized, false otherwise
+     */
+    virtual bool isWebViewCacheInitialized() const = 0;
 
     /**
      * @return number of tabs
