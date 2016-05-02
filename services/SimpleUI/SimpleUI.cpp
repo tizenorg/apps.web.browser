@@ -645,6 +645,7 @@ void SimpleUI::switchViewToQuickAccess()
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
+    m_webEngine->preinitializeWebViewCache();
 }
 
 void SimpleUI::switchViewToIncognitoPage()
