@@ -38,6 +38,7 @@ WebEngineService::WebEngineService()
     : m_initialised(false)
     , m_guiParent(nullptr)
     , m_stopped(false)
+    , m_webViewCacheInitialized(false)
     , m_currentTabId(TabId::NONE)
     , m_tabIdCreated(-1)
 {
@@ -80,6 +81,18 @@ void WebEngineService::init(void * guiParent)
         m_guiParent = guiParent;
         m_initialised = true;
     }
+}
+
+void WebEngineService::preinitializeWebViewCache()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webViewCacheInitialized = true;
+    Ewk_Context* context = ewk_context_default_get();
+    Evas_Object* ewk_view = ewk_view_add_with_context(evas_object_evas_get(
+            reinterpret_cast<Evas_Object *>(m_guiParent)), context);
+    ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
+    ewk_view_orientation_send(ewk_view, 0);
+    evas_object_del(ewk_view);
 }
 
 void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
@@ -277,6 +290,11 @@ bool WebEngineService::isLoading() const
     return m_currentWebView->isLoading();
 }
 
+bool WebEngineService::isWebViewCacheInitialized() const
+{
+    return m_webViewCacheInitialized;
+}
+
 void WebEngineService::_favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -381,6 +399,7 @@ TabId WebEngineService::addTab(const std::string & uri,
     }
     TabId newTabId(newAdaptorId);
 
+    m_webViewCacheInitialized = true;
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, title, incognitoMode);
     if (tabInitId)
         p->init(desktopMode, getTabView(*tabInitId));
