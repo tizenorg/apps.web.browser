@@ -124,6 +124,7 @@ private:
     void switchViewToWebPage();
     void updateView();
     void windowCreated();
+    void preinitializeCache();
 
 #if PROFILE_MOBILE
     void openNewTab(const std::string &uri, const std::string& title =

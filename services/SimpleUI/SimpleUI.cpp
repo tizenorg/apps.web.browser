@@ -645,6 +645,7 @@ void SimpleUI::switchViewToQuickAccess()
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
+    preinitializeCache();
 }
 
 void SimpleUI::switchViewToIncognitoPage()
@@ -652,6 +653,12 @@ void SimpleUI::switchViewToIncognitoPage()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->switchViewToIncognitoPage();
     m_viewManager.popStackTo(m_webPageUI.get());
+}
+
+void SimpleUI::preinitializeCache()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webEngine->preinitializeWebViewCache();
 }
 
 void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
