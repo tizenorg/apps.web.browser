@@ -124,6 +124,7 @@ private:
     void switchViewToWebPage();
     void updateView();
     void windowCreated();
+    void preinitializeCache();
 
 #if PROFILE_MOBILE
     void openNewTab(const std::string &uri, const std::string& title =
@@ -352,6 +353,7 @@ private:
     storage::Session m_currentSession;
     std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     bool m_initialised;
+    bool m_cachePreinitialized;
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;

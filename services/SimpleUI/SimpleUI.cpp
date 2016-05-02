@@ -79,6 +79,7 @@ SimpleUI::SimpleUI()
     , m_settingsUI()
     , m_tabUI()
     , m_initialised(false)
+    , m_cachePreinitialized(false)
     , m_tabLimit(0)
     , m_favoritesLimit(0)
     , m_wvIMEStatus(false)
@@ -614,6 +615,7 @@ void SimpleUI::switchViewToWebPage()
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI());
     m_webPageUI->toIncognito(m_webEngine->isPrivateMode(m_webEngine->currentTabId()));
     updateSecureIcon();
+    m_cachePreinitialized = true;
 }
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
@@ -645,6 +647,7 @@ void SimpleUI::switchViewToQuickAccess()
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
+    preinitializeCache();
 }
 
 void SimpleUI::switchViewToIncognitoPage()
@@ -652,6 +655,15 @@ void SimpleUI::switchViewToIncognitoPage()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->switchViewToIncognitoPage();
     m_viewManager.popStackTo(m_webPageUI.get());
+}
+
+void SimpleUI::preinitializeCache()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!m_cachePreinitialized) {
+        m_cachePreinitialized = true;
+        m_webEngine->preinitializeWebViewCache();
+    }
 }
 
 void SimpleUI::openNewTab(const std::string &uri, const std::string& title,

@@ -47,6 +47,7 @@ public:
 
     Evas_Object * getLayout();
     void init(void * guiParent);
+    void preinitializeWebViewCache();
 
     void setURI(const std::string &);
     std::string getURI(void) const;

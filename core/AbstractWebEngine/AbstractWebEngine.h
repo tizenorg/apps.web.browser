@@ -60,6 +60,11 @@ public:
     virtual void init(void * guiParent) = 0;
 
     /**
+     * Preinitialize WebView parameters.
+     */
+    virtual void preinitializeWebViewCache() = 0;
+
+    /**
      * Set URI address for current tab.
      * @param uri
      */
