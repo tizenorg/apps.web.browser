@@ -47,6 +47,7 @@ public:
 
     Evas_Object * getLayout();
     void init(void * guiParent);
+    void preinitializeWebViewCache();
 
     void setURI(const std::string &);
     std::string getURI(void) const;
@@ -266,6 +267,7 @@ private:
     bool m_initialised;
     void* m_guiParent;
     bool m_stopped;
+    bool m_webViewCacheInitialized;
 
     // current TabId
     TabId m_currentTabId;
