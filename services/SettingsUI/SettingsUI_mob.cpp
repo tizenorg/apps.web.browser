@@ -83,6 +83,8 @@ SettingsUI::~SettingsUI()
 {
     if(m_setting_item_class)
         elm_genlist_item_class_free(m_setting_item_class);
+    if(m_setting_parent_item_class)
+        elm_genlist_item_class_free(m_setting_parent_item_class);
 }
 
 void SettingsUI::init(Evas_Object* parent)
