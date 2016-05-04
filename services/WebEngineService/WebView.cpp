@@ -227,10 +227,6 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
     evas_object_smart_callback_add(m_ewkView, "policy,navigation,decide", __policy_navigation_decide_cb, this);
 #endif
-    evas_object_smart_callback_add(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
-    evas_object_smart_callback_add(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
-    evas_object_smart_callback_add(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
-    evas_object_smart_callback_add(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 //     evas_object_smart_callback_add(m_ewkView, "notify,certificate,info", __setCertificatePem, this);    TODO: when engine will implement proper callback, change to it
 
@@ -272,10 +268,6 @@ void WebView::unregisterCallbacks()
     evas_object_smart_callback_del_full(m_ewkView, "policy,response,decide", __policy_response_decide_cb, this);
     evas_object_smart_callback_del_full(m_ewkView, "policy,navigation,decide", __policy_navigation_decide_cb, this);
 #endif
-    evas_object_smart_callback_del_full(m_ewkView, "geolocation,permission,request", __geolocationPermissionRequest, this);
-    evas_object_smart_callback_del_full(m_ewkView, "usermedia,permission,request", __usermediaPermissionRequest, this);
-    evas_object_smart_callback_del_full(m_ewkView, "notification,permission,request", __notificationPermissionRequest, this);
-    evas_object_smart_callback_del_full(m_ewkView, "authentication,challenge", __authenticationChallenge, this);
     evas_object_smart_callback_del_full(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
     evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
@@ -760,67 +752,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    switch(confirmation->getConfirmationType()) {
-    case WebConfirmation::ConfirmationType::Geolocation: {
-        Ewk_Geolocation_Permission_Request *request = m_confirmationGeolocationMap[confirmation];
-        Eina_Bool result;
-        if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
-        else if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
-        else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        }
-        // set geolocation permission
-        ewk_geolocation_permission_reply(request, result);
-        ewk_view_resume(m_ewkView);
-
-        // remove from map
-        m_confirmationGeolocationMap.erase(confirmation);
-        break;
-    }
-    case WebConfirmation::ConfirmationType::UserMedia: {
-        Ewk_User_Media_Permission_Request *request = m_confirmationUserMediaMap[confirmation];
-        Eina_Bool result;
-        if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
-        else if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
-        else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        };
-
-        // set usermedia permission
-        ewk_user_media_permission_reply(request, result);
-        ewk_view_resume(m_ewkView);
-
-        // remove from map
-        m_confirmationUserMediaMap.erase(confirmation);
-        break;
-    }
-    case WebConfirmation::ConfirmationType::Notification: {
-        Ewk_Notification_Permission_Request *request = m_confirmationNotificationMap[confirmation];
-        Eina_Bool result;
-        if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Confirmed)
-            result = EINA_TRUE;
-        else if (confirmation->getResult() == WebConfirmation::ConfirmationResult::Rejected)
-            result = EINA_FALSE;
-        else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        }
-
-        // set notification permission
-        ewk_notification_permission_reply(request, result);
-        ewk_view_resume(m_ewkView);
-
-        // remove from map
-        m_confirmationNotificationMap.erase(confirmation);
-        break;
-    }
-    case WebConfirmation::ConfirmationType::CertificateConfirmation: {
+    if (confirmation->getConfirmationType() == WebConfirmation::ConfirmationType::CertificateConfirmation) {
         //FIXME: https://bugs.tizen.org/jira/browse/TT-229
         CertificateConfirmationPtr cert = std::dynamic_pointer_cast<CertificateConfirmation, WebConfirmation>(confirmation);
 
@@ -835,7 +767,7 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
             result = EINA_FALSE;
         else {
             BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
+            return;
         }
 
         // set certificate confirmation
@@ -844,27 +776,8 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
 
         // remove from map
         m_confirmationCertificatenMap.erase(cert);
-        break;
-    }
-    case WebConfirmation::ConfirmationType::Authentication: {
-        AuthenticationConfirmationPtr auth = std::dynamic_pointer_cast<AuthenticationConfirmation, WebConfirmation>(confirmation);
-        Ewk_Auth_Challenge *request = m_confirmationAuthenticationMap[auth];
-
-        if (auth->getResult() == WebConfirmation::ConfirmationResult::Confirmed) {
-            ewk_auth_challenge_credential_use(request, auth->getLogin().c_str(), auth->getPassword().c_str());
-        } else if (auth->getResult() == WebConfirmation::ConfirmationResult::Rejected) {
-            ewk_auth_challenge_credential_cancel(request);
-        } else {
-            BROWSER_LOGE("Wrong ConfirmationResult");
-            break;
-        }
-
-        // remove from map
-        m_confirmationAuthenticationMap.erase(auth);
-        break;
-    }
-    default:
-        break;
+    } else {
+        BROWSER_LOGW("[%s:%d] Unknown WebConfirmation::ConfirmationType!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -1142,113 +1055,6 @@ void WebView::__load_provisional_redirect(void* data, Evas_Object*, void*)
     if (!self->getRedirectedURL().empty())
         self->redirectedWebPage(self->getRedirectedURL(), self->getURI());
     self->setRedirectedURL("");
-}
-
-std::string WebView::securityOriginToUri(const Ewk_Security_Origin *origin)
-{
-    std::string protocol = fromChar(ewk_security_origin_protocol_get(origin));
-    std::string uri = fromChar(ewk_security_origin_host_get(origin));
-    std::string url = (boost::format("%1%://%2%") % protocol % uri).str();
-    return url;
-}
-
-void WebView::__geolocationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-
-    Ewk_Geolocation_Permission_Request *request = reinterpret_cast<Ewk_Geolocation_Permission_Request *>(event_info);
-    if (!request)
-        return;
-
-    // suspend webview
-    ewk_view_suspend(self->m_ewkView);
-
-    std::string url = WebView::securityOriginToUri(ewk_geolocation_permission_request_origin_get(request));
-
-    ///\todo add translations
-    std::string message = (boost::format("%1% Requests your location") % url).str();
-
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ConfirmationType::Geolocation, self->m_tabId, url, message);
-
-    // store
-    self->m_confirmationGeolocationMap[c] = request;
-
-    self->confirmationRequest(c);
-}
-
-void WebView::__usermediaPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-
-    Ewk_User_Media_Permission_Request *request = reinterpret_cast<Ewk_User_Media_Permission_Request *>(event_info);
-    if (!request)
-        return;
-
-    // suspend webview
-    ewk_view_suspend(self->m_ewkView);
-
-    ///\todo add translations
-    std::string message = "User media permission request";
-
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ConfirmationType::UserMedia, self->m_tabId, std::string(), message);
-
-    // store
-    self->m_confirmationUserMediaMap[c] = request;
-
-    self->confirmationRequest(c);
-}
-
-void WebView::__notificationPermissionRequest(void * data, Evas_Object * /* obj */, void * event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-
-    Ewk_Notification_Permission_Request *request = reinterpret_cast<Ewk_Notification_Permission_Request *>(event_info);
-    if (!request)
-        return;
-
-    // suspend webview
-    ewk_view_suspend(self->m_ewkView);
-
-    ///\todo add translations
-    std::string message = (boost::format("%1% wants to display notifications") % self->getURI()).str();
-
-    WebConfirmationPtr c = std::make_shared<WebConfirmation>(WebConfirmation::ConfirmationType::Notification, self->m_tabId, self->getURI(), message);
-
-    // store
-    self->m_confirmationNotificationMap[c] = request;
-
-    self->confirmationRequest(c);
-}
-
-void WebView::__authenticationChallenge(void * data, Evas_Object * /* obj */, void * event_info)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-
-    Ewk_Auth_Challenge *request = reinterpret_cast<Ewk_Auth_Challenge *>(event_info);
-    EINA_SAFETY_ON_NULL_RETURN(request);
-
-    const char* realm = ewk_auth_challenge_realm_get(request);
-    const char* auth_url = ewk_auth_challenge_url_get(request);
-    if (!realm || !auth_url)
-        BROWSER_LOGE("realm or url NULL");
-    ewk_auth_challenge_suspend(request);
-
-    std::string url = self->getURI();
-    std::string message = (boost::format("A username and password are being requested by %1%.") % url).str();
-
-    AuthenticationConfirmationPtr c = std::make_shared<AuthenticationConfirmation>(self->m_tabId, url, message);
-
-    self->m_confirmationAuthenticationMap[c] = request;
-
-    self->confirmationRequest(c);
 }
 
 void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj */, void * event_info)

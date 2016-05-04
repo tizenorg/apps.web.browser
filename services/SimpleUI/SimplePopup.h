@@ -36,12 +36,6 @@ struct PopupData {
     virtual ~PopupData() {};
 };
 
-struct AuthenticationPopupData : public PopupData {
-    basic_webengine::AuthenticationConfirmationPtr auth;
-    Evas_Object *loginEntry;
-    Evas_Object *passwordEntry;
-};
-
 struct CertificatePopupData : public PopupData {
     basic_webengine::CertificateConfirmationPtr cert;
 };

@@ -295,7 +295,6 @@ private:
     void unregisterCallbacks();
     void setupEwkSettings();
 
-    static std::string securityOriginToUri(const Ewk_Security_Origin *);
     static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
     static void __newWindowRequest(void * data, Evas_Object *, void *out);
     static void __closeWindowRequest(void * data, Evas_Object *, void *);
@@ -352,10 +351,6 @@ private:
     static void __load_provisional_redirect(void* data, Evas_Object*, void*);
 
     // confirmation requests
-    static void __geolocationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
-    static void __usermediaPermissionRequest(void * data, Evas_Object * obj, void * event_info);
-    static void __notificationPermissionRequest(void * data, Evas_Object * obj, void * event_info);
-    static void __authenticationChallenge(void * data, Evas_Object * obj, void * event_info);
     static void __requestCertificationConfirm(void * data, Evas_Object * obj, void * event_info);
     static void __setCertificatePem(void * data, Evas_Object * obj, void * event_info);
 
@@ -389,12 +384,8 @@ private:
     bool m_private;
     bool m_fullscreen;
 
-    std::map<WebConfirmationPtr, Ewk_Geolocation_Permission_Request *> m_confirmationGeolocationMap;
-    std::map<WebConfirmationPtr, Ewk_User_Media_Permission_Request *> m_confirmationUserMediaMap;
-    std::map<WebConfirmationPtr, Ewk_Notification_Permission_Request *> m_confirmationNotificationMap;
     std::map<CertificateConfirmationPtr, Ewk_Certificate_Policy_Decision *> m_confirmationCertificatenMap;
-    std::map<AuthenticationConfirmationPtr, Ewk_Auth_Challenge *> m_confirmationAuthenticationMap;
-
+    
     static const std::string COOKIES_PATH;
 
 #if PROFILE_MOBILE
