@@ -237,7 +237,6 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
     URIEntry* self = static_cast<URIEntry*>(data);
 
     if (!self->m_entryContextMenuOpen) {
-        elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
 #if PROFILE_MOBILE
         self->mobileEntryUnfocused();
@@ -258,7 +257,6 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
     URIEntry* self = static_cast<URIEntry*>(data);
 
     if (!self->m_entryContextMenuOpen) {
-        elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
 #if PROFILE_MOBILE
         self->mobileEntryFocused();
 #endif
