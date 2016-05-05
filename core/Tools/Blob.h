@@ -27,11 +27,11 @@ class Blob
 public:
     explicit Blob();
     explicit Blob(Blob && other);
-    explicit Blob(const void * ptr, int length);
+    explicit Blob(const void* ptr, unsigned long long length);
     ~Blob();
     Blob & operator=(Blob && other);
     const void * getData() const;
-    void setData(void * ptr, int length);
+    void setData(void* ptr, unsigned long long length);
     void free();
     int getLength();
     int transferData(void ** data);
@@ -41,7 +41,7 @@ private:
     Blob & operator=(const Blob &);
 
     void * m_data;
-    int m_length;
+    unsigned long long m_length;
 };
 
 }

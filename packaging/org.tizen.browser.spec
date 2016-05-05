@@ -28,7 +28,7 @@ BuildRequires:  pkgconfig(chromium-efl)
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(capi-appfw-application)
 BuildRequires:  pkgconfig(capi-network-connection)
-BuildRequires:  pkgconfig(libpng)
+BuildRequires:  pkgconfig(capi-media-image-util)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(libtzplatform-config)
 %if "%{?profile}" == "mobile"
