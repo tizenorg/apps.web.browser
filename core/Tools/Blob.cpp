@@ -41,7 +41,7 @@ Blob::Blob(Blob && other) : m_data(NULL), m_length(0)
     other.m_length = 0;
 }
 
-Blob::Blob(const void * ptr, int length) :
+Blob::Blob(const void* ptr, unsigned long long length) :
     m_length(length)
 {
     m_data = malloc(length);
@@ -85,7 +85,7 @@ const void * Blob::getData() const
     return this->m_data;
 }
 
-void Blob::setData(void * ptr, int length)
+void Blob::setData(void* ptr, unsigned long long length)
 {
     free();
 

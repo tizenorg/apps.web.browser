@@ -71,7 +71,7 @@ if(TIZEN_BUILD)
     SET(tizen_pkgs_list
         dlog
         capi-appfw-application
-        libpng
+	capi-media-image-util
         efl-extension
         libssl
     )

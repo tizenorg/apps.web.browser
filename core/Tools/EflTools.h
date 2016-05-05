@@ -24,8 +24,6 @@
 #define __EFL_TOOLS_H__ 1
 
 #include <Evas.h>
-/* Need for COMPRESSION_LEVEL */
-#include <zlib.h>
 #include "BrowserImageTypedef.h"
 #include "BrowserImage.h"
 #include "Blob.h"
@@ -37,8 +35,8 @@ namespace tizen_browser {
 namespace tools {
 namespace EflTools {
 
-    std::unique_ptr<Blob> getBlobPNG(BrowserImagePtr browserImage, int level = Z_DEFAULT_COMPRESSION);
-    void * getBlobPNG(int width, int height, void * image_data, int * length, int level = Z_DEFAULT_COMPRESSION);
+    std::unique_ptr<Blob> getBlobPNG(BrowserImagePtr browserImage);
+    void* getBlobPNG(int width, int height, void * image_data, unsigned long long* length);
 
     void setExpandHints(Evas_Object* toSet);
 
