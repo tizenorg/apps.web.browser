@@ -73,7 +73,6 @@ endif(DYN_INT_LIBS)
 target_link_libraries(browserCore dl)
 target_link_libraries(browserCore ${Boost_LIBRARIES})
 target_link_libraries(browserCore ${EFL_LDFLAGS})
-target_link_libraries(browserCore ${PNG_LIBRARIES})
 target_link_libraries(browserCore ${EWEBKIT2_LDFLAGS})
 
 if(TIZEN_BUILD)
