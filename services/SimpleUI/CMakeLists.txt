@@ -101,7 +101,6 @@ include(EDCCompile)
 #please do not add edc/ directory
 if (${PROFILE} MATCHES "mobile")
 set(edcFiles
-    AuthenticationPopup.edc
     InputPopup_mob.edc
     NotificationPopup_mob.edc
     Tooltip.edc
@@ -111,7 +110,6 @@ set(edcFiles
     )
 else (${PROFILE} MATCHES "mobile")
 set(edcFiles
-    AuthenticationPopup.edc
     InputPopup.edc
     NotificationPopup.edc
     Tooltip.edc

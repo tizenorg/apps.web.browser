@@ -43,21 +43,11 @@ WebConfirmation::~WebConfirmation()
 {
 }
 
-
-AuthenticationConfirmation::AuthenticationConfirmation(TabId tabId, const std::string & uri, const std::string & msg)
-    : WebConfirmation(ConfirmationType::Authentication, tabId, uri, msg)
-{
-}
-
 CertificateConfirmation::CertificateConfirmation(TabId tabId, const std::string & uri, const std::string & msg)
     : WebConfirmation(ConfirmationType::CertificateConfirmation, tabId, uri, msg)
 {
 }
 
-ScriptPrompt::ScriptPrompt(TabId tabId, const std::string & uri, const std::string & msg)
-    : WebConfirmation(ConfirmationType::ScriptPrompt, tabId, uri, msg)
-{
-}
 
 } /* end of basic_webengine */
 } /* end of tizen_browser */

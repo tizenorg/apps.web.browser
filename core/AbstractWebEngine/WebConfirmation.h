@@ -91,32 +91,6 @@ private:
     ConfirmationResult m_result;
 };
 
-class AuthenticationConfirmation;
-typedef std::shared_ptr<AuthenticationConfirmation> AuthenticationConfirmationPtr;
-
-class AuthenticationConfirmation : public WebConfirmation {
-public:
-    AuthenticationConfirmation(TabId tabId, const std::string & uri, const std::string & msg);
-
-    void setLogin(const std::string &login) {
-    	m_login = login;
-    }
-    std::string getLogin() const {
-    	return m_login;
-    }
-
-    void setPassword(const std::string &pass) {
-    	m_password = pass;
-    }
-    std::string getPassword() const {
-    	return m_password;
-    }
-
-private:
-    std::string m_login;
-    std::string m_password;
-};
-
 class CertificateConfirmation;
 typedef std::shared_ptr<CertificateConfirmation> CertificateConfirmationPtr;
 
@@ -132,23 +106,6 @@ private:
     void* m_data;
 };
 
-class ScriptPrompt;
-typedef std::shared_ptr<ScriptPrompt> ScriptPromptPtr;
-
-class ScriptPrompt : public WebConfirmation {
-public:
-	ScriptPrompt(TabId tabId, const std::string & uri, const std::string & msg);
-
-    void setUserData(const std::string &userData) {
-    	m_userData = userData;
-    }
-    std::string getUserData() const {
-    	return m_userData;
-    }
-
-private:
-    std::string m_userData;
-};
 
 
 } /* namespace basic_webengine */
