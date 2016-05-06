@@ -66,6 +66,7 @@ public:
 
     void setCurrentTabCertData(std::string host, std::string pem, HOST_TYPE type);
     Eina_Bool isValidCertificate() const { return m_hostType == SECURE_HOST; }
+    bool isValidCertificate(const std::string& uri);
 
     HOST_TYPE isCertExistForHost(const std::string& host);
     void addToHostCertList(const std::string& host, HOST_TYPE type);

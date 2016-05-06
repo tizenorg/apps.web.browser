@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <boost/regex.hpp>
 #include "BrowserAssert.h"
+#include "Tools/URIschemes.h"
 
 namespace tizen_browser {
 namespace base_ui {
@@ -126,6 +127,7 @@ void URIEntry::changeUri(const std::string& newUri)
     } else {
         elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
     }
+    updateSecureIcon();
 }
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
@@ -439,6 +441,22 @@ void URIEntry::showCancelIcon()
         elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
     else
         elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+}
+
+void URIEntry::updateSecureIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    bool show = false, secure = false;
+    if (m_URI.find(HTTPS_SCHEME) == 0) {
+        show = true;
+        auto valid = isValidCert(m_URI);
+        if (valid)
+            secure = *valid;
+        else
+            BROWSER_LOGW("[%s:%d] Wrong isValidCert result!", __PRETTY_FUNCTION__, __LINE__);
+    }
+    showSecureIcon(show, secure);
 }
 
 void URIEntry::showSecureIcon(bool show, bool secure)

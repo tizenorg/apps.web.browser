@@ -19,6 +19,7 @@
 #include <openssl/asn1.h>
 #include <openssl/bn.h>
 #include "app_i18n.h"
+#include "Tools/GeneralTools.h"
 
 #define SHA256LEN 32
 #define SHA1LEN 20
@@ -104,6 +105,11 @@ void CertificateContents::setCurrentTabCertData(std::string host, std::string pe
     m_genlist = createGenlist(m_parent);
 }
 
+bool CertificateContents::isValidCertificate(const std::string& uri)
+{
+    HOST_TYPE type = isCertExistForHost(tools::extractDomain(uri));
+    return type == SECURE_HOST;
+}
 
 CertificateContents::HOST_TYPE CertificateContents::isCertExistForHost(const std::string& host)
 {
