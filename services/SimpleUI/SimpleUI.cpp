@@ -663,7 +663,8 @@ void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
             nullptr, adaptorId, title, desktopMode, incognitoMode);
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
-    incognitoMode ? switchViewToIncognitoPage() : m_currentSession.updateItem(tab.toString(), uri, title);
+    if (incognitoMode)
+        switchViewToIncognitoPage();
 }
 
 void SimpleUI::closeTab()
