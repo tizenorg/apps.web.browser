@@ -245,6 +245,7 @@ private:
 #if PROFILE_MOBILE
     int _getRotation();
     void setWebViewSettings(std::shared_ptr<WebView> webView);
+    void _unsecureConnection();
 #endif
 
     /**
