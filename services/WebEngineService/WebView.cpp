@@ -1068,6 +1068,14 @@ void WebView::__requestCertificationConfirm(void * data , Evas_Object * /* obj *
         return;
     }
 
+    int error = ewk_certificate_policy_decision_error_get(request);
+    if (error == EWK_CERTIFICATE_POLICY_DECISION_ERROR_PINNED_KEY_NOT_IN_CHAIN) {
+        ewk_certificate_policy_decision_allowed_set(request, EINA_FALSE);
+        BROWSER_LOGW("[%s:%d] EWK_CERTIFICATE_POLICY_DECISION_ERROR_PINNED_KEY_NOT_IN_CHAIN", __PRETTY_FUNCTION__, __LINE__);
+        self->unsecureConnection();
+        return;
+    }
+
     self->suspend();
     ewk_certificate_policy_decision_suspend(request);
 
