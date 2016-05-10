@@ -120,6 +120,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->setCertificatePem.connect(boost::bind(&WebEngineService::_setCertificatePem, this, _1, _2, _3));
 #if PROFILE_MOBILE
     webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
+    webView->unsecureConnection.connect(boost::bind(&WebEngineService::_unsecureConnection, this));
 #endif
 }
 
@@ -568,6 +569,11 @@ void WebEngineService::orientationChanged()
 {
     if (m_currentWebView)
         m_currentWebView->orientationChanged();
+}
+
+void WebEngineService::_unsecureConnection()
+{
+    unsecureConnection();
 }
 #endif
 

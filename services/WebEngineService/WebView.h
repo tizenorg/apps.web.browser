@@ -285,6 +285,7 @@ public:
     boost::signals2::signal<void (const std::string&, const std::string&, bool)> setCertificatePem;
 
     boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
+    boost::signals2::signal<void()> unsecureConnection;
 
 protected:
     std::string getRedirectedURL() {return m_redirectedURL;};

@@ -539,6 +539,11 @@ public:
      * Gets rotation angle value.
      */
     boost::signals2::signal<int()> getRotation;
+
+    /**
+     * Unsecure connection to https host, do not even ask to confirm, just inform.
+     */
+    boost::signals2::signal<void()> unsecureConnection;
 #endif
 };
 
