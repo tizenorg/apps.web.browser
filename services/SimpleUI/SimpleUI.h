@@ -276,6 +276,7 @@ private:
 #if PROFILE_MOBILE
     void showCertificatePopup();
     void showCertificatePopup(const std::string& host, const std::string& pem, services::CertificateContents::HOST_TYPE type);
+    void showUnsecureConnectionPopup();
     void closeBookmarkFlowUI();
 
     void showFindOnPageUI();

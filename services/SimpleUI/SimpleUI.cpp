@@ -565,6 +565,7 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
     m_webEngine->closeFindOnPage.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
+    m_webEngine->unsecureConnection.connect(boost::bind(&SimpleUI::showUnsecureConnectionPopup, this));
 #endif
 
     m_favoriteService->bookmarkAdded.connect(boost::bind(&SimpleUI::onBookmarkAdded, this,_1));
@@ -1394,6 +1395,19 @@ void SimpleUI::showCertificatePopup()
     services::CertificateContents::HOST_TYPE type = m_certificateContents->isCertExistForHost(uri);
     std::string pem = m_storageService->getCertificateStorage().getPemForURI(uri);
     showCertificatePopup(uri, pem, type);
+}
+
+void SimpleUI::showUnsecureConnectionPopup()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
+    popup->addButton(OK);
+    popup->setTitle("Unsecure connection!");
+    popup->setMessage("The page which you're trying to open cannot be displayed, unsecure connection detected.");
+    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    popup->show();
 }
 
 void SimpleUI::showCertificatePopup(const std::string& host, const std::string& pem, services::CertificateContents::HOST_TYPE type)
