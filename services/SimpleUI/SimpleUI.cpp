@@ -777,6 +777,7 @@ void SimpleUI::onBookmarkButtonClicked()
 void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_webPageUI->setState(WPUState::MAIN_WEB_PAGE);
     m_viewManager.popStackTo(m_webPageUI.get());
     std::string bookmarkAddress = bookmarkItem->getAddress();
 

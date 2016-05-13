@@ -157,6 +157,11 @@ void WebPageUI::progressChanged(double progress)
     }
 }
 
+void WebPageUI::setState(WPUState state)
+{
+    m_statesMgr->set(state);
+}
+
 bool WebPageUI::stateEquals(WPUState state) const
 {
     return m_statesMgr->equals(state);

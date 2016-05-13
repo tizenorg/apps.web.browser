@@ -60,6 +60,7 @@ public:
     void progressChanged(double progress);
     void loadFinished();
     WPUStatesManagerPtrConst getStatesMgr() {return m_statesMgr;}
+    void setState(WPUState state);
     /**
      * @param state The state to compare
      * @returns True if manager's state equals to given state
