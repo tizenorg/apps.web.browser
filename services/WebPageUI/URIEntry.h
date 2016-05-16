@@ -58,6 +58,8 @@ public:
     boost::signals2::signal<void ()> mobileEntryFocused;
     boost::signals2::signal<void ()> mobileEntryUnfocused;
     boost::signals2::signal<void ()> secureIconClicked;
+    boost::signals2::signal<bool (const std::string&)> isValidCert;
+    void updateSecureIcon();
     void showSecureIcon(bool show, bool secure);
 #endif
 
