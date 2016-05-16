@@ -55,12 +55,13 @@ public:
     boost::signals2::signal<void ()> rightPressed;
     boost::signals2::signal<void ()> backPressed;
     boost::signals2::signal<void ()> escapePressed;
+#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> menuButtonPressed;
+#else
     boost::signals2::signal<void ()> redPressed;
     boost::signals2::signal<void ()> greenPressed;
     boost::signals2::signal<void ()> yellowPressed;
     boost::signals2::signal<void ()> bluePressed;
-#if PROFILE_MOBILE
-    boost::signals2::signal<void ()> menuButtonPressed;
 #endif
     boost::signals2::signal<void (int, int)> mouseClicked;
 

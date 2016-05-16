@@ -23,6 +23,8 @@
 #include "AbstractUIComponent.h"
 #if PROFILE_MOBILE
 #include "AbstractRotatable.h"
+#else
+#include "FocusManager.h"
 #endif
 #include "AbstractService.h"
 #include "ServiceFactory.h"
@@ -30,7 +32,6 @@
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
 #include "BookmarkFolder.h"
-#include "FocusManager.h"
 
 namespace tizen_browser{
 namespace base_ui{
@@ -85,10 +86,10 @@ private:
     void createGengrid();
 #if !PROFILE_MOBILE
     void createBottomContent();
+    void createFocusVector();
 #endif
     void createGengridItemClasses();
     void addCustomFolder(FolderData*);
-    void createFocusVector();
 
     static void _bookmarkCustomFolderClicked(void * data, Evas_Object *, void *);
     static void _bookmarkAllFolderClicked(void * data, Evas_Object *, void *);
@@ -105,13 +106,13 @@ private:
 
     std::map<std::string,Elm_Object_Item*> m_map_bookmark;
     std::string m_edjFilePath;
-    FocusManager m_focusManager;
 
     Evas_Object *m_parent;
     Evas_Object *b_mm_layout;
     Evas_Object *m_topContent;
     Evas_Object *m_gengrid;
 #if !PROFILE_MOBILE
+    FocusManager m_focusManager;
     Evas_Object *m_bottom_content;
 
     const unsigned int GENGRID_ITEM_WIDTH = 404;

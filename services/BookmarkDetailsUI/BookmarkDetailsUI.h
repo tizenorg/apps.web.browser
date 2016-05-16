@@ -35,8 +35,11 @@
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
 #include "BookmarkFolder.h"
-#include "FocusManager.h"
 #include "app_i18n.h"
+
+#if !PROFILE_MOBILE
+#include "FocusManager.h"
+#endif
 
 namespace tizen_browser{
 namespace base_ui{
@@ -71,7 +74,9 @@ public:
 
 private:
     void addBookmarkItem(std::shared_ptr<tizen_browser::services::BookmarkItem>);
+#if !PROFILE_MOBILE
     void createFocusVector();
+#endif
     void createGengridItemClasses();
     std::string getFolderName();
     void setEmpty(bool isEmpty);
@@ -102,12 +107,12 @@ private:
 
     Evas_Object *m_parent;
     std::string m_edjFilePath;
-    FocusManager m_focusManager;
     Evas_Object *m_layout;
     Evas_Object *m_top_content;
     Evas_Object *m_gengrid;
 #if !PROFILE_MOBILE
     Evas_Object *m_bottom_content;
+    FocusManager m_focusManager;
 #else
     std::map<unsigned int, Elm_Object_Item*> m_map_bookmark;
     std::map<unsigned int, bool> m_map_delete;
