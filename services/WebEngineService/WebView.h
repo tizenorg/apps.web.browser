@@ -282,7 +282,7 @@ public:
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
     boost::signals2::signal<void ()> switchToWebPage;
-    boost::signals2::signal<void (const std::string&, const std::string&, bool)> setCertificatePem;
+    boost::signals2::signal<void (const std::string&, const std::string&)> setCertificatePem;
 
     boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
 
