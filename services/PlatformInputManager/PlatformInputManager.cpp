@@ -128,9 +128,6 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
 #if !PROFILE_MOBILE
         else if(!keyName.compare("F11") || !keyName.compare("XF86Back"))
             self->backPressed();
-#endif
-        else if(!keyName.compare("Escape"))
-            self->escapePressed();
         else if(!keyName.compare("XF86Red"))    // F4 - Red
             self->redPressed();
         else if(!keyName.compare("XF86Green"))  // F5 - Green
@@ -139,6 +136,10 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->yellowPressed();
         else if(!keyName.compare("XF86Blue"))   // F7 - Blue
             self->bluePressed();
+#endif
+        else if(!keyName.compare("Escape"))
+            self->escapePressed();
+
 
     } else if(type == ECORE_EVENT_KEY_UP) {
         M_ASSERT(event);

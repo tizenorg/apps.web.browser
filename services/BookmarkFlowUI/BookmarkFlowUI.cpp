@@ -522,14 +522,18 @@ void BookmarkFlowUI::show()
     createBookmarkFlowLayout();
     evas_object_show(m_layout);
     evas_object_show(m_gengrid);
+#if !PROFILE_MOBILE
     m_focusManager.startFocusManager(m_gengrid);
+#endif
     popupShown(this);
 }
 
 void BookmarkFlowUI::dismiss()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+#if !PROFILE_MOBILE
     m_focusManager.stopFocusManager();
+#endif
     popupDismissed(this);
 }
 

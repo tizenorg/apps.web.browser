@@ -577,8 +577,10 @@ void SimpleUI::connectModelSignals()
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
     m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
+#if !PROFILE_MOBILE
     m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
     m_platformInputManager->yellowPressed.connect(boost::bind(&SimpleUI::onYellowKeyPressed, this));
+#endif
 
     m_certificateContents->getHostCertList.connect(boost::bind(&storage::CertificateStorage::getHostCertList, &m_storageService->getCertificateStorage()));
     m_certificateContents->addOrUpdateCertificateEntry.connect(boost::bind(&storage::CertificateStorage::addOrUpdateCertificateEntry, &m_storageService->getCertificateStorage(), _1, _2, _3));
@@ -1236,6 +1238,7 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
     m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
 
+#if !PROFILE_MOBILE
 void SimpleUI::onRedKeyPressed()
 {
     m_webPageUI->onRedKeyPressed();
@@ -1245,6 +1248,7 @@ void SimpleUI::onYellowKeyPressed()
 {
     m_webPageUI->onYellowKeyPressed();
 }
+#endif
 
 void SimpleUI::webEngineURLChanged(const std::string url)
 {

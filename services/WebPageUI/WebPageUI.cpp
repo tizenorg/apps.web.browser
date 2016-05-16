@@ -211,7 +211,9 @@ void WebPageUI::switchViewToErrorPage()
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setErrorButtons();
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
 }
 
 void WebPageUI::switchViewToIncognitoPage()
@@ -227,7 +229,9 @@ void WebPageUI::switchViewToIncognitoPage()
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setPrivateButtons();
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     m_URIEntry->changeUri("");
     m_URIEntry->setFocus();
 }
@@ -242,7 +246,9 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
     }
     setMainContent(content);
     updateURIBar(uri);
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
@@ -260,7 +266,9 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
     hideProgressBar();
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     m_URIEntry->changeUri("");
 #if PROFILE_MOBILE
     m_URIEntry->showSecureIcon(false, false);
@@ -325,11 +333,14 @@ void WebPageUI::lockUrlHistoryList()
 
 void WebPageUI::unlockUrlHistoryList()
 {
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     elm_object_focus_set(m_URIEntry->getEntryWidget(), EINA_TRUE);
     getUrlHistoryList()->onListWidgetFocusChange(false);
 }
 
+#if !PROFILE_MOBILE
 void WebPageUI::onRedKeyPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -356,6 +367,7 @@ void WebPageUI::onYellowKeyPressed()
         lockUrlHistoryList();
     }
 }
+#endif
 
 #if PROFILE_MOBILE
 void WebPageUI::orientationChanged()
@@ -621,6 +633,7 @@ void WebPageUI::showMoreMenuConnect()
     showMoreMenu();
 }
 
+#if !PROFILE_MOBILE
 void WebPageUI::refreshFocusChain()
 {
     // set custom focus chain
@@ -634,6 +647,7 @@ void WebPageUI::refreshFocusChain()
     }
     elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
 }
+#endif
 
 #if PROFILE_MOBILE && GESTURE
 Evas_Event_Flags WebPageUI::_gesture_move(void* data , void* event_info)
