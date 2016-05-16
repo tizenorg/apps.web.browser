@@ -117,7 +117,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1, _2));
     webView->redirectedWebPage.connect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
-    webView->setCertificatePem.connect(boost::bind(&WebEngineService::_setCertificatePem, this, _1, _2, _3));
+    webView->setCertificatePem.connect(boost::bind(&WebEngineService::_setCertificatePem, this, _1, _2));
 #if PROFILE_MOBILE
     webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
     webView->unsecureConnection.connect(boost::bind(&WebEngineService::_unsecureConnection, this));
@@ -648,10 +648,10 @@ void WebEngineService::_redirectedWebPage(const std::string& oldUrl, const std::
     redirectedWebPage(oldUrl, newUrl);
 }
 
-void WebEngineService::_setCertificatePem(const std::string& uri, const std::string& pem, bool valid)
+void WebEngineService::_setCertificatePem(const std::string& uri, const std::string& pem)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    setCertificatePem(uri, pem, valid);
+    setCertificatePem(uri, pem);
 }
 
 #if PROFILE_MOBILE

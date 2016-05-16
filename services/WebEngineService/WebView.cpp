@@ -226,7 +226,7 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "policy,navigation,decide", __policy_navigation_decide_cb, this);
 #endif
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
-//     evas_object_smart_callback_add(m_ewkView, "notify,certificate,info", __setCertificatePem, this);    TODO: when engine will implement proper callback, change to it
+    evas_object_smart_callback_add(m_ewkView, "ssl,certificate,changed", __setCertificatePem, this);
 
     evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
     evas_object_smart_callback_add(m_ewkView, "icon,received", __faviconChanged, this);
@@ -1085,15 +1085,13 @@ void WebView::__setCertificatePem(void* data , Evas_Object* /* obj */, void* eve
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     auto self = reinterpret_cast<WebView *>(data);
-    Ewk_Certificate_Policy_Decision *request = reinterpret_cast<Ewk_Certificate_Policy_Decision *>(event_info);
-    if (!request) {
+    auto *pem = reinterpret_cast<char *>(event_info);
+    if (!pem) {
         BROWSER_LOGW("[%s:%d] Wrong event_info!", __PRETTY_FUNCTION__, __LINE__);
         return;
     }
-    const char *pem = ewk_certificate_policy_decision_certificate_pem_get(request);
-    int error = ewk_certificate_policy_decision_error_get(request);
     std::string url = tools::extractDomain(self->getURI());
-    self->setCertificatePem(url, std::string(pem), error >= 0);
+    self->setCertificatePem(url, std::string(pem));
 }
 
 #if PROFILE_MOBILE
