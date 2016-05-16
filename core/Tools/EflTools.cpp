@@ -36,6 +36,10 @@ std::unique_ptr<Blob> getBlobPNG(std::shared_ptr<BrowserImage> browserImage)
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     unsigned long long length = 0;
     void* mem_buffer = getBlobPNG(browserImage->getWidth(), browserImage->getHeight(), browserImage->getData(), &length);
+    if (!mem_buffer || !length){
+        BROWSER_LOGW("Cannot create BlobPNG");
+        return nullptr;
+    }
     std::unique_ptr<Blob> image(new Blob(mem_buffer, length));
 
     return std::move(image);
@@ -50,30 +54,37 @@ void* getBlobPNG(int width, int height, void* image_data, unsigned long long* le
 
     if (image_util_encode_create(IMAGE_UTIL_PNG, &handler) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_create: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_set_png_compression(handler, IMAGE_UTIL_PNG_COMPRESSION_6) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_set_png_compression: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_set_resolution(handler, width, height) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_set_resolution: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_set_input_buffer(handler, (const unsigned char*) image_data) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_set_input_buffer: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_set_output_buffer(handler, &outputBuffer) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_set_output_buffer: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_run(handler, length) < 0) {
         BROWSER_LOGW("[%s:%d] image_util_encode_run: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     if (image_util_encode_destroy(handler) < 0) {
         BROWSER_LOGW("[%s:%d] mage_util_encode_destroy: error!", __PRETTY_FUNCTION__, __LINE__);
+        return nullptr;
     }
 
     return outputBuffer;

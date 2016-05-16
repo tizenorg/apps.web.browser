@@ -344,6 +344,10 @@ void HistoryService::addHistoryItem(const std::string & url,
 
     if (favicon) {
        std::unique_ptr<tools::Blob> favicon_blob = tools::EflTools::getBlobPNG(favicon);
+       if (!favicon_blob){
+           BROWSER_LOGW("getBlobPNG failed");
+           return;
+       }
        unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
        if (bp_history_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength()) < 0) {
            errorPrint("bp_history_adaptor_set_icon");
@@ -358,6 +362,10 @@ void HistoryService::updateHistoryItemFavicon(const std::string & url, tools::Br
     if (id!=0) {
         if (favicon) {
            std::unique_ptr<tools::Blob> favicon_blob = tools::EflTools::getBlobPNG(favicon);
+           if (!favicon_blob){
+               BROWSER_LOGW("getBlobPNG failed");
+               return;
+           }
            unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
            if (bp_history_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength()) < 0) {
                errorPrint("bp_history_adaptor_set_icon");
@@ -374,6 +382,10 @@ void HistoryService::updateHistoryItemSnapshot(const std::string & url, tools::B
     int id = getHistoryId(url);
     if (id != 0 && snapshot) {
         std::unique_ptr<tools::Blob> snapshot_blob = tools::EflTools::getBlobPNG(snapshot);
+        if (!snapshot_blob){
+            BROWSER_LOGW("getBlobPNG failed");
+            return;
+        }
         unsigned char * snap = std::move((unsigned char*)snapshot_blob->getData());
         if (bp_history_adaptor_set_snapshot(id, snapshot->getWidth(), snapshot->getHeight(), snap,
                 snapshot_blob->getLength()) < 0)
