@@ -193,10 +193,11 @@ private:
     void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
-    void onRedKeyPressed();
-    void onYellowKeyPressed();
 #if PROFILE_MOBILE
     void onMenuButtonPressed();
+#else
+    void onRedKeyPressed();
+    void onYellowKeyPressed();
 #endif
     void setwvIMEStatus(bool status);
 

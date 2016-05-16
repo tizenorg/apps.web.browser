@@ -31,6 +31,7 @@
 #include "AbstractUIComponent.h"
 #else
 #include "AbstractPopup.h"
+#include "FocusManager.h"
 #endif
 #include "AbstractService.h"
 #include "ServiceFactory.h"
@@ -38,7 +39,6 @@
 #include "services/HistoryService/HistoryItem.h"
 #include "BookmarkItem.h"
 #include "BookmarkFolder.h"
-#include "FocusManager.h"
 #include "app_i18n.h"
 
 #define BOOKMARK_FLOW_SERVICE "org.tizen.browser.bookmarkflowui"

@@ -38,7 +38,6 @@ set(browserCore_SRCS
     Tools/CapiWebErrorCodes.cpp
     Tools/FeedItem.cpp
     Tools/FeedChannel.cpp
-    Tools/FocusManager.cpp
     Tools/StringTools.cpp
     )
 
@@ -48,6 +47,13 @@ if(${PROFILE} MATCHES "mobile")
         DownloadControl/DownloadControl.cpp
         )
 endif(${PROFILE} MATCHES "mobile")
+
+if(NOT ${PROFILE} MATCHES "mobile")
+    set(browserCore_SRCS
+        ${browserCore_SRCS}
+        Tools/FocusManager.cpp
+        )
+endif(NOT ${PROFILE} MATCHES "mobile")
 
 if(TIZEN_BUILD)
     set(browserCore_SRCS

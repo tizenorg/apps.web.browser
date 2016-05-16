@@ -238,7 +238,9 @@ void MoreMenuUI::showCurrentTab()
     m_bookmarkIcon = elm_icon_add(m_mm_layout);
     elm_object_part_content_set(m_current_tab_bar, "bookmark_ico", m_bookmarkIcon);
     elm_object_part_content_set(m_current_tab_bar, "star_click", m_bookmarkButton);
+#if !PROFILE_MOBILE
     createFocusVector();
+#endif
 }
 
 void MoreMenuUI::setFavIcon(tools::BrowserImagePtr favicon)
@@ -731,6 +733,7 @@ void MoreMenuUI::setIsBookmark(bool isBookmark)
     m_isBookmark = isBookmark ? EINA_TRUE : EINA_FALSE;
 }
 
+#if !PROFILE_MOBILE
 void MoreMenuUI::createFocusVector()
 {
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
@@ -739,6 +742,7 @@ void MoreMenuUI::createFocusVector()
     m_focusManager.addItem(m_gengrid);
     m_focusManager.setIterator();
 }
+#endif
 
 }
 }

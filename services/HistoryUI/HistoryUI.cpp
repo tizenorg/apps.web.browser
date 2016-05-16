@@ -29,7 +29,9 @@
 #include "HistoryDaysListManager/HistoryDaysListManagerMob.h"
 #include "HistoryDaysListManager/HistoryDaysListManagerTv.h"
 #include "services/HistoryService/HistoryItem.h"
+#if !PROFILE_MOBILE
 #include "HistoryUIFocusManager.h"
+#endif
 #include "HistoryDeleteManager.h"
 
 namespace tizen_browser{
@@ -71,9 +73,10 @@ HistoryUI::HistoryUI()
 
     m_historyDaysListManager->signalHistoryItemClicked.connect(signalHistoryItemClicked);
     m_historyDaysListManager->signalDeleteHistoryItems.connect(signalDeleteHistoryItems);
-
+#if !PROFILE_MOBILE
     m_focusManager = std::unique_ptr<HistoryUIFocusManager>(
             new HistoryUIFocusManager(m_historyDaysListManager));
+#endif
 }
 
 HistoryUI::~HistoryUI()
@@ -86,7 +89,9 @@ void HistoryUI::showUI()
     M_ASSERT(m_main_layout);
     evas_object_show(m_actionBar);
     evas_object_show(m_main_layout);
+#if !PROFILE_MOBILE
     m_focusManager->refreshFocusChain();
+#endif
 }
 
 void HistoryUI::hideUI()
@@ -96,7 +101,9 @@ void HistoryUI::hideUI()
     evas_object_hide(m_actionBar);
     evas_object_hide(m_main_layout);
     clearItems();
+#if !PROFILE_MOBILE
     m_focusManager->unsetFocusChain();
+#endif
     m_historyDeleteManager->setDeleteMode(false);
 }
 
@@ -128,7 +135,9 @@ void HistoryUI::createHistoryUILayout(Evas_Object* parent)
     m_actionBar = createActionBar(m_main_layout);
     m_daysList = createDaysList(m_main_layout);
     clearItems();
+#if !PROFILE_MOBILE
     m_focusManager->setFocusObj(m_main_layout);
+#endif
 }
 
 std::map<std::string, services::HistoryItemVector>
@@ -177,9 +186,9 @@ Evas_Object* HistoryUI::createActionBar(Evas_Object* history_layout)
     elm_object_style_set(m_buttonClose, "close_history_button");
     evas_object_smart_callback_add(m_buttonClose, "clicked", HistoryUI::_close_clicked_cb, this);
     elm_object_part_content_set(actionBar, "close_click", m_buttonClose);
-
+#if !PROFILE_MOBILE
     m_focusManager->setHistoryUIButtons(m_buttonClose, m_buttonClear);
-
+#endif
     return actionBar;
 }
 
