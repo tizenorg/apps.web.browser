@@ -187,13 +187,13 @@ private:
     void onSnapshotCaptured(std::shared_ptr<tools::BrowserImage> snapshot, tools::SnapshotType snapshot_type);
     void onCreateTabId();
 
-    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
     void onActionTriggered(const Action& action);
 #if PROFILE_MOBILE
     void onMenuButtonPressed();
+    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();

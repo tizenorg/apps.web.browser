@@ -112,6 +112,7 @@ private:
     Evas_Object *m_title_area;
     std::string m_edjFilePath;
     bool m_state;
+    unsigned int m_all_folder_id;
 
     static char* _folder_title_text_get(void* data, Evas_Object*, const char* part);
 #if PROFILE_MOBILE
@@ -149,7 +150,6 @@ private:
     Elm_Genlist_Item_Class *m_folder_selected_item_class;
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
-    unsigned int m_all_folder_id;
     unsigned int m_special_folder_id;
     unsigned int m_max_items;
     const unsigned int MAX_ITEMS = 4;
