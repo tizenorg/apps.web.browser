@@ -118,23 +118,28 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
         return std::make_shared<BookmarkItem>();
     }
     // max sequence
-    ret = bp_bookmark_adaptor_set_sequence(id, -1);
+    if (bp_bookmark_adaptor_set_sequence(id, -1) < 0){
+        BROWSER_LOGE("Error! Could not set sequence!");
+        return std::make_shared<BookmarkItem>();
+    }
 
-    if(thumbnail->getSize() > 0)
-    {
-        std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
-        unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
-        bp_bookmark_adaptor_set_snapshot(id, thumbnail->getWidth(), thumbnail->getHeight(), thumb, thumb_blob->getLength());
-    }
-    if(favicon->getSize() > 0)
-    {
-        std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
-        unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
-        bp_bookmark_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength());
-    }
     std::shared_ptr<BookmarkItem> bookmark = std::make_shared<BookmarkItem>(address, title, note, dirId, id);
-    bookmark->setThumbnail(thumbnail);
-    bookmark->setFavicon(favicon);
+    if (thumbnail && thumbnail->getSize() > 0){
+        std::unique_ptr<tizen_browser::tools::Blob> thumb_blob = tizen_browser::tools::EflTools::getBlobPNG(thumbnail);
+        if (thumb_blob){
+            unsigned char * thumb = std::move((unsigned char*)thumb_blob->getData());
+            bp_bookmark_adaptor_set_snapshot(id, thumbnail->getWidth(), thumbnail->getHeight(), thumb, thumb_blob->getLength());
+            bookmark->setThumbnail(thumbnail);
+        }
+    }
+    if (favicon && favicon->getSize() > 0){
+        std::unique_ptr<tizen_browser::tools::Blob> favicon_blob = tizen_browser::tools::EflTools::getBlobPNG(favicon);
+        if (favicon_blob){
+            unsigned char * fav = std::move((unsigned char*)favicon_blob->getData());
+            bp_bookmark_adaptor_set_icon(id, favicon->getWidth(), favicon->getHeight(), fav, favicon_blob->getLength());
+            bookmark->setFavicon(favicon);
+        }
+    }
 #if PROFILE_MOBILE
     bookmark->set_folder_flag(EINA_FALSE);
 #endif

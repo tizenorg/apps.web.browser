@@ -174,6 +174,8 @@ void TabService::saveThumbDatabase(const basic_webengine::TabId& tabId,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     std::unique_ptr<tools::Blob> thumb_blob = tools::EflTools::getBlobPNG(
             imagePtr);
+    if (!thumb_blob)
+        return;
     unsigned char* thumbData = std::move((unsigned char*) thumb_blob->getData());
     if (bp_tab_adaptor_set_snapshot(tabId.get(), imagePtr->getWidth(),
             imagePtr->getHeight(), thumbData, thumb_blob->getLength()) < 0) {
