@@ -87,8 +87,9 @@ void BookmarkManagerUI::init(Evas_Object* parent)
 void BookmarkManagerUI::showUI()
 {
     evas_object_show(b_mm_layout);
+#if !PROFILE_MOBILE
     m_focusManager.startFocusManager(m_gengrid);
-#if PROFILE_MOBILE
+#else
     orientationChanged();
 #endif
 }
@@ -98,7 +99,9 @@ void BookmarkManagerUI::hideUI()
     evas_object_hide(b_mm_layout);
     elm_gengrid_clear(m_gengrid);
     m_map_bookmark.clear();
+#if !PROFILE_MOBILE
     m_focusManager.stopFocusManager();
+#endif
 }
 
 Evas_Object* BookmarkManagerUI::getContent()
@@ -194,9 +197,9 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
 
     createGengrid();
     createTopContent();
-    createFocusVector();
 #if !PROFILE_MOBILE
     createBottomContent();
+    createFocusVector();
 #endif
     return b_mm_layout;
 }
@@ -264,6 +267,14 @@ void BookmarkManagerUI::createBottomContent()
 
     elm_layout_file_set(m_bottom_content, m_edjFilePath.c_str(), "bottom-content");
 }
+
+void BookmarkManagerUI::createFocusVector()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    m_focusManager.addItem(elm_object_part_content_get(m_topContent, "close_click"));
+    m_focusManager.addItem(m_gengrid);
+    m_focusManager.setIterator();
+}
 #endif
 
 void BookmarkManagerUI::_close_clicked_cb(void* data, Evas_Object*, void*)
@@ -274,14 +285,6 @@ void BookmarkManagerUI::_close_clicked_cb(void* data, Evas_Object*, void*)
         BookmarkManagerUI* id = static_cast<BookmarkManagerUI*>(data);
         id->closeBookmarkManagerClicked();
     }
-}
-
-void BookmarkManagerUI::createFocusVector()
-{
-    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
-    m_focusManager.addItem(elm_object_part_content_get(m_topContent, "close_click"));
-    m_focusManager.addItem(m_gengrid);
-    m_focusManager.setIterator();
 }
 
 void BookmarkManagerUI::addCustomFolder(FolderData* item)
