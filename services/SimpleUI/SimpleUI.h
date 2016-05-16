@@ -109,7 +109,6 @@ private:
     void loadFinished();
     void progressChanged(double progress);
     void loadStarted();
-    void updateSecureIcon();
     void loadError();
     void webEngineReady(basic_webengine::TabId id);
 

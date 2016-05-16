@@ -172,6 +172,7 @@ void WebPageUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     hideProgressBar();
+    m_URIEntry->updateSecureIcon();
 }
 
 void WebPageUI::toIncognito(bool incognito)
