@@ -549,7 +549,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
     m_webEngine->ready.connect(boost::bind(&SimpleUI::webEngineReady, this, _1));
-    m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
     m_webEngine->tabClosed.connect(boost::bind(&SimpleUI::tabClosed,this,_1));
@@ -563,6 +562,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2, _3, false));
 #if PROFILE_MOBILE
+    m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
     m_webEngine->closeFindOnPage.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
 #endif
@@ -1354,10 +1354,11 @@ int SimpleUI::tabsCount()
     return m_webEngine->tabsCount();
 }
 
+#if PROFILE_MOBILE
 void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PROFILE_MOBILE
+
     if (webConfirmation->getConfirmationType() == basic_webengine::WebConfirmation::ConfirmationType::CertificateConfirmation) {
         if (m_webPageUI->stateEquals(WPUState::MAIN_WEB_PAGE)) {
             auto cert = std::dynamic_pointer_cast<basic_webengine::CertificateConfirmation, basic_webengine::WebConfirmation>(webConfirmation);
@@ -1384,7 +1385,6 @@ void SimpleUI::handleConfirmationRequest(basic_webengine::WebConfirmationPtr web
     } else {
         BROWSER_LOGW("[%s:%d] Unknown WebConfirmation::ConfirmationType!", __PRETTY_FUNCTION__, __LINE__);
     }
-#endif
 }
 
 void SimpleUI::showCertificatePopup()
@@ -1410,6 +1410,7 @@ void SimpleUI::showCertificatePopup(const std::string& host, const std::string& 
     popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
     popup->show();
 }
+#endif
 
 void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData)
 {
@@ -1433,7 +1434,9 @@ void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
             break;
         case VIEW_CERTIFICATE:
         {
+#if PROFILE_MOBILE
             showCertificatePopup(certPopupData->cert->getURI(), certPopupData->cert->getPem(), services::CertificateContents::UNSECURE_HOST_UNKNOWN);
+#endif
             break;
         }
         default:

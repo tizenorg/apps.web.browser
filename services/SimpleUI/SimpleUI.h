@@ -188,7 +188,6 @@ private:
     void onSnapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
     void onCreateTabId();
 
-    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
     void authPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
     void certPopupButtonClicked(PopupButtons button, std::shared_ptr<PopupData> popupData);
 
@@ -197,6 +196,7 @@ private:
     void onYellowKeyPressed();
 #if PROFILE_MOBILE
     void onMenuButtonPressed();
+    void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
 #endif
     void setwvIMEStatus(bool status);
 

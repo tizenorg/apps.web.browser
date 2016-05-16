@@ -149,7 +149,6 @@ private:
     Elm_Genlist_Item_Class *m_folder_selected_item_class;
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
-    unsigned int m_all_folder_id;
     unsigned int m_special_folder_id;
     unsigned int m_max_items;
     const unsigned int MAX_ITEMS = 4;
@@ -172,6 +171,7 @@ private:
     Elm_Gengrid_Item_Class *m_folder_custom_item_class;
 
     FocusManager m_focusManager;
+    unsigned int m_all_folder_id;
     const unsigned int upto9 = 10;
     const unsigned int upto6 = 7;
 #endif
