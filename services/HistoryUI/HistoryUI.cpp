@@ -86,7 +86,9 @@ void HistoryUI::showUI()
     M_ASSERT(m_main_layout);
     evas_object_show(m_actionBar);
     evas_object_show(m_main_layout);
+#if !PROFILE_MOBILE
     m_focusManager->refreshFocusChain();
+#endif
 }
 
 void HistoryUI::hideUI()
@@ -96,7 +98,9 @@ void HistoryUI::hideUI()
     evas_object_hide(m_actionBar);
     evas_object_hide(m_main_layout);
     clearItems();
+#if !PROFILE_MOBILE
     m_focusManager->unsetFocusChain();
+#endif
     m_historyDeleteManager->setDeleteMode(false);
 }
 

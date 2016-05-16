@@ -32,8 +32,10 @@ public:
     HistoryUIFocusManager(HistoryDaysListManagerPtr historyDaysListManager);
     virtual ~HistoryUIFocusManager();
     void setFocusObj(Evas_Object* obj);
+#if !PROFILE_MOBILE
     void refreshFocusChain();
     void unsetFocusChain();
+#endif
     void setHistoryUIButtons(Evas_Object* buttonClose, Evas_Object* buttonClear);
 
 private:
