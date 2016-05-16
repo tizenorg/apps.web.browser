@@ -30,7 +30,10 @@
 
 #include "BookmarkItem.h"
 #include "services/HistoryService/HistoryItem.h"
+
+#if !PROFILE_MOBILE
 #include "FocusManager.h"
+#endif
 
 #include <Ecore_Wayland.h>
 
@@ -127,7 +130,9 @@ private:
     static Evas_Object * _grid_content_get(void *data, Evas_Object *obj, const char *part);
     static void _thumbSelected(void * data, Evas_Object * obj, void * event_info);
     static void _exitClicked();
+#if !PROFILE_MOBILE
     void createFocusVector();
+#endif
 
     void setDocIcon();
 
@@ -152,7 +157,6 @@ private:
     bool m_gengridSetup;
     bool m_desktopMode;
     Eina_Bool m_isBookmark;
-    FocusManager m_focusManager;
 #if PROFILE_MOBILE
     bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
@@ -161,6 +165,7 @@ private:
     const unsigned int GENGRID_ITEM_WIDTH_LANDSCAPE = 208;
     const unsigned int GENGRID_ITEM_HEIGHT_LANDSCAPE = 213;
 #else
+    FocusManager m_focusManager;
     const unsigned int GENGRID_ITEM_WIDTH = 364;
     const unsigned int GENGRID_ITEM_HEIGHT = 320;
 #endif
