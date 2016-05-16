@@ -33,8 +33,10 @@ namespace base_ui{
 
 class HistoryDaysListManager;
 typedef std::shared_ptr<HistoryDaysListManager> HistoryDaysListManagerPtr;
+#if !PROFILE_MOBILE
 class HistoryUIFocusManager;
 typedef std::unique_ptr<HistoryUIFocusManager> HistoryUIFocusManagerPtrUnique;
+#endif
 class HistoryDeleteManager;
 typedef std::shared_ptr<HistoryDeleteManager> HistoryDeleteManagerPtr;
 
@@ -86,7 +88,9 @@ private:
     Evas_Object *m_buttonClear;
     Evas_Object *m_daysList;
     HistoryDaysListManagerPtr m_historyDaysListManager;
+#if !PROFILE_MOBILE
     HistoryUIFocusManagerPtrUnique m_focusManager;
+#endif
     HistoryDeleteManagerPtr m_historyDeleteManager;
 
 };

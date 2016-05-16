@@ -86,13 +86,14 @@ public:
     void lockWebview();
     void lockUrlHistoryList();
     void unlockUrlHistoryList();
-    void onRedKeyPressed();
-    void onYellowKeyPressed();
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
     void setContentFocus();
     static Eina_Bool _hideDelay(void *data);
+#else
+    void onRedKeyPressed();
+    void onYellowKeyPressed();
 #endif
 
     boost::signals2::signal<void ()> backPage;
@@ -136,7 +137,9 @@ private:
     void setMainContent(Evas_Object* content);
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
+#if !PROFILE_MOBILE
     void refreshFocusChain();
+#endif
 #if PROFILE_MOBILE && GESTURE
     void gestureUp();
     void gestureDown();

@@ -35,6 +35,7 @@ void HistoryUIFocusManager::setFocusObj(Evas_Object* obj)
     m_focusObject = obj;
 }
 
+#if !PROFILE_MOBILE
 void HistoryUIFocusManager::refreshFocusChain()
 {
     elm_object_focus_custom_chain_unset(m_focusObject);
@@ -50,6 +51,7 @@ void HistoryUIFocusManager::unsetFocusChain()
 {
     elm_object_focus_custom_chain_unset(m_focusObject);
 }
+#endif
 
 void HistoryUIFocusManager::setHistoryUIButtons(Evas_Object* buttonClose, Evas_Object* buttonClear)
 {

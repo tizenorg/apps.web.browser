@@ -668,7 +668,9 @@ void QuickAccess::showMostVisited()
     setIndexPage(QuickAccess::MOST_VISITED_PAGE);
 #else
     evas_object_hide(m_bookmarkManagerButton);
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     // Setting focus is needed for the first time we open QuickAccess
     elm_object_focus_set(m_mostVisitedButton, EINA_TRUE);
     // Unfocused signal to previous category button is send before m_currPage is change
@@ -694,7 +696,9 @@ void QuickAccess::showBookmarks()
     setIndexPage(QuickAccess::BOOKMARK_PAGE);
 #else
     evas_object_show(m_bookmarkManagerButton);
+#if !PROFILE_MOBILE
     refreshFocusChain();
+#endif
     elm_object_focus_set(m_bookmarksButton, EINA_TRUE);
     elm_object_signal_emit(m_mostVisitedButton, "btn,normal", "border");
     evas_object_raise(m_bookmarksButton);
