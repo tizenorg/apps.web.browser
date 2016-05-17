@@ -62,6 +62,7 @@ public:
     Eina_Bool deleteDeleteView(void);
     Eina_Bool deleteComposer(void);
     std::vector<AutoFillFormItem *> getItemList(void) { return m_AutoFillFormItemList; }
+    AutoFillFormItem* getItem(unsigned it){ return m_AutoFillFormItemList[it];}
     std::vector<AutoFillFormItem *> loadEntireItemList(void);
     Eina_Bool addItemToList(AutoFillFormItem *item);
     void rotateLandscape();

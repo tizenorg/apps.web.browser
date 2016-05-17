@@ -114,15 +114,19 @@ Eina_Bool AutoFillFormManager::addItemToList(AutoFillFormItem *item)
 Eina_Bool AutoFillFormManager::deleteAutoFillFormItem(AutoFillFormItem *item)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    for (unsigned int i = 0; i < m_AutoFillFormItemList.size(); i++) {
-        if (m_AutoFillFormItemList[i]->getProfileId() == item->getProfileId()) {
-            if (ewk_context_form_autofill_profile_remove(m_ewkContext, item->getProfileId()) == EINA_FALSE)
-                return EINA_FALSE;
 
-            m_AutoFillFormItemList.erase(m_AutoFillFormItemList.begin() + i);
-        }
-    }
-
+    m_AutoFillFormItemList.erase(
+        std::remove_if(
+            m_AutoFillFormItemList.begin(),
+            m_AutoFillFormItemList.end(),
+            [&](AutoFillFormItem* el) -> Eina_Bool {
+                return (el->getProfileId() == item->getProfileId()) ?
+                        ewk_context_form_autofill_profile_remove(m_ewkContext, item->getProfileId()) :
+                        EINA_FALSE;
+            }
+        ),
+        m_AutoFillFormItemList.end()
+    );
     return EINA_TRUE;
 }
 
