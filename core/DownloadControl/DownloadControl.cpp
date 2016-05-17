@@ -369,24 +369,53 @@ Eina_Bool DownloadControl::handle_data_scheme(const char *uri)
     char *file_name = NULL;
     if (_get_download_path(extension, &full_path, &file_name) == EINA_FALSE) {
         BROWSER_LOGE("[%s:%d] failed to _get_download_path", __PRETTY_FUNCTION__, __LINE__);
+        if(full_path){
+            free(full_path);
+        }
+        if(file_name){
+            free(file_name);
+        }
         return EINA_FALSE;
     }
 
     if (!(full_path && strlen(full_path)) || !(file_name && strlen(file_name))) {
         BROWSER_LOGE("[%s:%d] has problem to _get_download_path", __PRETTY_FUNCTION__, __LINE__);
+        if(full_path){
+            free(full_path);
+        }
+        if(file_name){
+            free(file_name);
+        }
         return EINA_FALSE;
     }
 
     if (_save_file(encoded_str, full_path) == EINA_FALSE) {
         BROWSER_LOGE("[%s:%d] failed to _save_file with path [%s]", __PRETTY_FUNCTION__, __LINE__, full_path);
+        if(full_path){
+            free(full_path);
+        }
+        if(file_name){
+            free(file_name);
+        }
         return EINA_FALSE;
     }
 
     if (_update_contents_on_media_db(full_path) == EINA_FALSE) {
         BROWSER_LOGE("[%s:%d] failed to _update_contents_on_media_db with path [%s]", __PRETTY_FUNCTION__, __LINE__, full_path);
+        if(full_path){
+            free(full_path);
+        }
+        if(file_name){
+            free(file_name);
+        }
         return EINA_FALSE;
     }
-
+    if(full_path){
+        free(full_path);
+    }
+    if(file_name){
+        free(file_name);
+    }
     return EINA_TRUE;
 }
 
