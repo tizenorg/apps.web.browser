@@ -307,7 +307,7 @@ void AutoProfileDeleteView::deleteSelectedItems(void)
         checkbox = elm_object_item_part_content_get(it, "checkbox");
         cb_data = static_cast<genlistCallbackData*>(elm_object_item_data_get(it));
         if (elm_check_state_get(checkbox)) {
-            AutoFillFormItem *item = m_manager->getItemList()[cb_data->menu_index - del_count];
+            AutoFillFormItem *item = m_manager->getItem(cb_data->menu_index - del_count);
             m_manager->deleteAutoFillFormItem(item);
             del_count++;
             m_checkbox_delete_state_map.erase(it);
@@ -338,7 +338,7 @@ const char *AutoProfileDeleteView::getEachItemFullName(unsigned int index)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_manager->getAutoFillFormItemCount() == 0)
         return NULL;
-    return (m_manager->getItemList())[index]->getName();
+    return (m_manager->getItem(index))->getName();
 }
 
 Evas_Object *AutoProfileDeleteView::__content_get_cb(void* data, Evas_Object* obj, const char *part)
