@@ -19,6 +19,7 @@
 #include <openssl/asn1.h>
 #include <openssl/bn.h>
 #include "app_i18n.h"
+#include <string.h>
 
 #define SHA256LEN 32
 #define SHA1LEN 20
@@ -386,9 +387,9 @@ static const char* _get_formatted_serial_no(ASN1_INTEGER *bs )
     for (size_t i=0; i < outsz; i++) {
         char* l = (char*) (3*i + ((intptr_t) printable));
         if (i < (outsz -1))
-            sprintf(l, "%02x%c", binSerial[i],':');
+            snprintf(l, strlen(l), "%02x%c", binSerial[i],':');
         else
-            sprintf(l, "%02x", binSerial[i]);
+            snprintf(l, strlen(l), "%02x", binSerial[i]);
     }
     free(binSerial);
     BN_free(bn);
@@ -405,7 +406,7 @@ static const char* _bin2hex(unsigned char*bin, size_t bin_size , char delimiter)
     char printable[100]={'\0',};
     for (size_t i=0; i < bin_size; i++) {
         char* l = (char*) (3*i + ((intptr_t) printable));
-        sprintf(l, "%02x%c", bin[i],delimiter);
+        snprintf(l, strlen(l), "%02x%c", bin[i],delimiter);
     }
 
     return strdup(printable);
