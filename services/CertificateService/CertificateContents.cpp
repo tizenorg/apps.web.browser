@@ -386,9 +386,9 @@ static const char* _get_formatted_serial_no(ASN1_INTEGER *bs )
     for (size_t i=0; i < outsz; i++) {
         char* l = (char*) (3*i + ((intptr_t) printable));
         if (i < (outsz -1))
-            sprintf(l, "%02x%c", binSerial[i],':');
+            snprintf(l, "%02x%c", binSerial[i],':');
         else
-            sprintf(l, "%02x", binSerial[i]);
+            snprintf(l, "%02x", binSerial[i]);
     }
     free(binSerial);
     BN_free(bn);
@@ -405,7 +405,7 @@ static const char* _bin2hex(unsigned char*bin, size_t bin_size , char delimiter)
     char printable[100]={'\0',};
     for (size_t i=0; i < bin_size; i++) {
         char* l = (char*) (3*i + ((intptr_t) printable));
-        sprintf(l, "%02x%c", bin[i],delimiter);
+        snprintf(l, "%02x%c", bin[i],delimiter);
     }
 
     return strdup(printable);
