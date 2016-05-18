@@ -70,6 +70,12 @@ namespace webengine_service {
 
 const std::string WebView::COOKIES_PATH = "cookies";
 
+struct SnapshotItemData {
+    WebView * web_view;
+    tizen_browser::config::SnapshotType snapshot_type;
+};
+
+
 WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool incognitoMode)
     : m_parent(obj)
     , m_tabId(tabId)
@@ -85,7 +91,6 @@ WebView::WebView(Evas_Object * obj, TabId tabId, const std::string& title, bool 
 #if PROFILE_MOBILE
     , m_downloadControl(nullptr)
 #endif
-    , m_timer(nullptr)
 {
 }
 
@@ -96,10 +101,6 @@ WebView::~WebView()
     if (m_ewkView) {
         unregisterCallbacks();
         evas_object_del(m_ewkView);
-    }
-    if (m_timer) {
-        ecore_timer_del(m_timer);
-        m_timer = nullptr;
     }
 #if PROFILE_MOBILE
     delete m_downloadControl;
@@ -212,9 +213,6 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "load,finished", __loadFinished, this);
     evas_object_smart_callback_add(m_ewkView, "load,progress", __loadProgress, this);
     evas_object_smart_callback_add(m_ewkView, "load,error", __loadError, this);
-
-    //TODO: uncomment this line when "ready" signal is supported by ewk_view
-    //evas_object_smart_callback_add(m_ewkView, "ready", __ready, this);
 
     evas_object_smart_callback_add(m_ewkView, "title,changed", __titleChanged, this);
     evas_object_smart_callback_add(m_ewkView, "url,changed", __urlChanged, this);
@@ -781,7 +779,8 @@ void WebView::confirmationResult(WebConfirmationPtr confirmation)
     }
 }
 
-tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeight, bool async)
+tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeight, bool async,
+        tizen_browser::config::SnapshotType snapshot_type)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
@@ -814,11 +813,13 @@ tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeigh
     BROWSER_LOGD("[%s:%d] Before snapshot (screenshot) - look at the time of taking snapshot below",__func__, __LINE__);
 
     if (async) {
-        bool result = ewk_view_screenshot_contents_get_async(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView), __screenshotCaptured, this);
+        SnapshotItemData *snapshot_data = new SnapshotItemData();
+        snapshot_data->web_view = this;
+        snapshot_data->snapshot_type = snapshot_type;
+        bool result = ewk_view_screenshot_contents_get_async(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView), __screenshotCaptured, snapshot_data);
         if (!result)
             BROWSER_LOGD("[%s:%d] ewk_view_screenshot_contents_get_async API failed", __func__, __LINE__);
-    }
-    else {
+    } else {
         Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
         BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
         if (snapshot)
@@ -832,8 +833,8 @@ void WebView::__screenshotCaptured(Evas_Object* image, void* data)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    WebView * self = reinterpret_cast<WebView *>(data);
-    self->snapshotCaptured(std::make_shared<tools::BrowserImage>(image));
+    SnapshotItemData *snapshot_data = static_cast<SnapshotItemData*>(data);
+    snapshot_data->web_view->snapshotCaptured(std::make_shared<tools::BrowserImage>(image), snapshot_data->snapshot_type);
 }
 
 void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
@@ -922,11 +923,9 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
     self->loadFinished();
     self->loadProgress(self->m_loadProgress);
 
-    //TODO: delete this line when "ready" signal is supported by ewk_view
-    if (self->m_timer)
-        ecore_timer_reset(self->m_timer);
-    else
-        self->m_timer =  ecore_timer_add(self->TIMER_INTERVAL, _ready, self);
+    self->captureSnapshot(boost::any_cast<int>(config::Config::getInstance().get(CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_WIDTH)),
+            boost::any_cast<int>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_HEIGHT)),
+            true, config::SnapshotType::ASYNC_LOAD_FINISHED);
 }
 
 void WebView::__loadProgress(void * data, Evas_Object * /* obj */, void * event_info)
@@ -963,26 +962,6 @@ void WebView::__loadError(void* data, Evas_Object * obj, void* ewkError)
         self->loadError();
         self->m_loadError=true;
     }
-}
-
-Eina_Bool WebView::_ready(void *data)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-    ecore_timer_del(self->m_timer);
-    self->m_timer = nullptr;
-    self->__ready(data, nullptr, nullptr);
-
-    return ECORE_CALLBACK_CANCEL;
-}
-
-void WebView::__ready(void* data, Evas_Object * /*obj*/, void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView *self = reinterpret_cast<WebView*>(data);
-    self->ready(self->getTabId());
 }
 
 void WebView::__titleChanged(void * data, Evas_Object * obj, void * /* event_info */)

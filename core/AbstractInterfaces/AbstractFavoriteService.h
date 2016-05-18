@@ -58,6 +58,13 @@ public:
                                                  std::shared_ptr<tizen_browser::tools::BrowserImage> favicon = std::shared_ptr<tizen_browser::tools::BrowserImage>(),
                                                  unsigned int dirId = 0) = 0;
 
+    /**
+     * @brief Update bookmark snapshot by given url
+     *
+     * @param url of bookmark to delete
+     */
+    virtual void updateBookmarkItemSnapshot(const std::string & url, std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot) = 0;
+
     /** \todo Need to change this callback function for finding stored bookmark, check getBookmarkId function
      * @brief Check if bookmark exists
      *

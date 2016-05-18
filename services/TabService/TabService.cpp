@@ -115,6 +115,7 @@ void TabService::updateThumb(const basic_webengine::TabId& tabId)
 void TabService::clearThumb(const basic_webengine::TabId& tabId)
 {
     BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
+    m_thumbMapSave[tabId.get()] = false;
     clearFromDatabase(tabId);
     clearFromCache(tabId);
 }
@@ -141,6 +142,18 @@ void TabService::onThumbGenerated(const basic_webengine::TabId& tabId,
         saveThumbDatabase(tabId, imagePtr);
     }
     saveThumbCache(tabId, imagePtr);
+}
+
+void TabService::updateTabItemSnapshot(const basic_webengine::TabId& tabId,
+        tools::BrowserImagePtr imagePtr)
+{
+    BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
+    if (!thumbInDatabase(tabId))
+        createTabId(tabId.get());
+    m_thumbMapSave[tabId.get()] = true;
+    clearFromCache(tabId);
+    saveThumbCache(tabId, imagePtr);
+    saveThumbDatabase(tabId, imagePtr);
 }
 
 void TabService::saveThumbCache(const basic_webengine::TabId& tabId,
