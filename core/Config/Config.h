@@ -29,6 +29,16 @@ namespace config
 {
 
 /**
+ * @brief Snapshot type enumerator. Used to recognize why methed was created
+ */
+enum class SnapshotType {
+    ASYNC_LOAD_FINISHED,
+    ASYNC_TAB,
+    ASYNC_BOOKMARK,
+    SYNC
+};
+
+/**
  * @brief Default config placeholder.
  */
 class Config

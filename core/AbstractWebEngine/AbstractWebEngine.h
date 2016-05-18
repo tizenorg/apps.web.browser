@@ -21,6 +21,7 @@
 #include <boost/optional.hpp>
 #include <memory>
 #include <Evas.h>
+#include "../Config/Config.h"
 
 #include "BrowserImage.h"
 #include "../ServiceManager/Debug/Lifecycle.h"
@@ -215,12 +216,14 @@ public:
     /**
      * Gets snapshot data as void* for current tab
      */
-    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width = 324, int height = 177) = 0;
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width = 324, int height = 177,
+            tizen_browser::config::SnapshotType snapshot_type = tizen_browser::config::SnapshotType::SYNC) = 0;
 
     /**
      * Gets snapshot data as void* for tab provided as parameter
      */
-    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, bool async) = 0;
+    virtual std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height,
+            bool async, tizen_browser::config::SnapshotType snapshot_type) = 0;
 
     /**
      * Get the state of private mode for a specific tab
@@ -446,11 +449,6 @@ public:
     boost::signals2::signal<void ()> loadError;
 
     /**
-     * Page is fully loaded.
-     */
-    boost::signals2::signal<void (TabId)> ready;
-
-    /**
      * Current tab changed
      * \param TabId of new tab
      */
@@ -517,7 +515,8 @@ public:
     /**
      * Async signal to save snapshot after it is generated.
      */
-    boost::signals2::signal<void(std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
+    boost::signals2::signal<void(std::shared_ptr<tizen_browser::tools::BrowserImage>,
+            tizen_browser::config::SnapshotType snapshot_type)> snapshotCaptured;
 
     /**
      * Async signal to inform the redirection has started.

@@ -548,7 +548,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->loadFinished.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadStop.connect(boost::bind(&SimpleUI::loadFinished, this));
     m_webEngine->loadError.connect(boost::bind(&SimpleUI::loadError, this));
-    m_webEngine->ready.connect(boost::bind(&SimpleUI::webEngineReady, this, _1));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->tabCreated.connect(boost::bind(&SimpleUI::tabCreated, this));
     m_webEngine->checkIfCreate.connect(boost::bind(&SimpleUI::checkIfCreate, this));
@@ -559,7 +558,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->favIconChanged.connect(boost::bind(&SimpleUI::faviconChanged, this, _1));
     m_webEngine->windowCreated.connect(boost::bind(&SimpleUI::windowCreated, this));
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
-    m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1));
+    m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1, _2));
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2, _3, false));
 #if PROFILE_MOBILE
@@ -916,20 +915,32 @@ void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
 }
 #endif
 
-void SimpleUI::onSnapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot)
+void SimpleUI::onSnapshotCaptured(std::shared_ptr<tools::BrowserImage> snapshot, config::SnapshotType snapshot_type)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_tabService->onThumbGenerated(m_webEngine->currentTabId(), snapshot);
+    switch (snapshot_type) {
+    case config::SnapshotType::ASYNC_LOAD_FINISHED:
+        m_historyService->updateHistoryItemSnapshot(m_webEngine->getURI(), snapshot);
+    case config::SnapshotType::ASYNC_TAB:
+        m_tabService->updateTabItemSnapshot(m_webEngine->currentTabId(), snapshot);
+        break;
+    case config::SnapshotType::ASYNC_BOOKMARK:
+        m_favoriteService->updateBookmarkItemSnapshot(m_webEngine->getURI(), snapshot);
+        break;
+    case config::SnapshotType::SYNC:
+        BROWSER_LOGE("Synchronized snapshot in asynchronized workflow");
+        break;
+    }
 }
 
 void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     const int THUMB_WIDTH = boost::any_cast<int>(
-            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_WIDTH));
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_WIDTH));
     const int THUMB_HEIGHT = boost::any_cast<int>(
-            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::TABSERVICE_THUMB_HEIGHT));
-    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, false);
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_HEIGHT));
+    tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, false, config::SnapshotType::SYNC);
     m_tabService->onThumbGenerated(tabId, snapshotImage);
 }
 
@@ -1181,14 +1192,6 @@ void SimpleUI::loadError()
 #endif
 }
 
-void SimpleUI::webEngineReady(basic_webengine::TabId id)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_historyService->updateHistoryItemSnapshot(m_webEngine->getURI(), m_webEngine->getSnapshotData(
-            QuickAccess::MAX_THUMBNAIL_WIDTH, QuickAccess::MAX_THUMBNAIL_HEIGHT));
-    m_tabService->updateThumb(id);
-}
-
 void SimpleUI::filterURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] url=%s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
@@ -1245,6 +1248,7 @@ void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_webPageUI->getURIEntry().clearFocus();
+    m_tabService->clearThumb(m_webEngine->currentTabId());
 }
 
 void SimpleUI::showZoomUI()
@@ -1899,13 +1903,17 @@ void SimpleUI::addBookmark(BookmarkUpdate bookmark_update)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_favoriteService) {
         if (m_webEngine && !m_webEngine->getURI().empty()) {
+            const int THUMB_HEIGHT = boost::any_cast<int>(
+                    tizen_browser::config::Config::getInstance().get(CONFIG_KEY::FAVORITESERVICE_THUMB_HEIGHT));
+            const int THUMB_WIDTH = boost::any_cast<int>(
+                    tizen_browser::config::Config::getInstance().get(CONFIG_KEY::FAVORITESERVICE_THUMB_WIDTH));
             m_favoriteService->addBookmark(m_webEngine->getURI(),
 #if PROFILE_MOBILE
                                            bookmark_update.title,
 #else
                                            m_webEngine->getTitle(),
 #endif
-                                           std::string(), m_webEngine->getSnapshotData(373, 240),
+                                           std::string(), m_webEngine->getSnapshotData(THUMB_WIDTH, THUMB_HEIGHT, config::SnapshotType::ASYNC_BOOKMARK),
                                            m_webEngine->getFavicon(), bookmark_update.folder_id);
             m_storageService->getFoldersStorage().addNumberInFolder(bookmark_update.folder_id);
         }

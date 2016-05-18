@@ -83,6 +83,9 @@ public:
             tools::BrowserImagePtr imagePtr);
     boost::signals2::signal<void(basic_webengine::TabId)> generateThumb;
 
+    void updateTabItemSnapshot(const basic_webengine::TabId& tabId,
+            tools::BrowserImagePtr imagePtr);
+
 private:
     /**
      * Help method printing last bp_tab_error_defs error.

@@ -153,6 +153,19 @@ std::shared_ptr<BookmarkItem> BookmarkService::addBookmark(
     return bookmark;
 }
 
+void BookmarkService::updateBookmarkItemSnapshot(const std::string & url, tools::BrowserImagePtr snapshot)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    int id = getBookmarkId(url);
+    if (id != 0 && snapshot) {
+        std::unique_ptr<tools::Blob> snapshot_blob = tools::EflTools::getBlobPNG(snapshot);
+        unsigned char * snap = std::move((unsigned char*)snapshot_blob->getData());
+        if (bp_bookmark_adaptor_set_snapshot(id, snapshot->getWidth(), snapshot->getHeight(), snap,
+                snapshot_blob->getLength()) < 0)
+            errorPrint("bp_history_adaptor_set_snapshot");
+    }
+}
+
 bool BookmarkService::editBookmark(const std::string & url, const std::string & title, unsigned int folder_id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
