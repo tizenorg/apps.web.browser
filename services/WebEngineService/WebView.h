@@ -24,7 +24,9 @@
 
 #include <ewk_chromium.h>
 #include "browser_config.h"
+#include "Config.h"
 #include "BrowserImage.h"
+#include "SnapshotType.h"
 #include "AbstractWebEngine/TabId.h"
 #include "AbstractWebEngine/WebConfirmation.h"
 
@@ -116,7 +118,8 @@ public:
      */
     bool isPrivateMode() {return m_private;}
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height, bool async);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> captureSnapshot(int width, int height, bool async,
+            tizen_browser::tools::SnapshotType snapshot_type);
      /**
      * \brief Sets Focus to URI entry.
      */
@@ -253,7 +256,7 @@ public:
 
 // signals
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
-    boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> snapshotCaptured;
+    boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>, tizen_browser::tools::SnapshotType snapshot_type)> snapshotCaptured;
     boost::signals2::signal<void (const std::string&)> titleChanged;
     boost::signals2::signal<void (const std::string)> uriChanged;
     boost::signals2::signal<void (bool)> downloadStarted;
@@ -263,8 +266,6 @@ public:
     boost::signals2::signal<void ()> loadStop;
     boost::signals2::signal<void ()> loadError;
     boost::signals2::signal<void (double)> loadProgress;
-
-    boost::signals2::signal<void (TabId)> ready;
 
     boost::signals2::signal<void (bool)> forwardEnableChanged;
     boost::signals2::signal<void (bool)> backwardEnableChanged;
@@ -325,11 +326,6 @@ private:
     static void __loadProgress(void * data, Evas_Object * obj, void * event_info);
     static void __loadError(void* data, Evas_Object* obj, void *ewkError);
 
-    // Ready
-    // TODO: delete workaround function _ready when ewk_view sends "ready" signal
-    static Eina_Bool _ready(void *data);
-    static void __ready(void* data, Evas_Object* obj, void *event_info);
-
     static void __titleChanged(void * data, Evas_Object * obj, void * event_info);
     static void __urlChanged(void * data, Evas_Object * obj, void * event_info);
 
@@ -388,9 +384,6 @@ private:
     Eina_Bool m_is_error_page;
     DownloadControl *m_downloadControl;
 #endif
-    //TODO: delete this lines when "ready" signal is supported by ewk_view
-    Ecore_Timer *m_timer;
-    const double TIMER_INTERVAL = 5.0;
 };
 
 } /* namespace webengine_service */

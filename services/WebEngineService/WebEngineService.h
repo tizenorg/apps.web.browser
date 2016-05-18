@@ -28,6 +28,7 @@
 #include "AbstractWebEngine/AbstractWebEngine.h"
 #include "AbstractWebEngine/TabIdTypedef.h"
 #include "AbstractWebEngine/WebConfirmation.h"
+#include "SnapshotType.h"
 #include "BrowserImage.h"
 
 namespace tizen_browser {
@@ -111,11 +112,12 @@ public:
      *
      * @param width of snapshot
      * @param height of snapshot
+     * @param type of snapshot
      * @return Shared pointer to BrowserImage
      */
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width, int height);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(int width, int height, tizen_browser::tools::SnapshotType snapshot_type);
 
-    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, bool async);
+    std::shared_ptr<tizen_browser::tools::BrowserImage> getSnapshotData(TabId id, int width, int height, bool async, tizen_browser::tools::SnapshotType snapshot_type);
 
     /**
      * @brief Get the state of private mode for a specific tab
@@ -229,10 +231,9 @@ private:
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
-    void _ready(TabId id);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
-    void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
+    void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot, tools::SnapshotType snapshot_type);
     void _redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
     void webViewClicked();
     void _setCertificatePem(const std::string& uri, const std::string& pem, bool valid);
