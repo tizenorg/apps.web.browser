@@ -791,6 +791,15 @@ tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeigh
     if (vw == 0 || vh == 0)
         return std::make_shared<BrowserImage>();
 
+    double scale = targetWidth / (double)(vw * getZoomFactor());
+    double scale_max, scale_min;
+    ewk_view_scale_range_get(m_ewkView, &scale_min, &scale_max);
+    if (scale < scale_min)
+        scale = scale_min;
+
+    else if (scale > scale_max)
+        scale = scale_max;
+
     Eina_Rectangle area;
     double snapshotProportions = (double)(targetWidth) /(double)(targetHeight);
     double webkitProportions = (double)(vw) /(double)(vh);
@@ -816,11 +825,11 @@ tools::BrowserImagePtr WebView::captureSnapshot(int targetWidth, int targetHeigh
         SnapshotItemData *snapshot_data = new SnapshotItemData();
         snapshot_data->web_view = this;
         snapshot_data->snapshot_type = snapshot_type;
-        bool result = ewk_view_screenshot_contents_get_async(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView), __screenshotCaptured, snapshot_data);
+        bool result = ewk_view_screenshot_contents_get_async(m_ewkView, area, scale, evas_object_evas_get(m_ewkView), __screenshotCaptured, snapshot_data);
         if (!result)
             BROWSER_LOGD("[%s:%d] ewk_view_screenshot_contents_get_async API failed", __func__, __LINE__);
     } else {
-        Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_ewkView, area, 1.0, evas_object_evas_get(m_ewkView));
+        Evas_Object *snapshot = ewk_view_screenshot_contents_get(m_ewkView, area, scale, evas_object_evas_get(m_ewkView));
         BROWSER_LOGD("[%s:%d] Snapshot (screenshot) catched, evas pointer: %p",__func__, __LINE__, snapshot);
         if (snapshot)
             return std::make_shared<tools::BrowserImage>(snapshot);
