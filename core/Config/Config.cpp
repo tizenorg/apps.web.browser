@@ -45,8 +45,10 @@ Config::Config()
 
     m_data["resourcedb/dir"] = std::string(app_get_data_path());
 
-    m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_HEIGHT] = 79;
-    m_keysValues[CONFIG_KEY::TABSERVICE_THUMB_WIDTH] = 79;
+    m_keysValues[CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_HEIGHT] = 315;
+    m_keysValues[CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_WIDTH] = 590;
+    m_keysValues[CONFIG_KEY::FAVORITESERVICE_THUMB_HEIGHT] = 261;
+    m_keysValues[CONFIG_KEY::FAVORITESERVICE_THUMB_WIDTH] = 319;
 
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_NUMBER_MAX] = 12;
     m_keysValues[CONFIG_KEY::URLHISTORYLIST_ITEMS_VISIBLE_NUMBER_MAX] = 5;

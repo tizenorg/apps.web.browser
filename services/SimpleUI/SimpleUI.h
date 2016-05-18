@@ -111,7 +111,6 @@ private:
     void loadStarted();
     void updateSecureIcon();
     void loadError();
-    void webEngineReady(basic_webengine::TabId id);
 
     void setErrorButtons();
 
@@ -185,7 +184,7 @@ private:
      * @brief Handles 'generateThumb' signals.
      */
     void onGenerateThumb(basic_webengine::TabId tabId);
-    void onSnapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot);
+    void onSnapshotCaptured(std::shared_ptr<tools::BrowserImage> snapshot, tools::SnapshotType snapshot_type);
     void onCreateTabId();
 
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
