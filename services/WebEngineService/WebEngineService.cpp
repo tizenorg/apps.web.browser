@@ -108,14 +108,13 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
     webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
     webView->loadProgress.connect(boost::bind(&WebEngineService::_loadProgress, this, _1));
-    webView->ready.connect(boost::bind(&WebEngineService::_ready, this, _1));
     webView->loadError.connect(boost::bind(&WebEngineService::_loadError, this));
     webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
     webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
     webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
-    webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1));
+    webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1, _2));
     webView->redirectedWebPage.connect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
     webView->setCertificatePem.connect(boost::bind(&WebEngineService::_setCertificatePem, this, _1, _2, _3));
 #if PROFILE_MOBILE
@@ -349,11 +348,6 @@ void WebEngineService::_loadProgress(double d)
     loadProgress(d);
 }
 
-void WebEngineService::_ready(TabId id)
-{
-    ready(id);
-}
-
 void WebEngineService::_confirmationRequest(WebConfirmationPtr c)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -505,18 +499,19 @@ bool WebEngineService::isPrivateMode(const TabId& id)
     return m_tabs[id]->isPrivateMode();
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(int width, int height)
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(int width, int height,
+        tizen_browser::tools::SnapshotType snapshot_type)
 {
     M_ASSERT(m_currentWebView);
-    if(m_currentWebView)
-        return m_currentWebView->captureSnapshot(width, height, false);
+    if (m_currentWebView)
+        return m_currentWebView->captureSnapshot(width, height, snapshot_type != tools::SnapshotType::SYNC, snapshot_type);
     else
         return std::make_shared<tizen_browser::tools::BrowserImage>();
-
 }
 
-std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height, bool async){
-   return m_tabs[id]->captureSnapshot(width, height, async);
+std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height, bool async,
+        tizen_browser::tools::SnapshotType snapshot_type){
+   return m_tabs[id]->captureSnapshot(width, height, async, snapshot_type);
 }
 
 void WebEngineService::setFocus()
@@ -636,9 +631,9 @@ void WebEngineService::_IMEStateChanged(bool enable)
     IMEStateChanged(enable);
 }
 
-void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> image)
+void WebEngineService::_snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> image, tools::SnapshotType snapshot_type)
 {
-    snapshotCaptured(image);
+    snapshotCaptured(image, snapshot_type);
 }
 
 void WebEngineService::_redirectedWebPage(const std::string& oldUrl, const std::string& newUrl)
