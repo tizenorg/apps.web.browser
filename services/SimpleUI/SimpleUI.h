@@ -26,6 +26,7 @@
 
 #include <Evas.h>
 
+#include "AbstractContextMenu.h"
 #include "AbstractMainWindow.h"
 #include "AbstractService.h"
 #include "AbstractFavoriteService.h"
@@ -295,6 +296,7 @@ private:
     int getRotation();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
+    Evas_Object* getMainWindow();
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();

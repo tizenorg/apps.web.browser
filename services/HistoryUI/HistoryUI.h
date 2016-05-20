@@ -23,6 +23,7 @@
 
 #include "HistoryPeriod.h"
 #include <services/HistoryService/HistoryItemTypedef.h>
+#include "AbstractContextMenu.h"
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
 #include "ServiceFactory.h"
@@ -41,7 +42,8 @@ class HistoryDeleteManager;
 typedef std::shared_ptr<HistoryDeleteManager> HistoryDeleteManagerPtr;
 
 class BROWSER_EXPORT HistoryUI
-    : public tizen_browser::interfaces::AbstractUIComponent
+    : public interfaces::AbstractContextMenu
+    , public tizen_browser::interfaces::AbstractUIComponent
     , public tizen_browser::core::AbstractService
 {
 public:
@@ -58,6 +60,11 @@ public:
     void removeHistoryItem(const std::string& uri);
     Evas_Object* createActionBar(Evas_Object* history_layout);
     void addItems();
+
+    //AbstractContextMenu interface implementation
+    virtual void showContextMenu() override;
+    static void _cm_delete_clicked(void*, Evas_Object*, void*);
+
     boost::signals2::signal<void ()> closeHistoryUIClicked;
     boost::signals2::signal<void ()> clearHistoryClicked;
     boost::signals2::signal<void (std::shared_ptr<const std::vector<int>> itemIds)> signalDeleteHistoryItems;

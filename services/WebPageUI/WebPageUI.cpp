@@ -412,6 +412,112 @@ void WebPageUI::orientationChanged()
 }
 #endif
 
+void WebPageUI::showContextMenu()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    boost::optional<Evas_Object*> window = getWindow();
+    if (window) {
+        createContextMenu(*window);
+
+        if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+            //TODO: Add translation
+            elm_ctxpopup_item_append(m_ctxpopup, "Edit Quick access", nullptr, _cm_edit_qa_clicked, this);
+        } else if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
+            elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_SHARE"), nullptr, _cm_share_clicked, this);
+            elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_FIND_ON_PAGE"), nullptr, _cm_find_on_page_clicked, this);
+
+            boost::optional<bool> bookmark = isBookmark();
+            if (bookmark) {
+                //TODO: Add translation
+                elm_ctxpopup_item_append(m_ctxpopup, *bookmark ? "Remove from bookmarks" : "Add to Bookmarks",
+                        nullptr, _cm_bookmark_flow_clicked, this);
+            } else
+                BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+
+            //TODO: "dont add this item if it is already in a quick access
+            elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_ADD_TO_QUICK_ACCESS"), nullptr, _cm_add_to_qa_clicked, this);
+            elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_BODY_DESKTOP_VIEW"), nullptr, _cm_desktop_view_page_clicked, this);
+        } else
+            return;
+
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_BODY_SETTINGS"), nullptr, _cm_settings_clicked, this);
+        alignContextMenu(*window);
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void WebPageUI::_cm_edit_qa_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+    }
+}
+
+void WebPageUI::_cm_share_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+    }
+}
+
+void WebPageUI::_cm_find_on_page_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+        webPageUI->showFindOnPageUI();
+    }
+}
+
+void WebPageUI::_cm_bookmark_flow_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+
+        boost::optional<bool> bookmark = webPageUI->isBookmark();
+        if (bookmark)
+            webPageUI->showBookmarkFlowUI(*bookmark);
+        else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+    }
+}
+
+void WebPageUI::_cm_add_to_qa_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+    }
+}
+
+void WebPageUI::_cm_desktop_view_page_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+    }
+}
+
+void WebPageUI::_cm_settings_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+        webPageUI->showSettingsUI();
+    }
+}
+
 void WebPageUI::createLayout()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
