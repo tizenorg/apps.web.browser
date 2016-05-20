@@ -20,6 +20,7 @@
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
 
+#include "AbstractContextMenu.h"
 #include "AbstractUIComponent.h"
 #if PROFILE_MOBILE
 #include "AbstractRotatable.h"
@@ -36,7 +37,8 @@ namespace tizen_browser{
 namespace base_ui{
 
 class BROWSER_EXPORT BookmarkManagerUI
-        : public tizen_browser::interfaces::AbstractUIComponent
+        : public interfaces::AbstractContextMenu
+        , public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
 #if PROFILE_MOBILE
         , public tizen_browser::interfaces::AbstractRotatable
@@ -58,6 +60,14 @@ public:
     void addNewFolder();
     virtual void orientationChanged() override;
 #endif
+    //AbstractContextMenu interface implementation
+    virtual void showContextMenu() override;
+    static void _cm_delete_clicked(void*, Evas_Object*, void*);
+    static void _cm_share_clicked(void*, Evas_Object*, void*);
+    static void _cm_reorder_clicked(void*, Evas_Object*, void*);
+    static void _cm_edit_clicked(void*, Evas_Object*, void*);
+    static void _cm_create_folder_clicked(void*, Evas_Object*, void*);
+
     void addCustomFolders(services::SharedBookmarkFolderList folders);
     void addCustomFolders(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem> >);
 

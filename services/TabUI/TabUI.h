@@ -20,6 +20,7 @@
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
 
+#include "AbstractContextMenu.h"
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
 #include "ServiceFactory.h"
@@ -33,7 +34,8 @@ namespace tizen_browser{
 namespace base_ui{
 
 class BROWSER_EXPORT TabUI
-        : public tizen_browser::interfaces::AbstractUIComponent
+        : public tizen_browser::interfaces::AbstractContextMenu
+        , public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
 #if PROFILE_MOBILE
         , public tizen_browser::interfaces::AbstractRotatable
@@ -57,6 +59,12 @@ public:
     virtual void orientationChanged() override;
 #endif
 
+    //AbstractContextMenu interface implementation
+    virtual void showContextMenu() override;
+    static void _cm_sync_clicked(void*, Evas_Object*, void*);
+    static void _cm_secret_clicked(void*, Evas_Object*, void*);
+    static void _cm_close_clicked(void*, Evas_Object*, void*);
+
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void ()> newTabClicked;
     boost::signals2::signal<void ()> newIncognitoTabClicked;
@@ -69,6 +77,7 @@ public:
     boost::signals2::signal<int () > tabsCount;
     boost::signals2::signal<bool (const tizen_browser::basic_webengine::TabId& )> isIncognito;
 
+    //AbstractContextMenu signals
 private:
 
     static char* _grid_text_get(void *data, Evas_Object *obj, const char *part);
