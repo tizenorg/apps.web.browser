@@ -26,6 +26,7 @@
 
 #include <Evas.h>
 
+#include "AbstractContextMenu.h"
 #include "AbstractMainWindow.h"
 #include "AbstractService.h"
 #include "AbstractFavoriteService.h"
@@ -278,13 +279,13 @@ private:
     void closeSettingsUI();
 
     void showBookmarkFlowUI(bool state);
+    void showFindOnPageUI(const std::string& str);
 #if PROFILE_MOBILE
     void showCertificatePopup();
     void showCertificatePopup(const std::string& host, const std::string& pem, services::CertificateContents::HOST_TYPE type);
     void showUnsecureConnectionPopup();
     void closeBookmarkFlowUI();
 
-    void showFindOnPageUI(const std::string& str);
     void findWord(const struct FindData& fdata);
     void closeFindOnPageUI();
 
@@ -296,6 +297,7 @@ private:
     int getRotation();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
+    Evas_Object* getMainWindow();
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
