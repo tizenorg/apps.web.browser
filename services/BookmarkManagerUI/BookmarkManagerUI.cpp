@@ -338,6 +338,76 @@ void BookmarkManagerUI::orientationChanged()
 }
 #endif
 
+void BookmarkManagerUI::showContextMenu()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    boost::optional<Evas_Object*> window = getWindow();
+    if (window) {
+        createContextMenu(*window);
+
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_SK_DELETE"), nullptr, _cm_delete_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_SHARE"), nullptr, _cm_share_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_REORDER_ABB"), nullptr, _cm_reorder_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_BUTTON_EDIT"), nullptr, _cm_edit_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_SK3_CREATE_FOLDER"), nullptr, _cm_create_folder_clicked, this);
+
+        alignContextMenu(*window);
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void BookmarkManagerUI::_cm_delete_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        _cm_dismissed(nullptr, bookmarkManagerUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkManagerUI::_cm_share_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        _cm_dismissed(nullptr, bookmarkManagerUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkManagerUI::_cm_reorder_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        _cm_dismissed(nullptr, bookmarkManagerUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkManagerUI::_cm_edit_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        _cm_dismissed(nullptr, bookmarkManagerUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkManagerUI::_cm_create_folder_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        BookmarkManagerUI* bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        _cm_dismissed(nullptr, bookmarkManagerUI->m_ctxpopup, nullptr);
+        bookmarkManagerUI->newFolderItemClicked();
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
 void BookmarkManagerUI::addCustomFolders(services::SharedBookmarkFolderList folders)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

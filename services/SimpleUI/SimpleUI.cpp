@@ -322,6 +322,11 @@ void SimpleUI::connectUISignals()
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_webPageUI->focusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setFocus, m_webEngine.get()));
     m_webPageUI->unfocusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::clearFocus, m_webEngine.get()));
+    m_webPageUI->getWindow.connect(boost::bind(&SimpleUI::getMainWindow, this));
+    m_webPageUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
+    m_webPageUI->showBookmarkFlowUI.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
+    m_webPageUI->showFindOnPageUI.connect(boost::bind(&SimpleUI::showFindOnPageUI, this, std::string()));
+    m_webPageUI->showSettingsUI.connect(boost::bind(&SimpleUI::showSettingsUI, this));
 #if PROFILE_MOBILE
     m_webPageUI->hideMoreMenu.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_webPageUI->getURIEntry().mobileEntryFocused.connect(boost::bind(&WebPageUI::mobileEntryFocused, m_webPageUI));
@@ -349,6 +354,7 @@ void SimpleUI::connectUISignals()
     m_tabUI->tabClicked.connect(boost::bind(&SimpleUI::tabClicked, this,_1));
     m_tabUI->closeTabsClicked.connect(boost::bind(&SimpleUI::closeTabsClicked, this,_1));
     m_tabUI->isIncognito.connect(boost::bind(&SimpleUI::isIncognito, this, _1));
+    m_tabUI->getWindow.connect(boost::bind(&SimpleUI::getMainWindow, this));
 #if PROFILE_MOBILE
     m_tabUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
     bool desktop_ua = false;
@@ -363,6 +369,7 @@ void SimpleUI::connectUISignals()
     m_historyUI->signalDeleteHistoryItems.connect(boost::bind(&SimpleUI::onDeleteHistoryItems, this, _1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
     m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2, desktop_ua));
+    m_historyUI->getWindow.connect(boost::bind(&SimpleUI::getMainWindow, this));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
@@ -420,6 +427,7 @@ void SimpleUI::connectUISignals()
     m_bookmarkManagerUI->customFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkCustomFolderClicked, this, _1));
     m_bookmarkManagerUI->allFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkAllFolderClicked, this));
     m_bookmarkManagerUI->specialFolderClicked.connect(boost::bind(&SimpleUI::onBookmarkSpecialFolderClicked, this));
+    m_bookmarkManagerUI->getWindow.connect(boost::bind(&SimpleUI::getMainWindow, this));
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     m_bookmarkManagerUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
@@ -1076,8 +1084,10 @@ void SimpleUI::onEscapePressed()
 #else
 void SimpleUI::onMenuButtonPressed()
 {
-    BROWSER_LOGD("[%s]", __func__);
-    showMoreMenu();
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    interfaces::AbstractContextMenu *view = dynamic_cast<interfaces::AbstractContextMenu*>(m_viewManager.topOfStack());
+    if (view)
+        view->showContextMenu();
 }
 
 void SimpleUI::onRotation()
@@ -1120,6 +1130,11 @@ int SimpleUI::getRotation()
     return elm_win_rotation_get(main_window);
 }
 #endif
+
+Evas_Object* SimpleUI::getMainWindow()
+{
+    return main_window;
+}
 
 void SimpleUI::reloadEnable(bool enable)
 {

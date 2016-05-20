@@ -21,6 +21,7 @@
 #include <string.h>
 #include <AbstractMainWindow.h>
 
+#include "app_i18n.h"
 #include "HistoryUI.h"
 #include "ServiceManager.h"
 #include "BrowserLogger.h"
@@ -232,6 +233,31 @@ void HistoryUI::clearItems()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_historyDaysListManager->clear();
+}
+
+void HistoryUI::showContextMenu()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    boost::optional<Evas_Object*> window = getWindow();
+    if (window) {
+        createContextMenu(*window);
+
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_SK_DELETE"), nullptr, _cm_delete_clicked, this);
+
+        alignContextMenu(*window);
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void HistoryUI::_cm_delete_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        HistoryUI* historyUI = static_cast<HistoryUI*>(data);
+        _cm_dismissed(nullptr, historyUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
 }

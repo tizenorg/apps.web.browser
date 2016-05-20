@@ -313,6 +313,60 @@ void TabUI::orientationChanged()
 }
 #endif
 
+void TabUI::showContextMenu()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    boost::optional<Evas_Object*> window = getWindow();
+    if (window) {
+        createContextMenu(*window);
+
+        elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_BODY_SYNC_OPEN_PAGES"), nullptr, _cm_sync_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, "Secret mode security", nullptr, _cm_secret_clicked, this);
+        if (elm_gengrid_items_count(m_gengrid) != 0)
+            elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_OPT_CLOSE_ALL"), nullptr, _cm_close_clicked, this);
+        alignContextMenu(*window);
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void TabUI::_cm_sync_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        TabUI* tabUI = static_cast<TabUI*>(data);
+        _cm_dismissed(nullptr, tabUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void TabUI::_cm_secret_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        TabUI* tabUI = static_cast<TabUI*>(data);
+        _cm_dismissed(nullptr, tabUI->m_ctxpopup, nullptr);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void TabUI::_cm_close_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        TabUI* tabUI = static_cast<TabUI*>(data);
+        _cm_dismissed(nullptr, tabUI->m_ctxpopup, nullptr);
+        Elm_Object_Item* it = elm_gengrid_first_item_get(tabUI->m_gengrid);
+        while (it) {
+            TabItemData *item = (TabItemData *)elm_object_item_data_get(it);
+            tabUI->closeTabsClicked(item->item->getId());
+            it = elm_gengrid_item_next_get(it);
+        }
+        //Todo: set empty state
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
 Evas_Object* TabUI::createTopButtons(Evas_Object* parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

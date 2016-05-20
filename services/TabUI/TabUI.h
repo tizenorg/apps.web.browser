@@ -20,6 +20,7 @@
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
 
+#include "AbstractContextMenu.h"
 #include "AbstractUIComponent.h"
 #include "AbstractService.h"
 #include "ServiceFactory.h"
@@ -33,7 +34,8 @@ namespace tizen_browser{
 namespace base_ui{
 
 class BROWSER_EXPORT TabUI
-        : public tizen_browser::interfaces::AbstractUIComponent
+        : public tizen_browser::interfaces::AbstractContextMenu
+        , public tizen_browser::interfaces::AbstractUIComponent
         , public tizen_browser::core::AbstractService
 #if PROFILE_MOBILE
         , public tizen_browser::interfaces::AbstractRotatable
@@ -56,6 +58,9 @@ public:
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
 #endif
+
+    //AbstractContextMenu interface implementation
+    virtual void showContextMenu() override;
 
     boost::signals2::signal<void (const tizen_browser::basic_webengine::TabId&)> tabClicked;
     boost::signals2::signal<void ()> newTabClicked;
@@ -91,6 +96,9 @@ private:
 #endif
     static void _focus_in(void * data, Evas*, Evas_Object * obj, void * event_info);
     static Eina_Bool _ready(void *data);
+    static void _cm_sync_clicked(void*, Evas_Object*, void*);
+    static void _cm_secret_clicked(void*, Evas_Object*, void*);
+    static void _cm_close_clicked(void*, Evas_Object*, void*);
 
     void createTabUILayout();
     Evas_Object* createActionBar(Evas_Object* parent);

@@ -19,6 +19,7 @@
 
 #include <Evas.h>
 #include <boost/signals2/signal.hpp>
+#include "AbstractContextMenu.h"
 #include "AbstractService.h"
 #include "AbstractUIComponent.h"
 #include "AbstractRotatable.h"
@@ -38,7 +39,8 @@ class UrlHistoryList;
 typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
 
 class BROWSER_EXPORT WebPageUI
-        : public tizen_browser::core::AbstractService
+        : public interfaces::AbstractContextMenu
+        , public tizen_browser::core::AbstractService
         , public tizen_browser::interfaces::AbstractUIComponent
 #if PROFILE_MOBILE
         , public tizen_browser::interfaces::AbstractRotatable
@@ -57,6 +59,9 @@ public:
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
 #endif
+    //AbstractContextMenu interface implementation
+    virtual void showContextMenu() override;
+
     void loadStarted();
     void progressChanged(double progress);
     void loadFinished();
@@ -116,6 +121,12 @@ public:
     boost::signals2::signal<void ()> focusWebView;
     boost::signals2::signal<void ()> unfocusWebView;
 
+    //AbstractContextMenu signals
+    boost::signals2::signal<bool ()> isBookmark;
+    boost::signals2::signal<void (bool)> showBookmarkFlowUI;
+    boost::signals2::signal<void ()> showFindOnPageUI;
+    boost::signals2::signal<void ()> showSettingsUI;
+
 private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
     static Eina_Bool _cb_down_pressed_on_urlbar(void *data, Evas_Object *obj, Evas_Object *src, Evas_Callback_Type type, void *event_info);
@@ -129,6 +140,13 @@ private:
 #if PROFILE_MOBILE && GESTURE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
 #endif
+    static void _cm_edit_qa_clicked(void*, Evas_Object*, void*);
+    static void _cm_share_clicked(void*, Evas_Object*, void*);
+    static void _cm_find_on_page_clicked(void*, Evas_Object*, void*);
+    static void _cm_bookmark_flow_clicked(void*, Evas_Object*, void*);
+    static void _cm_add_to_qa_clicked(void*, Evas_Object*, void*);
+    static void _cm_desktop_view_page_clicked(void*, Evas_Object*, void*);
+    static void _cm_settings_clicked(void*, Evas_Object*, void*);
 
     void createLayout();
     void createErrorLayout();
