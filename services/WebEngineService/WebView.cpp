@@ -1505,10 +1505,6 @@ void WebView::findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_
     ewk_view_text_find(m_ewkView, word, find_option, FIND_WORD_MAX_COUNT);
 }
 
-void WebView::setTouchEvents(bool enabled) {
-    ewk_view_touch_events_enabled_set(m_ewkView, enabled);
-}
-
 void WebView::ewkSettingsAutoFittingSet(bool value)
 {
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);

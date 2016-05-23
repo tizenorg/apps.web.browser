@@ -109,7 +109,6 @@ public:
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> showZoomNavigation;
-    boost::signals2::signal<void (bool enabled)> setWebViewTouchEvents;
 
 private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);
@@ -121,7 +120,6 @@ private:
 #endif
 #if PROFILE_MOBILE && GESTURE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
-    static void _gesture_finished(void *data, Evas_Object *obj, const char *emission, const char *source);
 #endif
 
     void createLayout();

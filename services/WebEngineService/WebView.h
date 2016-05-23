@@ -204,12 +204,6 @@ public:
      * @param data User data.
      */
     void findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data);
-    /**
-     * @brief Enable or disable touch events
-     *
-     * @param enabled True if touch event have to be enabled, false else.
-     */
-    void setTouchEvents(bool enabled);
 
     /**
      * @brief Set auto fitting settings flag.

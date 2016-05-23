@@ -730,12 +730,6 @@ void WebEngineService::findWord(const char *word, Eina_Bool forward, Evas_Smart_
     m_currentWebView->findWord(word, forward, found_cb, data);
 }
 
-void WebEngineService::setTouchEvents(bool enabled)
-{
-    M_ASSERT(m_currentWebView);
-    m_currentWebView->setTouchEvents(enabled);
-}
-
 bool WebEngineService::getSettingsParam(WebEngineSettings param) {
     return m_settings.at(param);
 }

@@ -103,7 +103,6 @@ void WebPageUI::showUI()
     elm_gesture_layer_cb_add(m_gestureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
     elm_gesture_layer_line_min_length_set(m_gestureLayer, SWIPE_MOMENTUM_TRESHOLD);
     elm_gesture_layer_line_distance_tolerance_set(m_gestureLayer, SWIPE_MOMENTUM_TRESHOLD);
-    elm_object_signal_callback_add(m_mainLayout,  "animation_finished", "ui", _gesture_finished, this);
 #endif
 }
 
@@ -131,7 +130,6 @@ void WebPageUI::hideUI()
     elm_object_event_callback_del(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE && GESTURE
     elm_gesture_layer_cb_del(m_gestureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
-    elm_object_signal_callback_del(m_mainLayout,  "animation_finished", "ui", _gesture_finished);
 #endif
 #if PROFILE_MOBILE
     hideMoreMenu();
@@ -669,9 +667,6 @@ void WebPageUI::gestureUp()
                 elm_object_signal_emit(m_mainLayout, "hide_uri_bar_vertical", "ui");
         } else
             BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
-        if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
-            setWebViewTouchEvents(false);
-        }
     }
 }
 
@@ -679,20 +674,8 @@ void WebPageUI::gestureDown()
 {
     if (m_uriBarHidden) {
         BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-        if (m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
-            setWebViewTouchEvents(false);
-        }
         elm_object_signal_emit(m_mainLayout, "show_uri_bar", "ui");
         m_uriBarHidden = false;
-    }
-}
-
-void WebPageUI::_gesture_finished(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    auto self = reinterpret_cast<WebPageUI*>(data);
-    if (self->m_statesMgr->equals(WPUState::MAIN_WEB_PAGE)) {
-        self->setWebViewTouchEvents(true);
     }
 }
 #endif

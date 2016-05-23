@@ -457,12 +457,6 @@ collections { base_scale: 2.6;
                 target: "progress_bar_light_bg";
             }
             program {
-                name: "hide_uri_bar_finished";
-                signal: "hide_uri_bar_finished";
-                source: "ui";
-                action: SIGNAL_EMIT "animation_finished" "ui";
-            }
-            program {
                 name: "hide_uri_bar_landscape";
                 signal: "hide_uri_bar_landscape";
                 source: "ui";
@@ -470,7 +464,6 @@ collections { base_scale: 2.6;
                 action: STATE_SET "hidden_landscape" 0.0;
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
-                after: "hide_uri_bar_finished";
             }
             program {
                 name: "hide_uri_bar_vertical";
@@ -480,13 +473,6 @@ collections { base_scale: 2.6;
                 action: STATE_SET "hidden_vertical" 0.0;
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
-                after: "hide_uri_bar_finished";
-            }
-            program {
-                name: "show_uri_bar_finished";
-                signal: "show_uri_bar_finished";
-                source: "ui";
-                action: SIGNAL_EMIT "animation_finished" "ui";
             }
             program {
                 name: "show_uri_bar";
@@ -495,7 +481,6 @@ collections { base_scale: 2.6;
                 action: STATE_SET "default" 0.0;
                 target: "uri_bar_bg";
                 transition: LINEAR 0.15;
-                after: "show_uri_bar_finished";
             }
             program {
                 name: "hide_moremenu";

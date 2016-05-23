@@ -315,7 +315,6 @@ void SimpleUI::connectUISignals()
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
 #if PROFILE_MOBILE
-    m_webPageUI->setWebViewTouchEvents.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setTouchEvents, m_webEngine.get(), _1));
     m_webPageUI->hideMoreMenu.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_webPageUI->getURIEntry().mobileEntryFocused.connect(boost::bind(&WebPageUI::mobileEntryFocused, m_webPageUI));
     m_webPageUI->getURIEntry().mobileEntryUnfocused.connect(boost::bind(&WebPageUI::mobileEntryUnfocused, m_webPageUI));
