@@ -431,6 +431,7 @@ void SimpleUI::connectUISignals()
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     m_bookmarkManagerUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
+    m_quickAccess->addQuickAccessClicked.connect(boost::bind(&SimpleUI::onNewQuickAccessClicked, this));
 #else
     M_ASSERT(m_zoomUI.get());
     m_zoomUI->setZoom.connect(boost::bind(&SimpleUI::setZoomFactor, this, _1));
@@ -799,7 +800,7 @@ void SimpleUI::onMostVisitedClicked()
 void SimpleUI::onBookmarkButtonClicked()
 {
    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-   m_quickAccess->setBookmarksItems(m_favoriteService->getBookmarks(-1));
+   m_quickAccess->setQuickAccessItems(m_favoriteService->getBookmarks(-1));
 }
 
 void SimpleUI::onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem)
@@ -863,6 +864,18 @@ void SimpleUI::onNewFolderPopupClick(const std::string& folder_name)
     addBookmark(update);
 #endif
 }
+
+void SimpleUI::onNewQuickAccessClicked()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "Add to Quick access", "",
+                                                          "Enter web address", _("IDS_BR_OPT_ADD"), _("IDS_BR_SK_CANCEL_ABB"), true);
+    inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onNewFolderPopupClick, this, _1));        //TODO: connect new function
+    inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));        //TODO: connect new function
+    inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));        //TODO: connect new function
+    inputPopup->show();
+}
+
 #if PROFILE_MOBILE
 void SimpleUI::onEditFolderClicked(const std::string& folder_name)
 {

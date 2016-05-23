@@ -158,7 +158,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
     int *ids=nullptr;
     int count=-1;
     bp_history_rows_cond_fmt conds;
-    conds.limit = 5;  //no of rows to get negative means no limitation
+    conds.limit = 12;  //no of rows to get negative means no limitation
     conds.offset = -1;   //the first row's index
     conds.order_offset = BP_HISTORY_O_FREQUENCY; // property to sort
     conds.ordering = 1; //way of ordering 0 asc 1 desc
@@ -181,12 +181,12 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         }
     }
 
-    int index_array[6] = {0, };
+    int index_array[13] = {0, };
     int j=0;
     int maximum = freq_arr[0];
     int position = 0;
 
-    for(int k=1; k<=5;k++){
+    for(int k=1; k<=12;k++){
         if(k > count || count == 0)
             break;
 
