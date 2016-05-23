@@ -140,8 +140,10 @@ void BookmarkFlowUI::addCustomFolders(services::SharedBookmarkFolderList folders
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     for (auto it = folders.begin(); it != folders.end(); ++it) {
+#if PROFILE_MOBILE
         if ((*it)->getId() == m_all_folder_id)
             continue;
+#endif
         FolderData *folderData = new FolderData();
         folderData->name = (*it)->getName();
         folderData->folder_id = (*it)->getId();
