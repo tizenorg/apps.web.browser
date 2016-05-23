@@ -155,6 +155,7 @@ private:
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onNewFolderClicked();
     void onNewFolderPopupClick(const std::string& folder_name);
+    void onNewQuickAccessClicked();
 #if PROFILE_MOBILE
     void onEditFolderClicked(const std::string& folder_name);
     void onDeleteFolderClicked(const std::string& folder_name);
