@@ -258,9 +258,21 @@ void SimpleUI::loadUIServices()
 
     m_historyUI =
         std::dynamic_pointer_cast
+<<<<<<< HEAD
+        <tizen_browser::base_ui::HistoryUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
+
+    m_settingsUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::SettingsUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
+
+    m_moreMenuUI =
+=======
         <tizen_browser::base_ui::HistoryUI,
         tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
-
+    }));
+    ft.push_back(make_async_future([this](){
 #if PROFILE_MOBILE
         m_settingsManager =
         std::dynamic_pointer_cast
@@ -268,13 +280,17 @@ void SimpleUI::loadUIServices()
         tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
         m_settingsUI = m_settingsManager->getView(SettingsMainOptions::BASE);
         m_settingsList.push_back(m_settingsUI);
+    }));
 #else
     m_settingsUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::SettingsUI,
         tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
+    }));
 #endif
+    ft.push_back(make_async_future([this](){
         m_moreMenuUI =
+>>>>>>> 31df093... Initial new SettingsUI Implementation
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
@@ -377,7 +393,7 @@ void SimpleUI::connectUISignals()
     M_ASSERT(m_moreMenuUI.get());
     m_moreMenuUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
     m_moreMenuUI->historyUIClicked.connect(boost::bind(&SimpleUI::showHistoryUI, this));
-    m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsBaseUI, this));
+    m_moreMenuUI->settingsClicked.connect(boost::bind(&SimpleUI::showSettingsUI, this));
     m_moreMenuUI->closeMoreMenuClicked.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
@@ -428,6 +444,7 @@ void SimpleUI::connectUISignals()
 #endif
 }
 
+<<<<<<< HEAD
 void SimpleUI::loadModelServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -467,23 +484,24 @@ void SimpleUI::loadModelServices()
         std::dynamic_pointer_cast
         <tizen_browser::services::CertificateContents, tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.certificateservice"));
-}
-
+=======
 void SimpleUI::connectSettingsSignals()
 {
 
     // SETTINGS OVERALL
     M_ASSERT(m_settingsUI.get());
+    m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
+    m_settingsUI->deleteSelectedDataClicked.connect(boost::bind(&SimpleUI::settingsDeleteSelectedData, this,_1));
     m_settingsUI->resetMostVisitedClicked.connect(boost::bind(&SimpleUI::settingsResetMostVisited, this));
     m_settingsUI->resetBrowserClicked.connect(boost::bind(&SimpleUI::settingsResetBrowser, this));
 #if PROFILE_MOBILE
+    m_settingsUI->userAgentItemClicked.connect(boost::bind(&SimpleUI::settingsOverrideUseragent, this, _1));
     m_settingsUI->getWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
     m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_settingsUI->setWebEngineSettingsParam.connect(boost::bind(&storage::SettingsStorage::setParam, &m_storageService->getSettingsStorage(), _1, _2));
     m_settingsUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
 
     // SETTINGS HOME PAGE SIGNALS
-    m_settingsManager->init(m_viewManager.getContent());
     auto home = m_settingsManager->getView(SettingsMainOptions::HOME);
     home->requestCurrentPage.connect(boost::bind(&SimpleUI::requestSettingsCurrentPage, this));
 
@@ -507,16 +525,8 @@ void SimpleUI::connectSettingsSignals()
     adv->setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     adv->getWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::getSettingsParam, m_webEngine.get(), _1));
     adv->setWebEngineSettingsParam.connect(boost::bind(&storage::SettingsStorage::setParam, &m_storageService->getSettingsStorage(), _1, _2));
-
-    // SETTINGS AUTO FILL PROFILE SELECT SIGNALS
-    auto afp = m_settingsManager->getView(SettingsMainOptions::AUTO_FILL_PROFILE);
-    afp->settingsAutofillProfileClicked.connect(boost::bind(&SimpleUI::showSettingsAutofillCreatorUI, this, _1));
-
-    // SETTINGS DELETE DATA
-    auto dpd = m_settingsManager->getView(SettingsMainOptions::DEL_PERSONAL_DATA);
-    dpd->deleteSelectedDataClicked.connect(boost::bind(&SimpleUI::settingsDeleteSelectedData, this,_1));
-
     #endif
+>>>>>>> 31df093... Initial new SettingsUI Implementation
 }
 
 void SimpleUI::initUIServices()
@@ -569,8 +579,8 @@ void SimpleUI::initModelServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    M_ASSERT(m_webEngine.get());
-    M_ASSERT(m_webPageUI.get());
+    M_ASSERT(m_webEngine);
+    M_ASSERT(m_webPageUI->getContent());
     m_webEngine->init(m_webPageUI->getContent());
 
 #if PROFILE_MOBILE
@@ -1083,7 +1093,8 @@ void SimpleUI::onBackPressed()
         }
 #if PROFILE_MOBILE
     } else if (m_viewManager.topOfStack() == m_settingsUI.get()) {
-        closeSettingsUI();
+        m_settingsUI->onBackKey();
+        //closeSettingsUI();
 #endif
     } else {
         m_viewManager.popTheStack();
@@ -1546,12 +1557,11 @@ void SimpleUI::closeHistoryUI()
         m_viewManager.popTheStack();
 }
 
-void SimpleUI::showSettings(const SettingsMainOptions& s)
-{
+void SimpleUI::showSettings(const SettingsMainOptions& s){
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_settingsManager->init(m_viewManager.getContent());
     m_settingsUI = m_settingsManager->getView(s);
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
+    m_settingsUI->init(m_viewManager.getContent());
     m_settingsList.push_back(m_settingsUI);
     m_viewManager.pushViewToStack(m_settingsUI.get());
 }
@@ -1560,7 +1570,6 @@ void SimpleUI::showSettingsUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_settingsUI.get());
-    m_settingsList.push_back(m_settingsUI);
 }
 
 void SimpleUI::showSettingsBaseUI()
@@ -1584,16 +1593,7 @@ void SimpleUI::showSettingsSearchEngineUI()
 void SimpleUI::showSettingsAutofillUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    showSettings(SettingsMainOptions::AUTO_FILL_PROFILE);
-}
-
-void SimpleUI::showSettingsAutofillCreatorUI(bool profile)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (profile)
-        showSettings(SettingsMainOptions::AUTO_FILL_CREATOR_WITH_PROFILE);
-    else
-        showSettings(SettingsMainOptions::AUTO_FILL_CREATOR_WITHOUT_PROFILE);
+    showSettings(SettingsMainOptions::AUTO_FILL);
 }
 
 void SimpleUI::showSettingsPrivacyUI()
@@ -1619,8 +1619,7 @@ void SimpleUI::closeSettingsUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_viewManager.topOfStack() == m_settingsList.back().get()){
         m_viewManager.popTheStack();
-        if (m_settingsList.size()) {
-            m_settingsList.back()->closeSettingsUIClicked.disconnect_all_slots();
+        if(m_settingsList.size() > 1) {
             m_settingsList.pop_back();
             m_settingsUI = m_settingsList.back();
         }
@@ -1806,18 +1805,15 @@ void SimpleUI::closeBookmarkManagerUI()
     m_viewManager.popTheStack();
 }
 
-void SimpleUI::settingsDeleteSelectedData(const std::map<SettingsDelPersDataOptions, bool>& options)
+void SimpleUI::settingsDeleteSelectedData(const std::string& str)
 {
     BROWSER_LOGD("[%s]: Deleting selected data", __func__);
     M_ASSERT(m_viewManager);
-    bool isSelected = false;
-    for (auto& it : options) {
-        if (it.second == true) {
-            isSelected = true;
-            break;
-        }
-    }
-    if (isSelected) {
+    if((str.find("CACHE")    != std::string::npos)  ||
+       (str.find("COOKIES")  != std::string::npos)  ||
+       (str.find("HISTORY")  != std::string::npos)  ||
+       (str.find("PASSWORD") != std::string::npos)  ||
+       (str.find("FORMDATA") != std::string::npos)) {
 #if PROFILE_MOBILE
            TextPopup* popup = TextPopup::createPopup(m_viewManager.getContent());
            popup->addButton(OK);
@@ -1827,7 +1823,7 @@ void SimpleUI::settingsDeleteSelectedData(const std::map<SettingsDelPersDataOpti
            popup->addButton(OK);
            popup->addButton(CANCEL);
 #endif
-           popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteSelectedDataButton, this, _1, options));
+           popup->buttonClicked.connect(boost::bind(&SimpleUI::onDeleteSelectedDataButton, this, _1, str));
            popup->setTitle("Delete");
            popup->setMessage("The selected web browsing data will be deleted.");
            popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
@@ -1836,33 +1832,24 @@ void SimpleUI::settingsDeleteSelectedData(const std::map<SettingsDelPersDataOpti
     }
 }
 
-void SimpleUI::onDeleteSelectedDataButton(const PopupButtons& button, const std::map<SettingsDelPersDataOptions, bool>& options)
+void SimpleUI::onDeleteSelectedDataButton(const PopupButtons& button, const std::string& dataText)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (button == OK) {
+    BROWSER_LOGD("[%s]: TYPE : %s", __func__, dataText.c_str());
+    if(button == OK){
         NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
         popup->show("Delete Web Browsing Data");
 
-        for (auto& it : options) {
-            if (it.first == BROWSING_HISTORY && it.second == true) {
-                BROWSER_LOGD("clear history" );
-                m_historyService->clearAllHistory();
-            } else if (it.first == CACHE && it.second == true) {
-                BROWSER_LOGD("clear cache");
-                m_webEngine->clearCache();
-            } else if (it.first == COOKIES_AND_SITE && it.second == true) {
-                BROWSER_LOGD("clear cookies");
-                m_webEngine->clearCookies();
-            } else if (it.first == PASSWORDS && it.second == true) {
-                BROWSER_LOGD("clear passwords");
-                m_webEngine->clearPasswordData();
-            } else if (it.first == DEL_PERS_AUTO_FILL && it.second == true) {
-                BROWSER_LOGD("clear autofill forms");
-                m_webEngine->clearFormData();
-            } else if (it.first == LOCATION && it.second == true) {
-                BROWSER_LOGD("clear location");
-            }
-        }
+        if (dataText.find("CACHE") != std::string::npos)
+            m_webEngine->clearCache();
+        if (dataText.find("COOKIES") != std::string::npos)
+            m_webEngine->clearCookies();
+        if (dataText.find("HISTORY") != std::string::npos)
+            m_historyService->clearAllHistory();
+        if (dataText.find("PASSWORD") != std::string::npos)
+            m_webEngine->clearPasswordData();
+        if (dataText.find("FORMDATA") != std::string::npos)
+            m_webEngine->clearFormData();
+
         popup->dismiss();
     }
 }
@@ -1939,6 +1926,43 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
 }
 
 #if PROFILE_MOBILE
+void SimpleUI::settingsOverrideUseragent(const std::string& userAgent)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS)) {
+        NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+        popup->show("Open a webpage to perform this operation.");
+        popup->dismiss();
+        m_settingsUI->onBackKey();
+        return;
+    }
+
+    if (userAgent.empty()) {
+        std::string currentUserAgent = m_webEngine->getUserAgent();
+        InputPopup *inputPopup = InputPopup::createPopup(m_viewManager.getContent(), "Override UserAgent", "",
+                                                        currentUserAgent, _("IDS_BR_SK_DONE"), _("IDS_BR_SK_CANCEL_ABB"), true);
+        inputPopup->button_clicked.connect(boost::bind(&SimpleUI::onOverrideUseragentButton, this, _1));
+        inputPopup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+        inputPopup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+        inputPopup->show();
+    }
+    else {
+        onOverrideUseragentButton(userAgent);
+    }
+}
+
+void SimpleUI::onOverrideUseragentButton(const std::string& newUA)
+{
+    BROWSER_LOGD("[%s]: Overriding useragent", __func__);
+    NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
+    m_webEngine->setUserAgent(newUA);
+    popup->show("UserAgent updated..");
+    popup->dismiss();
+    m_settingsUI->onBackKey();
+}
+#endif
+
+#if PROFILE_MOBILE
 void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button)
 #else
 void SimpleUI::tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData */)
@@ -1981,8 +2005,7 @@ bool SimpleUI::checkIfCreate()
         return true;
 }
 
-void SimpleUI::updateView()
-{
+void SimpleUI::updateView() {
     int tabs = m_webEngine->tabsCount();
     BROWSER_LOGD("[%s] Opened tabs: %d", __func__, tabs);
     if (tabs == 0) {
@@ -2005,8 +2028,7 @@ void SimpleUI::minimizeBrowser()
     elm_win_lower(main_window);
 }
 
-void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id)
-{
+void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_tabService->removeTab(id);
     updateView();

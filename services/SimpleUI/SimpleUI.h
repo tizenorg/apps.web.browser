@@ -41,6 +41,11 @@
 #if PROFILE_MOBILE
 #include "FindOnPageUI.h"
 #include "SettingsUI_mob.h"
+#include "SettingsMain_mob.h"
+#include "SettingsHomePage_mob.h"
+#include "SettingsSearchEngine_mob.h"
+#include "SettingsPrivacy_mob.h"
+#include "SettingsManager.h"
 #include "TextPopup_mob.h"
 #else
 #include "SettingsUI.h"
@@ -274,8 +279,18 @@ private:
     void switchToDesktopMode();
     void showHistoryUI();
     void closeHistoryUI();
+    void showSettings(const SettingsMainOptions&);
     void showSettingsUI();
+    void showSettingsBaseUI();
+    void showSettingsHomePageUI();
+    void showSettingsSearchEngineUI();
+    void showSettingsAutofillUI();
+    void showSettingsAutofillCreatorUI(bool);
+    void showSettingsPrivacyUI();
+    void showSettingsAdvancedUI();
+    void showSettingsDelPrivDataUI();
     void closeSettingsUI();
+    std::string requestSettingsCurrentPage();
 
     void showBookmarkFlowUI(bool state);
 #if PROFILE_MOBILE
@@ -294,6 +309,7 @@ private:
     void onRotation();
     bool isLandscape();
     int getRotation();
+    void connectSettingsSignals();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
     void closeBookmarkDetailsUI();
@@ -310,15 +326,13 @@ private:
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
-    void settingsDeleteSelectedData(const std::string& str);
+    void settingsDeleteSelectedData(const std::map<SettingsDelPersDataOptions, bool>& option);
     void settingsResetMostVisited();
     void settingsResetBrowser();
-    void onDeleteSelectedDataButton(const PopupButtons& button, const std::string &dataText);
+    void onDeleteSelectedDataButton(const PopupButtons& button, const std::map<SettingsDelPersDataOptions, bool>& options);
     void onDeleteMostVisitedButton(std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
 #if PROFILE_MOBILE
-    void settingsOverrideUseragent(const std::string& userAgent);
-    void onOverrideUseragentButton(const std::string& str);
     void tabLimitPopupButtonClicked(PopupButtons button);
 #else
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
@@ -353,7 +367,9 @@ private:
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
+    std::shared_ptr<SettingsManager> m_settingsManager;
     std::shared_ptr<SettingsUI> m_settingsUI;
+    std::list<std::shared_ptr<SettingsUI>> m_settingsList;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::StorageService> m_storageService;
