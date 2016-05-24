@@ -104,12 +104,13 @@ public:
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> hideMoreMenu;
     boost::signals2::signal<void ()> qaOrientationChanged;
+#else
+    boost::signals2::signal<void ()> showZoomNavigation;
 #endif
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
-    boost::signals2::signal<void ()> showZoomNavigation;
 
 private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);

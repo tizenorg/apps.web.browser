@@ -280,16 +280,16 @@ void SimpleUI::loadUIServices()
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::FindOnPageUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.findonpageui"));
+#else
+    m_zoomUI =
+        std::dynamic_pointer_cast
+        <tizen_browser::base_ui::ZoomUI, tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
 #endif
     m_bookmarkManagerUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkmanagerui"));
-
-    m_zoomUI =
-        std::dynamic_pointer_cast
-        <tizen_browser::base_ui::ZoomUI, tizen_browser::core::AbstractService>
-        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
 }
 
 void SimpleUI::connectUISignals()
@@ -377,12 +377,13 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->switchToMobileMode.connect(boost::bind(&SimpleUI::switchToMobileMode, this));
     m_moreMenuUI->switchToDesktopMode.connect(boost::bind(&SimpleUI::switchToDesktopMode, this));
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
-    m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
 #if PROFILE_MOBILE
     m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
     m_moreMenuUI->isRotated.connect(boost::bind(&SimpleUI::isLandscape, this));
     m_webPageUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
+#else
+    m_moreMenuUI->zoomUIClicked.connect(boost::bind(&SimpleUI::showZoomUI, this));
 #endif
 
     M_ASSERT(m_bookmarkDetailsUI.get());
@@ -414,12 +415,12 @@ void SimpleUI::connectUISignals()
 #if PROFILE_MOBILE
     m_bookmarkManagerUI->newFolderItemClicked.connect(boost::bind(&SimpleUI::onNewFolderClicked, this));
     m_bookmarkManagerUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
-#endif
-
+#else
     M_ASSERT(m_zoomUI.get());
     m_zoomUI->setZoom.connect(boost::bind(&SimpleUI::setZoomFactor, this, _1));
     m_zoomUI->getZoom.connect(boost::bind(&SimpleUI::getZoomFactor, this));
     m_zoomUI->scrollView.connect(boost::bind(&SimpleUI::scrollView, this, _1, _2));
+#endif
 }
 
 void SimpleUI::loadModelServices()
@@ -499,14 +500,14 @@ void SimpleUI::initUIServices()
 
     M_ASSERT(m_findOnPageUI.get());
     m_findOnPageUI->init(m_webPageUI->getContent());
+#else
+    M_ASSERT(m_zoomUI.get());
+    m_zoomUI->init(m_viewManager.getContent());
 #endif
 
     M_ASSERT(m_bookmarkManagerUI.get());
     m_bookmarkManagerUI->init(m_viewManager.getContent());
     m_bookmarkManagerUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
-
-    M_ASSERT(m_zoomUI.get());
-    m_zoomUI->init(m_viewManager.getContent());
 }
 
 void SimpleUI::initModelServices()
@@ -576,8 +577,8 @@ void SimpleUI::connectModelSignals()
 
     m_platformInputManager->returnPressed.connect(boost::bind(&elm_exit));
     m_platformInputManager->backPressed.connect(boost::bind(&SimpleUI::onBackPressed, this));
-    m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
 #if !PROFILE_MOBILE
+    m_platformInputManager->escapePressed.connect(boost::bind(&SimpleUI::onEscapePressed, this));
     m_platformInputManager->redPressed.connect(boost::bind(&SimpleUI::onRedKeyPressed, this));
     m_platformInputManager->yellowPressed.connect(boost::bind(&SimpleUI::onYellowKeyPressed, this));
 #endif
@@ -1040,13 +1041,13 @@ void SimpleUI::dismissPopup(interfaces::AbstractPopup* popup)
     }
 }
 
+#if !PROFILE_MOBILE
 void SimpleUI::onEscapePressed()
 {
     BROWSER_LOGD("[%s]", __func__);
     m_zoomUI->escapeZoom();
 }
-
-#if PROFILE_MOBILE
+#else
 void SimpleUI::onMenuButtonPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
@@ -1248,14 +1249,6 @@ void SimpleUI::onYellowKeyPressed()
 {
     m_webPageUI->onYellowKeyPressed();
 }
-#endif
-
-void SimpleUI::webEngineURLChanged(const std::string url)
-{
-    BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
-    m_webPageUI->getURIEntry().clearFocus();
-    m_tabService->clearThumb(m_webEngine->currentTabId());
-}
 
 void SimpleUI::showZoomUI()
 {
@@ -1284,6 +1277,14 @@ int SimpleUI::getZoomFactor()
 {
     BROWSER_LOGD("[%s:%d] %d", __PRETTY_FUNCTION__, __LINE__, m_webEngine->getZoomFactor());
     return m_webEngine->getZoomFactor();
+}
+#endif
+
+void SimpleUI::webEngineURLChanged(const std::string url)
+{
+    BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
+    m_webPageUI->getURIEntry().clearFocus();
+    m_tabService->clearThumb(m_webEngine->currentTabId());
 }
 
 void SimpleUI::scrollView(const int& dx, const int& dy)

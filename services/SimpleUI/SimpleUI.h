@@ -43,11 +43,11 @@
 #include "TextPopup_mob.h"
 #else
 #include "SettingsUI.h"
+#include "ZoomUI.h"
 #endif
 #include "QuickAccess.h"
 #include "TabUI.h"
 #include "TabId.h"
-#include "ZoomUI.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
 #include "BookmarkDetailsUI.h"
@@ -252,6 +252,7 @@ private:
      */
     void deleteBookmark(void);
 
+#if !PROFILE_MOBILE
     /**
      * @brief show Zoom Menu
      */
@@ -259,6 +260,7 @@ private:
     void closeZoomUI();
     void setZoomFactor(int level);
     int getZoomFactor();
+#endif
     void scrollView(const int& dx, const int& dy);
 
     void showTabUI();
@@ -318,12 +320,12 @@ private:
     void tabLimitPopupButtonClicked(PopupButtons button);
 #else
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
+    void onEscapePressed();
 #endif
     int tabsCount();
 
     void onReturnPressed(MenuButton *m);
     void onBackPressed();
-    void onEscapePressed();
 
     void searchWebPage(std::string &text, int flags);
 
@@ -341,6 +343,8 @@ private:
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
+#else
+    std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
 #endif
     std::shared_ptr<services::CertificateContents> m_certificateContents;
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
@@ -351,7 +355,6 @@ private:
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::StorageService> m_storageService;
     storage::Session m_currentSession;
-    std::shared_ptr<tizen_browser::base_ui::ZoomUI> m_zoomUI;
     bool m_initialised;
     int m_tabLimit;
     int m_favoritesLimit;
