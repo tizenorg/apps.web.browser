@@ -2,20 +2,30 @@ project(SettingsUI)
 
 if (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS
+    SettingsManager.cpp
     SettingsUI_mob.cpp
-    AutoFillForm/AutoFillFormComposeView.cpp
-    AutoFillForm/AutoFillFormManager.cpp
+    SettingsMain_mob.cpp
+    SettingsHomePage_mob.cpp
+    SettingsSearchEngine_mob.cpp
+    SettingsPrivacy_mob.cpp
+    SettingsAdvanced_mob.cpp
+    SettingsDelPersData_mob.cpp
+    SettingsAFProfile_mob.cpp
+    SettingsAFCreator_mob.cpp
     AutoFillForm/AutoFillFormItem.cpp
-    AutoFillForm/AutoFillFormListView.cpp
-    AutoFillForm/AutoProfileDeleteView.cpp
     )
 set(SettingsUI_HEADERS
+    SettingsManager.h
     SettingsUI_mob.h
-    AutoFillForm/AutoFillFormComposeView.h
-    AutoFillForm/AutoFillFormManager.h
+    SettingsMain_mob.h
+    SettingsHomePage_mob.h
+    SettingsSearchEngine_mob.h
+    SettingsPrivacy_mob.h
+    SettingsAdvanced_mob.h
+    SettingsDelPersData_mob.h
+    SettingsAFProfile_mob.h
+    SettingsAFCreator_mob.cpp
     AutoFillForm/AutoFillFormItem.h
-    AutoFillForm/AutoFillFormListView.h
-    AutoFillForm/AutoProfileDeleteView.h
     )
 else (${PROFILE} MATCHES "mobile")
 set(SettingsUI_SRCS

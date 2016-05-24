@@ -54,6 +54,7 @@ WebEngineService::WebEngineService()
     m_settings[WebEngineSettings::REMEMBER_FROM_DATA] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA));
     m_settings[WebEngineSettings::REMEMBER_PASSWORDS] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS));
     m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA));
+    m_settings[WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES] = boost::any_cast<bool>(tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_SCRIPTS_CAN_OPEN_PAGES));
 #endif
 }
 
@@ -677,6 +678,7 @@ void WebEngineService::setWebViewSettings(std::shared_ptr<WebView> webView) {
     webView->ewkSettingsFormCandidateDataEnabledSet(m_settings[WebEngineSettings::REMEMBER_FROM_DATA]);
     webView->ewkSettingsAutofillPasswordFormEnabledSet(m_settings[WebEngineSettings::REMEMBER_PASSWORDS]);
     webView->ewkSettingsFormProfileDataEnabledSet(m_settings[WebEngineSettings::AUTOFILL_PROFILE_DATA]);
+    webView->ewkSettingsScriptsCanOpenNewPagesEnabledSet(m_settings[WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES]);
 }
 
 void WebEngineService::orientationChanged()
@@ -745,9 +747,20 @@ void WebEngineService::clearPasswordData()
 
 void WebEngineService::clearFormData()
 {
-    for(std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it){
-            it->second->clearFormData();
+    auto context = ewk_context_default_get();
+    Eina_List *list = nullptr;
+    void *item_data = nullptr;
+    Eina_List *entire_item_list = ewk_context_form_autofill_profile_get_all(context);
+
+    EINA_LIST_FOREACH(entire_item_list, list, item_data) {
+        if (item_data) {
+            Ewk_Autofill_Profile *profile = static_cast<Ewk_Autofill_Profile*>(item_data);
+            ewk_context_form_autofill_profile_remove(context, ewk_autofill_profile_id_get(profile));
         }
+    }
+    ewk_context_form_candidate_data_delete_all(ewk_context_default_get());
+    for (std::map<TabId, WebViewPtr>::const_iterator it = m_tabs.begin(); it != m_tabs.end(); ++it)
+        it->second->clearFormData();
 }
 
 void WebEngineService::searchOnWebsite(const std::string & searchString, int flags)
@@ -929,6 +942,9 @@ void WebEngineService::setSettingsParam(WebEngineSettings param, bool value) {
         case WebEngineSettings::AUTOFILL_PROFILE_DATA:
             it->second->ewkSettingsFormProfileDataEnabledSet(value);
             break;
+        case WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES:
+            it->second->ewkSettingsScriptsCanOpenNewPagesEnabledSet(value);
+            break;
         default:
             BROWSER_LOGD("[%s:%d] Warning unknown param value!", __PRETTY_FUNCTION__, __LINE__);
         }
@@ -947,6 +963,10 @@ void WebEngineService::resetSettingsParam()
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA)));
     setSettingsParam(WebEngineSettings::REMEMBER_PASSWORDS, boost::any_cast<bool>(
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS)));
+    setSettingsParam(WebEngineSettings::AUTOFILL_PROFILE_DATA, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA)));
+    setSettingsParam(WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_SCRIPTS_CAN_OPEN_PAGES)));
 }
 #endif
 
