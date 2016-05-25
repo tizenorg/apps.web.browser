@@ -98,7 +98,7 @@ target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
 
 
 if(TIZEN_BUILD)
-    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS})
+    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS} "-pie")
 endif(TIZEN_BUILD)
 
 install(TARGETS ${BIN_NAME} RUNTIME DESTINATION bin)
