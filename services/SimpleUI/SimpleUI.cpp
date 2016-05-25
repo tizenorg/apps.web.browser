@@ -1002,7 +1002,12 @@ void SimpleUI::onBackPressed()
             if (m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
                 m_quickAccess->backButtonClicked();
             } else {
-                ui_app_exit();
+                app_control_h service;
+                app_control_create(&service);
+                app_control_set_operation(service, APP_CONTROL_OPERATION_MAIN);
+                app_control_set_app_id(service, "org.tizen.homescreen-efl");
+                app_control_send_launch_request(service, NULL, NULL);
+                app_control_destroy(service);
             }
         } else {
             m_webEngine->backButtonClicked();

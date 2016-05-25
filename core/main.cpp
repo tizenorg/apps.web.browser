@@ -84,13 +84,6 @@ static bool app_create(void* app_data)
     return true;
 }
 
-static void app_terminate(void* app_data)
-{
-    BROWSER_LOGD("%s\n", __func__);
-    auto bd = static_cast<BrowserDataPtr*>(app_data);
-    (*bd)->destroyUI();
-}
-
 static void app_control(app_control_h app_control, void* app_data){
     /* to test this functionality please use aul_test command on target:
      *  $aul_test org.tizen.browser __APP_SVC_URI__ <http://full.url.com/>
@@ -184,7 +177,8 @@ int main(int argc, char* argv[])try
     memset(&ops, 0x00, sizeof(ui_app_lifecycle_callback_s));
 
     ops.create = app_create;
-    ops.terminate = app_terminate;
+    // As we suspend process on exit we dont need to terminate.
+    ops.terminate = app_pause;
     ops.app_control = app_control;
     ops.pause = app_pause;
     ops.resume = app_resume;
