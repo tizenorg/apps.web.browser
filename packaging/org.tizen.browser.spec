@@ -117,7 +117,6 @@ cd %{_build_dir}
 %files
 %manifest org.tizen.browser.manifest
 %{_icondir}/org.tizen.browser.png
-%{_icondir}/apps_img_web_default_4x2.png
 %{_manifestdir}/%{name}.xml
 %defattr(-,root,root,-)
 %{_appdir}/bin/browser
