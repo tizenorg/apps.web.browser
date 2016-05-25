@@ -16,6 +16,7 @@
 
 #include <string>
 #include <cstring>
+#include "app_control.h"
 
 #ifndef __GENERALTOOLS_H__
 #define __GENERALTOOLS_H__
@@ -34,6 +35,7 @@ namespace tools
     static std::string fromChar(const char* c) __attribute__ ((unused));
     static std::string clearURL(const std::string & url) __attribute__ ((unused));
     static std::string extractDomain(const std::string & url) __attribute__ ((unused));
+    static void ui_app_pause() __attribute__ ((unused));
 
     static std::string fromChar(const char* c) { return c ? std::string(c) : std::string(); }
 
@@ -48,6 +50,17 @@ namespace tools
         beg += strlen(PROTCOL_BEGIN);
         size_t end = url.find(END_SLASH, beg);
         return url.substr(beg, end - beg);
+    }
+
+    static void ui_app_pause() {
+        //From app_control.h on APP_CONTROL_OPERATION_MAIN:
+        //"Definition for the app_control operation: An explicit launch for a homescreen application."
+        app_control_h service;
+        app_control_create(&service);
+        app_control_set_operation(service, APP_CONTROL_OPERATION_MAIN);
+        app_control_set_app_id(service, "org.tizen.homescreen-efl");
+        app_control_send_launch_request(service, NULL, NULL);
+        app_control_destroy(service);
     }
 }
 }
