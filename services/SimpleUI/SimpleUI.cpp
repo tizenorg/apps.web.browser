@@ -1003,7 +1003,7 @@ void SimpleUI::onBackPressed()
             if (m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
                 m_quickAccess->backButtonClicked();
             } else {
-                ui_app_exit();
+                tools::ui_app_pause();
             }
         } else {
             m_webEngine->backButtonClicked();
