@@ -95,6 +95,17 @@ public:
      */
     virtual bool deleteBookmark(const std::string & url) = 0;
 
+    virtual std::shared_ptr<tizen_browser::services::BookmarkItem> addFolder(const std::string & title,
+            int parent = tizen_browser::services::ROOT_FOLDER_ID) = 0;
+
+    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> getFolders(
+            int parent = tizen_browser::services::ROOT_FOLDER_ID) = 0;
+    virtual bool folderExists(const std::string & title, int parent = tizen_browser::services::ROOT_FOLDER_ID) = 0;
+    virtual std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> getAllBookmarkItems(int parent = tizen_browser::services::ROOT_FOLDER_ID) = 0;
+    virtual std::shared_ptr<tizen_browser::services::BookmarkItem> getRoot() = 0;
+    virtual std::shared_ptr<tizen_browser::services::BookmarkItem> getBookmarkItem(int id) = 0;
+    virtual void editBookmark(int id, const std::string & url, const std::string & title, int parent = -1, int order = -1) = 0;
+    virtual bool deleteBookmark(int id) = 0;
     /**
      * @brief Gets bookmark item
      *
