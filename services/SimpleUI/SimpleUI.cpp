@@ -379,7 +379,7 @@ void SimpleUI::connectUISignals()
     m_moreMenuUI->isBookmark.connect(boost::bind(&SimpleUI::checkBookmark, this));
     m_moreMenuUI->bookmarkFlowClicked.connect(boost::bind(&SimpleUI::showBookmarkFlowUI, this, _1));
 #if PROFILE_MOBILE
-    m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this));
+    m_moreMenuUI->findOnPageClicked.connect(boost::bind(&SimpleUI::showFindOnPageUI, this, std::string()));
     m_moreMenuUI->isRotated.connect(boost::bind(&SimpleUI::isLandscape, this));
     m_webPageUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
 #else
@@ -564,6 +564,7 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
+    m_webEngine->openFindOnPage.connect(boost::bind(&SimpleUI::showFindOnPageUI, this, _1));
     m_webEngine->closeFindOnPage.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
     m_webEngine->unsecureConnection.connect(boost::bind(&SimpleUI::showUnsecureConnectionPopup, this));
 #endif
@@ -1293,11 +1294,13 @@ void SimpleUI::scrollView(const int& dx, const int& dy)
 }
 
 #if PROFILE_MOBILE
-void SimpleUI::showFindOnPageUI()
+void SimpleUI::showFindOnPageUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_findOnPageUI);
     m_findOnPageUI->show();
+    if(!str.empty())
+        m_findOnPageUI->set_text(str.c_str());
 }
 
 void SimpleUI::findWord(const struct FindData& fdata)

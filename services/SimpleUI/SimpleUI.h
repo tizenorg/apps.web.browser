@@ -281,7 +281,7 @@ private:
     void showUnsecureConnectionPopup();
     void closeBookmarkFlowUI();
 
-    void showFindOnPageUI();
+    void showFindOnPageUI(const std::string& str);
     void findWord(const struct FindData& fdata);
     void closeFindOnPageUI();
 
