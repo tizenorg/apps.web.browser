@@ -466,6 +466,11 @@ public:
     boost::signals2::signal<void (TabId)> tabClosed;
 
     /**
+     * Open find on page
+     */
+    boost::signals2::signal<void (const std::string&)> openFindOnPage;
+
+    /**
      * Close find on page
      */
     boost::signals2::signal<void ()> closeFindOnPage;

@@ -121,6 +121,7 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
 #if PROFILE_MOBILE
     webView->getRotation.connect(boost::bind(&WebEngineService::_getRotation, this));
     webView->unsecureConnection.connect(boost::bind(&WebEngineService::_unsecureConnection, this));
+    webView->findOnPage.connect(boost::bind(&WebEngineService::_findOnPage, this, _1));
 #endif
 }
 
@@ -570,6 +571,11 @@ void WebEngineService::orientationChanged()
 void WebEngineService::_unsecureConnection()
 {
     unsecureConnection();
+}
+
+void WebEngineService::_findOnPage(const std::string& str)
+{
+    openFindOnPage(str);
 }
 #endif
 

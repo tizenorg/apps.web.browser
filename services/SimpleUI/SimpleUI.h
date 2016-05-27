@@ -282,6 +282,7 @@ private:
     void closeBookmarkFlowUI();
 
     void showFindOnPageUI();
+    void openFindOnPageUI(const std::string& str);
     void findWord(const struct FindData& fdata);
     void closeFindOnPageUI();
 

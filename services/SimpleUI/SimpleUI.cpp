@@ -564,6 +564,7 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
+    m_webEngine->openFindOnPage.connect(boost::bind(&SimpleUI::openFindOnPageUI, this, _1));
     m_webEngine->closeFindOnPage.connect(boost::bind(&SimpleUI::closeFindOnPageUI, this));
     m_webEngine->unsecureConnection.connect(boost::bind(&SimpleUI::showUnsecureConnectionPopup, this));
 #endif
@@ -1304,6 +1305,14 @@ void SimpleUI::findWord(const struct FindData& fdata)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webEngine->findWord(fdata.input_str, fdata.forward, fdata.func, fdata.data);
+}
+
+void SimpleUI::openFindOnPageUI(const std::string& str)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_findOnPageUI);
+    showFindOnPageUI();
+    m_findOnPageUI->set_text(str.c_str());
 }
 
 void SimpleUI::closeFindOnPageUI()
