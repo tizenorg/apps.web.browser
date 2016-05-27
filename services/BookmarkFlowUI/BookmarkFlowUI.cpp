@@ -275,7 +275,8 @@ void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
     if (data != nullptr) {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         BookmarkUpdate update;
-        update.folder_id = bookmarkFlowUI->m_folder_id;
+        update.folder_id = 0;
+        //TODO: change bookmarkFlowUI->m_folder_id;
         update.title = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
         if (!bookmarkFlowUI->m_state)
             bookmarkFlowUI->saveBookmark(update);
@@ -471,7 +472,7 @@ void BookmarkFlowUI::_folder_clicked(void * data, Evas_Object *, void *)
     if (data != nullptr)
     {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        bookmarkFlowUI->addFolder();
+        bookmarkFlowUI->addFolder(0);
     }
 }
 
@@ -588,7 +589,7 @@ void BookmarkFlowUI::_gridNewFolderClicked(void * data, Evas_Object *, void *)
     if (data != nullptr)
     {
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        bookmarkFlowUI->addFolder();
+        bookmarkFlowUI->addFolder(0);
         bookmarkFlowUI->dismiss();
     }
 }
