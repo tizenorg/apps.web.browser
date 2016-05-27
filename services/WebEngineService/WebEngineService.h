@@ -241,6 +241,7 @@ private:
     int _getRotation();
     void setWebViewSettings(std::shared_ptr<WebView> webView);
     void _unsecureConnection();
+    void _findOnPage(const std::string& str);
 #endif
 
     /**
