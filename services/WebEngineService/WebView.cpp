@@ -1234,9 +1234,15 @@ void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
         ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY, _("IDS_BR_OPT_COPY"), true);
     }
     /* Share*/
-   if (text_selected == true) {
-         ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE, _("IDS_BR_OPT_SHARE"), true);
-     }
+    if (text_selected == true) {
+        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE, _("IDS_BR_OPT_SHARE"), true);
+    }
+    if (text_selected == true) {
+        ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SEARCH_WEB, _("IDS_BR_OPT_WEB_SEARCH"), true);
+    }
+    if (text_selected == true) {
+        ewk_context_menu_item_append_as_action(menu, CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_PAGE, _("IDS_BR_OPT_FIND_ON_PAGE_ABB"), true);
+    }
 }
 
 void WebView::_show_context_menu_image_only(Ewk_Context_Menu *menu)
@@ -1388,11 +1394,14 @@ void WebView::__contextmenu_selected_cb(void *data, Evas_Object */*obj*/, void *
     Ewk_Context_Menu_Item_Tag tag = ewk_context_menu_item_tag_get(item);
 
     const char *link_url = ewk_context_menu_item_link_url_get(item);
+    const char *selected_text = ewk_view_text_selection_text_get(self->m_ewkView);
 
     if (tag == CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL) {
         self->handle_scheme(link_url);
     } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_CALL) {
         self->handle_scheme(link_url);
+    } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_FIND_ON_PAGE) {
+        self->findOnPage(selected_text);
     } else if (tag == CUSTOM_CONTEXT_MENU_ITEM_SEND_MESSAGE) {
         if (link_url && !strncmp(TEL_SCHEME, link_url, strlen(TEL_SCHEME))) {
             std::string::size_type pos = std::string::npos;

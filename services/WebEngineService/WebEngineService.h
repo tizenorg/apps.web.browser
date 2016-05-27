@@ -231,6 +231,7 @@ private:
     void _forwardEnableChanged(bool);
     void _backwardEnableChanged(bool);
     void _loadProgress(double);
+    void _findOnPage(const std::string& str);
     void _confirmationRequest(WebConfirmationPtr) ;
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot, tools::SnapshotType snapshot_type);
