@@ -91,7 +91,7 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> saveBookmark;
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
-    boost::signals2::signal<void ()> addFolder;
+    boost::signals2::signal<void (int)> addFolder;
 #if PROFILE_MOBILE
     boost::signals2::signal<bool ()> isRotated;
 #endif

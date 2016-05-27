@@ -29,31 +29,37 @@
 namespace tizen_browser{
 namespace services{
 
+
 BookmarkItem::BookmarkItem()
 : m_saved_id(0)
 , m_url()
 , m_title()
 , m_note()
-, m_thumbnail(std::make_shared<tizen_browser::tools::BrowserImage>())
-, m_favicon(std::make_shared<tizen_browser::tools::BrowserImage>())
-, m_directory(0)
+, m_parent(0)
+, m_order(0)
+, m_has_thumbnail(false)
+, m_has_favicon(false)
 , m_is_folder(false)
 , m_is_editable(true)
 {
 }
 
 BookmarkItem::BookmarkItem(
+                int id,
                 const std::string& url,
                 const std::string& title,
                 const std::string& note,
-                unsigned int dir,
-                unsigned int id
+                int parent,
+                int order
                         )
 : m_saved_id(id)
 , m_url(url)
 , m_title(title)
 , m_note(note)
-, m_directory(dir)
+, m_parent(parent)
+, m_order(order)
+, m_has_thumbnail(false)
+, m_has_favicon(false)
 {
 
 }
@@ -64,6 +70,7 @@ BookmarkItem::~BookmarkItem()
 
 void BookmarkItem::setFavicon(std::shared_ptr<tizen_browser::tools::BrowserImage> fav)
 {
+    m_has_favicon = true;
     m_favicon = fav;
 };
 
@@ -74,12 +81,12 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> BookmarkItem::getFavicon() c
 
 void BookmarkItem::setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail)
 {
+    m_has_thumbnail = true;
     m_thumbnail = thumbnail;
 };
 
 std::shared_ptr<tizen_browser::tools::BrowserImage> BookmarkItem::getThumbnail() const
 {
-
     return m_thumbnail;
 };
 
