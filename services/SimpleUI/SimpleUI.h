@@ -281,7 +281,7 @@ private:
     void showUnsecureConnectionPopup();
     void closeBookmarkFlowUI();
 
-    void showFindOnPageUI();
+    void showFindOnPageUI(const std::string& str);
     void findWord(const struct FindData& fdata);
     void closeFindOnPageUI();
 
@@ -369,6 +369,7 @@ private:
     int m_current_angle;
     int m_temp_angle;
     Elm_Transit *m_rotation_transit;
+    bool m_isFindOnPageShown;
 #endif
 };
 
