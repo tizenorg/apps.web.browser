@@ -379,13 +379,17 @@ void WebPageUI::orientationChanged()
     if (landscape) {
         if (*landscape) {
             elm_object_signal_emit(m_privateLayout, "show_incognito_landscape", "ui");
+#if GESTURE
             if (m_uriBarHidden)
                 elm_object_signal_emit(m_mainLayout, "hide_uri_bar_landscape", "ui");
+#endif
         }
         else {
             elm_object_signal_emit(m_privateLayout, "show_incognito_vertical", "ui");
+#if GESTURE
             if (m_uriBarHidden)
                 elm_object_signal_emit(m_mainLayout, "hide_uri_bar_vertical", "ui");
+#endif
         }
     }
     else
