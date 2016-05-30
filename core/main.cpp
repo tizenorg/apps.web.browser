@@ -45,11 +45,10 @@ const std::string DEFAULT_URL = "";
 
 using BrowserDataPtr = std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>>;
 
-static void set_arguments(int argc, char **argv)
+static void set_arguments(int, char **argv)
 {
     std::vector<char*> browser_argv;
-    for (int i = 0; i < argc; i++)
-        browser_argv.push_back(argv[i]);
+    browser_argv.push_back(argv[0]);
     for (auto arg: engineCommandLineFlags)
         browser_argv.push_back(const_cast<char*>(arg));
 
