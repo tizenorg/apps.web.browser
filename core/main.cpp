@@ -36,8 +36,8 @@
 
 // Command line flags for engine
 const char *engineCommandLineFlags[] = {
-  "process-per-tab",
-  "allow-file-access-from-files",
+  "--process-per-tab",
+  "--allow-file-access-from-files",
 };
 
 ///\note Odroid platform modification
@@ -48,8 +48,6 @@ using BrowserDataPtr = std::shared_ptr<tizen_browser::base_ui::AbstractMainWindo
 static void set_arguments(int argc, char **argv)
 {
     std::vector<char*> browser_argv;
-    for (int i = 0; i < argc; i++)
-        browser_argv.push_back(argv[i]);
     for (auto arg: engineCommandLineFlags)
         browser_argv.push_back(const_cast<char*>(arg));
 
