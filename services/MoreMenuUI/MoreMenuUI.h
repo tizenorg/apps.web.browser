@@ -81,6 +81,7 @@ public:
     //AbstractUIComponent interface methods
     void init(Evas_Object* parent);
     Evas_Object* getContent();
+    void updateBookmarkButton();
     void showUI();
     void hideUI();
 
@@ -97,7 +98,6 @@ public:
     void enableAddToBookmarkButton(bool data);
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
-    void setIsBookmark(bool isBookmark);
 #if PROFILE_MOBILE
     void blockThumbnails(bool blockThumbnails);
     void shouldShowFindOnPage(bool show);
@@ -156,7 +156,6 @@ private:
     std::string m_edjFilePath;
     bool m_gengridSetup;
     bool m_desktopMode;
-    Eina_Bool m_isBookmark;
 #if PROFILE_MOBILE
     bool m_shouldShowFindOnPage;
     bool m_blockThumbnails;
