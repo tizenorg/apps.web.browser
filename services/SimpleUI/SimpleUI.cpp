@@ -1290,6 +1290,8 @@ void SimpleUI::webEngineURLChanged(const std::string url)
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_webPageUI->getURIEntry().clearFocus();
     m_tabService->clearThumb(m_webEngine->currentTabId());
+    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+        m_moreMenuUI->updateBookmarkButton();
 }
 
 void SimpleUI::scrollView(const int& dx, const int& dy)
@@ -1541,7 +1543,6 @@ void SimpleUI::showMoreMenu()
         m_moreMenuUI->setHomePageInfo();
     }
 #endif
-    m_moreMenuUI->setIsBookmark(checkBookmark());
 }
 
 void SimpleUI::closeMoreMenu()

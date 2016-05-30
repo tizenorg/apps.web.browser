@@ -52,7 +52,6 @@ MoreMenuUI::MoreMenuUI()
     , m_bookmarkIcon(nullptr)
     , m_item_class(nullptr)
     , m_desktopMode(true)
-    , m_isBookmark(EINA_FALSE)
 #if PROFILE_MOBILE
     , m_shouldShowFindOnPage(false)
     , m_blockThumbnails(false)
@@ -89,6 +88,12 @@ void MoreMenuUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+}
+
+void MoreMenuUI::updateBookmarkButton()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_gengrid_item_update(m_map_menu_views[ADD_TO_BOOKMARK]);
 }
 
 void MoreMenuUI::showUI()
@@ -286,27 +291,25 @@ void MoreMenuUI::setURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
 
-    if(!url.empty()) {
-        elm_object_part_text_set(m_current_tab_bar, "webpage_url", url.c_str());
-
-        if(true == isBookmark()) {
-            m_isBookmark = EINA_TRUE;
-            changeBookmarkStatus(true);
-            enableAddToBookmarkButton(true);
-        }
-        else {
-            m_isBookmark = EINA_FALSE;
+    boost::optional<bool> bookmark = isBookmark();
+    if (bookmark) {
+        if (!url.empty()) {
+            elm_object_part_text_set(m_current_tab_bar, "webpage_url", url.c_str());
+            if (*bookmark) {
+                changeBookmarkStatus(true);
+                enableAddToBookmarkButton(true);
+            } else {
+                changeBookmarkStatus(false);
+                enableAddToBookmarkButton(true);
+            }
+        } else {
+            elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
+            elm_object_part_text_set(m_current_tab_bar, "webpage_title", "No Content");
             changeBookmarkStatus(false);
-            enableAddToBookmarkButton(true);
+            enableAddToBookmarkButton(false);
         }
-    }
-    else {
-        m_isBookmark = EINA_FALSE;
-        elm_object_part_text_set(m_current_tab_bar, "webpage_url", "");
-        elm_object_part_text_set(m_current_tab_bar, "webpage_title", "No Content");
-        changeBookmarkStatus(false);
-        enableAddToBookmarkButton(false);
-    }
+    } else
+        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
 }
 
 void MoreMenuUI::setHomePageInfo()
@@ -317,13 +320,11 @@ void MoreMenuUI::setHomePageInfo()
 
 void MoreMenuUI::changeBookmarkStatus(bool data)
 {
-    if(data) {
-        m_isBookmark = EINA_TRUE;
+    if (data) {
         elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Remove Bookmark");
         elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark.png");
     }
     else {
-        m_isBookmark = EINA_FALSE;
         elm_object_part_text_set(m_current_tab_bar, "add_to_bookmark_text", "Add to Bookmark");
         elm_image_file_set(m_bookmarkIcon, m_edjFilePath.c_str(), "ic_add_bookmark_new.png");
     }
@@ -362,7 +363,11 @@ void MoreMenuUI::_bookmarkButton_clicked(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if(data) {
         MoreMenuUI *moreMenuUI = static_cast<MoreMenuUI*>(data);
-        moreMenuUI->bookmarkFlowClicked(moreMenuUI->m_isBookmark == EINA_TRUE);
+        boost::optional<bool> bookmark = moreMenuUI->isBookmark();
+        if (bookmark)
+            moreMenuUI->bookmarkFlowClicked(*bookmark);
+        else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -447,8 +452,13 @@ char* MoreMenuUI::_grid_text_get(void* data, Evas_Object*, const char* part)
                 item_name = _("IDS_BR_OPT_SETTINGS");
                 break;
 #if PROFILE_MOBILE
-            case ADD_TO_BOOKMARK:
-                item_name = itemData->moreMenuUI->m_isBookmark == EINA_TRUE ? "Edit Bookmark" : "Add to Bookmark";
+            case ADD_TO_BOOKMARK: {
+                boost::optional<bool> bookmark = itemData->moreMenuUI->isBookmark();
+                if (bookmark)
+                    item_name = *bookmark ? "Edit Bookmark" : "Add to Bookmark";
+                else
+                    BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+                }
                 break;
 #ifdef READER_MODE_ENABLED
             case READER_MODE:
@@ -576,9 +586,13 @@ Evas_Object * MoreMenuUI::_grid_content_get(void *data, Evas_Object *obj, const 
 
         if (!strncmp(part_name1, part, part_name1_len)) {
             Evas_Object* thumb_nail = elm_icon_add(obj);
-            const char* file_name = getImageFileNameForType(itemData->item, false, itemData->moreMenuUI->m_isBookmark);
-            elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
-            return thumb_nail;
+            boost::optional<bool> bookmark = itemData->moreMenuUI->isBookmark();
+            if (bookmark) {
+                const char* file_name = getImageFileNameForType(itemData->item, false, *bookmark);
+                elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
+                return thumb_nail;
+            } else
+                BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
         }
 
         if (!strncmp(part_name2, part, part_name2_len)) {
@@ -611,8 +625,12 @@ void MoreMenuUI::__cb_mouse_in(void * data, Evas *, Evas_Object *obj, void *)
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
         Elm_Object_Item *selected = itemData->moreMenuUI->m_map_menu_views[itemData->item];
         Evas_Object *thumb_nail = elm_object_item_part_content_get(selected, "thumbnail_item");
-        const char *file_name = getImageFileNameForType(itemData->item, true, itemData->moreMenuUI->m_isBookmark);
-        elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
+        boost::optional<bool> bookmark = itemData->moreMenuUI->isBookmark();
+        if (bookmark) {
+            const char *file_name = getImageFileNameForType(itemData->item, true, *bookmark);
+            elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
+        } else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
     }
 #endif
 }
@@ -629,8 +647,12 @@ void MoreMenuUI::__cb_mouse_out(void * data, Evas *, Evas_Object *obj, void *)
         MoreMenuItemData *itemData = static_cast<MoreMenuItemData*>(data);
         Elm_Object_Item *selected = itemData->moreMenuUI->m_map_menu_views[itemData->item];
         Evas_Object *thumb_nail = elm_object_item_part_content_get(selected, "thumbnail_item");
-        const char *file_name = getImageFileNameForType(itemData->item, false, itemData->moreMenuUI->m_isBookmark);
-        elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
+        boost::optional<bool> bookmark = itemData->moreMenuUI->isBookmark();
+        if (bookmark) {
+            const char *file_name = getImageFileNameForType(itemData->item, false, *bookmark);
+            elm_image_file_set(thumb_nail, itemData->moreMenuUI->m_edjFilePath.c_str(), file_name);
+        } else
+            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
     }
 #endif
 }
@@ -660,7 +682,11 @@ void MoreMenuUI::_thumbSelected(void* data, Evas_Object*, void*)
             case ADD_TO_BOOKMARK:
                 if (!itemData->moreMenuUI->m_blockThumbnails) {
                     elm_object_focus_allow_set(itemData->moreMenuUI->m_gengrid, EINA_FALSE);
-                    itemData->moreMenuUI->bookmarkFlowClicked(itemData->moreMenuUI->m_isBookmark == EINA_TRUE);
+                    boost::optional<bool> bookmark = itemData->moreMenuUI->isBookmark();
+                    if (bookmark)
+                        itemData->moreMenuUI->bookmarkFlowClicked(*bookmark);
+                    else
+                        BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
                 }
                 break;
 #ifdef READER_MODE_ENABLED
@@ -728,10 +754,6 @@ void MoreMenuUI::blockThumbnails(bool blockThumbnails)
     m_blockThumbnails = blockThumbnails;
 }
 #endif
-void MoreMenuUI::setIsBookmark(bool isBookmark)
-{
-    m_isBookmark = isBookmark ? EINA_TRUE : EINA_FALSE;
-}
 
 #if !PROFILE_MOBILE
 void MoreMenuUI::createFocusVector()
