@@ -129,6 +129,12 @@ SimpleUI::~SimpleUI() {
     evas_object_del(m_window.get());
 }
 
+void SimpleUI::suspend()
+{
+    m_webPageUI->setFocusOnSuspend();
+    m_webEngine->suspend();
+}
+
 void SimpleUI::destroyUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
