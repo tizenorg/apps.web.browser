@@ -86,6 +86,7 @@ public:
     void lockWebview();
     void lockUrlHistoryList();
     void unlockUrlHistoryList();
+    void setFocusOnSuspend();
 #if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
