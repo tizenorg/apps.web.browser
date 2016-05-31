@@ -1128,14 +1128,31 @@ void SimpleUI::reloadEnable(bool enable)
     m_webPageUI->setReloadButtonEnabled(enable);
 }
 
-void SimpleUI::downloadStarted(bool status)
+void SimpleUI::downloadStarted(int status)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-    if (status)
-        popup->show("Starting download", false);
-    else
-        popup->show("Fail to start download", false);
+
+    switch(status)
+    {
+        case 0:
+            popup->show(_("IDS_BR_HEADER_UNABLE_TO_DOWNLOAD_ABB"), false);
+            break;
+        case 1:
+            popup->show(_("IDS_BR_POP_STARTING_DOWNLOAD_ING"), false);
+            break;
+        case 2:
+            popup->show(_("IDS_BR_OPT_SAVEDPAGES"), false);
+            break;
+        case 3:
+            popup->show(_("IDS_BR_POP_FAIL"), false);
+            break;
+        case 4:
+            popup->show(_("IDS_BR_POP_ONLY_HTTP_OR_HTTPS_URLS_CAN_BE_DOWNLOADED"), false);
+            break;
+        default:
+            break;
+    }
     popup->dismiss();
 }
 

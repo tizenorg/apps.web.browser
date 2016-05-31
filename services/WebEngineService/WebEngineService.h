@@ -223,7 +223,7 @@ private:
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
     void _titleChanged(const std::string&);
     void _uriChanged(const std::string &);
-    void _downloadStarted(bool status);
+    void _downloadStarted(int status);
     void _loadFinished();
     void _loadStarted();
     void _loadStop();
