@@ -340,6 +340,11 @@ void WebPageUI::unlockUrlHistoryList()
     getUrlHistoryList()->onListWidgetFocusChange(false);
 }
 
+void WebPageUI::setFocusOnSuspend()
+{
+    elm_object_focus_set(m_rightButtonBar->getButton("tab_button"), EINA_TRUE);
+}
+
 #if !PROFILE_MOBILE
 void WebPageUI::onRedKeyPressed()
 {
