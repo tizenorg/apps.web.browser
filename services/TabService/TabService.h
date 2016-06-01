@@ -96,7 +96,7 @@ private:
      * Get image thumb for given id (from cache or database).
      * Create one, if it does not exist.
      */
-    tools::BrowserImagePtr getThumb(const basic_webengine::TabId& tabId);
+    tools::BrowserImagePtr getThumb(const basic_webengine::TabId& tabId, bool isCurrentTab = false);
 
     /**
      * Get cached thumb for given tab id.

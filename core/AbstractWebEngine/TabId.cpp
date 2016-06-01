@@ -54,6 +54,7 @@ TabContent::TabContent(TabId id, const std::string& title,
     : m_id(id)
     , m_title(title)
     , m_thumbnail(thumbnail)
+    , m_isCurrentTab(false)
 {
 }
 

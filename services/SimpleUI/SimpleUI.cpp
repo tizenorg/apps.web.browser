@@ -538,6 +538,7 @@ void SimpleUI::connectModelSignals()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_webEngine->currentTabChanged.connect(boost::bind(&SimpleUI::currentTabChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
@@ -617,6 +618,13 @@ void SimpleUI::switchViewToWebPage()
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI());
     m_webPageUI->toIncognito(m_webEngine->isPrivateMode(m_webEngine->currentTabId()));
     updateSecureIcon();
+}
+
+void SimpleUI::currentTabChanged(const tizen_browser::basic_webengine::TabId&)
+{
+    m_webPageUI->getURIEntry().clearFocus();
+    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+        m_moreMenuUI->updateBookmarkButton();
 }
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
