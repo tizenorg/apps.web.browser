@@ -27,7 +27,6 @@
 #include "BrowserLogger.h"
 #include "Config/Config.h"
 #include "WebView.h"
-#include "GeneralTools.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -699,7 +698,7 @@ void WebEngineService::backButtonClicked()
         closeTab();
         switchToWebPage();
     } else {
-        tools::ui_app_pause();
+        minimizeBrowser();
     }
 }
 

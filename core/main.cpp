@@ -42,6 +42,7 @@ const char *engineCommandLineFlags[] = {
 
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
+const std::string DEFAULT_CALLER = "org.tizen.homescreen-efl";
 
 using BrowserDataPtr = std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>>;
 
@@ -100,6 +101,7 @@ static void app_control(app_control_h app_control, void* app_data){
     char *operation = NULL;
     char *request_uri = NULL;
     char *request_mime_type = NULL;
+    char *request_caller = NULL;
 
     if (app_control_get_operation(app_control, &operation) != APP_CONTROL_ERROR_NONE) {
         BROWSER_LOGD("get app_control operation failed");
@@ -112,19 +114,23 @@ static void app_control(app_control_h app_control, void* app_data){
     if (app_control_get_mime(app_control, &request_mime_type) != APP_CONTROL_ERROR_NONE)
         BROWSER_LOGD("get app_control mime failed");
 
+    if (app_control_get_caller(app_control, &request_caller) != APP_CONTROL_ERROR_NONE)
+        BROWSER_LOGD("get app_control caller failed");
 
-    BROWSER_LOGD("operation = [%s], request_uri = [%s], request_mime_type = [%s]"
-            , operation, request_uri, request_mime_type);
+    BROWSER_LOGD("operation = [%s], request_uri = [%s], request_caller = [%s] request_mime_type = [%s]"
+            , operation, request_uri, request_caller, request_mime_type);
 
     std::string uri = request_uri != NULL ? std::string(request_uri) : DEFAULT_URL;
+    std::string caller = request_caller != NULL ? std::string(request_caller) : DEFAULT_CALLER;
 
     BROWSER_LOGD("[%s] uri=%s", __func__, uri.c_str());
     free(request_uri);
     free(request_mime_type);
+    free(request_caller);
     free(operation);
 
     auto bd = static_cast<BrowserDataPtr*>(app_data);
-    (*bd)->exec(uri);
+    (*bd)->exec(uri, caller);
     evas_object_show((*bd)->getMainWindow().get());
     elm_win_activate((*bd)->getMainWindow().get());
 }

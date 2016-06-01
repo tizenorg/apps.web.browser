@@ -81,7 +81,7 @@ class BROWSER_EXPORT SimpleUI : public AbstractMainWindow<Evas_Object>
 public:
     SimpleUI(/*Evas_Object *window*/);
     virtual ~SimpleUI();
-    virtual int exec(const std::string& url);
+    virtual int exec(const std::string& _url, const std::string& _caller);
     virtual std::string getName();
     void suspend() {m_webEngine->suspend();}
     void resume() {m_webEngine->resume();}
@@ -123,6 +123,7 @@ private:
     void switchViewToWebPage();
     void updateView();
     void windowCreated();
+    void minimizeBrowser();
 
 #if PROFILE_MOBILE
     void openNewTab(const std::string &uri, const std::string& title =
@@ -356,6 +357,7 @@ private:
     std::shared_ptr<services::StorageService> m_storageService;
     storage::Session m_currentSession;
     bool m_initialised;
+    std::string m_caller;
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
