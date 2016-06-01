@@ -179,7 +179,8 @@ public:
             const boost::optional<int> tabId = boost::none,
             const std::string& title = std::string(),
             bool desktopMode = true,
-            bool incognitoMode = false) = 0;
+            bool incognitoMode = false,
+            int origin = 0) = 0;
 
     /**
      * @param tab id
