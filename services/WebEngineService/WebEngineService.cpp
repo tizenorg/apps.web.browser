@@ -370,6 +370,7 @@ std::vector<TabContentPtr> WebEngineService::getTabContents() const {
     std::vector<TabContentPtr> result;
     for (auto const& tab : m_tabs) {
         auto tabContent = std::make_shared<TabContent>(tab.first, tab.second->getTitle());
+        tabContent->setIsCurrentTab(tab.first == m_currentTabId);
         result.push_back(tabContent);
     }
     return result;
@@ -437,8 +438,6 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
     connectSignals(m_currentWebView);
     resume();
 
-    titleChanged(m_currentWebView->getTitle());
-    uriChanged(m_currentWebView->getURI());
     forwardEnableChanged(m_currentWebView->isForwardEnabled());
     backwardEnableChanged(m_currentWebView->isBackEnabled());
     currentTabChanged(m_currentTabId);
