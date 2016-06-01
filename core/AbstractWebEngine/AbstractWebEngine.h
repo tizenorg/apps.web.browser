@@ -385,6 +385,11 @@ public:
 #endif
 
     /**
+     * Ask browser to minimize itself
+     */
+    boost::signals2::signal<void ()> minimizeBrowser;
+
+    /**
      * FavIcon of current page changed
      */
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>)> favIconChanged;
