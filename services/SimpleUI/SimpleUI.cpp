@@ -156,10 +156,11 @@ std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
     return m_historyService->getHistoryToday();
 }
 
-int SimpleUI::exec(const std::string& _url)
+int SimpleUI::exec(const std::string& _url, const std::string& _caller)
 {
-    BROWSER_LOGD("[%s] _url=%s, initialised=%d", __func__, _url.c_str(), m_initialised);
+    BROWSER_LOGD("[%s] _url=%s, _caller=%s, initialised=%d", __func__, _url.c_str(), _caller.c_str(), m_initialised);
     std::string url = _url;
+    m_caller = _caller;
 
     if(!m_initialised){
         if (m_window.get()) {
@@ -544,6 +545,7 @@ void SimpleUI::connectModelSignals()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_webEngine->minimizeBrowser.connect(boost::bind(&SimpleUI::minimizeBrowser, this));
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
@@ -1014,7 +1016,7 @@ void SimpleUI::onBackPressed()
             if (m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
                 m_quickAccess->backButtonClicked();
             } else {
-                tools::ui_app_pause();
+                minimizeBrowser();
             }
         } else {
             m_webEngine->backButtonClicked();
@@ -1908,6 +1910,12 @@ void SimpleUI::windowCreated()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     switchViewToWebPage();
+}
+
+void SimpleUI::minimizeBrowser()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    tools::ui_app_pause(m_caller.c_str());
 }
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
