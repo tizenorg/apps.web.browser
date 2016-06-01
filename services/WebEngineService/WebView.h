@@ -67,6 +67,22 @@ namespace tizen_browser {
 namespace basic_webengine {
 namespace webengine_service {
 
+// container for special webview origin values
+class Origin
+{
+public:
+    static const int UNKNOWN = -1;
+    static const int QUICKACCESS = -2;
+    Origin() : m_value(UNKNOWN) { }
+    Origin(int from) : m_value(from) { }
+    int getValue() const { return m_value; }
+    void setValue(int value) { m_value = value; }
+    bool isFromWebView() const { return m_value >= 0; }
+private:
+    int m_value;
+
+};
+
 class WebView
 #if PROFILE_MOBILE
         : public tizen_browser::interfaces::AbstractRotatable
@@ -75,7 +91,7 @@ class WebView
 public:
     WebView(Evas_Object *, TabId, const std::string& title, bool incognitoMode);
     virtual ~WebView();
-    void init(bool desktopMode, Evas_Object * view = NULL);
+    void init(bool desktopMode, int origin, Evas_Object * view = NULL);
 
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
@@ -196,6 +212,8 @@ public:
      * @param y vertical position to scroll
      */
     void scrollView(const int& dx, const int& dy);
+
+    Origin getOrigin() { return m_origin; }
 
 #if PROFILE_MOBILE
     /**
@@ -375,6 +393,7 @@ private:
     bool m_suspended;
     bool m_private;
     bool m_fullscreen;
+    Origin m_origin;
 
     std::map<CertificateConfirmationPtr, Ewk_Certificate_Policy_Decision *> m_confirmationCertificatenMap;
 

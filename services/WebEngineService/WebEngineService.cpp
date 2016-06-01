@@ -377,7 +377,7 @@ std::vector<TabContentPtr> WebEngineService::getTabContents() const {
 
 TabId WebEngineService::addTab(const std::string & uri,
         const TabId * tabInitId, const boost::optional<int> tabId,
-        const std::string& title, bool desktopMode, bool incognitoMode)
+        const std::string& title, bool desktopMode, bool incognitoMode, int origin)
 {
     if (!(*AbstractWebEngine::checkIfCreate()))
         return currentTabId();
@@ -396,9 +396,9 @@ TabId WebEngineService::addTab(const std::string & uri,
     m_webViewCacheInitialized = true;
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, title, incognitoMode);
     if (tabInitId)
-        p->init(desktopMode, getTabView(*tabInitId));
+        p->init(desktopMode, origin, getTabView(*tabInitId));
     else
-        p->init(desktopMode);
+        p->init(desktopMode, origin);
 
     m_tabs[newTabId] = p;
 
@@ -697,7 +697,10 @@ void WebEngineService::backButtonClicked()
         m_currentWebView->back();
     } else if (m_currentWebView->isPrivateMode()) {
         closeTab();
-        switchToWebPage();
+    } else if (m_currentWebView->getOrigin().isFromWebView() && m_tabs.find(m_currentWebView->getOrigin().getValue()) != m_tabs.end()) {
+        int switchTo = m_currentWebView->getOrigin().getValue();
+        closeTab();
+        switchToTab(switchTo);
     } else {
         tools::ui_app_pause();
     }
