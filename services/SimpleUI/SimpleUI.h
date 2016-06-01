@@ -134,6 +134,7 @@ private:
             bool desktopMode = true, bool incognitoMode = false);
 #endif
 
+    void currentTabChanged(const tizen_browser::basic_webengine::TabId& tabId);
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
     void newTabClicked();
     void tabClicked(const tizen_browser::basic_webengine::TabId& tabId);

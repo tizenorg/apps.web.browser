@@ -72,11 +72,14 @@ public:
     std::string getTitle() const;
     void setThumbnail(tools::BrowserImagePtr thumbnail);
     tools::BrowserImagePtr getThumbnail() const;
+    void setIsCurrentTab( bool isCurrentTab ) { m_isCurrentTab = isCurrentTab; };
+    bool getIsCurrentTab() { return m_isCurrentTab; };
 
 private:
     TabId m_id;
     std::string m_title;
     tools::BrowserImagePtr m_thumbnail;
+    bool m_isCurrentTab;
 
 };
 } /* end of basic_webengine */

@@ -70,14 +70,18 @@ void TabService::errorPrint(std::string method) const
             tools::capiWebError::tabErrorToString(error_code).c_str());
 }
 
-tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
+tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId, bool isCurrentTab)
 {
     // TODO Check for improvements - low cache usage
     auto imageDatabase = getThumbDatabase(tabId);
-    if(imageDatabase) {
+    if (imageDatabase) {
         saveThumbCache(tabId, *imageDatabase);
         return *imageDatabase;
     }
+
+    auto imageCache = getThumbCache(tabId);
+    if (!isCurrentTab && imageCache)
+        return *imageCache;
 
     BROWSER_LOGD("%s [%d] generating thumb", __FUNCTION__, tabId.get());
     clearThumb(tabId);
@@ -85,7 +89,7 @@ tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
 
     if (m_thumbMapSave[tabId.get()])
         return std::make_shared<tools::BrowserImage>();
-    auto imageCache = getThumbCache(tabId);
+    imageCache = getThumbCache(tabId);
     if (!imageCache) {
         // error, something went wrong and TabService didn't receive thumb
         // for desired ID through onThumbGenerated() slot
@@ -124,7 +128,7 @@ void TabService::fillThumbs(
         const std::vector<basic_webengine::TabContentPtr>& tabsContents)
 {
     for (auto& tc : tabsContents) {
-        auto thumbPtr = getThumb(tc->getId());
+        auto thumbPtr = getThumb(tc->getId(), tc->getIsCurrentTab());
         m_thumbMapSave.insert(std::pair<int, bool>(tc->getId().get(), false));
         tc->setThumbnail(thumbPtr);
     }
