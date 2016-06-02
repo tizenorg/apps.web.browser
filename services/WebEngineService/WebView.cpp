@@ -1258,13 +1258,13 @@ void WebView::_show_context_menu_image_only(Ewk_Context_Menu *menu)
         ewk_context_menu_item_remove(menu, item);
     }
 
-    /* Open in current Tab */
+    /* View Image */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, _("IDS_BR_BODY_VIEW_IMAGE"), true);               //TODO: missing translation
     /* Open in New Tab */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_NEW_WINDOW,_( "IDS_BR_OPT_OPEN_IN_NEW_WINDOW_ABB"), true);    //TODO: missing translation
     /* Copy image */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_IMAGE"), true);
-    /* Downlad image */
+    /* Save image */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, _("IDS_BR_OPT_SAVE_IMAGE"), true);                 //TODO: missing translation
 }
 
@@ -1317,20 +1317,18 @@ void WebView::_show_context_menu_image_link(Ewk_Context_Menu *menu)
         ewk_context_menu_item_remove(menu, item);
     }
 
-    /* Open in current window */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK, _("IDS_BR_OPT_OPEN"), true);
-    /* Open in new window */
+    /* Open link in new window */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_LINK_IN_NEW_WINDOW, _("IDS_BR_OPT_OPEN_IN_NEW_WINDOW_ABB"), true);               //TODO: missing translation
-    /* copy image */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_IMAGE"), true);
-    /* Copy link */
-    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_LINK_URL"), true);              //TODO: missing translation
-    /* Share Link */
-     //ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_SHARE_LINK, "Share Link", true);                                //TODO: missing translation
     /* Save link */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_LINK_TO_DISK, _("IDS_BR_OPT_SAVE_LINK"), true);
+    /* Copy link */
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_LINK_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_LINK_URL"), true);              //TODO: missing translation
     /* Save image */
     ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_DOWNLOAD_IMAGE_TO_DISK, _("IDS_BR_OPT_SAVE_IMAGE"), true);                 //TODO: missing translation
+   /* copy image */
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_COPY_IMAGE_TO_CLIPBOARD, _("IDS_BR_OPT_COPY_IMAGE"), true);
+    /* View image  */
+    ewk_context_menu_item_append_as_action(menu, EWK_CONTEXT_MENU_ITEM_TAG_OPEN_IMAGE_IN_CURRENT_WINDOW, _("IDS_BR_BODY_VIEW_IMAGE"), true);                                //TODO: missing translation
 }
 
 void WebView::_customize_context_menu(Ewk_Context_Menu *menu)
