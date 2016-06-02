@@ -107,7 +107,7 @@ WebView::~WebView()
 #endif
 }
 
-void WebView::init(bool desktopMode, Evas_Object*)
+void WebView::init(bool desktopMode, int origin, Evas_Object*)
 {
     m_ewkView = m_private ? ewk_view_add_in_incognito_mode(evas_object_evas_get(m_parent)) :
                             ewk_view_add_with_context(evas_object_evas_get(m_parent), ewk_context_default_get());
@@ -128,6 +128,7 @@ void WebView::init(bool desktopMode, Evas_Object*)
     } else {
         switchToMobileMode();
     }
+    m_origin.setValue(origin);
 
     ewk_context_cache_model_set(m_ewkContext, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
     std::string path = app_get_data_path() + COOKIES_PATH;
@@ -872,12 +873,14 @@ void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)
 
     /// \todo: Choose newly created tab.
     TabId id(TabId::NONE);
-    if (m_webEngine->currentTabId() != (id = m_webEngine->addTab(std::string(),
+    TabId currentTabId = m_webEngine->currentTabId();
+    if (currentTabId != (id = m_webEngine->addTab(std::string(),
                                                                  &self->getTabId(),
                                                                  boost::none,
                                                                  std::string(),
                                                                  self->isDesktopMode(),
-                                                                 self->isPrivateMode()))) {
+                                                                 self->isPrivateMode(),
+                                                                 currentTabId.get()))) {
         BROWSER_LOGD("Created tab: %s", id.toString().c_str());
         Evas_Object* tab_ewk_view = m_webEngine->getTabView(id);
         *static_cast<Evas_Object**>(out) = tab_ewk_view;
