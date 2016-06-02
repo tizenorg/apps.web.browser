@@ -30,6 +30,7 @@
 #include "AbstractWebEngine/WebConfirmation.h"
 #include "SnapshotType.h"
 #include "BrowserImage.h"
+#include "Origin.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -100,7 +101,8 @@ public:
             const boost::optional<int> tabId = boost::none,
             const std::string& title = std::string(),
             bool desktopMode = true,
-            bool incognitoMode = false);
+            bool incognitoMode = false,
+            int origin = Origin::UNKNOWN);
     Evas_Object* getTabView(TabId id);
     bool switchToTab(TabId);
     bool closeTab();
