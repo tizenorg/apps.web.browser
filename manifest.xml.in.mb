@@ -139,5 +139,6 @@
         <privilege>http://tizen.org/privilege/download</privilege>
         <privilege>http://tizen.org/privilege/haptic</privilege>
         <privilege>http://tizen.org/privilege/camera</privilege>
+        <privilege>http://tizen.org/privilege/push</privilege>
      </privileges>
 </manifest>
