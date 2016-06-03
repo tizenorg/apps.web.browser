@@ -1222,7 +1222,10 @@ void WebView::_show_context_menu_text_only(Ewk_Context_Menu *menu)
 
     const char *selected_text = ewk_view_text_selection_text_get(m_ewkView);
     bool text_selected = false;
-    if (selected_text && strlen(selected_text) > 0)
+    // TODO ewk_view_text_selection_text_get return string without \0 sign so we cannot use
+    // strlen to check if the string is empty. We should add strlen if
+    // ewk_view_text_selection_text_get will be fixed
+    if (selected_text)
         text_selected = true;
 
     for (int  i = 0 ; i < count ; i++) {
@@ -1279,7 +1282,10 @@ void WebView::_show_context_menu_text_image_link(Ewk_Context_Menu *menu)
 
     const char *selected_text = ewk_view_text_selection_text_get(m_ewkView);
     bool text_selected = false;
-    if (selected_text && strlen(selected_text) > 0)
+    // TODO ewk_view_text_selection_text_get return string without \0 sign so we cannot use
+    // strlen to check if the string is empty. We should add strlen if
+    // ewk_view_text_selection_text_get will be fixed
+    if (selected_text)
         text_selected = true;
 
     for (int  i = 0 ; i < count ; i++) {
