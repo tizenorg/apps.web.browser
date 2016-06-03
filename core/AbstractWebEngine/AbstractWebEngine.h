@@ -29,6 +29,7 @@
 #include "../ServiceManager/AbstractService.h"
 
 #include "TabId.h"
+#include "Origin.h"
 #include "WebConfirmation.h"
 #include "WebEngineSettings.h"
 
@@ -81,6 +82,11 @@ public:
      * @return title of page opened in current tab.
      */
     virtual std::string getTitle(void) const = 0;
+
+    /**
+     * @return Current tab origin.
+     */
+    virtual Origin getOrigin(void) const = 0;
 
     /**
      * @return Current UserAgent string of the browser.
@@ -180,7 +186,7 @@ public:
             const std::string& title = std::string(),
             bool desktopMode = true,
             bool incognitoMode = false,
-            int origin = 0) = 0;
+            Origin origin = Origin::UNKNOWN) = 0;
 
     /**
      * @param tab id

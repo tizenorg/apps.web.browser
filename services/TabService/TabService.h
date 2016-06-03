@@ -28,6 +28,7 @@
 #include <web/web_tab.h>
 #include "TabIdTypedef.h"
 #include "BrowserImageTypedef.h"
+#include "AbstractWebEngine/Origin.h"
 
 namespace tizen_browser {
 namespace services {
@@ -43,15 +44,26 @@ public:
     virtual std::string getName();
 
     /**
-     * Overwrite image thumb for given id with new screenshot (in cache and
-     * in database).
+     * @brief Insert or update item related to tab of given id.
+     * @param tabId Id of the tab from web engine
+     * @param url URL of the tab
+     * @param title Ttle of the tab
      */
-    void updateThumb(const basic_webengine::TabId& tabId);
+    void updateTabItem(const basic_webengine::TabId& tabId,
+            const std::string& url,
+            const std::string& title,
+            const basic_webengine::Origin& origin);
+
+    /**
+     * @brief Get all tab in vector.
+     * @return Shared pointer to vector of tabs (TabContents)
+     */
+    std::shared_ptr<std::vector<basic_webengine::TabContent> > getAllTabs();
 
     /**
      * Remove image thumb for given id from the cache and database.
      */
-    void clearThumb(const basic_webengine::TabId& tabId);
+    void removeTab(const basic_webengine::TabId& tabId);
 
     /**
      * Set thumb images for given TabContent objects: get them from
