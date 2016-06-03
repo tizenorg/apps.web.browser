@@ -310,7 +310,7 @@ void WebEngineService::_uriChanged(const std::string & uri)
     uriChanged(uri);
 }
 
-void WebEngineService::_downloadStarted(bool status)
+void WebEngineService::_downloadStarted(int status)
 {
     downloadStarted(status);
 }

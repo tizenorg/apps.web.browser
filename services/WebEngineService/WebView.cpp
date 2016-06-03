@@ -1732,16 +1732,20 @@ void WebView::__download_request_cb(const char *download_uri, void *data)
     WebView *wv = (WebView *)data;
 
     if (!strncmp(download_uri, "data:", strlen("data:"))){
-        BROWSER_LOGD("[%s:%d] popup1", __PRETTY_FUNCTION__, __LINE__);
+        wv->downloadStarted(DOWNLOAD_STARTING_DOWNLOAD);
+        BROWSER_LOGD("[%s:%d] download start..", __PRETTY_FUNCTION__, __LINE__);
+
         if (wv->m_downloadControl->handle_data_scheme(download_uri) == EINA_TRUE){
-            BROWSER_LOGD("[%s:%d] popup2", __PRETTY_FUNCTION__, __LINE__);
+            BROWSER_LOGD("[%s:%d] saved..", __PRETTY_FUNCTION__, __LINE__);
+            wv->downloadStarted(DOWNLOAD_SAVEDPAGES);
          }
         else{
-            BROWSER_LOGD("[%s:%d] popup3", __PRETTY_FUNCTION__, __LINE__);
+            BROWSER_LOGD("[%s:%d] fail..", __PRETTY_FUNCTION__, __LINE__);
+            wv->downloadStarted(DOWNLOAD_FAIL);
          }
     } else if (strncmp(download_uri, "http://", strlen("http://")) && strncmp(download_uri, "https://", strlen("https://"))) {
         BROWSER_LOGD("[%s:%d] Only http or https URLs can be downloaded", __PRETTY_FUNCTION__, __LINE__);
-        BROWSER_LOGD("[%s:%d] popup4", __PRETTY_FUNCTION__, __LINE__);
+        wv->downloadStarted(DOWNLOAD_ONLY_HTTP_OR_HTTPS_URLS);
         return;
     } else {
         wv->downloadStarted(wv->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);

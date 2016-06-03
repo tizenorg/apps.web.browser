@@ -416,7 +416,7 @@ public:
     /**
      * File downoad started
      */
-    boost::signals2::signal<void (bool)> downloadStarted;
+    boost::signals2::signal<void (int)> downloadStarted;
 
     /**
      * Page load finished
