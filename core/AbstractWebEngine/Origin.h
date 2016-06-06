@@ -20,8 +20,6 @@
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webengine_service {
-
 /*
  * Container for webview origin id value
  */
@@ -41,7 +39,6 @@ private:
 };
 
 
-}
 }
 }
 

@@ -70,9 +70,51 @@ void TabService::errorPrint(std::string method) const
             tools::capiWebError::tabErrorToString(error_code).c_str());
 }
 
+std::shared_ptr<std::vector<basic_webengine::TabContent> > TabService::getAllTabs()
+{
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    int* items;
+    int count;
+    auto vec = std::make_shared<std::vector<basic_webengine::TabContent> >(std::vector<basic_webengine::TabContent>());
+    if (bp_tab_adaptor_get_full_ids_p(&items, &count) < 0) {
+        errorPrint("bp_tab_adaptor_get_full_ids_p");
+        return vec;
+    }
+
+    if (count > 0) {
+        for (int i = 0; i < count; ++i) {
+            bp_tab_info_fmt info;
+            if (bp_tab_adaptor_get_easy_all(items[i], &info) < 0) {
+                errorPrint("bp_tab_adaptor_get_easy_all");
+                continue;
+            }
+            if (!info.url) {
+                BROWSER_LOGW("[%s:%d] unknown url!", __PRETTY_FUNCTION__, __LINE__);
+                continue;
+            }
+            if (!info.title) {
+                BROWSER_LOGW("[%s:%d] unknown title!", __PRETTY_FUNCTION__, __LINE__);
+                continue;
+            }
+            if (!info.index) {
+                BROWSER_LOGW("[%s:%d] unknown index!", __PRETTY_FUNCTION__, __LINE__);
+                continue;
+            }
+            vec->push_back(basic_webengine::TabContent(basic_webengine::TabId(items[i]), std::string(info.url), std::string(info.title), basic_webengine::Origin(info.index)));
+        }
+        free(items);
+    }
+
+    return vec;
+}
+
 tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
 {
-    // TODO Check for improvements - low cache usage
+    auto imageCache = getThumbCache(tabId);
+    if (imageCache) {
+        return *imageCache;
+    }
+
     auto imageDatabase = getThumbDatabase(tabId);
     if(imageDatabase) {
         saveThumbCache(tabId, *imageDatabase);
@@ -80,19 +122,13 @@ tools::BrowserImagePtr TabService::getThumb(const basic_webengine::TabId& tabId)
     }
 
     BROWSER_LOGD("%s [%d] generating thumb", __FUNCTION__, tabId.get());
-    clearThumb(tabId);
     generateThumb(tabId);
 
-    if (m_thumbMapSave[tabId.get()])
+    imageCache = getThumbCache(tabId);
+    if (imageCache)
+        return *imageCache;
+    else
         return std::make_shared<tools::BrowserImage>();
-    auto imageCache = getThumbCache(tabId);
-    if (!imageCache) {
-        // error, something went wrong and TabService didn't receive thumb
-        // for desired ID through onThumbGenerated() slot
-        BROWSER_LOGE("%s error: no thumb generated", __PRETTY_FUNCTION__);
-        return std::make_shared<tools::BrowserImage>();
-    }
-    return *imageCache;
 }
 
 boost::optional<tools::BrowserImagePtr> TabService::getThumbCache(
@@ -104,18 +140,9 @@ boost::optional<tools::BrowserImagePtr> TabService::getThumbCache(
     return m_thumbMap.find(tabId.get())->second;
 }
 
-void TabService::updateThumb(const basic_webengine::TabId& tabId)
+void TabService::removeTab(const basic_webengine::TabId& tabId)
 {
-    BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
-    m_thumbMapSave[tabId.get()] = true;
-    clearThumb(tabId);
-    getThumb(tabId);
-}
-
-void TabService::clearThumb(const basic_webengine::TabId& tabId)
-{
-    BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
-    m_thumbMapSave[tabId.get()] = false;
+    BROWSER_LOGD("[%s:%d] tab id: %d", __PRETTY_FUNCTION__, __LINE__, tabId.get());
     clearFromDatabase(tabId);
     clearFromCache(tabId);
 }
@@ -125,33 +152,37 @@ void TabService::fillThumbs(
 {
     for (auto& tc : tabsContents) {
         auto thumbPtr = getThumb(tc->getId());
-        m_thumbMapSave.insert(std::pair<int, bool>(tc->getId().get(), false));
         tc->setThumbnail(thumbPtr);
     }
 }
 
-void TabService::onThumbGenerated(const basic_webengine::TabId& tabId,
-        tools::BrowserImagePtr imagePtr)
+void TabService::updateTabItem(const basic_webengine::TabId& tabId,
+        const std::string& url,
+        const std::string& title,
+        const basic_webengine::Origin& origin)
 {
-    if (m_thumbMapSave[tabId.get()]) {
-        if(!thumbInDatabase(tabId)) {
-            // prepare adaptor id before saving in db
-            createTabId(tabId.get());
-        }
-        // TODO (m.kawonczyk) getBlobPNG() works fast on Z3. It should be improved for N4
-        saveThumbDatabase(tabId, imagePtr);
+    BROWSER_LOGD("[%s:%d] tabid: %d", __PRETTY_FUNCTION__, __LINE__, tabId.get());
+
+    if (!thumbInDatabase(tabId))
+        createTabId(tabId.get());
+    if (bp_tab_adaptor_set_url(tabId.get(), url.c_str()) < 0) {
+        errorPrint("bp_tab_adaptor_set_url");
     }
-    saveThumbCache(tabId, imagePtr);
+    if (bp_tab_adaptor_set_title(tabId.get(), title.c_str()) < 0) {
+        errorPrint("bp_tab_adaptor_set_title");
+    }
+    if (bp_tab_adaptor_set_index(tabId.get(), origin.getValue()) < 0) {     // tab origin is int saved in index bp_tab parameter
+        errorPrint("bp_tab_adaptor_set_index");
+    }
 }
 
 void TabService::updateTabItemSnapshot(const basic_webengine::TabId& tabId,
         tools::BrowserImagePtr imagePtr)
 {
-    BROWSER_LOGD("%s [%d]", __FUNCTION__, tabId.get());
+    BROWSER_LOGD("[%s:%d] tabid: %d", __PRETTY_FUNCTION__, __LINE__, tabId.get());
+
     if (!thumbInDatabase(tabId))
         createTabId(tabId.get());
-    m_thumbMapSave[tabId.get()] = true;
-    clearFromCache(tabId);
     saveThumbCache(tabId, imagePtr);
     saveThumbDatabase(tabId, imagePtr);
 }
@@ -159,8 +190,7 @@ void TabService::updateTabItemSnapshot(const basic_webengine::TabId& tabId,
 void TabService::saveThumbCache(const basic_webengine::TabId& tabId,
         tools::BrowserImagePtr imagePtr)
 {
-    m_thumbMap.insert(
-            std::pair<int, tools::BrowserImagePtr>(tabId.get(), imagePtr));
+    m_thumbMap[tabId.get()] = imagePtr;
 }
 
 bool TabService::thumbCached(const basic_webengine::TabId& tabId) const
@@ -174,8 +204,6 @@ void TabService::clearFromCache(const basic_webengine::TabId& tabId) {
 
 void TabService::clearFromDatabase(const basic_webengine::TabId& tabId)
 {
-    if (!thumbInDatabase(tabId))
-        return;
     if (bp_tab_adaptor_delete(tabId.get()) < 0) {
         errorPrint("bp_tab_adaptor_delete");
     }
@@ -184,7 +212,7 @@ void TabService::clearFromDatabase(const basic_webengine::TabId& tabId)
 void TabService::saveThumbDatabase(const basic_webengine::TabId& tabId,
         tools::BrowserImagePtr imagePtr)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] tabId: %d", __PRETTY_FUNCTION__, __LINE__, tabId.get());
     std::unique_ptr<tools::Blob> thumb_blob = tools::EflTools::getBlobPNG(
             imagePtr);
     if (!thumb_blob){
@@ -200,24 +228,16 @@ void TabService::saveThumbDatabase(const basic_webengine::TabId& tabId,
 
 bool TabService::thumbInDatabase(const basic_webengine::TabId& tabId) const
 {
-    int* ids;
-    int count;
-    if (bp_tab_adaptor_get_full_ids_p(&ids, &count) < 0) {
+    char* url;
+    int result = bp_tab_adaptor_get_url(tabId.get(), &url);
+    if (result == BP_TAB_ERROR_ID_NOT_FOUND) {
+        return false;
+    } else if (result < 0) {
         errorPrint("bp_tab_adaptor_get_full_ids_p");
         return false;
     }
-    bool exists = false;
-    for(int i = 0; i < count; ++i) {
-        if (ids[i] == tabId.get()) {
-            exists = true;
-            break;
-        }
-    }
 
-    if(count)
-        free(ids);
-
-    return exists;
+    return true;
 }
 
 boost::optional<tools::BrowserImagePtr> TabService::getThumbDatabase(
@@ -240,6 +260,7 @@ boost::optional<tools::BrowserImagePtr> TabService::getThumbDatabase(
     image->setData((void*)v, false, tools::ImageType::ImageTypePNG);
 
     if (image->getSize() <= 0) {
+        BROWSER_LOGW("[%s:%d] empty image!", __PRETTY_FUNCTION__, __LINE__);
         return boost::none;
     }
 

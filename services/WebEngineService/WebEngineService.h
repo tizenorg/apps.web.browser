@@ -28,9 +28,9 @@
 #include "AbstractWebEngine/AbstractWebEngine.h"
 #include "AbstractWebEngine/TabIdTypedef.h"
 #include "AbstractWebEngine/WebConfirmation.h"
+#include "AbstractWebEngine/Origin.h"
 #include "SnapshotType.h"
 #include "BrowserImage.h"
-#include "Origin.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -53,9 +53,8 @@ public:
 
     void setURI(const std::string &);
     std::string getURI(void) const;
-
     std::string getTitle(void) const;
-
+    Origin getOrigin(void) const;
     std::string getUserAgent(void) const;
     void setUserAgent(const std::string& ua);
 
@@ -102,7 +101,7 @@ public:
             const std::string& title = std::string(),
             bool desktopMode = true,
             bool incognitoMode = false,
-            int origin = Origin::UNKNOWN);
+            Origin origin = Origin::UNKNOWN);
     Evas_Object* getTabView(TabId id);
     bool switchToTab(TabId);
     bool closeTab();
