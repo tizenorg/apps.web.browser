@@ -29,7 +29,7 @@
 #include "SnapshotType.h"
 #include "AbstractWebEngine/TabId.h"
 #include "AbstractWebEngine/WebConfirmation.h"
-#include "Origin.h"
+#include "AbstractWebEngine/TabOrigin.h"
 
 #if PROFILE_MOBILE
 #include "DownloadControl/DownloadControl.h"
@@ -84,7 +84,7 @@ class WebView
 public:
     WebView(Evas_Object *, TabId, const std::string& title, bool incognitoMode);
     virtual ~WebView();
-    void init(bool desktopMode, int origin, Evas_Object * view = NULL);
+    void init(bool desktopMode, TabOrigin origin, Evas_Object * view = NULL);
 
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
@@ -206,7 +206,7 @@ public:
      */
     void scrollView(const int& dx, const int& dy);
 
-    Origin getOrigin() { return m_origin; }
+    TabOrigin getOrigin() { return m_origin; }
 
 #if PROFILE_MOBILE
     /**
@@ -386,7 +386,7 @@ private:
     bool m_suspended;
     bool m_private;
     bool m_fullscreen;
-    Origin m_origin;
+    TabOrigin m_origin;
 
     std::map<CertificateConfirmationPtr, Ewk_Certificate_Policy_Decision *> m_confirmationCertificatenMap;
 

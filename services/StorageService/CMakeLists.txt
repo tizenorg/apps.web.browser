@@ -11,8 +11,6 @@ set(StorageServiceSOURCES
     DBTools.cpp
     SQLDatabase.cpp
     SettingsStorage.cpp
-    Session.cpp
-    SessionStorage.cpp
     StorageService.cpp
 )
 

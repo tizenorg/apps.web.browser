@@ -202,6 +202,14 @@ std::string WebEngineService::getTitle() const
         return std::string("");
 }
 
+TabOrigin WebEngineService::getOrigin() const
+{
+    if (m_currentWebView)
+        return m_currentWebView->getOrigin();
+    else
+        return TabOrigin::UNKNOWN;
+}
+
 std::string WebEngineService::getUserAgent() const
 {
     M_ASSERT(m_currentWebView);
@@ -368,7 +376,7 @@ TabId WebEngineService::currentTabId() const
 std::vector<TabContentPtr> WebEngineService::getTabContents() const {
     std::vector<TabContentPtr> result;
     for (auto const& tab : m_tabs) {
-        auto tabContent = std::make_shared<TabContent>(tab.first, tab.second->getTitle());
+        auto tabContent = std::make_shared<TabContent>(tab.first, tab.second->getURI(), tab.second->getTitle(), tab.second->getOrigin());
         result.push_back(tabContent);
     }
     return result;
@@ -376,7 +384,7 @@ std::vector<TabContentPtr> WebEngineService::getTabContents() const {
 
 TabId WebEngineService::addTab(const std::string & uri,
         const TabId * tabInitId, const boost::optional<int> tabId,
-        const std::string& title, bool desktopMode, bool incognitoMode, int origin)
+        const std::string& title, bool desktopMode, bool incognitoMode, TabOrigin origin)
 {
     if (!(*AbstractWebEngine::checkIfCreate()))
         return currentTabId();
