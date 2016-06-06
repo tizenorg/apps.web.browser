@@ -22,6 +22,7 @@
 
 #include "BrowserImageTypedef.h"
 #include "TabIdTypedef.h"
+#include "Origin.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -65,17 +66,24 @@ private:
 class TabContent
 {
 public:
-    TabContent(TabId id, const std::string& title,
+    TabContent(TabId id,
+            const std::string& url,
+            const std::string& title,
+            const Origin& origin,
             tools::BrowserImagePtr thumbnail);
-    TabContent(TabId id, const std::string& title);
+    TabContent(const TabId& id, const std::string& url, const std::string& title, const Origin& origin);
     TabId getId() const;
+    std::string getUrl() const;
     std::string getTitle() const;
+    Origin getOrigin() const;
     void setThumbnail(tools::BrowserImagePtr thumbnail);
     tools::BrowserImagePtr getThumbnail() const;
 
 private:
     TabId m_id;
+    std::string m_url;
     std::string m_title;
+    Origin m_origin;
     tools::BrowserImagePtr m_thumbnail;
 
 };
