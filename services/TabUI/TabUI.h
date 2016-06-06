@@ -50,7 +50,7 @@ public:
 
     virtual std::string getName();
 
-    void addTabItems(std::vector<basic_webengine::TabContentPtr> items);
+    void addTabItems(std::vector<basic_webengine::TabContentPtr>& items);
     bool isEditMode();
     void onBackKey();
 #if PROFILE_MOBILE

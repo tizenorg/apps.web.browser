@@ -35,6 +35,7 @@
 // components
 #include "WebPageUI.h"
 #include "AbstractWebEngine.h"
+#include "TabOrigin.h"
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #if PROFILE_MOBILE
@@ -54,7 +55,6 @@
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
-#include "SessionStorage.h"
 #include "StorageService.h"
 #include "CertificateContents.h"
 
@@ -127,7 +127,8 @@ private:
 #if PROFILE_MOBILE
     void openNewTab(const std::string &uri, const std::string& title =
             std::string(), const boost::optional<int> adaptorId = boost::none,
-            bool desktopMode = false, bool incognitoMode = false);
+            bool desktopMode = false, bool incognitoMode = false,
+            basic_webengine::TabOrigin origin = basic_webengine::TabOrigin::UNKNOWN);
 #else
     void openNewTab(const std::string &uri, const std::string& title =
             std::string(), const boost::optional<int> adaptorId = boost::none,
@@ -354,7 +355,6 @@ private:
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
     std::shared_ptr<services::StorageService> m_storageService;
-    storage::Session m_currentSession;
     bool m_initialised;
     int m_tabLimit;
     int m_favoritesLimit;

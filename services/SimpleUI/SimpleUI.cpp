@@ -41,7 +41,6 @@
 #include "HistoryItem.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "SessionStorage.h"
 #include "DetailPopup.h"
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "NotificationPopup.h"
@@ -185,7 +184,6 @@ int SimpleUI::exec(const std::string& _url)
             m_platformInputManager->registerHWKeyCallback(m_moreMenuUI->getContent());
 #endif
         }
-        m_currentSession = std::move(m_storageService->getSessionStorage().createSession());
 
         if (url.empty())
         {
@@ -221,18 +219,10 @@ void SimpleUI::faviconChanged(tools::BrowserImagePtr favicon)
 void SimpleUI::restoreLastSession()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_storageService);
-    storage::Session lastSession = std::move(
-            m_storageService->getSessionStorage().getLastSession());
 
-    if (lastSession.items().size() >= 1) {
-        for (auto iter = lastSession.items().begin(), end =
-                lastSession.items().end(); iter != end; ++iter) {
-            auto newTabId = m_tabService->convertTabId(iter->first);
-            openNewTab(iter->second.first,
-                    lastSession.getUrlTitle(iter->second.first), newTabId);
-        }
-        m_storageService->getSessionStorage().deleteSession(lastSession);
+    auto vec = m_tabService->getAllTabs();
+    for (const basic_webengine::TabContent& i : *vec) {
+        openNewTab(i.getUrl(), i.getTitle(), boost::optional<int>(i.getId().get()), false, false, i.getOrigin());
     }
 }
 
@@ -353,7 +343,7 @@ void SimpleUI::connectUISignals()
 #else
     bool desktop_ua = true;
 #endif
-    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", boost::none, desktop_ua, true));
+    m_tabUI->newIncognitoTabClicked.connect(boost::bind(&SimpleUI::openNewTab, this, "", "", boost::none, desktop_ua, true, basic_webengine::TabOrigin::UNKNOWN));
     m_tabUI->tabsCount.connect(boost::bind(&SimpleUI::tabsCount, this));
 
     M_ASSERT(m_historyUI.get());
@@ -667,11 +657,11 @@ void SimpleUI::switchViewToIncognitoPage()
 
 void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
         const boost::optional<int> adaptorId, bool desktopMode,
-        bool incognitoMode)
+        bool incognitoMode, basic_webengine::TabOrigin origin)
 {
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri,
-            nullptr, adaptorId, title, desktopMode, incognitoMode);
+            nullptr, adaptorId, title, desktopMode, incognitoMode, origin);
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
     if (incognitoMode)
@@ -687,9 +677,8 @@ void SimpleUI::closeTab()
 
 void SimpleUI::closeTab(const tizen_browser::basic_webengine::TabId& id)
 {
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_currentSession.removeItem(id.toString());
-    m_tabService->clearThumb(id);
+    BROWSER_LOGD("[%s:%d] id: %d", __PRETTY_FUNCTION__, __LINE__, id.get());
+    m_tabService->removeTab(id);
     m_webEngine->closeTab(id);
     updateView();
 }
@@ -953,7 +942,7 @@ void SimpleUI::onGenerateThumb(basic_webengine::TabId tabId)
     const int THUMB_HEIGHT = boost::any_cast<int>(
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::HISTORY_TAB_SERVICE_THUMB_HEIGHT));
     tools::BrowserImagePtr snapshotImage = m_webEngine->getSnapshotData(tabId, THUMB_WIDTH, THUMB_HEIGHT, false, tools::SnapshotType::SYNC);
-    m_tabService->onThumbGenerated(tabId, snapshotImage);
+    m_tabService->updateTabItemSnapshot(tabId, snapshotImage);
 }
 
 void SimpleUI::onCreateTabId()
@@ -1190,7 +1179,10 @@ void SimpleUI::loadFinished()
 #if PROFILE_MOBILE
     updateSecureIcon();
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
-        m_currentSession.updateItem(m_webEngine->currentTabId().toString(), m_webEngine->getURI(), m_webEngine->getTitle());
+        m_tabService->updateTabItem(m_webEngine->currentTabId(),
+                m_webEngine->getURI(),
+                m_webEngine->getTitle(),
+                m_webEngine->getOrigin());
         m_historyService->addHistoryItem(m_webEngine->getURI(),
                                                  m_webEngine->getTitle(),
                                                  m_webEngine->getFavicon());
@@ -1312,7 +1304,6 @@ void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
     m_webPageUI->getURIEntry().clearFocus();
-    m_tabService->clearThumb(m_webEngine->currentTabId());
     if (evas_object_visible_get(m_moreMenuUI->getContent()))
         m_moreMenuUI->updateBookmarkButton();
 }
@@ -1351,6 +1342,8 @@ void SimpleUI::showTabUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_tabUI.get());
 
+    if (m_webEngine->isLoading())
+        onGenerateThumb(m_webEngine->currentTabId());
     std::vector<basic_webengine::TabContentPtr> tabsContents =
             m_webEngine->getTabContents();
     m_tabService->fillThumbs(tabsContents);
@@ -1813,8 +1806,7 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
         std::vector<std::shared_ptr<tizen_browser::basic_webengine::TabContent>> openedTabs = m_webEngine->getTabContents();
         for (auto it = openedTabs.begin(); it < openedTabs.end(); ++it) {
             tizen_browser::basic_webengine::TabId id = it->get()->getId();
-            m_currentSession.removeItem(id.toString());
-            m_tabService->clearThumb(id);
+            m_tabService->removeTab(id);
             m_webEngine->closeTab(id);
         }
         m_storageService->getFoldersStorage().deleteAllFolders();
@@ -1929,8 +1921,7 @@ void SimpleUI::windowCreated()
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_currentSession.removeItem(id.toString());
-    m_tabService->clearThumb(id);
+    m_tabService->removeTab(id);
     updateView();
 }
 
