@@ -350,7 +350,7 @@ void SimpleUI::connectUISignals()
     m_historyUI->clearHistoryClicked.connect(boost::bind(&SimpleUI::onClearHistoryAllClicked, this));
     m_historyUI->signalDeleteHistoryItems.connect(boost::bind(&SimpleUI::onDeleteHistoryItems, this, _1));
     m_historyUI->closeHistoryUIClicked.connect(boost::bind(&SimpleUI::closeHistoryUI, this));
-    m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2, desktop_ua));
+    m_historyUI->signalHistoryItemClicked.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2, desktop_ua, basic_webengine::TabOrigin::UNKNOWN));
 
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->closeSettingsUIClicked.connect(boost::bind(&SimpleUI::closeSettingsUI, this));
@@ -557,6 +557,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1, _2));
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2, _3, false));
+    m_webEngine->switchToQuickAccess.connect(boost::bind(&SimpleUI::switchViewToQuickAccess, this));
 #if PROFILE_MOBILE
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
@@ -718,22 +719,28 @@ void SimpleUI::onBookmarkRemoved(const std::string& uri)
 
 void SimpleUI::onOpenURL(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode)
 {
-    onOpenURL(historyItem->getUrl(), historyItem->getTitle(), desktopMode);
+    basic_webengine::TabOrigin origin = basic_webengine::TabOrigin::UNKNOWN;
+    if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+        origin = basic_webengine::TabOrigin::QUICKACCESS;
+    onOpenURL(historyItem->getUrl(), historyItem->getTitle(), desktopMode, origin);
 }
 
 void SimpleUI::onOpenURL(const std::string& url)
 {
     // TODO: desktop mode should be checked in WebView or QuickAcces
     // (depends on which view is active)
-    onOpenURL(url, "", m_quickAccess->isDesktopMode());
+    basic_webengine::TabOrigin origin = basic_webengine::TabOrigin::UNKNOWN;
+    if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+        origin = basic_webengine::TabOrigin::QUICKACCESS;
+    onOpenURL(url, "", m_quickAccess->isDesktopMode(), origin);
 }
 
-void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool desktopMode)
+void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool desktopMode, const basic_webengine::TabOrigin& origin)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.popStackTo(m_webPageUI.get());
     if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-        openNewTab(url, title, boost::none, desktopMode);
+        openNewTab(url, title, boost::none, desktopMode, false, origin);
     else {
         m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
         m_webEngine->setURI(url);
@@ -1235,7 +1242,7 @@ void SimpleUI::filterURL(const std::string& url)
     //no filtering
 
         if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-            openNewTab(url);
+            openNewTab(url, "", boost::none, false, false, basic_webengine::TabOrigin::QUICKACCESS);
         else
             m_webEngine->setURI(url);
 
