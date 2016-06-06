@@ -33,6 +33,7 @@ public:
     int getValue() const { return m_value; }
     void setValue(int value) { m_value = value; }
     bool isFromWebView() const { return m_value >= 0; }
+    bool isFromQuickAccess() const { return m_value == QUICKACCESS; }
 private:
     int m_value;
 
