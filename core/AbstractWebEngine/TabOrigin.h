@@ -20,18 +20,16 @@
 
 namespace tizen_browser {
 namespace basic_webengine {
-namespace webengine_service {
-
 /*
  * Container for webview origin id value
  */
-class Origin
+class TabOrigin
 {
 public:
     static const int UNKNOWN = -1;
     static const int QUICKACCESS = -2;
-    Origin() : m_value(UNKNOWN) { }
-    Origin(int from) : m_value(from) { }
+    TabOrigin() : m_value(UNKNOWN) { }
+    TabOrigin(int from) : m_value(from) { }
     int getValue() const { return m_value; }
     void setValue(int value) { m_value = value; }
     bool isFromWebView() const { return m_value >= 0; }
@@ -41,7 +39,6 @@ private:
 };
 
 
-}
 }
 }
 

@@ -28,6 +28,7 @@
 #include <web/web_tab.h>
 #include "TabIdTypedef.h"
 #include "BrowserImageTypedef.h"
+#include "AbstractWebEngine/TabOrigin.h"
 
 namespace tizen_browser {
 namespace services {
@@ -43,15 +44,26 @@ public:
     virtual std::string getName();
 
     /**
-     * Overwrite image thumb for given id with new screenshot (in cache and
-     * in database).
+     * @brief Insert or update item related to tab of given id.
+     * @param tabId Id of the tab from web engine
+     * @param url URL of the tab
+     * @param title Ttle of the tab
      */
-    void updateThumb(const basic_webengine::TabId& tabId);
+    void updateTabItem(const basic_webengine::TabId& tabId,
+            const std::string& url,
+            const std::string& title,
+            const basic_webengine::TabOrigin& origin);
+
+    /**
+     * @brief Get all tab in vector.
+     * @return Shared pointer to vector of tabs (TabContents)
+     */
+    std::shared_ptr<std::vector<basic_webengine::TabContent> > getAllTabs();
 
     /**
      * Remove image thumb for given id from the cache and database.
      */
-    void clearThumb(const basic_webengine::TabId& tabId);
+    void removeTab(const basic_webengine::TabId& tabId);
 
     /**
      * Set thumb images for given TabContent objects: get them from
@@ -76,11 +88,6 @@ public:
      */
     boost::optional<int> convertTabId(std::string tabId) const;
 
-    /**
-     * Slot to which generated image is passed.
-     */
-    void onThumbGenerated(const basic_webengine::TabId& tabId,
-            tools::BrowserImagePtr imagePtr);
     boost::signals2::signal<void(basic_webengine::TabId)> generateThumb;
 
     void updateTabItemSnapshot(const basic_webengine::TabId& tabId,
@@ -146,13 +153,6 @@ private:
      * Map caching images. Keys: tab ids, values: thumb images.
      */
     std::map<int, tools::BrowserImagePtr> m_thumbMap;
-
-    /**
-     * Map caching if thumb should be saved in database.
-     * Only thumb generated after website fully loaded should be saved.
-     * Keys: tab ids, values: false/true
-     */
-    std::map<int, bool> m_thumbMapSave;
 };
 
 } /* namespace base_ui */
