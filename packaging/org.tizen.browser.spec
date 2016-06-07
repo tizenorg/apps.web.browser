@@ -86,6 +86,7 @@ cd %{_build_dir}
 export CFLAGS="$(echo $CFLAGS | sed 's/-Wl,--as-needed//g')"
 export CXXFLAGS="$(echo $CXXFLAGS | sed 's/-Wl,--as-needed//g')"
 export FFLAGS="$(echo $FFLAGS | sed 's/-Wl,--as-needed//g')"
+export LDFLAGS+=" -Wl,--allow-shlib-undefined "
 
 cmake .. \
     -DCMAKE_BUILD_TYPE=%{?build_type}%{!?build_type:RELEASE} \
