@@ -1178,6 +1178,10 @@ void SimpleUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->loadStarted();
+#if PROFILE_MOBILE
+    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+        closeFindOnPageUI();
+#endif
 }
 
 void SimpleUI::progressChanged(double progress)
