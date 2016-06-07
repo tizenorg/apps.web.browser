@@ -535,6 +535,11 @@ public:
      */
     boost::signals2::signal<void (const std::string&, const std::string&)> redirectedWebPage;
 
+    /**
+     * Switch to quick access when tere is no page to witch we can return on back keys.
+     */
+    boost::signals2::signal<void()> switchToQuickAccess;
+
 #if PROFILE_MOBILE
     /**
      * Register H/W back key callback for the current webview
