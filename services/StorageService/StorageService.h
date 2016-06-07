@@ -20,7 +20,6 @@
 #include "ServiceFactory.h"
 #include "service_macros.h"
 #include "SettingsStorage.h"
-#include "SessionStorage.h"
 #include "FoldersStorage.h"
 #include "CertificateStorage.h"
 
@@ -37,7 +36,6 @@ public:
     virtual std::string getName();
 
     storage::SettingsStorage& getSettingsStorage() { return m_settingsStorage; }
-    storage::SessionStorage& getSessionStorage() { return storage::SessionStorage::getInstance(); }
     storage::FoldersStorage& getFoldersStorage() { return m_foldersStorage; }
     storage::CertificateStorage& getCertificateStorage() { return m_certificateStorage; }
 

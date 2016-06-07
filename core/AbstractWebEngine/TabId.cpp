@@ -49,16 +49,21 @@ std::string TabId::toString() const {
     return std::to_string(m_id);
 }
 
-TabContent::TabContent(TabId id, const std::string& title,
+TabContent::TabContent(TabId id,
+        const std::string& url,
+        const std::string& title,
+        const TabOrigin& origin,
         tools::BrowserImagePtr thumbnail)
     : m_id(id)
+    , m_url(url)
     , m_title(title)
+    , m_origin(origin)
     , m_thumbnail(thumbnail)
 {
 }
 
-TabContent::TabContent(TabId id, const std::string& title) :
-        TabContent(id, title, std::make_shared<tools::BrowserImage>())
+TabContent::TabContent(const TabId& id, const std::string& url, const std::string& title, const TabOrigin& origin) :
+        TabContent(id, url, title, origin, std::make_shared<tools::BrowserImage>())
 {
 }
 
@@ -67,9 +72,19 @@ TabId TabContent::getId() const
     return m_id;
 }
 
+std::string TabContent::getUrl() const
+{
+    return m_url;
+}
+
 std::string TabContent::getTitle() const
 {
     return m_title;
+}
+
+TabOrigin TabContent::getOrigin() const
+{
+    return m_origin;
 }
 
 void TabContent::setThumbnail(tools::BrowserImagePtr thumbnail)
