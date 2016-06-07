@@ -559,6 +559,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1, _2));
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2, _3, false));
+    m_webEngine->switchToQuickAccess.connect(boost::bind(&SimpleUI::switchViewToQuickAccess, this));
 #if PROFILE_MOBILE
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
@@ -735,7 +736,7 @@ void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool 
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.popStackTo(m_webPageUI.get());
     if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-        openNewTab(url, title, boost::none, desktopMode);
+        openNewTab(url, title, boost::none, desktopMode, false, basic_webengine::TabOrigin::QUICKACCESS);
     else {
         m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
         m_webEngine->setURI(url);
@@ -1237,7 +1238,7 @@ void SimpleUI::filterURL(const std::string& url)
     //no filtering
 
         if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-            openNewTab(url);
+            openNewTab(url, "", boost::none, false, false, basic_webengine::TabOrigin::QUICKACCESS);
         else
             m_webEngine->setURI(url);
 
