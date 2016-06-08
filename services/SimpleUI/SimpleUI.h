@@ -293,7 +293,6 @@ private:
     bool isLandscape();
     int getRotation();
     static void __orientation_changed(void* data, Evas_Object*, void*);
-    static void __after_rotation(void *data, Elm_Transit *transit);
 #endif
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
@@ -369,7 +368,6 @@ private:
     Evas_Object *m_conformant;
     int m_current_angle;
     int m_temp_angle;
-    Elm_Transit *m_rotation_transit;
 #endif
 };
 

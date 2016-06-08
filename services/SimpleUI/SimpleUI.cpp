@@ -85,7 +85,6 @@ SimpleUI::SimpleUI()
 #if PROFILE_MOBILE
     , m_current_angle(0)
     , m_temp_angle(0)
-    , m_rotation_transit(nullptr)
 #endif
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1072,50 +1071,20 @@ void SimpleUI::onMenuButtonPressed()
     showMoreMenu();
 }
 
-void SimpleUI::__after_rotation(void *data, Elm_Transit */*transit*/)
-{
-    SimpleUI* simpleUI = static_cast<SimpleUI*>(data);
-    simpleUI->m_rotation_transit = nullptr;
-    elm_win_rotation_with_resize_set(simpleUI->main_window, simpleUI->m_current_angle);
-    simpleUI->m_bookmarkDetailsUI->setLandscape((simpleUI->m_current_angle % 180) == 0);
-    simpleUI->m_moreMenuUI->resetContent();
-    simpleUI->m_bookmarkFlowUI->resetContent();
-    simpleUI->m_settingsUI->orientationChanged();
-    simpleUI->m_bookmarkManagerUI->orientationChanged();
-    simpleUI->m_webPageUI->orientationChanged();
-    simpleUI->m_tabUI->orientationChanged();
-    simpleUI->m_webEngine->orientationChanged();
-}
-
 void SimpleUI::onRotation()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_rotation_transit) {
-        //Situation when we get additional signal while animation is still not finished.
-        elm_transit_del(m_rotation_transit);
-        m_rotation_transit = nullptr;
-    }
-
-    m_rotation_transit = elm_transit_add();
-    int to_degree = 0;
-    int diff_degree = m_temp_angle - m_current_angle;
-    elm_transit_object_add(m_rotation_transit, m_viewManager.getContent());
-
-    if (diff_degree == 270)
-        to_degree = -90;
-    else if (diff_degree == -270)
-        to_degree = 90;
-    else
-        to_degree = diff_degree;
-
-    elm_transit_effect_rotation_add(m_rotation_transit, to_degree, 0);
-    elm_transit_duration_set(m_rotation_transit, 0.25);
-
-    elm_transit_del_cb_set(m_rotation_transit, __after_rotation, this);
-    elm_transit_objects_final_state_keep_set(m_rotation_transit, EINA_FALSE);
-    elm_transit_go(m_rotation_transit);
 
     m_current_angle = m_temp_angle;
+    elm_win_rotation_with_resize_set(main_window, m_current_angle);
+    m_bookmarkDetailsUI->setLandscape((m_current_angle % 180) == 0);
+    m_moreMenuUI->resetContent();
+    m_bookmarkFlowUI->resetContent();
+    m_settingsUI->orientationChanged();
+    m_bookmarkManagerUI->orientationChanged();
+    m_webPageUI->orientationChanged();
+    m_tabUI->orientationChanged();
+    m_webEngine->orientationChanged();
 }
 
 void SimpleUI::__orientation_changed(void* data, Evas_Object*, void*)
