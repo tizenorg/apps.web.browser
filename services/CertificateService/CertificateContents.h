@@ -66,10 +66,12 @@ public:
 
     void setCurrentTabCertData(std::string host, std::string pem, HOST_TYPE type);
     Eina_Bool isValidCertificate() const { return m_hostType == SECURE_HOST; }
+    bool isValidCertificate(const std::string& uri);
 
     HOST_TYPE isCertExistForHost(const std::string& host);
-    void addToHostCertList(const std::string& host, HOST_TYPE type);
-    void saveCertificateInfo(const std::string& host, const std::string& pem, bool validCert, bool allowUnsecureCert=false);
+    void saveCertificateInfo(const std::string& host, const std::string& pem);
+    void saveWrongCertificateInfo(const std::string& host, const std::string& pem);
+    void clear();
 
     boost::signals2::signal<std::shared_ptr<std::vector<std::pair<std::string, int> > > ()> getHostCertList;
     boost::signals2::signal<void (const std::string&, const std::string&, int)> addOrUpdateCertificateEntry;
@@ -101,6 +103,7 @@ private:
         const char *value;
     };
 
+    void addToHostCertList(const std::string host, HOST_TYPE type);
     bool createCertificate(const char *cert_data);
     Evas_Object* createGenlist(Evas_Object* parent);
     Evas_Object* createLabel(Evas_Object* parent,  const std::string& msg);
