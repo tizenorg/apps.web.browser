@@ -522,7 +522,16 @@ public:
      * Generate id for the new tab.
      */
     boost::signals2::signal<void()> createTabId;
-    boost::signals2::signal<void (const std::string&, const std::string&, bool)> setCertificatePem;
+
+    /**
+     *  Set valid certificate for host.
+     */
+    boost::signals2::signal<void (const std::string&, const std::string&)> setCertificatePem;
+
+    /**
+     *  Set invalid certificate for host.
+     */
+    boost::signals2::signal<void (const std::string&, const std::string&)> setWrongCertificatePem;
 
     /**
      * Async signal to save snapshot after it is generated.

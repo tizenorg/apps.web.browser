@@ -318,6 +318,7 @@ void SimpleUI::connectUISignals()
     m_webPageUI->getURIEntry().mobileEntryUnfocused.connect(boost::bind(&WebPageUI::mobileEntryUnfocused, m_webPageUI));
     m_webPageUI->qaOrientationChanged.connect(boost::bind(&QuickAccess::orientationChanged, m_quickAccess));
     m_webPageUI->getURIEntry().secureIconClicked.connect(boost::bind(&SimpleUI::showCertificatePopup, this));
+    m_webPageUI->getURIEntry().isValidCert.connect(boost::bind(&services::CertificateContents::isValidCertificate, m_certificateContents, _1));
 #endif
 
     M_ASSERT(m_quickAccess.get());
@@ -558,8 +559,9 @@ void SimpleUI::connectModelSignals()
     m_webEngine->createTabId.connect(boost::bind(&SimpleUI::onCreateTabId, this));
     m_webEngine->snapshotCaptured.connect(boost::bind(&SimpleUI::onSnapshotCaptured, this, _1, _2));
     m_webEngine->redirectedWebPage.connect(boost::bind(&SimpleUI::redirectedWebPage, this, _1, _2));
-    m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2, _3, false));
     m_webEngine->switchToQuickAccess.connect(boost::bind(&SimpleUI::switchViewToQuickAccess, this));
+    m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2));
+    m_webEngine->setWrongCertificatePem.connect(boost::bind(&services::CertificateContents::saveWrongCertificateInfo, m_certificateContents, _1, _2));
 #if PROFILE_MOBILE
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
@@ -616,7 +618,6 @@ void SimpleUI::switchViewToWebPage()
         m_webEngine->resume();
     m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), m_webEngine->getURI());
     m_webPageUI->toIncognito(m_webEngine->isPrivateMode(m_webEngine->currentTabId()));
-    updateSecureIcon();
 }
 
 void SimpleUI::switchToTab(const tizen_browser::basic_webengine::TabId& tabId)
@@ -1184,7 +1185,6 @@ void SimpleUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->loadFinished();
 #if PROFILE_MOBILE
-    updateSecureIcon();
     if (!m_webEngine->isPrivateMode(m_webEngine->currentTabId())) {
         m_tabService->updateTabItem(m_webEngine->currentTabId(),
                 m_webEngine->getURI(),
@@ -1194,25 +1194,6 @@ void SimpleUI::loadFinished()
                                                  m_webEngine->getTitle(),
                                                  m_webEngine->getFavicon());
     }
-}
-
-void SimpleUI::updateSecureIcon()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    std::string uri = m_webEngine->getURI();
-
-    bool show = false, secure = false;
-    if (uri.find("https://") == 0) {
-        show = true;
-        services::CertificateContents::HOST_TYPE type = m_certificateContents->isCertExistForHost(tools::extractDomain(uri));
-        if (type == services::CertificateContents::SECURE_HOST)
-            secure = true;
-        else if (type == services::CertificateContents::UNSECURE_HOST_ALLOWED)
-            secure = false;
-        else
-            show = false;
-    }
-    m_webPageUI->getURIEntry().showSecureIcon(show, secure);
 #endif
 }
 
@@ -1482,7 +1463,7 @@ void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
             m_webEngine->confirmationResult(certPopupData->cert);
             std::string uri = certPopupData->cert->getURI();
             std::string pem = certPopupData->cert->getPem();
-            m_certificateContents->saveCertificateInfo(uri, pem, false, true);
+            m_certificateContents->saveWrongCertificateInfo(uri, pem);
             break;
         }
         case BACK_TO_SAFETY:
@@ -1816,10 +1797,10 @@ void SimpleUI::onResetBrowserButton(PopupButtons button, std::shared_ptr< PopupD
             m_tabService->removeTab(id);
             m_webEngine->closeTab(id);
         }
-        m_storageService->getFoldersStorage().deleteAllFolders();
+        m_certificateContents->clear();
         m_storageService->getCertificateStorage().deleteAllEntries();
+        m_storageService->getFoldersStorage().deleteAllFolders();
 #if PROFILE_MOBILE
-        m_certificateContents = make_shared<services::CertificateContents>();
         m_webEngine->resetSettingsParam();
         m_storageService->getSettingsStorage().resetSettings();
 #endif

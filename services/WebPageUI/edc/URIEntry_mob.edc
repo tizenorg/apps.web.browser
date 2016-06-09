@@ -562,20 +562,6 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
                 action: STATE_SET "visible" 0.0;
                 target: "right_icon_bg";
             }
-//             program {
-//                 name: "mouse_in_secure_icon";
-//                 signal: "mouse,down,*";
-//                 source: "secure_over";
-//                 action: STATE_SET "focused" 0.0;
-//                 target: "secure_icon_bg";
-//             }
-//             program {
-//                 name: "mouse_out_secure_icon";
-//                 signal: "mouse,up,*";
-//                 source: "secure_over";
-//                 action: STATE_SET "visible" 0.0;
-//                 target: "secure_icon_bg";
-//             }
             program {
                 name: "show_secure_icon";
                 signal: "show,secure,icon";
@@ -592,18 +578,6 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
                 target: "right_icon";
                 after: "show_icon_bg";
             }
-//             program {
-//                 name: "mouse_clicked_secure_icon";
-//                 signal: "mouse,clicked,*";
-//                 source: "secure_over";
-//                 after: "call_on_secure_icon_clicked_cb";
-//             }
-//             program {
-//                 name: "call_on_secure_icon_clicked_cb";
-//                 signal: "call_on_secure_icon_clicked_cb";
-//                 source: "ui";
-//                 action: SIGNAL_EMIT "secure_icon_clicked" "ui";
-//             }
             program {
                 name: "mouse_clicked_right_icon";
                 signal: "mouse,clicked,*";
