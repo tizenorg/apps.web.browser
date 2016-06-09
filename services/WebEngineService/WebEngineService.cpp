@@ -708,6 +708,9 @@ void WebEngineService::backButtonClicked()
         int switchTo = m_currentWebView->getOrigin().getValue();
         closeTab();
         switchToTab(switchTo);
+    } else if (m_currentWebView->getOrigin().isFromQuickAccess()) {
+        closeTab();
+        switchToQuickAccess();
     } else {
         minimizeBrowser();
     }
