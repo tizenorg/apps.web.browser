@@ -19,6 +19,7 @@
 #include <openssl/asn1.h>
 #include <openssl/bn.h>
 #include "app_i18n.h"
+#include "Tools/GeneralTools.h"
 
 #define SHA256LEN 32
 #define SHA1LEN 20
@@ -104,18 +105,21 @@ void CertificateContents::setCurrentTabCertData(std::string host, std::string pe
     m_genlist = createGenlist(m_parent);
 }
 
+bool CertificateContents::isValidCertificate(const std::string& uri)
+{
+    HOST_TYPE type = isCertExistForHost(tools::extractDomain(uri));
+    return type == SECURE_HOST;
+}
 
 CertificateContents::HOST_TYPE CertificateContents::isCertExistForHost(const std::string& host)
 {
     /*Returns the host type if a cert. exists for the host */
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    std::string key(host);
-    std::map<std::string, HOST_TYPE>::const_iterator lookup_host = m_host_cert_info.find(key);
-    if (lookup_host == m_host_cert_info.end())
+    if (m_host_cert_info.find(host) == m_host_cert_info.end())
         return HOST_ABSENT;
     else
-        return m_host_cert_info[key];
+        return m_host_cert_info[host];
 }
 
 void CertificateContents::addToHostCertList(const std::string& host, HOST_TYPE type)
@@ -124,21 +128,29 @@ void CertificateContents::addToHostCertList(const std::string& host, HOST_TYPE t
     m_host_cert_info[host] = type;
 }
 
-void CertificateContents::saveCertificateInfo(const std::string& host, const std::string& pem, bool validCert, bool allowUnsecureCert)
+void CertificateContents::saveCertificateInfo(const std::string& host, const std::string& pem)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     HOST_TYPE savedType = isCertExistForHost(host);
-    HOST_TYPE type;
-    if (validCert) {
-        type = SECURE_HOST;
-    } else if (allowUnsecureCert || savedType == UNSECURE_HOST_ALLOWED) {
-        type = UNSECURE_HOST_ALLOWED;
-    } else {
-        type = UNSECURE_HOST_UNKNOWN;
-    }
-    setCurrentTabCertData(host, pem, type);
-    type = isCertExistForHost(host);
-    addOrUpdateCertificateEntry(pem, host, static_cast<int>(type));
+    if (savedType == HOST_ABSENT)
+        savedType = SECURE_HOST;
+
+    setCurrentTabCertData(host, pem, savedType);
+    addOrUpdateCertificateEntry(pem, host, static_cast<int>(savedType));
+}
+
+void CertificateContents::saveWrongCertificateInfo(const std::string& host, const std::string& pem)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    HOST_TYPE savedType = UNSECURE_HOST_ALLOWED;
+    setCurrentTabCertData(host, pem, savedType);
+    addOrUpdateCertificateEntry(pem, host, static_cast<int>(savedType));
+}
+
+void CertificateContents::clear()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_host_cert_info.clear();
 }
 
 void CertificateContents::initUI(Evas_Object* parent)

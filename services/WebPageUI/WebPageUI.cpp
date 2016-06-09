@@ -170,6 +170,7 @@ void WebPageUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     hideProgressBar();
+    m_URIEntry->updateSecureIcon();
 }
 
 void WebPageUI::toIncognito(bool incognito)
@@ -245,14 +246,14 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
         m_statesMgr->set(WPUState::MAIN_WEB_PAGE);
     }
     setMainContent(content);
-    updateURIBar(uri);
 #if !PROFILE_MOBILE
     refreshFocusChain();
+    elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 #endif
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
-    elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
+    updateURIBar(uri);
 }
 
 void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
