@@ -1348,7 +1348,7 @@ void SimpleUI::showTabUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.pushViewToStack(m_tabUI.get());
 
-    if (m_webEngine->isLoading())
+    if (!m_webPageUI->stateEquals(WPUState::QUICK_ACCESS) && m_webEngine->tabsCount() > 0 && m_webEngine->isLoading())
         onGenerateThumb(m_webEngine->currentTabId());
     std::vector<basic_webengine::TabContentPtr> tabsContents =
             m_webEngine->getTabContents();
