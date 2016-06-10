@@ -18,7 +18,6 @@
 
 #define FIND_WORD_MAX_COUNT 10000
 #define FIND_ON_PAGE_MAX_TEXT 1000
-#define FIND_ON_PAGE_ENTRY_STYLE "DEFAULT='font_size=30 color=#404040 ellipsis=1'"
 
 #include <Elementary.h>
 #include <vector>
@@ -155,7 +154,6 @@ Evas_Object* FindOnPageUI::createFindOnPageUILayout()
 
     Evas_Object *access = elm_access_object_get(elm_entry_textblock_get(m_entry));
     elm_access_info_set(access, ELM_ACCESS_TYPE, _("IDS_BR_BODY_TEXT_FIELD_T_TTS"));
-    elm_entry_text_style_user_push(m_entry, FIND_ON_PAGE_ENTRY_STYLE);
 
     static Elm_Entry_Filter_Limit_Size limit_filter_data;
     limit_filter_data.max_byte_count = 0;
