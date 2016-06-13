@@ -118,7 +118,6 @@ void WebPageUI::hideUI()
         hideQuickAccess();
 
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
-    m_URIEntry->editingCanceled();
     evas_object_hide(m_URIEntry->getContent());
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
