@@ -1291,7 +1291,6 @@ int SimpleUI::getZoomFactor()
 void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
-    m_webPageUI->getURIEntry().clearFocus();
     if (evas_object_visible_get(m_moreMenuUI->getContent()))
         m_moreMenuUI->updateBookmarkButton();
 }
