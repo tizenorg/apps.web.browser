@@ -49,6 +49,7 @@ URIEntry::URIEntry()
     , m_entryContextMenuOpen(false)
     , m_searchTextEntered(false)
     , m_first_click(true)
+    , m_focused(false)
 #if PROFILE_MOBILE
     , m_rightIconType(RightIconType::NONE)
 #endif
@@ -118,13 +119,14 @@ void URIEntry::changeUri(const std::string& newUri)
 {
     BROWSER_LOGD("%s: newUri=%s", __func__, newUri.c_str());
     m_URI = newUri;
-    if (!m_URI.empty()) {
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
-#if PROFILE_MOBILE
-        m_rightIconType = RightIconType::NONE;
-#endif
-    } else {
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
+    if (!m_focused) {
+        if (!m_URI.empty()) {
+            elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
+    #if PROFILE_MOBILE
+            m_rightIconType = RightIconType::NONE;
+    #endif
+        } else
+            elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
     }
 }
 
@@ -235,6 +237,8 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
+    self->m_focused = false;
+    elm_entry_entry_set(self->m_entry, self->m_URI.c_str());
 
     if (!self->m_entryContextMenuOpen) {
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
@@ -255,7 +259,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-
+    self->m_focused = true;
     if (!self->m_entryContextMenuOpen) {
 #if PROFILE_MOBILE
         self->mobileEntryFocused();
@@ -305,7 +309,8 @@ void URIEntry::editingCompleted()
     free(text);
 
     elm_entry_input_panel_hide(m_entry);
-    uriChanged(rewriteURI(userString));
+    m_URI = rewriteURI(userString);
+    uriChanged(m_URI);
 #if !PROFILE_MOBILE
     elm_object_focus_set(m_entry, EINA_TRUE);
 #else
