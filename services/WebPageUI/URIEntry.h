@@ -144,6 +144,7 @@ private:
     bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
     bool m_first_click;
+    bool m_focused;
 #if PROFILE_MOBILE
     RightIconType m_rightIconType;
     bool m_securePageIcon;
