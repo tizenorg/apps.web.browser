@@ -159,7 +159,6 @@ private:
     Evas_Object* m_mainLayout;
     Evas_Object* m_errorLayout;
     Evas_Object* m_privateLayout;
-    Evas_Object* m_progressBar;
     Evas_Object* m_bookmarkManagerButton;
 
     std::unique_ptr<ButtonBar> m_leftButtonBar;
