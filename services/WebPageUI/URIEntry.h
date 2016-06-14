@@ -96,11 +96,9 @@ public:
     bool hasFocus() const;
 
     void setDisabled(bool disabled);
-    void editingCanceled();
 
 private:
     static void activated(void* data, Evas_Object* obj, void* event_info);
-    static void aborted(void* data, Evas_Object* obj, void* event_info);
     static void preeditChange(void* data, Evas_Object* obj, void* event_info);
     static void focused(void* data, Evas_Object* obj, void* event_info);
     static void unfocused(void* data, Evas_Object* obj, void* event_info);
@@ -140,7 +138,6 @@ private:
     Evas_Object* m_favicon;
     Evas_Object* m_entry_layout;
     SelectionState m_entrySelectionState;
-    std::string m_oryginalEntryText;
     std::string m_pageTitle;
     std::string m_URI;
     bool m_entryContextMenuOpen;
