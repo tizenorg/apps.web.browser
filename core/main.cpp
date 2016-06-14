@@ -24,6 +24,8 @@
 #include <stdexcept>
 #include <app.h>
 #include <ewk_main_internal.h>
+#include <ewk_context.h>
+#include <ewk_context_internal.h>
 #if PROFILE_MOBILE
 #include <system_settings.h>
 #include <app_common.h>
@@ -34,6 +36,8 @@
 #include "ServiceManager.h"
 #include "BasicUI/AbstractMainWindow.h"
 
+#define WEB_INSPECTOR 0
+
 // Command line flags for engine
 const char *engineCommandLineFlags[] = {
   "process-per-tab",
@@ -43,8 +47,21 @@ const char *engineCommandLineFlags[] = {
 ///\note Odroid platform modification
 const std::string DEFAULT_URL = "";
 const std::string DEFAULT_CALLER = "org.tizen.homescreen-efl";
+const int WEB_INSPECTOR_PORT = 9222;
 
 using BrowserDataPtr = std::shared_ptr<tizen_browser::base_ui::AbstractMainWindow<Evas_Object>>;
+
+#if WEB_INSPECTOR
+static void start_webInspectorServer()
+{
+        Ewk_Context *context = ewk_context_default_get();
+        unsigned int port = ewk_context_inspector_server_start(context, WEB_INSPECTOR_PORT);
+        if (port == 0)
+            BROWSER_LOGI("Failed to start WebInspector Server");
+        else
+            BROWSER_LOGI("WebInspector server started at port: %d \n", port);
+}
+#endif
 
 static void set_arguments(char **argv)
 {
@@ -200,6 +217,9 @@ int main(int argc, char* argv[])try
     ui_app_add_event_handler(&lang_changed_handler, APP_EVENT_LANGUAGE_CHANGED, app_language_changed, NULL);
 #endif
 
+#if WEB_INSPECTOR
+    start_webInspectorServer();
+#endif
     ui_app_main(argc, argv, &ops, &bd);
 
     ewk_shutdown();
