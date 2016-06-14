@@ -93,7 +93,6 @@ Evas_Object* URIEntry::getContent()
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
 
         evas_object_smart_callback_add(m_entry, "activated", URIEntry::activated, this);
-        evas_object_smart_callback_add(m_entry, "aborted", URIEntry::aborted, this);
         evas_object_smart_callback_add(m_entry, "preedit,changed", URIEntry::preeditChange, this);
         evas_object_smart_callback_add(m_entry, "changed,user", URIEntry::_uri_entry_editing_changed_user, this);
         evas_object_smart_callback_add(m_entry, "focused", URIEntry::focused, this);
@@ -171,7 +170,6 @@ URIEntry::IconType URIEntry::getCurrentIconTyep()
 void URIEntry::selectionTool()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_oryginalEntryText = elm_entry_markup_to_utf8(elm_entry_entry_get(m_entry));
     if (m_entrySelectionState == SelectionState::SELECTION_KEEP) {
         m_entrySelectionState = SelectionState::SELECTION_NONE;
     } else {
@@ -196,13 +194,6 @@ void URIEntry::activated(void* /* data */, Evas_Object* /* obj */, void* /*event
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-void URIEntry::aborted(void* data, Evas_Object* /* obj */, void* /*event_info*/)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    URIEntry* self = reinterpret_cast<URIEntry*>(data);
-    self->editingCanceled();
-}
-
 void URIEntry::preeditChange(void* /* data */, Evas_Object* /* obj */, void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -213,7 +204,6 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = reinterpret_cast<URIEntry*>(data);
     std::string entry(elm_entry_markup_to_utf8(elm_entry_entry_get(self->m_entry)));
-    self->m_URI = entry;
     if ((entry.find("http://") == 0)
             || (entry.find("https://") == 0)
             || (entry.find(".") != std::string::npos)) {
@@ -239,7 +229,6 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-    elm_entry_entry_set(self->m_entry, self->m_URI.c_str());
 
     if (!self->m_entryContextMenuOpen) {
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
@@ -254,6 +243,8 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 #if PROFILE_MOBILE
     self->showSecureIcon(self->m_showSecureIcon, self->m_securePageIcon);
 #endif
+
+    elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
 }
 
 void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info */)
@@ -293,7 +284,6 @@ void URIEntry::_fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Objec
         return;
     }
     if (keynameEsc == ev->keyname) {
-        self->editingCanceled();
 #if !PROFILE_MOBILE
         elm_object_focus_set(self->m_entry, EINA_TRUE);
 #endif
@@ -339,18 +329,6 @@ std::string URIEntry::rewriteURI(const std::string& url)
     }
 
     return url;
-}
-
-
-void URIEntry::editingCanceled()
-{
-    BROWSER_LOGD("[%s:%d] oryginal URL: %s ", __PRETTY_FUNCTION__, __LINE__, m_oryginalEntryText.c_str());
-    if (!m_oryginalEntryText.empty()) {
-        elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_oryginalEntryText.c_str()));
-        m_oryginalEntryText = "";
-    }
-    elm_entry_input_panel_hide(m_entry);
-    setCurrentFavIcon();
 }
 
 void URIEntry::AddAction(sharedAction action)
@@ -422,7 +400,6 @@ void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const c
     URIEntry* self = static_cast<URIEntry*>(data);
     switch (self->m_rightIconType) {
     case RightIconType::CANCEL:
-        self->m_URI = "";
         elm_entry_entry_set(self->m_entry, "");
         elm_object_signal_emit(self->m_entry_layout, "hide_icon", "ui");
         break;
