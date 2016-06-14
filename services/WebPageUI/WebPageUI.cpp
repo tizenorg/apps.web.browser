@@ -30,12 +30,15 @@ namespace base_ui {
 
 EXPORT_SERVICE(WebPageUI, "org.tizen.browser.webpageui")
 
+#define MAX_SIGNAL_NAME 32
+#define MAX_PROGRESS_LEVEL 20
+#define PROGRESS_STEP 0.05
+
 WebPageUI::WebPageUI()
     : m_parent(nullptr)
     , m_mainLayout(nullptr)
     , m_errorLayout(nullptr)
     , m_privateLayout(nullptr)
-    , m_progressBar(nullptr)
     , m_bookmarkManagerButton(nullptr)
     , m_URIEntry(new URIEntry())
     , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
@@ -151,7 +154,10 @@ void WebPageUI::progressChanged(double progress)
     if (progress == 1.0) {
         hideProgressBar();
     } else {
-        elm_progressbar_value_set(m_progressBar, progress);
+        int level = (int)(progress * MAX_PROGRESS_LEVEL);
+        char signal_name[MAX_SIGNAL_NAME] = { 0 };
+        snprintf(signal_name, MAX_SIGNAL_NAME, "update,progress,%.02f,signal", ((double)level * PROGRESS_STEP));
+        elm_object_signal_emit(m_mainLayout, signal_name, "");
     }
 }
 
@@ -434,11 +440,6 @@ void WebPageUI::createLayout()
     m_rightButtonBar->addAction(m_tab, "tab_button");
     m_rightButtonBar->addAction(m_showMoreMenu, "setting_button");
 
-    // progress bar
-    m_progressBar = elm_progressbar_add(m_mainLayout);
-    elm_object_style_set(m_progressBar, "default");
-    elm_progressbar_unit_format_set(m_progressBar, "");
-
     //URL bar (Evas Object is shipped by URIEntry object)
     m_URIEntry->init(m_mainLayout);
     elm_object_part_content_set(m_mainLayout, "uri_entry", m_URIEntry->getContent());
@@ -566,17 +567,14 @@ void WebPageUI::connectActions()
 void WebPageUI::showProgressBar()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_signal_emit(m_mainLayout, "show_progressbar_bg", "ui");
-    elm_object_part_content_set(m_mainLayout, "progress_bar", m_progressBar);
+    elm_object_signal_emit(m_mainLayout, "show,progress,signal", "");
+    elm_object_signal_emit(m_mainLayout, "update,progress,0.00,signal", "");
 }
 
 void WebPageUI::hideProgressBar()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_signal_emit(m_mainLayout, "hide_progressbar_bg", "ui");
-    elm_progressbar_value_set(m_progressBar, 0.0);
-    elm_object_part_content_unset(m_mainLayout, "progress_bar");
-    evas_object_hide(m_progressBar);
+    elm_object_signal_emit(m_mainLayout, "hide,progress,signal", "");
 }
 
 void WebPageUI::hideFindOnPage()
@@ -600,7 +598,6 @@ void WebPageUI::setErrorButtons()
     m_stopLoading->setEnabled(false);
     m_reload->setEnabled(true);
     m_forward->setEnabled(false);
-    evas_object_hide(m_progressBar);
 }
 
 void WebPageUI::setPrivateButtons()
@@ -609,7 +606,6 @@ void WebPageUI::setPrivateButtons()
     m_stopLoading->setEnabled(false);
     m_reload->setEnabled(false);
     m_forward->setEnabled(false);
-    evas_object_hide(m_progressBar);
 }
 
 void WebPageUI::updateURIBar(const std::string& uri)
