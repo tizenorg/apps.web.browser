@@ -129,26 +129,32 @@ void ViewManager::updateLayout(interfaces::AbstractUIComponent* previousView)
     Evas_Object* swallowed = elm_layout_content_get(m_mainLayout, "content");
     if (!m_viewStack.empty())
     {
-        if (m_viewStack.top()->getContent() == swallowed)
+        if (topOfStack()->getContent() == swallowed)
         {
             BROWSER_LOGD("[%s:%d] Top of stack is already visible!!!",
                          __PRETTY_FUNCTION__, __LINE__);
             return;
         }
-        if(previousView)
-            previousView->hideUI();
         elm_layout_content_unset(m_mainLayout, "content");
-        elm_layout_content_set(m_mainLayout, "content", m_viewStack.top()->getContent());
+        if (previousView)
+        {
+            previousView->hideUI();
+            evas_object_hide(previousView->getContent());
+        }
+        elm_layout_content_set(m_mainLayout, "content", topOfStack()->getContent());
+        evas_object_show(elm_layout_content_get(m_mainLayout, "content"));
 
-        m_viewStack.top()->showUI();
+        topOfStack()->showUI();
     }
     else
     {
         BROWSER_LOGD("[%s:%d] Stack is empty!!!",__PRETTY_FUNCTION__, __LINE__);
-        if(previousView)
-             previousView->hideUI();
-
         elm_layout_content_unset(m_mainLayout, "content");
+        if (previousView)
+        {
+             previousView->hideUI();
+             evas_object_hide(previousView->getContent());
+        }
         elm_layout_content_set(m_mainLayout, "content", nullptr);
     }
 }
