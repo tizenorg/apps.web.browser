@@ -172,7 +172,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
 
     bp_history_offset offset = (BP_HISTORY_O_URL | BP_HISTORY_O_TITLE | BP_HISTORY_O_FREQUENCY | BP_HISTORY_O_FAVICON | BP_HISTORY_O_DATE_CREATED | BP_HISTORY_O_THUMBNAIL);
 
-    int freq_arr[1000];
+    int freq_arr[1000] = {0, };
     for(int i = 0; i< count; i++){
         int freq;
         if (0 == bp_history_adaptor_get_frequency(ids[i], &freq))
@@ -181,7 +181,7 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         }
     }
 
-    int index_array[6];
+    int index_array[6] = {0, };
     int j=0;
     int maximum = freq_arr[0];
     int position = 0;
@@ -190,16 +190,16 @@ std::shared_ptr<HistoryItemVector> HistoryService::getMostVisitedHistoryItems()
         if(k > count || count == 0)
             break;
 
-    maximum = freq_arr[0];
-    position = 0;
+        maximum = freq_arr[0];
+        position = 0;
 
-    for(int i =1;i<count;i++){
-        if (freq_arr[i] > maximum)
+        for(int i =1;i<count;i++){
+            if (freq_arr[i] > maximum)
             {
                 maximum  = freq_arr[i];
                 position = i;
             }
-         }
+        }
         index_array[j++] = position;
         freq_arr[position] = -1;
     }

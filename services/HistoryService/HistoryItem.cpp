@@ -15,6 +15,7 @@
  */
 
 #include "HistoryItem.h"
+#include "BrowserLogger.h"
 
 namespace tizen_browser
 {
@@ -23,7 +24,13 @@ namespace services
 
 HistoryItem::HistoryItem(HistoryItem && other) throw()
 {
-    *this = std::move(other);
+    try {
+        if (this != &other) {
+            *this = std::move(other);
+        }
+    } catch(...) {
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    }
 }
 
 HistoryItem::HistoryItem(int id,
