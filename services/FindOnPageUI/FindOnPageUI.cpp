@@ -305,9 +305,6 @@ void FindOnPageUI::__entry_changed_cb(void *data, Evas_Object *obj, void* /*even
     if (!elm_text || strlen(elm_text) == 0) {
         elm_object_signal_emit(fop->m_fop_layout, "hide,clear,button,signal", "");
         eina_stringshare_replace(&fop->m_input_word, "");
-        // On deleting last character, send empty string to clear the highlight.
-        struct FindData fd = {"", EINA_FALSE, NULL, NULL};
-        fop->startFindingWord(fd);
         return;
     }
 
