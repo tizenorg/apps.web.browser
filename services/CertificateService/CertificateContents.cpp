@@ -386,14 +386,16 @@ static const char* _get_formatted_serial_no(ASN1_INTEGER *bs )
     unsigned char* binSerial = nullptr;
     unsigned int outsz;
     outsz = BN_num_bytes(bn);
-    if (BN_is_negative(bn)) {
-        outsz++;
-        if (!(binSerial = (unsigned char* )malloc(outsz))) return 0;
-        BN_bn2bin(bn, binSerial + 1);
-        binSerial[0] = 0x80;
-    } else {
-        if (!(binSerial = (unsigned char* )malloc(outsz))) return 0;
-        BN_bn2bin(bn, binSerial);
+    if(bn){
+        if (BN_is_negative(bn)) {
+            outsz++;
+            if (!(binSerial = (unsigned char* )malloc(outsz))) return 0;
+            BN_bn2bin(bn, binSerial + 1);
+            binSerial[0] = 0x80;
+        } else {
+            if (!(binSerial = (unsigned char* )malloc(outsz))) return 0;
+            BN_bn2bin(bn, binSerial);
+        }
     }
 
     for (size_t i=0; i < outsz; i++) {
