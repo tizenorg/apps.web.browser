@@ -113,6 +113,7 @@ SimpleUI::SimpleUI()
         static const int rots[] = {0, 90, 180, 270};
         elm_win_wm_rotation_available_rotations_set(main_window, rots, (sizeof(rots) / sizeof(int)));
         evas_object_smart_callback_add(main_window, "wm,rotation,changed", __orientation_changed, this);
+        evas_object_event_callback_add(m_viewManager.getContent(), EVAS_CALLBACK_RESIZE, _layout_resized, this);
     } else
         BROWSER_LOGW("[%s:%d] Device does not support rotation.", __PRETTY_FUNCTION__, __LINE__);
 
@@ -1115,6 +1116,14 @@ void SimpleUI::__orientation_changed(void* data, Evas_Object*, void*)
                         simpleUI->m_current_angle, simpleUI->m_temp_angle);
         simpleUI->onRotation();
     }
+}
+
+void SimpleUI::_layout_resized(void *data, Evas *, Evas_Object *, void *)
+{
+    SimpleUI* simpleUI = static_cast<SimpleUI*>(data);
+    int w, h;
+    evas_object_geometry_get(simpleUI->m_viewManager.getContent(), nullptr, nullptr, &w, &h);
+    BROWSER_LOGD("[%s:%d] Current layout size: %d %d", __PRETTY_FUNCTION__, __LINE__, w, h);
 }
 
 bool SimpleUI::isLandscape()
