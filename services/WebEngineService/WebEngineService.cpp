@@ -40,6 +40,7 @@ WebEngineService::WebEngineService()
     , m_stopped(false)
     , m_webViewCacheInitialized(false)
     , m_currentTabId(TabId::NONE)
+    , m_currentWebView(nullptr)
     , m_tabIdCreated(-1)
 {
     m_mostRecentTab.clear();
@@ -749,7 +750,8 @@ void WebEngineService::scrollView(const int& dx, const int& dy)
 #if PROFILE_MOBILE
 void WebEngineService::findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_cb, void *data)
 {
-    m_currentWebView->findWord(word, forward, found_cb, data);
+    if (m_currentWebView)
+        m_currentWebView->findWord(word, forward, found_cb, data);
 }
 
 bool WebEngineService::getSettingsParam(WebEngineSettings param) {
