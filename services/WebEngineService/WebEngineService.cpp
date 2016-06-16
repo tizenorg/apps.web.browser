@@ -501,6 +501,10 @@ TabId WebEngineService::addTab(const std::string & uri,
 }
 
 Evas_Object* WebEngineService::getTabView(TabId id){
+    if (m_tabs.find(id) == m_tabs.end()) {
+        BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, id.get());
+        return nullptr;
+    }
     return m_tabs[id]->getLayout();
 }
 
@@ -512,6 +516,11 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
     if (m_currentWebView) {
         disconnectSignals(m_currentWebView);
         suspend();
+    }
+
+    if (m_tabs.find(newTabId) == m_tabs.end()) {
+        BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, newTabId.get());
+        return false;
     }
 
     m_currentWebView = m_tabs[newTabId];
@@ -584,6 +593,10 @@ void WebEngineService::confirmationResult(WebConfirmationPtr c)
 bool WebEngineService::isPrivateMode(const TabId& id)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_tabs.find(id) == m_tabs.end()) {
+        BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, id.get());
+        return false;
+    }
     return m_tabs[id]->isPrivateMode();
 }
 
@@ -599,6 +612,10 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapsho
 
 std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapshotData(TabId id, int width, int height, bool async,
         tizen_browser::tools::SnapshotType snapshot_type){
+    if (m_tabs.find(id) == m_tabs.end()) {
+        BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, id.get());
+        return std::shared_ptr<tizen_browser::tools::BrowserImage>();
+    }
    return m_tabs[id]->captureSnapshot(width, height, async, snapshot_type);
 }
 
