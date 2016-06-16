@@ -66,12 +66,18 @@ void WebEngineService::destroyTabs()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_tabs.clear();
-    m_currentWebView.reset();
+    if (m_currentWebView)
+        m_currentWebView.reset();
 }
 
 Evas_Object * WebEngineService::getLayout()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return nullptr;
+    }
     return m_currentWebView->getLayout();
 }
 
@@ -173,6 +179,10 @@ void WebEngineService::setURI(const std::string & uri)
 {
     BROWSER_LOGD("[%s:%d] uri=%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_stopped = false;
     m_currentWebView->setURI(uri);
 }
@@ -218,19 +228,35 @@ TabOrigin WebEngineService::getOrigin() const
 
 std::string WebEngineService::getUserAgent() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return std::string();
+    }
     return m_currentWebView->getUserAgent();
 }
 
 void WebEngineService::setUserAgent(const std::string& ua)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->setUserAgent(ua);
 }
 
 void WebEngineService::suspend()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     if(tabsCount()>0) {
-        M_ASSERT(m_currentWebView);
         m_currentWebView->suspend();
 #if PROFILE_MOBILE
         unregisterHWKeyCallback();
@@ -240,6 +266,12 @@ void WebEngineService::suspend()
 
 void WebEngineService::resume()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     if(tabsCount()>0) {
         M_ASSERT(m_currentWebView);
         m_currentWebView->resume();
@@ -251,27 +283,47 @@ void WebEngineService::resume()
 
 bool WebEngineService::isSuspended() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->isSuspended();
 }
 
 void WebEngineService::stopLoading(void)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_stopped = true;
     m_currentWebView->stopLoading();
 }
 
 void WebEngineService::reload(void)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_stopped = false;
     m_currentWebView->reload();
 }
 
 void WebEngineService::back(void)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_stopped = false;
     m_currentWebView->back();
 #if PROFILE_MOBILE
@@ -281,7 +333,12 @@ void WebEngineService::back(void)
 
 void WebEngineService::forward(void)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_stopped = false;
     m_currentWebView->forward();
 #if PROFILE_MOBILE
@@ -291,19 +348,34 @@ void WebEngineService::forward(void)
 
 bool WebEngineService::isBackEnabled() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->isBackEnabled();
 }
 
 bool WebEngineService::isForwardEnabled() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->isForwardEnabled();
 }
 
 bool WebEngineService::isLoading() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->isLoading();
 }
 
@@ -481,7 +553,8 @@ bool WebEngineService::closeTab(TabId id) {
     m_mostRecentTab.erase(std::remove(m_mostRecentTab.begin(), m_mostRecentTab.end(), closingTabId), m_mostRecentTab.end());
 
     if (closingTabId == m_currentTabId) {
-        m_currentWebView.reset();
+        if (m_currentWebView)
+            m_currentWebView.reset();
     }
     if (m_tabs.size() == 0) {
         m_currentTabId = TabId::NONE;
@@ -531,19 +604,34 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getSnapsho
 
 void WebEngineService::setFocus()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->setFocus();
 }
 
 void WebEngineService::clearFocus()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->clearFocus();
 }
 
 bool WebEngineService::hasFocus() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->hasFocus();
 }
 
@@ -602,7 +690,12 @@ int WebEngineService::getZoomFactor() const
 
 void WebEngineService::setZoomFactor(int zoomFactor)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->setZoomFactor(0.01*zoomFactor);
 
 }
@@ -643,6 +736,12 @@ void WebEngineService::clearFormData()
 
 void WebEngineService::searchOnWebsite(const std::string & searchString, int flags)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->searchOnWebsite(searchString, flags);
 }
 
@@ -688,6 +787,10 @@ void WebEngineService::moreKeyPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
 
     if (m_currentTabId == TabId::NONE || m_currentWebView->clearTextSelection())
         return;
@@ -700,7 +803,12 @@ void WebEngineService::moreKeyPressed()
 
 void WebEngineService::backButtonClicked()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
 
 #if PROFILE_MOBILE
     if (m_currentWebView->clearTextSelection())
@@ -730,24 +838,45 @@ void WebEngineService::backButtonClicked()
 
 void WebEngineService::switchToDesktopMode()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->switchToDesktopMode();
 }
 
 void WebEngineService::switchToMobileMode()
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->switchToMobileMode();
 }
 
 bool WebEngineService::isDesktopMode() const
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return false;
+    }
     return m_currentWebView->isDesktopMode();
 }
 
 void WebEngineService::scrollView(const int& dx, const int& dy)
 {
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    M_ASSERT(m_currentWebView);
+    if (!m_currentWebView) {
+        BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
+        return;
+    }
     m_currentWebView->scrollView(dx, dy);
 }
 
