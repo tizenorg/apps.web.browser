@@ -182,8 +182,7 @@ int main(int argc, char* argv[])try
 	BROWSER_LOGD("BROWSER TAG: %s",tizen_browser::logger::Logger::getInstance().getLogTag().c_str());
 	BROWSER_LOGD("BROWSER REGISTERED LOGGERS COUNT: %d",tizen_browser::logger::Logger::getInstance().getLoggersCount());
 
-    // TODO: Enable it after video black screen issue is resolved.
-    // setenv("COREGL_FASTPATH", "1", 1);
+    setenv("COREGL_FASTPATH", "1", 1);
 
     ui_app_lifecycle_callback_s ops;
     memset(&ops, 0x00, sizeof(ui_app_lifecycle_callback_s));
