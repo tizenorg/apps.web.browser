@@ -316,6 +316,7 @@ void URIEntry::editingCompleted()
 #else
     showSecureIcon(false, false);
 #endif
+    clearFocus();
 }
 
 std::string URIEntry::rewriteURI(const std::string& url)
@@ -351,6 +352,7 @@ void URIEntry::editingCanceled()
     }
     elm_entry_input_panel_hide(m_entry);
     setCurrentFavIcon();
+    clearFocus();
 }
 
 void URIEntry::AddAction(sharedAction action)
