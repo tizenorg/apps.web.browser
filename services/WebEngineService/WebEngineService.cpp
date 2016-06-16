@@ -188,6 +188,10 @@ std::string WebEngineService::getURI() const
 
 bool WebEngineService::isLoadError() const
 {
+    if (!m_currentWebView) {
+        BROWSER_LOGW("[%s:%d] no current webview!", __PRETTY_FUNCTION__, __LINE__);
+        return false;
+    }
     return m_currentWebView->isLoadError();
 }
 
