@@ -710,12 +710,13 @@ void WebPageUI::mobileEntryFocused()
 void WebPageUI::mobileEntryUnfocused()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri", "ui");
     } else {
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
-
+    setFocusOnSuspend();
     // delay hiding on one efl loop iteration to enable genlist item selected callback to come
     ecore_timer_add(0.0, _hideDelay, this);
 }
