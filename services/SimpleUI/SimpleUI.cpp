@@ -666,6 +666,10 @@ void SimpleUI::openNewTab(const std::string &uri, const std::string& title,
     BROWSER_LOGD("[%s:%d] uri =%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     tizen_browser::basic_webengine::TabId tab = m_webEngine->addTab(uri,
             nullptr, adaptorId, title, desktopMode, incognitoMode, origin);
+    if (tab == basic_webengine::TabId::NONE) {
+        BROWSER_LOGW("[%s:%d] New tab is not created!", __PRETTY_FUNCTION__, __LINE__);
+        return;
+    }
     switchToTab(tab);
     m_webPageUI->toIncognito(incognitoMode);
     if (incognitoMode)

@@ -475,6 +475,8 @@ TabId WebEngineService::addTab(const std::string & uri,
     } else {
         // searching for next available tabId
         newAdaptorId = createTabId();
+        if (newAdaptorId < 0)
+            return TabId(TabId::NONE);
     }
     TabId newTabId(newAdaptorId);
 

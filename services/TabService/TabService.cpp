@@ -42,10 +42,11 @@ TabService::~TabService()
     }
 }
 
+// return -1 when tab adaptor is not created
 int TabService::createTabId(int tabId) const
 {
     int adaptorId = tabId;
-    if (!bp_tab_adaptor_create(&adaptorId)) {
+    if (bp_tab_adaptor_create(&adaptorId) < 0) {
         errorPrint("bp_tab_adaptor_create");
     }
     return adaptorId;
