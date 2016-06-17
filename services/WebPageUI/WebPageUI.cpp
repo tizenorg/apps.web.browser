@@ -715,7 +715,7 @@ void WebPageUI::mobileEntryUnfocused()
     } else {
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
-
+    setFocusOnSuspend();
     // delay hiding on one efl loop iteration to enable genlist item selected callback to come
     ecore_timer_add(0.0, _hideDelay, this);
 }
