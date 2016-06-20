@@ -479,6 +479,24 @@ collections { base_scale: 2.6;
                    visible: 1;
                }
             }
+            part {
+                name: "dummy_button_swallow";
+                scale: 1;
+                type: SWALLOW;
+                mouse_events: 1;
+                repeat_events: 1;
+                description {
+                    state: "default" 0.0;
+                    align: 0 0;
+                    visible: 1;
+                    fixed: 1 1;
+                    min: 1 1;
+                    max: 1 1;
+                    //color: 255 0 0 255;
+                    rel1 { relative: 0.0 0.0; to: "web_view"; }
+                    rel2 { relative: 1.0 1.0; to: "web_view"; }
+                }
+            }
         }
         programs {
             program {

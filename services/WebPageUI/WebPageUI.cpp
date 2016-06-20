@@ -37,6 +37,7 @@ EXPORT_SERVICE(WebPageUI, "org.tizen.browser.webpageui")
 WebPageUI::WebPageUI()
     : m_parent(nullptr)
     , m_mainLayout(nullptr)
+    , m_dummy_button(nullptr)
     , m_errorLayout(nullptr)
     , m_privateLayout(nullptr)
     , m_bookmarkManagerButton(nullptr)
@@ -348,7 +349,9 @@ void WebPageUI::unlockUrlHistoryList()
 
 void WebPageUI::setFocusOnSuspend()
 {
-    elm_object_focus_set(m_rightButtonBar->getButton("tab_button"), EINA_TRUE);
+    fprintf(stderr, "KAWA setFocusOnSuspend\n");
+    elm_object_focus_set(m_dummy_button, EINA_TRUE);
+    fprintf(stderr, "KAWA setFocusOnSuspend PO\n");
 }
 
 #if !PROFILE_MOBILE
@@ -424,6 +427,11 @@ void WebPageUI::createLayout()
     createErrorLayout();
     createPrivateLayout();
     createActions();
+
+    m_dummy_button = elm_button_add(m_mainLayout);
+    //elm_object_style_set(m_dummy_button, "invisible_button");
+    evas_object_show(m_dummy_button);
+    elm_object_part_content_set(m_mainLayout, "dummy_button_swallow", m_dummy_button);
 
     // left buttons
     m_leftButtonBar = std::unique_ptr<ButtonBar>(new ButtonBar(m_mainLayout, "WebPageUI/LeftButtonBar.edj", "left_button_bar"));
