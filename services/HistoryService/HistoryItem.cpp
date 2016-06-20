@@ -22,7 +22,7 @@ namespace tizen_browser
 namespace services
 {
 
-HistoryItem::HistoryItem(HistoryItem && other) throw()
+HistoryItem::HistoryItem(HistoryItem && other) noexcept
 {
     try {
         if (this != &other) {
@@ -76,7 +76,7 @@ HistoryItem::~HistoryItem()
 
 }
 
-HistoryItem & HistoryItem::operator=(HistoryItem && other) throw()
+HistoryItem & HistoryItem::operator=(HistoryItem && other) noexcept
 {
     if (this != &other) {
         m_url = std::move(other.m_url);

@@ -35,7 +35,7 @@ public:
                 const std::string & title,
                 tools::BrowserImagePtr favicon,
                 tools::BrowserImagePtr thumbnail = std::make_shared<tools::BrowserImage>());
-    HistoryItem(HistoryItem && other) throw();
+    HistoryItem(HistoryItem && other) noexcept;
     HistoryItem(int id, const std::string& url);
     HistoryItem(const HistoryItem& source);
     virtual ~HistoryItem();
