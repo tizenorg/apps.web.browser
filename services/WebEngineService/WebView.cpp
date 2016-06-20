@@ -681,6 +681,7 @@ void WebView::suspend()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkView);
 
+    //fprintf(stderr, "KAWA PRZED SUSPEND: %d\n", ewk_view_focus_get(m_ewkView));
     ewk_view_suspend(m_ewkView);
     m_suspended = true;
 }
@@ -691,6 +692,7 @@ void WebView::resume()
     M_ASSERT(m_ewkView);
 
     ewk_view_resume(m_ewkView);
+    //fprintf(stderr, "KAWA PO RESUME: %d\n", ewk_view_focus_get(m_ewkView));
     m_suspended = false;
 }
 

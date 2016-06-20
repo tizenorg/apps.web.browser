@@ -130,7 +130,9 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::suspend()
 {
-    m_webPageUI->setFocusOnSuspend();
+    fprintf(stderr, "KAWA %d\n", m_wvIMEStatus);
+    if (m_wvIMEStatus)
+        m_webPageUI->mobileEntryUnfocused();
     m_webEngine->suspend();
 }
 
