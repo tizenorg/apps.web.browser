@@ -130,7 +130,8 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::suspend()
 {
-    m_webPageUI->setFocusOnSuspend();
+    if (m_webPageUI->getURIEntry().hasFocus())
+        m_webPageUI->mobileEntryUnfocused();
     m_webEngine->suspend();
 }
 
