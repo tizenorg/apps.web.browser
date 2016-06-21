@@ -402,10 +402,14 @@ static const char* _get_formatted_serial_no(ASN1_INTEGER *bs )
         char* l = (char*) (3*i + ((intptr_t) printable));
 
         if (i < (outsz -1)) {
-            snprintf(l, 4, "%02x%c", binSerial[i],':');
+            if(binSerial != nullptr) {
+                snprintf(l, 4, "%02x%c", binSerial[i],':');
+            }
         }
         else {
-            snprintf(l, 3, "%02x", binSerial[i]);
+            if(binSerial != nullptr) {
+                snprintf(l, 3, "%02x", binSerial[i]);
+            }
         }
     }
     free(binSerial);
