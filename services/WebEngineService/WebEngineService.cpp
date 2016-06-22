@@ -151,6 +151,8 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->redirectedWebPage.disconnect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     webView->getRotation.disconnect(boost::bind(&WebEngineService::_getRotation, this));
+    webView->unsecureConnection.disconnect(boost::bind(&WebEngineService::_unsecureConnection, this));
+    webView->findOnPage.disconnect(boost::bind(&WebEngineService::_findOnPage, this, _1));
 #endif
 }
 
@@ -524,7 +526,9 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
         BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, newTabId.get());
         return false;
     }
-
+#if PROFILE_MOBILE
+    closeFindOnPage();
+#endif
     m_currentWebView = m_tabs[newTabId];
     m_currentTabId = newTabId;
     m_mostRecentTab.erase(std::remove(m_mostRecentTab.begin(), m_mostRecentTab.end(), newTabId), m_mostRecentTab.end());

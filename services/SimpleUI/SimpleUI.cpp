@@ -1325,7 +1325,8 @@ void SimpleUI::closeFindOnPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_findOnPageUI);
-    m_findOnPageUI->hideUI();
+    if (m_findOnPageUI && evas_object_visible_get(m_findOnPageUI->getContent()))
+        m_findOnPageUI->hideUI();
 }
 #endif
 
