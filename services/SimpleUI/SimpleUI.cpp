@@ -134,6 +134,15 @@ void SimpleUI::suspend()
     m_webEngine->suspend();
 }
 
+void SimpleUI::resume()
+{
+    m_webEngine->resume();
+#if PROFILE_MOBILE
+    if (m_findOnPageUI)
+        m_findOnPageUI->show_ime();
+#endif
+}
+
 void SimpleUI::destroyUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1325,7 +1334,8 @@ void SimpleUI::closeFindOnPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_findOnPageUI);
-    m_findOnPageUI->hideUI();
+    if (m_findOnPageUI)
+        m_findOnPageUI->hideUI();
 }
 #endif
 
