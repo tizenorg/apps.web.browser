@@ -84,7 +84,7 @@ public:
     virtual int exec(const std::string& _url, const std::string& _caller);
     virtual std::string getName();
     void suspend();
-    void resume() {m_webEngine->resume();}
+    void resume();
 
     void destroyUI();
 private:

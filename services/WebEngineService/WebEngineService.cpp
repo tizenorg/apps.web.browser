@@ -151,12 +151,14 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->redirectedWebPage.disconnect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
     webView->getRotation.disconnect(boost::bind(&WebEngineService::_getRotation, this));
+    webView->unsecureConnection.disconnect(boost::bind(&WebEngineService::_unsecureConnection, this));
+    webView->findOnPage.disconnect(boost::bind(&WebEngineService::_findOnPage, this, _1));
 #endif
 }
 
 void WebEngineService::disconnectCurrentWebViewSignals()
 {
-    if(m_currentWebView.get())
+    if (m_currentWebView.get())
         disconnectSignals(m_currentWebView);
 }
 
@@ -164,7 +166,7 @@ int WebEngineService::createTabId()
 {
     m_tabIdCreated = -1;
     AbstractWebEngine::createTabId();
-    if(m_tabIdCreated == -1) {
+    if (m_tabIdCreated == -1) {
         BROWSER_LOGE("%s generated tab id == -1", __PRETTY_FUNCTION__);
     }
     return m_tabIdCreated;
@@ -190,7 +192,7 @@ void WebEngineService::setURI(const std::string & uri)
 std::string WebEngineService::getURI() const
 {
     M_ASSERT(m_currentWebView);
-    if(m_currentWebView)
+    if (m_currentWebView)
         return m_currentWebView->getURI();
     else
         return std::string("");
@@ -256,7 +258,7 @@ void WebEngineService::suspend()
         BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
         return;
     }
-    if(tabsCount()>0) {
+    if (tabsCount()>0) {
         m_currentWebView->suspend();
 #if PROFILE_MOBILE
         unregisterHWKeyCallback();
@@ -272,7 +274,7 @@ void WebEngineService::resume()
         BROWSER_LOGD("[%s:%d:%s] ", __PRETTY_FUNCTION__, __LINE__,"m_currentWebView is null");
         return;
     }
-    if(tabsCount()>0) {
+    if (tabsCount()>0) {
         M_ASSERT(m_currentWebView);
         m_currentWebView->resume();
 #if PROFILE_MOBILE
@@ -470,7 +472,7 @@ TabId WebEngineService::addTab(const std::string & uri,
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     int newAdaptorId = -1;
-    if(tabId) {
+    if (tabId) {
         newAdaptorId = *tabId;
     } else {
         // searching for next available tabId
@@ -524,7 +526,9 @@ bool WebEngineService::switchToTab(tizen_browser::basic_webengine::TabId newTabI
         BROWSER_LOGW("[%s:%d] there is no tab of id %d", __PRETTY_FUNCTION__, __LINE__, newTabId.get());
         return false;
     }
-
+#if PROFILE_MOBILE
+    closeFindOnPage();
+#endif
     m_currentWebView = m_tabs[newTabId];
     m_currentTabId = newTabId;
     m_mostRecentTab.erase(std::remove(m_mostRecentTab.begin(), m_mostRecentTab.end(), newTabId), m_mostRecentTab.end());
@@ -557,7 +561,7 @@ bool WebEngineService::closeTab(TabId id) {
 
     TabId closingTabId = id;
     bool res = true;
-    if(closingTabId == TabId::NONE){
+    if (closingTabId == TabId::NONE){
         return res;
     }
     m_tabs.erase(closingTabId);
@@ -701,7 +705,7 @@ void WebEngineService::_findOnPage(const std::string& str)
 
 int WebEngineService::getZoomFactor() const
 {
-    if(!m_currentWebView)
+    if (!m_currentWebView)
         return 0;
     return static_cast<int>(m_currentWebView->getZoomFactor()*100);
 
