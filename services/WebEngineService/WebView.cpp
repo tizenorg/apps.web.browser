@@ -1447,17 +1447,17 @@ void WebView::__fullscreen_exit_cb(void *data, Evas_Object*, void*) {
 
 void WebView::setFocus()
 {
-    elm_object_focus_set(m_ewkView, EINA_TRUE);
+    ewk_view_focus_set(m_ewkView, EINA_TRUE);
 }
 
 void WebView::clearFocus()
 {
-    elm_object_focus_set(m_ewkView, EINA_FALSE);
+    ewk_view_focus_set(m_ewkView, EINA_FALSE);
 }
 
 bool WebView::hasFocus() const
 {
-    return elm_object_focus_get(m_ewkView) == EINA_TRUE ? true : false;
+    return ewk_view_focus_get(m_ewkView) == EINA_TRUE ? true : false;
 }
 
 double WebView::getZoomFactor() const

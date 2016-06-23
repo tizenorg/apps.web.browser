@@ -82,6 +82,7 @@ SimpleUI::SimpleUI()
     , m_tabLimit(0)
     , m_favoritesLimit(0)
     , m_wvIMEStatus(false)
+    , m_webEngineHadFocusBeforeSuspend(false)
 #if PROFILE_MOBILE
     , m_current_angle(0)
     , m_temp_angle(0)
@@ -129,17 +130,36 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::suspend()
 {
-    m_webPageUI->setFocusOnSuspend();
+    //TODO: Delete when web_view fixed unfocus on suspend issue
+    m_webEngineHadFocusBeforeSuspend = m_webEngine->hasFocus();
     m_webEngine->suspend();
 }
 
 void SimpleUI::resume()
 {
     m_webEngine->resume();
+    //TODO: Delete when web_view fixed unfocus on suspend issue
+    if (m_webEngineHadFocusBeforeSuspend)
+        m_timer =  ecore_timer_add(0.0, web_view_set_focus_timer, this);
+
 #if PROFILE_MOBILE
     if (m_findOnPageUI)
         m_findOnPageUI->show_ime();
 #endif
+}
+
+Eina_Bool SimpleUI::web_view_set_focus_timer(void *data)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    SimpleUI * simpleUI = static_cast<SimpleUI*>(data);
+    if (simpleUI->m_webEngine->hasFocus() && ecore_timer_interval_get(simpleUI->m_timer) != 0.0) {
+        ecore_timer_del(simpleUI->m_timer);
+        return ECORE_CALLBACK_CANCEL;
+    } else {
+        ecore_timer_interval_set(simpleUI->m_timer, 1.0);
+        simpleUI->m_webEngine->setFocus();
+        return ECORE_CALLBACK_RENEW;
+    }
 }
 
 void SimpleUI::destroyUI()
