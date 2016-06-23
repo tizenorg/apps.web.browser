@@ -359,6 +359,7 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
+    bool m_webEngineHadFocusBeforeSuspend;
     std::string m_folder_name;
 
     //helper object used to view management
