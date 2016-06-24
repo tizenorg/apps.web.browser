@@ -824,7 +824,7 @@ void WebEngineService::moreKeyPressed()
 }
 #endif
 
-void WebEngineService::backButtonClicked()
+void WebEngineService::backButtonClicked(Evas_Object * window)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_currentWebView);
@@ -855,7 +855,7 @@ void WebEngineService::backButtonClicked()
         closeTab();
         switchToQuickAccess();
     } else {
-        minimizeBrowser();
+        elm_win_lower(window);
     }
 }
 
