@@ -1020,10 +1020,10 @@ void SimpleUI::onBackPressed()
             if (m_quickAccess->canBeBacked(m_webEngine->tabsCount())) {
                 m_quickAccess->backButtonClicked();
             } else {
-                minimizeBrowser();
+		elm_win_lower(main_window);
             }
         } else {
-            m_webEngine->backButtonClicked();
+            m_webEngine->backButtonClicked(main_window);
         }
 #if PROFILE_MOBILE
     } else if ((m_viewManager.topOfStack() == m_settingsUI.get()) && m_settingsUI->isSubpage()) {

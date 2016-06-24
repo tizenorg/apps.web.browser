@@ -178,7 +178,7 @@ public:
     /**
      * @brief back or exit when back key is pressed
      */
-    void backButtonClicked();
+    void backButtonClicked(Evas_Object * window);
 
 #if PROFILE_MOBILE
     void moreKeyPressed();

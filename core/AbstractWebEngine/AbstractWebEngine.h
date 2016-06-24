@@ -316,7 +316,7 @@ public:
     /**
      * @brief back or exit when back key is pressed
      */
-    virtual void backButtonClicked() = 0;
+    virtual void backButtonClicked(Evas_Object * window) = 0;
 
 #if PROFILE_MOBILE
     /**
