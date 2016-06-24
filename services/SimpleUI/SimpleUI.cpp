@@ -1893,7 +1893,7 @@ void SimpleUI::windowCreated()
 void SimpleUI::minimizeBrowser()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    tools::ui_app_pause(m_caller.c_str());
+    elm_win_lower(main_window);
 }
 
 void SimpleUI::tabClosed(const tizen_browser::basic_webengine::TabId& id) {
