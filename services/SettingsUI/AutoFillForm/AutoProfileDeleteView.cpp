@@ -257,7 +257,10 @@ void AutoProfileDeleteView::__genlist_item_selected_cb(void* data, Evas_Object* 
     else
         elm_check_state_set(sel_all_checkbox, false);
 
-    if (callback_data->user_data->m_checked_count >= 1) {
+    if (callback_data->user_data->m_checked_count == 0) {
+        elm_object_signal_emit(callback_data->user_data->m_mainLayout, "dim,del,button,signal", "");
+        elm_object_disabled_set(elm_object_part_content_get(callback_data->user_data->m_mainLayout, "del_button"), true);
+    } else {
         elm_object_signal_emit(callback_data->user_data->m_mainLayout, "show,del,button,signal", "");
         elm_object_disabled_set(elm_object_part_content_get(callback_data->user_data->m_mainLayout, "del_button"), false);
     }
