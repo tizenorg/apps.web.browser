@@ -141,5 +141,6 @@
         <privilege>http://tizen.org/privilege/camera</privilege>
         <privilege>http://tizen.org/privilege/push</privilege>
         <privilege>http://tizen.org/privilege/mediastorage</privilege>
+        <privilege>http://tizen.org/privilege/recorder</privilege>
      </privileges>
 </manifest>
