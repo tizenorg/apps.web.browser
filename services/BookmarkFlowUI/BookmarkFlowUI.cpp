@@ -50,7 +50,6 @@ BookmarkFlowUI::BookmarkFlowUI()
     , m_cancel_button(nullptr)
     , m_input_cancel_button(nullptr)
     , m_folder_button(nullptr)
-    , m_max_items(MAX_ITEMS_LANDSCAPE)
 #else
     , m_gengrid(nullptr)
     , m_bg(nullptr)
@@ -376,11 +375,10 @@ void BookmarkFlowUI::createGenlist()
     m_genlist = elm_genlist_add(m_contents_area);
     elm_object_part_content_set(m_contents_area, "dropdown_swallow", m_genlist);
     elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_genlist_homogeneous_set(m_genlist, EINA_FALSE);
+    elm_genlist_homogeneous_set(m_genlist, EINA_TRUE);
     elm_genlist_multi_select_set(m_genlist, EINA_FALSE);
     elm_genlist_select_mode_set(m_genlist, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genlist, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genlist, EINA_TRUE);
+    elm_genlist_mode_set(m_genlist, ELM_LIST_COMPRESS);
     evas_object_size_hint_weight_set(m_genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
 }
