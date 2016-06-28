@@ -58,6 +58,7 @@ public:
     void set_text(const char *text);
     Evas_Object* get_entry(void) { return m_entry; }
     void unset_focus(void);
+    bool isVisible() { return m_visible; };
 
     boost::signals2::signal<void ()> closeFindOnPageUIClicked;
     boost::signals2::signal<void (const struct FindData& )> startFindingWord;
@@ -87,6 +88,7 @@ private:
     int m_current_index;
     const char *m_input_word;
     std::string m_edjFilePath;
+    bool m_visible;
 };
 
 }

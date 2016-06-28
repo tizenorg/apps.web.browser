@@ -143,7 +143,7 @@ void SimpleUI::resume()
         m_webEngineFocusWorkaroundTimer =  ecore_timer_add(0.0, web_view_set_focus_timer, this);
 
 #if PROFILE_MOBILE
-    if (m_findOnPageUI)
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         m_findOnPageUI->show_ime();
 #endif
 }
@@ -1005,7 +1005,7 @@ void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s]", __func__);
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         closeFindOnPageUI();
     else
 #else
@@ -1167,7 +1167,7 @@ void SimpleUI::loadStarted()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->loadStarted();
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         closeFindOnPageUI();
 #endif
 }
@@ -1302,9 +1302,11 @@ void SimpleUI::showFindOnPageUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_findOnPageUI);
-    m_findOnPageUI->show();
-    if (!str.empty())
-        m_findOnPageUI->set_text(str.c_str());
+    if (m_findOnPageUI && !m_findOnPageUI->isVisible()) {
+        m_findOnPageUI->show();
+        if (!str.empty())
+            m_findOnPageUI->set_text(str.c_str());
+    }
 }
 
 void SimpleUI::findWord(const struct FindData& fdata)
@@ -1317,7 +1319,7 @@ void SimpleUI::closeFindOnPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_findOnPageUI);
-    if (m_findOnPageUI)
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         m_findOnPageUI->hideUI();
 }
 #endif
