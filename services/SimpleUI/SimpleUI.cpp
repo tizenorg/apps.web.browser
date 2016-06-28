@@ -613,6 +613,7 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
+    m_platformInputManager->XF86BackPressed.connect(boost::bind(&SimpleUI::onXF86BackPressed, this));
     m_webEngine->registerHWKeyCallback.connect(boost::bind(&SimpleUI::registerHWKeyCallback, this));
     m_webEngine->unregisterHWKeyCallback.connect(boost::bind(&SimpleUI::unregisterHWKeyCallback, this));
 #endif
@@ -938,9 +939,6 @@ void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
     self->setwvIMEStatus(false);
-#if PROFILE_MOBILE
-    self->m_webPageUI->setContentFocus();
-#endif
 }
 #endif
 
@@ -1001,9 +999,16 @@ void SimpleUI::setwvIMEStatus(bool status)
     m_wvIMEStatus = status;
 }
 
+void SimpleUI::onXF86BackPressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_wvIMEStatus && m_webPageUI->getURIEntry().hasFocus())
+        m_webPageUI->getURIEntry().clearFocus();
+}
+
 void SimpleUI::onBackPressed()
 {
-    BROWSER_LOGD("[%s]", __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
     if (evas_object_visible_get(m_findOnPageUI->getContent()))
         closeFindOnPageUI();
