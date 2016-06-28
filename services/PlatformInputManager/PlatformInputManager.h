@@ -56,6 +56,7 @@ public:
     boost::signals2::signal<void ()> backPressed;
     boost::signals2::signal<void ()> escapePressed;
 #if PROFILE_MOBILE
+    boost::signals2::signal<void ()> XF86BackPressed;
     boost::signals2::signal<void ()> menuButtonPressed;
 #else
     boost::signals2::signal<void ()> redPressed;

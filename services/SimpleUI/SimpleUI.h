@@ -326,6 +326,7 @@ private:
     int tabsCount();
 
     void onReturnPressed(MenuButton *m);
+    void onXF86BackPressed();
     void onBackPressed();
 
     void searchWebPage(std::string &text, int flags);
