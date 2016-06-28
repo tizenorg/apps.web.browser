@@ -313,14 +313,16 @@ std::string URIEntry::rewriteURI(const std::string& url)
 {
     BROWSER_LOGD("%s: %s", __PRETTY_FUNCTION__, url.c_str());
     boost::regex urlRegex(R"(^(https?|ftp)://[^\s/$.?#].[^\s]*$)");
-    boost::regex fileRegex(R"(^file:///[^\s]*$)");
+//    boost::regex fileRegex(R"(^file:///[^\s]*$)");
 
     if (!url.empty() && url != "about:blank" && url != "about:home") {
-        if (boost::regex_match(url, urlRegex) || boost::regex_match(url, fileRegex))
+        if (boost::regex_match(url, urlRegex)) {
+            // || boost::regex_match(url, fileRegex)) {
+            // TSAM-3971 issue that solve file prefix delete.
             return url;
-        else if (boost::regex_match(std::string("http://") + url, urlRegex) &&  url.find(".") != std::string::npos)
+        } else if (boost::regex_match(std::string("http://") + url, urlRegex) &&  url.find(".") != std::string::npos) {
             return std::string("http://") + url;
-        else {
+        } else {
             std::string searchString("http://www.google.com/search?q=");
             searchString += url;
             std::replace(searchString.begin(), searchString.end(), ' ', '+');
