@@ -45,6 +45,7 @@ FindOnPageUI::FindOnPageUI()
     , m_total_count(0)
     , m_current_index(0)
     , m_input_word(NULL)
+    , m_visible(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -55,6 +56,7 @@ FindOnPageUI::~FindOnPageUI(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
+    m_visible = false;
     evas_object_smart_callback_del(m_down_button, "clicked", __down_clicked_cb);
     evas_object_smart_callback_del(m_up_button, "clicked", __up_clicked_cb);
 
@@ -73,6 +75,7 @@ void FindOnPageUI::show()
         m_fop_layout = createFindOnPageUILayout();
     showUI();
     show_ime();
+    m_visible = true;
 }
 
 void FindOnPageUI::init(Evas_Object* parent)
@@ -210,6 +213,7 @@ void FindOnPageUI::hideUI()
     clear_text();
     unset_focus();
     evas_object_hide(m_fop_layout);
+    m_visible = false;
 }
 
 void FindOnPageUI::__close_clicked_cb(void* data, Evas_Object*, void*)
