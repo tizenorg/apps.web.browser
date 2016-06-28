@@ -938,9 +938,6 @@ void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
     self->setwvIMEStatus(false);
-#if PROFILE_MOBILE
-    self->m_webPageUI->setContentFocus();
-#endif
 }
 #endif
 
