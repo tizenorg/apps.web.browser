@@ -203,7 +203,7 @@ void WebPageUI::setMainContent(Evas_Object* content)
     elm_gesture_layer_attach(m_gestureLayer, content);
 #endif
 #if PROFILE_MOBILE
-    evas_object_smart_callback_add(content, "mouse,in", _content_clicked, this);
+    evas_object_smart_callback_add(content, "mouse,down", _content_clicked, this);
 #endif
     evas_object_show(content);
 }
