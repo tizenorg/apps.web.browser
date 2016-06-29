@@ -143,7 +143,7 @@ void SimpleUI::resume()
         m_webEngineFocusWorkaroundTimer =  ecore_timer_add(0.0, web_view_set_focus_timer, this);
 
 #if PROFILE_MOBILE
-    if (m_findOnPageUI)
+    if (m_findOnPageUI && (evas_object_visible_get(m_findOnPageUI->getContent()) == EINA_TRUE))
         m_findOnPageUI->show_ime();
 #endif
 }
