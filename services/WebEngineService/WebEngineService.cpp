@@ -119,7 +119,6 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->forwardEnableChanged.connect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.connect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
     webView->confirmationRequest.connect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.connect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.connect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->snapshotCaptured.connect(boost::bind(&WebEngineService::_snapshotCaptured, this, _1, _2));
     webView->redirectedWebPage.connect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
@@ -146,7 +145,6 @@ void WebEngineService::disconnectSignals(std::shared_ptr<WebView> webView)
     webView->forwardEnableChanged.disconnect(boost::bind(&WebEngineService::_forwardEnableChanged, this, _1));
     webView->backwardEnableChanged.disconnect(boost::bind(&WebEngineService::_backwardEnableChanged, this, _1));
     webView->confirmationRequest.disconnect(boost::bind(&WebEngineService::_confirmationRequest, this, _1));
-    webView->ewkViewClicked.disconnect(boost::bind(&WebEngineService::webViewClicked, this));
     webView->IMEStateChanged.disconnect(boost::bind(&WebEngineService::_IMEStateChanged, this, _1));
     webView->redirectedWebPage.disconnect(boost::bind(&WebEngineService::_redirectedWebPage, this, _1, _2));
 #if PROFILE_MOBILE
@@ -669,11 +667,6 @@ std::shared_ptr<tizen_browser::tools::BrowserImage> WebEngineService::getFavicon
             return m_currentWebView->getFavicon();
     } else
         return std::make_shared<tizen_browser::tools::BrowserImage>();
-}
-
-void WebEngineService::webViewClicked()
-{
-    AbstractWebEngine::webViewClicked();
 }
 
 #if PROFILE_MOBILE
