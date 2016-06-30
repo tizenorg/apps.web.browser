@@ -236,6 +236,7 @@ private:
     void _IMEStateChanged(bool);
     void _snapshotCaptured(std::shared_ptr<tizen_browser::tools::BrowserImage> snapshot, tools::SnapshotType snapshot_type);
     void _redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
+    void webViewClicked();
     void _setCertificatePem(const std::string& uri, const std::string& pem);
     void _setWrongCertificatePem(const std::string& uri, const std::string& pem);
 #if PROFILE_MOBILE
