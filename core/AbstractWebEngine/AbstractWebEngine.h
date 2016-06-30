@@ -493,11 +493,6 @@ public:
     boost::signals2::signal<void (basic_webengine::WebConfirmationPtr)> confirmationRequest;
 
     /**
-     * Web Engine area clicked
-     */
-    boost::signals2::signal<void ()> webViewClicked;
-
-    /**
      * All links to RSS/Atom channels were gathered from webpage.
      */
     boost::signals2::signal<void (std::vector<std::string>)> gotFeedLinks;

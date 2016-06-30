@@ -56,6 +56,8 @@ WebPageUI::WebPageUI()
 WebPageUI::~WebPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_smart_callback_del(m_dummy_button, "focused", _dummy_button_focused);
+    evas_object_smart_callback_del(m_dummy_button, "unfocused", _dummy_button_unfocused);
 }
 
 void WebPageUI::init(Evas_Object* parent)
@@ -421,6 +423,18 @@ void WebPageUI::createLayout()
     evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_layout_file_set(m_mainLayout, edjePath("WebPageUI/WebPageUI.edj").c_str(), "main_layout");
 
+    m_dummy_button = elm_button_add(m_mainLayout);
+    elm_object_style_set(m_dummy_button, "invisible_button");
+    evas_object_size_hint_align_set(m_dummy_button, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(m_dummy_button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_object_focus_allow_set(m_dummy_button, EINA_TRUE);
+    elm_object_focus_set(m_dummy_button, EINA_TRUE);
+    evas_object_show(m_dummy_button);
+    elm_object_part_content_set(m_mainLayout, "web_view_dummy_button", m_dummy_button);
+
+    evas_object_smart_callback_add(m_dummy_button, "focused", _dummy_button_focused, this);
+    evas_object_smart_callback_add(m_dummy_button, "unfocused", _dummy_button_unfocused, this);
+
     createErrorLayout();
     createPrivateLayout();
     createActions();
@@ -460,6 +474,24 @@ void WebPageUI::createLayout()
     // will be attatch on every 'setMainContent'
     m_gestureLayer = elm_gesture_layer_add(m_mainLayout);
 #endif
+}
+
+void WebPageUI::_dummy_button_focused(void *data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        webPageUI->focusWebView();
+    }
+}
+
+void WebPageUI::_dummy_button_unfocused(void *data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        webPageUI->unfocusWebView();
+    }
 }
 
 void WebPageUI::createErrorLayout()
@@ -586,8 +618,7 @@ void WebPageUI::hideWebView()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
-    elm_object_part_content_unset(m_mainLayout, "web_view");
+    evas_object_hide(elm_object_part_content_unset(m_mainLayout, "web_view"));
 }
 
 void WebPageUI::setErrorButtons()
