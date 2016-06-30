@@ -284,8 +284,6 @@ public:
 
     boost::signals2::signal<void (WebConfirmationPtr)> confirmationRequest;
 
-    boost::signals2::signal<void ()> ewkViewClicked;
-
     boost::signals2::signal<void (bool)> IMEStateChanged;
 
     boost::signals2::signal<void ()> switchToWebPage;
@@ -304,7 +302,6 @@ private:
     void unregisterCallbacks();
     void setupEwkSettings();
 
-    static void __setFocusToEwkView(void * data, Evas * e, Evas_Object * obj, void * event_info);
     static void __newWindowRequest(void * data, Evas_Object *, void *out);
     static void __closeWindowRequest(void * data, Evas_Object *, void *);
 

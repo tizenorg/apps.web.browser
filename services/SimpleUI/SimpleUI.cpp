@@ -82,7 +82,6 @@ SimpleUI::SimpleUI()
     , m_tabLimit(0)
     , m_favoritesLimit(0)
     , m_wvIMEStatus(false)
-    , m_webEngineHadFocusBeforeSuspend(false)
 #if PROFILE_MOBILE
     , m_current_angle(0)
     , m_temp_angle(0)
@@ -130,30 +129,16 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::suspend()
 {
-    //TODO: Delete when web_view fixed unfocus on suspend issue
-    m_webEngineHadFocusBeforeSuspend = m_webEngine->hasFocus();
     m_webEngine->suspend();
 }
 
 void SimpleUI::resume()
 {
     m_webEngine->resume();
-    //TODO: Delete when web_view fixed unfocus on suspend issue
-    if (m_webEngineHadFocusBeforeSuspend)
-        m_webEngineFocusWorkaroundTimer =  ecore_timer_add(0.0, web_view_set_focus_timer, this);
-
 #if PROFILE_MOBILE
     if (m_findOnPageUI && (evas_object_visible_get(m_findOnPageUI->getContent()) == EINA_TRUE))
         m_findOnPageUI->show_ime();
 #endif
-}
-
-Eina_Bool SimpleUI::web_view_set_focus_timer(void *data)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    SimpleUI * simpleUI = static_cast<SimpleUI*>(data);
-    simpleUI->m_webEngine->setFocus();
-    return ECORE_CALLBACK_CANCEL;
 }
 
 void SimpleUI::destroyUI()
@@ -334,6 +319,8 @@ void SimpleUI::connectUISignals()
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
+    m_webPageUI->focusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setFocus, m_webEngine.get()));
+    m_webPageUI->unfocusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::clearFocus, m_webEngine.get()));
 #if PROFILE_MOBILE
     m_webPageUI->hideMoreMenu.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_webPageUI->getURIEntry().mobileEntryFocused.connect(boost::bind(&WebPageUI::mobileEntryFocused, m_webPageUI));
@@ -562,7 +549,6 @@ void SimpleUI::connectModelSignals()
     m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
-    m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
