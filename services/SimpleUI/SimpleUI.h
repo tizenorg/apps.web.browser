@@ -87,7 +87,6 @@ public:
     void resume();
 
     void destroyUI();
-    static Eina_Bool web_view_set_focus_timer(void *data);
 private:
     // setup functions
     void loadUIServices();
@@ -361,7 +360,6 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
-    bool m_webEngineHadFocusBeforeSuspend;
     std::string m_folder_name;
 
     //helper object used to view management
@@ -372,7 +370,6 @@ private:
     int m_current_angle;
     int m_temp_angle;
 #endif
-    Ecore_Timer* m_webEngineFocusWorkaroundTimer;
 };
 
 }
