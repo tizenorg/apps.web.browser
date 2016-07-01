@@ -305,7 +305,6 @@ void URIEntry::editingCompleted()
     elm_object_focus_set(m_entry, EINA_TRUE);
 #else
     showSecureIcon(false, false);
-    clearFocus();
 #endif
 }
 
