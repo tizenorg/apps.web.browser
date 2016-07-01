@@ -95,10 +95,12 @@ collections{
             style {
                 name: "input_text_style";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#333333 align=0.0";
+                tag:  "br" "";
             }
             style {
                 name: "guide_text_style";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#969696 align=0.0 ellipsis=1";
+                tag:  "br" "";
             }
         }
         data {
