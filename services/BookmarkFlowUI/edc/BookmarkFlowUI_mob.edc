@@ -126,10 +126,12 @@ collections { base_scale: 2.6;
             style {
                 name: "browser-entry-uri-style-unselected";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#969696 align=0.0";
+                tag:  "br" "";
             }
             style {
                 name: "browser-entry-uri-style-selected";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#333333 align=0.0";
+                tag:  "br" "";
             }
         }
         data {
