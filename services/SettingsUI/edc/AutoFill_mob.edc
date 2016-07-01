@@ -567,6 +567,7 @@ group {
         style {
             name: "entry-style";
             base: "font=Sans:style=SVD_Medium font_size="42" wrap=none color=#969696";
+            tag:  "br" "";
         }
     }
     parts {

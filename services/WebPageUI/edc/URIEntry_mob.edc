@@ -122,14 +122,17 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
             style {
                 name: "browser-entry-uri-style-unselected";
                 base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#969696";
+                tag:  "br" "";
             }
             style {
                 name: "browser-entry-uri-style-selected";
                 base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#4088d3";
+                tag:  "br" "";
             }
             style {
                 name: "browser-entry-uri-style-selected-incognito";
                 base: "font=Sans:style=SVD_Medium font_size="40" wrap=none color=#4088d3";
+                tag:  "br" "";
             }
         }
         data {
