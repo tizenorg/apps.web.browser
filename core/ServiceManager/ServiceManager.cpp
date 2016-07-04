@@ -15,6 +15,7 @@
  */
 #include "browser_config.h"
 #include <unordered_map>
+#include <future>
 #include <boost/filesystem.hpp>
 #include "Config.h"
 #include "BrowserLogger.h"
@@ -30,7 +31,6 @@ ServiceManagerPrivate::ServiceManagerPrivate()
 {
     findServiceLibs();
     loadServiceLibs();
-    enumerateServices();
 }
 
 ServiceManagerPrivate::~ServiceManagerPrivate()
@@ -39,6 +39,7 @@ ServiceManagerPrivate::~ServiceManagerPrivate()
 void ServiceManagerPrivate::findServiceLibs()
 {
     try{
+        std::vector<std::future<void>> vt;
         boost::filesystem::path servicesDir(boost::any_cast<std::string>(tizen_browser::config::Config::getInstance().get("services/dir")));
         for( boost::filesystem::directory_iterator it(servicesDir);
                 it != boost::filesystem::directory_iterator();
@@ -48,13 +49,22 @@ void ServiceManagerPrivate::findServiceLibs()
                 if( (item.extension().string() == ".so" )
                     && (item.filename().string().find("lib") == 0)){
                     try{
-                        servicesLoaderMap[item.string()] = std::shared_ptr<ServiceLoader>(new ServiceLoader(item.string()));
+                        vt.push_back(
+                            std::async(
+                                std::launch::async,
+                                [this](boost::filesystem::path item){
+                                    servicesLoaderMap[item.string()] = std::shared_ptr<ServiceLoader>(new ServiceLoader(item.string()));
+                                },
+                            item)
+                        );
                     } catch (std::runtime_error & e){
                         BROWSER_LOGD(e.what() );
                     }
                 }
             }
         }
+        for(auto& th : vt)
+            th.get();
     } catch (const boost::filesystem::filesystem_error& ex){
         BROWSER_LOGD(ex.what() );
     }
@@ -84,7 +94,6 @@ void ServiceManagerPrivate::enumerateServices(){
 ServiceManager::ServiceManager()
     :d(new ServiceManagerPrivate)
 {
-
 }
 
 ServiceManager& ServiceManager::getInstance(void)
