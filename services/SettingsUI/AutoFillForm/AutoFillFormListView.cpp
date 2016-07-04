@@ -46,7 +46,7 @@ AutoFillFormListView::~AutoFillFormListView(void)
     evas_object_smart_callback_del(m_del_btn, "clicked", __delete_profile_button_cb);
 
     if (m_genlist) {
-        elm_genlist_clear(m_genlist);
+//        elm_genlist_clear(m_genlist);
         evas_object_del(m_genlist);
     }
     if (m_mainLayout) {
