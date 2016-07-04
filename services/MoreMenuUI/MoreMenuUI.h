@@ -84,6 +84,7 @@ public:
     void updateBookmarkButton();
     void showUI();
     void hideUI();
+    bool isVisible() { return m_isVisible; }
 
     void setDesktopMode(bool desktopMode) {m_desktopMode = desktopMode;}
 
@@ -168,6 +169,7 @@ private:
     const unsigned int GENGRID_ITEM_WIDTH = 364;
     const unsigned int GENGRID_ITEM_HEIGHT = 320;
 #endif
+    bool m_isVisible;
 };
 
 }
