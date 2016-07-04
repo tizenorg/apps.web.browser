@@ -546,7 +546,6 @@ void SimpleUI::connectModelSignals()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_webEngine->minimizeBrowser.connect(boost::bind(&SimpleUI::minimizeBrowser, this));
-    m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
@@ -571,6 +570,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2));
     m_webEngine->setWrongCertificatePem.connect(boost::bind(&services::CertificateContents::saveWrongCertificateInfo, m_certificateContents, _1, _2));
 #if PROFILE_MOBILE
+    m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
     m_webEngine->openFindOnPage.connect(boost::bind(&SimpleUI::showFindOnPageUI, this, _1));
@@ -1276,6 +1276,12 @@ int SimpleUI::getZoomFactor()
 }
 #endif
 
+void SimpleUI::scrollView(const int& dx, const int& dy)
+{
+    m_webEngine->scrollView(dx, dy);
+}
+
+#if PROFILE_MOBILE
 void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
@@ -1283,12 +1289,6 @@ void SimpleUI::webEngineURLChanged(const std::string url)
         m_moreMenuUI->updateBookmarkButton();
 }
 
-void SimpleUI::scrollView(const int& dx, const int& dy)
-{
-    m_webEngine->scrollView(dx, dy);
-}
-
-#if PROFILE_MOBILE
 void SimpleUI::showFindOnPageUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);

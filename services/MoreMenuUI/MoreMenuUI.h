@@ -81,7 +81,6 @@ public:
     //AbstractUIComponent interface methods
     void init(Evas_Object* parent);
     Evas_Object* getContent();
-    void updateBookmarkButton();
     void showUI();
     void hideUI();
 
@@ -99,6 +98,7 @@ public:
     void createToastPopup(const char* text);
     void setFocus(Eina_Bool focusable);
 #if PROFILE_MOBILE
+    void updateBookmarkButton();
     void blockThumbnails(bool blockThumbnails);
     void shouldShowFindOnPage(bool show);
     void resetContent();

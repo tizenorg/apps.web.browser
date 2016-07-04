@@ -90,11 +90,13 @@ void MoreMenuUI::init(Evas_Object* parent)
     m_parent = parent;
 }
 
+#if PROFILE_MOBILE
 void MoreMenuUI::updateBookmarkButton()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_item_update(m_map_menu_views[ADD_TO_BOOKMARK]);
 }
+#endif
 
 void MoreMenuUI::showUI()
 {
