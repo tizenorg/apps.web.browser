@@ -52,6 +52,7 @@ public:
     void show();
     void showUI();
     void hideUI();
+    bool isVisible() { return m_isVisible; }
 
     void show_ime(void);
     void clear_text(void);
@@ -87,6 +88,7 @@ private:
     int m_current_index;
     const char *m_input_word;
     std::string m_edjFilePath;
+    bool m_isVisible;
 };
 
 }

@@ -113,13 +113,13 @@ void HistoryUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
-
-    createHistoryUILayout(m_parent);
 }
 
 Evas_Object* HistoryUI::getContent()
 {
-    M_ASSERT(m_main_layout);
+    M_ASSERT(m_parent);
+    if (!m_main_layout)
+        createHistoryUILayout(m_parent);
     return m_main_layout;
 }
 
