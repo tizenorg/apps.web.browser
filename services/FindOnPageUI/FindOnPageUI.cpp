@@ -313,6 +313,7 @@ void FindOnPageUI::__entry_changed_cb(void *data, Evas_Object *obj, void* /*even
 
     const char *elm_text = elm_entry_entry_get(obj);
     if (!elm_text || strlen(elm_text) == 0) {
+        fop->_set_count(0, 0); 
         elm_object_signal_emit(fop->m_fop_layout, "hide,clear,button,signal", "");
         eina_stringshare_replace(&fop->m_input_word, "");
         // On deleting last character, send empty string to clear the highlight.
