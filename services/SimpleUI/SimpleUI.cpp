@@ -134,9 +134,11 @@ void SimpleUI::suspend()
 
 void SimpleUI::resume()
 {
+    m_webEngine->preinitializeWebViewCache();
+    m_webPageUI->createDummyButton();
     m_webEngine->resume();
 #if PROFILE_MOBILE
-    if (m_findOnPageUI && (evas_object_visible_get(m_findOnPageUI->getContent()) == EINA_TRUE))
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         m_findOnPageUI->show_ime();
 #endif
 }
@@ -189,7 +191,6 @@ int SimpleUI::exec(const std::string& _url, const std::string& _caller)
 #if PROFILE_MOBILE
             // Register H/W back key callback
             m_platformInputManager->registerHWKeyCallback(m_viewManager.getContent());
-            m_platformInputManager->registerHWKeyCallback(m_moreMenuUI->getContent());
 #endif
         }
 
@@ -658,7 +659,6 @@ void SimpleUI::switchViewToQuickAccess()
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
-    m_webEngine->preinitializeWebViewCache();
 }
 
 void SimpleUI::switchViewToIncognitoPage()
@@ -996,7 +996,7 @@ void SimpleUI::onBackPressed()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI->isVisible())
         closeFindOnPageUI();
     else
 #else
@@ -1009,7 +1009,7 @@ void SimpleUI::onBackPressed()
     } else if (m_popupVector.size() > 0) {
         m_popupVector.back()->onBackPressed();
 #if PROFILE_MOBILE
-    } else if (evas_object_visible_get(m_moreMenuUI->getContent())) {
+    } else if (m_moreMenuUI->isVisible()) {
         m_moreMenuUI->hideUI();
 #endif
     } else if ((m_viewManager.topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
@@ -1158,7 +1158,7 @@ void SimpleUI::loadStarted()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->loadStarted();
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI->isVisible())
         closeFindOnPageUI();
 #endif
 }
@@ -1285,7 +1285,7 @@ void SimpleUI::scrollView(const int& dx, const int& dy)
 void SimpleUI::webEngineURLChanged(const std::string url)
 {
     BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+    if (m_moreMenuUI->isVisible())
         m_moreMenuUI->updateBookmarkButton();
 }
 
@@ -1512,7 +1512,7 @@ void SimpleUI::showMoreMenu()
 
 #if PROFILE_MOBILE
     M_ASSERT(m_webPageUI);
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+    if (m_moreMenuUI->isVisible())
         m_moreMenuUI->hideUI();
     else {
         m_moreMenuUI->shouldShowFindOnPage(!m_webEngine->getURI().empty());
@@ -1543,7 +1543,7 @@ void SimpleUI::closeMoreMenu()
 
 #if PROFILE_MOBILE
     M_ASSERT(m_webPageUI);
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+    if (m_moreMenuUI->isVisible())
         m_moreMenuUI->hideUI();
 #else
     if (m_viewManager.topOfStack() == m_moreMenuUI.get())

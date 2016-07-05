@@ -53,6 +53,7 @@ public:
     UrlHistoryPtr getUrlHistoryList();
     virtual void showUI();
     virtual void hideUI();
+    void createDummyButton();
 #if PROFILE_MOBILE
     virtual void orientationChanged() override;
 #endif
