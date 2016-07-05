@@ -704,10 +704,11 @@ void SettingsUI::initializeAutoFillManager()
 void SettingsUI::destroyAutoFillManager()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_autoFillManager) {
-        m_autoFillManager.reset();
-        m_autoFillManager = nullptr;
-    }
+// TSAM-5587 : Include Auto Fill forms. when click to all back, destructor not call.
+//    if (m_autoFillManager) {
+//        m_autoFillManager.reset();
+//        m_autoFillManager = nullptr;
+//    }
     elm_object_tree_focus_allow_set(m_settings_layout, EINA_FALSE);
 }
 
