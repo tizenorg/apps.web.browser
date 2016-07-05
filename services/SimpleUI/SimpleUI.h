@@ -299,6 +299,7 @@ private:
     int getRotation();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
+    static void _win_state_visibility_cb(void *data, Evas_Object*, void*);
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
@@ -374,6 +375,7 @@ private:
     Evas_Object *m_conformant;
     int m_current_angle;
     int m_temp_angle;
+    std::string m_urlOnStart;
 #endif
 };
 
