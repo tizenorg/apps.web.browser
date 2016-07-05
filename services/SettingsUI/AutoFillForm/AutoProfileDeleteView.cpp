@@ -155,6 +155,14 @@ Evas_Object *AutoProfileDeleteView::createGenlist(Evas_Object *parent)
         return nullptr;
     }
 
+    elm_scroller_policy_set(genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
+    elm_genlist_homogeneous_set(genlist, EINA_TRUE);
+    elm_genlist_multi_select_set(genlist, EINA_FALSE);
+    elm_genlist_select_mode_set(genlist, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_genlist_mode_set(genlist, ELM_LIST_COMPRESS);
+    evas_object_size_hint_weight_set(genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
     m_itemClass = elm_genlist_item_class_new();
     if (!m_itemClass) {
         BROWSER_LOGE("elm_genlist_item_class_new for description_item_class failed");
