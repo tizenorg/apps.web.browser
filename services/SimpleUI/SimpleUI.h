@@ -296,6 +296,7 @@ private:
     int getRotation();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
+    static void _win_state_visibility_cb(void *data, Evas_Object*, void*);
     void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
     void showBookmarkManagerUI();
@@ -363,6 +364,7 @@ private:
     int m_favoritesLimit;
     bool m_wvIMEStatus;
     std::string m_folder_name;
+    std::string m_urlOnStart;
 
     //helper object used to view management
     ViewManager m_viewManager;
