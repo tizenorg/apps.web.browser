@@ -56,6 +56,7 @@ MoreMenuUI::MoreMenuUI()
     , m_shouldShowFindOnPage(false)
     , m_blockThumbnails(false)
 #endif
+    , m_isVisible(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -101,7 +102,8 @@ void MoreMenuUI::updateBookmarkButton()
 void MoreMenuUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_mm_layout);
+    if (!m_mm_layout)
+        createMoreMenuLayout();
     createGengrid();    // recreate gengrid because icons could have changed
     addItems();
 #if !PROFILE_MOBILE
@@ -113,6 +115,7 @@ void MoreMenuUI::showUI()
 #if PROFILE_MOBILE
     resetContent();
 #endif
+    m_isVisible = true;
 }
 
 void MoreMenuUI::hideUI()
@@ -132,6 +135,7 @@ void MoreMenuUI::hideUI()
     setFocus(EINA_FALSE);
     m_focusManager.stopFocusManager();
 #endif
+    m_isVisible = false;
 }
 
 

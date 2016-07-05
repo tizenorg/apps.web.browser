@@ -45,6 +45,7 @@ FindOnPageUI::FindOnPageUI()
     , m_total_count(0)
     , m_current_index(0)
     , m_input_word(NULL)
+    , m_isVisible(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -201,6 +202,7 @@ void FindOnPageUI::showUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_signal_emit(m_parent, "show_findonpage", "ui");
     evas_object_show(m_fop_layout);
+    m_isVisible = true;
 }
 
 void FindOnPageUI::hideUI()
@@ -210,6 +212,7 @@ void FindOnPageUI::hideUI()
     clear_text();
     unset_focus();
     evas_object_hide(m_fop_layout);
+    m_isVisible = false;
 }
 
 void FindOnPageUI::__close_clicked_cb(void* data, Evas_Object*, void*)
