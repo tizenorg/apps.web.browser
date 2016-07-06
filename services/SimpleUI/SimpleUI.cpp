@@ -1191,6 +1191,7 @@ void SimpleUI::loadStarted()
 #if PROFILE_MOBILE
     if (m_findOnPageUI->isVisible())
         closeFindOnPageUI();
+    m_webPageUI->setContentFocus();
 #endif
 }
 
@@ -1250,7 +1251,6 @@ void SimpleUI::filterURL(const std::string& url)
                 m_webPageUI->stateEquals(WPUState::MAIN_ERROR_PAGE))
             switchViewToWebPage();
     }
-    m_webPageUI->getURIEntry().clearFocus();
 }
 
 void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr)

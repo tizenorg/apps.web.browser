@@ -92,7 +92,6 @@ public:
     void mobileEntryFocused();
     void mobileEntryUnfocused();
     void setContentFocus();
-    static Eina_Bool _hideDelay(void *data);
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();
