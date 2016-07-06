@@ -54,6 +54,7 @@ void ContentPopup::show()
 {
     evas_object_show(m_layout);
     elm_object_part_content_set(m_parent, "popup_content", m_layout);
+    orientationChanged();
     popupShown(this);
 }
 
@@ -146,26 +147,24 @@ void ContentPopup::_layout_resize_cb(void* data, Evas* /*e*/, Evas_Object* /*obj
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     auto self = static_cast<ContentPopup*>(data);
-    int w, h;
-    evas_object_geometry_get(self->m_layout, NULL, NULL, &w, &h);
+    int w;
+    evas_object_geometry_get(self->m_layout, NULL, NULL, &w, NULL);
     w -= 2 * Z3_SCALE_SIZE(MARGIN);
     elm_label_wrap_width_set(self->m_content, w);
+}
 
-    int x,y;
-    evas_object_geometry_get(self->m_content, NULL, NULL, &x, &y);
+void ContentPopup::orientationChanged()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    auto landscapeSignal = self->isLandscape();
-    bool landscape = false;
-    if (!landscapeSignal)
+    auto landscapeSignal = isLandscape();
+    if (landscapeSignal) {
+        if (*landscapeSignal)
+            evas_object_size_hint_max_set(m_scroller, -1, MAX_HEIGHT_LANDSCAPE);
+        else
+            evas_object_size_hint_max_set(m_scroller, -1, MAX_HEIGHT);
+    } else
         BROWSER_LOGW("[%s:%d] Wrong boost signal value!", __PRETTY_FUNCTION__, __LINE__);
-    else
-        landscape = *landscapeSignal;
-
-    int maxHeight = landscape ? MAX_HEIGHT_LANDSCAPE : MAX_HEIGHT;
-    if (y < maxHeight)
-        evas_object_size_hint_max_set(self->m_scroller, w, y);
-    else
-        evas_object_size_hint_max_set(self->m_scroller, w, maxHeight);
 }
 
 
