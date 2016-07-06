@@ -120,7 +120,6 @@ SimpleUI::SimpleUI()
     evas_object_smart_callback_add(m_viewManager.getConformant(), "virtualkeypad,state,on", onUrlIMEOpened, this);
     evas_object_smart_callback_add(m_viewManager.getConformant(), "virtualkeypad,state,off",onUrlIMEClosed, this);
 #endif
-    evas_object_smart_callback_add(main_window, "visibility,changed", _win_state_visibility_cb, this);
 }
 
 SimpleUI::~SimpleUI() {
@@ -164,16 +163,6 @@ std::shared_ptr<services::HistoryItemVector> SimpleUI::getHistory()
 {
     return m_historyService->getHistoryToday();
 }
-void SimpleUI::_win_state_visibility_cb(void *data, Evas_Object*, void*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (!data)
-        return;
-    auto sui = static_cast<SimpleUI*>(data);
-    if (!sui->m_urlOnStart.empty())
-        sui->openNewTab(sui->m_urlOnStart);
-    sui->m_urlOnStart.clear();
-}
 
 int SimpleUI::exec(const std::string& _url, const std::string& _caller)
 {
@@ -185,6 +174,7 @@ int SimpleUI::exec(const std::string& _url, const std::string& _caller)
         if (m_window.get()) {
             m_tabLimit = boost::any_cast <int> (tizen_browser::config::Config::getInstance().get("TAB_LIMIT"));
             m_favoritesLimit = boost::any_cast <int> (tizen_browser::config::Config::getInstance().get("FAVORITES_LIMIT"));
+
 
             loadUIServices();
             loadModelServices();
@@ -212,7 +202,12 @@ int SimpleUI::exec(const std::string& _url, const std::string& _caller)
         }
         m_initialised = true;
     }
-    m_urlOnStart = url;
+
+    if (!url.empty())
+    {
+        BROWSER_LOGD("[%s]: open new tab", __func__);
+        openNewTab(url);
+    }
 
     BROWSER_LOGD("[%s]:%d url=%s", __func__, __LINE__, url.c_str());
     return 0;
