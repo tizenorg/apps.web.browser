@@ -42,6 +42,9 @@ public:
     void show();
     void dismiss();
     void onBackPressed();
+#if PROFILE_MOBILE
+    void orientationChanged() {};
+#endif
 
     void setTitle(const std::string& title);
     void setMessage(const std::string& message);

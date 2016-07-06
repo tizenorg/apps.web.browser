@@ -46,6 +46,9 @@ public:
     void show();
     void dismiss();
     void onBackPressed();
+#if PROFILE_MOBILE
+    void orientationChanged() {};
+#endif
 
     void setContent(Evas_Object *content);
     void setInput(const std::string &input);

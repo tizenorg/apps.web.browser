@@ -1090,6 +1090,8 @@ void SimpleUI::onRotation()
     m_webPageUI->orientationChanged();
     m_tabUI->orientationChanged();
     m_webEngine->orientationChanged();
+    if (!m_popupVector.empty())
+        m_popupVector.back()->orientationChanged();
 }
 
 void SimpleUI::__orientation_changed(void* data, Evas_Object*, void*)
