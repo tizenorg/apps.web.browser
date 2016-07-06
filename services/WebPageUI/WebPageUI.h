@@ -92,7 +92,6 @@ public:
     void mobileEntryFocused();
     void mobileEntryUnfocused();
     void setContentFocus();
-    static Eina_Bool _hideDelay(void *data);
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();
@@ -106,6 +105,7 @@ public:
 #if PROFILE_MOBILE
     boost::signals2::signal<void ()> hideMoreMenu;
     boost::signals2::signal<void ()> qaOrientationChanged;
+    boost::signals2::signal<void ()> hideHistoryList;
 #else
     boost::signals2::signal<void ()> showZoomNavigation;
 #endif
