@@ -378,6 +378,7 @@ private:
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_faviconImage;
     bool m_isLoading;
     double m_loadProgress;
+    double m_animatorframe;
     bool m_loadError;
     // true if desktop view is enabled, false if mobile
     bool m_desktopMode;
