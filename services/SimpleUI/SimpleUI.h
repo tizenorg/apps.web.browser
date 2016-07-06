@@ -258,6 +258,14 @@ private:
      */
     void deleteBookmark(void);
 
+    /**
+    * @brief Hide history list
+    *
+    * @param  ...
+    * @return void
+    */
+    void hideHistoryList();
+
 #if !PROFILE_MOBILE
     /**
      * @brief show Zoom Menu

@@ -371,6 +371,10 @@ void SimpleUI::connectUISignals()
 #endif
 
     M_ASSERT(m_webPageUI.get());
+#if PROFILE_MOBILE
+    m_webPageUI->hideHistoryList.connect(boost::bind(&SimpleUI::hideHistoryList, this));
+    m_webPageUI->getURIEntry().hideHistoryList.connect(boost::bind(&SimpleUI::hideHistoryList, this));
+#endif
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
     m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
@@ -1263,6 +1267,15 @@ void SimpleUI::onURLEntryEditedByUser(const std::shared_ptr<std::string> editedU
                     historyItemsVisibleMax, minKeywordLength, true);
     m_webPageUI->getUrlHistoryList()->onURLEntryEditedByUser(editedUrl, result);
 }
+
+#if PROFILE_MOBILE
+void SimpleUI::hideHistoryList()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_webPageUI && m_webPageUI->getUrlHistoryList()->getGenlistVisible())
+        m_webPageUI->getUrlHistoryList()->hideWidget();
+}
+#endif
 
 #if !PROFILE_MOBILE
 void SimpleUI::onRedKeyPressed()
