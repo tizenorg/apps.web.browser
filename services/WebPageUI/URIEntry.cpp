@@ -384,6 +384,9 @@ void URIEntry::_uri_entry_selection_changed(void* data, Evas_Object* /*obj*/, vo
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
     self->m_entrySelectionState = SelectionState::SELECTION_KEEP;
+#if PROFILE_MOBILE
+    self->hideHistoryList();
+#endif
 }
 
 void URIEntry::_uri_entry_longpressed(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
