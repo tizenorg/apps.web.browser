@@ -1504,6 +1504,7 @@ void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
 void SimpleUI::showHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_viewManager.pushViewToStack(m_historyUI.get());
     m_historyUI->addHistoryItems(m_historyService->getHistoryToday(),
             HistoryPeriod::HISTORY_TODAY);
     m_historyUI->addHistoryItems(m_historyService->getHistoryYesterday(),
@@ -1514,7 +1515,6 @@ void SimpleUI::showHistoryUI()
             HistoryPeriod::HISTORY_LASTMONTH);
     m_historyUI->addHistoryItems(m_historyService->getHistoryOlder(),
             HistoryPeriod::HISTORY_OLDER);
-    m_viewManager.pushViewToStack(m_historyUI.get());
 }
 
 void SimpleUI::closeHistoryUI()
