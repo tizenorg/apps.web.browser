@@ -695,7 +695,6 @@ void WebView::resume()
 void WebView::stopLoading(void)
 {
     m_isLoading = false;
-    ecore_animator_frametime_set(m_animatorframe);
     ewk_view_stop(m_ewkView);
     loadStop();
 }
@@ -896,8 +895,6 @@ void WebView::__loadStarted(void * data, Evas_Object * /* obj */, void * /* even
     BROWSER_LOGD("%s:%d\n\t %s", __func__, __LINE__, ewk_view_url_get(self->m_ewkView));
 
     self->m_isLoading = true;
-    self->m_animatorframe = ecore_animator_frametime_get();
-    ecore_animator_frametime_set (0.1);
     self->loadStarted();
 }
 
@@ -907,7 +904,7 @@ void WebView::__loadStop(void * data, Evas_Object * /* obj */, void * /* event_i
 
     WebView * self = reinterpret_cast<WebView *>(data);
     self->m_isLoading = false;
-    ecore_animator_frametime_set(self->m_animatorframe);
+
     self->loadStop();
 }
 
@@ -919,7 +916,7 @@ void WebView::__loadFinished(void * data, Evas_Object * /* obj */, void * /* eve
 
     self->m_isLoading = false;
     self->m_loadProgress = 1;
-    ecore_animator_frametime_set(self->m_animatorframe);
+
     self->loadFinished();
     self->loadProgress(self->m_loadProgress);
 
