@@ -781,13 +781,17 @@ void SimpleUI::onOpenURL(const std::string& url)
 void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_viewManager.popStackTo(m_webPageUI.get());
-    if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-        openNewTab(url, title, boost::none, desktopMode, false, basic_webengine::TabOrigin::QUICKACCESS);
-    else {
-        m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
-        m_webEngine->setURI(url);
-        m_webPageUI->getURIEntry().clearFocus();
+    if (m_webPageUI) {
+        m_viewManager.popStackTo(m_webPageUI.get());
+        if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+            openNewTab(url, title, boost::none, desktopMode, false, basic_webengine::TabOrigin::QUICKACCESS);
+        else {
+            m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
+            m_webEngine->setURI(url);
+            m_webPageUI->getURIEntry().clearFocus();
+        }
+    } else {
+        BROWSER_LOGW("[%s:%d] No m_webPageUI object!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
