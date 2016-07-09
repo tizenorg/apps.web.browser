@@ -410,6 +410,7 @@ void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const c
     case RightIconType::CANCEL:
         elm_entry_entry_set(self->m_entry, "");
         elm_object_signal_emit(self->m_entry_layout, "hide_icon", "ui");
+        self->hideHistoryList();
         break;
     case RightIconType::SECURE:
         self->secureIconClicked();
