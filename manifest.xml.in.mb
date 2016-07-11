@@ -111,22 +111,18 @@
         </app-control>
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
             <mime name="application/x-shockwave-flash" />
         </app-control>
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
             <mime name="image/svg+xml" />
         </app-control>
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
             <mime name="text/html" />
         </app-control>
         <app-control>
             <operation name="http://tizen.org/appcontrol/operation/view" />
-            <uri name="file" />
             <mime name="application/xml" />
         </app-control>
     </ui-application>

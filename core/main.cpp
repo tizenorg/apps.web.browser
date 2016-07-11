@@ -139,6 +139,14 @@ static void app_control(app_control_h app_control, void* app_data){
     std::string uri = request_uri != NULL ? std::string(request_uri) : DEFAULT_URL;
     std::string caller = request_caller != NULL ? std::string(request_caller) : DEFAULT_CALLER;
 
+    if( (operation && !strcmp(operation, "http://tizen.org/appcontrol/operation/view")) && (request_uri != NULL)) {
+        if (request_uri) {
+            if (!strncmp(request_uri, "/opt/", strlen("/opt/"))) {
+                uri = std::string("file://") + uri;
+                }
+            }
+        }
+
     BROWSER_LOGD("[%s] uri=%s", __func__, uri.c_str());
     free(request_uri);
     free(request_mime_type);
