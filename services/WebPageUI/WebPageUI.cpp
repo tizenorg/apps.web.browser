@@ -544,6 +544,7 @@ void WebPageUI::setContentFocus()
     if (getURIEntry().hasFocus()) {
         getURIEntry().clearFocus();
         mobileEntryUnfocused();
+        hideHistoryList();
     }
 }
 
@@ -552,7 +553,6 @@ void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         WebPageUI* webpageUI = static_cast<WebPageUI*>(data);
-        webpageUI->hideHistoryList();
         webpageUI->setContentFocus();
     } else
         BROWSER_LOGE("WebPageUI data is null!");
