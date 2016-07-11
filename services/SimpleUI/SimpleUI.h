@@ -207,7 +207,6 @@ private:
      * and this is a back function that checks if address emited from browser should be changed.
      */
     void webEngineURLChanged(const std::string url);
-    void hideHistoryList();
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();
