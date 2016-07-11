@@ -1237,6 +1237,7 @@ void SimpleUI::loadError()
 void SimpleUI::filterURL(const std::string& url)
 {
     BROWSER_LOGD("[%s:%d] url=%s", __PRETTY_FUNCTION__, __LINE__, url.c_str());
+
     //check for special urls (like:  'about:home')
     //if there will be more addresses may be we should
     //create some kind of std::man<std::string url, bool *(doSomethingWithUrl)()>
@@ -1251,6 +1252,7 @@ void SimpleUI::filterURL(const std::string& url)
 
     //no filtering
         elm_object_focus_allow_set(m_webPageUI->getURIEntry().getEntryWidget(), EINA_FALSE);
+        hideHistoryList();
         if (m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
             openNewTab(url, "", boost::none, false, false, basic_webengine::TabOrigin::QUICKACCESS);
         else
@@ -1355,8 +1357,9 @@ void SimpleUI::closeFindOnPageUI()
 void SimpleUI::hideHistoryList()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_webPageUI && m_webPageUI->getUrlHistoryList()->getGenlistVisible())
-        m_webPageUI->getUrlHistoryList()->hideWidget();
+    M_ASSERT(m_webPageUI);
+    M_ASSERT(m_webPageUI->getUrlHistoryList());
+    m_webPageUI->getUrlHistoryList()->hideWidget();
 }
 #endif
 

@@ -552,8 +552,8 @@ void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data) {
         WebPageUI* webpageUI = static_cast<WebPageUI*>(data);
-        webpageUI->hideHistoryList();
         webpageUI->setContentFocus();
+        webpageUI->hideHistoryList();
     } else
         BROWSER_LOGE("WebPageUI data is null!");
 }
