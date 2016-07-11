@@ -148,8 +148,6 @@ void UrlHistoryList::onItemSelect(std::string content)
     } else {
         uriChanged(content);
     }
-    if (getGenlistVisible())
-        hideWidget();
 }
 
 void UrlHistoryList::onListWidgetFocusChange(bool focused)

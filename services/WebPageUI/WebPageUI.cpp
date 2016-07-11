@@ -550,12 +550,8 @@ void WebPageUI::setContentFocus()
 void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (data) {
-        WebPageUI* webpageUI = static_cast<WebPageUI*>(data);
-        webpageUI->hideHistoryList();
-        webpageUI->setContentFocus();
-    } else
-        BROWSER_LOGE("WebPageUI data is null!");
+    WebPageUI*  webpageUI = static_cast<WebPageUI*>(data);
+    webpageUI->setContentFocus();
 }
 
 void WebPageUI::_more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*)
@@ -755,12 +751,24 @@ void WebPageUI::mobileEntryFocused()
 void WebPageUI::mobileEntryUnfocused()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
-        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri", "ui");
-    } else {
-        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
-    }
+
+    // delay hiding on one efl loop iteration to enable genlist item selected callback to come
+    ecore_timer_add(0.1, _hideDelay, this);
 }
+
+Eina_Bool WebPageUI::_hideDelay(void *data)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = static_cast<WebPageUI*>(data);
+    self->m_urlHistoryList->hideWidget();
+    if (self->m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
+        elm_object_signal_emit(self->m_mainLayout, "decrease_unfocused_uri", "ui");
+    } else {
+        elm_object_signal_emit(self->m_mainLayout, "decrease_unfocused_uri_wp", "ui");
+    }
+    return ECORE_CALLBACK_CANCEL;
+}
+
 #endif
 
 }   // namespace tizen_browser
