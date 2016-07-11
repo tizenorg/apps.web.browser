@@ -372,9 +372,9 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
-    m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
-    m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
-    m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
+//    m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
+//    m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
+//    m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));

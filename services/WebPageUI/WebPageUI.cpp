@@ -456,9 +456,9 @@ void WebPageUI::createLayout()
     edje_object_signal_callback_add(elm_layout_edje_get(m_mainLayout), "mouse,clicked,1", "moremenu_dimmed_bg", _more_menu_background_clicked, this);
 #endif
 
-    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
-    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
-    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getLayout());
+//    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
+//    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
+//    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getLayout());
 
     connectActions();
 
