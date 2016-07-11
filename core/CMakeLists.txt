@@ -98,7 +98,26 @@ target_link_libraries(${BIN_NAME} ${Boost_LIBRARIES})
 
 
 if(TIZEN_BUILD)
-    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS} "-pie")
+    target_link_libraries(${BIN_NAME} ${tizen_pkgs_LDFLAGS} "-pie"
+    BookmarkDetailsUI
+    BookmarkFlowUI
+    BookmarkManagerUI
+    BookmarkService
+    CertificateService
+    FindOnPageUI
+    HistoryService
+    HistoryUI
+    MoreMenuUI
+    PlatformInputManager
+    QuickAccess
+    SettingsUI
+    SimpleUI
+    StorageService
+    TabService
+    TabUI
+    WebEngineService
+    WebPageUI
+    )
 endif(TIZEN_BUILD)
 
 install(TARGETS ${BIN_NAME} RUNTIME DESTINATION bin)
