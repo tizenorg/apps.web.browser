@@ -261,7 +261,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
         self->m_entryContextMenuOpen = false;
     }
     if(self->m_first_click) {
-//        elm_entry_select_all(self->m_entry);
+        elm_entry_select_all(self->m_entry);
         self->m_first_click = false;
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
     }
@@ -372,11 +372,11 @@ void URIEntry::setDisabled(bool disabled)
     elm_object_disabled_set(getContent(), disabled ? EINA_TRUE : EINA_FALSE);
 }
 
-void URIEntry::_uri_entry_double_clicked(void* /*data*/, Evas_Object* /*obj*/, void* /*event_info*/)
+void URIEntry::_uri_entry_double_clicked(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-//    URIEntry* self = static_cast<URIEntry*>(data);
-//    elm_entry_select_all(self->m_entry);
+    URIEntry* self = static_cast<URIEntry*>(data);
+    elm_entry_select_all(self->m_entry);
 }
 
 void URIEntry::_uri_entry_selection_changed(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
