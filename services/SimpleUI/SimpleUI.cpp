@@ -971,6 +971,7 @@ void SimpleUI::onSnapshotCaptured(std::shared_ptr<tools::BrowserImage> snapshot,
     switch (snapshot_type) {
     case tools::SnapshotType::ASYNC_LOAD_FINISHED:
         m_historyService->updateHistoryItemSnapshot(m_webEngine->getURI(), snapshot);
+        m_tabService->updateTabItemSnapshot(m_webEngine->currentTabId(), snapshot);
         break;
     case tools::SnapshotType::ASYNC_TAB:
         m_tabService->updateTabItemSnapshot(m_webEngine->currentTabId(), snapshot);
