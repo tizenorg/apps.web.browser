@@ -104,16 +104,19 @@ ServiceManager& ServiceManager::getInstance(void)
 
 std::shared_ptr< AbstractService > ServiceManager::getService(const std::string& service)
 {
+    if(service.empty())
+        return nullptr;
+
     static std::unordered_map<std::string, std::shared_ptr<AbstractService>> cache;
     static std::mutex mut;
 
-
-    std::lock_guard<std::mutex> hold(mut);
+    mut.lock();
     auto sp = cache[service];
 
     if(!sp){
         cache[service] = sp = std::shared_ptr<AbstractService>(d->servicesMap[service]->create());
     }
+    mut.unlock();
     return sp;
 }
 
