@@ -235,132 +235,66 @@ void SimpleUI::restoreLastSession()
     }
 }
 
+
 //TODO: Move all service creation here:
 void SimpleUI::loadUIServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    std::vector<std::future<void>> ft;
 
-    ft.push_back(make_async_future([this](){
-        m_webPageUI =
+    m_webPageUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::WebPageUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webpageui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_quickAccess =
+        <tizen_browser::base_ui::WebPageUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webpageui"));
+
+    m_quickAccess =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::QuickAccess,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.quickaccess"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_tabUI =
+        <tizen_browser::base_ui::QuickAccess,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.quickaccess"));
+
+    m_tabUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::TabUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.tabui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_historyUI =
+        <tizen_browser::base_ui::TabUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.tabui"));
+
+    m_historyUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::HistoryUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_settingsUI =
+        <tizen_browser::base_ui::HistoryUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyui"));
+
+    m_settingsUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::SettingsUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_moreMenuUI =
+        <tizen_browser::base_ui::SettingsUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.settingsui"));
+
+    m_moreMenuUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::MoreMenuUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_bookmarkDetailsUI =
+        <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
+
+    m_bookmarkDetailsUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::BookmarkDetailsUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkdetailsui"));
-    }));
-    #if PROFILE_MOBILE
-    ft.push_back(make_async_future([this](){
-        m_bookmarkFlowUI =
+        <tizen_browser::base_ui::BookmarkDetailsUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkdetailsui"));
+#if PROFILE_MOBILE
+    m_bookmarkFlowUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::BookmarkFlowUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkflowui"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_findOnPageUI =
+        <tizen_browser::base_ui::BookmarkFlowUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkflowui"));
+
+    m_findOnPageUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::FindOnPageUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.findonpageui"));
-    }));
+        <tizen_browser::base_ui::FindOnPageUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.findonpageui"));
 #else
-    ft.push_back(make_async_future([this](){
-        m_zoomUI =
+    m_zoomUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::ZoomUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
-    }));
+        <tizen_browser::base_ui::ZoomUI, tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.zoomui"));
 #endif
-    ft.push_back(make_async_future([this](){
-        m_bookmarkManagerUI =
+    m_bookmarkManagerUI =
         std::dynamic_pointer_cast
-        <tizen_browser::base_ui::BookmarkManagerUI,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkmanagerui"));
-    }));
-    for(auto& th : ft)
-        th.get();
-}
-
-void SimpleUI::loadModelServices()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    std::vector<std::future<void>> ft;
-    ft.push_back(make_async_future([this](){
-        m_webEngine =
-        std::dynamic_pointer_cast
-        <basic_webengine::AbstractWebEngine<Evas_Object>,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_storageService =
-        std::dynamic_pointer_cast
-        <tizen_browser::services::StorageService,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.storageservice"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_favoriteService =
-        std::dynamic_pointer_cast
-        <tizen_browser::interfaces::AbstractFavoriteService,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_historyService =
-        std::dynamic_pointer_cast
-        <tizen_browser::services::HistoryService,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_tabService = std::dynamic_pointer_cast<
-        tizen_browser::services::TabService,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.tabservice"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_platformInputManager =
-        std::dynamic_pointer_cast
-        <tizen_browser::services::PlatformInputManager,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
-    }));
-    ft.push_back(make_async_future([this](){
-        m_certificateContents =
-        std::dynamic_pointer_cast
-        <tizen_browser::services::CertificateContents,
-        tizen_browser::core::AbstractService>(tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.certificateservice"));
-    }));
-    for(auto& th : ft)
-        th.get();
+        <tizen_browser::base_ui::BookmarkManagerUI,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkmanagerui"));
 }
 
 void SimpleUI::connectUISignals()
@@ -497,6 +431,47 @@ void SimpleUI::connectUISignals()
 #endif
 }
 
+void SimpleUI::loadModelServices()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    m_webEngine =
+        std::dynamic_pointer_cast
+        <basic_webengine::AbstractWebEngine<Evas_Object>,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.webengineservice"));
+
+    m_storageService =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::StorageService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.storageservice"));
+
+    m_favoriteService =
+        std::dynamic_pointer_cast
+        <tizen_browser::interfaces::AbstractFavoriteService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.favoriteservice"));
+
+    m_historyService =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::HistoryService,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.historyservice"));
+
+    m_tabService = std::dynamic_pointer_cast<
+            tizen_browser::services::TabService,
+            tizen_browser::core::AbstractService>(
+            tizen_browser::core::ServiceManager::getInstance().getService(
+                    "org.tizen.browser.tabservice"));
+
+    m_platformInputManager =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::PlatformInputManager,tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.platforminputmanager"));
+
+    m_certificateContents =
+        std::dynamic_pointer_cast
+        <tizen_browser::services::CertificateContents, tizen_browser::core::AbstractService>
+        (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.certificateservice"));
+}
+
 void SimpleUI::initUIServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -543,32 +518,28 @@ void SimpleUI::initUIServices()
     m_bookmarkManagerUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
 }
 
-std::future<void> SimpleUI::make_async_future(std::function<void()> f){
-    return std::async(std::launch::async, f);
-}
-
 void SimpleUI::initModelServices()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    std::vector<std::future<void>> ft;
-    M_ASSERT(m_webEngine.get());
-    M_ASSERT(m_webPageUI.get());
-    M_ASSERT(m_favoriteService.get());
-    M_ASSERT(m_platformInputManager.get());
-    M_ASSERT(m_certificateContents.get());
-#if PROFILE_MOBILE
-    M_ASSERT(m_storageService.get());
-#endif
-    ft.push_back(make_async_future([this](){m_webEngine->init(m_webPageUI->getContent());}));
-    ft.push_back(make_async_future([this](){m_favoriteService->getBookmarks();}));
-    ft.push_back(make_async_future([this](){m_platformInputManager->init(m_window.get());}));
-    ft.push_back(make_async_future([this](){m_certificateContents->init();}));
+
+    M_ASSERT(m_webEngine);
+    M_ASSERT(m_webPageUI->getContent());
+    m_webEngine->init(m_webPageUI->getContent());
 
 #if PROFILE_MOBILE
-    ft.push_back(make_async_future([this](){m_storageService->getSettingsStorage().initWebEngineSettingsFromDB();}));
+    M_ASSERT(m_storageService->getSettingsStorage());
+    M_ASSERT(m_storageService->getFoldersStorage());
+    m_storageService->getSettingsStorage().initWebEngineSettingsFromDB();
 #endif
-    for(auto& th : ft)
-        th.get();
+
+    M_ASSERT(m_favoriteService);
+    m_favoriteService->getBookmarks();
+
+    M_ASSERT(m_platformInputManager);
+    m_platformInputManager->init(m_window.get());
+
+    M_ASSERT(m_certificateContents.get());
+    m_certificateContents->init();
 }
 
 void SimpleUI::connectModelSignals()

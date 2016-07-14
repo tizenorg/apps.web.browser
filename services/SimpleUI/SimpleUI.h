@@ -25,14 +25,12 @@
 #define SIMPLEUI_H_
 
 #include <Evas.h>
-#include <future>
-#include <functional>
+
 #include "AbstractMainWindow.h"
 #include "AbstractService.h"
 #include "AbstractFavoriteService.h"
 #include "ServiceFactory.h"
 #include "service_macros.h"
-
 
 // components
 #include "WebPageUI.h"
@@ -125,7 +123,6 @@ private:
     void updateView();
     void windowCreated();
     void minimizeBrowser();
-    std::future<void> make_async_future(std::function<void()> f);
 
 #if PROFILE_MOBILE
     void openNewTab(const std::string &uri, const std::string& title =
