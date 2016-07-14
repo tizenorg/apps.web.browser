@@ -44,6 +44,7 @@ void ServiceLoaderPrivate::loadService()
 ServiceLoader::ServiceLoader(const std::string& serviceFileName)
     : d(new ServiceLoaderPrivate(serviceFileName))
 {
+    BROWSER_LOGD( "%s %s", __PRETTY_FUNCTION__ , serviceFileName.c_str() );
 }
 
 
