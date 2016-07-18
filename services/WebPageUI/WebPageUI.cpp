@@ -56,6 +56,8 @@ WebPageUI::WebPageUI()
 WebPageUI::~WebPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    evas_object_smart_callback_del(m_dummy_button, "focused", _dummy_button_focused);
+    evas_object_smart_callback_del(m_dummy_button, "unfocused", _dummy_button_unfocused);
 }
 
 void WebPageUI::init(Evas_Object* parent)
@@ -175,7 +177,9 @@ void WebPageUI::loadFinished()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
     hideProgressBar();
+#if PROFILE_MOBILE
     m_URIEntry->updateSecureIcon();
+#endif
 }
 
 void WebPageUI::toIncognito(bool incognito)
@@ -203,7 +207,7 @@ void WebPageUI::setMainContent(Evas_Object* content)
     elm_gesture_layer_attach(m_gestureLayer, content);
 #endif
 #if PROFILE_MOBILE
-    evas_object_smart_callback_add(content, "mouse,in", _content_clicked, this);
+    evas_object_smart_callback_add(content, "mouse,down", _content_clicked, this);
 #endif
     evas_object_show(content);
 }
@@ -212,6 +216,8 @@ void WebPageUI::switchViewToErrorPage()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_statesMgr->set(WPUState::MAIN_ERROR_PAGE);
+    if (!m_errorLayout)
+        createErrorLayout();
     setMainContent(m_errorLayout);
     evas_object_show(m_leftButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
@@ -227,6 +233,8 @@ void WebPageUI::switchViewToIncognitoPage()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_statesMgr->set(WPUState::MAIN_INCOGNITO_PAGE);
     toIncognito(true);
+    if (!m_privateLayout)
+        createPrivateLayout();
     setMainContent(m_privateLayout);
 #if PROFILE_MOBILE
     orientationChanged();
@@ -421,8 +429,6 @@ void WebPageUI::createLayout()
     evas_object_size_hint_weight_set(m_mainLayout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_layout_file_set(m_mainLayout, edjePath("WebPageUI/WebPageUI.edj").c_str(), "main_layout");
 
-    createErrorLayout();
-    createPrivateLayout();
     createActions();
 
     // left buttons
@@ -450,9 +456,9 @@ void WebPageUI::createLayout()
     edje_object_signal_callback_add(elm_layout_edje_get(m_mainLayout), "mouse,clicked,1", "moremenu_dimmed_bg", _more_menu_background_clicked, this);
 #endif
 
-    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
-    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
-    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getLayout());
+//    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
+//    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
+//    elm_object_part_content_set(m_mainLayout, "url_history_list", m_urlHistoryList->getLayout());
 
     connectActions();
 
@@ -460,6 +466,43 @@ void WebPageUI::createLayout()
     // will be attatch on every 'setMainContent'
     m_gestureLayer = elm_gesture_layer_add(m_mainLayout);
 #endif
+}
+
+void WebPageUI::createDummyButton()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!m_dummy_button) {
+        M_ASSERT(m_mainLayout);
+        m_dummy_button = elm_button_add(m_mainLayout);
+        elm_object_style_set(m_dummy_button, "invisible_button");
+        evas_object_size_hint_align_set(m_dummy_button, EVAS_HINT_FILL, EVAS_HINT_FILL);
+        evas_object_size_hint_weight_set(m_dummy_button, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+        elm_object_focus_allow_set(m_dummy_button, EINA_TRUE);
+        elm_object_focus_set(m_dummy_button, EINA_TRUE);
+        evas_object_show(m_dummy_button);
+        elm_object_part_content_set(m_mainLayout, "web_view_dummy_button", m_dummy_button);
+
+        evas_object_smart_callback_add(m_dummy_button, "focused", _dummy_button_focused, this);
+        evas_object_smart_callback_add(m_dummy_button, "unfocused", _dummy_button_unfocused, this);
+    }
+}
+
+void WebPageUI::_dummy_button_focused(void *data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        webPageUI->focusWebView();
+    }
+}
+
+void WebPageUI::_dummy_button_unfocused(void *data, Evas_Object *, void *)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        webPageUI->unfocusWebView();
+    }
 }
 
 void WebPageUI::createErrorLayout()
@@ -586,8 +629,7 @@ void WebPageUI::hideWebView()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
-    elm_object_part_content_unset(m_mainLayout, "web_view");
+    evas_object_hide(elm_object_part_content_unset(m_mainLayout, "web_view"));
 }
 
 void WebPageUI::setErrorButtons()
@@ -714,7 +756,7 @@ void WebPageUI::mobileEntryUnfocused()
     } else {
         elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
     }
-    setFocusOnSuspend();
+
     // delay hiding on one efl loop iteration to enable genlist item selected callback to come
     ecore_timer_add(0.0, _hideDelay, this);
 }

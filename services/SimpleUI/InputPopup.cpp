@@ -145,7 +145,7 @@ void InputPopup::createLayout()
     elm_entry_scrollable_set(m_entry, EINA_TRUE);
     elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
     elm_object_part_content_set(m_input_area, "input_text_swallow", m_entry);
-    elm_object_part_text_set(m_entry, "elm.text", m_input.c_str());
+    elm_object_part_text_set(m_entry, "elm.text", elm_entry_utf8_to_markup(m_input.c_str()));
 
     evas_object_smart_callback_add(m_entry, "focused", _entry_focused, (void*)this);
     evas_object_smart_callback_add(m_entry, "unfocused", _entry_unfocused, (void*)this);
@@ -166,7 +166,8 @@ void InputPopup::createLayout()
     m_button_left = elm_button_add(m_buttons_box);
     elm_object_style_set(m_button_left, "input-popup-button");
     evas_object_size_hint_weight_set(m_button_left, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);    elm_object_part_text_set(m_button_left, "elm.text", m_cancel_button_text.c_str());
+    evas_object_size_hint_align_set(m_button_left, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_object_part_text_set(m_button_left, "elm.text", m_cancel_button_text.c_str());
     elm_box_pack_end(m_buttons_box, m_button_left);
     evas_object_smart_callback_add(m_button_left, "clicked", _left_button_clicked, (void*)this);
 
@@ -222,7 +223,7 @@ void InputPopup::_entry_changed(void* data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         InputPopup*  inputPopup = static_cast<InputPopup*>(data);
-        std::string text = elm_object_part_text_get(inputPopup->m_entry, "elm.text");
+        std::string text = elm_entry_markup_to_utf8(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
 
         if (text.empty())
             elm_object_signal_emit(inputPopup->m_input_area, "close_icon_hide", "ui");
@@ -263,7 +264,7 @@ void InputPopup::_right_button_clicked(void *data, Evas_Object *, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = static_cast<InputPopup*>(data);
     if (inputPopup->m_accept_right_left)
-        inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
+        inputPopup->button_clicked(elm_entry_markup_to_utf8(elm_object_part_text_get(inputPopup->m_entry, "elm.text")));
     inputPopup->dismiss();
 }
 
@@ -272,7 +273,7 @@ void InputPopup::_left_button_clicked(void* data, Evas_Object *, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     InputPopup *inputPopup = static_cast<InputPopup*>(data);
     if (!inputPopup->m_accept_right_left)
-        inputPopup->button_clicked(elm_object_part_text_get(inputPopup->m_entry, "elm.text"));
+        inputPopup->button_clicked(elm_entry_markup_to_utf8(elm_object_part_text_get(inputPopup->m_entry, "elm.text")));
     inputPopup->dismiss();
 }
 

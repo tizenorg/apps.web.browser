@@ -82,7 +82,6 @@ SimpleUI::SimpleUI()
     , m_tabLimit(0)
     , m_favoritesLimit(0)
     , m_wvIMEStatus(false)
-    , m_webEngineHadFocusBeforeSuspend(false)
 #if PROFILE_MOBILE
     , m_current_angle(0)
     , m_temp_angle(0)
@@ -130,30 +129,18 @@ SimpleUI::~SimpleUI() {
 
 void SimpleUI::suspend()
 {
-    //TODO: Delete when web_view fixed unfocus on suspend issue
-    m_webEngineHadFocusBeforeSuspend = m_webEngine->hasFocus();
     m_webEngine->suspend();
 }
 
 void SimpleUI::resume()
 {
+    m_webEngine->preinitializeWebViewCache();
+    m_webPageUI->createDummyButton();
     m_webEngine->resume();
-    //TODO: Delete when web_view fixed unfocus on suspend issue
-    if (m_webEngineHadFocusBeforeSuspend)
-        m_webEngineFocusWorkaroundTimer =  ecore_timer_add(0.0, web_view_set_focus_timer, this);
-
 #if PROFILE_MOBILE
-    if (m_findOnPageUI)
+    if (m_findOnPageUI && m_findOnPageUI->isVisible())
         m_findOnPageUI->show_ime();
 #endif
-}
-
-Eina_Bool SimpleUI::web_view_set_focus_timer(void *data)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    SimpleUI * simpleUI = static_cast<SimpleUI*>(data);
-    simpleUI->m_webEngine->setFocus();
-    return ECORE_CALLBACK_CANCEL;
 }
 
 void SimpleUI::destroyUI()
@@ -204,7 +191,6 @@ int SimpleUI::exec(const std::string& _url, const std::string& _caller)
 #if PROFILE_MOBILE
             // Register H/W back key callback
             m_platformInputManager->registerHWKeyCallback(m_viewManager.getContent());
-            m_platformInputManager->registerHWKeyCallback(m_moreMenuUI->getContent());
 #endif
         }
 
@@ -320,9 +306,9 @@ void SimpleUI::connectUISignals()
 
     M_ASSERT(m_webPageUI.get());
     m_webPageUI->getURIEntry().uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
-    m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
-    m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
-    m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
+//    m_webPageUI->getURIEntry().uriEntryEditingChangedByUser.connect(boost::bind(&SimpleUI::onURLEntryEditedByUser, this, _1));
+//    m_webPageUI->getUrlHistoryList()->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1));
+//    m_webPageUI->getUrlHistoryList()->uriChanged.connect(boost::bind(&SimpleUI::filterURL, this, _1));
     m_webPageUI->backPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
     m_webPageUI->backPage.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::back, m_webEngine.get()));
     m_webPageUI->reloadPage.connect(boost::bind(&SimpleUI::switchViewToWebPage, this));
@@ -334,6 +320,8 @@ void SimpleUI::connectUISignals()
     m_webPageUI->showQuickAccess.connect(boost::bind(&SimpleUI::showQuickAccess, this));
     m_webPageUI->hideQuickAccess.connect(boost::bind(&QuickAccess::hideUI, m_quickAccess));
     m_webPageUI->bookmarkManagerClicked.connect(boost::bind(&SimpleUI::showBookmarkManagerUI, this));
+    m_webPageUI->focusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::setFocus, m_webEngine.get()));
+    m_webPageUI->unfocusWebView.connect(boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::clearFocus, m_webEngine.get()));
 #if PROFILE_MOBILE
     m_webPageUI->hideMoreMenu.connect(boost::bind(&SimpleUI::closeMoreMenu, this));
     m_webPageUI->getURIEntry().mobileEntryFocused.connect(boost::bind(&WebPageUI::mobileEntryFocused, m_webPageUI));
@@ -559,10 +547,8 @@ void SimpleUI::connectModelSignals()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
     m_webEngine->minimizeBrowser.connect(boost::bind(&SimpleUI::minimizeBrowser, this));
-    m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->uriChanged.connect(boost::bind(&URIEntry::changeUri, &m_webPageUI->getURIEntry(), _1));
     m_webEngine->downloadStarted.connect(boost::bind(&SimpleUI::downloadStarted, this, _1));
-    m_webEngine->webViewClicked.connect(boost::bind(&URIEntry::clearFocus, &m_webPageUI->getURIEntry()));
     m_webEngine->backwardEnableChanged.connect(boost::bind(&WebPageUI::setBackButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->forwardEnableChanged.connect(boost::bind(&WebPageUI::setForwardButtonEnabled, m_webPageUI.get(), _1));
     m_webEngine->loadStarted.connect(boost::bind(&SimpleUI::loadStarted, this));
@@ -585,6 +571,7 @@ void SimpleUI::connectModelSignals()
     m_webEngine->setCertificatePem.connect(boost::bind(&services::CertificateContents::saveCertificateInfo, m_certificateContents, _1, _2));
     m_webEngine->setWrongCertificatePem.connect(boost::bind(&services::CertificateContents::saveWrongCertificateInfo, m_certificateContents, _1, _2));
 #if PROFILE_MOBILE
+    m_webEngine->uriChanged.connect(boost::bind(&SimpleUI::webEngineURLChanged, this, _1));
     m_webEngine->confirmationRequest.connect(boost::bind(&SimpleUI::handleConfirmationRequest, this, _1));
     m_webEngine->getRotation.connect(boost::bind(&SimpleUI::getRotation, this));
     m_webEngine->openFindOnPage.connect(boost::bind(&SimpleUI::showFindOnPageUI, this, _1));
@@ -613,6 +600,7 @@ void SimpleUI::connectModelSignals()
 #if PROFILE_MOBILE
     m_storageService->getSettingsStorage().setWebEngineSettingsParam.connect(boost::bind(&basic_webengine::AbstractWebEngine<Evas_Object>::setSettingsParam, m_webEngine.get(), _1, _2));
     m_platformInputManager->menuButtonPressed.connect(boost::bind(&SimpleUI::onMenuButtonPressed, this));
+    m_platformInputManager->XF86BackPressed.connect(boost::bind(&SimpleUI::onXF86BackPressed, this));
     m_webEngine->registerHWKeyCallback.connect(boost::bind(&SimpleUI::registerHWKeyCallback, this));
     m_webEngine->unregisterHWKeyCallback.connect(boost::bind(&SimpleUI::unregisterHWKeyCallback, this));
 #endif
@@ -671,7 +659,6 @@ void SimpleUI::switchViewToQuickAccess()
     m_webPageUI->switchViewToQuickAccess(m_quickAccess->getContent());
     m_webEngine->disconnectCurrentWebViewSignals();
     m_viewManager.popStackTo(m_webPageUI.get());
-    m_webEngine->preinitializeWebViewCache();
 }
 
 void SimpleUI::switchViewToIncognitoPage()
@@ -761,13 +748,17 @@ void SimpleUI::onOpenURL(const std::string& url)
 void SimpleUI::onOpenURL(const std::string& url, const std::string& title, bool desktopMode)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_viewManager.popStackTo(m_webPageUI.get());
-    if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
-        openNewTab(url, title, boost::none, desktopMode, false, basic_webengine::TabOrigin::QUICKACCESS);
-    else {
-        m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
-        m_webEngine->setURI(url);
-        m_webPageUI->getURIEntry().clearFocus();
+    if (m_webPageUI) {
+        m_viewManager.popStackTo(m_webPageUI.get());
+        if (tabsCount() == 0 || m_webPageUI->stateEquals(WPUState::QUICK_ACCESS))
+            openNewTab(url, title, boost::none, desktopMode, false, basic_webengine::TabOrigin::QUICKACCESS);
+        else {
+            m_webPageUI->switchViewToWebPage(m_webEngine->getLayout(), title);
+            m_webEngine->setURI(url);
+            m_webPageUI->getURIEntry().clearFocus();
+        }
+    } else {
+        BROWSER_LOGW("[%s:%d] No m_webPageUI object!", __PRETTY_FUNCTION__, __LINE__);
     }
 }
 
@@ -938,9 +929,6 @@ void SimpleUI::onUrlIMEClosed(void* data, Evas_Object*, void*)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SimpleUI* self = reinterpret_cast<SimpleUI*>(data);
     self->setwvIMEStatus(false);
-#if PROFILE_MOBILE
-    self->m_webPageUI->setContentFocus();
-#endif
 }
 #endif
 
@@ -1001,11 +989,18 @@ void SimpleUI::setwvIMEStatus(bool status)
     m_wvIMEStatus = status;
 }
 
+void SimpleUI::onXF86BackPressed()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (m_wvIMEStatus && m_webPageUI->getURIEntry().hasFocus())
+        m_webPageUI->getURIEntry().clearFocus();
+}
+
 void SimpleUI::onBackPressed()
 {
-    BROWSER_LOGD("[%s]", __func__);
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI->isVisible())
         closeFindOnPageUI();
     else
 #else
@@ -1018,7 +1013,7 @@ void SimpleUI::onBackPressed()
     } else if (m_popupVector.size() > 0) {
         m_popupVector.back()->onBackPressed();
 #if PROFILE_MOBILE
-    } else if (evas_object_visible_get(m_moreMenuUI->getContent())) {
+    } else if (m_moreMenuUI->isVisible()) {
         m_moreMenuUI->hideUI();
 #endif
     } else if ((m_viewManager.topOfStack() == m_tabUI.get()) && m_tabUI->isEditMode()) {
@@ -1099,6 +1094,8 @@ void SimpleUI::onRotation()
     m_webPageUI->orientationChanged();
     m_tabUI->orientationChanged();
     m_webEngine->orientationChanged();
+    if (!m_popupVector.empty())
+        m_popupVector.back()->orientationChanged();
 }
 
 void SimpleUI::__orientation_changed(void* data, Evas_Object*, void*)
@@ -1167,7 +1164,7 @@ void SimpleUI::loadStarted()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_webPageUI->loadStarted();
 #if PROFILE_MOBILE
-    if (evas_object_visible_get(m_findOnPageUI->getContent()))
+    if (m_findOnPageUI->isVisible())
         closeFindOnPageUI();
 #endif
 }
@@ -1285,19 +1282,19 @@ int SimpleUI::getZoomFactor()
 }
 #endif
 
-void SimpleUI::webEngineURLChanged(const std::string url)
-{
-    BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
-        m_moreMenuUI->updateBookmarkButton();
-}
-
 void SimpleUI::scrollView(const int& dx, const int& dy)
 {
     m_webEngine->scrollView(dx, dy);
 }
 
 #if PROFILE_MOBILE
+void SimpleUI::webEngineURLChanged(const std::string url)
+{
+    BROWSER_LOGD("webEngineURLChanged:%s", url.c_str());
+    if (m_moreMenuUI->isVisible())
+        m_moreMenuUI->updateBookmarkButton();
+}
+
 void SimpleUI::showFindOnPageUI(const std::string& str)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -1482,6 +1479,7 @@ void SimpleUI::certPopupButtonClicked(PopupButtons button, std::shared_ptr<Popup
 void SimpleUI::showHistoryUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_viewManager.pushViewToStack(m_historyUI.get());
     m_historyUI->addHistoryItems(m_historyService->getHistoryToday(),
             HistoryPeriod::HISTORY_TODAY);
     m_historyUI->addHistoryItems(m_historyService->getHistoryYesterday(),
@@ -1492,7 +1490,6 @@ void SimpleUI::showHistoryUI()
             HistoryPeriod::HISTORY_LASTMONTH);
     m_historyUI->addHistoryItems(m_historyService->getHistoryOlder(),
             HistoryPeriod::HISTORY_OLDER);
-    m_viewManager.pushViewToStack(m_historyUI.get());
 }
 
 void SimpleUI::closeHistoryUI()
@@ -1521,7 +1518,7 @@ void SimpleUI::showMoreMenu()
 
 #if PROFILE_MOBILE
     M_ASSERT(m_webPageUI);
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+    if (m_moreMenuUI->isVisible())
         m_moreMenuUI->hideUI();
     else {
         m_moreMenuUI->shouldShowFindOnPage(!m_webEngine->getURI().empty());
@@ -1552,7 +1549,7 @@ void SimpleUI::closeMoreMenu()
 
 #if PROFILE_MOBILE
     M_ASSERT(m_webPageUI);
-    if (evas_object_visible_get(m_moreMenuUI->getContent()))
+    if (m_moreMenuUI->isVisible())
         m_moreMenuUI->hideUI();
 #else
     if (m_viewManager.topOfStack() == m_moreMenuUI.get())
@@ -1740,7 +1737,7 @@ void SimpleUI::settingsResetMostVisited()
 {
     BROWSER_LOGD("[%s]: Deleting most visited sites", __func__);
     NotificationPopup *popup = NotificationPopup::createNotificationPopup(m_viewManager.getContent());
-    popup->show("Resetting most visited sites...");
+    popup->show("Resetting most visited sites.");
     onDeleteMostVisitedButton(nullptr);
     popup->dismiss();
 }

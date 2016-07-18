@@ -87,7 +87,6 @@ public:
     void resume();
 
     void destroyUI();
-    static Eina_Bool web_view_set_focus_timer(void *data);
 private:
     // setup functions
     void loadUIServices();
@@ -133,7 +132,8 @@ private:
 #else
     void openNewTab(const std::string &uri, const std::string& title =
             std::string(), const boost::optional<int> adaptorId = boost::none,
-            bool desktopMode = true, bool incognitoMode = false);
+            bool desktopMode = true, bool incognitoMode = false,
+            basic_webengine::TabOrigin origin = basic_webengine::TabOrigin::UNKNOWN);
 #endif
 
     void switchToTab(const tizen_browser::basic_webengine::TabId& tabId);
@@ -196,6 +196,14 @@ private:
 #if PROFILE_MOBILE
     void onMenuButtonPressed();
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
+
+    /**
+     * \brief check if url comming back from WebEngine should be passed to URI.
+     *
+     * For filtered addresses we need to hide real URI so the user would be confused.
+     * and this is a back function that checks if address emited from browser should be changed.
+     */
+    void webEngineURLChanged(const std::string url);
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();
@@ -218,13 +226,6 @@ private:
     // on uri entry widget "changed" signal
     void onURLEntryEdited();
 
-    /**
-     * \brief check if url comming back from WebEngine should be passed to URI.
-     *
-     * For filtered addresses we need to hide real URI so the user would be confused.
-     * and this is a back function that checks if address emited from browser should be changed.
-     */
-    void webEngineURLChanged(const std::string url);
     void onmostHistoryvisitedClicked();
     void onBookmarkvisitedClicked();
 
@@ -326,6 +327,7 @@ private:
     int tabsCount();
 
     void onReturnPressed(MenuButton *m);
+    void onXF86BackPressed();
     void onBackPressed();
 
     void searchWebPage(std::string &text, int flags);
@@ -360,7 +362,6 @@ private:
     int m_tabLimit;
     int m_favoritesLimit;
     bool m_wvIMEStatus;
-    bool m_webEngineHadFocusBeforeSuspend;
     std::string m_folder_name;
 
     //helper object used to view management
@@ -371,7 +372,6 @@ private:
     int m_current_angle;
     int m_temp_angle;
 #endif
-    Ecore_Timer* m_webEngineFocusWorkaroundTimer;
 };
 
 }

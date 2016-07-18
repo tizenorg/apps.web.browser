@@ -64,6 +64,13 @@ public:
      */
     virtual void onBackPressed() = 0;
 
+#if PROFILE_MOBILE
+    /**
+     * @brief virtual method to handle orientation changed
+     */
+    virtual void orientationChanged() = 0;
+#endif
+
     virtual ~AbstractPopup() {};
 };
 

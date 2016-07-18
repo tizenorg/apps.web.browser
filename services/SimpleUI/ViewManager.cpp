@@ -47,7 +47,8 @@ void ViewManager::init(Evas_Object* parentWindow)
     M_ASSERT(parentWindow);
 
     m_conformant = elm_conformant_add(parentWindow);
-    elm_win_indicator_mode_set(parentWindow, ELM_WIN_INDICATOR_SHOW);
+     //tmp for TSAM-5664 rotation resize issue
+    //elm_win_indicator_mode_set(parentWindow, ELM_WIN_INDICATOR_SHOW);
     evas_object_size_hint_weight_set(m_conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_show(m_conformant);
     elm_win_resize_object_add(parentWindow, m_conformant);

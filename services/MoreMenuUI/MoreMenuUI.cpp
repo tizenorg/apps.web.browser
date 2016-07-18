@@ -56,6 +56,7 @@ MoreMenuUI::MoreMenuUI()
     , m_shouldShowFindOnPage(false)
     , m_blockThumbnails(false)
 #endif
+    , m_isVisible(false)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_edjFilePath = EDJE_DIR;
@@ -90,16 +91,19 @@ void MoreMenuUI::init(Evas_Object* parent)
     m_parent = parent;
 }
 
+#if PROFILE_MOBILE
 void MoreMenuUI::updateBookmarkButton()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_gengrid_item_update(m_map_menu_views[ADD_TO_BOOKMARK]);
 }
+#endif
 
 void MoreMenuUI::showUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    M_ASSERT(m_mm_layout);
+    if (!m_mm_layout)
+        createMoreMenuLayout();
     createGengrid();    // recreate gengrid because icons could have changed
     addItems();
 #if !PROFILE_MOBILE
@@ -111,6 +115,7 @@ void MoreMenuUI::showUI()
 #if PROFILE_MOBILE
     resetContent();
 #endif
+    m_isVisible = true;
 }
 
 void MoreMenuUI::hideUI()
@@ -130,6 +135,7 @@ void MoreMenuUI::hideUI()
     setFocus(EINA_FALSE);
     m_focusManager.stopFocusManager();
 #endif
+    m_isVisible = false;
 }
 
 

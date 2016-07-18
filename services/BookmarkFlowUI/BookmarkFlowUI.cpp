@@ -50,7 +50,6 @@ BookmarkFlowUI::BookmarkFlowUI()
     , m_cancel_button(nullptr)
     , m_input_cancel_button(nullptr)
     , m_folder_button(nullptr)
-    , m_max_items(MAX_ITEMS_LANDSCAPE)
 #else
     , m_gengrid(nullptr)
     , m_bg(nullptr)
@@ -211,7 +210,7 @@ void BookmarkFlowUI::setState(bool state)
 void BookmarkFlowUI::setTitle(const std::string& title)
 {
     BROWSER_LOGD("[%s:%d] %s", __PRETTY_FUNCTION__, __LINE__, title.c_str());
-    elm_object_part_text_set(m_entry, "elm.text", title.c_str());
+    elm_object_part_text_set(m_entry, "elm.text", elm_entry_utf8_to_markup(title.c_str()));
 
     if (title.empty()) {
         elm_object_disabled_set(m_save_button, EINA_TRUE);
@@ -236,7 +235,7 @@ void BookmarkFlowUI::setFolder(unsigned int folder_id, const std::string& folder
     m_folder_id = folder_id;
     elm_object_signal_emit(m_contents_area, (m_folder_id == m_special_folder_id)
                            ? "folder_icon_special" : "folder_icon_normal", "ui");
-    elm_object_part_text_set(m_contents_area, "dropdown_text", folder_name.c_str());
+    elm_object_part_text_set(m_contents_area, "dropdown_text", elm_entry_utf8_to_markup(folder_name.c_str()));
     elm_genlist_item_item_class_update(m_map_folders[m_folder_id], m_folder_selected_item_class);
 }
 
@@ -254,9 +253,11 @@ void BookmarkFlowUI::resetContent()
         if (*rotated) {
             elm_scroller_page_size_set(m_genlist, 0, ELM_SCALE_SIZE(GENLIST_HEIGHT_LANDSCAPE));
             m_max_items = MAX_ITEMS_LANDSCAPE;
+            elm_object_signal_emit(m_contents_area, "dropdown_text_landscape", "ui");
         } else {
             elm_scroller_page_size_set(m_genlist, 0, ELM_SCALE_SIZE(GENLIST_HEIGHT));
             m_max_items = MAX_ITEMS;
+            elm_object_signal_emit(m_contents_area, "dropdown_text_portrait", "ui");
         }
         if (evas_object_visible_get(m_genlist) == EINA_TRUE) {
             unsigned int count = elm_genlist_items_count(m_genlist);
@@ -278,7 +279,7 @@ void BookmarkFlowUI::_save_clicked(void * data, Evas_Object *, void *)
         BookmarkFlowUI* bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
         BookmarkUpdate update;
         update.folder_id = bookmarkFlowUI->m_folder_id;
-        update.title = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
+        update.title = elm_entry_markup_to_utf8(elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text"));
         if (!bookmarkFlowUI->m_state)
             bookmarkFlowUI->saveBookmark(update);
         else
@@ -376,11 +377,10 @@ void BookmarkFlowUI::createGenlist()
     m_genlist = elm_genlist_add(m_contents_area);
     elm_object_part_content_set(m_contents_area, "dropdown_swallow", m_genlist);
     elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_genlist_homogeneous_set(m_genlist, EINA_FALSE);
+    elm_genlist_homogeneous_set(m_genlist, EINA_TRUE);
     elm_genlist_multi_select_set(m_genlist, EINA_FALSE);
     elm_genlist_select_mode_set(m_genlist, ELM_OBJECT_SELECT_MODE_ALWAYS);
-    elm_genlist_mode_set(m_genlist, ELM_LIST_LIMIT);
-    elm_genlist_decorate_mode_set(m_genlist, EINA_TRUE);
+    elm_genlist_mode_set(m_genlist, ELM_LIST_COMPRESS);
     evas_object_size_hint_weight_set(m_genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
 }
@@ -404,7 +404,7 @@ void BookmarkFlowUI::_listCustomFolderClicked(void *data, Evas_Object *, void *)
                 folderData->bookmarkFlowUI->m_folder_custom_item_class);
         folderData->bookmarkFlowUI->m_folder_id = folderData->folder_id;
         elm_object_part_text_set(folderData->bookmarkFlowUI->m_contents_area,
-                                 "dropdown_text", folderData->name.c_str());
+                                 "dropdown_text", elm_entry_utf8_to_markup(folderData->name.c_str()));
         elm_object_signal_emit(folderData->bookmarkFlowUI->m_contents_area,
                                (folderData->bookmarkFlowUI->m_folder_id == folderData->bookmarkFlowUI->m_special_folder_id)
                                ? "folder_icon_special" : "folder_icon_normal", "ui");
@@ -441,7 +441,7 @@ void BookmarkFlowUI::_entry_changed(void * data, Evas_Object *, void *)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         BookmarkFlowUI*  bookmarkFlowUI = static_cast<BookmarkFlowUI*>(data);
-        std::string text = elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text");
+        std::string text = elm_entry_markup_to_utf8(elm_object_part_text_get(bookmarkFlowUI->m_entry, "elm.text"));
 
         if (text.empty()) {
             elm_object_signal_emit(bookmarkFlowUI->m_contents_area, "close_icon_hide", "ui");
@@ -644,7 +644,7 @@ char* BookmarkFlowUI::_folder_title_text_get(void *data, Evas_Object *, const ch
         FolderData *folderData = static_cast<FolderData*>(data);
         const char *folder_text = "folder_text";
         if (!strncmp(folder_text, part, strlen(folder_text)))
-            return strdup(folderData->name.c_str());
+            return strdup(elm_entry_utf8_to_markup(folderData->name.c_str()));
     }
     return strdup("");
 }

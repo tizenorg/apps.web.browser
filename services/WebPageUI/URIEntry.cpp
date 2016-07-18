@@ -127,7 +127,9 @@ void URIEntry::changeUri(const std::string& newUri)
         } else
             elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
     }
+#if PROFILE_MOBILE
     updateSecureIcon();
+#endif
 }
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
@@ -305,7 +307,6 @@ void URIEntry::editingCompleted()
     elm_object_focus_set(m_entry, EINA_TRUE);
 #else
     showSecureIcon(false, false);
-    clearFocus();
 #endif
 }
 

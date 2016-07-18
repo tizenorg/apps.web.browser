@@ -111,9 +111,9 @@ Evas_Object* AutoFillFormComposeView::show(Evas_Object* parent, Evas_Object* act
     evas_object_show(m_mainLayout);
 
     if (m_itemForCompose->getItemComposeMode() == profile_edit)
-        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Auto Fill Edit");
+        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Edit info");
     else
-        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Auto Fill Compose");
+        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Add info");
 
     m_cancelButton = elm_button_add(m_action_bar);
     if (!m_cancelButton) {

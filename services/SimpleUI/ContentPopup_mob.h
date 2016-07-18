@@ -42,6 +42,7 @@ public:
     void show();
     void dismiss();
     void onBackPressed();
+    void orientationChanged();
 
     void setTitle(const std::string& title);
     void setContent(Evas_Object* content);

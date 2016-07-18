@@ -125,7 +125,10 @@ Eina_Bool PlatformInputManager::__filter(void *data, void */*loop_data*/, int ty
             self->rightPressed();
         else if(!keyName.compare("KEY_ENTER"))
             self->enterPressed();
-#if !PROFILE_MOBILE
+#if PROFILE_MOBILE
+        else if(!keyName.compare("XF86Back"))
+            self->XF86BackPressed();
+#else
         else if(!keyName.compare("F11") || !keyName.compare("XF86Back"))
             self->backPressed();
         else if(!keyName.compare("XF86Red"))    // F4 - Red
