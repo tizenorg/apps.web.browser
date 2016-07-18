@@ -24,6 +24,7 @@
 #include "BasicUI/Action.h"
 #include "BrowserImage.h"
 #include "EflTools.h"
+#include "WebPageUIStatesManager.h"
 
 
 namespace tizen_browser {
@@ -42,7 +43,7 @@ public:
         SELECTION_KEEP
         , SELECTION_NONE
     };
-    URIEntry();
+    URIEntry(WPUStatesManagerPtrConst statesMgr);
     ~URIEntry();
     void init(Evas_Object* parent);
     Evas_Object* getContent();
@@ -59,6 +60,8 @@ public:
     boost::signals2::signal<void ()> mobileEntryUnfocused;
     boost::signals2::signal<void ()> secureIconClicked;
     boost::signals2::signal<bool (const std::string&)> isValidCert;
+    boost::signals2::signal<void ()> reloadPage;
+    boost::signals2::signal<void ()> stopLoadingPage;
     void updateSecureIcon();
     void showSecureIcon(bool show, bool secure);
 #endif
@@ -96,6 +99,9 @@ public:
     bool hasFocus() const;
 
     void setDisabled(bool disabled);
+    void editingCanceled();
+    void loadStarted();
+    void loadFinished();
 
 private:
     static void activated(void* data, Evas_Object* obj, void* event_info);
@@ -123,11 +129,15 @@ private:
     enum class RightIconType {
         NONE,
         CANCEL,
-        SECURE
+        RELOAD,
+        STOP_LOADING
     };
 
     static void _uri_right_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     void showCancelIcon();
+    void showStopIcon();
+    void showReloadIcon();
+    void hideRightIcon();
 #endif
 
 private:
@@ -143,6 +153,8 @@ private:
     bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
     bool m_first_click;
+    bool m_isPageLoading;
+    WPUStatesManagerPtrConst m_statesMgr;
 #if PROFILE_MOBILE
     RightIconType m_rightIconType;
     bool m_securePageIcon;

@@ -40,7 +40,7 @@ const std::string keynameKP_Enter = "KP_Enter";
 const std::string keynameReturn = "Return";
 const std::string keynameEsc = "XF86Back";
 
-URIEntry::URIEntry()
+URIEntry::URIEntry(WPUStatesManagerPtrConst statesMgr)
     : m_parent(nullptr)
     , m_currentIconType(IconTypeSearch)
     , m_entry(NULL)
@@ -50,6 +50,8 @@ URIEntry::URIEntry()
     , m_entryContextMenuOpen(false)
     , m_searchTextEntered(false)
     , m_first_click(true)
+    , m_isPageLoading(false)
+    , m_statesMgr(statesMgr)
 #if PROFILE_MOBILE
     , m_rightIconType(RightIconType::NONE)
 #endif
@@ -236,7 +238,14 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
 #if PROFILE_MOBILE
         self->mobileEntryUnfocused();
-        self->showCancelIcon();
+        if (!self->m_statesMgr->equals(WPUState::QUICK_ACCESS) && !self->m_statesMgr->equals(WPUState::MAIN_INCOGNITO_PAGE)) {
+            if (self->m_isPageLoading)
+                self->showStopIcon();
+            else
+                self->showReloadIcon();
+        } else {
+            self->hideRightIcon();
+        }
 #endif
     }
     self->m_first_click = true;
@@ -333,6 +342,25 @@ std::string URIEntry::rewriteURI(const std::string& url)
     return url;
 }
 
+void URIEntry::editingCanceled()
+{
+    elm_entry_input_panel_hide(m_entry);
+    setCurrentFavIcon();
+}
+
+void URIEntry::loadStarted()
+{
+    m_isPageLoading = true;
+    elm_object_signal_emit(m_entry_layout, "shiftright_uribg", "ui");
+    showStopIcon();
+}
+
+void URIEntry::loadFinished()
+{
+    m_isPageLoading = false;
+    showReloadIcon();
+}
+
 void URIEntry::AddAction(sharedAction action)
 {
     m_actions.push_back(action);
@@ -405,8 +433,12 @@ void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const c
         elm_entry_entry_set(self->m_entry, "");
         elm_object_signal_emit(self->m_entry_layout, "hide_icon", "ui");
         break;
-    case RightIconType::SECURE:
-        self->secureIconClicked();
+    case RightIconType::RELOAD:
+        //self->secureIconClicked();
+        self->reloadPage();
+        break;
+    case RightIconType::STOP_LOADING:
+        self->stopLoadingPage();
         break;
     default:
         BROWSER_LOGW("[%s:%d] Unknown icon type!", __PRETTY_FUNCTION__, __LINE__);
@@ -440,11 +472,31 @@ void URIEntry::updateSecureIcon()
     showSecureIcon(show, secure);
 }
 
+void URIEntry::showStopIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_rightIconType = RightIconType::STOP_LOADING;
+    elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
+}
+
+void URIEntry::showReloadIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_rightIconType = RightIconType::RELOAD;
+    elm_object_signal_emit(m_entry_layout, "show,reload,icon", "");
+}
+
+void URIEntry::hideRightIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+}
+
 void URIEntry::showSecureIcon(bool show, bool secure)
 {
     BROWSER_LOGD("[%s:%d] [ show : %d, secure : %d] ", __PRETTY_FUNCTION__, __LINE__, show, secure);
 
-    m_rightIconType = RightIconType::SECURE;
+//    m_rightIconType = RightIconType::SECURE;
     m_securePageIcon = secure;
     m_showSecureIcon = show;
     if (show) {
@@ -454,7 +506,8 @@ void URIEntry::showSecureIcon(bool show, bool secure)
             elm_object_signal_emit(m_entry_layout, "show,unsecure,icon", "");
     }
     else {
-        elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+        // TODO: trzeba inny sygnal do ikonki klodki
+//        elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
     }
 }
 #endif

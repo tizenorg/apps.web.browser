@@ -57,27 +57,15 @@ if (${PROFILE} MATCHES "mobile")
 endif (${PROFILE} MATCHES "mobile")
 
 #please do not add edc/ directory
-if (${PROFILE} MATCHES "mobile")    # mobile profile
-    set(edcFiles
-        WebPageUI_mob.edc
-        ErrorMessage.edc
-        LeftButtonBar_mob.edc
-        RightButtonBar_mob.edc
-        URIEntry_mob.edc
-        PrivateMode_mob.edc
-        UrlHistoryList.edc
-        )
-else (${PROFILE} MATCHES "mobile")  # tv profile
-    set(edcFiles
-        WebPageUI.edc
-        ErrorMessage.edc
-        LeftButtonBar.edc
-        RightButtonBar.edc
-        URIEntry.edc
-        PrivateMode.edc
-        UrlHistoryList.edc
-        )
-endif (${PROFILE} MATCHES "mobile")
+set(edcFiles
+    WebPageUI_mob.edc
+    ErrorMessage.edc
+    BottomButtonBar.edc
+    RightButtonBar_mob.edc
+    URIEntry_mob.edc
+    PrivateMode_mob.edc
+    UrlHistoryList.edc
+    )
 
 foreach(edec ${edcFiles})
     string(REGEX REPLACE "(_mob)?.edc" ".edj" target_name ${edec})

@@ -53,6 +53,7 @@ public:
     void setDisabled(bool disabled);
 
 private:
+    std::string m_edjFilePath;
     //map button name to current action assigned to button
     std::map<std::string, sharedAction> m_actionsMap;
     //map button name to struct ActionButton which contains Evas_Object of button
@@ -60,13 +61,6 @@ private:
     Evas_Object* m_layout;
     void refreshButton(const std::string& buttonName);
     void onEnabledChanged(const std::string& buttonName, sharedAction action);
-#if !PROFILE_MOBILE
-    static Ecore_Timer* m_tooltipHideTimer;
-    static Ecore_Timer* m_tooltipShowTimer;
-
-    static double tooltipHideTimeout;
-    static double tooltipShowDelay;
-#endif
 
     static void __cb_mouse_in(void* data, Evas* e, Evas_Object* obj, void* event_info);
     static void __cb_mouse_out(void* data, Evas* e, Evas_Object* obj, void* event_info);
