@@ -269,7 +269,6 @@ void QuickAccess::createBookmarksView (Evas_Object * parent)
     m_bookmarkGengrid = createBookmarkGengrid(m_bookmarksView);
     evas_object_smart_callback_add(m_bookmarkGengrid, "realized", _bookmark_tile_realized, this);
     elm_object_part_content_set(m_bookmarksView, "elm.swallow.content", m_bookmarkGengrid);
-
     evas_object_show(m_bookmarkGengrid);
 #endif
 }
@@ -710,9 +709,11 @@ void QuickAccess::showScrollerPage(int page)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     switch (page) {
         case MOST_VISITED_PAGE:
+            getMostVisitedItems();
             showMostVisited();
             break;
         case BOOKMARK_PAGE:
+            getBookmarksItems();
             showBookmarks();
             break;
         default:
@@ -732,8 +733,6 @@ void QuickAccess::showUI()
     }
 #endif
     evas_object_show(m_layout);
-    getMostVisitedItems();
-    getBookmarksItems();
     showScrollerPage(m_currPage);
 }
 

@@ -126,10 +126,12 @@ collections { base_scale: 2.6;
             style {
                 name: "browser-entry-uri-style-unselected";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#969696 align=0.0";
+                tag:  "br" "";
             }
             style {
                 name: "browser-entry-uri-style-selected";
                 base: "font=Tizen:style=Regular font_size=40 wrap=none color=#333333 align=0.0";
+                tag:  "br" "";
             }
         }
         data {
@@ -1389,9 +1391,9 @@ collections { base_scale: 2.6;
                 description {
                     state: "default" 0.0;
                     align: 0.0 0.0;
-                    min: 0 BOOKMARK_DROPDOWN_ITEM_HEIGHT;
-                    max: -1 -1;
-                    fixed: 0 0;
+                    min: 608 BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    max: 608 -1;
+                    fixed: 1 0;
                     visible: DEVELOPMENT;
                     color: 135 206 250 255;//lightskyblue
                     rel1 { relative: 1 1;
@@ -1400,6 +1402,12 @@ collections { base_scale: 2.6;
                     rel2 { relative: 0 0;
                            to: "dropdown_text_spacer_1";
                          }
+                }
+                description {
+                    state: "landscape" 0.0;
+                    inherit: "default";
+                    min: 1168 BOOKMARK_DROPDOWN_ITEM_HEIGHT;
+                    max: 1168 -1;
                 }
             }
             part {
@@ -2071,6 +2079,20 @@ collections { base_scale: 2.6;
                 target: "remove_bg";
                 target: "remove_click";
                 target: "remove_text";
+            }
+            program {
+                name: "dropdown_text_portrait";
+                source: "ui";
+                signal: "dropdown_text_portrait";
+                action: STATE_SET "default" 0.0;
+                target: "dropdown_text_bg";
+            }
+            program {
+                name: "dropdown_text_landscape";
+                source: "ui";
+                signal: "dropdown_text_landscape";
+                action: STATE_SET "landscape" 0.0;
+                target: "dropdown_text_bg";
             }
         }
     }

@@ -229,7 +229,6 @@ void WebView::registerCallbacks()
     evas_object_smart_callback_add(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
     evas_object_smart_callback_add(m_ewkView, "ssl,certificate,changed", __setCertificatePem, this);
 
-    evas_object_event_callback_add(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView, this);
     evas_object_smart_callback_add(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_add(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
@@ -269,7 +268,6 @@ void WebView::unregisterCallbacks()
 #endif
     evas_object_smart_callback_del_full(m_ewkView, "request,certificate,confirm", __requestCertificationConfirm, this);
 
-    evas_object_event_callback_del(m_ewkView, EVAS_CALLBACK_MOUSE_DOWN, __setFocusToEwkView);
     evas_object_smart_callback_del_full(m_ewkView, "icon,received", __faviconChanged, this);
 
     evas_object_smart_callback_del_full(m_ewkView, "editorclient,ime,closed", __IMEClosed, this);
@@ -842,16 +840,6 @@ void WebView::__screenshotCaptured(Evas_Object* image, void* data)
 
     SnapshotItemData *snapshot_data = static_cast<SnapshotItemData*>(data);
     snapshot_data->web_view->snapshotCaptured(std::make_shared<tools::BrowserImage>(image), snapshot_data->snapshot_type);
-}
-
-void WebView::__setFocusToEwkView(void * data, Evas * /* e */, Evas_Object * /* obj */, void * /* event_info */)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    WebView * self = reinterpret_cast<WebView *>(data);
-
-    if(!self->hasFocus())
-        self->ewkViewClicked();
 }
 
 void WebView::__newWindowRequest(void *data, Evas_Object *, void *out)

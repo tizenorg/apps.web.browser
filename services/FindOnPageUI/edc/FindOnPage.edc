@@ -109,11 +109,13 @@ collections {
       styles {
          style {
             name: "fop-entry-style-unselected";
-            base: "font=Sans font_size="28" wrap=none ellipsis="1.0" color=#969696";
+            base: "font=Sans font_size="28" wrap=none color=#969696";
+            tag:  "br" "";
          }
          style {
             name: "fop-entry-style-selected";
-            base: "font=Sans font_size="28" wrap=none ellipsis="1.0" color=#4088d3";
+            base: "font=Sans font_size="28" wrap=none color=#4088d3";
+            tag:  "br" "";
          }
       }
       parts {

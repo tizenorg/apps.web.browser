@@ -220,8 +220,12 @@ Evas_Object* CertificateContents::createGenlist(Evas_Object* parent)
         evas_object_del(m_genlist);
     }
     m_genlist = elm_genlist_add(parent);
+
+    elm_scroller_policy_set(m_genlist, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_ON);
+    elm_genlist_mode_set(m_genlist, ELM_LIST_COMPRESS);
     evas_object_size_hint_weight_set(m_genlist, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(m_genlist, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
     evas_object_show(m_genlist);
 
     Elm_Genlist_Item_Class *auth_item_class = elm_genlist_item_class_new();
