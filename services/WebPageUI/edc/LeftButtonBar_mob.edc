@@ -1,103 +1,108 @@
 #include "ImageButton.edc"
 #include "../../../core/Tools/edc/Spacer.edc"
 
+#define BUTTON_WIDTH 120
+#define BUTTON_HEIGHT 94
+#define SPACER_SIZE 20
+
+#define ADD_BUTTON(NAME, RELATIVE_TO)                               \
+        part {                                                      \
+            name: NAME;                                             \
+            type : SWALLOW;                                         \
+            scale: 1;                                               \
+            description {                                           \
+                state: "default" 0.0;                               \
+                visible: 1;                                         \
+                align: 0.0 0.0;                                     \
+                fixed: 1 1;                                         \
+                min: BUTTON_WIDTH BUTTON_WIDTH;                       \
+                max: BUTTON_WIDTH BUTTON_WIDTH;                       \
+                rel1 { relative: 1.0 0.0; to: RELATIVE_TO; }        \
+                rel2 { relative: 0.0 0.0; }                         \
+            }                                                       \
+            description {                                           \
+                state: "hidden" 0.0;                                \
+                inherit: "default" 0.0;                             \
+                visible: 0;                                         \
+            }                                                       \
+            description {                                           \
+                state: "visible" 0.0;                               \
+                inherit: "default" 0.0;                             \
+                visible: 1;                                         \
+            }                                                       \
+        }
+
 collections { base_scale: 2.6;
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", 64, 64, "btn_bar_back_nor.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_prev", BUTTON_WIDTH, BUTTON_WIDTH, "btn_bar_back_nor.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", 64, 64, "btn_bar_forward_nor.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_next", BUTTON_WIDTH, BUTTON_WIDTH, "btn_bar_forward_nor.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_reload", 64, 64, "btn_bar_reload_nor.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_home", BUTTON_WIDTH, BUTTON_WIDTH, "I01_toolbar_icon_home.png", 224, 237, 251)
 
-    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_stop", 64, 64, "btn_bar_stop_nor.png", 224, 237, 251)
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_bookmark", BUTTON_WIDTH, BUTTON_WIDTH, "I01_toolbar_icon_bookmark.png", 224, 237, 251)
+
+    FOUR_STATE_IMAGE_BUTTON("browser/toolbar_tabs", BUTTON_WIDTH, BUTTON_WIDTH, "btn_bar_manager_nor.png", 224, 237, 251)
 
     group {
         name: "left_button_bar";
 
         parts {
+            part {
+                name: "spacer_0";
+                type: SPACER;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    fixed: 1 1;
+                    align: 0.0 0.0;
+                    min: SPACER_SIZE BUTTON_WIDTH;
+                    max: SPACER_SIZE BUTTON_WIDTH;
+                }
+            }
+
+            ADD_BUTTON("prev_button", "spacer_0")
+
+            ADD_SPACER_NEXT_TO("spacer_1", "prev_button", SPACER_SIZE, BUTTON_WIDTH)
+
+            ADD_BUTTON("next_button", "spacer_1")
+
+            ADD_SPACER_NEXT_TO("spacer_2", "next_button", SPACER_SIZE, BUTTON_WIDTH)
+
+            ADD_BUTTON("home_button", "spacer_2")
+
+            ADD_SPACER_NEXT_TO("spacer_3", "home_button", SPACER_SIZE, BUTTON_WIDTH)
+
+            ADD_BUTTON("bookmarks_button", "spacer_3")
+
+            ADD_SPACER_NEXT_TO("spacer_4", "bookmarks_button", SPACER_SIZE, BUTTON_WIDTH)
+
+            ADD_BUTTON("tabs_button", "spacer_4")
 
             part {
-                name: "prev_button";
-                type : SWALLOW;
+                name: "tabs_number";
+                type: TEXT;
                 scale: 1;
-                description {
+                repeat_events: 1;
+                description{
                     state: "default" 0.0;
                     visible: 1;
-                    align: 0.0 0.0;
                     fixed: 1 1;
-                min: 64 64;
-                max: 64 64;
-                rel1 { relative: 0.0 0.0; }
-                rel2 { relative: 0.0 0.0; }
-            }
-            description {
-                state: "hidden" 0.0;
-                inherit: "default" 0.0;
-                visible: 0;
-            }
-            description {
-                state: "visible" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-            }
-        }
-
-        ADD_SPACER("spacer_1", "prev_button", 2, 64)
-
-        part {
-                name: "next_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
                     align: 0.0 0.0;
-                    fixed: 1 1;
-                min: 64 64;
-                max: 64 64;
-                rel1 { relative: 1.0 0.0; to: "spacer_1"; }
-                rel2 { relative: 0.0 0.0; }
+                    min: BUTTON_WIDTH BUTTON_WIDTH*2/3;
+                    max: BUTTON_WIDTH BUTTON_WIDTH*2/3;
+                    color: 86 86 86 255;
+                    rel1 { relative: 0.0 0.0; to: "tabs_button"; }
+                    rel2 { relative: 1.0 1.0; to: "tabs_button"; }
+                    text {
+                        text: "";
+                        font: "Tizen:style=Bold";
+                        size: 19;
+                        align: 0.5 0.5;
+                    }
+                }
             }
-            description {
-                state: "hidden" 0.0;
-                inherit: "default" 0.0;
-                visible: 0;
-            }
-            description {
-                state: "visible" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-            }
+
         }
-
-        ADD_SPACER("spacer_2", "next_button", 2, 64)
-
-        part {
-                name: "refresh_stop_button";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 1;
-                    align: 0.0 0.0;
-                    fixed: 1 1;
-                min: 64 64;
-                max: 64 64;
-                rel1 { relative: 1.0 0.0; to: "spacer_2"; }
-                rel2 { relative: 0.0 0.0; }
-            }
-            description {
-                state: "hidden" 0.0;
-                inherit: "default" 0.0;
-                visible: 0;
-            }
-            description {
-                state: "visible" 0.0;
-                inherit: "default" 0.0;
-                visible: 1;
-            }
-        }
-
     }
-}
 }

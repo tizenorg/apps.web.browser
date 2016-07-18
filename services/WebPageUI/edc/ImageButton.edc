@@ -42,10 +42,30 @@
             part {                                                  \
                 name: "bg";                                         \
                 scale: 1;                                           \
-                type: IMAGE;                                        \
+                type: RECT;                                         \
                 description { state: "default" 0.0;                 \
                     min: W H;                                       \
                     max: W H;                                       \
+                    fixed: 1 1;                                     \
+                    align: 0 0;                                     \
+                    color: 255 255 255 153;                           \
+                }                                                   \
+                description { state: "disabled" 0.0;                \
+                    inherit: "default" 0.0;                         \
+                    color: 255 255 255 51;                          \
+                }                                                   \
+                description { state: "highlight" 0.0;               \
+                    inherit: "default" 0.0;                         \
+                    color: 255 255 255 255;                         \
+                }                                                   \
+            }                                                       \
+            part {                                                  \
+                name: "img";                                        \
+                scale: 1;                                           \
+                type: IMAGE;                                        \
+                description { state: "default" 0.0;                 \
+                    rel1 { to: "bg"; relative: 0 0; }               \
+                    rel2 { to: "bg"; relative: 1 0.65; }            \
                     fixed: 1 1;                                     \
                     align: 0 0;                                     \
                     image.normal: IMG_NORMAL;                       \
@@ -58,6 +78,25 @@
                 description { state: "highlight" 0.0;               \
                     inherit: "default" 0.0;                         \
                     color: 255 255 255 255;                         \
+                }                                                   \
+            }                                                       \
+            part {                                                  \
+                name: "elm.swallow.text";                           \
+                scale: 1;                                           \
+                type: TEXT;                                         \
+                description { state: "default" 0.0;                 \
+                    visible: 1;                                     \
+                    rel1 { to: "img"; relative: 0 1; }              \
+                    rel2 { to: "bg"; relative: 1 1; }               \
+                    fixed: 1 1;                                     \
+                    align: 0 0;                                     \
+                    color: 0 0 0 255;                               \
+                    text {                                          \
+                        text: "test2";  \
+                        font: "ATO005";                             \
+                        size: 25;                                   \
+                        align: 0.5 0.0;                             \
+                    }                                               \
                 }                                                   \
             }                                                       \
             part { name: "over2";                                   \
@@ -97,25 +136,6 @@
                 description { state: "disabled" 0.0;                \
                     inherit: "default" 0.0;                         \
                     visible: 1;                                     \
-                }                                                   \
-            }                                                       \
-            part {                                                  \
-                name: "elm.swallow.content";                        \
-                scale:1;                                            \
-                type: SWALLOW;                                      \
-                description { state: "default" 0.0;                 \
-                    visible: 0;                                     \
-                }                                                   \
-            }                                                       \
-            part {                                                  \
-                name: "elm.swallow.text";                           \
-                scale: 1;                                           \
-                type: TEXT;                                         \
-                description { state: "default" 0.0;                 \
-                    visible: 0;                                     \
-                    text {                                          \
-                        min: 0 0;                                   \
-                    }                                               \
                 }                                                   \
             }                                                       \
             part {                                                  \

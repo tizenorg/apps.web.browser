@@ -27,6 +27,7 @@ RESOURCE_IMAGE_LOSSY("input_ic_incognito.png")
 RESOURCE_IMAGE_LOSSY("navi_input_ic_cancel.png")
 RESOURCE_IMAGE_LOSSY("ic_lock.png")
 RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
+RESOURCE_IMAGE_LOSSY("navi_ic_reload.png")
     group {
         name: "elm/entry/selection/browser_entry";
         parts {
@@ -458,11 +459,11 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
                     max: 46 46;
                     visible: 1;
                 }
-                description {
-                    state: "moveright" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 0;
-                }
+//                description {
+//                    state: "moveright" 0.0;
+//                    inherit: "default" 0.0;
+//                    visible: 0;
+//                }
                 description {
                     state: "cancel" 0.0;
                     inherit: "visible" 0.0;
@@ -477,6 +478,11 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
                     state: "unsecure" 0.0;
                     inherit: "visible" 0.0;
                     image.normal: "ic_lock_unsecure.png";
+                }
+                description {
+                    state: "reload" 0.0;
+                    inherit: "visible" 0.0;
+                    image.normal: "navi_ic_reload.png";
                 }
             }
             part {
@@ -578,6 +584,14 @@ RESOURCE_IMAGE_LOSSY("ic_lock_unsecure.png")
                 signal: "show,unsecure,icon";
                 source: "";
                 action: STATE_SET "unsecure" 0.0;
+                target: "right_icon";
+                after: "show_icon_bg";
+            }
+            program {
+                name: "show_reload_icon";
+                signal: "show,reload,icon";
+                source: "";
+                action: STATE_SET "reload" 0.0;
                 target: "right_icon";
                 after: "show_icon_bg";
             }

@@ -120,48 +120,6 @@ collections { base_scale: 2.6;
                 }
             }
             ADD_SPACER_OVER("left_spacer", "uri_bar_bg", 16, URI_BG_HEIGHT)
-            part {
-                name: "uri_bar_buttons_left";
-                type : SWALLOW;
-                scale: 1;
-                description {
-                    state: "default" 0.0;
-                    visible: 0;
-                    align: 0 0.5;
-                    min: 0 64;
-                    max: 0 64;
-                    fixed: 0 1;
-                    rel1 { relative: 1.0 0.0; to: "left_spacer"; }
-                    rel2 { relative: 1.0 1.0; to: "uri_bar_bg"; }
-                }
-                description {
-                    state: "moveright" 0.0;
-                    inherit: "default" 0.0;
-                    visible: 1;
-                    min: 196 64;
-                    max: 196 64;
-                }
-                description {
-                    state: "hidden" 0.0;
-                    inherit: "default" 0.0;
-                }
-                description {
-                    state: "entry_enlarged" 0.0;
-                    inherit: "default" 0.0;
-                }
-                description {
-                    state: "entry_decreased_wp" 0.0;
-                    inherit: "moveright" 0.0;
-                    visible: 1;
-                }
-                description {
-                    state: "visible" 0.0;
-                    inherit: "moveright" 0.0;
-                    visible: 1;
-                }
-            }
-
-            ADD_SPACER("left_buttons_spacer", "uri_bar_buttons_left", 18, URI_BG_HEIGHT)
 
             part {
                 name: "uri_entry";
@@ -174,14 +132,14 @@ collections { base_scale: 2.6;
                     min: 0 URI_WIDTH;
                     max: -1 URI_WIDTH;
                     fixed: 0 1;
-                    rel1 { relative: 1.0 0.0; to: "left_buttons_spacer"; }
+                    rel1 { relative: 1.0 0.0; to: "left_spacer"; }
                     rel2 { relative: 0.0 1.0; to: "spacer_after_uri_entry"; }
                 }
                 description {
                     state: "moveright" 0.0;
                     inherit: "default" 0.0;
                     visible: 1;
-                    rel1 { relative: 1.0 0.0; to: "left_buttons_spacer"; }
+                    rel1 { relative: 1.0 0.0; to: "left_spacer"; }
                     rel2 { relative: 0.0 1.0; to: "spacer_after_uri_entry"; }
                 }
                 description {
@@ -235,11 +193,11 @@ collections { base_scale: 2.6;
                     state: "default" 0.0;
                     visible: 1;
                     align: 1.0 0.5;
-                    min: 130 64;
-                    max: 130 64;
+                    min: 100 64;
+                    max: 100 64;
                     fixed: 1 1;
                     rel1 { relative: 0.0 0.0; to: "uri_bar_bg"; }
-                    rel2 { relative: 0.0 1.0; to: "spacer_after_right_bar_buttons"; }
+                    rel2 { relative: 1.0 1.0; to: "uri_bar_bg"; }
                 }
                 description {
                     state: "hidden" 0.0;
@@ -267,21 +225,42 @@ collections { base_scale: 2.6;
             }
 
             part {
-                name: "spacer_after_right_bar_buttons";
+                name: "bottom_toolbar";
                 type: RECT;
                 scale: 1;
                 description {
                     state: "default" 0.0;
                     visible: 1;
-                    fixed: 0 1;
-                    align: 1 0.5;
-                    color: 0 0 0 0;
-                    min: 16 URI_BG_HEIGHT;
-                    max: 16 URI_BG_HEIGHT;
-                    rel1 { relative: 0.0 0.0; to: "uri_bar_bg"; }
-                    rel2 { relative: 1.0 1.0; to: "uri_bar_bg"; }
+                    align: 0.0 1.0;
+                    min: 0 0;
+                    max: -1 URI_BG_HEIGHT;
+                    color: 255 255 255 255;
+                    rel1 { relative: 0.0 0.0; to: "bg"; }
+                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                }
+                description {
+                    state: "hidden_vertical" 0.0;
+                    inherit: "default" 0.0;
+                    rel1 {relative: 0.0 1.0; to:"bg";}
+                }
+                description {
+                    state: "hidden_landscape" 0.0;
+                    inherit: "default" 0.0;
+                    rel1 {relative: 0.0 1.0; to:"bg";}
                 }
             }
+            part {
+                name: "bottom_swallow";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 1;
+                    rel1 { relative: 0.0 0.0; to: "bottom_toolbar"; }
+                    rel2 { relative: 1.0 1.0; to: "bottom_toolbar"; }
+                }
+            }
+
             part {
                 name: "web_view";
                 type: SWALLOW;
@@ -294,7 +273,7 @@ collections { base_scale: 2.6;
                     min: 0 0;
                     max: -1 -1;
                     rel1 { relative: 0.0 1.0; to: "uri_bar_bg"; }
-                    rel2 { relative: 1.0 1.0; to: "bg"; }
+                    rel2 { relative: 1.0 0.0; to: "bottom_toolbar"; }
                 }
             }
             part {
@@ -504,7 +483,6 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "moveright" 0.0;
                 target: "uri_entry";
-                target: "uri_bar_buttons_left";
             }
             program {
                 name: "shiftback_uribar";
@@ -512,7 +490,6 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "uri_entry";
-                target: "uri_bar_buttons_left";
             }
             program {
                 name: "enlarge_focused_uribar";
@@ -520,7 +497,6 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "entry_enlarged" 0.0;
                 target: "uri_entry";
-                target: "uri_bar_buttons_left";
                 target: "uri_bar_buttons_right";
             }
             program {
@@ -529,7 +505,6 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "uri_entry";
-                target: "uri_bar_buttons_left";
                 target: "uri_bar_buttons_right";
             }
             program {
@@ -538,7 +513,6 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "entry_decreased_wp" 0.0;
                 target: "uri_entry";
-                target: "uri_bar_buttons_left";
                 target: "uri_bar_buttons_right";
             }
             program {
@@ -548,6 +522,7 @@ collections { base_scale: 2.6;
                 in: 0.01 0.0;
                 action: STATE_SET "hidden_landscape" 0.0;
                 target: "uri_bar_bg";
+                target: "bottom_toolbar";
                 transition: LINEAR 0.15;
             }
             program {
@@ -557,6 +532,7 @@ collections { base_scale: 2.6;
                 in: 0.01 0.0;
                 action: STATE_SET "hidden_vertical" 0.0;
                 target: "uri_bar_bg";
+                target: "bottom_toolbar";
                 transition: LINEAR 0.15;
             }
             program {
@@ -565,6 +541,7 @@ collections { base_scale: 2.6;
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "uri_bar_bg";
+                target: "bottom_toolbar";
                 transition: LINEAR 0.15;
             }
             program {
