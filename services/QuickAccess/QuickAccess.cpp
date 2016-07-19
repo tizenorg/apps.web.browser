@@ -334,6 +334,9 @@ void QuickAccess::setMostVisitedItems(std::shared_ptr<services::HistoryItemVecto
 void QuickAccess::addQuickAccessItem(std::shared_ptr<tizen_browser::services::BookmarkItem> bi)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    //TODO: It should be guaranted that items added here are not folders.
+    if (bi->is_folder())
+        return;
     BookmarkItemData *itemData = new BookmarkItemData();        // deleted in _grid_bookmark_del
     itemData->item = bi;
     itemData->quickAccess = this;
