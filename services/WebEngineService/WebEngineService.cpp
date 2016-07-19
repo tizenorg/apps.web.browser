@@ -42,6 +42,9 @@ WebEngineService::WebEngineService()
     , m_currentTabId(TabId::NONE)
     , m_currentWebView(nullptr)
     , m_tabIdCreated(-1)
+    #if PROFILE_MOBILE
+    , m_downloadControl(nullptr)
+    #endif
 {
     m_mostRecentTab.clear();
     m_tabs.clear();
@@ -60,6 +63,9 @@ WebEngineService::WebEngineService()
 WebEngineService::~WebEngineService()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    #if PROFILE_MOBILE
+        delete m_downloadControl;
+    #endif
 }
 
 void WebEngineService::destroyTabs()
@@ -88,6 +94,12 @@ void WebEngineService::init(void * guiParent)
         m_guiParent = guiParent;
         m_initialised = true;
     }
+
+#if PROFILE_MOBILE
+    Ewk_Context *context = ewk_context_default_get();
+    ewk_context_did_start_download_callback_set(context , _download_request_cb, this);
+    m_downloadControl = new DownloadControl();
+#endif
 }
 
 void WebEngineService::preinitializeWebViewCache()
@@ -110,7 +122,6 @@ void WebEngineService::connectSignals(std::shared_ptr<WebView> webView)
     webView->favIconChanged.connect(boost::bind(&WebEngineService::_favIconChanged, this, _1));
     webView->titleChanged.connect(boost::bind(&WebEngineService::_titleChanged, this, _1));
     webView->uriChanged.connect(boost::bind(&WebEngineService::_uriChanged, this, _1));
-    webView->downloadStarted.connect(boost::bind(&WebEngineService::_downloadStarted, this, _1));
     webView->loadFinished.connect(boost::bind(&WebEngineService::_loadFinished, this));
     webView->loadStarted.connect(boost::bind(&WebEngineService::_loadStarted, this));
     webView->loadStop.connect(boost::bind(&WebEngineService::_loadStop, this));
@@ -393,11 +404,6 @@ void WebEngineService::_titleChanged(const std::string& title)
 void WebEngineService::_uriChanged(const std::string & uri)
 {
     uriChanged(uri);
-}
-
-void WebEngineService::_downloadStarted(int status)
-{
-    downloadStarted(status);
 }
 
 void WebEngineService::_loadFinished()
@@ -789,6 +795,36 @@ void WebEngineService::_setWrongCertificatePem(const std::string& uri, const std
 }
 
 #if PROFILE_MOBILE
+void WebEngineService::_download_request_cb(const char *download_uri, void *data)
+{
+     BROWSER_LOGD("[%s:%d] download_uri= [%s]", __PRETTY_FUNCTION__, __LINE__, download_uri);
+
+     WebEngineService *wes = (WebEngineService *)data;
+
+     if (!strncmp(download_uri, "data:", strlen("data:"))){
+         wes->downloadStarted(DOWNLOAD_STARTING_DOWNLOAD);
+         BROWSER_LOGD("[%s:%d] download start..", __PRETTY_FUNCTION__, __LINE__);
+
+         if (wes->m_downloadControl->handle_data_scheme(download_uri) == EINA_TRUE){
+             BROWSER_LOGD("[%s:%d] saved..", __PRETTY_FUNCTION__, __LINE__);
+             wes->downloadStarted(DOWNLOAD_SAVEDPAGES);
+          }
+         else{
+             BROWSER_LOGD("[%s:%d] fail..", __PRETTY_FUNCTION__, __LINE__);
+             wes->downloadStarted(DOWNLOAD_FAIL);
+          }
+     } else if (strncmp(download_uri, "http://", strlen("http://")) && strncmp(download_uri, "https://", strlen("https://"))) {
+         BROWSER_LOGD("[%s:%d] Only http or https URLs can be downloaded", __PRETTY_FUNCTION__, __LINE__);
+         wes->downloadStarted(DOWNLOAD_ONLY_HTTP_OR_HTTPS_URLS);
+         return;
+     } else {
+         wes->downloadStarted(wes->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);
+     }
+
+     wes->m_downloadControl->launch_download_app(download_uri);
+}
+
+
 int WebEngineService::_getRotation()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
