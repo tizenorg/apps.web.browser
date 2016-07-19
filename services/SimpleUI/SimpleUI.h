@@ -52,7 +52,6 @@
 #include "TabId.h"
 #include "HistoryService.h"
 #include "TabServiceTypedef.h"
-#include "BookmarkDetailsUI.h"
 #include "BookmarkFlowUI.h"
 #include "BookmarkManagerUI.h"
 #include "PlatformInputManager.h"
@@ -153,13 +152,15 @@ private:
     void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
 
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
-    void onNewFolderClicked();
-    void onNewFolderPopupClick(const std::string& folder_name);
+    void onBookmarkEdit(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
+    void onBookmarkOrderEdited(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
+    void onBookmarkDeleted(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
+    void onNewFolderClicked(int parent);
+    void onNewFolderPopupClick(const std::string& folder_name, int parent);
 #if PROFILE_MOBILE
-    void onEditFolderClicked(const std::string& folder_name);
     void onDeleteFolderClicked(const std::string& folder_name);
-    void onRemoveFoldersClicked(std::vector<std::shared_ptr<tizen_browser::services::BookmarkItem>> items);
-    void onEditFolderPopupClicked(const std::string& newName);
+    void onRemoveFoldersClicked(std::vector<std::shared_ptr<services::BookmarkItem>> items);
+    void onEditFolderPopupClicked(const std::string& newName, std::shared_ptr<services::BookmarkItem> item);
     void onDeleteFolderPopupClicked(PopupButtons button);
     static void onUrlIMEOpened(void* data, Evas_Object*, void*);
     static void onUrlIMEClosed(void* data, Evas_Object*, void*);
@@ -298,13 +299,9 @@ private:
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
     Evas_Object* getMainWindow();
-    void closeBookmarkDetailsUI();
     void closeBookmarkManagerUI();
-    void showBookmarkManagerUI();
+    void showBookmarkManagerUI(std::shared_ptr<services::BookmarkItem> parent);
     void redirectedWebPage(const std::string& oldUrl, const std::string& newUrl);
-    void onBookmarkCustomFolderClicked(int);
-    void onBookmarkAllFolderClicked();
-    void onBookmarkSpecialFolderClicked();
 
     void showPopup(interfaces::AbstractPopup* popup);
     void dismissPopup(interfaces::AbstractPopup* popup);
@@ -344,7 +341,6 @@ private:
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
     std::shared_ptr<MoreMenuUI> m_moreMenuUI;
-    std::shared_ptr<BookmarkDetailsUI> m_bookmarkDetailsUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
