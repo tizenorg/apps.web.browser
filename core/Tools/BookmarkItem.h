@@ -34,11 +34,12 @@ class BookmarkItem
 public:
     BookmarkItem();
     BookmarkItem(
-        const std::string& url,
-        const std::string& title,
-        const std::string& note,
-        unsigned int dir = 0,
-        unsigned int id = 0
+        int id,
+        const std::string& url = "",
+        const std::string& title = "",
+        const std::string& note = "",
+        int parent = 0,
+        int order = 0
         );
     virtual ~BookmarkItem();
 
@@ -52,7 +53,7 @@ public:
     std::string getNote() const { return m_note;};
 
     void setId(int id) { m_saved_id = id; };
-    unsigned int getId() const { return m_saved_id; };
+    int getId() const { return m_saved_id; };
 
     void setThumbnail(std::shared_ptr<tizen_browser::tools::BrowserImage> thumbnail);
     std::shared_ptr<tizen_browser::tools::BrowserImage> getThumbnail() const ;
@@ -60,12 +61,17 @@ public:
     void setFavicon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     std::shared_ptr<tizen_browser::tools::BrowserImage> getFavicon() const;
 
-    void setDir(unsigned int dir){m_directory = dir;};
-    unsigned int getDir() const {return m_directory;};
+    void setParent(int parent){m_parent = parent;};
+    int getParent() const {return m_parent;};
+
+    void setOrder(int order){m_order = order;};
+    int getOrder() const {return m_order;};
 
     void setTags(const std::vector<unsigned int>& tags) { m_tags = tags; };
     std::vector<unsigned int> getTags() const { return m_tags; };
 
+    bool has_thumbnail() const { return m_has_thumbnail; }
+    bool has_favicon() const { return m_has_favicon; }
     bool is_folder(void) const { return m_is_folder; }
     bool is_editable(void) const { return m_is_editable; }
 
@@ -73,14 +79,17 @@ public:
     void set_editable_flag(bool flag) { m_is_editable = flag; }
 
 private:
-    unsigned int m_saved_id;
+    int m_saved_id;
     std::string m_url;
     std::string m_title;
     std::string m_note;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_thumbnail;
     std::shared_ptr<tizen_browser::tools::BrowserImage> m_favicon;
-    unsigned int m_directory;
+    int m_parent;
+    int m_order;
     std::vector<unsigned int> m_tags;
+    bool m_has_thumbnail;
+    bool m_has_favicon;
     bool m_is_folder;
     bool m_is_editable;
 };
