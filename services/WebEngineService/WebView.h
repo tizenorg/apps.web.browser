@@ -62,14 +62,6 @@ typedef enum _custom_context_menu_item_tag {
     CUSTOM_CONTEXT_MENU_ITEM_SEND_EMAIL,
     CUSTOM_CONTEXT_MENU_ITEM_SEND_ADD_TO_CONTACT,
 } custom_context_menu_item_tag;
-
-typedef enum _download_popup_type{
-    DOWNLOAD_UNABLE_TO_DOWNLOAD = 0,
-    DOWNLOAD_STARTING_DOWNLOAD,
-    DOWNLOAD_SAVEDPAGES,
-    DOWNLOAD_FAIL,
-    DOWNLOAD_ONLY_HTTP_OR_HTTPS_URLS,
-} download_popup_type;
 #endif
 
 namespace tizen_browser {
@@ -275,7 +267,6 @@ public:
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::tools::BrowserImage>, tizen_browser::tools::SnapshotType snapshot_type)> snapshotCaptured;
     boost::signals2::signal<void (const std::string&)> titleChanged;
     boost::signals2::signal<void (const std::string)> uriChanged;
-    boost::signals2::signal<void (int)> downloadStarted;
     boost::signals2::signal<void (const std::string&)> findOnPage;
 
     boost::signals2::signal<void ()> loadFinished;
@@ -366,7 +357,6 @@ private:
     // downloads
     static void __policy_response_decide_cb(void *data, Evas_Object *obj, void *event_info);
     static void __policy_navigation_decide_cb(void *data, Evas_Object *obj, void *event_info);
-    static void __download_request_cb(const char *download_uri, void *data);
 #endif
 
     // Screenshot capture

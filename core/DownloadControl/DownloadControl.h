@@ -60,6 +60,14 @@
 #define BROWSER_DATA_SCHEME_DOWNLOAD_ALLOW_MAX_COUNT 100000
 #define APP_LIST_HEIGHT (230 * efl_scale)
 
+typedef enum _download_popup_type {
+    DOWNLOAD_UNABLE_TO_DOWNLOAD = 0,
+    DOWNLOAD_STARTING_DOWNLOAD,
+    DOWNLOAD_SAVEDPAGES,
+    DOWNLOAD_FAIL,
+    DOWNLOAD_ONLY_HTTP_OR_HTTPS_URLS
+} download_popup_type;
+
 struct popup_callback
 {
 public:
