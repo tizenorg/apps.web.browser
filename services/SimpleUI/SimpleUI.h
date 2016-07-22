@@ -39,14 +39,14 @@
 #include "TabOrigin.h"
 #include "MoreMenuUI.h"
 #include "HistoryUI.h"
-#if PROFILE_MOBILE
 #include "FindOnPageUI.h"
-#include "SettingsUI_mob.h"
-#include "TextPopup_mob.h"
-#else
 #include "SettingsUI.h"
-#include "ZoomUI.h"
-#endif
+#include "SettingsMain.h"
+#include "SettingsHomePage.h"
+#include "SettingsSearchEngine.h"
+#include "SettingsPrivacy.h"
+#include "SettingsManager.h"
+#include "TextPopup_mob.h"
 #include "QuickAccess.h"
 #include "TabUI.h"
 #include "TabId.h"
@@ -222,7 +222,7 @@ private:
      */
     void filterURL(const std::string& url);
 
-    // // on uri entry widget "changed,user" signal
+    // on uri entry widget "changed,user" signal
     void onURLEntryEditedByUser(const std::shared_ptr<std::string> editedUrlPtr);
     // on uri entry widget "changed" signal
     void onURLEntryEdited();
@@ -275,8 +275,9 @@ private:
     void switchToDesktopMode();
     void showHistoryUI();
     void closeHistoryUI();
-    void showSettingsUI();
+    void showSettings(unsigned);
     void closeSettingsUI();
+    std::string requestSettingsCurrentPage();
 
     void showBookmarkFlowUI(bool state);
     void showFindOnPageUI(const std::string& str);
@@ -295,6 +296,7 @@ private:
     void onRotation();
     bool isLandscape();
     int getRotation();
+    void connectSettingsSignals();
     static void __orientation_changed(void* data, Evas_Object*, void*);
 #endif
     Evas_Object* getMainWindow();
@@ -312,15 +314,13 @@ private:
     void closeTab();
     void closeTab(const tizen_browser::basic_webengine::TabId& id);
 
-    void settingsDeleteSelectedData(const std::string& str);
+    void settingsDeleteSelectedData(const std::map<SettingsDelPersDataOptions, bool>& option);
     void settingsResetMostVisited();
     void settingsResetBrowser();
-    void onDeleteSelectedDataButton(const PopupButtons& button, const std::string &dataText);
+    void onDeleteSelectedDataButton(const PopupButtons& button, const std::map<SettingsDelPersDataOptions, bool>& options);
     void onDeleteMostVisitedButton(std::shared_ptr<PopupData> popupData);
     void onResetBrowserButton(PopupButtons button, std::shared_ptr<PopupData> popupData);
 #if PROFILE_MOBILE
-    void settingsOverrideUseragent(const std::string& userAgent);
-    void onOverrideUseragentButton(const std::string& str);
     void tabLimitPopupButtonClicked(PopupButtons button);
 #else
     void tabLimitPopupButtonClicked(PopupButtons button, std::shared_ptr< PopupData > /*popupData*/);
@@ -355,6 +355,7 @@ private:
     std::shared_ptr<BookmarkManagerUI> m_bookmarkManagerUI;
     std::shared_ptr<QuickAccess> m_quickAccess;
     std::shared_ptr<HistoryUI> m_historyUI;
+    std::shared_ptr<SettingsManager> m_settingsManager;
     std::shared_ptr<SettingsUI> m_settingsUI;
     std::shared_ptr<TabUI> m_tabUI;
     std::shared_ptr<services::PlatformInputManager> m_platformInputManager;
