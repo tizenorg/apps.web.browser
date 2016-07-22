@@ -139,5 +139,7 @@
         <privilege>http://tizen.org/privilege/mediastorage</privilege>
         <privilege>http://tizen.org/privilege/recorder</privilege>
         <privilege>http://tizen.org/privilege/shortcut</privilege>
+        <privilege>http://tizen.org/privilege/externalstorage</privilege>
+        <privilege>http://tizen.org/privilege/externalstorage.appdata</privilege>
      </privileges>
 </manifest>
