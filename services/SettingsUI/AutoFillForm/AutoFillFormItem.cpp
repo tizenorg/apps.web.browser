@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-#include "AutoFillFormManager.h"
 #include "AutoFillFormItem.h"
 #include "BrowserLogger.h"
+#include "../SettingsUI.h"
+
+#include <Ecore.h>
+#include <Elementary.h>
+#include <Evas.h>
 
 namespace tizen_browser{
 namespace base_ui{

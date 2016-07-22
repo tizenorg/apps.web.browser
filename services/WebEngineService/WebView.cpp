@@ -1501,32 +1501,44 @@ void WebView::findWord(const char *word, Eina_Bool forward, Evas_Smart_Cb found_
 
 void WebView::ewkSettingsAutoFittingSet(bool value)
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_auto_fitting_set(settings, value);
 }
 
 void WebView::ewkSettingsLoadsImagesSet(bool value)
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_loads_images_automatically_set(settings, value);
 }
 
 void WebView::ewkSettingsJavascriptEnabledSet(bool value)
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_javascript_enabled_set(settings, value);
 }
 
 void WebView::ewkSettingsFormCandidateDataEnabledSet(bool value)
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_form_candidate_data_enabled_set(settings, value);
 }
 
 void WebView::ewkSettingsAutofillPasswordFormEnabledSet(bool value)
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
     ewk_settings_autofill_password_form_enabled_set(settings, value);
+}
+
+void WebView::ewkSettingsScriptsCanOpenNewPagesEnabledSet(bool value)
+{
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
+    Ewk_Settings* settings = ewk_view_settings_get(m_ewkView);
+    ewk_settings_scripts_can_open_windows_set(settings, value);
 }
 
 bool WebView::clearTextSelection() const {
@@ -1596,9 +1608,9 @@ void WebView::clearFormData()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(m_ewkContext);
-    if (m_ewkContext)
+    if (m_ewkContext) {
         ewk_context_form_candidate_data_delete_all(m_ewkContext);
-    else
+    } else
         BROWSER_LOGD("[%s:%d] Warning: no context", __PRETTY_FUNCTION__, __LINE__);
 }
 

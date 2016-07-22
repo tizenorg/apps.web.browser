@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,45 @@
  * limitations under the License.
  */
 
-#ifndef AUTOFILLFORMCOMPOSEVIEW_H_
-#define AUTOFILLFORMCOMPOSEVIEW_H_
+#ifndef SETTINGSAFCREATOR_MOB_H_
+#define SETTINGSAFCREATOR_MOB_H_
 
-#include "AutoFillFormItem.h"
+#include "SettingsUI.h"
+
+#include <Elementary.h>
+#include <boost/concept_check.hpp>
+#include <string.h>
+#include <stdio.h>
+#include <vector>
+#include <Evas.h>
+#include "BrowserLogger.h"
+#include "Tools/EflTools.h"
+#include "AutoFillForm/AutoFillFormItem.h"
 
 namespace tizen_browser{
 namespace base_ui{
 
-class AutoFillFormManager;
-class AutoFillFormComposeView {
+class SettingsAFCreator
+    : public SettingsUI
+{
 public:
-    AutoFillFormComposeView(AutoFillFormManager* manager, AutoFillFormItem *item = NULL);
-    ~AutoFillFormComposeView(void);
-
-    Evas_Object* show(Evas_Object *parent, Evas_Object* action_bar = nullptr);
-    void hide();
-    void rotateLandscape();
-    void rotatePortrait();
+    SettingsAFCreator(){};
+    SettingsAFCreator(Evas_Object* parent, bool profile_exists);
+    virtual ~SettingsAFCreator();
+    virtual bool populateLayout(Evas_Object* genlist);
+    Evas_Object* createScroller(Evas_Object *parent);
+    bool loadProfile(void);
+    void createNewAutoFillFormItem(Ewk_Autofill_Profile*);
 private:
+    Eina_Bool isEntryHasOnlySpace(const char* field);
+    Eina_Bool applyEntryData(void);
+    static void __done_button_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __cancel_button_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __entry_changed_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __entry_next_key_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __entry_clicked_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __entry_clear_button_clicked_cb(void* data, Evas_Object* obj, void* event_info);
+    static void __editfield_changed_cb(void* data, Evas_Object* obj, void* event_info);
     enum menu_type
     {
         profile_composer_title_full_name = 0,
@@ -55,31 +75,15 @@ private:
         Evas_Object* entry;
         Evas_Object* it;
     };
-
-    Evas_Object* createScroller(Evas_Object* parent);
-    void addItems();
-    Eina_Bool isEntryHasOnlySpace(const char *);
-    Eina_Bool applyEntryData(void);
     void createInputLayout(Evas_Object* parent, char* fieldName, genlistCallbackData* cb_data);
-
-    static void __done_button_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __cancel_button_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __entry_changed_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __entry_next_key_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __entry_clicked_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __entry_clear_button_clicked_cb(void* data, Evas_Object* obj, void* event_info);
-    static void __editfield_changed_cb(void* data, Evas_Object* obj, void* event_info);
-    void hide_action_bar();
-    AutoFillFormItem *m_itemForCompose;
-    AutoFillFormManager *m_manager;
-
+    void addItems();
+protected:
+    std::map<unsigned, ItemData> m_buttonsMap;
     Evas_Object *m_mainLayout;
-    Evas_Object *m_parent;
     Evas_Object *m_scroller;
     Evas_Object *m_box;
     Evas_Object *m_doneButton;
     Evas_Object *m_cancelButton;
-    Evas_Object *m_action_bar;
 
     profileEditErrorcode m_editErrorcode;
     profileSaveErrorcode m_saveErrorcode;
@@ -96,10 +100,11 @@ private:
     genlistCallbackData m_countyRegionItemCallbackData;
     genlistCallbackData m_phoneItemCallbackData;
     genlistCallbackData m_emailItemCallbackData;
-    std::string m_edjFilePath;
+    std::shared_ptr<AutoFillFormItem> m_item;
+    Ewk_Context* m_ewkContext;
+    bool m_profile_exists;
 };
 
 }
 }
-
-#endif /* AUTOFILLFORMCOMPOSEVIEW_H_ */
+#endif /* SETTINGSAFCREATOR_MOB_H_ */
