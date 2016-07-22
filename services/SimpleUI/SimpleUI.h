@@ -103,8 +103,6 @@ private:
     Evas_Object* createErrorLayout(Evas_Object* parent);
 
     void forwardEnable(bool enable);
-    void stopEnable(bool enable);
-    void reloadEnable(bool enable);
 
     void downloadStarted(int status);
     void loadFinished();

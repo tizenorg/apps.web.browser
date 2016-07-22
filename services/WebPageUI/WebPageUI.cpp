@@ -40,8 +40,8 @@ WebPageUI::WebPageUI()
     , m_errorLayout(nullptr)
     , m_privateLayout(nullptr)
     , m_bookmarkManagerButton(nullptr)
-    , m_URIEntry(new URIEntry())
     , m_statesMgr(std::make_shared<WebPageUIStatesManager>(WPUState::MAIN_WEB_PAGE))
+    , m_URIEntry(new URIEntry(m_statesMgr))
     , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
     , m_WebPageUIvisible(false)
@@ -90,18 +90,18 @@ void WebPageUI::showUI()
 
     evas_object_show(elm_object_part_content_get(m_mainLayout, "web_view"));
     evas_object_show(m_URIEntry->getContent());
-    evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
+    evas_object_show(elm_object_part_content_get(m_mainLayout, "bottom_toolbar"));
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
     if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
-        evas_object_hide(m_leftButtonBar->getContent());
+        evas_object_hide(m_bottomButtonBar->getContent());
         elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
         showQuickAccess();
     }
 
     m_WebPageUIvisible = true;
 
-    elm_object_event_callback_add(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_add(m_bottomButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_add(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_add(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE && GESTURE
@@ -124,12 +124,12 @@ void WebPageUI::hideUI()
 
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "web_view"));
     evas_object_hide(m_URIEntry->getContent());
-    evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_left"));
+    evas_object_hide(elm_object_part_content_get(m_mainLayout, "bottom_toolbar"));
     evas_object_hide(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
     m_WebPageUIvisible = false;
 
-    elm_object_event_callback_del(m_leftButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
+    elm_object_event_callback_del(m_bottomButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_del(m_rightButtonBar->getContent(), _cb_down_pressed_on_urlbar, this);
     elm_object_event_callback_del(m_URIEntry->getContent(), _cb_down_pressed_on_urlbar, this);
 #if PROFILE_MOBILE && GESTURE
@@ -145,9 +145,8 @@ void WebPageUI::loadStarted()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     showProgressBar();
-    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
+    m_URIEntry->loadStarted();
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_stopLoading);
 }
 
 void WebPageUI::progressChanged(double progress)
@@ -175,7 +174,7 @@ bool WebPageUI::stateEquals(std::initializer_list<WPUState> states) const
 void WebPageUI::loadFinished()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
+    m_URIEntry->loadFinished();
     hideProgressBar();
 #if PROFILE_MOBILE
     m_URIEntry->updateSecureIcon();
@@ -219,7 +218,7 @@ void WebPageUI::switchViewToErrorPage()
     if (!m_errorLayout)
         createErrorLayout();
     setMainContent(m_errorLayout);
-    evas_object_show(m_leftButtonBar->getContent());
+    evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setErrorButtons();
@@ -239,7 +238,7 @@ void WebPageUI::switchViewToIncognitoPage()
 #if PROFILE_MOBILE
     orientationChanged();
 #endif
-    evas_object_show(m_leftButtonBar->getContent());
+    evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setPrivateButtons();
@@ -263,7 +262,7 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
     refreshFocusChain();
     elm_object_focus_custom_chain_append(m_mainLayout, content, NULL);
 #endif
-    evas_object_show(m_leftButtonBar->getContent());
+    evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     updateURIBar(uri);
@@ -276,7 +275,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     m_statesMgr->set(WPUState::QUICK_ACCESS);
     toIncognito(false);
     setMainContent(content);
-    evas_object_hide(m_leftButtonBar->getContent());
+    evas_object_hide(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
     elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
     hideProgressBar();
@@ -318,9 +317,9 @@ void WebPageUI::setTabsNumber(int tabs)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (tabs == 0) {
-        elm_object_part_text_set(m_rightButtonBar->getContent(), "tabs_number", "");
+        elm_object_part_text_set(m_bottomButtonBar->getContent(), "tabs_number", "");
     } else {
-        elm_object_part_text_set(m_rightButtonBar->getContent(), "tabs_number", (boost::format("%1%") % tabs).str().c_str());
+        elm_object_part_text_set(m_bottomButtonBar->getContent(), "tabs_number", (boost::format("%1%") % tabs).str().c_str());
     }
 }
 
@@ -546,24 +545,22 @@ void WebPageUI::createLayout()
 
     createActions();
 
-    // left buttons
-    m_leftButtonBar = std::unique_ptr<ButtonBar>(new ButtonBar(m_mainLayout, "WebPageUI/LeftButtonBar.edj", "left_button_bar"));
-    m_leftButtonBar->addAction(m_back, "prev_button");
-    m_leftButtonBar->addAction(m_forward, "next_button");
-    m_leftButtonBar->addAction(m_reload, "refresh_stop_button");
-
-    //register action that will be used later by buttons"
-    m_leftButtonBar->registerEnabledChangedCallback(m_stopLoading, "refresh_stop_button");
+    // bottom buttons
+    m_bottomButtonBar = std::unique_ptr<ButtonBar>(new ButtonBar(m_mainLayout, "WebPageUI/BottomButtonBar.edj", "bottom_button_bar"));
+    m_bottomButtonBar->addAction(m_back, "prev_button");
+    m_bottomButtonBar->addAction(m_forward, "next_button");
+    m_bottomButtonBar->addAction(m_homePage, "home_button");
+    m_bottomButtonBar->addAction(m_bookmarks, "bookmarks_button");
+    m_bottomButtonBar->addAction(m_tabs, "tabs_button");
 
     // right buttons
     m_rightButtonBar = std::unique_ptr<ButtonBar>(new ButtonBar(m_mainLayout, "WebPageUI/RightButtonBar.edj", "right_button_bar"));
-    m_rightButtonBar->addAction(m_tab, "tab_button");
-    m_rightButtonBar->addAction(m_showMoreMenu, "setting_button");
+    m_rightButtonBar->addAction(m_addTab, "tab_button");
 
     //URL bar (Evas Object is shipped by URIEntry object)
     m_URIEntry->init(m_mainLayout);
     elm_object_part_content_set(m_mainLayout, "uri_entry", m_URIEntry->getContent());
-    elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_left", m_leftButtonBar->getContent());
+    elm_object_part_content_set(m_mainLayout, "bottom_swallow", m_bottomButtonBar->getContent());
     elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_right", m_rightButtonBar->getContent());
 
     elm_layout_signal_callback_add(m_URIEntry->getContent(), "slide_websearch", "elm", faviconClicked, this);
@@ -681,44 +678,35 @@ void WebPageUI::createActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_back = sharedAction(new Action(_("IDS_BR_BUTTON_BACK_ABB")));
-    m_back->setIcon("browser/toolbar_prev");
+    m_back->setIcon("toolbar_prev");
 
     m_forward = sharedAction(new Action(_("IDS_BR_SK_NEXT")));
-    m_forward->setIcon("browser/toolbar_next");
+    m_forward->setIcon("toolbar_next");
 
-    m_stopLoading = sharedAction(new Action(_("IDS_BR_OPT_STOP")));
-    m_stopLoading->setIcon("browser/toolbar_stop");
+    m_addTab = sharedAction(new Action("Add tab"));
+    m_addTab->setIcon("add_tab");
 
-    m_reload = sharedAction(new Action("Reload"));
-    m_reload->setIcon("browser/toolbar_reload");
-    m_tab = sharedAction(new Action(_("IDS_BR_SK_TABS")));
-    m_tab->setIcon("browser/toolbar_tab");
+    m_homePage = sharedAction(new Action("Home"));
+    m_homePage->setIcon("toolbar_home");
 
-    m_showMoreMenu = sharedAction(new Action("More_Menu"));
-    m_showMoreMenu->setIcon("browser/toolbar_setting");
+    m_bookmarks = sharedAction(new Action(_("IDS_BR_BODY_BOOKMARKS")));
+    m_bookmarks->setIcon("toolbar_bookmark");
 
-#if !PROFILE_MOBILE
-    m_back->setToolTip(_("IDS_BR_SK_PREVIOUS"));
-    m_forward->setToolTip(_("IDS_BR_SK_NEXT"));
-    m_stopLoading->setToolTip(_("IDS_BR_OPT_STOP"));
-    m_reload->setToolTip("Reload");
-    m_tab->setToolTip("Tab Manager");
-    m_showMoreMenu->setToolTip("More Menu");
-#endif
+    m_tabs = sharedAction(new Action(_("IDS_BR_SK_TABS")));
+    m_tabs->setIcon("toolbar_tabs");
 }
 
 void WebPageUI::connectActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    //left bar
+    //bottom bar
     m_back->triggered.connect(boost::bind(&WebPageUI::backPageConnect, this));
     m_forward->triggered.connect(boost::bind(&WebPageUI::forwardPageConnect, this));
-    m_stopLoading->triggered.connect(boost::bind(&WebPageUI::stopLoadingPageConnect, this));
-    m_reload->triggered.connect(boost::bind(&WebPageUI::reloadPageConnect, this));
+    m_tabs->triggered.connect(boost::bind(&WebPageUI::showTabUIConnect, this));
+    m_bookmarks->triggered.connect(boost::bind(&WebPageUI::showBookmarksConnect, this));
 
     //right bar
-    m_tab->triggered.connect(boost::bind(&WebPageUI::showTabUIConnect, this));
-    m_showMoreMenu->triggered.connect(boost::bind(&WebPageUI::showMoreMenuConnect, this));
+    m_addTab->triggered.connect(boost::bind(&WebPageUI::addNewTabConnect, this));
 }
 
 void WebPageUI::showProgressBar()
@@ -750,17 +738,12 @@ void WebPageUI::hideWebView()
 void WebPageUI::setErrorButtons()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-    m_stopLoading->setEnabled(false);
-    m_reload->setEnabled(true);
     m_forward->setEnabled(false);
 }
 
 void WebPageUI::setPrivateButtons()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    m_stopLoading->setEnabled(false);
-    m_reload->setEnabled(false);
     m_forward->setEnabled(false);
 }
 
@@ -768,10 +751,6 @@ void WebPageUI::updateURIBar(const std::string& uri)
 {
     BROWSER_LOGD("[%s:%d] URI:%s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
     m_URIEntry->changeUri(uri);
-    m_leftButtonBar->setActionForButton("refresh_stop_button", m_reload);
-
-    m_stopLoading->setEnabled(true);
-    m_reload->setEnabled(true);
     hideProgressBar();
 }
 
@@ -795,18 +774,17 @@ void WebPageUI::showMoreMenuConnect()
     showMoreMenu();
 }
 
+void WebPageUI::showBookmarksConnect()
+{
+    hideUI();
+    showBookmarksUI();
+}
+
 #if !PROFILE_MOBILE
 void WebPageUI::refreshFocusChain()
 {
     // set custom focus chain
     elm_object_focus_custom_chain_unset(m_mainLayout);
-    elm_object_focus_custom_chain_append(m_mainLayout, m_rightButtonBar->getContent(), NULL);
-    if(!m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
-        elm_object_focus_custom_chain_append(m_mainLayout, m_leftButtonBar->getContent(), NULL);
-        elm_object_focus_custom_chain_append(m_mainLayout, m_bookmarkManagerButton, NULL);
-    } else {
-        m_reload->setEnabled(false);
-    }
     elm_object_focus_custom_chain_append(m_mainLayout, m_URIEntry->getContent(), NULL);
 }
 #endif
