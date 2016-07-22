@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Samsung Electronics Co., Ltd.
+ * Copyright (c) 2016 Samsung Electronics Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the License);
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-#include "AutoFillFormManager.h"
-#include "AutoFillFormComposeView.h"
-#include "AutoFillFormListView.h"
-#include "BrowserLogger.h"
-#include "app_i18n.h"
+#include "SettingsAFCreator.h"
 
-#include <Ecore.h>
-#include <Elementary.h>
-#include <Evas.h>
+#include <memory>
+#include "app_i18n.h"
 
 #define TRIM_SPACE " \t\n\v"
 
@@ -35,65 +30,90 @@ inline std::string _trim(std::string& s, const std::string& drop = TRIM_SPACE)
     return r.erase(0, r.find_first_not_of(drop));
 }
 
-AutoFillFormComposeView::AutoFillFormComposeView(AutoFillFormManager* manager, AutoFillFormItem *item)
-    : m_itemForCompose(nullptr)
-    , m_manager(manager)
-    , m_mainLayout(nullptr)
-    , m_parent(nullptr)
+SettingsAFCreator::SettingsAFCreator(Evas_Object* parent, bool profile_exists)
+    : m_mainLayout(nullptr)
     , m_scroller(nullptr)
     , m_doneButton(nullptr)
     , m_cancelButton(nullptr)
-    , m_action_bar(nullptr)
     , m_editErrorcode(update_error_none)
     , m_saveErrorcode(save_error_none)
     , m_editFieldItemClass(nullptr)
+    , m_item(nullptr)
+    , m_ewkContext(ewk_context_default_get())
+    , m_profile_exists(profile_exists)
+{
+    init(parent);
+    loadProfile();
+};
+
+SettingsAFCreator::~SettingsAFCreator()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+}
+
+void SettingsAFCreator::updateButtonMap()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+}
+
+bool SettingsAFCreator::loadProfile(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    if (item && item->getItemComposeMode() == profile_edit)
-        m_itemForCompose = item;
-    else
-        m_itemForCompose = new AutoFillFormItem(nullptr);
+    Ewk_Autofill_Profile* profile = nullptr;
+    if (m_profile_exists)
+        profile = ewk_context_form_autofill_profile_get(m_ewkContext, 1);
 
+    createNewAutoFillFormItem(profile);
+
+    return false;
+}
+
+void SettingsAFCreator::createNewAutoFillFormItem(Ewk_Autofill_Profile* profile)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!profile)
+        m_item  = std::shared_ptr<AutoFillFormItem>(new AutoFillFormItem(nullptr));
+    else {
+        AutoFillFormItemData* item_data = new AutoFillFormItemData;
+        if (!item_data) {
+            BROWSER_LOGE("Malloc failed to get item_data");
+            return;
+        }
+        memset(item_data, 0x00, sizeof(AutoFillFormItemData));
+        item_data->profile_id = ewk_autofill_profile_id_get(profile);
+        item_data->name = ewk_autofill_profile_data_get(profile, EWK_PROFILE_NAME);
+        item_data->company = ewk_autofill_profile_data_get(profile, EWK_PROFILE_COMPANY);
+        item_data->primary_address = ewk_autofill_profile_data_get(profile, EWK_PROFILE_ADDRESS1);
+        item_data->secondary_address = ewk_autofill_profile_data_get(profile, EWK_PROFILE_ADDRESS2);
+        item_data->city_town = ewk_autofill_profile_data_get(profile, EWK_PROFILE_CITY_TOWN);
+        item_data->state_province_region = ewk_autofill_profile_data_get(profile, EWK_PROFILE_STATE_PROVINCE_REGION);
+        item_data->post_code = ewk_autofill_profile_data_get(profile, EWK_PROFILE_ZIPCODE);
+        item_data->country = ewk_autofill_profile_data_get(profile, EWK_PROFILE_COUNTRY);
+        item_data->phone_number = ewk_autofill_profile_data_get(profile, EWK_PROFILE_PHONE);
+        item_data->email_address = ewk_autofill_profile_data_get(profile, EWK_PROFILE_EMAIL);
+        item_data->activation = false;
+        item_data->compose_mode = profile_edit;
+
+        m_item = std::shared_ptr<AutoFillFormItem>(new AutoFillFormItem(item_data));
+        delete item_data;
+        item_data = nullptr;
+        return;
+    }
+}
+
+bool SettingsAFCreator::populateLayout(Evas_Object* parent)
+{
     m_entryLimitSize.max_char_count = 0;
     m_entryLimitSize.max_byte_count = AUTO_FILL_FORM_ENTRY_MAX_COUNT;
     m_edjFilePath = EDJE_DIR;
     m_edjFilePath.append("SettingsUI/AutoFillMobileUI.edj");
-}
 
-AutoFillFormComposeView::~AutoFillFormComposeView(void)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    evas_object_smart_callback_del(m_cancelButton, "clicked", __cancel_button_cb);
-    evas_object_smart_callback_del(m_doneButton, "clicked", __done_button_cb);
-
-    if (m_editFieldItemClass)
-        elm_genlist_item_class_free(m_editFieldItemClass);
-
-    if (m_itemForCompose && m_itemForCompose->getItemComposeMode() == profile_create)
-        delete m_itemForCompose;
-    m_itemForCompose = nullptr;
-
-    if (m_mainLayout) {
-        evas_object_hide(m_mainLayout);
-        evas_object_del(m_mainLayout);
-    }
-    m_mainLayout = nullptr;
-    m_scroller = nullptr;
-}
-
-Evas_Object* AutoFillFormComposeView::show(Evas_Object* parent, Evas_Object* action_bar)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    elm_theme_extension_add(nullptr, m_edjFilePath.c_str());
-
-    m_action_bar = action_bar;
-    elm_object_signal_emit(m_action_bar, "show,buttons,signal", "but_vis");
-    elm_object_signal_emit(m_action_bar, "hide,close,icon", "del_but");
+    elm_object_signal_emit(m_actionBar, "show,buttons,signal", "but_vis");
+    elm_object_signal_emit(m_actionBar, "hide,close,icon", "del_but");
 
     m_mainLayout = elm_layout_add(parent);
+    elm_object_tree_focus_allow_set(m_mainLayout, EINA_TRUE);
     if (!m_mainLayout) {
         BROWSER_LOGE("createMainLayout failed");
         return nullptr;
@@ -110,39 +130,38 @@ Evas_Object* AutoFillFormComposeView::show(Evas_Object* parent, Evas_Object* act
     elm_object_part_content_set(m_mainLayout, "affcv_genlist", m_scroller);
     evas_object_show(m_mainLayout);
 
-    if (m_itemForCompose->getItemComposeMode() == profile_edit)
-        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Edit info");
+    if (m_item->getItemComposeMode() == profile_edit)
+        elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Edit info");
     else
-        elm_object_translatable_part_text_set(m_action_bar, "settings_title", "Add info");
+        elm_object_translatable_part_text_set(m_actionBar, "settings_title", "Add info");
 
-    m_cancelButton = elm_button_add(m_action_bar);
+    m_cancelButton = elm_button_add(m_actionBar);
     if (!m_cancelButton) {
         BROWSER_LOGE("Failed to create m_cancelButton");
         return nullptr;
     }
     elm_object_style_set(m_cancelButton, "basic_button");
     evas_object_smart_callback_add(m_cancelButton, "clicked", __cancel_button_cb, this);
-    elm_object_part_content_set(m_action_bar, "cancel_button", m_cancelButton);
+    elm_object_part_content_set(m_actionBar, "cancel_button", m_cancelButton);
 
-    m_doneButton = elm_button_add(m_action_bar);
+    m_doneButton = elm_button_add(m_actionBar);
     if (!m_doneButton) {
         BROWSER_LOGE("Failed to create m_doneButton");
         return nullptr;
     }
     elm_object_style_set(m_doneButton, "basic_button");
     evas_object_smart_callback_add(m_doneButton, "clicked", __done_button_cb, this);
-    elm_object_part_content_set(m_action_bar, "done_button", m_doneButton);
-    elm_object_signal_emit(m_action_bar, "dim,done,button,signal", "");
+    elm_object_part_content_set(m_actionBar, "done_button", m_doneButton);
+    elm_object_signal_emit(m_actionBar, "dim,done,button,signal", "");
 
-    if (m_itemForCompose->getItemComposeMode() == profile_create)
+    if (m_item->getItemComposeMode() == profile_create)
         elm_object_disabled_set(m_doneButton, EINA_TRUE);
 
-    elm_layout_content_set(parent, "autofill_comp_swallow", m_mainLayout);
-    m_parent = parent;
-    return m_mainLayout;
+    m_layout = m_mainLayout;
+    return true;
 }
 
-void AutoFillFormComposeView::createInputLayout(Evas_Object* parent, char* fieldName,
+void SettingsAFCreator::createInputLayout(Evas_Object* parent, char* fieldName,
                                                         genlistCallbackData* cb_data)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -194,7 +213,7 @@ void AutoFillFormComposeView::createInputLayout(Evas_Object* parent, char* field
     evas_object_show(layout);
 }
 
-void AutoFillFormComposeView::addItems()
+void SettingsAFCreator::addItems()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -202,43 +221,43 @@ void AutoFillFormComposeView::addItems()
     m_fullNameItemCallbackData.type = profile_composer_title_full_name;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_FULL_NAME_ABB")), &m_fullNameItemCallbackData);
     elm_box_pack_end(m_box, m_fullNameItemCallbackData.it);
-    if (m_itemForCompose->getName() && strlen(m_itemForCompose->getName()))
-        elm_object_part_text_set(m_fullNameItemCallbackData.entry, "elm.text", m_itemForCompose->getName());
+    if (m_item->getName() && strlen(m_item->getName()))
+        elm_object_part_text_set(m_fullNameItemCallbackData.entry, "elm.text", m_item->getName());
 
     // company_name
     m_companyNameItemCallbackData.type = profile_composer_title_company_name;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_COMPANY_NAME_ABB")), &m_companyNameItemCallbackData);
     elm_box_pack_end(m_box, m_companyNameItemCallbackData.it);
-    if (m_itemForCompose->getCompany() && strlen(m_itemForCompose->getCompany()))
-        elm_object_part_text_set(m_companyNameItemCallbackData.entry, "elm.text", m_itemForCompose->getCompany());
+    if (m_item->getCompany() && strlen(m_item->getCompany()))
+        elm_object_part_text_set(m_companyNameItemCallbackData.entry, "elm.text", m_item->getCompany());
 
     // address 1
     m_addressLine1ItemCallbackData.type = profile_composer_title_address_line_1;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_ADDRESS_LINE_1_ABB")), &m_addressLine1ItemCallbackData);
     elm_box_pack_end(m_box, m_addressLine1ItemCallbackData.it);
-    if (m_itemForCompose->getPrimaryAddress() && strlen(m_itemForCompose->getPrimaryAddress()))
-        elm_object_part_text_set(m_addressLine1ItemCallbackData.entry, "elm.text", m_itemForCompose->getPrimaryAddress());
+    if (m_item->getPrimaryAddress() && strlen(m_item->getPrimaryAddress()))
+        elm_object_part_text_set(m_addressLine1ItemCallbackData.entry, "elm.text", m_item->getPrimaryAddress());
 
     // address 2
     m_addressLine2ItemCallbackData.type = profile_composer_title_address_line_2;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_ADDRESS_LINE_2_ABB")), &m_addressLine2ItemCallbackData);
     elm_box_pack_end(m_box, m_addressLine2ItemCallbackData.it);
-    if (m_itemForCompose->getSecondaryAddress2() && strlen(m_itemForCompose->getSecondaryAddress2()))
-        elm_object_part_text_set(m_addressLine2ItemCallbackData.entry, "elm.text", m_itemForCompose->getSecondaryAddress2());
+    if (m_item->getSecondaryAddress2() && strlen(m_item->getSecondaryAddress2()))
+        elm_object_part_text_set(m_addressLine2ItemCallbackData.entry, "elm.text", m_item->getSecondaryAddress2());
 
     // city town
     m_cityTownItemCallbackData.type = profile_composer_title_city_town;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_CITY_TOWN_ABB")), &m_cityTownItemCallbackData);
     elm_box_pack_end(m_box, m_cityTownItemCallbackData.it);
-    if (m_itemForCompose->getCityTown() && strlen(m_itemForCompose->getCityTown()))
-        elm_object_part_text_set(m_cityTownItemCallbackData.entry, "elm.text", m_itemForCompose->getCityTown());
+    if (m_item->getCityTown() && strlen(m_item->getCityTown()))
+        elm_object_part_text_set(m_cityTownItemCallbackData.entry, "elm.text", m_item->getCityTown());
 
     // country
     m_countryItemCallbackData.type = profile_composer_title_country;
     createInputLayout(m_box, strdup("Country"), &m_countryItemCallbackData);
     elm_box_pack_end(m_box, m_countryItemCallbackData.it);
-    if (m_itemForCompose->getCountry() && strlen(m_itemForCompose->getCountry()))
-        elm_object_part_text_set(m_countryItemCallbackData.entry, "elm.text", m_itemForCompose->getCountry());
+    if (m_item->getCountry() && strlen(m_item->getCountry()))
+        elm_object_part_text_set(m_countryItemCallbackData.entry, "elm.text", m_item->getCountry());
 
     // post code
     m_postCodeItemCallbackData.type = profile_composer_title_post_code;
@@ -251,8 +270,8 @@ void AutoFillFormComposeView::addItems()
     m_entry_accept_set.rejected = NULL;
     elm_entry_markup_filter_append(m_postCodeItemCallbackData.entry, elm_entry_filter_limit_size, &m_entryLimitSize);
     elm_entry_markup_filter_append(m_postCodeItemCallbackData.entry, elm_entry_filter_accept_set, &m_entry_accept_set);
-    if (m_itemForCompose->getPostCode() && strlen(m_itemForCompose->getPostCode()))
-        elm_object_part_text_set(m_postCodeItemCallbackData.entry, "elm.text", m_itemForCompose->getPostCode());
+    if (m_item->getPostCode() && strlen(m_item->getPostCode()))
+        elm_object_part_text_set(m_postCodeItemCallbackData.entry, "elm.text", m_item->getPostCode());
     elm_entry_input_panel_layout_set(m_postCodeItemCallbackData.entry, ELM_INPUT_PANEL_LAYOUT_NUMBERONLY);
     elm_entry_prediction_allow_set(m_postCodeItemCallbackData.entry, EINA_FALSE);
 
@@ -260,15 +279,15 @@ void AutoFillFormComposeView::addItems()
     m_countyRegionItemCallbackData.type = profile_composer_title_country_region;
     createInputLayout(m_box, strdup(_("IDS_BR_MBODY_COUNTRY_REGION")), &m_countyRegionItemCallbackData);
     elm_box_pack_end(m_box, m_countyRegionItemCallbackData.it);
-    if (m_itemForCompose->getStateProvince() && strlen(m_itemForCompose->getStateProvince()))
-        elm_object_part_text_set(m_countyRegionItemCallbackData.entry, "elm.text", m_itemForCompose->getStateProvince());
+    if (m_item->getStateProvince() && strlen(m_item->getStateProvince()))
+        elm_object_part_text_set(m_countyRegionItemCallbackData.entry, "elm.text", m_item->getStateProvince());
 
     // phone
     m_phoneItemCallbackData.type = profile_composer_title_phone;
     createInputLayout(m_box, strdup(_("IDS_BR_BODY_PHONE")), &m_phoneItemCallbackData);
     elm_box_pack_end(m_box, m_phoneItemCallbackData.it);
-    if (m_itemForCompose->getPhoneNumber() && strlen(m_itemForCompose->getPhoneNumber()))
-        elm_object_part_text_set(m_phoneItemCallbackData.entry, "elm.text", m_itemForCompose->getPhoneNumber());
+    if (m_item->getPhoneNumber() && strlen(m_item->getPhoneNumber()))
+        elm_object_part_text_set(m_phoneItemCallbackData.entry, "elm.text", m_item->getPhoneNumber());
     Elm_Entry_Filter_Accept_Set entry_accept_set;
     entry_accept_set.accepted = PHONE_FIELD_VALID_ENTRIES;
     entry_accept_set.rejected = NULL;
@@ -280,15 +299,15 @@ void AutoFillFormComposeView::addItems()
     m_emailItemCallbackData.type = profile_composer_title_email;
     createInputLayout(m_box, strdup(_("IDS_BR_OPT_SENDURLVIA_EMAIL")), &m_emailItemCallbackData);
     elm_box_pack_end(m_box, m_emailItemCallbackData.it);
-    if (m_itemForCompose->getEmailAddress() && strlen(m_itemForCompose->getEmailAddress()))
-        elm_object_part_text_set(m_emailItemCallbackData.entry, "elm.text", m_itemForCompose->getEmailAddress());
+    if (m_item->getEmailAddress() && strlen(m_item->getEmailAddress()))
+        elm_object_part_text_set(m_emailItemCallbackData.entry, "elm.text", m_item->getEmailAddress());
     elm_entry_input_panel_return_key_type_set(m_emailItemCallbackData.entry, ELM_INPUT_PANEL_RETURN_KEY_TYPE_DONE);
     evas_object_smart_callback_add(m_emailItemCallbackData.entry, "activated", __done_button_cb, this);
     elm_entry_input_panel_layout_set(m_emailItemCallbackData.entry, ELM_INPUT_PANEL_LAYOUT_EMAIL);
     elm_entry_prediction_allow_set(m_emailItemCallbackData.entry, EINA_FALSE);
 }
 
-Evas_Object *AutoFillFormComposeView::createScroller(Evas_Object *parent)
+Evas_Object* SettingsAFCreator::createScroller(Evas_Object *parent)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -309,7 +328,7 @@ Evas_Object *AutoFillFormComposeView::createScroller(Evas_Object *parent)
     return scroller;
 }
 
-Eina_Bool AutoFillFormComposeView::isEntryHasOnlySpace(const char* field)
+Eina_Bool SettingsAFCreator::isEntryHasOnlySpace(const char* field)
 {
     Eina_Bool only_has_space = EINA_FALSE;
     unsigned int space_count = 0;
@@ -325,7 +344,7 @@ Eina_Bool AutoFillFormComposeView::isEntryHasOnlySpace(const char* field)
     return only_has_space;
 }
 
-Eina_Bool AutoFillFormComposeView::applyEntryData(void)
+Eina_Bool SettingsAFCreator::applyEntryData(void)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
@@ -339,49 +358,54 @@ Eina_Bool AutoFillFormComposeView::applyEntryData(void)
     full_name = full_name_str.c_str();
 
     if (full_name && strlen(full_name) && !isEntryHasOnlySpace(full_name))
-        m_itemForCompose->setName(full_name);
+        m_item->setName(full_name);
     else {
         elm_object_focus_set(m_cancelButton, EINA_TRUE); // Closing virtual keyboard by changing the focus*/
         return EINA_FALSE;
     }
     const char *company_name = elm_entry_entry_get(m_companyNameItemCallbackData.entry);
-    m_itemForCompose->setCompany(company_name);
+    m_item->setCompany(company_name);
     const char *primary_address = elm_entry_entry_get(m_addressLine1ItemCallbackData.entry);
-    m_itemForCompose->setPrimaryAddress(primary_address);
+    m_item->setPrimaryAddress(primary_address);
     const char *secondary_address = elm_entry_entry_get(m_addressLine2ItemCallbackData.entry);
-    m_itemForCompose->setSecondaryAddress2(secondary_address);
+    m_item->setSecondaryAddress2(secondary_address);
     const char *city_town = elm_entry_entry_get(m_cityTownItemCallbackData.entry);
-    m_itemForCompose->setCityTown(city_town);
+    m_item->setCityTown(city_town);
     const char *county = elm_entry_entry_get(m_countryItemCallbackData.entry);
-    m_itemForCompose->setStateProvince(county);
+    m_item->setStateProvince(county);
     const char *post_code = elm_entry_entry_get(m_postCodeItemCallbackData.entry);
-    m_itemForCompose->setPostCode(post_code);
+    m_item->setPostCode(post_code);
     const char *country = elm_entry_entry_get(m_countyRegionItemCallbackData.entry);
-    m_itemForCompose->setCountry(country);
+    m_item->setCountry(country);
     const char *phone = elm_entry_entry_get(m_phoneItemCallbackData.entry);
-    m_itemForCompose->setPhoneNumber(phone);
+    m_item->setPhoneNumber(phone);
     const char *email = elm_entry_entry_get(m_emailItemCallbackData.entry);
-    m_itemForCompose->setEmailAddress(email);
+    m_item->setEmailAddress(email);
 
-    if (m_itemForCompose->getItemComposeMode() == profile_edit) {
+    if (m_item->getItemComposeMode() == profile_edit) {
 
-        m_editErrorcode = m_itemForCompose->updateItem();
+        m_editErrorcode = m_item->updateItem();
         if (m_editErrorcode == profile_edit_failed || m_editErrorcode == profile_already_exist) {
             BROWSER_LOGD("Update failed!");
             return EINA_FALSE;
         }
     } else {
-        m_saveErrorcode = m_itemForCompose->saveItem();
-        if (m_saveErrorcode != profile_create_failed && m_saveErrorcode != duplicate_profile)
-            m_manager->addItemToList(m_itemForCompose);
+        m_saveErrorcode = m_item->saveItem();
+        if (m_saveErrorcode != profile_create_failed && m_saveErrorcode != duplicate_profile){
+            BROWSER_LOGD("Cannot save autofill data");
+            return EINA_FALSE;
+        }
     }
-
     return EINA_TRUE;
 }
 
-void AutoFillFormComposeView::__editfield_changed_cb(void* data, Evas_Object* obj, void* /*event_info*/)
+void SettingsAFCreator::__editfield_changed_cb(void* data, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!data) {
+        BROWSER_LOGE("data is null");
+        return;
+    }
     Evas_Object *editfield = static_cast<Evas_Object*>(data);
 
     if (!elm_entry_is_empty(obj) && elm_object_focus_get(obj))
@@ -390,45 +414,34 @@ void AutoFillFormComposeView::__editfield_changed_cb(void* data, Evas_Object* ob
         elm_object_signal_emit(editfield, "hide,clear,button,signal", "");
 }
 
-void AutoFillFormComposeView::__done_button_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void SettingsAFCreator::__done_button_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(data);
-    if (view->applyEntryData() == EINA_FALSE)
+    if (!data) {
+        BROWSER_LOGE("data is null");
         return;
-
-#if !PROFILE_MOBILE
-    elm_object_focus_set(view->m_cancelButton, EINA_TRUE);
-    evas_object_hide(view->m_mainLayout);
-#endif
-    view->m_manager->refreshListView();
-    view->hide_action_bar();
+    }
+    SettingsAFCreator *safc = static_cast<SettingsAFCreator*>(data);
+    if (safc->applyEntryData() == EINA_FALSE)
+        return;
+    SettingsPrettySignalConnector::Instance().closeSettingsUIClicked();
 }
 
-void AutoFillFormComposeView::__cancel_button_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void SettingsAFCreator::__cancel_button_cb(void*, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
-    AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(data);
-    view->hide_action_bar();
+    SettingsPrettySignalConnector::Instance().closeSettingsUIClicked();
 }
 
-void AutoFillFormComposeView::hide_action_bar()
-{
-    elm_object_signal_emit(m_action_bar, "hide,buttons,signal", "but_vis");
-    elm_object_signal_emit(m_action_bar, "show,close,icon", "del_but");
-    elm_object_signal_emit(m_action_bar, "back,icon,change", "del_but");
-    elm_object_translatable_part_text_set(m_action_bar, "settings_title", "IDS_BR_BODY_AUTO_FILL_FORMS_T_TTS");
-    hide();
-}
-
-void AutoFillFormComposeView::__entry_changed_cb(void* data, Evas_Object* obj, void* /*event_info*/)
+void SettingsAFCreator::__entry_changed_cb(void* data, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
+    if (!data) {
+        BROWSER_LOGE("data is null");
+        return;
+    }
     genlistCallbackData *cb_data = static_cast<genlistCallbackData*>(data);
-    AutoFillFormComposeView *view = static_cast<AutoFillFormComposeView*>(cb_data->user_data);
+    SettingsAFCreator *view = static_cast<SettingsAFCreator*>(cb_data->user_data);
     const char* text = elm_entry_entry_get(obj);
     if (text && strlen(text) > 0) {
         elm_object_signal_emit(cb_data->editfield, "show,clear,button,signal", "");
@@ -438,39 +451,50 @@ void AutoFillFormComposeView::__entry_changed_cb(void* data, Evas_Object* obj, v
     }
 
     if (!elm_entry_is_empty(view->m_fullNameItemCallbackData.entry)) {
-        elm_object_signal_emit(view->m_action_bar, "show,buttons,signal", "but_vis");
+        elm_object_signal_emit(view->m_actionBar, "show,buttons,signal", "but_vis");
         elm_object_disabled_set(view->m_doneButton, EINA_FALSE);
     } else {
-        elm_object_signal_emit(view->m_action_bar, "dim,done,button,signal", "but_vis");
+        elm_object_signal_emit(view->m_actionBar, "dim,done,button,signal", "but_vis");
         elm_object_disabled_set(view->m_doneButton, EINA_TRUE);
     }
 
 }
 
-void AutoFillFormComposeView::__entry_clicked_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void SettingsAFCreator::__entry_clicked_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
+    if (!data) {
+        BROWSER_LOGE("data is null");
+        return;
+    }
     genlistCallbackData *callback_data = static_cast<genlistCallbackData*>(data);
     Elm_Object_Item *item = callback_data->it;
-    Evas_Object *entry = elm_object_item_part_content_get(item, "entry_swallow");
-    elm_object_focus_set(entry, EINA_TRUE);
+    if (!item)
+        BROWSER_LOGD("Item is null");
+    elm_object_focus_set(callback_data->editfield, EINA_TRUE);
 }
 
-void AutoFillFormComposeView::__entry_clear_button_clicked_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void SettingsAFCreator::__entry_clear_button_clicked_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (!data) {
+        BROWSER_LOGE("data is null");
+        return;
+    }
     Evas_Object *entry = static_cast<Evas_Object*>(data);
     elm_entry_entry_set(entry, "");
 }
 
-void AutoFillFormComposeView::__entry_next_key_cb(void* data, Evas_Object* /*obj*/, void* /*event_info*/)
+void SettingsAFCreator::__entry_next_key_cb(void* data, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-
+    if (!data) {
+        BROWSER_LOGE("data is null");
+        return;
+    }
     genlistCallbackData *callback_data = static_cast<genlistCallbackData*>(data);
-    AutoFillFormComposeView *self = static_cast<AutoFillFormComposeView*>(callback_data->user_data);
-    AutoFillFormComposeView::menu_type type = callback_data->type;
+    SettingsAFCreator *self = static_cast<SettingsAFCreator*>(callback_data->user_data);
+    SettingsAFCreator::menu_type type = callback_data->type;
     Evas_Object *entry = nullptr;
 
     if (type == profile_composer_title_full_name) {
@@ -498,12 +522,5 @@ void AutoFillFormComposeView::__entry_next_key_cb(void* data, Evas_Object* /*obj
     elm_object_focus_set(entry, EINA_TRUE);
     elm_entry_cursor_end_set(entry);
 }
-
-void AutoFillFormComposeView::hide()
-{
-    if (m_manager)
-        m_manager->deleteComposer();
-}
-
 }
 }

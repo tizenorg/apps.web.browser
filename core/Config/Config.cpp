@@ -65,6 +65,7 @@ Config::Config()
     m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS] = true;
     m_keysValues[CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA] = true;
+    m_keysValues[CONFIG_KEY::WEB_ENGINE_SCRIPTS_CAN_OPEN_PAGES] = true;
 
     m_keysValues[CONFIG_KEY::CACHE_ENABLE_VALUE] = EINA_TRUE;
     m_keysValues[CONFIG_KEY::CACHE_FONT_VALUE] = 0;
