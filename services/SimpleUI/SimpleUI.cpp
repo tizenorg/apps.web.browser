@@ -135,7 +135,7 @@ void SimpleUI::suspend()
 void SimpleUI::resume()
 {
     m_webEngine->preinitializeWebViewCache();
-    m_webPageUI->createDummyButton();
+    //m_webPageUI->createDummyButton();
     m_webEngine->resume();
 #if PROFILE_MOBILE
     if (m_findOnPageUI && m_findOnPageUI->isVisible())

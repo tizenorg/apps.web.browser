@@ -305,7 +305,7 @@ collections { base_scale: 2.6;
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    visible: 1;
+                    visible: 0;
                     align: 0.0 0.0;
                     fixed: 0 0;
                     min: 0 0;
