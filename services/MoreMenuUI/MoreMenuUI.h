@@ -19,6 +19,7 @@
 
 #include <Evas.h>
 #include <Eina.h>
+#include <Elementary.h>
 #include <memory>
 #include <boost/signals2/signal.hpp>
 

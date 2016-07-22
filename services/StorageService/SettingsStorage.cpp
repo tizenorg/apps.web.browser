@@ -107,6 +107,10 @@ void SettingsStorage::resetSettings()
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_FROM_DATA)));
     setParam(basic_webengine::WebEngineSettings::REMEMBER_PASSWORDS, boost::any_cast<bool>(
             tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_REMEMBER_PASSWORDS)));
+    setParam(basic_webengine::WebEngineSettings::AUTOFILL_PROFILE_DATA, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_AUTOFILL_PROFILE_DATA)));
+    setParam(basic_webengine::WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES, boost::any_cast<bool>(
+            tizen_browser::config::Config::getInstance().get(CONFIG_KEY::WEB_ENGINE_SCRIPTS_CAN_OPEN_PAGES)));
 }
 
 void SettingsStorage::init(bool testmode)
@@ -172,6 +176,7 @@ void SettingsStorage::initWebEngineSettingsFromDB()
 
 void SettingsStorage::setParam(basic_webengine::WebEngineSettings param, bool value) const
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     const std::string& paramName = basic_webengine::PARAMS_NAMES.at(param);
     setSettingsInt(paramName, static_cast<int>(value));
 }
@@ -285,6 +290,7 @@ void SettingsStorage::setSettingsValue(const std::string & key, storage::FieldPt
  */
 void SettingsStorage::setSettingsInt(const std::string & key, int value) const
 {
+    BROWSER_LOGD("[%s:%d:%d] ", __PRETTY_FUNCTION__, __LINE__, value);
     storage::FieldPtr field = std::make_shared<storage::Field>(value);
     setSettingsValue(key, field);
 }
