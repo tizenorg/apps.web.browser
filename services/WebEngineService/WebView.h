@@ -245,6 +245,11 @@ public:
     void ewkSettingsAutofillPasswordFormEnabledSet(bool value);
 
     /**
+     * @brief Set enable opening of the new pages by the script flag.
+     */
+    void ewkSettingsScriptsCanOpenNewPagesEnabledSet(bool value);
+
+    /**
      * @brief Check if fullscreen mode is enabled.
      */
     bool isFullScreen() const { return m_fullscreen; };
