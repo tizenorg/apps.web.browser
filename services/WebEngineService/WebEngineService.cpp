@@ -833,7 +833,6 @@ void WebEngineService::_download_request_cb(const char *download_uri, void *data
      } else {
          wes->downloadStarted(wes->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);
      }
-     wes->m_downloadControl->launch_download_app(download_uri);
 }
 
 
