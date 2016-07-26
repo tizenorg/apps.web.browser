@@ -279,7 +279,7 @@ private:
     void closeSettingsUI();
     std::string requestSettingsCurrentPage();
 
-    void showBookmarkFlowUI(bool state);
+    void showBookmarkFlowUI();
     void showFindOnPageUI(const std::string& str);
 #if PROFILE_MOBILE
     void showCertificatePopup();
