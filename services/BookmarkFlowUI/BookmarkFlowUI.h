@@ -53,11 +53,7 @@ struct BookmarkUpdate {
 };
 
 class BROWSER_EXPORT BookmarkFlowUI
-#if PROFILE_MOBILE
         : public tizen_browser::interfaces::AbstractUIComponent
-#else
-        : public interfaces::AbstractPopup
-#endif
         , public tizen_browser::core::AbstractService
 {
 public:
@@ -68,7 +64,6 @@ public:
     Evas_Object *getContent();
     void addCustomFolders(services::SharedBookmarkFolderList folders);
 
-#if PROFILE_MOBILE
     void showUI();
     void hideUI();
     void setState(bool state);
@@ -77,13 +72,7 @@ public:
     void setFolder(unsigned int folder_id, const std::string& folder_name);
     void setFoldersId(unsigned int all, unsigned int special);
     void resetContent();
-#else
-    static BookmarkFlowUI* createPopup(Evas_Object* parent);
-    void show();
-    void dismiss();
-    void onBackPressed();
-    void addNewFolder();
-#endif
+
     virtual std::string getName();
     void hide();
 
@@ -92,9 +81,7 @@ public:
     boost::signals2::signal<void (BookmarkUpdate)> editBookmark;
     boost::signals2::signal<void ()> removeBookmark;
     boost::signals2::signal<void (int)> addFolder;
-#if PROFILE_MOBILE
     boost::signals2::signal<bool ()> isRotated;
-#endif
 
 private:
     typedef struct
@@ -105,7 +92,7 @@ private:
     } FolderData;
 
     Evas_Object* createBookmarkFlowLayout();
-    void createTitleArea();
+    void createTopContent();
 
     Evas_Object *m_parent;
     Evas_Object *m_layout;
@@ -114,30 +101,42 @@ private:
     bool m_state;
     unsigned int m_all_folder_id;
 
-    static char* _folder_title_text_get(void* data, Evas_Object*, const char* part);
-#if PROFILE_MOBILE
+    static Evas_Object *_genlist_entry_content_get(void *data, Evas_Object *obj, const char *part);
+    static Evas_Object *_genlist_folder_content_get(void *data, Evas_Object *obj, const char *part);
+    static Evas_Object *_genlist_add_to_qa_content_get(void *data, Evas_Object *obj, const char *part);
+    static char* _genlist_entry_text_get(void* data, Evas_Object*, const char* part);
+    static char* _genlist_text_get(void* data, Evas_Object*, const char* part);
+    static char* _genlist_folder_text_get(void* data, Evas_Object*, const char* part);
+    static char* _genlist_add_to_qa_text_get(void* data, Evas_Object*, const char* part);
+
     void createContentsArea();
     void createGenlistItemClasses();
     void createGenlist();
     void listAddCustomFolder(FolderData* item);
 
-    static void _save_clicked(void* data, Evas_Object*, void*);
+    static void _done_clicked(void* data, Evas_Object*, void*);
     static void _cancel_clicked(void* data, Evas_Object*, void*);
     static void _entry_focused(void* data, Evas_Object*, void*);
     static void _entry_unfocused(void* data, Evas_Object*, void*);
     static void _entry_changed(void* data, Evas_Object*, void*);
-    static void _inputCancel_clicked(void* data, Evas_Object*, void*);
+    static void _input_cancel_clicked(void* data, Evas_Object*, void*);
     static void _folder_clicked(void* data, Evas_Object*, void*);
     static void _folder_dropdown_clicked(void* data, Evas_Object*, void*);
     static void _remove_clicked(void* data, Evas_Object*, void*);
     static void _listCustomFolderClicked(void* data, Evas_Object*, void*);
+    static void _add_to_qa_state_changed(void* data, Evas_Object*, void*);
+    static void _folder_selector_clicked(void* data, Evas_Object*, void*);
+    static void _qa_clicked(void* data, Evas_Object*, void*);
 
+    Evas_Object *m_box;
+    Evas_Object *m_entry_layout;
     Evas_Object *m_contents_area;
     Evas_Object *m_remove_button;
     Evas_Object *m_entry;
+    Evas_Object *m_qa_checkbox;
     Evas_Object *m_save_box;
     Evas_Object *m_save;
-    Evas_Object *m_save_button;
+    Evas_Object *m_done_button;
     Evas_Object *m_cancel_box;
     Evas_Object *m_cancel;
     Evas_Object *m_cancel_button;
@@ -146,8 +145,12 @@ private:
     Evas_Object *m_folder_dropdown_button;
     Evas_Object *m_genlist;
 
-    Elm_Genlist_Item_Class *m_folder_custom_item_class;
-    Elm_Genlist_Item_Class *m_folder_selected_item_class;
+    Elm_Genlist_Item_Class *m_label_item_class;
+    Elm_Genlist_Item_Class *m_entry_item_class;
+    Elm_Genlist_Item_Class *m_group_item_class;
+    Elm_Genlist_Item_Class *m_folder_item_class;
+    Elm_Genlist_Item_Class *m_add_to_qa_item_class;
+
     std::map<unsigned int, Elm_Object_Item*> m_map_folders;
     unsigned int m_folder_id;
     unsigned int m_special_folder_id;
@@ -156,25 +159,7 @@ private:
     const unsigned int MAX_ITEMS_LANDSCAPE = 2;
     const unsigned int GENLIST_HEIGHT = 384;
     const unsigned int GENLIST_HEIGHT_LANDSCAPE = 192;
-#else
-    void createGengridItemClasses();
-    void createGengrid();
-    void gridAddCustomFolder(FolderData* item);
-    void createFocusVector();
-
-    static void _gridNewFolderClicked(void* data, Evas_Object*, void*);
-    static void _gridCustomFolderClicked(void* data, Evas_Object*, void*);
-    static void _bg_clicked(void* data, Evas_Object*, void*);
-
-    Evas_Object *m_gengrid;
-    Evas_Object *m_bg;
-    Elm_Gengrid_Item_Class *m_folder_new_item_class;
-    Elm_Gengrid_Item_Class *m_folder_custom_item_class;
-
-    FocusManager m_focusManager;
-    const unsigned int upto9 = 10;
-    const unsigned int upto6 = 7;
-#endif
+    bool m_add_to_qa;
 };
 
 }

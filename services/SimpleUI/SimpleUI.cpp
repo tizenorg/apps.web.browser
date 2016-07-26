@@ -69,8 +69,8 @@ SimpleUI::SimpleUI()
     : AbstractMainWindow()
     , m_webPageUI()
     , m_moreMenuUI()
-#if PROFILE_MOBILE
     , m_bookmarkFlowUI()
+#if PROFILE_MOBILE
     , m_findOnPageUI()
 #endif
     , m_bookmarkManagerUI()
@@ -271,12 +271,11 @@ void SimpleUI::loadUIServices()
         <tizen_browser::base_ui::MoreMenuUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.moremenuui"));
 
-#if PROFILE_MOBILE
     m_bookmarkFlowUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::BookmarkFlowUI,tizen_browser::core::AbstractService>
         (tizen_browser::core::ServiceManager::getInstance().getService("org.tizen.browser.bookmarkflowui"));
-
+#if PROFILE_MOBILE
     m_findOnPageUI =
         std::dynamic_pointer_cast
         <tizen_browser::base_ui::FindOnPageUI,tizen_browser::core::AbstractService>
@@ -494,11 +493,10 @@ void SimpleUI::initUIServices()
     M_ASSERT(m_settingsUI.get());
     m_settingsUI->init(m_viewManager.getContent());
 
-#if PROFILE_MOBILE
     M_ASSERT(m_bookmarkFlowUI.get());
     m_bookmarkFlowUI->init(m_viewManager.getContent());
     m_bookmarkFlowUI->setFoldersId(m_storageService->getFoldersStorage().AllFolder, m_storageService->getFoldersStorage().SpecialFolder);
-
+#if PROFILE_MOBILE
     M_ASSERT(m_findOnPageUI.get());
     m_findOnPageUI->init(m_webPageUI->getContent());
 #else
@@ -1584,14 +1582,7 @@ void SimpleUI::switchToDesktopMode()
 
 void SimpleUI::showBookmarkFlowUI(bool state)
 {
-#if !PROFILE_MOBILE
-    if (state) {
-        deleteBookmark();
-        return;
-    }
-#endif
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if PROFILE_MOBILE
     m_viewManager.pushViewToStack(m_bookmarkFlowUI.get());
     std::string uri = m_webEngine->getURI();
     m_bookmarkFlowUI->setURL(uri);
@@ -1604,25 +1595,14 @@ void SimpleUI::showBookmarkFlowUI(bool state)
     m_bookmarkFlowUI->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
     unsigned int id = state ? item.getParent() : m_storageService->getFoldersStorage().SpecialFolder;
     m_bookmarkFlowUI->setFolder(id, m_storageService->getFoldersStorage().getFolderName(id));
-#else
-    BookmarkFlowUI *bookmarkFlow = BookmarkFlowUI::createPopup(m_viewManager.getContent());
-    bookmarkFlow->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
-    bookmarkFlow->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
-    bookmarkFlow->addFolder.connect(boost::bind(&SimpleUI::onNewFolderClicked, this, _1));
-    bookmarkFlow->saveBookmark.connect(boost::bind(&SimpleUI::addBookmark, this, _1));
-    bookmarkFlow->show();
-    bookmarkFlow->addNewFolder();
-    bookmarkFlow->addCustomFolders(m_storageService->getFoldersStorage().getFolders());
-#endif
 }
-#if PROFILE_MOBILE
+
 void SimpleUI::closeBookmarkFlowUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (m_viewManager.topOfStack() == m_bookmarkFlowUI.get())
         m_viewManager.popTheStack();
 }
-#endif
 
 void SimpleUI::showBookmarkManagerUI(std::shared_ptr<services::BookmarkItem> parent)
 {
