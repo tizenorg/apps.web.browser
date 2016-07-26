@@ -24,6 +24,7 @@
 #include "BasicUI/Action.h"
 #include "BrowserImage.h"
 #include "EflTools.h"
+#include "WebPageUIStatesManager.h"
 
 
 namespace tizen_browser {
@@ -42,7 +43,7 @@ public:
         SELECTION_KEEP
         , SELECTION_NONE
     };
-    URIEntry();
+    URIEntry(WPUStatesManagerPtrConst statesMgr);
     ~URIEntry();
     void init(Evas_Object* parent);
     Evas_Object* getContent();
@@ -54,14 +55,14 @@ public:
     // uri edition change (by a user)
     boost::signals2::signal<void (const std::shared_ptr<std::string>)> uriEntryEditingChangedByUser;
 
-#if PROFILE_MOBILE
     boost::signals2::signal<void ()> mobileEntryFocused;
     boost::signals2::signal<void ()> mobileEntryUnfocused;
     boost::signals2::signal<void ()> secureIconClicked;
     boost::signals2::signal<bool (const std::string&)> isValidCert;
+    boost::signals2::signal<void ()> reloadPage;
+    boost::signals2::signal<void ()> stopLoadingPage;
     void updateSecureIcon();
     void showSecureIcon(bool show, bool secure);
-#endif
 
     void setFavIcon(std::shared_ptr<tizen_browser::tools::BrowserImage> favicon);
     void setCurrentFavIcon();
@@ -81,11 +82,6 @@ public:
     std::list<sharedAction> actions() const;
 
     /**
-     * \brief Sets Focus to URI entry.
-     */
-    void setFocus();
-
-    /**
      * @brief Remove focus form URI
      */
     void clearFocus();
@@ -96,6 +92,9 @@ public:
     bool hasFocus() const;
 
     void setDisabled(bool disabled);
+    void editingCanceled();
+    void loadStarted();
+    void loadFinished();
 
 private:
     static void activated(void* data, Evas_Object* obj, void* event_info);
@@ -119,16 +118,18 @@ private:
     static void _uri_entry_double_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_selection_changed(void* data, Evas_Object* obj, void* event_info);
     static void _uri_entry_longpressed(void* data, Evas_Object* obj, void* event_info);
-#if PROFILE_MOBILE
     enum class RightIconType {
         NONE,
         CANCEL,
-        SECURE
+        RELOAD,
+        STOP_LOADING
     };
 
     static void _uri_right_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     void showCancelIcon();
-#endif
+    void showStopIcon();
+    void showReloadIcon();
+    void hideRightIcon();
 
 private:
     Evas_Object* m_parent;
@@ -143,11 +144,11 @@ private:
     bool m_entryContextMenuOpen;
     bool m_searchTextEntered;
     bool m_first_click;
-#if PROFILE_MOBILE
+    bool m_isPageLoading;
+    WPUStatesManagerPtrConst m_statesMgr;
     RightIconType m_rightIconType;
     bool m_securePageIcon;
     bool m_showSecureIcon;
-#endif
 };
 
 

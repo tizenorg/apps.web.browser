@@ -33,8 +33,6 @@ namespace base_ui {
 
 class WebPageUIStatesManager;
 enum class WPUState;
-typedef std::shared_ptr<WebPageUIStatesManager> WPUStatesManagerPtr;
-typedef std::shared_ptr<const WebPageUIStatesManager> WPUStatesManagerPtrConst;
 class UrlHistoryList;
 typedef std::shared_ptr<UrlHistoryList> UrlHistoryPtr;
 
@@ -42,9 +40,7 @@ class BROWSER_EXPORT WebPageUI
         : public interfaces::AbstractContextMenu
         , public tizen_browser::core::AbstractService
         , public tizen_browser::interfaces::AbstractUIComponent
-#if PROFILE_MOBILE
         , public tizen_browser::interfaces::AbstractRotatable
-#endif
 {
 public:
     WebPageUI();
@@ -56,9 +52,7 @@ public:
     virtual void showUI();
     virtual void hideUI();
     void createDummyButton();
-#if PROFILE_MOBILE
     virtual void orientationChanged() override;
-#endif
     //AbstractContextMenu interface implementation
     virtual void showContextMenu() override;
 
@@ -86,40 +80,28 @@ public:
     void setTabsNumber(int tabs);
     void setBackButtonEnabled(bool enabled) { m_back->setEnabled(enabled); }
     void setForwardButtonEnabled(bool enabled) { m_forward->setEnabled(enabled); }
-    void setReloadButtonEnabled(bool enabled) { m_reload->setEnabled(enabled); }
-    void setStopButtonEnabled(bool enabled) { m_stopLoading->setEnabled(enabled); }
-    void setMoreMenuButtonEnabled(bool enabled) { m_showMoreMenu->setEnabled(enabled); }
     void lockWebview();
     void lockUrlHistoryList();
     void unlockUrlHistoryList();
     void setFocusOnSuspend();
-#if PROFILE_MOBILE
     void mobileEntryFocused();
     void mobileEntryUnfocused();
     void setContentFocus();
     static Eina_Bool _hideDelay(void *data);
-#else
-    void onRedKeyPressed();
-    void onYellowKeyPressed();
-#endif
 
     boost::signals2::signal<void ()> backPage;
     boost::signals2::signal<void ()> forwardPage;
-    boost::signals2::signal<void ()> stopLoadingPage;
-    boost::signals2::signal<void ()> reloadPage;
     boost::signals2::signal<void ()> showTabUI;
-#if PROFILE_MOBILE
+    boost::signals2::signal<void ()> showBookmarksUI;
     boost::signals2::signal<void ()> hideMoreMenu;
     boost::signals2::signal<void ()> qaOrientationChanged;
-#else
-    boost::signals2::signal<void ()> showZoomNavigation;
-#endif
     boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
     boost::signals2::signal<void ()> focusWebView;
     boost::signals2::signal<void ()> unfocusWebView;
+    boost::signals2::signal<void ()> addNewTab;
 
     //AbstractContextMenu signals
     boost::signals2::signal<bool ()> isBookmark;
@@ -133,11 +115,9 @@ private:
     static void _bookmark_manager_clicked(void * data, Evas_Object *, void *);
     static void _dummy_button_focused(void *data, Evas_Object *, void *);
     static void _dummy_button_unfocused(void *data, Evas_Object *, void *);
-#if PROFILE_MOBILE
     static void _more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*);
     static void _content_clicked(void * data, Evas_Object *, void *);
-#endif
-#if PROFILE_MOBILE && GESTURE
+#if GESTURE
     static Evas_Event_Flags _gesture_move(void *data, void *event_info);
 #endif
     static void _cm_edit_qa_clicked(void*, Evas_Object*, void*);
@@ -162,10 +142,7 @@ private:
     void setMainContent(Evas_Object* content);
     void updateURIBar(const std::string& uri);
     std::string edjePath(const std::string& file);
-#if !PROFILE_MOBILE
-    void refreshFocusChain();
-#endif
-#if PROFILE_MOBILE && GESTURE
+#if GESTURE
     void gestureUp();
     void gestureDown();
 #endif
@@ -173,10 +150,8 @@ private:
     // wrappers to call singal as a reaction to other signal
     void backPageConnect() { backPage(); }
     void forwardPageConnect() { forwardPage(); }
-    void stopLoadingPageConnect() { stopLoadingPage(); }
-    void reloadPageConnect() { reloadPage(); }
-    void showTabUIConnect();
     void showMoreMenuConnect();
+    void addNewTabConnect() { addNewTab(); }
 
     Evas_Object* m_parent;
     Evas_Object* m_mainLayout;
@@ -185,22 +160,22 @@ private:
     Evas_Object* m_privateLayout;
     Evas_Object* m_bookmarkManagerButton;
 
-    std::unique_ptr<ButtonBar> m_leftButtonBar;
+    std::unique_ptr<ButtonBar> m_bottomButtonBar;
     std::unique_ptr<ButtonBar> m_rightButtonBar;
-    std::unique_ptr<URIEntry> m_URIEntry;
     WPUStatesManagerPtr m_statesMgr;
+    std::unique_ptr<URIEntry> m_URIEntry;
     UrlHistoryPtr m_urlHistoryList;
     bool m_webviewLocked;
     bool m_WebPageUIvisible;
 
     sharedAction m_back;
     sharedAction m_forward;
-    sharedAction m_stopLoading;
-    sharedAction m_reload;
-    sharedAction m_tab;
-    sharedAction m_showMoreMenu;
+    sharedAction m_addTab;
+    sharedAction m_homePage;
+    sharedAction m_bookmarks;
+    sharedAction m_tabs;
 
-#if PROFILE_MOBILE && GESTURE
+#if GESTURE
     Evas_Object* m_gestureLayer;
     bool m_uriBarHidden;
     static const int SINGLE_FINGER = 1;
