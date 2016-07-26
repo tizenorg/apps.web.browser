@@ -74,6 +74,7 @@ if(TIZEN_BUILD)
         capi-media-image-util
         efl-extension
         libssl
+        shortcut
     )
 
    if (${PROFILE} MATCHES "mobile")
@@ -85,6 +86,7 @@ if(TIZEN_BUILD)
         capi-appfw-app-manager
         notification
         appsvc
+        shortcut
     )
     endif (${PROFILE} MATCHES "mobile")
 

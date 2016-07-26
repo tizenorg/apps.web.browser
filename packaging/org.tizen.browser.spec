@@ -52,6 +52,7 @@ BuildRequires:  pkgconfig(notification)
 BuildRequires:  pkgconfig(appsvc)
 BuildRequires:  pkgconfig(capi-appfw-app-manager)
 BuildRequires:  pkgconfig(capi-content-media-content)
+BuildRequires:  pkgconfig(shortcut)
 %endif
 
 %define BUILD_UT  %{?build_ut:ON}%{!?build_ut:OFF}

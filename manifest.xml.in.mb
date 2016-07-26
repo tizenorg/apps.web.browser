@@ -138,5 +138,6 @@
         <privilege>http://tizen.org/privilege/push</privilege>
         <privilege>http://tizen.org/privilege/mediastorage</privilege>
         <privilege>http://tizen.org/privilege/recorder</privilege>
+        <privilege>http://tizen.org/privilege/shortcut</privilege>
      </privileges>
 </manifest>
