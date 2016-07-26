@@ -379,8 +379,12 @@ void WebPageUI::showContextMenu()
             boost::optional<bool> bookmark = isBookmark();
             if (bookmark) {
                 //TODO: Add translation
-                elm_ctxpopup_item_append(m_ctxpopup, *bookmark ? "Remove from bookmarks" : "Add to Bookmarks",
-                        nullptr, _cm_bookmark_flow_clicked, this);
+                if (*bookmark)
+                    elm_ctxpopup_item_append(m_ctxpopup, "Remove from bookmarks", nullptr,
+                        _cm_delete_bookmark_clicked, this);
+                else
+                    elm_ctxpopup_item_append(m_ctxpopup, "Add to Bookmarks", nullptr,
+                        _cm_bookmark_flow_clicked, this);
             } else
                 BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
 
@@ -430,18 +434,24 @@ void WebPageUI::_cm_find_on_page_clicked(void* data, Evas_Object*, void* )
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
+void WebPageUI::_cm_delete_bookmark_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+        webPageUI->deleteBookmark();
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
 void WebPageUI::_cm_bookmark_flow_clicked(void* data, Evas_Object*, void* )
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
         _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
-
-        boost::optional<bool> bookmark = webPageUI->isBookmark();
-        if (bookmark)
-            webPageUI->showBookmarkFlowUI(*bookmark);
-        else
-            BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
+        webPageUI->showBookmarkFlowUI();
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
