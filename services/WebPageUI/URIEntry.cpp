@@ -28,11 +28,7 @@ namespace tizen_browser {
 namespace base_ui {
 
 #define GUIDE_TEXT_FOCUSED "Search or URL"
-#if PROFILE_MOBILE
 #define GUIDE_TEXT_UNFOCUSED "Search or URL"
-#else
-#define GUIDE_TEXT_UNFOCUSED "Search or URL - Press [A] to enter"
-#endif
 
 const std::string keynameSelect = "Select";
 const std::string keynameClear = "Clear";
@@ -40,7 +36,7 @@ const std::string keynameKP_Enter = "KP_Enter";
 const std::string keynameReturn = "Return";
 const std::string keynameEsc = "XF86Back";
 
-URIEntry::URIEntry()
+URIEntry::URIEntry(WPUStatesManagerPtrConst statesMgr)
     : m_parent(nullptr)
     , m_currentIconType(IconTypeSearch)
     , m_entry(NULL)
@@ -50,9 +46,9 @@ URIEntry::URIEntry()
     , m_entryContextMenuOpen(false)
     , m_searchTextEntered(false)
     , m_first_click(true)
-#if PROFILE_MOBILE
+    , m_isPageLoading(false)
+    , m_statesMgr(statesMgr)
     , m_rightIconType(RightIconType::NONE)
-#endif
 {
     std::string edjFilePath = EDJE_DIR;
     edjFilePath.append("WebPageUI/URIEntry.edj");
@@ -86,9 +82,7 @@ Evas_Object* URIEntry::getContent()
         elm_entry_single_line_set(m_entry, EINA_TRUE);
         elm_entry_scrollable_set(m_entry, EINA_TRUE);
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
-#if PROFILE_MOBILE
         elm_object_signal_callback_add(m_entry_layout,  "right_icon_clicked", "ui", _uri_right_icon_clicked, this);
-#endif
 
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
 
@@ -121,15 +115,11 @@ void URIEntry::changeUri(const std::string& newUri)
     if (elm_object_focus_get(m_entry) == EINA_FALSE) {
         if (!m_URI.empty()) {
             elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
-    #if PROFILE_MOBILE
             m_rightIconType = RightIconType::NONE;
-    #endif
         } else
             elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
     }
-#if PROFILE_MOBILE
     updateSecureIcon();
-#endif
 }
 
 void URIEntry::setFavIcon(std::shared_ptr< tizen_browser::tools::BrowserImage > favicon)
@@ -183,9 +173,7 @@ void URIEntry::_uri_entry_clicked(void* data, Evas_Object* /* obj */, void* /* e
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
-#if PROFILE_MOBILE
     self->showCancelIcon();
-#endif
     // TODO This line should be uncommented when input events will be fixed
 //    elm_entry_select_none(self->m_entry);
     self->selectionTool();
@@ -213,9 +201,7 @@ void URIEntry::_uri_entry_editing_changed_user(void* data, Evas_Object* /* obj *
     } else {
         self->setSearchIcon();
     }
-#if PROFILE_MOBILE
     self->showCancelIcon();
-#endif
     if(entry.find(" ") != std::string::npos)
         return;
     self->uriEntryEditingChangedByUser(std::make_shared<std::string>(entry));
@@ -234,17 +220,20 @@ void URIEntry::unfocused(void* data, Evas_Object*, void*)
 
     if (!self->m_entryContextMenuOpen) {
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
-#if PROFILE_MOBILE
         self->mobileEntryUnfocused();
-        self->showCancelIcon();
-#endif
+        if (!self->m_statesMgr->equals(WPUState::QUICK_ACCESS) && !self->m_statesMgr->equals(WPUState::MAIN_INCOGNITO_PAGE)) {
+            if (self->m_isPageLoading)
+                self->showStopIcon();
+            else
+                self->showReloadIcon();
+        } else {
+            self->hideRightIcon();
+        }
     }
     self->m_first_click = true;
     elm_entry_select_none(self->m_entry);
 
-#if PROFILE_MOBILE
     self->showSecureIcon(self->m_showSecureIcon, self->m_securePageIcon);
-#endif
 
     elm_entry_entry_set(self->m_entry, elm_entry_utf8_to_markup(self->m_URI.c_str()));
 }
@@ -254,9 +243,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     URIEntry* self = static_cast<URIEntry*>(data);
     if (!self->m_entryContextMenuOpen) {
-#if PROFILE_MOBILE
         self->mobileEntryFocused();
-#endif
     } else {
         self->m_entryContextMenuOpen = false;
     }
@@ -285,12 +272,6 @@ void URIEntry::_fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Objec
         self->editingCompleted();
         return;
     }
-    if (keynameEsc == ev->keyname) {
-#if !PROFILE_MOBILE
-        elm_object_focus_set(self->m_entry, EINA_TRUE);
-#endif
-        return;
-    }
 }
 
 void URIEntry::editingCompleted()
@@ -303,11 +284,7 @@ void URIEntry::editingCompleted()
     elm_entry_input_panel_hide(m_entry);
     m_URI = rewriteURI(userString);
     uriChanged(m_URI);
-#if !PROFILE_MOBILE
-    elm_object_focus_set(m_entry, EINA_TRUE);
-#else
     showSecureIcon(false, false);
-#endif
 }
 
 std::string URIEntry::rewriteURI(const std::string& url)
@@ -333,6 +310,25 @@ std::string URIEntry::rewriteURI(const std::string& url)
     return url;
 }
 
+void URIEntry::editingCanceled()
+{
+    elm_entry_input_panel_hide(m_entry);
+    setCurrentFavIcon();
+}
+
+void URIEntry::loadStarted()
+{
+    m_isPageLoading = true;
+    elm_object_signal_emit(m_entry_layout, "shiftright_uribg", "ui");
+    showStopIcon();
+}
+
+void URIEntry::loadFinished()
+{
+    m_isPageLoading = false;
+    showReloadIcon();
+}
+
 void URIEntry::AddAction(sharedAction action)
 {
     m_actions.push_back(action);
@@ -347,14 +343,6 @@ void URIEntry::clearFocus()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     elm_object_focus_set(m_entry, EINA_FALSE);
-}
-
-void URIEntry::setFocus()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-#if !PROFILE_MOBILE
-    elm_object_focus_set(m_entry, EINA_TRUE);
-#endif
 }
 
 bool URIEntry::hasFocus() const
@@ -395,7 +383,6 @@ void URIEntry::_uri_entry_longpressed(void* data, Evas_Object* /*obj*/, void* /*
 
 }
 
-#if PROFILE_MOBILE
 void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -405,8 +392,11 @@ void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const c
         elm_entry_entry_set(self->m_entry, "");
         elm_object_signal_emit(self->m_entry_layout, "hide_icon", "ui");
         break;
-    case RightIconType::SECURE:
-        self->secureIconClicked();
+    case RightIconType::RELOAD:
+        self->reloadPage();
+        break;
+    case RightIconType::STOP_LOADING:
+        self->stopLoadingPage();
         break;
     default:
         BROWSER_LOGW("[%s:%d] Unknown icon type!", __PRETTY_FUNCTION__, __LINE__);
@@ -440,11 +430,30 @@ void URIEntry::updateSecureIcon()
     showSecureIcon(show, secure);
 }
 
+void URIEntry::showStopIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_rightIconType = RightIconType::STOP_LOADING;
+    elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
+}
+
+void URIEntry::showReloadIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    m_rightIconType = RightIconType::RELOAD;
+    elm_object_signal_emit(m_entry_layout, "show,reload,icon", "");
+}
+
+void URIEntry::hideRightIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+}
+
 void URIEntry::showSecureIcon(bool show, bool secure)
 {
     BROWSER_LOGD("[%s:%d] [ show : %d, secure : %d] ", __PRETTY_FUNCTION__, __LINE__, show, secure);
 
-    m_rightIconType = RightIconType::SECURE;
     m_securePageIcon = secure;
     m_showSecureIcon = show;
     if (show) {
@@ -454,10 +463,9 @@ void URIEntry::showSecureIcon(bool show, bool secure)
             elm_object_signal_emit(m_entry_layout, "show,unsecure,icon", "");
     }
     else {
-        elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+        // TODO: new signal for left side secure icon needed
     }
 }
-#endif
 
 }
 }
