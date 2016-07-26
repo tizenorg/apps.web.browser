@@ -117,7 +117,7 @@ public:
     boost::signals2::signal<void ()> switchToMobileMode;
     boost::signals2::signal<void ()> switchToDesktopMode;
     boost::signals2::signal<bool ()> isBookmark;
-    boost::signals2::signal<void (bool)> bookmarkFlowClicked;
+    boost::signals2::signal<void ()> bookmarkFlowClicked;
 private:
     Elm_Gengrid_Item_Class* createItemClass();
     void createMoreMenuLayout();

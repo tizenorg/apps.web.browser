@@ -84,8 +84,6 @@ void BookmarkManagerUI::showUI()
 void BookmarkManagerUI::hideUI()
 {
     evas_object_hide(b_mm_layout);
-    elm_genlist_clear(m_genlist);
-    m_map_bookmark.clear();
 }
 
 Evas_Object* BookmarkManagerUI::getContent()
