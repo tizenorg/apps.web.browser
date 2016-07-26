@@ -123,7 +123,8 @@ public:
 
     //AbstractContextMenu signals
     boost::signals2::signal<bool ()> isBookmark;
-    boost::signals2::signal<void (bool)> showBookmarkFlowUI;
+    boost::signals2::signal<void ()> deleteBookmark;
+    boost::signals2::signal<void ()> showBookmarkFlowUI;
     boost::signals2::signal<void ()> showFindOnPageUI;
     boost::signals2::signal<void ()> showSettingsUI;
 
@@ -143,6 +144,7 @@ private:
     static void _cm_edit_qa_clicked(void*, Evas_Object*, void*);
     static void _cm_share_clicked(void*, Evas_Object*, void*);
     static void _cm_find_on_page_clicked(void*, Evas_Object*, void*);
+    static void _cm_delete_bookmark_clicked(void*, Evas_Object*, void*);
     static void _cm_bookmark_flow_clicked(void*, Evas_Object*, void*);
     static void _cm_add_to_qa_clicked(void*, Evas_Object*, void*);
     static void _cm_desktop_view_page_clicked(void*, Evas_Object*, void*);
