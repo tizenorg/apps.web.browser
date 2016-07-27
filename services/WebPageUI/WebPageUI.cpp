@@ -392,6 +392,7 @@ void WebPageUI::showContextMenu()
         }
 
         elm_ctxpopup_item_append(m_ctxpopup, _("IDS_BR_BODY_SETTINGS"), nullptr, _cm_settings_clicked, this);
+        elm_ctxpopup_item_append(m_ctxpopup, "Add to Homescreen", nullptr, _cm_add_to_hs_clicked, this);
         alignContextMenu(*window);
     } else
         BROWSER_LOGE("[%s:%d] Signal not found", __PRETTY_FUNCTION__, __LINE__);
@@ -473,6 +474,18 @@ void WebPageUI::_cm_settings_clicked(void* data, Evas_Object*, void* )
         webPageUI->showSettingsUI();
     } else
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data != nullptr) {
+            WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+            _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+            // add to home screen 구현
+            //webPageUI->showSettingsUI();
+        } else
+            BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);//
 }
 
 void WebPageUI::createLayout()

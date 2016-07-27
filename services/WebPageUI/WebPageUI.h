@@ -127,6 +127,7 @@ private:
     static void _cm_add_to_qa_clicked(void*, Evas_Object*, void*);
     static void _cm_desktop_view_page_clicked(void*, Evas_Object*, void*);
     static void _cm_settings_clicked(void*, Evas_Object*, void*);
+    static void _cm_add_to_hs_clicked(void*, Evas_Object*, void*);
 
     void createLayout();
     void createErrorLayout();
