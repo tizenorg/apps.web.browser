@@ -44,8 +44,6 @@
 #include "Tools/WorkQueue.h"
 #include "ServiceManager.h"
 
-#include <shortcut_manager.h>
-
 #if PROFILE_MOBILE
 #include <device/haptic.h>
 #include <Ecore.h>
@@ -56,9 +54,6 @@
 
 //TODO: temporary user agent for mobile display, change to proper one
 #define APPLICATION_NAME_FOR_USER_AGENT_MOBILE "Mozilla/5.0 (Linux; Tizen 3.0; tm1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Mobile safari/537.36"
-
-// temporary WPA apply to test for define code.
-#define WPA 0
 
 #if PROFILE_MOBILE
 Ecore_Timer* m_haptic_timer_id =NULL;
@@ -1743,13 +1738,7 @@ void WebView::__download_request_cb(const char *download_uri, void *data)
         wv->downloadStarted(DOWNLOAD_ONLY_HTTP_OR_HTTPS_URLS);
         return;
     } else {
-        // If WPA value is 1, Shortcut API execute that a temporary.
-        // but If WPA value is the other, download request callback function execute.
-        if(WPA == 1) {
-            shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 1, NULL, NULL);
-        } else {
-            wv->downloadStarted(wv->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);
-        }
+        wv->downloadStarted(wv->m_downloadControl->launch_download_app(download_uri) == EINA_TRUE);
     }
 }
 #endif
