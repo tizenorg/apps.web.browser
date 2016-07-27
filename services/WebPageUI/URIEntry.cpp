@@ -82,6 +82,7 @@ Evas_Object* URIEntry::getContent()
         elm_entry_single_line_set(m_entry, EINA_TRUE);
         elm_entry_scrollable_set(m_entry, EINA_TRUE);
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
+        elm_object_signal_callback_add(m_entry_layout,  "left_icon_clicked", "ui", _uri_left_icon_clicked, this);
         elm_object_signal_callback_add(m_entry_layout,  "right_icon_clicked", "ui", _uri_right_icon_clicked, this);
 
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
@@ -383,6 +384,13 @@ void URIEntry::_uri_entry_longpressed(void* data, Evas_Object* /*obj*/, void* /*
 
 }
 
+void URIEntry::_uri_left_icon_clicked(void* data, Evas_Object*, const char*, const char*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = static_cast<URIEntry*>(data);
+    self->secureIconClicked();
+}
+
 void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -463,7 +471,7 @@ void URIEntry::showSecureIcon(bool show, bool secure)
             elm_object_signal_emit(m_entry_layout, "show,unsecure,icon", "");
     }
     else {
-        // TODO: new signal for left side secure icon needed
+        elm_object_signal_emit(m_entry_layout,"uri_entry_normal", "ui");
     }
 }
 

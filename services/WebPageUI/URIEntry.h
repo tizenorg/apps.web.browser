@@ -125,6 +125,7 @@ private:
         STOP_LOADING
     };
 
+    static void _uri_left_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     static void _uri_right_icon_clicked(void* data, Evas_Object*, const char*, const char*);
     void showCancelIcon();
     void showStopIcon();

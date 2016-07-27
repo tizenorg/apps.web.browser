@@ -183,13 +183,9 @@ void WebPageUI::toIncognito(bool incognito)
     BROWSER_LOGD("[%s:%d,%d] ", __PRETTY_FUNCTION__, __LINE__, incognito);
     if (incognito) {
         elm_object_signal_emit(m_mainLayout, "incognito,true", "ui");
-        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_incognito", "ui");
-        elm_object_signal_emit(m_URIEntry->getContent(), "uri_entry_incognito", "ui");
     }
     else {
         elm_object_signal_emit(m_mainLayout, "incognito,false", "ui");
-        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_normal", "ui");
-        elm_object_signal_emit(m_URIEntry->getContent(), "uri_entry_normal", "ui");
     }
 }
 
