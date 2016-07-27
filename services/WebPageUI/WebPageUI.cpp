@@ -24,6 +24,7 @@
 #include "BrowserAssert.h"
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "WebPageUIStatesManager.h"
+#include <shortcut_manager.h>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -480,12 +481,17 @@ void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
-            WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
-            _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
-            // add to home screen 구현
-            //webPageUI->showSettingsUI();
-        } else
-            BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);//
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+        shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, NULL);
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+int WebPageUI::result_cb(int ret, void *data) {
+    BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
+    BROWSER_LOGD("[%s:%d] ret : %d, data : %s", __PRETTY_FUNCTION__, __LINE__, ret, data);
+    return 0;
 }
 
 void WebPageUI::createLayout()
