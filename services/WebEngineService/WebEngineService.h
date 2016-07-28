@@ -31,6 +31,7 @@
 #include "AbstractWebEngine/TabOrigin.h"
 #include "SnapshotType.h"
 #include "BrowserImage.h"
+#include "DownloadControl/DownloadControl.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -224,7 +225,6 @@ private:
     void _favIconChanged(std::shared_ptr<tizen_browser::tools::BrowserImage> bi);
     void _titleChanged(const std::string&);
     void _uriChanged(const std::string &);
-    void _downloadStarted(int status);
     void _loadFinished();
     void _loadStarted();
     void _loadStop();
@@ -243,6 +243,7 @@ private:
     void setWebViewSettings(std::shared_ptr<WebView> webView);
     void _unsecureConnection();
     void _findOnPage(const std::string& str);
+    static void _download_request_cb(const char *download_uri, void *data);
 #endif
 
     /**
@@ -279,6 +280,7 @@ private:
     int m_tabIdCreated;
 #if PROFILE_MOBILE
     std::map<WebEngineSettings, bool>  m_settings;
+    DownloadControl *m_downloadControl;
 #endif
 };
 
