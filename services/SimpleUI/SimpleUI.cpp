@@ -398,6 +398,7 @@ void SimpleUI::connectUISignals()
     m_findOnPageUI->startFindingWord.connect(boost::bind(&SimpleUI::findWord, this, _1));
 
     M_ASSERT(m_bookmarkManagerUI.get());
+    m_bookmarkManagerUI->showHistory.connect(boost::bind(&SimpleUI::showHistoryUI, this));
     m_bookmarkManagerUI->closeBookmarkManagerClicked.connect(boost::bind(&SimpleUI::closeBookmarkManagerUI, this));
     m_bookmarkManagerUI->getWindow.connect(boost::bind(&SimpleUI::getMainWindow, this));
     m_bookmarkManagerUI->bookmarkItemClicked.connect(boost::bind(&SimpleUI::onBookmarkClicked, this, _1));

@@ -1,17 +1,7 @@
 #include "../../../core/Tools/edc/FolderImage.edc"
 
-#define DEVELOPMENT 0
-
-#define LAYOUT_TITLE_HEIGHT 108
-#define TITLE_ICON_SIZE 64
-#define TITLE_BUTTON_OFFSET_X 16
-#define TITLE_BUTTON_OFFSET_Y 22
-
-#define GRID_ITEM_SPACER 18
-#define GRID_ITEM_TITLE_HEIGHT 100
-#define GRID_ITEM_ICON_SIZE 99
-
-#define BOOKMARK_TOOLBAR_HEIGHT 75
+#define BOOKMARK_NAVIGATOR_TOOLBAR_HEIGHT 75
+#define BOOKMARK_MODULES_TOOLBAR_HEIGHT 80
 
 collections {
     base_scale: 2.6;
@@ -61,18 +51,49 @@ collections {
     group {
         name: "naviframe_content";
         parts {
+            rect {
+                name: "bg";
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    visible: 0;
+                }
+            }
             part {
-                name: "toolbar";
+                name: "modules_toolbar";
                 type: SWALLOW;
                 scale: 1;
                 description {
                     state: "default" 0.0;
-                    min: 0 BOOKMARK_TOOLBAR_HEIGHT;
-                    max: -1 BOOKMARK_TOOLBAR_HEIGHT;
+                    min: 0 BOOKMARK_MODULES_TOOLBAR_HEIGHT;
+                    max: -1 BOOKMARK_MODULES_TOOLBAR_HEIGHT;
                     fixed: 0 1;
                     align: 0.5 0.0;
                     visible: 1;
                     rel1.relative: 0.0 0.0;
+                    rel2.relative: 1.0 1.0;
+                }
+                description {
+                    state: "hidden_toolbar" 0.0;
+                    inherit: "default";
+                    visible: 0;
+                }
+            }
+            part {
+                name: "navigator_toolbar";
+                type: SWALLOW;
+                scale: 1;
+                description {
+                    state: "default" 0.0;
+                    min: 0 BOOKMARK_NAVIGATOR_TOOLBAR_HEIGHT;
+                    max: -1 BOOKMARK_NAVIGATOR_TOOLBAR_HEIGHT;
+                    fixed: 0 1;
+                    align: 0.5 0.0;
+                    visible: 1;
+                    rel1 {
+                        relative: 0.0 1.0;
+                        to: "modules_toolbar";
+                    }
                     rel2.relative: 1.0 1.0;
                 }
                 description {
@@ -94,14 +115,17 @@ collections {
                     align: 0.0 0.0;
                     rel1 {
                         relative: 0.0 1.0;
-                        to: "toolbar";
+                        to: "navigator_toolbar";
                     }
                     rel2.relative: 1.0 1.0;
                 }
                 description {
                     state: "hidden_toolbar" 0.0;
                     inherit: "default";
-                    rel1.relative: 0.0 0.0;
+                    rel1 {
+                        relative: 0.0 0.0;
+                        to: "bg";
+                    }
                 }
             }
             part {
@@ -146,20 +170,22 @@ collections {
                 target: "elm.swallow.content_overlay";
             }
             program {
-                name: "hide_toolbar";
-                signal: "hide_toolbar";
+                name: "hide_toolbars";
+                signal: "hide_toolbars";
                 source: "ui";
                 action: STATE_SET "hidden_toolbar" 0.0;
                 target: "elm.swallow.content";
-                target: "toolbar";
+                target: "navigator_toolbar";
+                target: "modules_toolbar";
             }
             program {
-                name: "show_toolbar";
-                signal: "show_toolbar";
+                name: "show_toolbars";
+                signal: "show_toolbars";
                 source: "ui";
                 action: STATE_SET "default" 0.0;
                 target: "elm.swallow.content";
-                target: "toolbar";
+                target: "navigator_toolbar";
+                target: "modules_toolbar";
             }
         }
     }
