@@ -47,6 +47,7 @@ BookmarkManagerUI::BookmarkManagerUI()
     , m_cancel_button(nullptr)
     , m_delete_button(nullptr)
     , m_prev_button(nullptr)
+    , m_modulesToolbar(nullptr)
     , m_navigatorToolbar(nullptr)
     , m_genlist(nullptr)
     , m_empty_layout(nullptr)
@@ -184,11 +185,28 @@ Evas_Object* BookmarkManagerUI::createBookmarksLayout(Evas_Object* parent)
     elm_object_part_content_set(b_mm_layout, "elm.swallow.content", m_content);
 
     createTopContent();
+    createModulesToolbar();
     createNavigatorToolbar();
+    elm_object_signal_emit(m_content, "show_toolbars", "ui");
 
     createGenlist();
     createEmptyLayout();
     return b_mm_layout;
+}
+
+void BookmarkManagerUI::createModulesToolbar()
+{
+    m_modulesToolbar = elm_toolbar_add(m_content);
+
+    elm_object_style_set(m_modulesToolbar, "tabbar/notitle");
+    elm_toolbar_shrink_mode_set(m_modulesToolbar, ELM_TOOLBAR_SHRINK_EXPAND);
+    elm_toolbar_select_mode_set(m_modulesToolbar, ELM_OBJECT_SELECT_MODE_ALWAYS);
+    elm_toolbar_transverse_expanded_set(m_modulesToolbar, EINA_TRUE);
+    elm_object_part_content_set(m_content, "modules_toolbar", m_modulesToolbar);
+    evas_object_show(m_modulesToolbar);
+
+    elm_toolbar_item_append(m_modulesToolbar, nullptr, _("IDS_BR_BODY_BOOKMARKS"), _modules_bookmarks_clicked, this);
+    elm_toolbar_item_append(m_modulesToolbar, nullptr, _("IDS_BR_MBODY_HISTORY"), _modules_history_clicked, this);
 }
 
 void BookmarkManagerUI::createNavigatorToolbar()
@@ -201,8 +219,7 @@ void BookmarkManagerUI::createNavigatorToolbar()
     elm_toolbar_align_set(m_navigatorToolbar, 0.0);
     elm_toolbar_homogeneous_set(m_navigatorToolbar, EINA_FALSE);
     elm_toolbar_select_mode_set(m_navigatorToolbar, ELM_OBJECT_SELECT_MODE_DEFAULT);
-    elm_object_part_content_set(m_content, "toolbar", m_navigatorToolbar);
-    elm_object_signal_emit(m_content, "show_toolbar", "ui");
+    elm_object_part_content_set(m_content, "navigator_toolbar", m_navigatorToolbar);
     evas_object_show(m_navigatorToolbar);
 }
 
@@ -549,6 +566,27 @@ void BookmarkManagerUI::_navigatorFolderClicked(void* data, Evas_Object*, void* 
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
+void BookmarkManagerUI::_modules_bookmarks_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        //TODO: When History is properly shown, go back to Bookmarks
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
+void BookmarkManagerUI::_modules_history_clicked(void* data, Evas_Object*, void*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    if (data) {
+        //This is temporary solution to enable a way to show history. This has some issues,
+        //like underline staying on history after going back.
+        BookmarkManagerUI *bookmarkManagerUI = static_cast<BookmarkManagerUI*>(data);
+        bookmarkManagerUI->showHistory();
+    } else
+        BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+}
+
 void BookmarkManagerUI::_bookmarkItemClicked(void * data, Evas_Object *, void *)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -586,7 +624,8 @@ void BookmarkManagerUI::changeState(BookmarkManagerState state)
         elm_object_signal_emit(b_mm_layout, "elm,state,title_right_btn,hide", "elm");
         elm_object_signal_emit(b_mm_layout, "elm,state,prev_btn,show", "elm");
         elm_object_part_text_set(b_mm_layout, "elm.text.title", _("IDS_BR_HEADER_SELECT_BOOKMARK"));
-        elm_object_signal_emit(m_content, "hide_toolbar", "ui");
+        elm_object_signal_emit(m_content, "hide_toolbars", "ui");
+        evas_object_hide(m_modulesToolbar);
         evas_object_hide(m_navigatorToolbar);
         break;
     case BookmarkManagerState::Delete:
@@ -600,7 +639,8 @@ void BookmarkManagerUI::changeState(BookmarkManagerState state)
         elm_object_signal_emit(b_mm_layout, "elm,state,title_left_btn,show", "elm");
         elm_object_signal_emit(b_mm_layout, "elm,state,title_right_btn,show", "elm");
         updateDeleteTopContent();
-        elm_object_signal_emit(m_content, "hide_toolbar", "ui");
+        elm_object_signal_emit(m_content, "hide_toolbars", "ui");
+        evas_object_hide(m_modulesToolbar);
         evas_object_hide(m_navigatorToolbar);
         elm_check_state_set(elm_object_part_content_get(m_select_all, "elm.swallow.end"), EINA_FALSE);
         elm_box_pack_start(m_box, m_select_all);
@@ -611,7 +651,8 @@ void BookmarkManagerUI::changeState(BookmarkManagerState state)
         elm_object_signal_emit(b_mm_layout, "elm,state,title_right_btn,hide", "elm");
         elm_object_signal_emit(b_mm_layout, "elm,state,prev_btn,show", "elm");
         elm_object_part_text_set(b_mm_layout, "elm.text.title", _("IDS_BR_OPT_REORDER_ABB"));
-        elm_object_signal_emit(m_content, "hide_toolbar", "ui");
+        elm_object_signal_emit(m_content, "hide_toolbars", "ui");
+        evas_object_hide(m_modulesToolbar);
         evas_object_hide(m_navigatorToolbar);
         elm_genlist_reorder_mode_set(m_genlist, EINA_TRUE);
         break;
@@ -622,7 +663,8 @@ void BookmarkManagerUI::changeState(BookmarkManagerState state)
         elm_object_signal_emit(b_mm_layout, "elm,state,title_left_btn,hide", "elm");
         elm_object_signal_emit(b_mm_layout, "elm,state,title_right_btn,hide", "elm");
         elm_object_signal_emit(b_mm_layout, "elm,state,prev_btn,show", "elm");
-        elm_object_signal_emit(m_content, "show_toolbar", "ui");
+        elm_object_signal_emit(m_content, "show_toolbars", "ui");
+        evas_object_show(m_modulesToolbar);
         evas_object_show(m_navigatorToolbar);
         elm_object_part_text_set(b_mm_layout, "elm.text.title", _("IDS_BR_BODY_BOOKMARKS"));
         elm_genlist_reorder_mode_set(m_genlist, EINA_FALSE);

@@ -66,6 +66,7 @@ public:
     void addBookmarkItems(services::SharedBookmarkItem parent, services::SharedBookmarkItemList items);
     void addBookmarkItemCurrentFolder(services::SharedBookmarkItem item);
 
+    boost::signals2::signal<void ()> showHistory;
     boost::signals2::signal<void ()> closeBookmarkManagerClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemClicked;
     boost::signals2::signal<void (std::shared_ptr<tizen_browser::services::BookmarkItem>)> bookmarkItemEdit;
@@ -90,6 +91,7 @@ private:
 
     Evas_Object* createBookmarksLayout(Evas_Object* parent);
     void createTopContent();
+    void createModulesToolbar();
     void createNavigatorToolbar();
     void createGenlist();
     void createEmptyLayout();
@@ -104,6 +106,8 @@ private:
     void updateDeleteTopContent();
 
     static void _navigatorFolderClicked(void* data, Evas_Object* obj, void* event_info);
+    static void _modules_bookmarks_clicked(void* data, Evas_Object* obj, void* event_info);
+    static void _modules_history_clicked(void* data, Evas_Object* obj, void* event_info);
     static void _bookmarkItemClicked(void* data, Evas_Object*, void*);
     static void _cancel_clicked(void *data, Evas_Object *, void *);
     static void _delete_clicked(void *data, Evas_Object *, void *);
@@ -128,6 +132,7 @@ private:
     Evas_Object *m_cancel_button;
     Evas_Object *m_delete_button;
     Evas_Object *m_prev_button;
+    Evas_Object *m_modulesToolbar;
     Evas_Object *m_navigatorToolbar;
     Evas_Object *m_box;
     Evas_Object *m_genlist;
