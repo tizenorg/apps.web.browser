@@ -610,10 +610,8 @@ void WebPageUI::_bookmark_manager_clicked(void * data, Evas_Object *, void *)
 void WebPageUI::setContentFocus()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (getURIEntry().hasFocus()) {
+    if (getURIEntry().hasFocus())
         getURIEntry().clearFocus();
-        mobileEntryUnfocused();
-    }
 }
 
 void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
