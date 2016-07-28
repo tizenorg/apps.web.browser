@@ -164,10 +164,6 @@ collections { base_scale: 2.6;
                     inherit: "default" 0.0;
                     visible: 1;
                 }
-                description {
-                    state: "entry_decreased_wp" 0.0;
-                    inherit: "moveright" 0.0;
-                }
             }
 
             part {
@@ -218,10 +214,6 @@ collections { base_scale: 2.6;
                     state: "visible" 0.0;
                     inherit: "default" 0.0;
                     visible: 1;
-                }
-                description {
-                    state: "entry_decreased_wp" 0.0;
-                    inherit: "default" 0.0;
                 }
             }
 
@@ -505,14 +497,6 @@ collections { base_scale: 2.6;
                 signal: "decrease_unfocused_uri";
                 source: "ui";
                 action: STATE_SET "default" 0.0;
-                target: "uri_entry";
-                target: "uri_bar_buttons_right";
-            }
-            program {
-                name: "decrease_unfocused_uribar_wp";
-                signal: "decrease_unfocused_uri_wp";
-                source: "ui";
-                action: STATE_SET "entry_decreased_wp" 0.0;
                 target: "uri_entry";
                 target: "uri_bar_buttons_right";
             }
