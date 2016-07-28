@@ -137,7 +137,6 @@ void WebPageUI::hideUI()
 #if GESTURE
     elm_gesture_layer_cb_del(m_gestureLayer, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_MOVE, _gesture_move, this);
 #endif
-    hideMoreMenu();
     hideFindOnPage();
 }
 
@@ -525,7 +524,6 @@ void WebPageUI::createLayout()
     elm_object_part_content_set(m_mainLayout, "uri_bar_buttons_right", m_rightButtonBar->getContent());
 
     elm_layout_signal_callback_add(m_URIEntry->getContent(), "slide_websearch", "elm", faviconClicked, this);
-    edje_object_signal_callback_add(elm_layout_edje_get(m_mainLayout), "mouse,clicked,1", "moremenu_dimmed_bg", _more_menu_background_clicked, this);
 
 //    elm_theme_extension_add(nullptr, edjePath("WebPageUI/UrlHistoryList.edj").c_str());
 //    m_urlHistoryList->setMembers(m_mainLayout, m_URIEntry->getEntryWidget());
@@ -624,13 +622,6 @@ void WebPageUI::_content_clicked(void *data, Evas_Object *, void *)
     webpageUI->setContentFocus();
 }
 
-void WebPageUI::_more_menu_background_clicked(void* data, Evas_Object*, const char*, const char*)
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    WebPageUI*  webPageUI = static_cast<WebPageUI*>(data);
-    webPageUI->hideMoreMenu();
-}
-
 void WebPageUI::createActions()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -714,12 +705,6 @@ void WebPageUI::updateURIBar(const std::string& uri)
 std::string WebPageUI::edjePath(const std::string& file)
 {
     return std::string(EDJE_DIR) + file;
-}
-
-void WebPageUI::showMoreMenuConnect()
-{
-    hideFindOnPage();
-    showMoreMenu();
 }
 
 #if GESTURE

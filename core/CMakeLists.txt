@@ -106,7 +106,6 @@ if(TIZEN_BUILD)
     FindOnPageUI
     HistoryService
     HistoryUI
-    MoreMenuUI
     PlatformInputManager
     QuickAccess
     SettingsUI

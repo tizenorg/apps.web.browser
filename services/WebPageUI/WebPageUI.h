@@ -93,9 +93,7 @@ public:
     boost::signals2::signal<void ()> forwardPage;
     boost::signals2::signal<void ()> showTabUI;
     boost::signals2::signal<void ()> showBookmarksUI;
-    boost::signals2::signal<void ()> hideMoreMenu;
     boost::signals2::signal<void ()> qaOrientationChanged;
-    boost::signals2::signal<void ()> showMoreMenu;
     boost::signals2::signal<void ()> hideQuickAccess;
     boost::signals2::signal<void ()> showQuickAccess;
     boost::signals2::signal<void ()> bookmarkManagerClicked;
@@ -152,7 +150,6 @@ private:
     // wrappers to call singal as a reaction to other signal
     void backPageConnect() { backPage(); }
     void forwardPageConnect() { forwardPage(); }
-    void showMoreMenuConnect();
     void addNewTabConnect() { addNewTab(); }
 
     Evas_Object* m_parent;

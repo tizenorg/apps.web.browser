@@ -37,7 +37,6 @@
 #include "WebPageUI.h"
 #include "AbstractWebEngine.h"
 #include "TabOrigin.h"
-#include "MoreMenuUI.h"
 #include "HistoryUI.h"
 #include "FindOnPageUI.h"
 #include "SettingsUI.h"
@@ -95,7 +94,6 @@ private:
     void initModelServices();
     void initUIServices();
     void connectModelSignals();
-    void titleChanged(const std::string& title);
     void faviconChanged(tools::BrowserImagePtr favicon);
     void restoreLastSession();
     Evas_Object* createWebLayout(Evas_Object* parent);
@@ -146,9 +144,6 @@ private:
     std::shared_ptr<services::HistoryItemVector> getHistory();
     std::shared_ptr<services::HistoryItemVector> getMostVisitedItems();
 
-    //UI signal handling functions
-    void onBookmarkAdded(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
-
     void onBookmarkClicked(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
     void onNewQuickAccessClicked();
     void onBookmarkEdit(std::shared_ptr<tizen_browser::services::BookmarkItem> bookmarkItem);
@@ -164,7 +159,6 @@ private:
     static void onUrlIMEOpened(void* data, Evas_Object*, void*);
     static void onUrlIMEClosed(void* data, Evas_Object*, void*);
 #endif
-    void onBookmarkRemoved(const std::string& uri);
 
     void onHistoryRemoved(const std::string& uri);
     void onOpenURL(std::shared_ptr<tizen_browser::services::HistoryItem> historyItem, bool desktopMode);
@@ -197,14 +191,6 @@ private:
 #if PROFILE_MOBILE
     void onMenuButtonPressed();
     void handleConfirmationRequest(basic_webengine::WebConfirmationPtr webConfirmation);
-
-    /**
-     * \brief check if url comming back from WebEngine should be passed to URI.
-     *
-     * For filtered addresses we need to hide real URI so the user would be confused.
-     * and this is a back function that checks if address emited from browser should be changed.
-     */
-    void webEngineURLChanged(const std::string url);
 #else
     void onRedKeyPressed();
     void onYellowKeyPressed();
@@ -269,8 +255,6 @@ private:
 
     void showTabUI();
     void closeTabUI();
-    void showMoreMenu();
-    void closeMoreMenu();
     void switchToMobileMode();
     void switchToDesktopMode();
     void showHistoryUI();
@@ -339,7 +323,6 @@ private:
     std::shared_ptr<interfaces::AbstractFavoriteService> m_favoriteService;
     std::shared_ptr<services::HistoryService> m_historyService;
     services::TabServicePtr m_tabService;
-    std::shared_ptr<MoreMenuUI> m_moreMenuUI;
 #if PROFILE_MOBILE
     std::shared_ptr<BookmarkFlowUI> m_bookmarkFlowUI;
     std::shared_ptr<FindOnPageUI> m_findOnPageUI;
