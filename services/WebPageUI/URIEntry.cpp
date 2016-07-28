@@ -82,6 +82,7 @@ Evas_Object* URIEntry::getContent()
         elm_entry_single_line_set(m_entry, EINA_TRUE);
         elm_entry_scrollable_set(m_entry, EINA_TRUE);
         elm_entry_input_panel_layout_set(m_entry, ELM_INPUT_PANEL_LAYOUT_URL);
+        elm_object_signal_callback_add(m_entry_layout,  "left_icon_clicked", "ui", _uri_left_icon_clicked, this);
         elm_object_signal_callback_add(m_entry_layout,  "right_icon_clicked", "ui", _uri_right_icon_clicked, this);
 
         setUrlGuideText(GUIDE_TEXT_UNFOCUSED);
@@ -116,8 +117,10 @@ void URIEntry::changeUri(const std::string& newUri)
         if (!m_URI.empty()) {
             elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(m_URI.c_str()));
             m_rightIconType = RightIconType::NONE;
-        } else
+        } else {
             elm_entry_entry_set(m_entry, elm_entry_utf8_to_markup(""));
+            hideRightIcon();
+        }
     }
     updateSecureIcon();
 }
@@ -252,6 +255,7 @@ void URIEntry::focused(void* data, Evas_Object* /* obj */, void* /* event_info *
         self->m_first_click = false;
         self->m_entrySelectionState = SelectionState::SELECTION_NONE;
     }
+    self->hideLeftIcon();
 }
 
 void URIEntry::_fixed_entry_key_down_handler(void* data, Evas* /*e*/, Evas_Object* /*obj*/, void* event_info)
@@ -319,7 +323,6 @@ void URIEntry::editingCanceled()
 void URIEntry::loadStarted()
 {
     m_isPageLoading = true;
-    elm_object_signal_emit(m_entry_layout, "shiftright_uribg", "ui");
     showStopIcon();
 }
 
@@ -383,6 +386,13 @@ void URIEntry::_uri_entry_longpressed(void* data, Evas_Object* /*obj*/, void* /*
 
 }
 
+void URIEntry::_uri_left_icon_clicked(void* data, Evas_Object*, const char*, const char*)
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    auto self = static_cast<URIEntry*>(data);
+    self->secureIconClicked();
+}
+
 void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const char* /*emission*/, const char* /*source*/)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -390,7 +400,7 @@ void URIEntry::_uri_right_icon_clicked(void* data, Evas_Object* /*obj*/, const c
     switch (self->m_rightIconType) {
     case RightIconType::CANCEL:
         elm_entry_entry_set(self->m_entry, "");
-        elm_object_signal_emit(self->m_entry_layout, "hide_icon", "ui");
+        self->hideRightIcon();
         break;
     case RightIconType::RELOAD:
         self->reloadPage();
@@ -409,9 +419,9 @@ void URIEntry::showCancelIcon()
     m_rightIconType = RightIconType::CANCEL;
     bool isEntryEmpty = elm_entry_is_empty(m_entry);
     if(!isEntryEmpty)
-        elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
+        elm_object_signal_emit(m_entry_layout, "show,cancel,icon", "ui");
     else
-        elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+        hideRightIcon();
 }
 
 void URIEntry::updateSecureIcon()
@@ -434,7 +444,7 @@ void URIEntry::showStopIcon()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_rightIconType = RightIconType::STOP_LOADING;
-    elm_object_signal_emit(m_entry_layout, "show_cancel_icon", "ui");
+    elm_object_signal_emit(m_entry_layout, "show,cancel,icon", "ui");
 }
 
 void URIEntry::showReloadIcon()
@@ -447,7 +457,13 @@ void URIEntry::showReloadIcon()
 void URIEntry::hideRightIcon()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    elm_object_signal_emit(m_entry_layout, "hide_icon", "ui");
+    elm_object_signal_emit(m_entry_layout, "hide,right,icon", "ui");
+}
+
+void URIEntry::hideLeftIcon()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+    elm_object_signal_emit(m_entry_layout,"hide,left,icon", "ui");
 }
 
 void URIEntry::showSecureIcon(bool show, bool secure)
@@ -461,9 +477,8 @@ void URIEntry::showSecureIcon(bool show, bool secure)
             elm_object_signal_emit(m_entry_layout, "show,secure,icon", "");
         else
             elm_object_signal_emit(m_entry_layout, "show,unsecure,icon", "");
-    }
-    else {
-        // TODO: new signal for left side secure icon needed
+    } else {
+        hideLeftIcon();
     }
 }
 
