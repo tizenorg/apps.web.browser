@@ -95,7 +95,6 @@ void WebPageUI::showUI()
     evas_object_show(elm_object_part_content_get(m_mainLayout, "uri_bar_buttons_right"));
 
     if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
-        evas_object_hide(m_bottomButtonBar->getContent());
         elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
         showQuickAccess();
     }
@@ -183,13 +182,9 @@ void WebPageUI::toIncognito(bool incognito)
     BROWSER_LOGD("[%s:%d,%d] ", __PRETTY_FUNCTION__, __LINE__, incognito);
     if (incognito) {
         elm_object_signal_emit(m_mainLayout, "incognito,true", "ui");
-        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_incognito", "ui");
-        elm_object_signal_emit(m_URIEntry->getContent(), "uri_entry_incognito", "ui");
     }
     else {
         elm_object_signal_emit(m_mainLayout, "incognito,false", "ui");
-        elm_object_signal_emit(m_URIEntry->getEntryWidget(), "uri_entry_normal", "ui");
-        elm_object_signal_emit(m_URIEntry->getContent(), "uri_entry_normal", "ui");
     }
 }
 
@@ -215,7 +210,6 @@ void WebPageUI::switchViewToErrorPage()
     setMainContent(m_errorLayout);
     evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
-    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setErrorButtons();
 }
 
@@ -228,9 +222,7 @@ void WebPageUI::switchViewToIncognitoPage()
         createPrivateLayout();
     setMainContent(m_privateLayout);
     orientationChanged();
-    evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
-    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     setPrivateButtons();
     m_URIEntry->changeUri("");
 }
@@ -244,9 +236,7 @@ void WebPageUI::switchViewToWebPage(Evas_Object* content, const std::string uri)
         m_statesMgr->set(WPUState::MAIN_WEB_PAGE);
     }
     setMainContent(content);
-    evas_object_show(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftright_uri", "ui");
-    elm_object_signal_emit(m_URIEntry->getContent(), "shiftright_uribg", "ui");
     updateURIBar(uri);
 }
 
@@ -257,9 +247,7 @@ void WebPageUI::switchViewToQuickAccess(Evas_Object* content)
     m_statesMgr->set(WPUState::QUICK_ACCESS);
     toIncognito(false);
     setMainContent(content);
-    evas_object_hide(m_bottomButtonBar->getContent());
     elm_object_signal_emit(m_mainLayout, "shiftback_uri", "ui");
-    elm_object_signal_emit(m_URIEntry->getContent(), "shiftback_uribg", "ui");
     hideProgressBar();
     m_URIEntry->changeUri("");
     m_URIEntry->showSecureIcon(false, false);
@@ -639,7 +627,7 @@ void WebPageUI::createActions()
     m_forward = sharedAction(new Action(_("IDS_BR_SK_NEXT")));
     m_forward->setIcon("toolbar_next");
 
-    m_addTab = sharedAction(new Action("Add tab"));
+    m_addTab = sharedAction(new Action("New tab"));
     m_addTab->setIcon("add_tab");
 
     m_homePage = sharedAction(new Action("Home"));
@@ -775,11 +763,7 @@ void WebPageUI::mobileEntryFocused()
 void WebPageUI::mobileEntryUnfocused()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    if (m_statesMgr->equals(WPUState::QUICK_ACCESS)) {
-        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri", "ui");
-    } else {
-        elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri_wp", "ui");
-    }
+    elm_object_signal_emit(m_mainLayout, "decrease_unfocused_uri", "ui");
 
     // delay hiding on one efl loop iteration to enable genlist item selected callback to come
     ecore_timer_add(0.0, _hideDelay, this);
