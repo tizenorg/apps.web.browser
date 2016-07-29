@@ -5,6 +5,7 @@
 #define BUTTON_HEIGHT 94
 #define TOOLBAR_HEIGHT 96
 #define SPACER_SIZE 20
+#define SPACER_LANDSCAPE 160
 
 #define ADD_BUTTON(NAME, RELATIVE_TO)                               \
         part {                                                      \
@@ -64,19 +65,19 @@ collections { base_scale: 2.6;
 
             ADD_BUTTON("prev_button", "spacer_0")
 
-            ADD_SPACER_NEXT_TO("spacer_1", "prev_button", SPACER_SIZE, BUTTON_HEIGHT)
+            ADD_SPACER_NEXT_TO("spacer_1", "prev_button", SPACER_SIZE, BUTTON_HEIGHT, SPACER_LANDSCAPE)
 
             ADD_BUTTON("next_button", "spacer_1")
 
-            ADD_SPACER_NEXT_TO("spacer_2", "next_button", SPACER_SIZE, BUTTON_HEIGHT)
+            ADD_SPACER_NEXT_TO("spacer_2", "next_button", SPACER_SIZE, BUTTON_HEIGHT, SPACER_LANDSCAPE)
 
             ADD_BUTTON("home_button", "spacer_2")
 
-            ADD_SPACER_NEXT_TO("spacer_3", "home_button", SPACER_SIZE, BUTTON_HEIGHT)
+            ADD_SPACER_NEXT_TO("spacer_3", "home_button", SPACER_SIZE, BUTTON_HEIGHT, SPACER_LANDSCAPE)
 
             ADD_BUTTON("bookmarks_button", "spacer_3")
 
-            ADD_SPACER_NEXT_TO("spacer_4", "bookmarks_button", SPACER_SIZE, BUTTON_HEIGHT)
+            ADD_SPACER_NEXT_TO("spacer_4", "bookmarks_button", SPACER_SIZE, BUTTON_HEIGHT, SPACER_LANDSCAPE)
 
             ADD_BUTTON("tabs_button", "spacer_4")
 
@@ -104,6 +105,28 @@ collections { base_scale: 2.6;
                 }
             }
 
+        }
+        programs {
+            program {
+                name: "portrait";
+                signal: "portrait,mode";
+                source: "";
+                action: STATE_SET "default" 0.0;
+                target: "spacer_1";
+                target: "spacer_2";
+                target: "spacer_3";
+                target: "spacer_4";
+            }
+            program {
+                name: "landscape";
+                signal: "landscape,mode";
+                source: "";
+                action: STATE_SET "landscape" 0.0;
+                target: "spacer_1";
+                target: "spacer_2";
+                target: "spacer_3";
+                target: "spacer_4";
+            }
         }
     }
 }
