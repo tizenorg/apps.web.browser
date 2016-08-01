@@ -32,6 +32,7 @@
 #include "SnapshotType.h"
 #include "BrowserImage.h"
 #include "DownloadControl/DownloadControl.h"
+#include "WebView.h"
 
 namespace tizen_browser {
 namespace basic_webengine {
@@ -262,6 +263,10 @@ private:
 
     int createTabId();
 
+#if PROFILE_MOBILE
+    void initializeDownloadControl(Ewk_Context* context = ewk_context_default_get());
+#endif
+
 private:
     bool m_initialised;
     void* m_guiParent;
@@ -280,7 +285,7 @@ private:
     int m_tabIdCreated;
 #if PROFILE_MOBILE
     std::map<WebEngineSettings, bool>  m_settings;
-    DownloadControl *m_downloadControl;
+    std::shared_ptr<DownloadControl> m_downloadControl;
 #endif
 };
 
