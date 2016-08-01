@@ -94,13 +94,16 @@ void WebEngineService::init(void * guiParent)
         m_guiParent = guiParent;
         m_initialised = true;
     }
+}
 
 #if PROFILE_MOBILE
-    Ewk_Context *context = ewk_context_default_get();
+void WebEngineService::initializeDownloadControl()
+{
+    Ewk_Context* context = ewk_context_default_get();
     ewk_context_did_start_download_callback_set(context , _download_request_cb, this);
     m_downloadControl = new DownloadControl();
-#endif
 }
+#endif
 
 void WebEngineService::preinitializeWebViewCache()
 {
@@ -108,6 +111,11 @@ void WebEngineService::preinitializeWebViewCache()
     if (!m_webViewCacheInitialized) {
         m_webViewCacheInitialized = true;
         Ewk_Context* context = ewk_context_default_get();
+
+#if PROFILE_MOBILE
+        initializeDownloadControl();
+#endif
+
         Evas_Object* ewk_view = ewk_view_add_with_context(evas_object_evas_get(
                 reinterpret_cast<Evas_Object *>(m_guiParent)), context);
         ewk_context_cache_model_set(context, EWK_CACHE_MODEL_PRIMARY_WEBBROWSER);
@@ -486,7 +494,13 @@ TabId WebEngineService::addTab(const std::string & uri,
     }
     TabId newTabId(newAdaptorId);
 
-    m_webViewCacheInitialized = true;
+    if (!m_webViewCacheInitialized) {
+#if PROFILE_MOBILE
+        initializeDownloadControl();
+#endif
+        m_webViewCacheInitialized = true;
+    }
+
     WebViewPtr p = std::make_shared<WebView>(reinterpret_cast<Evas_Object *>(m_guiParent), newTabId, title, incognitoMode);
     if (tabInitId)
         p->init(desktopMode, origin, getTabView(*tabInitId));

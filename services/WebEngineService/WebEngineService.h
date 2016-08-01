@@ -262,6 +262,8 @@ private:
 
     int createTabId();
 
+    void initializeDownloadControl();
+
 private:
     bool m_initialised;
     void* m_guiParent;
