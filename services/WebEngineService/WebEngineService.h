@@ -262,6 +262,10 @@ private:
 
     int createTabId();
 
+#if PROFILE_MOBILE
+    void initializeDownloadControl();
+#endif
+
 private:
     bool m_initialised;
     void* m_guiParent;
