@@ -42,7 +42,6 @@
 #include "SettingsUI.h"
 #include "SettingsMain.h"
 #include "SettingsHomePage.h"
-#include "SettingsSearchEngine.h"
 #include "SettingsPrivacy.h"
 #include "SettingsManager.h"
 #include "TextPopup_mob.h"
@@ -261,6 +260,7 @@ private:
     void closeHistoryUI();
     void showSettings(unsigned);
     void closeSettingsUI();
+    void onDefSearchEngineClicked();
     std::string requestSettingsCurrentPage();
 
     void showBookmarkFlowUI();

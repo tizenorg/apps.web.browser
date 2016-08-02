@@ -116,13 +116,20 @@ void SettingsMain::_home_page_cb(void*, Evas_Object*, void*)
 void SettingsMain::_search_engine_cb(void*, Evas_Object*, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    SettingsPrettySignalConnector::Instance().settingsSearchEngineClicked();
+    SettingsPrettySignalConnector::Instance().settingsBaseShowRadioPopup();
 }
 
-void SettingsMain::_zoom_cb(void *, Evas_Object*, void*)
+void SettingsMain::_zoom_cb(void *, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    // TODO Implementation
+    auto el = elm_genlist_selected_item_get(obj);
+    auto check = elm_object_item_part_content_get(el, "elm.swallow.end");
+    auto value = !elm_check_state_get(check);
+
+    elm_check_state_set(check, value);
+    SettingsPrettySignalConnector::Instance().
+        setWebEngineSettingsParam(
+            basic_webengine::WebEngineSettings::PAGE_OVERVIEW, static_cast<bool>(value));
 }
 
 void SettingsMain::_advanced_cb(void*, Evas_Object*, void*)
@@ -147,7 +154,7 @@ void SettingsMain::grid_item_check_changed(void*, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 
-    auto value = elm_check_state_get(obj);
+    auto value = !elm_check_state_get(obj);
 
     elm_check_state_set(obj, value);
     SettingsPrettySignalConnector::Instance().

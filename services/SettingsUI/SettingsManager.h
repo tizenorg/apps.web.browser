@@ -22,7 +22,6 @@
 #include "SettingsUI.h"
 #include "SettingsMain.h"
 #include "SettingsHomePage.h"
-#include "SettingsSearchEngine.h"
 #include "SettingsPrivacy.h"
 #include "SettingsAdvanced.h"
 #include "SettingsDelPersData.h"
@@ -53,7 +52,6 @@ public:
     SetPtr operator[](const SettingsMainOptions& s){ return m_settingsViews[s];};
     void showSettingsBaseUI();
     void showSettingsHomePageUI();
-    void showSettingsSearchEngineUI();
     void showSettingsAutofillUI();
     void showSettingsAutofillCreatorUI(bool);
     void showSettingsPrivacyUI();
