@@ -49,9 +49,6 @@ void SettingsManager::connectOpenSignals()
         settingsHomePageClicked.connect(
             boost::bind(&SettingsManager::showSettingsHomePageUI, this));
     SettingsPrettySignalConnector::Instance().
-        settingsSearchEngineClicked.connect(
-            boost::bind(&SettingsManager::showSettingsSearchEngineUI, this));
-    SettingsPrettySignalConnector::Instance().
         settingsAutofillClicked.connect(
             boost::bind(&SettingsManager::showSettingsAutofillUI, this));
     SettingsPrettySignalConnector::Instance().
@@ -78,9 +75,6 @@ std::shared_ptr<SettingsUI> SettingsManager::addView(const SettingsMainOptions& 
                 break;
             case HOME:
                 m_settingsViews[s] = std::make_shared<SettingsHomePage>(m_parent);
-                break;
-            case SEARCH:
-                m_settingsViews[s] = std::make_shared<SettingsSearchEngine>(m_parent);
                 break;
             case AUTO_FILL_PROFILE:
                 m_settingsViews[s] = std::make_shared<SettingsAFProfile>(m_parent);
@@ -121,12 +115,6 @@ void SettingsManager::showSettingsHomePageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     SettingsPrettySignalConnector::Instance().showSettings(SettingsMainOptions::HOME);
-}
-
-void SettingsManager::showSettingsSearchEngineUI()
-{
-    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    SettingsPrettySignalConnector::Instance().showSettings(SettingsMainOptions::SEARCH);
 }
 
 void SettingsManager::showSettingsAutofillUI()

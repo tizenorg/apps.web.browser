@@ -54,7 +54,6 @@ public:
     boost::signals2::signal<void (const basic_webengine::WebEngineSettings&, bool)> setWebEngineSettingsParam;
     boost::signals2::signal<void ()> settingsBaseClicked;
     boost::signals2::signal<void ()> settingsHomePageClicked;
-    boost::signals2::signal<void ()> settingsSearchEngineClicked;
     boost::signals2::signal<void ()> settingsAutofillClicked;
     boost::signals2::signal<void ()> settingsAdvancedClicked;
     boost::signals2::signal<void (bool)> settingsAutofillProfileClicked;
@@ -62,6 +61,7 @@ public:
     boost::signals2::signal<std::string ()> requestCurrentPage;
     boost::signals2::signal<bool ()> isLandscape;
     boost::signals2::signal<void (unsigned)> showSettings;
+    boost::signals2::signal<void ()> settingsBaseShowRadioPopup;
 
 private:
     SettingsPrettySignalConnector(){};

@@ -5,7 +5,6 @@ set(SettingsUI_SRCS
     SettingsUI.cpp
     SettingsMain.cpp
     SettingsHomePage.cpp
-    SettingsSearchEngine.cpp
     SettingsPrivacy.cpp
     SettingsAdvanced.cpp
     SettingsDelPersData.cpp
@@ -18,7 +17,6 @@ set(SettingsUI_HEADERS
     SettingsUI.h
     SettingsMain.h
     SettingsHomePage.h
-    SettingsSearchEngine.h
     SettingsPrivacy.h
     SettingsAdvanced.h
     SettingsDelPersData.h

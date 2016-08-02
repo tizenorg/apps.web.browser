@@ -45,6 +45,7 @@
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "NotificationPopup.h"
 #include "ContentPopup_mob.h"
+#include "RadioPopup.h"
 #include "Tools/GeneralTools.h"
 #include "Tools/SnapshotType.h"
 #include "SettingsPrettySignalConnector.h"
@@ -455,6 +456,8 @@ void SimpleUI::connectSettingsSignals()
             boost::bind(&storage::SettingsStorage::setParam, &m_storageService->getSettingsStorage(), _1, _2));
     SettingsPrettySignalConnector::Instance().
         isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
+    SettingsPrettySignalConnector::Instance().
+        settingsBaseShowRadioPopup.connect(boost::bind(&SimpleUI::onDefSearchEngineClicked, this));
 
     // SETTINGS HOME PAGE SIGNALS
     m_settingsManager->init(m_viewManager.getContent());
@@ -1467,6 +1470,25 @@ void SimpleUI::closeSettingsUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     m_viewManager.popTheStack();
+}
+
+void SimpleUI::onDefSearchEngineClicked()
+{
+    BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
+    auto popup = RadioPopup::createPopup(m_viewManager.getContent());
+    popup->setTitle("Default search engine");
+    popup->addRadio(RadioButtons::GOOGLE);
+    popup->addRadio(RadioButtons::YAHOO);
+    popup->addRadio(RadioButtons::BING);
+    popup->radioButtonClicked.connect(
+        [&, this](const RadioButtons&){
+        BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+        dismissPopup(popup);
+    });
+    popup->popupShown.connect(boost::bind(&SimpleUI::showPopup, this, _1));
+    popup->popupDismissed.connect(boost::bind(&SimpleUI::dismissPopup, this, _1));
+    popup->show();
 }
 
 std::string SimpleUI::requestSettingsCurrentPage()

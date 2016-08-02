@@ -102,16 +102,32 @@ Eina_Bool SettingsAdvanced::getOriginalState(int id)
     return (sig && *sig) ? EINA_TRUE : EINA_FALSE;
 }
 
-void SettingsAdvanced::_enable_js_cb(void *, Evas_Object*, void*)
+void SettingsAdvanced::_enable_js_cb(void *, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    // TODO Implementation
+    auto el = elm_genlist_selected_item_get(obj);
+    auto check = elm_object_item_part_content_get(el, "elm.swallow.end");
+    auto value = !elm_check_state_get(check);
+
+    elm_check_state_set(check, value);
+    SettingsPrettySignalConnector::Instance().
+        setWebEngineSettingsParam(
+            basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT,
+            static_cast<bool>(value));
 }
 
-void SettingsAdvanced::_block_popups_cb(void *, Evas_Object*, void*)
+void SettingsAdvanced::_block_popups_cb(void *, Evas_Object* obj, void*)
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
-    // TODO Implementation
+    auto el = elm_genlist_selected_item_get(obj);
+    auto check = elm_object_item_part_content_get(el, "elm.swallow.end");
+    auto value = !elm_check_state_get(check);
+
+    elm_check_state_set(check, value);
+    SettingsPrettySignalConnector::Instance().
+        setWebEngineSettingsParam(
+            basic_webengine::WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES,
+            static_cast<bool>(value));
 }
 
 void SettingsAdvanced::_save_content_cb(void *, Evas_Object*, void*)
@@ -134,15 +150,21 @@ void SettingsAdvanced::grid_item_check_changed(void* data, Evas_Object* obj, voi
         return;
     }
     auto itd = static_cast<ItemData*>(data);
-    auto value = elm_check_state_get(obj);
+    auto value = !elm_check_state_get(obj);
     switch (itd->id){
         case ENABLE_JS:
             elm_check_state_set(obj, value);
-            SettingsPrettySignalConnector::Instance().setWebEngineSettingsParam(basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT, static_cast<bool>(value));
+            SettingsPrettySignalConnector::Instance().
+                setWebEngineSettingsParam(
+                    basic_webengine::WebEngineSettings::ENABLE_JAVASCRIPT,
+                    static_cast<bool>(value));
             break;
         case BLOCK_POPUPS:
             elm_check_state_set(obj, value);
-            SettingsPrettySignalConnector::Instance().setWebEngineSettingsParam(basic_webengine::WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES, static_cast<bool>(value));
+            SettingsPrettySignalConnector::Instance().
+                setWebEngineSettingsParam(
+                    basic_webengine::WebEngineSettings::SCRIPTS_CAN_OPEN_PAGES,
+                    static_cast<bool>(value));
             break;
         default:
             break;
