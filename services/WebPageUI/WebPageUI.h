@@ -43,6 +43,22 @@ class BROWSER_EXPORT WebPageUI
         , public tizen_browser::interfaces::AbstractRotatable
 {
 public:
+    typedef enum OrientationType {
+        portrait_primary = 0,
+        portrait_secondary,
+        landscape_primary,
+        landscape_secondary,
+    } orientationType;
+
+    typedef enum WebDisplayMode {
+        WebDisplayModeUndefined = 0,
+        WebDisplayModeBrowser,
+        WebDisplayModeMinimalUi,
+        WebDisplayModeStandalone,
+        WebDisplayModeFullscreen,
+        WebDisplayModeLast = WebDisplayModeFullscreen
+    } webDisplayMode;
+
     WebPageUI();
     virtual ~WebPageUI();
     virtual std::string getName();
