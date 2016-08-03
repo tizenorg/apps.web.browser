@@ -48,6 +48,7 @@ WebPageUI::WebPageUI()
     , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
     , m_WebPageUIvisible(false)
+    , m_wpaInfo(nullptr)
 #if GESTURE
     , m_gestureLayer(nullptr)
     , m_uriBarHidden(false)
@@ -55,18 +56,6 @@ WebPageUI::WebPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
-
-typedef struct {
-    std::string     id;
-    std::string     decodedIcon; // needs to src, type, sizes.
-    std::string     uri;
-    std::string     name;
-    std::string     shortName;
-    int             orientation; // needs to portrait-primary, portrait-secondary, landscape-primary, landscape-secondary.
-    int             displayMode; // needs to fullscreen, standalone, minimal-ui, browser, and so on.
-    long            themeColor;
-    long            backgroundColor;
-} wpaInfo;
 
 WebPageUI::~WebPageUI()
 {
@@ -489,40 +478,43 @@ void WebPageUI::_cm_settings_clicked(void* data, Evas_Object*, void* )
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
-void* pNum;
-wpaInfo *info = new wpaInfo();
-
 void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
+
     if (data != nullptr) {
         WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        webPageUI->m_wpaInfo = std::make_shared<wpaInfo>();
         _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
 
-        pNum = &info;
         std::string uri = webPageUI->getURI();
-        BROWSER_LOGD("[%s:%d] pNum : %s", __PRETTY_FUNCTION__, __LINE__, pNum);
 
-        info->uri = uri.c_str();
-        info->orientation = portrait_secondary;         // test result : 1 (success)
-        info->displayMode = WebDisplayModeMinimalUi;    // test result : 2 (success)
-        BROWSER_LOGD("[%s:%d] info[0] : %s", __PRETTY_FUNCTION__, __LINE__, (info->uri).c_str());
-        BROWSER_LOGD("[%s:%d] info[1] : %d", __PRETTY_FUNCTION__, __LINE__, info->orientation);
-        BROWSER_LOGD("[%s:%d] info[2] : %d", __PRETTY_FUNCTION__, __LINE__, info->displayMode);
+        webPageUI->m_wpaInfo->uri = uri.c_str();
+        webPageUI->m_wpaInfo->orientation = portrait_secondary;
+        webPageUI->m_wpaInfo->displayMode = WebDisplayModeMinimalUi;
 
-        shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, pNum);
-    } else {
+       if(shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, webPageUI) != SHORTCUT_ERROR_NONE){
+            BROWSER_LOGE("[%s:%d] Fail to add to homescreen", __PRETTY_FUNCTION__, __LINE__);
+        }
+    }
+    else {
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
     }
 }
 
 int WebPageUI::result_cb(int ret, void *data) {
+
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     BROWSER_LOGD("[%s:%d] ret : %d, data : %s", __PRETTY_FUNCTION__, __LINE__, ret, data);
 
-//    WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
-//    webPageUI = (wpaInfo*)data;
-//    BROWSER_LOGD("[%s:%d] data->displayMode : %d", __PRETTY_FUNCTION__, __LINE__, (*(int *)((wpaInfo*)data)->displayMode));
+    BROWSER_LOGD("[%s:%d] uri : %s", __PRETTY_FUNCTION__, __LINE__, (webPageUI->m_wpaInfo->uri).c_str());
+    BROWSER_LOGD("[%s:%d] orientation : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->orientation);
+    BROWSER_LOGD("[%s:%d] displayMode : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->displayMode);
+    }
     return 0;
 }
 
