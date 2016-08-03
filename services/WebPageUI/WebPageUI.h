@@ -59,6 +59,18 @@ public:
         WebDisplayModeLast = WebDisplayModeFullscreen
     } webDisplayMode;
 
+    typedef struct {
+        std::string     id;
+        std::string     decodedIcon; // needs to src, type, sizes.
+        std::string     uri;
+        std::string     name;
+        std::string     shortName;
+        int             orientation; // needs to portrait-primary, portrait-secondary, landscape-primary, landscape-secondary.
+        int             displayMode; // needs to fullscreen, standalone, minimal-ui, browser, and so on.
+        long            themeColor;
+        long            backgroundColor;
+    } wpaInfo;
+
     WebPageUI();
     virtual ~WebPageUI();
     virtual std::string getName();
@@ -196,6 +208,7 @@ private:
     sharedAction m_bookmarks;
     sharedAction m_tabs;
 
+    wpaInfo *m_wpaInfo;
 #if GESTURE
     Evas_Object* m_gestureLayer;
     bool m_uriBarHidden;

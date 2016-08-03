@@ -48,6 +48,7 @@ WebPageUI::WebPageUI()
     , m_urlHistoryList(std::make_shared<UrlHistoryList>(getStatesMgr()))
     , m_webviewLocked(false)
     , m_WebPageUIvisible(false)
+    , m_wpaInfo(nullptr)
 #if GESTURE
     , m_gestureLayer(nullptr)
     , m_uriBarHidden(false)
@@ -56,23 +57,12 @@ WebPageUI::WebPageUI()
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
 
-typedef struct {
-    std::string     id;
-    std::string     decodedIcon; // needs to src, type, sizes.
-    std::string     uri;
-    std::string     name;
-    std::string     shortName;
-    int             orientation; // needs to portrait-primary, portrait-secondary, landscape-primary, landscape-secondary.
-    int             displayMode; // needs to fullscreen, standalone, minimal-ui, browser, and so on.
-    long            themeColor;
-    long            backgroundColor;
-} wpaInfo;
-
 WebPageUI::~WebPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     evas_object_smart_callback_del(m_dummy_button, "focused", _dummy_button_focused);
     evas_object_smart_callback_del(m_dummy_button, "unfocused", _dummy_button_unfocused);
+    delete m_wpaInfo;
 }
 
 void WebPageUI::init(Evas_Object* parent)
@@ -80,6 +70,7 @@ void WebPageUI::init(Evas_Object* parent)
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     M_ASSERT(parent);
     m_parent = parent;
+    m_wpaInfo = new wpaInfo();
 }
 
 Evas_Object* WebPageUI::getContent()
@@ -489,9 +480,6 @@ void WebPageUI::_cm_settings_clicked(void* data, Evas_Object*, void* )
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
-void* pNum;
-wpaInfo *info = new wpaInfo();
-
 void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
@@ -499,30 +487,34 @@ void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
         WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
         _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
 
-        pNum = &info;
         std::string uri = webPageUI->getURI();
-        BROWSER_LOGD("[%s:%d] pNum : %s", __PRETTY_FUNCTION__, __LINE__, pNum);
 
-        info->uri = uri.c_str();
-        info->orientation = portrait_secondary;         // test result : 1 (success)
-        info->displayMode = WebDisplayModeMinimalUi;    // test result : 2 (success)
-        BROWSER_LOGD("[%s:%d] info[0] : %s", __PRETTY_FUNCTION__, __LINE__, (info->uri).c_str());
-        BROWSER_LOGD("[%s:%d] info[1] : %d", __PRETTY_FUNCTION__, __LINE__, info->orientation);
-        BROWSER_LOGD("[%s:%d] info[2] : %d", __PRETTY_FUNCTION__, __LINE__, info->displayMode);
+        webPageUI->m_wpaInfo->uri = uri.c_str();
+        webPageUI->m_wpaInfo->orientation = portrait_secondary;         // test result : 1 (success)
+        webPageUI->m_wpaInfo->displayMode = WebDisplayModeMinimalUi;    // test result : 2 (success)
+        BROWSER_LOGD("[%s:%d] info[0] : %s", __PRETTY_FUNCTION__, __LINE__, (webPageUI->m_wpaInfo->uri).c_str());
+        BROWSER_LOGD("[%s:%d] info[1] : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->orientation);
+        BROWSER_LOGD("[%s:%d] info[2] : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->displayMode);
 
-        shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, pNum);
+        shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, webPageUI);
     } else {
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
     }
 }
 
 int WebPageUI::result_cb(int ret, void *data) {
+
+    if (data != nullptr) {
+        WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
+        _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     BROWSER_LOGD("[%s:%d] ret : %d, data : %s", __PRETTY_FUNCTION__, __LINE__, ret, data);
 
-//    WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
-//    webPageUI = (wpaInfo*)data;
-//    BROWSER_LOGD("[%s:%d] data->displayMode : %d", __PRETTY_FUNCTION__, __LINE__, (*(int *)((wpaInfo*)data)->displayMode));
+    BROWSER_LOGD("[%s:%d] info[0] : %s", __PRETTY_FUNCTION__, __LINE__, (webPageUI->m_wpaInfo->uri).c_str());
+    BROWSER_LOGD("[%s:%d] info[1] : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->orientation);
+    BROWSER_LOGD("[%s:%d] info[2] : %d", __PRETTY_FUNCTION__, __LINE__, webPageUI->m_wpaInfo->displayMode);
+    }
     return 0;
 }
 
