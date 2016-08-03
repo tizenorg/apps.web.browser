@@ -89,6 +89,8 @@ public:
     void setContentFocus();
     static Eina_Bool _hideDelay(void *data);
 
+    std::string getURI();
+
     boost::signals2::signal<void ()> backPage;
     boost::signals2::signal<void ()> forwardPage;
     boost::signals2::signal<void ()> showTabUI;
@@ -107,6 +109,8 @@ public:
     boost::signals2::signal<void ()> showBookmarkFlowUI;
     boost::signals2::signal<void ()> showFindOnPageUI;
     boost::signals2::signal<void ()> showSettingsUI;
+
+    boost::signals2::signal<std::string ()> requestCurrentPageForWebPageUI;
 
 private:
     static void faviconClicked(void* data, Evas_Object* obj, const char* emission, const char* source);

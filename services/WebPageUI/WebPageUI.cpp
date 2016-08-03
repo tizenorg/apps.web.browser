@@ -25,6 +25,7 @@
 #include "UrlHistoryList/UrlHistoryList.h"
 #include "WebPageUIStatesManager.h"
 #include <shortcut_manager.h>
+#include <string>
 
 namespace tizen_browser {
 namespace base_ui {
@@ -54,6 +55,12 @@ WebPageUI::WebPageUI()
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
 }
+
+struct wpaInfo {
+    std::string     uri;
+    std::string     orientation;
+    int             displayMode;
+};
 
 WebPageUI::~WebPageUI()
 {
@@ -476,21 +483,49 @@ void WebPageUI::_cm_settings_clicked(void* data, Evas_Object*, void* )
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
 }
 
+void* pNum;
+
 void WebPageUI::_cm_add_to_hs_clicked(void* data, Evas_Object*, void* )
 {
     BROWSER_LOGD("[%s:%d] ", __PRETTY_FUNCTION__, __LINE__);
     if (data != nullptr) {
         WebPageUI* webPageUI = static_cast<WebPageUI*>(data);
         _cm_dismissed(nullptr, webPageUI->m_ctxpopup, nullptr);
+
+        wpaInfo *info = new wpaInfo();
+        pNum = &info;
+        std::string uri = webPageUI->getURI();
+        std::string str = "landscape";
+        BROWSER_LOGD("[%s:%d] uri : %s", __PRETTY_FUNCTION__, __LINE__, uri.c_str());
+        BROWSER_LOGD("[%s:%d] pNum : %s", __PRETTY_FUNCTION__, __LINE__, pNum);
+
+        info->uri = uri.c_str();
+        info->orientation = str.c_str();
+        info->displayMode = 111;
+        BROWSER_LOGD("[%s:%d] info[0] : %s", __PRETTY_FUNCTION__, __LINE__, (info->uri).c_str());
+        BROWSER_LOGD("[%s:%d] info[1] : %s", __PRETTY_FUNCTION__, __LINE__, (info->orientation).c_str());
+        BROWSER_LOGD("[%s:%d] info[2] : %d", __PRETTY_FUNCTION__, __LINE__, info->displayMode);
+
         shortcut_add_to_home("Shortcut", LAUNCH_BY_APP, NULL, NULL, 0, result_cb, NULL);
-    } else
+    } else {
         BROWSER_LOGW("[%s] data = nullptr", __PRETTY_FUNCTION__);
+    }
 }
 
 int WebPageUI::result_cb(int ret, void *data) {
     BROWSER_LOGD("[%s:%d]", __PRETTY_FUNCTION__, __LINE__);
     BROWSER_LOGD("[%s:%d] ret : %d, data : %s", __PRETTY_FUNCTION__, __LINE__, ret, data);
+//    BROWSER_LOGD("[%s:%d] data->displayMode : %d", __PRETTY_FUNCTION__, __LINE__, *(int *)(&(data->displayMode)));
     return 0;
+}
+
+std::string WebPageUI::getURI() {
+    auto retVal = requestCurrentPageForWebPageUI();
+    if(retVal && !(*retVal).empty()) {
+        return *retVal;
+    } else {
+        return " ";
+    }
 }
 
 void WebPageUI::createLayout()

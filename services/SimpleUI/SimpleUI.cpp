@@ -322,6 +322,9 @@ void SimpleUI::connectUISignals()
         boost::bind(&tizen_browser::basic_webengine::AbstractWebEngine<Evas_Object>::stopLoading, m_webEngine.get()));
     m_webPageUI->isLandscape.connect(boost::bind(&SimpleUI::isLandscape, this));
 
+    // WPA
+    m_webPageUI->requestCurrentPageForWebPageUI.connect(boost::bind(&SimpleUI::requestSettingsCurrentPage, this));
+
     M_ASSERT(m_quickAccess.get());
     m_quickAccess->getDetailPopup().openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2));
     m_quickAccess->openURL.connect(boost::bind(&SimpleUI::onOpenURL, this, _1, _2));
